@@ -12,6 +12,6 @@ Here are a few quick comments from Arman `arman@cbio.mskcc.org` about this proto
 Change your working directory to `ctd2-dashboard` and issue the following commands
 
 	mvn clean install
-	cp -f target/dashboard-webapp.war $TOMCAT_HOME/webapps/
+	cp -f target/ctd2-dashboard.war $TOMCAT_HOME/webapps/
 
 where `$TOMCAT_HOME` is where your Tomcat-like web server lives. 

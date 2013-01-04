@@ -16,6 +16,6 @@
     </dependency>
   </dependencies>
   <build>
-    <finalName>dashboard-webapp</finalName>
+    <finalName>ctd2-dashboard</finalName>
   </build>
 </project>
