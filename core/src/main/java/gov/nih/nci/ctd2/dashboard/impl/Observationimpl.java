@@ -1,16 +1,23 @@
 package gov.nih.nci.ctd2.dashboard.impl;
 
 import gov.nih.nci.ctd2.dashboard.model.*;
+import org.hibernate.annotations.Proxy;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Proxy(proxyClass = Observation.class)
 public class ObservationImpl extends DashboardEntityImpl implements Observation {
     private List<Subject> subjects = new ArrayList<Subject>();
     private ObservationSource observationSource;
     private ObservationType observationType;
     private ObservationReference observationReference;
 
+    @OneToMany(mappedBy = "ObservationImpl")
     public List<Subject> getSubjects() {
         return subjects;
     }
@@ -19,6 +26,7 @@ public class ObservationImpl extends DashboardEntityImpl implements Observation 
         this.subjects = subjects;
     }
 
+    @Column(nullable = false)
     public ObservationSource getObservationSource() {
         return observationSource;
     }
@@ -27,6 +35,7 @@ public class ObservationImpl extends DashboardEntityImpl implements Observation 
         this.observationSource = observationSource;
     }
 
+    @Column(nullable = false)
     public ObservationType getObservationType() {
         return observationType;
     }
@@ -35,6 +44,7 @@ public class ObservationImpl extends DashboardEntityImpl implements Observation 
         this.observationType = observationType;
     }
 
+    @Column(nullable = false)
     public ObservationReference getObservationReference() {
         return observationReference;
     }

@@ -1,7 +1,12 @@
 package gov.nih.nci.ctd2.dashboard.impl;
 
 import gov.nih.nci.ctd2.dashboard.model.MouseModel;
+import org.hibernate.annotations.Proxy;
 
+import javax.persistence.Entity;
+
+@Entity
+@Proxy(proxyClass = MouseModel.class)
 public class MouseModelImpl extends SubjectImpl implements MouseModel {
     private String description;
 

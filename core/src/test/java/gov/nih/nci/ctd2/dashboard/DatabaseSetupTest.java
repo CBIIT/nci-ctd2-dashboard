@@ -12,11 +12,18 @@ import static org.junit.Assert.assertNotNull;
 
 public class DatabaseSetupTest {
     @Test
-    public void testBeanCreate() {
+    public void testBeanCreateAndPersist() {
         ApplicationContext appContext =
                 new ClassPathXmlApplicationContext("classpath*:META-INF/spring/testApplicationContext.xml");
         DashboardDao dashboardDao = (DashboardDao) appContext.getBean("dashboardDao");
         assertNotNull(dashboardDao);
+
+        DashboardFactory dashboardFactory = new DashboardFactory();
+        Gene gene = dashboardFactory.create(Gene.class, 1);
+        dashboardDao.save(gene);
+
+        Gene gene2 = dashboardFactory.create(Gene.class);
+        dashboardDao.save(gene2);
     }
 
 }

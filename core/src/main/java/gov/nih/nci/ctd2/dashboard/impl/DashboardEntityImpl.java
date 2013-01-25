@@ -1,8 +1,14 @@
 package gov.nih.nci.ctd2.dashboard.impl;
 
 import gov.nih.nci.ctd2.dashboard.model.DashboardEntity;
+import org.hibernate.annotations.Proxy;
 
+import javax.persistence.*;
 
+@Entity
+@Proxy(proxyClass= DashboardEntity.class)
+@Inheritance(strategy = InheritanceType.JOINED)
+@org.hibernate.annotations.Entity(dynamicUpdate = true, dynamicInsert = true)
 public class DashboardEntityImpl implements DashboardEntity {
     private Integer id;
     private String displayName;
@@ -15,6 +21,8 @@ public class DashboardEntityImpl implements DashboardEntity {
         this.displayName = displayName;
     }
 
+    @Id
+    @GeneratedValue(strategy=GenerationType.TABLE)
     public Integer getId() {
         return id;
     }

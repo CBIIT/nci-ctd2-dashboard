@@ -9,6 +9,10 @@ import java.lang.reflect.Method;
 public class DashboardFactory {
     private static Log log = LogFactory.getLog(DashboardFactory.class);
 
+    public <T extends DashboardEntity> T create(Class<T> aClass) {
+        return create(aClass, null);
+    }
+
     public <T extends DashboardEntity> T create(Class<T> aClass, Integer id) {
         // Idea from
         T entity = null;
