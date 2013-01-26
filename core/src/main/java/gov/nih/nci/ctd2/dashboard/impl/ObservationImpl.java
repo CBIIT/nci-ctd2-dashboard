@@ -27,7 +27,7 @@ public class ObservationImpl extends DashboardEntityImpl implements Observation 
         this.subjects = subjects;
     }
 
-    @ManyToOne(targetEntity = ObservationSourceImpl.class)
+    @ManyToOne(targetEntity = ObservationSourceImpl.class, cascade = CascadeType.ALL)
     public ObservationSource getObservationSource() {
         return observationSource;
     }
@@ -36,7 +36,7 @@ public class ObservationImpl extends DashboardEntityImpl implements Observation 
         this.observationSource = observationSource;
     }
 
-    @ManyToOne(targetEntity = ObservationTypeImpl.class)
+    @ManyToOne(targetEntity = ObservationTypeImpl.class, cascade = CascadeType.ALL)
     public ObservationType getObservationType() {
         return observationType;
     }
@@ -45,7 +45,7 @@ public class ObservationImpl extends DashboardEntityImpl implements Observation 
         this.observationType = observationType;
     }
 
-    @ManyToOne(targetEntity = ObservationReferenceImpl.class)
+    @ManyToOne(targetEntity = ObservationReferenceImpl.class, cascade = CascadeType.ALL)
     public ObservationReference getObservationReference() {
         return observationReference;
     }
@@ -54,7 +54,7 @@ public class ObservationImpl extends DashboardEntityImpl implements Observation 
         this.observationReference = observationReference;
     }
 
-    @OneToMany(targetEntity = EvidenceImpl.class)
+    @OneToMany(targetEntity = EvidenceImpl.class, cascade = CascadeType.ALL)
     @JoinTable(name = "observation_to_entity")
     public List<Evidence> getEvidences() {
         return evidences;

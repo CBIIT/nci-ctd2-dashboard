@@ -4,10 +4,7 @@ import gov.nih.nci.ctd2.dashboard.model.Subject;
 import gov.nih.nci.ctd2.dashboard.model.Synonym;
 import org.hibernate.annotations.Proxy;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinTable;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,7 +14,7 @@ import java.util.Set;
 public class SubjectImpl extends DashboardEntityImpl implements Subject {
     private Set<Synonym> synonyms = new HashSet<Synonym>();
 
-    @OneToMany(targetEntity = SynonymImpl.class)
+    @OneToMany(targetEntity = SynonymImpl.class, cascade = CascadeType.ALL)
     @JoinTable(name = "subject_to_synonym")
     public Set<Synonym> getSynonyms() {
         return synonyms;

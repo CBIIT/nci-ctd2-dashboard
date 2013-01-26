@@ -31,15 +31,12 @@ public class DatabaseSetupTest {
 
         Synonym synonym = dashboardFactory.create(Synonym.class);
         synonym.setDisplayName("S1");
-        dashboardDao.save(synonym);
 
         Synonym synonym2 = dashboardFactory.create(Synonym.class);
         synonym.setDisplayName("S2");
-        dashboardDao.save(synonym2);
 
         Synonym synonym3 = dashboardFactory.create(Synonym.class);
         synonym3.setDisplayName("S3");
-        dashboardDao.save(synonym3);
 
         // Save with id
         Gene gene = dashboardFactory.create(Gene.class, 1);
@@ -72,23 +69,18 @@ public class DatabaseSetupTest {
 
         UrlEvidence urlEvidence = dashboardFactory.create(UrlEvidence.class);
         urlEvidence.setUrl("http://ctd2.nci.nih.gov/");
-        dashboardDao.save(urlEvidence);
 
         LabelEvidence labelEvidence = dashboardFactory.create(LabelEvidence.class);
         labelEvidence.setDisplayName("L1");
-        dashboardDao.save(labelEvidence);
 
         ObservationReference observationReference = dashboardFactory.create(ObservationReference.class);
         observationReference.setDisplayName("OR1");
-        dashboardDao.save(observationReference);
 
         ObservationSource observationSource = dashboardFactory.create(ObservationSource.class);
         observationSource.setDisplayName("OS1");
-        dashboardDao.save(observationSource);
 
         ObservationType observationType = dashboardFactory.create(ObservationType.class);
         observationType.setDisplayName("OT1");
-        dashboardDao.save(observationType);
 
         Observation observation = dashboardFactory.create(Observation.class);
         observation.setObservationReference(observationReference);
