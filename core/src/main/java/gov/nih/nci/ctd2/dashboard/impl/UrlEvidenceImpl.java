@@ -5,9 +5,11 @@ import org.hibernate.annotations.Proxy;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Entity
 @Proxy(proxyClass = UrlEvidence.class)
+@Table(name = "url_evidence")
 public class UrlEvidenceImpl extends EvidenceImpl implements UrlEvidence {
     private String url;
 

@@ -24,7 +24,6 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
 
     @Override
     public DashboardEntity getEntityById(Integer id) {
-        // TODO: Filter by class?
         List list = getHibernateTemplate().find("from dashboard_entity where id=?",id);
         return list.isEmpty() ? null : (DashboardEntity) list.iterator().next();
     }

@@ -6,9 +6,12 @@ import org.hibernate.annotations.Proxy;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 @Entity
 @Proxy(proxyClass = ShRna.class)
+@Table(name = "shrna")
 public class ShRnaImpl extends SubjectImpl implements ShRna {
     private String targetSequence;
     private Transcript transcript;
@@ -22,6 +25,7 @@ public class ShRnaImpl extends SubjectImpl implements ShRna {
         this.targetSequence = targetSequence;
     }
 
+    @ManyToOne(targetEntity = TranscriptImpl.class)
     public Transcript getTranscript() {
         return transcript;
     }

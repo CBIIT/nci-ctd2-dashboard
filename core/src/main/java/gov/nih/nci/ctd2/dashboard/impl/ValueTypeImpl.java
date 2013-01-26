@@ -5,9 +5,11 @@ import org.hibernate.annotations.Proxy;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Entity
 @Proxy(proxyClass = ValueType.class)
+@Table(name = "value_type")
 public class ValueTypeImpl extends DashboardEntityImpl implements ValueType {
     private String unit;
 

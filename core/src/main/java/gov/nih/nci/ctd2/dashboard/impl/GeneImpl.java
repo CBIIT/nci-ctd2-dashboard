@@ -6,9 +6,11 @@ import org.hibernate.annotations.Proxy;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Entity
 @Proxy(proxyClass= Gene.class)
+@Table(name = "gene")
 public class GeneImpl extends SubjectImpl implements Gene {
     private String entrezGeneId;
 

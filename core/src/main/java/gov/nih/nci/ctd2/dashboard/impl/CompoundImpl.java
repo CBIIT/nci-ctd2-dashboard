@@ -5,9 +5,11 @@ import org.hibernate.annotations.Proxy;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Entity
 @Proxy(proxyClass = Compound.class)
+@Table(name = "compound")
 public class CompoundImpl extends SubjectImpl implements Compound {
     private String smilesNotation;
 

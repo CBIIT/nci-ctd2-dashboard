@@ -9,6 +9,7 @@ import javax.persistence.*;
 @Proxy(proxyClass= DashboardEntity.class)
 @Inheritance(strategy = InheritanceType.JOINED)
 @org.hibernate.annotations.Entity(dynamicUpdate = true, dynamicInsert = true)
+@Table(name = "dashboard_entity")
 public class DashboardEntityImpl implements DashboardEntity {
     private Integer id;
     private String displayName;

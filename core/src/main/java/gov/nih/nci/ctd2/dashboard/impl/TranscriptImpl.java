@@ -4,12 +4,11 @@ import gov.nih.nci.ctd2.dashboard.model.Gene;
 import gov.nih.nci.ctd2.dashboard.model.Transcript;
 import org.hibernate.annotations.Proxy;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.UniqueConstraint;
+import javax.persistence.*;
 
 @Entity
 @Proxy(proxyClass = Transcript.class)
+@Table(name = "transcript")
 public class TranscriptImpl extends SubjectImpl implements Transcript {
     private String refseqId;
     private Gene gene;
@@ -23,7 +22,7 @@ public class TranscriptImpl extends SubjectImpl implements Transcript {
         this.refseqId = refseqId;
     }
 
-    @Column(nullable = false)
+    @ManyToOne(targetEntity = GeneImpl.class)
     public Gene getGene() {
         return gene;
     }

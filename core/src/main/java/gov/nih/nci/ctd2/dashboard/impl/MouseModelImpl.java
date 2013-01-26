@@ -4,9 +4,11 @@ import gov.nih.nci.ctd2.dashboard.model.MouseModel;
 import org.hibernate.annotations.Proxy;
 
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Entity
 @Proxy(proxyClass = MouseModel.class)
+@Table(name = "mouse_model")
 public class MouseModelImpl extends SubjectImpl implements MouseModel {
     private String description;
 

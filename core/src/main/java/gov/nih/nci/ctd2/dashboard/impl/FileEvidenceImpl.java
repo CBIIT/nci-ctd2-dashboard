@@ -5,10 +5,12 @@ import org.hibernate.annotations.Proxy;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.beans.ConstructorProperties;
 
 @Entity
 @Proxy(proxyClass = FileEvidence.class)
+@Table(name = "file_evidence")
 public class FileEvidenceImpl extends EvidenceImpl implements FileEvidence {
     private String filePath;
     private String fileName;

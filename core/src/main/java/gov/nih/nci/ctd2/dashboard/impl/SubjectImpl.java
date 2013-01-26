@@ -7,11 +7,13 @@ import org.hibernate.annotations.Proxy;
 import javax.persistence.Entity;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Proxy(proxyClass = Subject.class)
+@Table(name = "subject")
 public class SubjectImpl extends DashboardEntityImpl implements Subject {
     private Set<Synonym> synonyms = new HashSet<Synonym>();
 

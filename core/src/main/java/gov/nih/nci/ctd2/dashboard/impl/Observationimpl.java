@@ -9,6 +9,7 @@ import java.util.List;
 
 @Entity
 @Proxy(proxyClass = Observation.class)
+@Table(name = "observation")
 public class ObservationImpl extends DashboardEntityImpl implements Observation {
     private List<Evidence> evidences = new ArrayList<Evidence>();
     private List<Subject> subjects = new ArrayList<Subject>();
@@ -26,7 +27,7 @@ public class ObservationImpl extends DashboardEntityImpl implements Observation 
         this.subjects = subjects;
     }
 
-    @Column(nullable = false)
+    @ManyToOne(targetEntity = ObservationSourceImpl.class)
     public ObservationSource getObservationSource() {
         return observationSource;
     }
@@ -35,7 +36,7 @@ public class ObservationImpl extends DashboardEntityImpl implements Observation 
         this.observationSource = observationSource;
     }
 
-    @Column(nullable = false)
+    @ManyToOne(targetEntity = ObservationTypeImpl.class)
     public ObservationType getObservationType() {
         return observationType;
     }
@@ -44,7 +45,7 @@ public class ObservationImpl extends DashboardEntityImpl implements Observation 
         this.observationType = observationType;
     }
 
-    @Column(nullable = false)
+    @ManyToOne(targetEntity = ObservationReferenceImpl.class)
     public ObservationReference getObservationReference() {
         return observationReference;
     }

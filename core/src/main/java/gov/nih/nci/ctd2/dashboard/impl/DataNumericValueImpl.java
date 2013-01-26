@@ -6,9 +6,12 @@ import org.hibernate.annotations.Proxy;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 @Entity
 @Proxy(proxyClass = DataNumericValue.class)
+@Table(name = "data_numeric_value")
 public class DataNumericValueImpl extends EvidenceImpl implements DataNumericValue {
     private Number numericValue;
     private ValueType valueType;
@@ -22,7 +25,7 @@ public class DataNumericValueImpl extends EvidenceImpl implements DataNumericVal
         this.numericValue = numericValue;
     }
 
-    @Column(nullable = false)
+    @ManyToOne(targetEntity = ValueTypeImpl.class)
     public ValueType getValueType() {
         return valueType;
     }
