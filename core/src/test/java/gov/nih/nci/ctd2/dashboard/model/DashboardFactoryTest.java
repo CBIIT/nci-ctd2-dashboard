@@ -1,6 +1,9 @@
 package gov.nih.nci.ctd2.dashboard.model;
 
+import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
 import org.junit.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -8,7 +11,12 @@ import static org.junit.Assert.assertNotNull;
 public class DashboardFactoryTest {
     @Test
     public void testBeanCreate() {
-        DashboardFactory dashboardFactory = new DashboardFactory();
+        DashboardFactory dashboardFactory;
+
+        ApplicationContext appContext =
+                new ClassPathXmlApplicationContext("classpath*:META-INF/spring/testApplicationContext.xml");
+        dashboardFactory = (DashboardFactory) appContext.getBean("dashboardFactory");
+
         int id = 0;
         assertNotNull(dashboardFactory.create(ShRna.class, id++));
         assertNotNull(dashboardFactory.create(CellLine.class, id++));

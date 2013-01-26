@@ -7,6 +7,8 @@
     <context:spring-configured/>
     <context:component-scan base-package="gov.nih.nci.ctd2.dashboard"/>
 
+    <bean class="gov.nih.nci.ctd2.dashboard.impl.DashboardFactoryImpl" id="dashboardFactory"/>
+
     <bean class="org.springframework.jdbc.datasource.DriverManagerDataSource" id="dataSource">
         <property name="driverClassName" value="${database.driverClassName}"/>
         <property name="url" value="${database.test.url}"/>
@@ -16,6 +18,7 @@
 
     <bean class="gov.nih.nci.ctd2.dashboard.dao.internal.DashboardDaoImpl" id="dashboardDao">
         <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="dashboardFactory" ref="dashboardFactory"/>
     </bean>
 
     <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">

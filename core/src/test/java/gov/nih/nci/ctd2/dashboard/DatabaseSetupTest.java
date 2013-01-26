@@ -13,12 +13,14 @@ import static org.junit.Assert.assertNull;
 
 public class DatabaseSetupTest {
     private DashboardDao dashboardDao;
+    private DashboardFactory dashboardFactory;
 
     @Before
     public void initiateDao() {
         ApplicationContext appContext =
                 new ClassPathXmlApplicationContext("classpath*:META-INF/spring/testApplicationContext.xml");
         this.dashboardDao = (DashboardDao) appContext.getBean("dashboardDao");
+        this.dashboardFactory = (DashboardFactory) appContext.getBean("dashboardFactory");
     }
 
     @Test
@@ -28,8 +30,6 @@ public class DatabaseSetupTest {
 
     @Test
     public void createAndPersistTest() {
-        DashboardFactory dashboardFactory = new DashboardFactory();
-
         Synonym synonym = dashboardFactory.create(Synonym.class);
         synonym.setDisplayName("S1");
 
@@ -97,8 +97,6 @@ public class DatabaseSetupTest {
 
     @Test
     public void saveAndDeleteTest() {
-        DashboardFactory dashboardFactory = new DashboardFactory();
-
         Synonym synonym = dashboardFactory.create(Synonym.class);
         synonym.setDisplayName("S1");
 
@@ -111,12 +109,15 @@ public class DatabaseSetupTest {
         gene.getSynonyms().add(synonym);
         gene.getSynonyms().add(synonym2);
         dashboardDao.save(gene);
+        assertEquals(1, dashboardDao.countEntities(Gene.class).intValue());
+        assertEquals(2, dashboardDao.countEntities(Synonym.class).intValue());
         dashboardDao.delete(gene);
+        assertEquals(0, dashboardDao.countEntities(Gene.class).intValue());
+        assertEquals(0, dashboardDao.countEntities(Synonym.class).intValue());
     }
 
     @Test
     public void findByIdTest() {
-        DashboardFactory dashboardFactory = new DashboardFactory();
         Gene gene1 = dashboardFactory.create(Gene.class);
         Gene gene2 = dashboardFactory.create(Gene.class);
         dashboardDao.save(gene1);
