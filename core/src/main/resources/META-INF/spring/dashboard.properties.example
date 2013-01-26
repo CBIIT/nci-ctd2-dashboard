@@ -9,6 +9,7 @@ database.password=PASSWORD
 # hibernate
 hibernate.dialect=org.hibernate.dialect.MySQL5InnoDBDialect
 hibernate.hbm2ddl.auto=update
-hibernate.hbm2ddl.auto.test=create-drop # clean the database before every test
+# clean the database before every test
+hibernate.hbm2ddl.auto.test=create-drop
 hibernate.ejb.naming_strategy=org.hibernate.cfg.ImprovedNamingStrategy
 hibernate.connection.charSet=UTF-8
