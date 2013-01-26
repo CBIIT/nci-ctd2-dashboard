@@ -49,7 +49,7 @@ public class DashboardFactory {
         Class<T> implClass = null;
 
         if(aClass.isInterface()) {
-            String name = "gov.nih.nci.ctd2.dashboard.impl." + aClass.getSimpleName() + "Impl";
+            String name = DashboardFactory.getImplClassName(aClass.getSimpleName());
             try {
                 implClass = (Class<T>) Class.forName(name);
             } catch (ClassNotFoundException e) {
@@ -59,5 +59,9 @@ public class DashboardFactory {
 
         return implClass;
 
+    }
+
+    public static String getImplClassName(String simpleClassName) {
+        return "gov.nih.nci.ctd2.dashboard.impl." + simpleClassName + "Impl";
     }
 }

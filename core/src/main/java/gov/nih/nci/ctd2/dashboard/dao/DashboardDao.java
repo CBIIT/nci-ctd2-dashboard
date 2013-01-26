@@ -7,4 +7,5 @@ public interface DashboardDao {
     void update(DashboardEntity entity);
     void delete(DashboardEntity entity);
     DashboardEntity getEntityById(Integer id);
+    <T extends DashboardEntity> T getEntityById(Class<T> filterBy, Integer id);
 }

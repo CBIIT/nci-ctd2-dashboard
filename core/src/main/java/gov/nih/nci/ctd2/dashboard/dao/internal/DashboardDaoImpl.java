@@ -1,10 +1,10 @@
 package gov.nih.nci.ctd2.dashboard.dao.internal;
 
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
+import gov.nih.nci.ctd2.dashboard.impl.DashboardEntityImpl;
 import gov.nih.nci.ctd2.dashboard.model.DashboardEntity;
+import gov.nih.nci.ctd2.dashboard.model.DashboardFactory;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
-
-import java.util.List;
 
 public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDao {
     @Override
@@ -24,7 +24,21 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
 
     @Override
     public DashboardEntity getEntityById(Integer id) {
-        List list = getHibernateTemplate().find("from dashboard_entity where id=?",id);
-        return list.isEmpty() ? null : (DashboardEntity) list.iterator().next();
+        return getHibernateTemplate().get(DashboardEntityImpl.class, id);
+    }
+
+    @Override
+    public <T extends DashboardEntity> T getEntityById(Class<T> filterBy, Integer id) {
+        try {
+            Class<T> aClass = filterBy.isInterface()
+                    ? (Class<T>) Class.forName(DashboardFactory.getImplClassName(filterBy.getSimpleName()))
+                    : filterBy;
+            return getHibernateTemplate().get(aClass, id);
+        } catch (ClassNotFoundException e) {
+            logger.error("Could not find class: " + filterBy.getSimpleName());
+            e.printStackTrace();
+        }
+
+        return null;
     }
 }

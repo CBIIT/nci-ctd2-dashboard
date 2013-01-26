@@ -9,6 +9,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 public class DatabaseSetupTest {
     private DashboardDao dashboardDao;
@@ -111,6 +112,21 @@ public class DatabaseSetupTest {
         gene.getSynonyms().add(synonym2);
         dashboardDao.save(gene);
         dashboardDao.delete(gene);
+    }
+
+    @Test
+    public void findByIdTest() {
+        DashboardFactory dashboardFactory = new DashboardFactory();
+        Gene gene1 = dashboardFactory.create(Gene.class);
+        Gene gene2 = dashboardFactory.create(Gene.class);
+        dashboardDao.save(gene1);
+        dashboardDao.save(gene2);
+
+        assertNotNull(dashboardDao.getEntityById(gene1.getId()));
+        assertNotNull(dashboardDao.getEntityById(gene2.getId()));
+        assertNull(dashboardDao.getEntityById(gene1.getId() + 100));
+        assertNotNull(dashboardDao.getEntityById(Gene.class, gene1.getId()));
+        assertNull(dashboardDao.getEntityById(Protein.class, gene1.getId()));
     }
 
 }
