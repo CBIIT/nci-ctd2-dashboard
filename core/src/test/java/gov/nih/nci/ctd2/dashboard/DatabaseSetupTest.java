@@ -94,5 +94,24 @@ public class DatabaseSetupTest {
         dashboardDao.save(observation);
     }
 
+    @Test
+    public void saveAndDeleteTest() {
+        DashboardFactory dashboardFactory = new DashboardFactory();
+
+        Synonym synonym = dashboardFactory.create(Synonym.class);
+        synonym.setDisplayName("S1");
+
+        Synonym synonym2 = dashboardFactory.create(Synonym.class);
+        synonym.setDisplayName("S2");
+
+        // Save with id
+        Gene gene = dashboardFactory.create(Gene.class, 1);
+        gene.setDisplayName("G1");
+        gene.getSynonyms().add(synonym);
+        gene.getSynonyms().add(synonym2);
+        dashboardDao.save(gene);
+        dashboardDao.delete(gene);
+    }
+
 }
 
