@@ -7,9 +7,9 @@ import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 public class DatabaseSetupTest {
     private DashboardDao dashboardDao;
@@ -140,5 +140,38 @@ public class DatabaseSetupTest {
         assertEquals(dashboardDao.countEntities(Gene.class).intValue(), dashboardDao.findEntities(Gene.class).size());
     }
 
+    @Test
+    public void findGenesByEntrezIdTest() {
+        Gene gene1 = dashboardFactory.create(Gene.class);
+        gene1.setEntrezGeneId("E1");
+        Gene gene2 = dashboardFactory.create(Gene.class);
+        gene2.setEntrezGeneId("E2");
+        dashboardDao.save(gene1);
+        dashboardDao.save(gene2);
+
+        List<Gene> e1genes = dashboardDao.findGenesByEntrezId("E1");
+        assertEquals(1, e1genes.size());
+        List<Gene> e2genes = dashboardDao.findGenesByEntrezId("E2");
+        assertEquals(1, e2genes.size());
+        assertNotSame(e1genes.iterator().next(), e2genes.iterator().next());
+        assertTrue(dashboardDao.findGenesByEntrezId("E3").isEmpty());
+    }
+
+    @Test
+    public void findProteinsByUniprotIdTest() {
+        Protein protein1 = dashboardFactory.create(Protein.class);
+        protein1.setUniprotId("UID1");
+        dashboardDao.save(protein1);
+
+        Protein protein2 = dashboardFactory.create(Protein.class);
+        protein2.setUniprotId("UID2");
+        dashboardDao.save(protein2);
+
+        List<Protein> uid1proteins = dashboardDao.findProteinsByUniprotId("UID1");
+        assertEquals(1, uid1proteins.size());
+        List<Protein> uid2proteins = dashboardDao.findProteinsByUniprotId("UID2");
+        assertEquals(1, uid2proteins.size());
+        assertTrue(dashboardDao.findProteinsByUniprotId("UID3").isEmpty());
+    }
 }
 
