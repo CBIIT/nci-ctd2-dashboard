@@ -1,6 +1,5 @@
 package gov.nih.nci.ctd2.dashboard.model;
 
-import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;

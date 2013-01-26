@@ -8,6 +8,9 @@ import org.hibernate.Criteria;
 import org.hibernate.criterion.Projections;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDao {
     private DashboardFactory dashboardFactory;
 
@@ -53,4 +56,15 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
         return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
+    @Override
+    public <T extends DashboardEntity> List<T> findEntities(Class<T> entityClass) {
+        List<T> list = new ArrayList<T>();
+        Class<T> implClass = dashboardFactory.getImplClass(entityClass);
+        Criteria criteria = getSession().createCriteria(implClass);
+        for (Object o : criteria.list()) {
+            assert implClass.isInstance(o);
+            list.add((T) o);
+        }
+        return list;
+    }
 }

@@ -130,5 +130,15 @@ public class DatabaseSetupTest {
         assertNull(dashboardDao.getEntityById(Protein.class, gene1.getId()));
     }
 
+    @Test
+    public void findEntitiesVsCountTest() {
+        Gene gene1 = dashboardFactory.create(Gene.class);
+        Gene gene2 = dashboardFactory.create(Gene.class);
+        dashboardDao.save(gene1);
+        dashboardDao.save(gene2);
+
+        assertEquals(dashboardDao.countEntities(Gene.class).intValue(), dashboardDao.findEntities(Gene.class).size());
+    }
+
 }
 
