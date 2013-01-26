@@ -1,4 +1,4 @@
-package gov.nih.nci.ctd2.dashboard;
+package gov.nih.nci.ctd2.dashboard.dao;
 
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
 import gov.nih.nci.ctd2.dashboard.model.*;
@@ -11,7 +11,7 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-public class DatabaseSetupTest {
+public class DashboardDaoTest {
     private DashboardDao dashboardDao;
     private DashboardFactory dashboardFactory;
 
@@ -171,7 +171,26 @@ public class DatabaseSetupTest {
         assertEquals(1, uid1proteins.size());
         List<Protein> uid2proteins = dashboardDao.findProteinsByUniprotId("UID2");
         assertEquals(1, uid2proteins.size());
+        assertNotSame(uid1proteins.iterator().next(), uid2proteins.iterator().next());
         assertTrue(dashboardDao.findProteinsByUniprotId("UID3").isEmpty());
+    }
+
+    @Test
+    public void findTranscriptByRefseqIdTest() {
+        Transcript transcript1 = dashboardFactory.create(Transcript.class);
+        transcript1.setRefseqId("R1");
+        dashboardDao.save(transcript1);
+
+        Transcript transcript2 = dashboardFactory.create(Transcript.class);
+        transcript2.setRefseqId("R2");
+        dashboardDao.save(transcript2);
+
+        List<Transcript> r1transcripts = dashboardDao.findTranscriptsByRefseqId("R1");
+        assertEquals(1, r1transcripts.size());
+        List<Transcript> r2transcripts = dashboardDao.findTranscriptsByRefseqId("R2");
+        assertEquals(1, r2transcripts.size());
+        assertNotSame(r1transcripts.iterator().next(), r2transcripts.iterator().next());
+        assertTrue(dashboardDao.findProteinsByUniprotId("R3").isEmpty());
     }
 }
 

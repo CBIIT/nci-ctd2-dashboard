@@ -1,9 +1,6 @@
 package gov.nih.nci.ctd2.dashboard.dao;
 
-import gov.nih.nci.ctd2.dashboard.model.DashboardEntity;
-import gov.nih.nci.ctd2.dashboard.model.DashboardFactory;
-import gov.nih.nci.ctd2.dashboard.model.Gene;
-import gov.nih.nci.ctd2.dashboard.model.Protein;
+import gov.nih.nci.ctd2.dashboard.model.*;
 
 import java.util.List;
 
@@ -19,4 +16,5 @@ public interface DashboardDao {
     <T extends DashboardEntity> List<T> findEntities(Class<T> entityClass);
     List<Gene> findGenesByEntrezId(String entrezId);
     List<Protein> findProteinsByUniprotId(String uniprotId);
+    List<Transcript> findTranscriptsByRefseqId(String refseqId);
 }
