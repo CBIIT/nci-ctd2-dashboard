@@ -2,10 +2,7 @@ package gov.nih.nci.ctd2.dashboard.dao.internal;
 
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
 import gov.nih.nci.ctd2.dashboard.impl.DashboardEntityImpl;
-import gov.nih.nci.ctd2.dashboard.model.DashboardEntity;
-import gov.nih.nci.ctd2.dashboard.model.DashboardFactory;
-import gov.nih.nci.ctd2.dashboard.model.Gene;
-import gov.nih.nci.ctd2.dashboard.model.Protein;
+import gov.nih.nci.ctd2.dashboard.model.*;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Projections;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
@@ -80,11 +77,22 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
         return list;
     }
 
+    @Override
     public List<Protein> findProteinsByUniprotId(String uniprotId) {
         List<Protein> list = new ArrayList<Protein>();
         for (Object o : getHibernateTemplate().find("from ProteinImpl where uniprotId = ?", uniprotId)) {
             assert o instanceof Protein;
             list.add((Protein) o);
+        }
+        return list;
+    }
+
+    @Override
+    public List<Transcript> findTranscriptsByRefseqId(String refseqId) {
+        List<Transcript> list = new ArrayList<Transcript>();
+        for (Object o : getHibernateTemplate().find("from TranscriptImpl where refseqId = ?", refseqId)) {
+            assert o instanceof Transcript;
+            list.add((Transcript) o);
         }
         return list;
     }
