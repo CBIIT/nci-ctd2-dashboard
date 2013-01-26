@@ -4,6 +4,8 @@ import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
 import gov.nih.nci.ctd2.dashboard.impl.DashboardEntityImpl;
 import gov.nih.nci.ctd2.dashboard.model.DashboardEntity;
 import gov.nih.nci.ctd2.dashboard.model.DashboardFactory;
+import gov.nih.nci.ctd2.dashboard.model.Gene;
+import gov.nih.nci.ctd2.dashboard.model.Protein;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Projections;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
@@ -64,6 +66,25 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
         for (Object o : criteria.list()) {
             assert implClass.isInstance(o);
             list.add((T) o);
+        }
+        return list;
+    }
+
+    @Override
+    public List<Gene> findGenesByEntrezId(String entrezId) {
+        List<Gene> list = new ArrayList<Gene>();
+        for (Object o : getHibernateTemplate().find("from GeneImpl where entrezGeneId = ?", entrezId)) {
+            assert o instanceof Gene;
+            list.add((Gene) o);
+        }
+        return list;
+    }
+
+    public List<Protein> findProteinsByUniprotId(String uniprotId) {
+        List<Protein> list = new ArrayList<Protein>();
+        for (Object o : getHibernateTemplate().find("from ProteinImpl where uniprotId = ?", uniprotId)) {
+            assert o instanceof Protein;
+            list.add((Protein) o);
         }
         return list;
     }
