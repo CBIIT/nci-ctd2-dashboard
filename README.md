@@ -41,6 +41,13 @@ You can simply deploy this application, with the following generic command:
 
 	cp -f web/target/web.war $TOMCAT_HOME/webapps/ctd2-dashboard.war
 
+or better, especially if you do not want to deal with a new Tomcat installation, you can take advantage of the _mvn tomcat_ target:
+
+	cd web/
+	mvn tomcat:run-war
+
+and point your browser to [http://localhost:8080/dashboard-webapp](http://localhost:8080/dashboard-webapp).
+
 ### Notes about design
 Here are a few quick comments from Arman `arman@cbio.mskcc.org` about this prototype:
 
