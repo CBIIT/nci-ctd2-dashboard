@@ -78,6 +78,6 @@ public class SampleImporter extends Importer {
         observation.getEvidences().add(labelEvidence);
         dashboardDao.save(observation);
 
-        log.info("Imported " + dashboardDao.findEntities(DashboardEntity.class).size() + " entities. ");
+        log.info("Imported " + dashboardDao.findEntities(DashboardEntity.class).size() + " entities.");
     }
 }

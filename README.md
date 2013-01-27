@@ -29,14 +29,15 @@ From here on you can follow the module-specific notes below.
   
 # Notes about moudles
 ## Core: Data structures and DAO methods
+This module tries to capture the main proposed database schema outlined below.
+![Dashboard DB schema](https://bitbucket.org/cbio_mskcc/ctd2-dashboard/downloads/dashboard_schema.png)
+
+## Admin: Importers/Converters and 
 TODO
 
-## Admin: Importers/Converters/
-TODO
-
-## Web: CTD^2 Dashboard UI Mock-up
+## Web: CTD^2 Dashboard UI/Web API
 ### Deploy
-This module will create a single _war_ file for the WEB API/UI.
+This module will create a single _war_ file for the Web API/UI.
 You can simply deploy this application, with the following generic command:
 
 	cp -f web/target/web.war $TOMCAT_HOME/webapps/ctd2-dashboard.war
