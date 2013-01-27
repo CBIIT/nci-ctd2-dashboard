@@ -4,7 +4,7 @@ import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
 import gov.nih.nci.ctd2.dashboard.model.DashboardFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public abstract class Importer implements Runnable {
+public abstract class AbstractImporter implements Runnable {
     @Autowired
     private DashboardDao dashboardDao;
     @Autowired

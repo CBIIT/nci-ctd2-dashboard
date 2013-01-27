@@ -18,6 +18,9 @@ public class DashboardAdminMain {
                 "classpath*:META-INF/spring/adminApplicationContext.xml" // This is for admin-related beans
         );
 
+
+        // These two should not be exposed in the main method, but were put here
+        // to show how we can access beans from the core module
         final DashboardDao dashboardDao = (DashboardDao) appContext.getBean("dashboardDao");
         final DashboardFactory dashboardFactory = (DashboardFactory) appContext.getBean("dashboardFactory");
 
@@ -38,21 +41,24 @@ public class DashboardAdminMain {
             }
 
             if( commandLine.hasOption("h") ) {
-                HelpFormatter helpFormatter = new HelpFormatter();
-                helpFormatter.printHelp(helpText, gnuOptions);
-                System.exit(0);
+                printHelpAndExit(gnuOptions, 0);
             }
 
             if( commandLine.hasOption("s") ) {
+                // This is just for demonstration purposes
                 SampleImporter sampleImporter = (SampleImporter) appContext.getBean("sampleImporter");
                 sampleImporter.run();
             }
 
         } catch (ParseException e) {
             System.err.println(e.getMessage());
-            HelpFormatter helpFormatter = new HelpFormatter();
-            helpFormatter.printHelp(helpText, gnuOptions);
-            System.exit(-1);
+            printHelpAndExit(gnuOptions, -1);
         }
+    }
+
+    private static void printHelpAndExit(Options gnuOptions, int exitStatus) {
+        HelpFormatter helpFormatter = new HelpFormatter();
+        helpFormatter.printHelp(helpText, gnuOptions);
+        System.exit(exitStatus);
     }
 }

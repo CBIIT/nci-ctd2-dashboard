@@ -1,12 +1,12 @@
 package gov.nih.nci.ctd2.dashboard.importer.internal;
 
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
-import gov.nih.nci.ctd2.dashboard.importer.Importer;
+import gov.nih.nci.ctd2.dashboard.importer.AbstractImporter;
 import gov.nih.nci.ctd2.dashboard.model.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public class SampleImporter extends Importer {
+public class SampleImporter extends AbstractImporter {
     private static Log log = LogFactory.getLog(SampleImporter.class);
 
     @Override
