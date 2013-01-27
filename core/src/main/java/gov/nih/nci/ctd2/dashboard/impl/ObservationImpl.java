@@ -18,7 +18,7 @@ public class ObservationImpl extends DashboardEntityImpl implements Observation 
     private ObservationReference observationReference;
 
     @OneToMany(targetEntity = SubjectImpl.class)
-    @JoinTable(name = "observation_to_subject")
+    @JoinTable(name = "observation_subject_map")
     public List<Subject> getSubjects() {
         return subjects;
     }
@@ -55,7 +55,7 @@ public class ObservationImpl extends DashboardEntityImpl implements Observation 
     }
 
     @OneToMany(targetEntity = EvidenceImpl.class, cascade = CascadeType.ALL)
-    @JoinTable(name = "observation_to_entity")
+    @JoinTable(name = "observation_evidence_map")
     public List<Evidence> getEvidences() {
         return evidences;
     }
