@@ -76,7 +76,7 @@ Basic querying methods are implemented as part of the `DashboardDao`.
 Developers do not have to deal with the configuration and/or initialization of the _Dao_ class, 
 but rather they can get it through _Spring_ facilities, _e.g._:
 
-	ApplicationContext appContext = new ClassPathXmlApplicationContext("classpath*:META-INF/spring/testApplicationContext.xml");
+	ApplicationContext appContext = new ClassPathXmlApplicationContext("classpath*:META-INF/spring/applicationContext.xml");
 	DashboardDao dashboardDao = (DashboardDao) appContext.getBean("dashboardDao");
 
 `DashboardDao` can be used to persist objects:
@@ -85,7 +85,16 @@ but rather they can get it through _Spring_ facilities, _e.g._:
 	synonym.setDisplayName("Synonym 1");
 	dashboardDao.save(synonym);
 
-or it can be used to acquire objects that are already in the database:
+Normally, you don't have to worry about the `id` field.
+When an object is created via `DashboardFactory`, it has an id of `null`.
+When it gets persisted, the `id` field is updated with the automatically-generated value:
+
+	Synonym synonym = dashboardFactory.create(Synonym.class);
+	assert synonym.getId() == null;
+	dashboardDao.save(synonym);
+	assert synonym.getId() != null;
+
+`DashboardDao` can also be used to acquire objects that are already in the database:
 
 	// Grabs all compounds in the database
 	List<Compund> allCompounds = dashboardDao.findEntities(Compound.class);
