@@ -96,8 +96,20 @@ or to conduct a find operation:
 
 	List<Compound> compoundsBySmiles = dashboardDao.findCompoundsBySmilesNotation(pyrethrinII);
 
-## Admin: Importers/Converters and 
-TODO
+## Admin: Importers/Converters and major database operations 
+This module provides a command-line interface (CLI) for users to populate the database via utilization of data importers.
+When `mvn install` is called either on this module or on the parent module, 
+a JAR file with all its dependencies included is generated under the default `target/` directory.
+This JAR file can be run via the following command:
+
+	java -jar admin/target/admin-VERSION.jar
+
+where VERSION corresponds the current version of the branch.
+For example:
+
+	java -jar admin/target/admin-VERSION.jar -h
+
+will list all available options to you.
 
 ## Web: CTD^2 Dashboard UI/Web API
 ### Deploy
