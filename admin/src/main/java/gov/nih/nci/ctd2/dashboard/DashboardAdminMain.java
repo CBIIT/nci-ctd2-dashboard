@@ -18,7 +18,6 @@ public class DashboardAdminMain {
                 "classpath*:META-INF/spring/adminApplicationContext.xml" // This is for admin-related beans
         );
 
-
         // These two should not be exposed in the main method, but were put here
         // to show how we can access beans from the core module
         final DashboardDao dashboardDao = (DashboardDao) appContext.getBean("dashboardDao");
@@ -45,11 +44,13 @@ public class DashboardAdminMain {
             }
 
             if( commandLine.hasOption("s") ) {
+                log.info("Running sample importer...");
                 // This is just for demonstration purposes
                 SampleImporter sampleImporter = (SampleImporter) appContext.getBean("sampleImporter");
                 sampleImporter.run();
             }
 
+            log.info("All done.");
         } catch (ParseException e) {
             System.err.println(e.getMessage());
             printHelpAndExit(gnuOptions, -1);
