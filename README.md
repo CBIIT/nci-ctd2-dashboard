@@ -33,7 +33,7 @@ This module tries to capture the main database schema outlined below:
 
 ![Dashboard DB schema](https://bitbucket.org/cbio_mskcc/ctd2-dashboard/downloads/dashboard_schema.png)
 
-We are taking advantage of _factory pattern_ and also separating class definitions (interfaces) and their actual implementations (_*Impl_s) for convenience.
+We are taking advantage of _factory pattern_ and also separating class definitions (interfaces) and their actual implementations (`*Impl`s) for convenience.
 We basically try to convey the following basic ideas in our implementation:
 
 1. Every item that is going to be persisted in the database is of type `DashboardEntity`.
@@ -41,7 +41,7 @@ We basically try to convey the following basic ideas in our implementation:
 3. All new instances of the classes should be created via `DashboardFactory` -- this is for better handling of the semantics.
 
 So let's take `Compound` as an example.
-The class `Compound` is actually an interface that extends the `Subject` interface which extends the `DashboardEntity` interface.
+The class `Compound` is actually an interface that extends the `Subject` interface which, in turn, extends the `DashboardEntity` interface.
 The interface determines which methods a class should provide.
 The actual implementation of the methods goes into the class `CompoundImpl` which, programmatically speaking, implements `Compound`.
 This is better explained with the following simple UML diagram:
@@ -52,7 +52,7 @@ The following UML diagram also shows properties and methods in a detailed manner
 
 ![CompoundDeatils](https://bitbucket.org/cbio_mskcc/ctd2-dashboard/downloads/sampleClassDiagramDetails.png)
 
-Because of these implementation choices, the good practice for creating a new instance of a specific object should be handled as follows:
+Because of these implementation choices, the good practice for creating a new instance of a specific object is as follows:
 
 	// Demonstration of how a new instance of an object should be created
 
