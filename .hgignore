@@ -2,3 +2,4 @@ target/
 database.properties
 dashboard.properties
 log4j.properties
+admin.properties
