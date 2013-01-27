@@ -1,9 +1,9 @@
 # About
 This project encapsulates three modules representing the whole CTD^2 Dashboard project:
 
-* *Core*: contains the main data structures and basic DAO methods.
-* *Admin*: contains importers/normalizers/converters for populating the database (depends on _core_)
-* *Web*: provides a Web-based API for querying the database; also contains a thin-client (known as _Dashboard Web UI_) that helps with basic navigation
+* **Core**: contains the main data structures and basic DAO methods.
+* **Admin**: contains importers/normalizers/converters for populating the database (depends on _core_)
+* **Web**: provides a Web-based API for querying the database; also contains a thin-client (known as _Dashboard Web UI_) that helps with basic navigation
 
 # Install
 The code is structured as a _Maven_ project. 
@@ -63,12 +63,12 @@ Because of these implementation choices, the good practice for creating a new in
 	Compound compound = dashboardFactory.create(Compound.class);
 	// Developer modifies the object through the methods defined in the interface
 	String pyrethrinII = "COC(=O)C(\\C)=C\\C1C(C)(C)[C@H]1C(=O)O[C@@H]2C(C)=C(C(=O)C2)CC=CC=C";
-        compound.setSmilesNotation(pyrethrinII);
+	compound.setSmilesNotation(pyrethrinII);
 	compound.setDisplayName("Pyrethrin II");
 
 Furthermore, the interfaces do not know about the persistence details -- that is, column/table names and _etc_.
 We do not empose a pre-set SQL schema onto the persistence layer, but instead let `Hibernate` deal with the details -- *i.e.* creating the schema.
-So all `Hibernate` and `Persistence` annotations go into the _*Impl*_ classes which use the actual interfaces as *Proxy*. 
+So all `Hibernate` and `Persistence` annotations go into the _*Impl*_ classes which use the actual interfaces as *Proxy* (see the UML diagram above). 
 The specific details -- database dialect, usernames, passwords, database names -- are all defined in the `dashboard.properties` file mentioned above.
 
 Basic querying methods are implemented as part of the `DashboardDao`.
@@ -76,12 +76,12 @@ Developers do not have to deal with the configuration and/or initialization of t
 but rather they can get it through _Spring_ facilities, _e.g._:
 
 	ApplicationContext appContext = new ClassPathXmlApplicationContext("classpath*:META-INF/spring/testApplicationContext.xml");
-        DashboardDao dashboardDao = (DashboardDao) appContext.getBean("dashboardDao");
+	DashboardDao dashboardDao = (DashboardDao) appContext.getBean("dashboardDao");
 
 `DashboardDao` can be used to persist objects:
 
 	Synonym synonym = dashboardFactory.create(Synonym.class);
-        synonym.setDisplayName("Synonym 1");
+	synonym.setDisplayName("Synonym 1");
 	dashboardDao.save(synonym);
 
 or it can be used to acquire objects that are already in the database:
