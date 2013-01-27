@@ -9,7 +9,7 @@ This project encapsulates three modules representing the whole CTD^2 Dashboard p
 The code is structured as a _Maven_ project. 
 We suggest you work in an environment with `JDK 1.6.x`, `Tomcat 6.x`, `MySQL 5.0.x` and `Maven 3.x.x` properly installed.
 
-Before running any _mvn_ targets, make sure you do the basic configuration.
+Before running any _mvn_ jobs, make sure you do the basic configuration.
 Example configuration files are provided within the distribution.
 The easiest way to do the configuration is as follows:
 
@@ -19,7 +19,7 @@ The easiest way to do the configuration is as follows:
 	# please make sure you edit minimally the USER/PASSWORD pair and the TEST/MAIN database URLs.
 	cp -f core/src/main/resources/META-INF/spring/dashboard.properties.example core/src/main/resources/META-INF/spring/dashboard.properties
 
-After you are done with the configuration, then you will be good to go for a basic _install_:
+After you are done with the configuration, you will be good to go ahead for a basic _install_:
 
 	mvn clean install
 
@@ -42,7 +42,7 @@ You can simply deploy this application, with the following generic command:
 
 	cp -f web/target/web.war $TOMCAT_HOME/webapps/ctd2-dashboard.war
 
-or better, especially if you do not want to deal with a new Tomcat installation, you can take advantage of the _mvn tomcat_ target:
+or better, especially if you do not want to deal with a new Tomcat installation, you can take advantage of the _mvn tomcat_ plugin:
 
 	cd web/
 	mvn tomcat:run-war
