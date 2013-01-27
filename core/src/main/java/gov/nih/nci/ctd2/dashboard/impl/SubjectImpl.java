@@ -15,7 +15,7 @@ public class SubjectImpl extends DashboardEntityImpl implements Subject {
     private Set<Synonym> synonyms = new HashSet<Synonym>();
 
     @OneToMany(targetEntity = SynonymImpl.class, cascade = CascadeType.ALL)
-    @JoinTable(name = "subject_to_synonym")
+    @JoinTable(name = "subject_synonym_map")
     public Set<Synonym> getSynonyms() {
         return synonyms;
     }
