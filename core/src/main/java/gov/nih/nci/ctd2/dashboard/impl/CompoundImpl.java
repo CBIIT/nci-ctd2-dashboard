@@ -13,7 +13,7 @@ import javax.persistence.Table;
 public class CompoundImpl extends SubjectImpl implements Compound {
     private String smilesNotation;
 
-    @Column(length = 256, nullable = false)
+    @Column(length = 2048, nullable = false)
     public String getSmilesNotation() {
         return smilesNotation;
     }

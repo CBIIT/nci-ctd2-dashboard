@@ -1,6 +1,5 @@
 package gov.nih.nci.ctd2.dashboard.dao;
 
-import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
 import gov.nih.nci.ctd2.dashboard.model.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -142,55 +141,85 @@ public class DashboardDaoTest {
 
     @Test
     public void findGenesByEntrezIdTest() {
+        String e1 = "22880";
+        String e2 = "74522";
+
         Gene gene1 = dashboardFactory.create(Gene.class);
-        gene1.setEntrezGeneId("E1");
+        gene1.setEntrezGeneId(e1);
         Gene gene2 = dashboardFactory.create(Gene.class);
-        gene2.setEntrezGeneId("E2");
+        gene2.setEntrezGeneId(e2);
         dashboardDao.save(gene1);
         dashboardDao.save(gene2);
 
-        List<Gene> e1genes = dashboardDao.findGenesByEntrezId("E1");
+        List<Gene> e1genes = dashboardDao.findGenesByEntrezId(e1);
         assertEquals(1, e1genes.size());
-        List<Gene> e2genes = dashboardDao.findGenesByEntrezId("E2");
+        List<Gene> e2genes = dashboardDao.findGenesByEntrezId(e2);
         assertEquals(1, e2genes.size());
         assertNotSame(e1genes.iterator().next(), e2genes.iterator().next());
-        assertTrue(dashboardDao.findGenesByEntrezId("E3").isEmpty());
+        assertTrue(dashboardDao.findGenesByEntrezId("12345").isEmpty());
     }
 
     @Test
     public void findProteinsByUniprotIdTest() {
+        String uid1 = "Q50496";
+        String uid2 = "Q9Y6X9";
+
         Protein protein1 = dashboardFactory.create(Protein.class);
-        protein1.setUniprotId("UID1");
+        protein1.setUniprotId(uid1);
         dashboardDao.save(protein1);
 
         Protein protein2 = dashboardFactory.create(Protein.class);
-        protein2.setUniprotId("UID2");
+        protein2.setUniprotId(uid2);
         dashboardDao.save(protein2);
 
-        List<Protein> uid1proteins = dashboardDao.findProteinsByUniprotId("UID1");
+        List<Protein> uid1proteins = dashboardDao.findProteinsByUniprotId(uid1);
         assertEquals(1, uid1proteins.size());
-        List<Protein> uid2proteins = dashboardDao.findProteinsByUniprotId("UID2");
+        List<Protein> uid2proteins = dashboardDao.findProteinsByUniprotId("Q9Y6X9");
         assertEquals(1, uid2proteins.size());
         assertNotSame(uid1proteins.iterator().next(), uid2proteins.iterator().next());
-        assertTrue(dashboardDao.findProteinsByUniprotId("UID3").isEmpty());
+        assertTrue(dashboardDao.findProteinsByUniprotId("Q1A3Y5").isEmpty());
     }
 
     @Test
     public void findTranscriptByRefseqIdTest() {
+        String refseq1 = "NM_014219.2";
+        String refseq2 = "NM_203373.2";
         Transcript transcript1 = dashboardFactory.create(Transcript.class);
-        transcript1.setRefseqId("R1");
+        transcript1.setRefseqId(refseq1);
         dashboardDao.save(transcript1);
 
         Transcript transcript2 = dashboardFactory.create(Transcript.class);
-        transcript2.setRefseqId("R2");
+        transcript2.setRefseqId(refseq2);
         dashboardDao.save(transcript2);
 
-        List<Transcript> r1transcripts = dashboardDao.findTranscriptsByRefseqId("R1");
+        List<Transcript> r1transcripts = dashboardDao.findTranscriptsByRefseqId(refseq1);
         assertEquals(1, r1transcripts.size());
-        List<Transcript> r2transcripts = dashboardDao.findTranscriptsByRefseqId("R2");
+        List<Transcript> r2transcripts = dashboardDao.findTranscriptsByRefseqId(refseq1);
         assertEquals(1, r2transcripts.size());
         assertNotSame(r1transcripts.iterator().next(), r2transcripts.iterator().next());
-        assertTrue(dashboardDao.findProteinsByUniprotId("R3").isEmpty());
+        assertTrue(dashboardDao.findProteinsByUniprotId("NM_104573.10").isEmpty());
+    }
+
+    @Test
+    public void findCompoundsBySmilesNotationTest() {
+        String pyrethrinII = "COC(=O)C(\\C)=C\\C1C(C)(C)[C@H]1C(=O)O[C@@H]2C(C)=C(C(=O)C2)CC=CC=C";
+        String flavopereirin = "CCc(c1)ccc2[n+]1ccc3c2Nc4c3cccc4";
+        String nicotine = "CN1CCC[C@H]1c2cccnc2";
+
+        Compound compound1 = dashboardFactory.create(Compound.class);
+        compound1.setSmilesNotation(pyrethrinII);
+        dashboardDao.save(compound1);
+
+        Compound compound2 = dashboardFactory.create(Compound.class);
+        compound2.setSmilesNotation(flavopereirin);
+        dashboardDao.save(compound2);
+
+        List<Compound> c1list = dashboardDao.findCompoundsBySmilesNotation(pyrethrinII);
+        assertEquals(1, c1list.size());
+        List<Compound> c2list = dashboardDao.findCompoundsBySmilesNotation(flavopereirin);
+        assertEquals(1, c2list.size());
+        assertNotSame(c1list.iterator().next(), c2list.iterator().next());
+        assertTrue(dashboardDao.findCompoundsBySmilesNotation(nicotine).isEmpty());
     }
 }
 

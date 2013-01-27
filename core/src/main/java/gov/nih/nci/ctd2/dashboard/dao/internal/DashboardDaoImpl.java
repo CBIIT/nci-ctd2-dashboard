@@ -96,4 +96,14 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
         }
         return list;
     }
+
+    @Override
+    public List<Compound> findCompoundsBySmilesNotation(String smilesNotation) {
+        List<Compound> list = new ArrayList<Compound>();
+        for (Object o : getHibernateTemplate().find("from CompoundImpl where smilesNotation = ?", smilesNotation)) {
+            assert o instanceof Compound;
+            list.add((Compound) o);
+        }
+        return list;
+    }
 }
