@@ -26,12 +26,14 @@ public class SampleImporter extends AbstractImporter {
         // Save with id
         Gene gene = dashboardFactory.create(Gene.class, 1);
         gene.setDisplayName("G1");
+        gene.setEntrezGeneId("E1");
         gene.getSynonyms().add(synonym);
         gene.getSynonyms().add(synonym2);
         dashboardDao.save(gene);
 
         // save without id
         Gene gene2 = dashboardFactory.create(Gene.class);
+        gene2.setEntrezGeneId("E2");
         gene.setDisplayName("G2");
         dashboardDao.save(gene2);
 
