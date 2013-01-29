@@ -1,6 +1,5 @@
 package gov.nih.nci.ctd2.dashboard.impl;
 
-import com.sun.istack.internal.NotNull;
 import gov.nih.nci.ctd2.dashboard.model.Gene;
 import org.hibernate.annotations.Proxy;
 
@@ -14,8 +13,7 @@ import javax.persistence.Table;
 public class GeneImpl extends SubjectImpl implements Gene {
     private String entrezGeneId;
 
-    @NotNull
-    @Column(length = 32)
+    @Column(length = 32, nullable = false)
     public String getEntrezGeneId() {
         return entrezGeneId;
     }

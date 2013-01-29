@@ -41,12 +41,14 @@ public class DashboardDaoTest {
         // Save with id
         Gene gene = dashboardFactory.create(Gene.class, 1);
         gene.setDisplayName("G1");
+        gene.setEntrezGeneId("E1");
         gene.getSynonyms().add(synonym);
         gene.getSynonyms().add(synonym2);
         dashboardDao.save(gene);
 
         // save without id
         Gene gene2 = dashboardFactory.create(Gene.class);
+        gene2.setEntrezGeneId("E2");
         gene.setDisplayName("G2");
         dashboardDao.save(gene2);
 
@@ -105,6 +107,7 @@ public class DashboardDaoTest {
         // Save with id
         Gene gene = dashboardFactory.create(Gene.class, 1);
         gene.setDisplayName("G1");
+        gene.setEntrezGeneId("E1");
         gene.getSynonyms().add(synonym);
         gene.getSynonyms().add(synonym2);
         dashboardDao.save(gene);
@@ -118,7 +121,9 @@ public class DashboardDaoTest {
     @Test
     public void findByIdTest() {
         Gene gene1 = dashboardFactory.create(Gene.class);
+        gene1.setEntrezGeneId("E1");
         Gene gene2 = dashboardFactory.create(Gene.class);
+        gene2.setEntrezGeneId("E2");
         dashboardDao.save(gene1);
         dashboardDao.save(gene2);
 
@@ -132,7 +137,9 @@ public class DashboardDaoTest {
     @Test
     public void findEntitiesVsCountTest() {
         Gene gene1 = dashboardFactory.create(Gene.class);
+        gene1.setEntrezGeneId("E1");
         Gene gene2 = dashboardFactory.create(Gene.class);
+        gene2.setEntrezGeneId("E2");
         dashboardDao.save(gene1);
         dashboardDao.save(gene2);
 
