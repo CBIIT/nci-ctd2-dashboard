@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>gov.nih.nci.ctd2.dashboard</groupId>
+  <artifactId>dashboard</artifactId>
+  <packaging>pom</packaging>
+  <version>0.1.0-SNAPSHOT</version>
+  <name>Dashboard</name>
+  <properties>
+	<java.version>1.6</java.version>
+	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	<slf4j.version>1.6.4</slf4j.version>
+	<spring.version>3.1.0.RELEASE</spring.version>
+    <aspectj.version>1.6.12</aspectj.version>
+  </properties>
+  <modules>
+	<module>core</module>
+	<module>admin</module>
+	<module>web</module>
+  </modules>
+
+  <dependencies>
+      <dependency>
+          <groupId>log4j</groupId>
+          <artifactId>log4j</artifactId>
+          <version>1.2.16</version>
+      </dependency>
+      <dependency>
+          <groupId>org.slf4j</groupId>
+          <artifactId>slf4j-api</artifactId>
+          <version>${slf4j.version}</version>
+      </dependency>
+      <dependency>
+          <groupId>org.slf4j</groupId>
+          <artifactId>jcl-over-slf4j</artifactId>
+          <version>${slf4j.version}</version>
+      </dependency>
+      <dependency>
+          <groupId>org.slf4j</groupId>
+          <artifactId>slf4j-log4j12</artifactId>
+          <version>${slf4j.version}</version>
+      </dependency>
+
+      <dependency>
+          <groupId>junit</groupId>
+          <artifactId>junit</artifactId>
+          <version>4.7</version>
+          <scope>test</scope>
+      </dependency>
+    </dependencies>
+
+
+</project>
