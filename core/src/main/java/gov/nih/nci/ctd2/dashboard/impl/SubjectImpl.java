@@ -2,6 +2,8 @@ package gov.nih.nci.ctd2.dashboard.impl;
 
 import gov.nih.nci.ctd2.dashboard.model.Subject;
 import gov.nih.nci.ctd2.dashboard.model.Synonym;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
@@ -14,6 +16,7 @@ import java.util.Set;
 public class SubjectImpl extends DashboardEntityImpl implements Subject {
     private Set<Synonym> synonyms = new HashSet<Synonym>();
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(targetEntity = SynonymImpl.class, cascade = CascadeType.ALL)
     @JoinTable(name = "subject_synonym_map")
     public Set<Synonym> getSynonyms() {
