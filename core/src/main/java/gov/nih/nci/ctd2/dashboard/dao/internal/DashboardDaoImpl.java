@@ -8,7 +8,9 @@ import org.hibernate.criterion.Projections;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDao {
     private DashboardFactory dashboardFactory;
@@ -103,6 +105,29 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
         for (Object o : getHibernateTemplate().find("from CompoundImpl where smilesNotation = ?", smilesNotation)) {
             assert o instanceof Compound;
             list.add((Compound) o);
+        }
+        return list;
+    }
+
+    @Override
+    public List<Subject> findSubjectsByXref(String databaseName, String databaseId) {
+        Set<Subject> subjects = new HashSet<Subject>();
+        List list = getHibernateTemplate()
+                        .find("FROM XrefImpl WHERE databaseName = ? AND databaseId = ?", databaseName, databaseId);
+        for (Object o : list) {
+            assert o instanceof Xref;
+            subjects.addAll(findSubjectsByXref((Xref) o));
+        }
+
+        return new ArrayList<Subject>(subjects);
+    }
+
+    @Override
+    public List<Subject> findSubjectsByXref(Xref xref) {
+        List<Subject> list = new ArrayList<Subject>();
+        for (Object o : getHibernateTemplate().find("SELECT o FROM SubjectImpl AS o WHERE ? MEMBER OF o.xrefs", xref)) {
+            assert o instanceof Subject;
+            list.add((Subject) o);
         }
         return list;
     }

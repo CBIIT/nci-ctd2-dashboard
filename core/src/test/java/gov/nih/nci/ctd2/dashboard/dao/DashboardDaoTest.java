@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -227,6 +228,52 @@ public class DashboardDaoTest {
         assertEquals(1, c2list.size());
         assertNotSame(c1list.iterator().next(), c2list.iterator().next());
         assertTrue(dashboardDao.findCompoundsBySmilesNotation(nicotine).isEmpty());
+    }
+
+    @Test
+    public void findSubjectsByXref() {
+        String id1 = "TestId1";
+        String db1 = "DashboardTest";
+        Xref xref1 = dashboardFactory.create(Xref.class);
+        xref1.setDatabaseId(id1);
+        xref1.setDatabaseName(db1);
+
+        String id2 = "TestId2";
+        String db2 = "DashboardTest2";
+        Xref xref2 = dashboardFactory.create(Xref.class);
+        xref2.setDatabaseId(id2);
+        xref2.setDatabaseName(db2);
+
+        String id3 = "TestId3";
+        String db3 = "DashboardTest3";
+        Xref xref3 = dashboardFactory.create(Xref.class);
+        xref3.setDatabaseId(id3);
+        xref3.setDatabaseName(db3);
+
+        CellLine cellLine1 = dashboardFactory.create(CellLine.class);
+        cellLine1.setDisplayName("CL1");
+        cellLine1.getXrefs().add(xref1);
+        dashboardDao.save(cellLine1);
+
+        CellLine cellLine2 = dashboardFactory.create(CellLine.class);
+        cellLine2.setDisplayName("CL2");
+        cellLine2.getXrefs().add(xref2);
+        cellLine2.getXrefs().add(xref3);
+        dashboardDao.save(cellLine2);
+
+        List<Subject> subjects1 = dashboardDao.findSubjectsByXref(xref1);
+        assertEquals(1, subjects1.size());
+        assertEquals(cellLine1, subjects1.iterator().next());
+
+        List<Subject> subjects2 = dashboardDao.findSubjectsByXref(xref2);
+        assertEquals(1, subjects2.size());
+        assertEquals(cellLine2, subjects2.iterator().next());
+
+        subjects2 = dashboardDao.findSubjectsByXref(xref3.getDatabaseName(), xref3.getDatabaseId());
+        assertEquals(1, subjects2.size());
+        assertEquals(cellLine2, subjects2.iterator().next());
+
+        assertTrue(dashboardDao.findSubjectsByXref("RandomDB", "RandomId").isEmpty());
     }
 }
 
