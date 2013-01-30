@@ -28,7 +28,7 @@ The command above will compile the project, run the tests and create the necessa
 Make sure the tests are sucessfully completed.
 From here on you can follow the module-specific notes below.
   
-# Notes about moudles
+# Notes about modules
 ## Core: Data structures and DAO methods
 This module tries to capture the main database schema outlined below:
 
@@ -97,7 +97,7 @@ When it gets persisted, the `id` field is updated with the automatically-generat
 `DashboardDao` can also be used to acquire objects that are already in the database:
 
 	// Grabs all compounds in the database
-	List<Compund> allCompounds = dashboardDao.findEntities(Compound.class);
+	List<Compound> allCompounds = dashboardDao.findEntities(Compound.class);
 
 	// or more generic entities, for example all Subjects
 	List<Subject> allSubjects = dashboardDao.findEntities(Subject.class);
