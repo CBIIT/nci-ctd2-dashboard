@@ -24,7 +24,7 @@ public class CompoundNamesFieldSetMapper implements FieldSetMapper<CompoundData>
 		Xref xref = dashboardFactory.create(Xref.class);
 		xref.setDatabaseId(fieldSet.readString(0));
 		xref.setDatabaseName(BROAD_COMPOUND_DATABASE);
-		//xref.setDisplayName(BROAD_COMPOUND_DATABASE);
+		xref.setDisplayName(BROAD_COMPOUND_DATABASE);
 		compound.getXrefs().add(xref);
 		return new CompoundData(compound, fieldSet.readString(2));
 	}
