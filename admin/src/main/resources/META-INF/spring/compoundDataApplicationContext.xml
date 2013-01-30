@@ -11,12 +11,12 @@
   <context:component-scan base-package="gov.nih.nci.ctd2.dashboard.importer.internal" />
 
   <batch:job id="compoundDataImporterJob">
-	<batch:step id="step1" parent="compoundDataStep" next="step2">
+	<batch:step id="compoundNameStep" parent="compoundDataStep" next="compoundSMILESStep">
 	  <batch:tasklet>
 		<batch:chunk reader="compoundNamesReader" processor="compoundNamesProcessor" writer="compoundNamesWriter"/>
 	  </batch:tasklet>
 	</batch:step>
-	<batch:step id="step2" parent="compoundDataStep">
+	<batch:step id="compoundSMILESStep" parent="compoundDataStep">
 	  <batch:tasklet>
 		<batch:chunk reader="compoundSMILESReader" processor="compoundSMILESProcessor" writer="compoundSMILESWriter"/>
 	  </batch:tasklet>
