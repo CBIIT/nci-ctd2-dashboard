@@ -1,1 +1,8 @@
 # Here will go admin specific options
+
+# data source locations
+gene.data.location=
+compound.names.location=
+compound.annotations.location=
+compound.smiles.location=
+center.data.location=
