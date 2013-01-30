@@ -1,6 +1,8 @@
 package gov.nih.nci.ctd2.dashboard.impl;
 
 import gov.nih.nci.ctd2.dashboard.model.*;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
@@ -17,6 +19,7 @@ public class ObservationImpl extends DashboardEntityImpl implements Observation 
     private ObservationType observationType;
     private ObservationReference observationReference;
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(targetEntity = SubjectImpl.class)
     @JoinTable(name = "observation_subject_map")
     public List<Subject> getSubjects() {
@@ -54,6 +57,7 @@ public class ObservationImpl extends DashboardEntityImpl implements Observation 
         this.observationReference = observationReference;
     }
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(targetEntity = EvidenceImpl.class, cascade = CascadeType.ALL)
     @JoinTable(name = "observation_evidence_map")
     public List<Evidence> getEvidences() {

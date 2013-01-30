@@ -1,6 +1,7 @@
 package gov.nih.nci.ctd2.dashboard.controller;
 
 import flexjson.JSONSerializer;
+import flexjson.transformer.AbstractTransformer;
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
 import gov.nih.nci.ctd2.dashboard.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +19,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class JSONController {
     @Autowired
     private DashboardDao dashboardDao;
-    @Autowired
-    private DashboardFactory dashboardFactory;
 
     @Transactional
-    @RequestMapping(value="{filter}/{id}", method = {RequestMethod.GET, RequestMethod.POST}, headers = "Accept=application/json")
-    public ResponseEntity<String> getEntityInJson(@PathVariable String filter, @PathVariable Integer id) {
+    @RequestMapping(value="{id}", method = {RequestMethod.GET, RequestMethod.POST}, headers = "Accept=application/json")
+    public ResponseEntity<String> getEntityInJson(@PathVariable Integer id) {
         DashboardEntity entityById = dashboardDao.getEntityById(id);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json; charset=utf-8");
@@ -32,8 +31,17 @@ public class JSONController {
             return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
         }
 
+        JSONSerializer jsonSerializer = new JSONSerializer()
+                .transform(new AbstractTransformer() {
+                    @Override
+                    public void transform(Object object) {
+                        assert object instanceof Class;
+                        getContext().writeQuoted(((Class) object).getSimpleName().replace("Impl", ""));
+                    }
+                }, Class.class);
+
         return new ResponseEntity<String>(
-                new JSONSerializer().exclude("*.class").deepSerialize(entityById),
+                jsonSerializer.deepSerialize(entityById),
                 headers,
                 HttpStatus.OK
         );
