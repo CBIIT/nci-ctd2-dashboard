@@ -25,6 +25,14 @@ public class GeneDataFieldSetMapper implements FieldSetMapper<GeneData> {
 			synonym.setDisplayName(synonymName);
 			gene.getSynonyms().add(synonym);
 		}
+		// hgnc parsing
+		for (String dbXrefs : fieldSet.readString(5).split("\\|")) {
+			String[] parts = dbXrefs.split("\\:");
+			if (parts[0].equals("HGNC")) {
+				gene.setHGNCId(parts[1]);
+				break;
+			}
+		}
         Organism organism = dashboardFactory.create(Organism.class);
 		organism.setTaxonomyId(fieldSet.readString(0));
 		organism.setGene(gene);

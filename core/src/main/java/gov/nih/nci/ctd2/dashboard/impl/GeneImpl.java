@@ -12,6 +12,7 @@ import javax.persistence.Table;
 @Table(name = "gene")
 public class GeneImpl extends SubjectImpl implements Gene {
     private String entrezGeneId;
+	private String hgncId;
 
     @Column(length = 32, nullable = false)
     public String getEntrezGeneId() {
@@ -20,5 +21,14 @@ public class GeneImpl extends SubjectImpl implements Gene {
 
     public void setEntrezGeneId(String entrezGeneId) {
         this.entrezGeneId = entrezGeneId;
+    }
+
+    @Column(length = 32, nullable = true)
+    public String getHGNCId() {
+        return hgncId;
+    }
+
+    public void setHGNCId(String hgncId) {
+        this.hgncId = hgncId;
     }
 }
