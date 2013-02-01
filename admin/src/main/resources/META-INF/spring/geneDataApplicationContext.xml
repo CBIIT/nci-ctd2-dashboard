@@ -11,14 +11,14 @@
   <context:component-scan base-package="gov.nih.nci.ctd2.dashboard.importer.internal" />
 
   <batch:job id="geneDataImporterJob">
-	<batch:step id="geneDataStep" parent="simpleStep">
+	<batch:step id="geneDataStep" parent="geneDataSimpleStep">
 	  <batch:tasklet>
 		<batch:chunk reader="geneDataReader" processor="geneDataProcessor" writer="geneDataWriter"/>
 	  </batch:tasklet>
 	</batch:step>
   </batch:job>
 
-  <bean id="simpleStep" class="org.springframework.batch.core.step.item.SimpleStepFactoryBean" abstract="true">
+  <bean id="geneDataSimpleStep" class="org.springframework.batch.core.step.item.SimpleStepFactoryBean" abstract="true">
 	<property name="transactionManager" ref="transactionManager" />
 	<property name="jobRepository" ref="jobRepository" />
 	<property name="commitInterval" value="100" />
