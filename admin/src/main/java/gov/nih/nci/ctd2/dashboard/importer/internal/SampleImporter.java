@@ -44,7 +44,7 @@ public class SampleImporter extends AbstractImporter {
         dashboardDao.save(transcript);
 
         Protein protein = dashboardFactory.create(Protein.class);
-        protein.setTranscript(transcript);
+        protein.getTranscripts().add(transcript);
         protein.setUniprotId("1000");
         protein.setDisplayName("P1");
         dashboardDao.save(protein);
