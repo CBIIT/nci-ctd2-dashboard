@@ -5,4 +5,6 @@ gene.data.location=
 compound.names.location=
 compound.annotations.location=
 compound.smiles.location=
+protein.data.location=
 center.data.location=
+

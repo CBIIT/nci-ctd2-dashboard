@@ -20,7 +20,8 @@ public class DashboardAdminMain {
         "classpath*:META-INF/spring/applicationContext.xml", // This is for DAO/Dashboard Model
         "classpath*:META-INF/spring/adminApplicationContext.xml", // This is for admin-related beans
         "classpath*:META-INF/spring/geneDataApplicationContext.xml", // This is for gene data importer beans
-        "classpath*:META-INF/spring/compoundDataApplicationContext.xml" // This is for compound data importer beans
+        "classpath*:META-INF/spring/compoundDataApplicationContext.xml", // This is for compound data importer beans
+        "classpath*:META-INF/spring/proteinDataApplicationContext.xml" // This is for compound data importer beans
     );
 
     public static void main(String[] args) {
@@ -36,6 +37,7 @@ public class DashboardAdminMain {
                 .addOption("h", "help", false, "shows this help document and quits.")
 			    .addOption("cp", "compound-data", false, "imports compound data.")
 			    .addOption("g", "gene-data", false, "imports gene data.")
+                .addOption("p", "protein-data", false, "imports protein data.")
                 .addOption("s", "sample-data", false, "imports sample data.")
         ;
 
@@ -58,6 +60,10 @@ public class DashboardAdminMain {
 
 			if( commandLine.hasOption("g") ) {
                 launchJob("geneDataImporterJob");
+			}
+
+			if( commandLine.hasOption("p") ) {
+                launchJob("proteinDataImporterJob");
 			}
 
             if( commandLine.hasOption("s") ) {
