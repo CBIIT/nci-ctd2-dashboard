@@ -6,7 +6,6 @@ import gov.nih.nci.ctd2.dashboard.model.Protein;
 import gov.nih.nci.ctd2.dashboard.model.Transcript;
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
 import gov.nih.nci.ctd2.dashboard.model.DashboardFactory;
-import org.springframework.validation.BindException;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.file.transform.FieldSet;
 import org.springframework.batch.item.file.mapping.FieldSetMapper;
@@ -57,16 +56,15 @@ public class UniProtDataReader implements ItemReader<ProteinData> {
 	public ProteinData read() throws Exception {
 
 		recordFinished = false;
-
 		while (!recordFinished) {
 			process(fieldSetReader.read());
 		}
 		if (protein == null) return null; // this would happen on eof
 		Protein proteinToReturn = protein;
 		protein = null;
-		HashSet<Transcript> transcriptsToReturn = new HashSet<Transcript>(transcripts);
-		String taxonomyIdToReturn = taxonomyId;
-		return new ProteinData(proteinToReturn, transcriptsToReturn, taxonomyIdToReturn);
+		return new ProteinData(proteinToReturn,
+							   new HashSet<Transcript>(transcripts),
+							   new String(taxonomyId));
 	}
 
 	private void process(FieldSet fieldSet) throws Exception {
