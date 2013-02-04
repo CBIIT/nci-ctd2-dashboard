@@ -10,7 +10,7 @@ import javax.persistence.Table;
 @Entity
 @Proxy(proxyClass= Gene.class)
 @Table(name = "gene")
-public class GeneImpl extends SubjectImpl implements Gene {
+public class GeneImpl extends SubjectWithOrganismImpl implements Gene {
     private String entrezGeneId;
 	private String hgncId;
 

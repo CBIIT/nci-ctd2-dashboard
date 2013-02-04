@@ -10,11 +10,16 @@ import org.springframework.batch.item.file.transform.FieldSet;
 import org.springframework.batch.item.file.mapping.FieldSetMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Component("geneDataMapper")
 public class GeneDataFieldSetMapper implements FieldSetMapper<GeneData> {
 
     @Autowired
     private DashboardFactory dashboardFactory;
+
+    private HashMap<String, Organism> organismMap = new HashMap<String, Organism>();
 
 	public GeneData mapFieldSet(FieldSet fieldSet) throws BindException {
         Gene gene = dashboardFactory.create(Gene.class);
@@ -33,9 +38,15 @@ public class GeneDataFieldSetMapper implements FieldSetMapper<GeneData> {
 				break;
 			}
 		}
-        Organism organism = dashboardFactory.create(Organism.class);
-		organism.setTaxonomyId(fieldSet.readString(0));
-		organism.setGene(gene);
-		return new GeneData(gene, organism);
+
+        String taxonomyId = fieldSet.readString(0);
+        Organism organism = organismMap.get(taxonomyId);
+        if(organism == null) {
+            organism = dashboardFactory.create(Organism.class);
+            organism.setTaxonomyId(taxonomyId);
+            organismMap.put(taxonomyId, organism);
+        }
+
+        return new GeneData(gene, organism);
 	}
 }

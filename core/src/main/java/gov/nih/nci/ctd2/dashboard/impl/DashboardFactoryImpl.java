@@ -12,10 +12,6 @@ public class DashboardFactoryImpl extends DashboardFactory {
     private static Log log = LogFactory.getLog(DashboardFactoryImpl.class);
 
     public <T extends DashboardEntity> T create(Class<T> aClass) {
-        return create(aClass, null);
-    }
-
-    public <T extends DashboardEntity> T create(Class<T> aClass, Integer id) {
         // Idea from
         T entity = null;
 
@@ -33,13 +29,16 @@ public class DashboardFactoryImpl extends DashboardFactory {
             log.error(e.getStackTrace());
         }
 
-        // Set id
+        // Set displayName
         try {
-            Method m = DashboardEntity.class.getDeclaredMethod("setId", Integer.class);
+            Method m = DashboardEntity.class.getDeclaredMethod("setDisplayName", String.class);
             m.setAccessible(true);
-            m.invoke(entity, id);
+            m.invoke(entity, "");
+//            m = DashboardEntity.class.getDeclaredMethod("setId", Integer.class);
+//            m.setAccessible(true);
+//            m.invoke(entity, (Integer) null);
         } catch (Exception e) {
-            log.error("Could not set ID for " + entity.getClass());
+            log.error("Could not set displayName/id for " + entity.getClass());
             log.error(e.getStackTrace());
             return null;
         }

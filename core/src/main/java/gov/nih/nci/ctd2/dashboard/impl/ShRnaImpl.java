@@ -12,7 +12,7 @@ import javax.persistence.Table;
 @Entity
 @Proxy(proxyClass = ShRna.class)
 @Table(name = "shrna")
-public class ShRnaImpl extends SubjectImpl implements ShRna {
+public class ShRnaImpl extends SubjectWithOrganismImpl implements ShRna {
     private String targetSequence;
     private Transcript transcript;
 

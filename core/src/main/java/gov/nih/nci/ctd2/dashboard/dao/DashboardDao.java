@@ -20,4 +20,6 @@ public interface DashboardDao {
     List<Compound> findCompoundsBySmilesNotation(String smilesNotation);
     List<Subject> findSubjectsByXref(String databaseName, String databaseId);
     List<Subject> findSubjectsByXref(Xref xref);
+    List<Organism> findOrganismByTaxonomyId(String taxonomyId);
+    List<SubjectWithOrganism> findSubjectByOrganism(Organism organism);
 }

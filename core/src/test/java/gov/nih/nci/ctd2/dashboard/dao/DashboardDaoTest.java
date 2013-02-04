@@ -6,7 +6,6 @@ import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -40,7 +39,7 @@ public class DashboardDaoTest {
         synonym3.setDisplayName("S3");
 
         // Save with id
-        Gene gene = dashboardFactory.create(Gene.class, 1);
+        Gene gene = dashboardFactory.create(Gene.class);
         gene.setDisplayName("G1");
         gene.setEntrezGeneId("E1");
         gene.getSynonyms().add(synonym);
@@ -65,10 +64,10 @@ public class DashboardDaoTest {
         protein.setDisplayName("P1");
         dashboardDao.save(protein);
 
-        MouseModel mouseModel = dashboardFactory.create(MouseModel.class);
-        mouseModel.getSynonyms().add(synonym3);
-        mouseModel.setDisplayName("MM1");
-        dashboardDao.save(mouseModel);
+        AnimalModel animalModel = dashboardFactory.create(AnimalModel.class);
+        animalModel.getSynonyms().add(synonym3);
+        animalModel.setDisplayName("MM1");
+        dashboardDao.save(animalModel);
 
         UrlEvidence urlEvidence = dashboardFactory.create(UrlEvidence.class);
         urlEvidence.setUrl("http://ctd2.nci.nih.gov/");
@@ -89,7 +88,7 @@ public class DashboardDaoTest {
         observation.setObservationReference(observationReference);
         observation.setObservationType(observationType);
         observation.setObservationSource(observationSource);
-        observation.getSubjects().add(mouseModel);
+        observation.getSubjects().add(animalModel);
         observation.getSubjects().add(gene2);
         observation.getSubjects().add(protein);
         observation.getEvidences().add(urlEvidence);
@@ -106,7 +105,7 @@ public class DashboardDaoTest {
         synonym.setDisplayName("S2");
 
         // Save with id
-        Gene gene = dashboardFactory.create(Gene.class, 1);
+        Gene gene = dashboardFactory.create(Gene.class);
         gene.setDisplayName("G1");
         gene.setEntrezGeneId("E1");
         gene.getSynonyms().add(synonym);
@@ -274,6 +273,41 @@ public class DashboardDaoTest {
         assertEquals(cellLine2, subjects2.iterator().next());
 
         assertTrue(dashboardDao.findSubjectsByXref("RandomDB", "RandomId").isEmpty());
+    }
+
+    @Test
+    public void organismFilteringTest() {
+        Organism organism1 = dashboardFactory.create(Organism.class);
+        organism1.setTaxonomyId("O1");
+        dashboardDao.save(organism1);
+
+        Organism organism2 = dashboardFactory.create(Organism.class);
+        organism2.setTaxonomyId("O2");
+        dashboardDao.save(organism2);
+
+        Gene gene1 = dashboardFactory.create(Gene.class);
+        gene1.setEntrezGeneId("E1");
+        gene1.setOrganism(organism1);
+        dashboardDao.save(gene1);
+
+        Gene gene2 = dashboardFactory.create(Gene.class);
+        gene2.setEntrezGeneId("E2");
+        gene2.setOrganism(organism2);
+        dashboardDao.save(gene2);
+
+        List<Organism> olist1 = dashboardDao.findOrganismByTaxonomyId("O1");
+        assertEquals(1, olist1.size());
+        List<Organism> olist2 = dashboardDao.findOrganismByTaxonomyId("O2");
+        assertEquals(1, olist2.size());
+        assertTrue(dashboardDao.findOrganismByTaxonomyId("O3").isEmpty());
+
+        List<SubjectWithOrganism> subjectByOrganism = dashboardDao.findSubjectByOrganism(olist1.iterator().next());
+        assertEquals(1, subjectByOrganism.size());
+        assertEquals(gene1.getEntrezGeneId(), ((Gene) subjectByOrganism.iterator().next()).getEntrezGeneId());
+
+        List<SubjectWithOrganism> subjectByOrganism2 = dashboardDao.findSubjectByOrganism(olist2.iterator().next());
+        assertEquals(1, subjectByOrganism2.size());
+        assertEquals(gene2.getEntrezGeneId(), ((Gene) subjectByOrganism2.iterator().next()).getEntrezGeneId());
     }
 }
 

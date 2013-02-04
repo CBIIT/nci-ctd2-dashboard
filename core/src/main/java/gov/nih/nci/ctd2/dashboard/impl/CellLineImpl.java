@@ -9,5 +9,5 @@ import javax.persistence.Table;
 @Entity
 @Proxy(proxyClass= CellLine.class)
 @Table(name = "cell_line")
-public class CellLineImpl extends SubjectImpl implements CellLine {
+public class CellLineImpl extends SubjectWithOrganismImpl implements CellLine {
 }

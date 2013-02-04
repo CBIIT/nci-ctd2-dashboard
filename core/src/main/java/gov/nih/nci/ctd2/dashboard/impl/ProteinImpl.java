@@ -12,7 +12,7 @@ import java.util.HashSet;
 @Entity
 @Proxy(proxyClass = Protein.class)
 @Table(name = "protein")
-public class ProteinImpl extends SubjectImpl implements Protein {
+public class ProteinImpl extends SubjectWithOrganismImpl implements Protein {
     private String uniprotId;
     private Set<Transcript> transcripts = new HashSet<Transcript>();
 

@@ -9,9 +9,8 @@ import javax.persistence.*;
 @Entity
 @Proxy(proxyClass = Organism.class)
 @Table(name = "organism")
-public class OrganismImpl extends SubjectImpl implements Organism {
+public class OrganismImpl extends DashboardEntityImpl implements Organism {
     private String taxonomyId;
-    private Gene gene;
 
     @Column(length = 32, nullable = false)
     public String getTaxonomyId() {
@@ -20,14 +19,5 @@ public class OrganismImpl extends SubjectImpl implements Organism {
 
     public void setTaxonomyId(String taxonomyId) {
         this.taxonomyId = taxonomyId;
-    }
-
-    @ManyToOne(targetEntity = GeneImpl.class)
-    public Gene getGene() {
-        return gene;
-    }
-
-    public void setGene(Gene gene) {
-        this.gene = gene;
     }
 }
