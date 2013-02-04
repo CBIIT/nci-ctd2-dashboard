@@ -1,15 +1,15 @@
 package gov.nih.nci.ctd2.dashboard.impl;
 
-import gov.nih.nci.ctd2.dashboard.model.MouseModel;
+import gov.nih.nci.ctd2.dashboard.model.AnimalModel;
 import org.hibernate.annotations.Proxy;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Proxy(proxyClass = MouseModel.class)
-@Table(name = "mouse_model")
-public class MouseModelImpl extends SubjectImpl implements MouseModel {
+@Proxy(proxyClass = AnimalModel.class)
+@Table(name = "animal_model")
+public class AnimalModelImpl extends SubjectWithOrganismImpl implements AnimalModel {
     private String description;
 
     public String getDescription() {

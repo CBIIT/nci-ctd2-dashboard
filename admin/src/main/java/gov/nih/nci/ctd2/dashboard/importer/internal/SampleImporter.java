@@ -24,7 +24,7 @@ public class SampleImporter extends AbstractImporter {
         synonym3.setDisplayName("S3");
 
         // Save with id
-        Gene gene = dashboardFactory.create(Gene.class, 1);
+        Gene gene = dashboardFactory.create(Gene.class);
         gene.setDisplayName("G1");
         gene.setEntrezGeneId("E1");
         gene.getSynonyms().add(synonym);
@@ -49,10 +49,10 @@ public class SampleImporter extends AbstractImporter {
         protein.setDisplayName("P1");
         dashboardDao.save(protein);
 
-        MouseModel mouseModel = dashboardFactory.create(MouseModel.class);
-        mouseModel.getSynonyms().add(synonym3);
-        mouseModel.setDisplayName("MM1");
-        dashboardDao.save(mouseModel);
+        AnimalModel animalModel = dashboardFactory.create(AnimalModel.class);
+        animalModel.getSynonyms().add(synonym3);
+        animalModel.setDisplayName("MM1");
+        dashboardDao.save(animalModel);
 
         UrlEvidence urlEvidence = dashboardFactory.create(UrlEvidence.class);
         urlEvidence.setUrl("http://ctd2.nci.nih.gov/");
@@ -73,7 +73,7 @@ public class SampleImporter extends AbstractImporter {
         observation.setObservationReference(observationReference);
         observation.setObservationType(observationType);
         observation.setObservationSource(observationSource);
-        observation.getSubjects().add(mouseModel);
+        observation.getSubjects().add(animalModel);
         observation.getSubjects().add(gene2);
         observation.getSubjects().add(protein);
         observation.getEvidences().add(urlEvidence);

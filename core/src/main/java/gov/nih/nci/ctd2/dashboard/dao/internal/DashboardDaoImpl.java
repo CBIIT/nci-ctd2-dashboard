@@ -131,4 +131,25 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
         }
         return list;
     }
+
+    @Override
+    public List<Organism> findOrganismByTaxonomyId(String taxonomyId) {
+        List<Organism> list = new ArrayList<Organism>();
+        for (Object o : getHibernateTemplate().find("from OrganismImpl where taxonomyId = ?", taxonomyId)) {
+            assert o instanceof Organism;
+            list.add((Organism) o);
+        }
+        return list;
+    }
+
+    @Override
+    public List<SubjectWithOrganism> findSubjectByOrganism(Organism organism) {
+        List<SubjectWithOrganism> list = new ArrayList<SubjectWithOrganism>();
+        for (Object o : getHibernateTemplate().find("from SubjectWithOrganismImpl where organism = ?", organism)) {
+            assert o instanceof SubjectWithOrganism;
+            list.add((SubjectWithOrganism) o);
+        }
+
+        return list;
+    }
 }

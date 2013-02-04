@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Entity
 @Proxy(proxyClass = Transcript.class)
 @Table(name = "transcript")
-public class TranscriptImpl extends SubjectImpl implements Transcript {
+public class TranscriptImpl extends SubjectWithOrganismImpl implements Transcript {
     private String refseqId;
     private Gene gene;
 
