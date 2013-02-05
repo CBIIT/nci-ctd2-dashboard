@@ -14,6 +14,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.List;
 import java.util.HashSet;
+import java.util.HashMap;
 
 public class UniProtDataReader implements ItemReader<ProteinData> {
 
@@ -41,13 +42,17 @@ public class UniProtDataReader implements ItemReader<ProteinData> {
     @Autowired
     private DashboardFactory dashboardFactory;
 
-	// vars to keep state
+	// vars which keep state of current protein/record being processed
 	private String geneId;
 	private Protein protein;
 	private String taxonomyId;
 	private HashSet<String> refseqIds = new HashSet<String>();
-	private HashSet<Transcript> transcripts = new HashSet<Transcript>();
+	private HashSet<Transcript> transcriptsToReturn = new HashSet<Transcript>();
 	private boolean recordFinished;
+
+	// vars to speed up lookup
+	private HashMap<String, Gene> genesCache = new HashMap<String, Gene>();
+	private HashMap<String, Transcript> transcriptsCache = new HashMap<String, Transcript>();
 
 	// this gets set for each row
 	private ItemReader<FieldSet> fieldSetReader;
@@ -63,7 +68,7 @@ public class UniProtDataReader implements ItemReader<ProteinData> {
 		Protein proteinToReturn = protein;
 		protein = null;
 		return new ProteinData(proteinToReturn,
-							   new HashSet<Transcript>(transcripts),
+							   new HashSet<Transcript>(transcriptsToReturn),
 							   new String(taxonomyId));
 	}
 
@@ -132,29 +137,38 @@ public class UniProtDataReader implements ItemReader<ProteinData> {
 		geneId = "";
 		taxonomyId = "";
 		refseqIds.clear();
-		transcripts.clear();
+		transcriptsToReturn.clear();
 	}
 
 	private void addTranscripts() {
 		if (!refseqIds.isEmpty()) {
-			Gene gene = null;
-			if (geneId.length() > 0) {
-				List<Gene> genes = dashboardDao.findGenesByEntrezId(geneId);
-				gene = (genes.size() == 1) ? genes.get(0) : null;
-			}
+			Gene gene = findGene();
 			for (String refseqId : refseqIds) {
-				List<Transcript> existingTranscripts = dashboardDao.findTranscriptsByRefseqId(refseqId);
-				if (existingTranscripts.size() == 1) {
-					protein.getTranscripts().add(existingTranscripts.iterator().next());
-				}
-				else {
-					Transcript transcript = dashboardFactory.create(Transcript.class);
+				Transcript transcript = transcriptsCache.get(refseqId);
+				if (transcript == null) {
+					transcript = dashboardFactory.create(Transcript.class);
 					transcript.setRefseqId(refseqId);
 					if (gene != null) transcript.setGene(gene);
-					protein.getTranscripts().add(transcript);
-					transcripts.add(transcript);
+					transcriptsToReturn.add(transcript);
+					transcriptsCache.put(refseqId, transcript);
+				}
+				protein.getTranscripts().add(transcript);
+			}
+		}
+	}
+
+	private Gene findGene() {
+		Gene toReturn = null;
+		if (geneId.length() > 0) {
+			toReturn = genesCache.get(geneId);
+			if (toReturn == null) {
+				List<Gene> genes = dashboardDao.findGenesByEntrezId(geneId);
+				if (genes.size() == 1) {
+					toReturn = genes.get(0);
+					genesCache.put(geneId, toReturn);
 				}
 			}
 		}
+		return toReturn;
 	}
 }
