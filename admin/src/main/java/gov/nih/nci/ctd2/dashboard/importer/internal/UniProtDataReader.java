@@ -89,7 +89,7 @@ public class UniProtDataReader implements ItemReader<ProteinData> {
 			//Matcher idMatcher = UNIPROT_ID_REGEX.matcher(fieldSet.readString(1));
 			//if (idMatcher.find()) protein.setUniprotId(idMatcher.group(1));
 		}
-		else if (lineId.equals(LINE_ID_RECORD_NAME)) {
+		else if (lineId.equals(LINE_ID_RECORD_NAME) && fieldSet.getValues().length == 2) {
 			Matcher recordNameMatcher = UNIPROT_NAME_REGEX.matcher(fieldSet.readString(1));
 			if (recordNameMatcher.find() &&
 				(protein.getDisplayName() == null ||
@@ -97,7 +97,7 @@ public class UniProtDataReader implements ItemReader<ProteinData> {
 				protein.setDisplayName(recordNameMatcher.group(1));
 			}
 		}
-		else if (lineId.equals(LINE_ID_ACCESSION)) {
+		else if (lineId.equals(LINE_ID_ACCESSION) && fieldSet.getValues().length == 2) {
 			for (String accession : fieldSet.readString(1).split(ACCESSION_DELIMITER)) {
 				// if uniprotid is null, it hasn't been set yet,
 				// use first (primary) accession as uniprotid
@@ -112,11 +112,11 @@ public class UniProtDataReader implements ItemReader<ProteinData> {
 				}
 			}
 		}
-		else if (lineId.equals(LINE_ID_NCBI_ORGANISM_TAX)) {
+		else if (lineId.equals(LINE_ID_NCBI_ORGANISM_TAX) && fieldSet.getValues().length == 2) {
 			Matcher taxonomyIdMatcher = NCBI_TAXONOMY_ID_REGEX.matcher(fieldSet.readString(1));
 			if (taxonomyIdMatcher.find()) taxonomyId = taxonomyIdMatcher.group(1);
 		}
-		else if (lineId.equals(LINE_ID_DB_XREF)) {
+		else if (lineId.equals(LINE_ID_DB_XREF) && fieldSet.getValues().length == 2) {
 			Matcher refSeqMatcher = REFSEQ_REGEX.matcher(fieldSet.readString(1));
 			if (refSeqMatcher.find()) {
 				refseqIds.add(refSeqMatcher.group(1));
