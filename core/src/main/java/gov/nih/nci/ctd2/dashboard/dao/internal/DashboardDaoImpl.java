@@ -113,7 +113,7 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
     public List<Subject> findSubjectsByXref(String databaseName, String databaseId) {
         Set<Subject> subjects = new HashSet<Subject>();
         List list = getHibernateTemplate()
-                        .find("FROM XrefImpl WHERE databaseName = ? AND databaseId = ?", databaseName, databaseId);
+                        .find("from XrefImpl where databaseName = ? and databaseId = ?", databaseName, databaseId);
         for (Object o : list) {
             assert o instanceof Xref;
             subjects.addAll(findSubjectsByXref((Xref) o));
@@ -125,7 +125,7 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
     @Override
     public List<Subject> findSubjectsByXref(Xref xref) {
         List<Subject> list = new ArrayList<Subject>();
-        for (Object o : getHibernateTemplate().find("SELECT o FROM SubjectImpl AS o WHERE ? MEMBER OF o.xrefs", xref)) {
+        for (Object o : getHibernateTemplate().find("select o from SubjectImpl as o where ? member of o.xrefs", xref)) {
             assert o instanceof Subject;
             list.add((Subject) o);
         }
@@ -151,5 +151,27 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
         }
 
         return list;
+    }
+
+    @Override
+    public List<Subject> findSubjectsBySynonym(String synonym, boolean exact) {
+        Set<Subject> subjects = new HashSet<Subject>();
+
+        // First grab the synonyms
+        String query = "from SynonymImpl where displayName "
+                + (exact ? " = ?" : "like concat('%', ?, '%')");
+        for (Object o : getHibernateTemplate().find(query, synonym)) {
+            assert o instanceof Synonym;
+
+            // Second: find subjects with the synonym
+            List subjectList = getHibernateTemplate()
+                    .find("select o from SubjectImpl as o where ? member of o.synonyms", (Synonym) o);
+            for (Object o2 : subjectList) {
+                assert o2 instanceof Subject;
+                subjects.add((Subject) o2);
+            }
+        }
+
+        return new ArrayList<Subject>(subjects);
     }
 }
