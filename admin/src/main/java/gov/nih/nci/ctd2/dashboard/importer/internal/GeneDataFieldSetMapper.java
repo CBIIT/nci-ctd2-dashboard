@@ -47,6 +47,8 @@ public class GeneDataFieldSetMapper implements FieldSetMapper<GeneData> {
             organismMap.put(taxonomyId, organism);
         }
 
+        gene.setOrganism(organism);
+
         return new GeneData(gene, organism);
 	}
 }
