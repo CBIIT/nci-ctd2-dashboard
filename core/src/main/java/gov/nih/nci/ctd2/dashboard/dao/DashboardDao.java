@@ -22,4 +22,5 @@ public interface DashboardDao {
     List<Subject> findSubjectsByXref(Xref xref);
     List<Organism> findOrganismByTaxonomyId(String taxonomyId);
     List<SubjectWithOrganism> findSubjectByOrganism(Organism organism);
+    List<Subject> findSubjectsBySynonym(String synonym, boolean exact);
 }
