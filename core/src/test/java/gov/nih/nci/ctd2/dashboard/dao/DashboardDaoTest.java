@@ -309,5 +309,68 @@ public class DashboardDaoTest {
         assertEquals(1, subjectByOrganism2.size());
         assertEquals(gene2.getEntrezGeneId(), ((Gene) subjectByOrganism2.iterator().next()).getEntrezGeneId());
     }
+
+    @Test
+    public void findSubjectBySynonymTest() {
+        String synonymStr = "Synonym";
+
+        String synStr1 = synonymStr + " 11";
+        Synonym synonym1 = dashboardFactory.create(Synonym.class);
+        synonym1.setDisplayName(synStr1);
+
+        String synStr2 = synonymStr + " 12";
+        Synonym synonym2 = dashboardFactory.create(Synonym.class);
+        synonym2.setDisplayName(synStr2);
+
+        String synStr3 = synonymStr + " 21";
+        Synonym synonym3 = dashboardFactory.create(Synonym.class);
+        synonym3.setDisplayName(synStr3);
+
+        String synStr4 = synonymStr + " 22";
+        Synonym synonym4 = dashboardFactory.create(Synonym.class);
+        synonym4.setDisplayName(synStr4);
+
+        Gene gene1 = dashboardFactory.create(Gene.class);
+        gene1.setEntrezGeneId("E1");
+        gene1.getSynonyms().add(synonym1);
+        gene1.getSynonyms().add(synonym2);
+        dashboardDao.save(gene1);
+
+        Gene gene2 = dashboardFactory.create(Gene.class);
+        gene2.setEntrezGeneId("E2");
+        gene2.getSynonyms().add(synonym3);
+        gene2.getSynonyms().add(synonym4);
+        dashboardDao.save(gene2);
+
+        List<Subject> l1 = dashboardDao.findSubjectsBySynonym(synStr1, true);
+        List<Subject> l2 = dashboardDao.findSubjectsBySynonym(synStr2, true);
+        List<Subject> l3 = dashboardDao.findSubjectsBySynonym(synStr3, true);
+        List<Subject> l4 = dashboardDao.findSubjectsBySynonym(synStr4, true);
+
+        assertEquals(1, l1.size());
+        assertEquals(1, l2.size());
+        assertEquals(1, l3.size());
+        assertEquals(1, l4.size());
+
+        l1.removeAll(l2);
+        l3.removeAll(l4);
+        assertTrue(l1.isEmpty());
+        assertTrue(l3.isEmpty());
+
+        Subject next2 = l2.iterator().next();
+        assertTrue(next2 instanceof Gene);
+        assertEquals("E1", ((Gene) next2).getEntrezGeneId());
+
+        Subject next4 = l4.iterator().next();
+        assertTrue(next4 instanceof Gene);
+        assertEquals("E2", ((Gene) next4).getEntrezGeneId());
+
+        List<Subject> l5 = dashboardDao.findSubjectsBySynonym(synonymStr, false);
+        assertEquals(2, l5.size());
+
+        String randomText = "RANDOMTEXT";
+        assertTrue(dashboardDao.findSubjectsBySynonym(randomText, true).isEmpty());
+        assertTrue(dashboardDao.findSubjectsBySynonym(randomText, false).isEmpty());
+    }
 }
 
