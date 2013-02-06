@@ -22,7 +22,7 @@ public class GeneDataWriter implements ItemWriter<GeneData> {
 	public void write(List<? extends GeneData> items) throws Exception {
 		for (GeneData geneData : items) {
 			log.info("Storing gene: " + geneData.gene.getDisplayName());
-            dashboardDao.save(geneData.organism);
+			if (geneData.saveOrganism) dashboardDao.save(geneData.organism);
 			dashboardDao.save(geneData.gene);
 		}
 	}

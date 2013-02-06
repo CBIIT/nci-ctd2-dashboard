@@ -39,16 +39,18 @@ public class GeneDataFieldSetMapper implements FieldSetMapper<GeneData> {
 			}
 		}
 
+		boolean saveOrganism = false;
         String taxonomyId = fieldSet.readString(0);
         Organism organism = organismMap.get(taxonomyId);
-        if(organism == null) {
+        if (organism == null) {
             organism = dashboardFactory.create(Organism.class);
             organism.setTaxonomyId(taxonomyId);
             organismMap.put(taxonomyId, organism);
+			saveOrganism = true;
         }
 
         gene.setOrganism(organism);
 
-        return new GeneData(gene, organism);
+        return new GeneData(gene, organism, saveOrganism);
 	}
 }

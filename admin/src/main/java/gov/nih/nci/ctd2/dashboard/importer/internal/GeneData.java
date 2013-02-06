@@ -7,9 +7,11 @@ public class GeneData {
 
 	protected Gene gene;
 	protected Organism organism;
+	protected boolean saveOrganism;
 
-	public GeneData(Gene gene, Organism organism) {
+	public GeneData(Gene gene, Organism organism, boolean saveOrganism) {
 		this.gene = gene;
 		this.organism = organism;
+		this.saveOrganism = saveOrganism;
 	}
 }
