@@ -11,6 +11,6 @@ import java.util.regex.Pattern;
 
     @Override
     public ProteinData process(ProteinData proteinData) throws Exception {
-        return (GeneDataProcessor.DESIRED_ORGANISMS.matcher(proteinData.taxonomyId).find()) ? proteinData : null;
+        return (GeneDataProcessor.DESIRED_ORGANISMS.matcher(proteinData.protein.getOrganism().getTaxonomyId()).find()) ? proteinData : null;
     }
 }

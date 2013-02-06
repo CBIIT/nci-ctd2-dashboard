@@ -3,6 +3,7 @@ package gov.nih.nci.ctd2.dashboard.importer.internal;
 import gov.nih.nci.ctd2.dashboard.model.Xref;
 import gov.nih.nci.ctd2.dashboard.model.Gene;
 import gov.nih.nci.ctd2.dashboard.model.Protein;
+import gov.nih.nci.ctd2.dashboard.model.Organism;
 import gov.nih.nci.ctd2.dashboard.model.Transcript;
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
 import gov.nih.nci.ctd2.dashboard.model.DashboardFactory;
@@ -47,11 +48,15 @@ public class UniProtDataReader implements ItemReader<ProteinData> {
 	private Protein protein;
 	private String taxonomyId;
 	private HashSet<String> refseqIds = new HashSet<String>();
-	private HashSet<Transcript> transcriptsToReturn = new HashSet<Transcript>();
 	private boolean recordFinished;
+
+	// these vars are used to return new organisms & transcripts to the writer
+	private HashSet<Organism> organismsToReturn = new HashSet<Organism>();
+	private HashSet<Transcript> transcriptsToReturn = new HashSet<Transcript>();
 
 	// vars to speed up lookup
 	private HashMap<String, Gene> genesCache = new HashMap<String, Gene>();
+	private HashMap<String, Organism> organismsCache = new HashMap<String, Organism>();
 	private HashMap<String, Transcript> transcriptsCache = new HashMap<String, Transcript>();
 
 	// this gets set for each row
@@ -67,9 +72,9 @@ public class UniProtDataReader implements ItemReader<ProteinData> {
 		if (protein == null) return null; // this would happen on eof
 		Protein proteinToReturn = protein;
 		protein = null;
-		return new ProteinData(proteinToReturn,
+		return new ProteinData(proteinToReturn, 
 							   new HashSet<Transcript>(transcriptsToReturn),
-							   new String(taxonomyId));
+							   new HashSet<Organism>(organismsToReturn));
 	}
 
 	private void process(FieldSet fieldSet) throws Exception {
@@ -128,7 +133,9 @@ public class UniProtDataReader implements ItemReader<ProteinData> {
 			}
 		}
 		else if (lineId.equals(LINE_ID_RECORD_END)) {
-			addTranscripts();
+			Organism organism = findOrganism();
+			if (organism != null) protein.setOrganism(organism);
+			addTranscripts(organism);
 			recordFinished = true;
 		}
 	}
@@ -137,10 +144,11 @@ public class UniProtDataReader implements ItemReader<ProteinData> {
 		geneId = "";
 		taxonomyId = "";
 		refseqIds.clear();
+		organismsToReturn.clear();
 		transcriptsToReturn.clear();
 	}
 
-	private void addTranscripts() {
+	private void addTranscripts(Organism organism) {
 		if (!refseqIds.isEmpty()) {
 			Gene gene = findGene();
 			for (String refseqId : refseqIds) {
@@ -149,6 +157,7 @@ public class UniProtDataReader implements ItemReader<ProteinData> {
 					transcript = dashboardFactory.create(Transcript.class);
 					transcript.setRefseqId(refseqId);
 					if (gene != null) transcript.setGene(gene);
+					if (organism != null) transcript.setOrganism(organism);
 					transcriptsToReturn.add(transcript);
 					transcriptsCache.put(refseqId, transcript);
 				}
@@ -167,6 +176,26 @@ public class UniProtDataReader implements ItemReader<ProteinData> {
 					toReturn = genes.get(0);
 					genesCache.put(geneId, toReturn);
 				}
+			}
+		}
+		return toReturn;
+	}
+
+	private Organism findOrganism() {
+		Organism toReturn = null;
+		if (taxonomyId.length() > 0) {
+			toReturn = organismsCache.get(taxonomyId);
+			if (toReturn == null) {
+				List<Organism> organisms = dashboardDao.findOrganismByTaxonomyId(taxonomyId);
+				if (organisms.size() == 1) {
+					toReturn = organisms.get(0);
+				}
+				else {
+					toReturn = dashboardFactory.create(Organism.class);
+					toReturn.setTaxonomyId(taxonomyId);
+					organismsToReturn.add(toReturn);
+				}
+				organismsCache.put(taxonomyId, toReturn);
 			}
 		}
 		return toReturn;
