@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 public class GeneDataProcessor implements ItemProcessor<GeneData, GeneData> {
 
 	// the reference metadata worksheet can contain environment vars
-	public static final Pattern DESIRED_ORGANISMS = Pattern.compile("(9606|10090)");
+	public static final Pattern DESIRED_ORGANISMS = Pattern.compile("^(9606|10090)$");
  
     @Override
     public GeneData process(GeneData geneData) throws Exception {
