@@ -107,9 +107,8 @@ public class DashboardDaoTest {
         dashboardDao.save(gene1);
         dashboardDao.save(gene2);
 
-        //assertNotNull(dashboardDao.getEntityById(gene1.getId()));
-        //assertNotNull(dashboardDao.getEntityById(gene2.getId()));
-        //assertNull(dashboardDao.getEntityById(gene1.getId() + 100));
+        assertNotNull(dashboardDao.getEntityById(Subject.class, gene1.getId()));
+        assertNotNull(dashboardDao.getEntityById(SubjectWithOrganism.class, gene2.getId()));
         assertNotNull(dashboardDao.getEntityById(Gene.class, gene1.getId()));
         assertNull(dashboardDao.getEntityById(Protein.class, gene1.getId()));
     }

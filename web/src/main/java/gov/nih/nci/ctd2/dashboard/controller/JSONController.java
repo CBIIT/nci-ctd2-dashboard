@@ -24,7 +24,7 @@ public class JSONController {
     @Transactional
     @RequestMapping(value="{id}", method = {RequestMethod.GET, RequestMethod.POST}, headers = "Accept=application/json")
     public ResponseEntity<String> getEntityInJson(@PathVariable Integer id) {
-        DashboardEntity entityById = dashboardDao.getEntityById(id);
+        DashboardEntity entityById = dashboardDao.getEntityById(Subject.class, id);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json; charset=utf-8");
 

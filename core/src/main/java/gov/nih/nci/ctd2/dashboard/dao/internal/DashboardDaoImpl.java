@@ -39,11 +39,6 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
     }
 
     @Override
-    public DashboardEntity getEntityById(Integer id) {
-        return getHibernateTemplate().get(DashboardEntityImpl.class, id);
-    }
-
-    @Override
     public <T extends DashboardEntity> T getEntityById(Class<T> entityClass, Integer id) {
         Class<T> aClass = entityClass.isInterface()
                 ? dashboardFactory.getImplClass(entityClass)
