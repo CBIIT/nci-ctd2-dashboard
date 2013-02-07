@@ -169,4 +169,29 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
 
         return new ArrayList<Subject>(subjects);
     }
+
+    @Override
+    public List<ObservedSubjectRole> findObservedSubjectRoleByColumnName(String columnName) {
+        List<ObservedSubjectRole> roles = new ArrayList<ObservedSubjectRole>();
+
+        for (Object o : getHibernateTemplate().find("from ObservedSubjectRoleImpl where columnName = ?", columnName)) {
+            assert o instanceof ObservedSubjectRole;
+            roles.add((ObservedSubjectRole) o);
+        }
+
+        return roles;
+    }
+
+    @Override
+    public List<ObservedEvidenceRole> findObservedEvidenceRoleByColumnName(String columnName) {
+        List<ObservedEvidenceRole> roles = new ArrayList<ObservedEvidenceRole>();
+
+        for (Object o : getHibernateTemplate().find("from ObservedEvidenceRoleImpl where columnName = ?", columnName)) {
+            assert o instanceof ObservedEvidenceRole;
+            roles.add((ObservedEvidenceRole) o);
+        }
+
+        return roles;
+    }
+
 }

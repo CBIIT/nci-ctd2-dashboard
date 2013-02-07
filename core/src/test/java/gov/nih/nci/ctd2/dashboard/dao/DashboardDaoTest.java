@@ -351,5 +351,37 @@ public class DashboardDaoTest {
         assertTrue(dashboardDao.findSubjectsBySynonym(randomText, true).isEmpty());
         assertTrue(dashboardDao.findSubjectsBySynonym(randomText, false).isEmpty());
     }
+
+    @Test
+    public void findObservedRolesByColumnName() {
+        EvidenceRole evidenceRole = dashboardFactory.create(EvidenceRole.class);
+        evidenceRole.setDisplayName("ER1");
+        dashboardDao.save(evidenceRole);
+
+        ObservedEvidenceRole observedEvidenceRole = dashboardFactory.create(ObservedEvidenceRole.class);
+        observedEvidenceRole.setEvidenceRole(evidenceRole);
+        String columnName = "role_column1";
+        observedEvidenceRole.setColumnName(columnName);
+        observedEvidenceRole.setDescription("description 1");
+        dashboardDao.save(observedEvidenceRole);
+
+        SubjectRole subjectRole = dashboardFactory.create(SubjectRole.class);
+        subjectRole.setDisplayName("SR1");
+        dashboardDao.save(subjectRole);
+
+        ObservedSubjectRole observedSubjectRole = dashboardFactory.create(ObservedSubjectRole.class);
+        observedSubjectRole.setSubjectRole(subjectRole);
+        observedSubjectRole.setColumnName(columnName);
+        observedSubjectRole.setDescription("description 1");
+        dashboardDao.save(observedSubjectRole);
+
+        List<ObservedEvidenceRole> observedEvidenceRoles
+                = dashboardDao.findObservedEvidenceRoleByColumnName(columnName);
+        assertEquals(1, observedEvidenceRoles.size());
+
+        List<ObservedSubjectRole> observedSubjectRoles
+                = dashboardDao.findObservedSubjectRoleByColumnName(columnName);
+        assertEquals(1, observedSubjectRoles.size());
+    }
 }
 
