@@ -60,26 +60,6 @@ public class SampleImporter extends AbstractImporter {
         LabelEvidence labelEvidence = dashboardFactory.create(LabelEvidence.class);
         labelEvidence.setDisplayName("L1");
 
-        ObservationReference observationReference = dashboardFactory.create(ObservationReference.class);
-        observationReference.setDisplayName("OR1");
-
-        ObservationSource observationSource = dashboardFactory.create(ObservationSource.class);
-        observationSource.setDisplayName("OS1");
-
-        ObservationType observationType = dashboardFactory.create(ObservationType.class);
-        observationType.setDisplayName("OT1");
-
-        Observation observation = dashboardFactory.create(Observation.class);
-        observation.setObservationReference(observationReference);
-        observation.setObservationType(observationType);
-        observation.setObservationSource(observationSource);
-        observation.getSubjects().add(animalModel);
-        observation.getSubjects().add(gene2);
-        observation.getSubjects().add(protein);
-        observation.getEvidences().add(urlEvidence);
-        observation.getEvidences().add(labelEvidence);
-        dashboardDao.save(observation);
-
         log.info("Imported " + dashboardDao.findEntities(DashboardEntity.class).size() + " entities.");
     }
 }
