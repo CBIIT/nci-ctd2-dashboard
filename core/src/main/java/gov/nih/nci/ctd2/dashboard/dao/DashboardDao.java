@@ -22,4 +22,6 @@ public interface DashboardDao {
     List<Organism> findOrganismByTaxonomyId(String taxonomyId);
     List<SubjectWithOrganism> findSubjectByOrganism(Organism organism);
     List<Subject> findSubjectsBySynonym(String synonym, boolean exact);
+    public List<ObservedSubjectRole> findObservedSubjectRoleByColumnName(String columnName);
+    public List<ObservedEvidenceRole> findObservedEvidenceRoleByColumnName(String columnName);
 }
