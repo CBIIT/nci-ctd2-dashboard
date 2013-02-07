@@ -13,7 +13,7 @@ public class TranscriptImpl extends SubjectWithOrganismImpl implements Transcrip
     private String refseqId;
     private Gene gene;
 
-    @Column(length = 64, nullable = false)
+    @Column(length = 64, nullable = false, unique = true)
     public String getRefseqId() {
         return refseqId;
     }

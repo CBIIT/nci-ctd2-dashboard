@@ -14,7 +14,7 @@ public class GeneImpl extends SubjectWithOrganismImpl implements Gene {
     private String entrezGeneId;
 	private String hgncId;
 
-    @Column(length = 32, nullable = false)
+    @Column(length = 32, nullable = false, unique = true)
     public String getEntrezGeneId() {
         return entrezGeneId;
     }
