@@ -16,7 +16,7 @@ public class ProteinImpl extends SubjectWithOrganismImpl implements Protein {
     private String uniprotId;
     private Set<Transcript> transcripts = new HashSet<Transcript>();
 
-    @Column(length = 64, nullable = false)
+    @Column(length = 64, nullable = false, unique = true)
     public String getUniprotId() {
         return uniprotId;
     }
