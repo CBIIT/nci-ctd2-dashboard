@@ -30,6 +30,7 @@ public class ControlledVocabularyWriter implements ItemWriter<ControlledVocabula
 			}
 			log.info("Storing Observed Role: " + observedRoleName);
 			dashboardDao.save(controlledVocabulary.role);
+			dashboardDao.save(controlledVocabulary.observationTemplate);
 			dashboardDao.save(controlledVocabulary.observedRole);
 		}
 	}
