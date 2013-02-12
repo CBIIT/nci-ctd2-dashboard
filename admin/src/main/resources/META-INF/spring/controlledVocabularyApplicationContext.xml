@@ -38,33 +38,4 @@
   <bean name="controlledVocabularyLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
   </bean>
-
-  <bean name="subjectTypeToClassNameMap" class="java.util.HashMap">
-	<constructor-arg index="0" type="java.util.Map">
-	  <map key-type="java.lang.String" value-type="java.lang.String">
-		<entry key="lineage" value="Lineage" />
-		<entry key="animal_model" value="AnimalModel" />
-		<entry key="compound" value="Compound" />
-		<entry key="cell_line" value="CellLine" />
-		<entry key="protein" value="Protein" />
-		<entry key="shrna" value="ShRna" />
-		<entry key="transcript" value="Transcript" />
-		<entry key="gene" value="Gene" />
-	  </map>
-	</constructor-arg>
-  </bean>
-
-  <bean name="evidenceTypeToClassNameMap" class="java.util.HashMap">
-	<constructor-arg index="0" type="java.util.Map">
-	  <map key-type="java.lang.String" value-type="java.lang.String">
-		<entry key="value_type" value="ValueType" />
-		<entry key="widget" value="Widget" />
-		<entry key="label" value="LabelEvidence" />
-		<entry key="numeric" value="DataNumericValue" />
-		<entry key="file" value="FileEvidence" />
-		<entry key="url" value="UrlEvidence" />
-	  </map>
-	</constructor-arg>
-  </bean>
-
 </beans>

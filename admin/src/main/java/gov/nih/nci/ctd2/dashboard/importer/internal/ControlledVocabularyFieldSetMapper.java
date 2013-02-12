@@ -11,7 +11,6 @@ import org.springframework.validation.BindException;
 import org.springframework.batch.item.file.transform.FieldSet;
 import org.springframework.batch.item.file.mapping.FieldSetMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -22,14 +21,6 @@ public class ControlledVocabularyFieldSetMapper implements FieldSetMapper<Contro
     @Autowired
     private DashboardFactory dashboardFactory;
 	
-	@Autowired
-	@Qualifier("subjectTypeToClassNameMap")
-	private	HashMap<String, String> subjectTypeToClassNameMap;
-
-	@Autowired
-	@Qualifier("evidenceTypeToClassNameMap")
-	private	HashMap<String, String> evidenceTypeToClassNameMap;
-
 	// cache for fast lookup and prevention of duplicate role records
     private HashMap<String, SubjectRole> subjectRoleCache = new HashMap<String, SubjectRole>();
     private HashMap<String, EvidenceRole> evidenceRoleCache = new HashMap<String, EvidenceRole>();
@@ -59,9 +50,6 @@ public class ControlledVocabularyFieldSetMapper implements FieldSetMapper<Contro
 			if (subjectRole == null) {
 				subjectRole = dashboardFactory.create(SubjectRole.class);
 				subjectRole.setDisplayName(role);
-				if (subjectTypeToClassNameMap.containsKey(subject)) {
-					subjectRole.setSubjectClassName(subjectTypeToClassNameMap.get(subject));
-				}
 				subjectRoleCache.put(subject, subjectRole);
 			}
 			ObservedSubjectRole observedSubjectRole = dashboardFactory.create(ObservedSubjectRole.class);
@@ -76,9 +64,6 @@ public class ControlledVocabularyFieldSetMapper implements FieldSetMapper<Contro
 			if (evidenceRole == null) {
 				evidenceRole = dashboardFactory.create(EvidenceRole.class);
 				evidenceRole.setDisplayName(role);
-				if (evidenceTypeToClassNameMap.containsKey(evidence)) {
-					evidenceRole.setEvidenceClassName(evidenceTypeToClassNameMap.get(evidence));
-				}
 				evidenceRoleCache.put(evidence, evidenceRole);
 			}
 			ObservedEvidenceRole observedEvidenceRole = dashboardFactory.create(ObservedEvidenceRole.class);
