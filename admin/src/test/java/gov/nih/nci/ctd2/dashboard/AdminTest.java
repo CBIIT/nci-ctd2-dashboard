@@ -7,6 +7,10 @@ import gov.nih.nci.ctd2.dashboard.model.Protein;
 import gov.nih.nci.ctd2.dashboard.model.Organism;
 import gov.nih.nci.ctd2.dashboard.model.Compound;
 import gov.nih.nci.ctd2.dashboard.model.Transcript;
+import gov.nih.nci.ctd2.dashboard.model.SubjectRole;
+import gov.nih.nci.ctd2.dashboard.model.ObservedSubjectRole;
+import gov.nih.nci.ctd2.dashboard.model.EvidenceRole;
+import gov.nih.nci.ctd2.dashboard.model.ObservedEvidenceRole;
 import gov.nih.nci.ctd2.dashboard.model.DashboardFactory;
 import gov.nih.nci.ctd2.dashboard.importer.internal.CompoundNamesFieldSetMapper;
 
@@ -36,7 +40,8 @@ public class AdminTest {
                 "classpath*:META-INF/spring/testAdminApplicationContext.xml", // and this from the admin module
 				"classpath*:META-INF/spring/testCompoundDataApplicationContext.xml", // and tis is for compound data importer beans
 				"classpath*:META-INF/spring/testGeneDataApplicationContext.xml", // and this is for gene data importer beans
-				"classpath*:META-INF/spring/testProteinDataApplicationContext.xml" // and this is for protein data importer beans
+				"classpath*:META-INF/spring/testProteinDataApplicationContext.xml", // and this is for protein data importer beans
+				"classpath*:META-INF/spring/testControlledVocabularyApplicationContext.xml" // and this is for controlled vocabulary importer beans
         );
 
         this.dashboardDao = (DashboardDao) appContext.getBean("dashboardDao");
@@ -84,6 +89,22 @@ public class AdminTest {
 		assertEquals(14, dashboardDao.countEntities(Transcript.class).intValue());
 		List<Transcript> transcripts = dashboardDao.findTranscriptsByRefseqId("NM_003404.3");
 		assertEquals(1, transcripts.size());
+
+		// import controlled vocabulary
+		jobExecution = executeJob("controlledVocabularyImporterJob");
+        assertEquals("COMPLETED", jobExecution.getExitStatus().getExitCode());
+		// we get some subject/observed subject roles
+		assertEquals(3, dashboardDao.countEntities(SubjectRole.class).intValue());
+		assertEquals(3, dashboardDao.countEntities(ObservedSubjectRole.class).intValue());
+		List<ObservedSubjectRole> observedSubjectRoles = 
+			dashboardDao.findObservedSubjectRoleByColumnName("compound_name");
+		assertEquals(1, observedSubjectRoles.size());
+		// we get some evidence/observed evidence roles
+		assertEquals(4, dashboardDao.countEntities(EvidenceRole.class).intValue());
+		assertEquals(12, dashboardDao.countEntities(ObservedEvidenceRole.class).intValue());
+		List<ObservedEvidenceRole> observedEvidenceRoles = 
+			dashboardDao.findObservedEvidenceRoleByColumnName("cell_line_subset");
+		assertEquals(1, observedEvidenceRoles.size());
 	}
 
 	private JobExecution executeJob(String jobName) throws Exception {
