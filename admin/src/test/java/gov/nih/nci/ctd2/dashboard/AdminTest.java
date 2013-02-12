@@ -1,17 +1,7 @@
 package gov.nih.nci.ctd2.dashboard;
 
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
-import gov.nih.nci.ctd2.dashboard.model.Gene;
-import gov.nih.nci.ctd2.dashboard.model.Subject;
-import gov.nih.nci.ctd2.dashboard.model.Protein;
-import gov.nih.nci.ctd2.dashboard.model.Organism;
-import gov.nih.nci.ctd2.dashboard.model.Compound;
-import gov.nih.nci.ctd2.dashboard.model.Transcript;
-import gov.nih.nci.ctd2.dashboard.model.SubjectRole;
-import gov.nih.nci.ctd2.dashboard.model.ObservedSubjectRole;
-import gov.nih.nci.ctd2.dashboard.model.EvidenceRole;
-import gov.nih.nci.ctd2.dashboard.model.ObservedEvidenceRole;
-import gov.nih.nci.ctd2.dashboard.model.DashboardFactory;
+import gov.nih.nci.ctd2.dashboard.model.*;
 import gov.nih.nci.ctd2.dashboard.importer.internal.CompoundNamesFieldSetMapper;
 
 import org.springframework.context.ApplicationContext;
@@ -105,6 +95,11 @@ public class AdminTest {
 		List<ObservedEvidenceRole> observedEvidenceRoles = 
 			dashboardDao.findObservedEvidenceRoleByColumnName("cell_line_subset");
 		assertEquals(1, observedEvidenceRoles.size());
+		// we get observation template data
+		assertEquals(1, dashboardDao.countEntities(ObservationTemplate.class).intValue());
+		List<ObservationTemplate> observationTemplates =
+			dashboardDao.findObservationTemplateByName("enrichment_analysis");
+		assertEquals(1, observationTemplates.size());
 	}
 
 	private JobExecution executeJob(String jobName) throws Exception {
