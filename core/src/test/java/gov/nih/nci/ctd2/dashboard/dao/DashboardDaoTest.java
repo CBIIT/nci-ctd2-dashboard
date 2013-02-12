@@ -356,7 +356,6 @@ public class DashboardDaoTest {
     public void findObservedRolesByColumnName() {
         EvidenceRole evidenceRole = dashboardFactory.create(EvidenceRole.class);
         evidenceRole.setDisplayName("ER1");
-		evidenceRole.setEvidenceClassName("FileEvidence");
         dashboardDao.save(evidenceRole);
 
         ObservedEvidenceRole observedEvidenceRole = dashboardFactory.create(ObservedEvidenceRole.class);
@@ -368,7 +367,6 @@ public class DashboardDaoTest {
 
         SubjectRole subjectRole = dashboardFactory.create(SubjectRole.class);
         subjectRole.setDisplayName("SR1");
-		subjectRole.setSubjectClassName("Gene");
         dashboardDao.save(subjectRole);
 
         ObservedSubjectRole observedSubjectRole = dashboardFactory.create(ObservedSubjectRole.class);
