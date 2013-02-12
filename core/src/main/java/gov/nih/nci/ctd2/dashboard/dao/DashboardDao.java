@@ -24,4 +24,5 @@ public interface DashboardDao {
     List<Subject> findSubjectsBySynonym(String synonym, boolean exact);
     public List<ObservedSubjectRole> findObservedSubjectRoleByColumnName(String columnName);
     public List<ObservedEvidenceRole> findObservedEvidenceRoleByColumnName(String columnName);
+    public List<ObservationTemplate> findObservationTemplateByName(String templateName);
 }
