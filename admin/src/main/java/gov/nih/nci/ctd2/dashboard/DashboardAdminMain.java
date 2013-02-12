@@ -21,7 +21,8 @@ public class DashboardAdminMain {
         "classpath*:META-INF/spring/adminApplicationContext.xml", // This is for admin-related beans
         "classpath*:META-INF/spring/geneDataApplicationContext.xml", // This is for gene data importer beans
         "classpath*:META-INF/spring/compoundDataApplicationContext.xml", // This is for compound data importer beans
-        "classpath*:META-INF/spring/proteinDataApplicationContext.xml" // This is for compound data importer beans
+        "classpath*:META-INF/spring/proteinDataApplicationContext.xml", // This is for compound data importer beans
+        "classpath*:META-INF/spring/controlledVocabularyApplicationContext.xml" // This is for controlled vocabulary importer beans
     );
 
     public static void main(String[] args) {
@@ -38,6 +39,7 @@ public class DashboardAdminMain {
 			    .addOption("cp", "compound-data", false, "imports compound data.")
 			    .addOption("g", "gene-data", false, "imports gene data.")
                 .addOption("p", "protein-data", false, "imports protein data.")
+                .addOption("cv", "controlled-vocabulary", false, "imports the dashboard controlled vocabulary.")
                 .addOption("s", "sample-data", false, "imports sample data.")
         ;
 
@@ -64,6 +66,10 @@ public class DashboardAdminMain {
 
 			if( commandLine.hasOption("p") ) {
                 launchJob("proteinDataImporterJob");
+			}
+
+			if( commandLine.hasOption("cv") ) {
+                launchJob("controlledVocabularyImporterJob");
 			}
 
             if( commandLine.hasOption("s") ) {
