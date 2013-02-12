@@ -194,4 +194,15 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
         return roles;
     }
 
+	@Override
+    public List<ObservationTemplate> findObservationTemplateByName(String templateName) {
+		List<ObservationTemplate> observationTemplates = new ArrayList<ObservationTemplate>();
+
+        for (Object o : getHibernateTemplate().find("from ObservationTemplateImpl where displayName = ?", templateName)) {
+            assert o instanceof ObservationTemplate;
+            observationTemplates.add((ObservationTemplate) o);
+        }
+
+        return observationTemplates;
+	}
 }
