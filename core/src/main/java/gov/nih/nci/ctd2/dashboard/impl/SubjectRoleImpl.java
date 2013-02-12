@@ -11,14 +11,4 @@ import javax.persistence.Table;
 @Proxy(proxyClass = SubjectRole.class)
 @Table(name = "subject_role")
 public class SubjectRoleImpl extends DashboardEntityImpl implements SubjectRole {
-    private String subjectClassName;
-
-    @Column(length = 32, nullable = false)
-    public String getSubjectClassName() {
-        return subjectClassName;
-    }
-
-    public void setSubjectClassName(String subjectClassName) {
-        this.subjectClassName = subjectClassName;
-    }
 }

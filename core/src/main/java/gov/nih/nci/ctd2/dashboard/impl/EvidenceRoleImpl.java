@@ -11,14 +11,4 @@ import javax.persistence.Table;
 @Table(name = "evidence_role")
 @Proxy(proxyClass = EvidenceRole.class)
 public class EvidenceRoleImpl extends DashboardEntityImpl implements EvidenceRole {
-    private String evidenceClassName;
-
-    @Column(length = 32, nullable = false)
-    public String getEvidenceClassName() {
-        return evidenceClassName;
-    }
-
-    public void setEvidenceClassName(String evidenceClassName) {
-        this.evidenceClassName = evidenceClassName;
-    }
 }
