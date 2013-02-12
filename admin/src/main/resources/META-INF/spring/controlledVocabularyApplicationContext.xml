@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:batch="http://www.springframework.org/schema/batch"
+		xmlns:context="http://www.springframework.org/schema/context"
+        xsi:schemaLocation="http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-2.1.xsd
+							http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+							http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+  <import resource="classpath*:META-INF/spring/adminApplicationContext.xml" />
+  <context:component-scan base-package="gov.nih.nci.ctd2.dashboard.importer.internal" />
+
+  <batch:job id="controlledVocabularyImporterJob">
+	<batch:step id="controlledVocabularyStep" parent="controlledVocabularySimpleStep">
+	  <batch:tasklet>
+		<batch:chunk reader="controlledVocabularyReader" processor="controlledVocabularyProcessor" writer="controlledVocabularyWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+  </batch:job>
+
+  <bean id="controlledVocabularySimpleStep" class="org.springframework.batch.core.step.item.SimpleStepFactoryBean" abstract="true">
+	<property name="transactionManager" ref="transactionManager" />
+	<property name="jobRepository" ref="jobRepository" />
+	<property name="commitInterval" value="100" />
+  </bean>
+
+  <bean name="controlledVocabularyReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="resource" value="${controlled.vocabulary.location}" />
+    <property name="lineMapper" ref="controlledVocabularyLineMapper" />
+	<property name="linesToSkip" value="1" />
+  </bean>
+
+  <bean name="controlledVocabularyLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+	<property name="fieldSetMapper" ref="controlledVocabularyMapper" />
+	<property name="lineTokenizer" ref="controlledVocabularyLineTokenizer" />
+  </bean>
+
+  <bean name="controlledVocabularyLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+	<property name="delimiter" value="\u0009"/>
+  </bean>
+
+  <bean name="subjectTypeToClassNameMap" class="java.util.HashMap">
+	<constructor-arg index="0" type="java.util.Map">
+	  <map key-type="java.lang.String" value-type="java.lang.String">
+		<entry key="lineage" value="Lineage" />
+		<entry key="animal_model" value="AnimalModel" />
+		<entry key="compound" value="Compound" />
+		<entry key="cell_line" value="CellLine" />
+		<entry key="protein" value="Protein" />
+		<entry key="shrna" value="ShRna" />
+		<entry key="transcript" value="Transcript" />
+		<entry key="gene" value="Gene" />
+	  </map>
+	</constructor-arg>
+  </bean>
+
+  <bean name="evidenceTypeToClassNameMap" class="java.util.HashMap">
+	<constructor-arg index="0" type="java.util.Map">
+	  <map key-type="java.lang.String" value-type="java.lang.String">
+		<entry key="value_type" value="ValueType" />
+		<entry key="widget" value="Widget" />
+		<entry key="label" value="LabelEvidence" />
+		<entry key="numeric" value="DataNumericValue" />
+		<entry key="file" value="FileEvidence" />
+		<entry key="url" value="UrlEvidence" />
+	  </map>
+	</constructor-arg>
+  </bean>
+
+</beans>
