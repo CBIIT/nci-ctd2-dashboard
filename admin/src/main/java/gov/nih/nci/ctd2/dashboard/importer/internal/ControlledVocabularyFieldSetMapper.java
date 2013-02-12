@@ -4,6 +4,7 @@ import gov.nih.nci.ctd2.dashboard.model.SubjectRole;
 import gov.nih.nci.ctd2.dashboard.model.ObservedSubjectRole;
 import gov.nih.nci.ctd2.dashboard.model.EvidenceRole;
 import gov.nih.nci.ctd2.dashboard.model.ObservedEvidenceRole;
+import gov.nih.nci.ctd2.dashboard.model.ObservationTemplate;
 import gov.nih.nci.ctd2.dashboard.model.DashboardFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindException;
@@ -32,14 +33,22 @@ public class ControlledVocabularyFieldSetMapper implements FieldSetMapper<Contro
 	// cache for fast lookup and prevention of duplicate role records
     private HashMap<String, SubjectRole> subjectRoleCache = new HashMap<String, SubjectRole>();
     private HashMap<String, EvidenceRole> evidenceRoleCache = new HashMap<String, EvidenceRole>();
+    private HashMap<String, ObservationTemplate> observationTemplateCache = new HashMap<String, ObservationTemplate>();
 
 	public ControlledVocabulary mapFieldSet(FieldSet fieldSet) throws BindException {
+		String templateId = fieldSet.readString(0);
+		String columnName = fieldSet.readString(1);
+		String subject = fieldSet.readString(2);
+		String evidence = fieldSet.readString(3);
+		String role = fieldSet.readString(4);
+		String description = fieldSet.readString(5);
 
-		String columnName = fieldSet.readString(0);
-		String subject = fieldSet.readString(1);
-		String evidence = fieldSet.readString(2);
-		String role = fieldSet.readString(3);
-		String description = fieldSet.readString(4);
+		ObservationTemplate observationTemplate = observationTemplateCache.get(templateId);
+		if (observationTemplate == null) {
+			observationTemplate = dashboardFactory.create(ObservationTemplate.class);
+			observationTemplate.setDisplayName(templateId);
+			observationTemplateCache.put(templateId, observationTemplate);
+		}
 
 		if (subject.length() > 0) {
 			SubjectRole subjectRole = subjectRoleCache.get(subject.toLowerCase());
@@ -55,7 +64,8 @@ public class ControlledVocabularyFieldSetMapper implements FieldSetMapper<Contro
 			observedSubjectRole.setSubjectRole(subjectRole);
 			observedSubjectRole.setColumnName(columnName.toLowerCase());
 			observedSubjectRole.setDescription(description);
-			return new ControlledVocabulary(subjectRole, observedSubjectRole);
+			observedSubjectRole.setObservationTemplate(observationTemplate);
+			return new ControlledVocabulary(observationTemplate, subjectRole, observedSubjectRole);
 		}
 		else if (evidence.length() > 0) {
 			EvidenceRole evidenceRole = evidenceRoleCache.get(evidence.toLowerCase());
@@ -71,8 +81,9 @@ public class ControlledVocabularyFieldSetMapper implements FieldSetMapper<Contro
 			observedEvidenceRole.setEvidenceRole(evidenceRole);
 			observedEvidenceRole.setColumnName(columnName.toLowerCase());
 			observedEvidenceRole.setDescription(description);
-			return new ControlledVocabulary(evidenceRole, observedEvidenceRole);
+			observedEvidenceRole.setObservationTemplate(observationTemplate);
+			return new ControlledVocabulary(observationTemplate, evidenceRole, observedEvidenceRole);
 		}
-		return new ControlledVocabulary(null, null);
+		return new ControlledVocabulary(null, null, null);
 	}
 }
