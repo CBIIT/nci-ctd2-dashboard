@@ -36,50 +36,54 @@ public class ControlledVocabularyFieldSetMapper implements FieldSetMapper<Contro
     private HashMap<String, ObservationTemplate> observationTemplateCache = new HashMap<String, ObservationTemplate>();
 
 	public ControlledVocabulary mapFieldSet(FieldSet fieldSet) throws BindException {
-		String templateId = fieldSet.readString(0);
-		String columnName = fieldSet.readString(1);
-		String subject = fieldSet.readString(2);
-		String evidence = fieldSet.readString(3);
-		String role = fieldSet.readString(4);
-		String description = fieldSet.readString(5);
+		String templateName = fieldSet.readString(0).toLowerCase();
+		String templateDescription = fieldSet.readString(1).toLowerCase();
+		Integer templateTier = fieldSet.readInt(2);
+		String columnName = fieldSet.readString(3).toLowerCase();
+		String subject = fieldSet.readString(4).toLowerCase();
+		String evidence = fieldSet.readString(5).toLowerCase();
+		String role = fieldSet.readString(6).toLowerCase();
+		String description = fieldSet.readString(7).toLowerCase();
 
-		ObservationTemplate observationTemplate = observationTemplateCache.get(templateId);
+		ObservationTemplate observationTemplate = observationTemplateCache.get(templateName);
 		if (observationTemplate == null) {
 			observationTemplate = dashboardFactory.create(ObservationTemplate.class);
-			observationTemplate.setDisplayName(templateId);
-			observationTemplateCache.put(templateId, observationTemplate);
+			observationTemplate.setDisplayName(templateName);
+			observationTemplate.setDescription(templateDescription);
+			observationTemplate.setTier(templateTier);
+			observationTemplateCache.put(templateName, observationTemplate);
 		}
 
 		if (subject.length() > 0) {
-			SubjectRole subjectRole = subjectRoleCache.get(subject.toLowerCase());
+			SubjectRole subjectRole = subjectRoleCache.get(subject);
 			if (subjectRole == null) {
 				subjectRole = dashboardFactory.create(SubjectRole.class);
-				subjectRole.setDisplayName(role.toLowerCase());
-				if (subjectTypeToClassNameMap.containsKey(subject.toLowerCase())) {
-					subjectRole.setSubjectClassName(subjectTypeToClassNameMap.get(subject.toLowerCase()));
+				subjectRole.setDisplayName(role);
+				if (subjectTypeToClassNameMap.containsKey(subject)) {
+					subjectRole.setSubjectClassName(subjectTypeToClassNameMap.get(subject));
 				}
-				subjectRoleCache.put(subject.toLowerCase(), subjectRole);
+				subjectRoleCache.put(subject, subjectRole);
 			}
 			ObservedSubjectRole observedSubjectRole = dashboardFactory.create(ObservedSubjectRole.class);
 			observedSubjectRole.setSubjectRole(subjectRole);
-			observedSubjectRole.setColumnName(columnName.toLowerCase());
+			observedSubjectRole.setColumnName(columnName);
 			observedSubjectRole.setDescription(description);
 			observedSubjectRole.setObservationTemplate(observationTemplate);
 			return new ControlledVocabulary(observationTemplate, subjectRole, observedSubjectRole);
 		}
 		else if (evidence.length() > 0) {
-			EvidenceRole evidenceRole = evidenceRoleCache.get(evidence.toLowerCase());
+			EvidenceRole evidenceRole = evidenceRoleCache.get(evidence);
 			if (evidenceRole == null) {
 				evidenceRole = dashboardFactory.create(EvidenceRole.class);
-				evidenceRole.setDisplayName(role.toLowerCase());
-				if (evidenceTypeToClassNameMap.containsKey(evidence.toLowerCase())) {
-					evidenceRole.setEvidenceClassName(evidenceTypeToClassNameMap.get(evidence.toLowerCase()));
+				evidenceRole.setDisplayName(role);
+				if (evidenceTypeToClassNameMap.containsKey(evidence)) {
+					evidenceRole.setEvidenceClassName(evidenceTypeToClassNameMap.get(evidence));
 				}
-				evidenceRoleCache.put(evidence.toLowerCase(), evidenceRole);
+				evidenceRoleCache.put(evidence, evidenceRole);
 			}
 			ObservedEvidenceRole observedEvidenceRole = dashboardFactory.create(ObservedEvidenceRole.class);
 			observedEvidenceRole.setEvidenceRole(evidenceRole);
-			observedEvidenceRole.setColumnName(columnName.toLowerCase());
+			observedEvidenceRole.setColumnName(columnName);
 			observedEvidenceRole.setDescription(description);
 			observedEvidenceRole.setObservationTemplate(observationTemplate);
 			return new ControlledVocabulary(observationTemplate, evidenceRole, observedEvidenceRole);
