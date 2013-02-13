@@ -7,4 +7,4 @@ compound.annotations.location=
 compound.smiles.location=
 protein.data.location=
 controlled.vocabulary.location=
-center.data.location=
+enrichment.analysis.data.location=

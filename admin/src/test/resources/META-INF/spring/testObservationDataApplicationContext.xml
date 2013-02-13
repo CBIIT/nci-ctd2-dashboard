@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:batch="http://www.springframework.org/schema/batch"
+		xmlns:context="http://www.springframework.org/schema/context"
+        xsi:schemaLocation="http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-2.1.xsd
+							http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+							http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+  <import resource="classpath*:META-INF/spring/testAdminApplicationContext.xml" />
+  <context:component-scan base-package="gov.nih.nci.ctd2.dashboard.importer.internal" />
+
+  <batch:job id="observationDataImporterJob">
+	<batch:step id="enrichmentAnalysisStep" parent="observationDataStep">
+	<!--<batch:step id="enrichmentAnalysisStep" parent="observationDataStep" next="regressionAnalysisStep">-->
+	  <batch:tasklet>
+		<batch:chunk reader="enrichmentAnalysisReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+	<!--
+	<batch:step id="regressionAnalysisStep" parent="observationDataStep">
+	  <batch:tasklet>
+		<batch:chunk reader="regressionAnalysisReader" processor="observationProcessor" writer="observationWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+	-->
+  </batch:job>
+
+  <bean id="observationDataStep" class="org.springframework.batch.core.step.item.SimpleStepFactoryBean" abstract="true">
+	<property name="transactionManager" ref="transactionManager" />
+	<property name="jobRepository" ref="jobRepository" />
+	<property name="commitInterval" value="100" />
+  </bean>
+
+  <!-- observation names beans -->
+  <bean name="enrichmentAnalysisReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="resource" value="classpath:test-enrichment-analysis-data.txt" />
+    <property name="lineMapper" ref="enrichmentAnalysisLineMapper" />
+	<property name="linesToSkip" value="1" />
+  </bean>
+
+  <bean name="enrichmentAnalysisLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+	<property name="fieldSetMapper" ref="enrichmentAnalysisMapper" />
+	<property name="lineTokenizer" ref="observationDataLineTokenizer" />
+  </bean>
+
+  <!-- regression analysis beans -->
+  <!--
+  <bean name="regressionAnalysisReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="resource" value="classpath:test-regression-analysis-data.txt" />
+    <property name="lineMapper" ref="regressionAnalysisLineMapper" />
+	<property name="linesToSkip" value="1" />
+  </bean>
+
+  <bean name="regressionAnalysisLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+	<property name="fieldSetMapper" ref="regressionAnalysisMapper" />
+	<property name="lineTokenizer" ref="observationDataLineTokenizer" />
+  </bean>
+  -->
+
+  <bean name="observationDataLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+	<property name="delimiter" value="\u0009"/>
+  </bean>
+
+  <!-- a helper factory -->
+  <bean name="observationDataFactory" class="gov.nih.nci.ctd2.dashboard.importer.internal.ObservationDataFactoryImpl"/>
+
+</beans>
