@@ -31,7 +31,8 @@ public class AdminTest {
 				"classpath*:META-INF/spring/testCompoundDataApplicationContext.xml", // and tis is for compound data importer beans
 				"classpath*:META-INF/spring/testGeneDataApplicationContext.xml", // and this is for gene data importer beans
 				"classpath*:META-INF/spring/testProteinDataApplicationContext.xml", // and this is for protein data importer beans
-				"classpath*:META-INF/spring/testControlledVocabularyApplicationContext.xml" // and this is for controlled vocabulary importer beans
+				"classpath*:META-INF/spring/testControlledVocabularyApplicationContext.xml", // and this is for controlled vocabulary importer beans
+				"classpath*:META-INF/spring/testObservationDataApplicationContext.xml" // and this is for observation data importer beans
         );
 
         this.dashboardDao = (DashboardDao) appContext.getBean("dashboardDao");
@@ -61,7 +62,7 @@ public class AdminTest {
 		// import some gene data
 		jobExecution = executeJob("geneDataImporterJob");
         assertEquals("COMPLETED", jobExecution.getExitStatus().getExitCode());
-		assertEquals(12, dashboardDao.countEntities(Gene.class).intValue());
+		assertEquals(19, dashboardDao.countEntities(Gene.class).intValue());
 		List<Gene> genes = dashboardDao.findGenesByEntrezId("7529");
 		assertEquals(1, genes.size());
 		// we should get some organism records created
@@ -72,11 +73,11 @@ public class AdminTest {
 		// import some protein data
 		jobExecution = executeJob("proteinDataImporterJob");
         assertEquals("COMPLETED", jobExecution.getExitStatus().getExitCode());
-		assertEquals(8, dashboardDao.countEntities(Protein.class).intValue());
+		assertEquals(15, dashboardDao.countEntities(Protein.class).intValue());
 		List<Protein> proteins = dashboardDao.findProteinsByUniprotId("P31946");
 		assertEquals(1, proteins.size());
 		// some transcripts get created along with proteins
-		assertEquals(14, dashboardDao.countEntities(Transcript.class).intValue());
+		assertEquals(35, dashboardDao.countEntities(Transcript.class).intValue());
 		List<Transcript> transcripts = dashboardDao.findTranscriptsByRefseqId("NM_003404.3");
 		assertEquals(1, transcripts.size());
 
@@ -100,6 +101,10 @@ public class AdminTest {
 		List<ObservationTemplate> observationTemplates =
 			dashboardDao.findObservationTemplateByName("enrichment_analysis");
 		assertEquals(1, observationTemplates.size());
+
+		// import observation data
+		//jobExecution = executeJob("observationDataImporterJob");
+        //assertEquals("COMPLETED", jobExecution.getExitStatus().getExitCode());
 	}
 
 	private JobExecution executeJob(String jobName) throws Exception {
