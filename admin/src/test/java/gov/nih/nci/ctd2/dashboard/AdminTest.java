@@ -86,13 +86,13 @@ public class AdminTest {
         assertEquals("COMPLETED", jobExecution.getExitStatus().getExitCode());
 		// we get some subject/observed subject roles
 		assertEquals(3, dashboardDao.countEntities(SubjectRole.class).intValue());
-		assertEquals(3, dashboardDao.countEntities(ObservedSubjectRole.class).intValue());
+		assertEquals(4, dashboardDao.countEntities(ObservedSubjectRole.class).intValue());
 		List<ObservedSubjectRole> observedSubjectRoles = 
 			dashboardDao.findObservedSubjectRoleByColumnName("compound_name");
 		assertEquals(1, observedSubjectRoles.size());
 		// we get some evidence/observed evidence roles
 		assertEquals(4, dashboardDao.countEntities(EvidenceRole.class).intValue());
-		assertEquals(12, dashboardDao.countEntities(ObservedEvidenceRole.class).intValue());
+		assertEquals(13, dashboardDao.countEntities(ObservedEvidenceRole.class).intValue());
 		List<ObservedEvidenceRole> observedEvidenceRoles = 
 			dashboardDao.findObservedEvidenceRoleByColumnName("cell_line_subset");
 		assertEquals(1, observedEvidenceRoles.size());

@@ -18,23 +18,39 @@ import java.util.HashSet;
 @Component("controlledVocabularyMapper")
 public class ControlledVocabularyFieldSetMapper implements FieldSetMapper<ControlledVocabulary> {
 
+	private static final String TEMPLATE_NAME = "template_name";
+	private static final String TEMPLATE_DESCRIPTION = "template_description";
+	private static final String TEMPLATE_TIER = "template_tier";
+	private static final String COLUMN_NAME = "column_name";
+	private static final String SUBJECT = "subject";
+	private static final String EVIDENCE = "evidence";
+	private static final String ROLE = "role";
+	private static final String DESCRIPTION = "description";
+	private static final String MIME_TYPE = "mime_type";
+	private static final String NUMERIC_UNITS = "numeric_units";
+	private static final String URL_TEMPLATE = "url_template";
+
     @Autowired
     private DashboardFactory dashboardFactory;
-	
+
 	// cache for fast lookup and prevention of duplicate role records
     private HashMap<String, SubjectRole> subjectRoleCache = new HashMap<String, SubjectRole>();
     private HashMap<String, EvidenceRole> evidenceRoleCache = new HashMap<String, EvidenceRole>();
     private HashMap<String, ObservationTemplate> observationTemplateCache = new HashMap<String, ObservationTemplate>();
 
 	public ControlledVocabulary mapFieldSet(FieldSet fieldSet) throws BindException {
-		String templateName = fieldSet.readString(0).toLowerCase();
-		String templateDescription = fieldSet.readString(1).toLowerCase();
-		Integer templateTier = fieldSet.readInt(2);
-		String columnName = fieldSet.readString(3).toLowerCase();
-		String subject = fieldSet.readString(4).toLowerCase();
-		String evidence = fieldSet.readString(5).toLowerCase();
-		String role = fieldSet.readString(6).toLowerCase();
-		String description = fieldSet.readString(7).toLowerCase();
+
+		String templateName = fieldSet.readString(TEMPLATE_NAME);
+		String templateDescription = fieldSet.readString(TEMPLATE_DESCRIPTION);
+		Integer templateTier = fieldSet.readInt(TEMPLATE_TIER);
+		String columnName = fieldSet.readString(COLUMN_NAME);
+		String subject = fieldSet.readString(SUBJECT);
+		String evidence = fieldSet.readString(EVIDENCE);
+		String role = fieldSet.readString(ROLE);
+		String description = fieldSet.readString(DESCRIPTION);
+		String mimeType = fieldSet.readString(MIME_TYPE);
+		String numericUnits = fieldSet.readString(NUMERIC_UNITS);
+		String urlTemplate = fieldSet.readString(URL_TEMPLATE);
 
 		ObservationTemplate observationTemplate = observationTemplateCache.get(templateName);
 		if (observationTemplate == null) {
@@ -71,8 +87,16 @@ public class ControlledVocabularyFieldSetMapper implements FieldSetMapper<Contro
 			observedEvidenceRole.setColumnName(columnName);
 			observedEvidenceRole.setDescription(description);
 			observedEvidenceRole.setObservationTemplate(observationTemplate);
+			observedEvidenceRole.setType(getObservedEvidenceRoleType(mimeType, numericUnits, urlTemplate));
 			return new ControlledVocabulary(observationTemplate, evidenceRole, observedEvidenceRole);
 		}
 		return new ControlledVocabulary(null, null, null);
+	}
+	
+	private String getObservedEvidenceRoleType(String mimeType, String numericUnits, String urlTemplate) {
+		if (mimeType.length() > 0) return mimeType;
+		if (numericUnits.length() > 0) return numericUnits;
+		if (urlTemplate.length() > 0) return urlTemplate;
+		return "";
 	}
 }
