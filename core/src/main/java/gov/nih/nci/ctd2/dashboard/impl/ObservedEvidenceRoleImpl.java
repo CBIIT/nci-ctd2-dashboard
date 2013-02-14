@@ -18,6 +18,7 @@ public class ObservedEvidenceRoleImpl extends DashboardEntityImpl implements Obs
     private EvidenceRole evidenceRole;
     private String description;
     private String columnName;
+    private String type;
 
     @ManyToOne(targetEntity = ObservationTemplateImpl.class)
     public ObservationTemplate getObservationTemplate() {
@@ -53,5 +54,14 @@ public class ObservedEvidenceRoleImpl extends DashboardEntityImpl implements Obs
 
     public void setColumnName(String columnName) {
         this.columnName = columnName;
+    }
+
+    @Column(length = 64)
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }
