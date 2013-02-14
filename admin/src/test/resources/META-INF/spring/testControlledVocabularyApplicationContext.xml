@@ -37,6 +37,6 @@
 
   <bean name="controlledVocabularyLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
+	<property name="names" value="template_name,template_description,template_tier,column_name,subject,evidence,role,description,mime_type,numeric_units,url_template,refers_to"/>
   </bean>
-
 </beans>
