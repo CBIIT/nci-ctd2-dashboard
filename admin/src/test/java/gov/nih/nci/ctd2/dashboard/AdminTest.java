@@ -103,8 +103,17 @@ public class AdminTest {
 		assertEquals(1, observationTemplates.size());
 
 		// import observation data
-		//jobExecution = executeJob("observationDataImporterJob");
-        //assertEquals("COMPLETED", jobExecution.getExitStatus().getExitCode());
+		jobExecution = executeJob("observationDataImporterJob");
+        assertEquals("COMPLETED", jobExecution.getExitStatus().getExitCode());
+		assertEquals(9, dashboardDao.countEntities(Submission.class).intValue());
+		assertEquals(9, dashboardDao.countEntities(SubmissionCenter.class).intValue());
+		assertEquals(9, dashboardDao.countEntities(Observation.class).intValue());
+		assertEquals(18, dashboardDao.countEntities(ObservedSubject.class).intValue());
+		assertEquals(108, dashboardDao.countEntities(ObservedEvidence.class).intValue());
+		assertEquals(45, dashboardDao.countEntities(LabelEvidence.class).intValue());
+		assertEquals(27, dashboardDao.countEntities(DataNumericValue.class).intValue());
+		assertEquals(27, dashboardDao.countEntities(FileEvidence.class).intValue());
+		assertEquals(9, dashboardDao.countEntities(UrlEvidence.class).intValue());
 	}
 
 	private JobExecution executeJob(String jobName) throws Exception {

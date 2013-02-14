@@ -25,7 +25,6 @@ public class ObservationDataFactoryImpl implements ObservationDataFactory {
 	// cache for fast lookup and prevention of duplicate role records
     private HashMap<String, Subject> subjectCache = new HashMap<String, Subject>();
     private HashMap<String, ObservedSubjectRole> observedSubjectRoleCache = new HashMap<String, ObservedSubjectRole>();
-    private HashMap<String, Evidence> evidenceCache = new HashMap<String, Evidence>();
     private HashMap<String, ObservedEvidenceRole> observedEvidenceRoleCache = new HashMap<String, ObservedEvidenceRole>();
 
 	@Override
@@ -76,12 +75,8 @@ public class ObservationDataFactoryImpl implements ObservationDataFactory {
 	public ObservedEvidence createObservedLabelEvidence(String evidenceValue, String columnName, Observation observation) {
 		ObservedEvidence observedEvidence = dashboardFactory.create(ObservedEvidence.class);
 		observedEvidence.setObservation(observation);
-		Evidence evidence = evidenceCache.get(columnName);
-		if (evidence == null) {
-			evidence = dashboardFactory.create(LabelEvidence.class);
-			evidence.setDisplayName(evidenceValue);
-			evidenceCache.put(columnName, evidence);
-		}
+		Evidence evidence = dashboardFactory.create(LabelEvidence.class);
+		evidence.setDisplayName(evidenceValue);
 		observedEvidence.setEvidence(evidence);
 		ObservedEvidenceRole observedEvidenceRole = getObservedEvidenceRole(columnName);
 		if (observedEvidenceRole != null) observedEvidence.setObservedEvidenceRole(observedEvidenceRole);
@@ -92,35 +87,32 @@ public class ObservationDataFactoryImpl implements ObservationDataFactory {
 	public ObservedEvidence createObservedNumericEvidence(Number evidenceValue, String columnName, Observation observation) {
 		ObservedEvidence observedEvidence = dashboardFactory.create(ObservedEvidence.class);
 		observedEvidence.setObservation(observation);
-		Evidence evidence = evidenceCache.get(columnName);
-		if (evidence == null) {
-			evidence = dashboardFactory.create(DataNumericValue.class);
-			((DataNumericValue)evidence).setNumericValue(evidenceValue);
-			// set value type?
-			evidenceCache.put(columnName, evidence);
-		}
-		observedEvidence.setEvidence(evidence);
 		ObservedEvidenceRole observedEvidenceRole = getObservedEvidenceRole(columnName);
 		if (observedEvidenceRole != null) observedEvidence.setObservedEvidenceRole(observedEvidenceRole);
+		Evidence evidence = dashboardFactory.create(DataNumericValue.class);
+		((DataNumericValue)evidence).setNumericValue(evidenceValue);
+		if (observedEvidenceRole != null && observedEvidenceRole.getType().length() > 0) {
+			((DataNumericValue)evidence).setUnit(observedEvidenceRole.getType());
+		}
+		observedEvidence.setEvidence(evidence);
 		return observedEvidence;
 	}
 
 	@Override
-	public ObservedEvidence createObservedFileEvidence(String evidenceValue, String mimeType, String columnName, Observation observation) {
+	public ObservedEvidence createObservedFileEvidence(String evidenceValue, String columnName, Observation observation) {
 		ObservedEvidence observedEvidence = dashboardFactory.create(ObservedEvidence.class);
 		observedEvidence.setObservation(observation);
-		Evidence evidence = evidenceCache.get(columnName);
-		if (evidence == null) {
-			File file = new File(evidenceValue);
-			evidence = dashboardFactory.create(FileEvidence.class);
-			((FileEvidence)evidence).setFileName(file.getName());
-			((FileEvidence)evidence).setFilePath(file.getPath());
-			((FileEvidence)evidence).setMimeType(mimeType);
-			evidenceCache.put(columnName, evidence);
-		}
-		observedEvidence.setEvidence(evidence);
 		ObservedEvidenceRole observedEvidenceRole = getObservedEvidenceRole(columnName);
 		if (observedEvidenceRole != null) observedEvidence.setObservedEvidenceRole(observedEvidenceRole);
+		Evidence evidence = dashboardFactory.create(FileEvidence.class);
+		File file = new File(evidenceValue);
+
+		((FileEvidence)evidence).setFileName(file.getName());
+		((FileEvidence)evidence).setFilePath(file.getPath());
+		if (observedEvidenceRole != null && observedEvidenceRole.getType().length() > 0) {
+			((FileEvidence)evidence).setMimeType(observedEvidenceRole.getType());
+		}
+		observedEvidence.setEvidence(evidence);
 		return observedEvidence;
 	}
 
@@ -129,15 +121,13 @@ public class ObservationDataFactoryImpl implements ObservationDataFactory {
 	public ObservedEvidence createObservedUrlEvidence(String evidenceValue, String columnName, Observation observation) {
 		ObservedEvidence observedEvidence = dashboardFactory.create(ObservedEvidence.class);
 		observedEvidence.setObservation(observation);
-		Evidence evidence = evidenceCache.get(columnName);
-		if (evidence == null) {
-			evidence = dashboardFactory.create(UrlEvidence.class);
-			((UrlEvidence)evidence).setUrl(evidenceValue);
-			evidenceCache.put(columnName, evidence);
-		}
-		observedEvidence.setEvidence(evidence);
 		ObservedEvidenceRole observedEvidenceRole = getObservedEvidenceRole(columnName);
 		if (observedEvidenceRole != null) observedEvidence.setObservedEvidenceRole(observedEvidenceRole);
+		Evidence evidence = dashboardFactory.create(UrlEvidence.class);
+		if (observedEvidenceRole != null && observedEvidenceRole.getType().length() > 0) {
+			((UrlEvidence)evidence).setUrl(observedEvidenceRole.getType() + evidenceValue);				
+		}
+		observedEvidence.setEvidence(evidence);
 		return observedEvidence;
 	}
 
