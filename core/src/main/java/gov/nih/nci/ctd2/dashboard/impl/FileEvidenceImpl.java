@@ -13,6 +13,7 @@ import java.beans.ConstructorProperties;
 @Table(name = "file_evidence")
 public class FileEvidenceImpl extends EvidenceImpl implements FileEvidence {
     private String filePath;
+	private String fileName;
     private String mimeType;
 
     @Column(length = 1024)
@@ -22,6 +23,15 @@ public class FileEvidenceImpl extends EvidenceImpl implements FileEvidence {
 
     public void setFilePath(String filePath) {
         this.filePath = filePath;
+    }
+
+	@Column(length = 1024)
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 
     @Column(length = 256)
