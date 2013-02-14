@@ -9,4 +9,6 @@ public interface ObservedEvidenceRole extends DashboardEntity {
     public void setDescription(String description);
     public String getColumnName();
     public void setColumnName(String columnName);
+    public String getType();
+    public void setType(String type);
 }
