@@ -1,7 +1,6 @@
 package gov.nih.nci.ctd2.dashboard.impl;
 
 import gov.nih.nci.ctd2.dashboard.model.DataNumericValue;
-import gov.nih.nci.ctd2.dashboard.model.ValueType;
 import org.hibernate.annotations.Proxy;
 
 import javax.persistence.Column;
@@ -14,7 +13,7 @@ import javax.persistence.Table;
 @Table(name = "data_numeric_value")
 public class DataNumericValueImpl extends EvidenceImpl implements DataNumericValue {
     private Number numericValue;
-    private ValueType valueType;
+    private String unit;
 
     @Column(nullable = false)
     public Number getNumericValue() {
@@ -25,12 +24,12 @@ public class DataNumericValueImpl extends EvidenceImpl implements DataNumericVal
         this.numericValue = numericValue;
     }
 
-    @ManyToOne(targetEntity = ValueTypeImpl.class)
-    public ValueType getValueType() {
-        return valueType;
+    @Column(length = 32)
+    public String getUnit() {
+        return unit;
     }
 
-    public void setValueType(ValueType valueType) {
-        this.valueType = valueType;
+    public void setUnit(String unit) {
+        this.unit = unit;
     }
 }
