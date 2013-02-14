@@ -10,6 +10,6 @@ public interface ObservationDataFactory {
 	ObservedSubject createObservedSubject(String subjectValue, String columnName, Observation observation, String daoFindQueryName) throws Exception;
 	ObservedEvidence createObservedLabelEvidence(String evidenceValue, String columnHeader, Observation observation);
 	ObservedEvidence createObservedNumericEvidence(Number evidenceValue, String columnHeader, Observation observation);
-	ObservedEvidence createObservedFileEvidence(String evidenceValue, String mimeType, String columnHeader, Observation observation);
+	ObservedEvidence createObservedFileEvidence(String evidenceValue, String columnHeader, Observation observation);
 	ObservedEvidence createObservedUrlEvidence(String evidenceValue, String columnName, Observation observation);
 }
