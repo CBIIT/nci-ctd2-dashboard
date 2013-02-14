@@ -41,37 +41,28 @@ public class ControlledVocabularyFieldSetMapper implements FieldSetMapper<Contro
 	public ControlledVocabulary mapFieldSet(FieldSet fieldSet) throws BindException {
 
 		String templateName = fieldSet.readString(TEMPLATE_NAME);
-		String templateDescription = fieldSet.readString(TEMPLATE_DESCRIPTION);
-		Integer templateTier = fieldSet.readInt(TEMPLATE_TIER);
-		String columnName = fieldSet.readString(COLUMN_NAME);
-		String subject = fieldSet.readString(SUBJECT);
-		String evidence = fieldSet.readString(EVIDENCE);
-		String role = fieldSet.readString(ROLE);
-		String description = fieldSet.readString(DESCRIPTION);
-		String mimeType = fieldSet.readString(MIME_TYPE);
-		String numericUnits = fieldSet.readString(NUMERIC_UNITS);
-		String urlTemplate = fieldSet.readString(URL_TEMPLATE);
-
 		ObservationTemplate observationTemplate = observationTemplateCache.get(templateName);
 		if (observationTemplate == null) {
 			observationTemplate = dashboardFactory.create(ObservationTemplate.class);
 			observationTemplate.setDisplayName(templateName);
-			observationTemplate.setDescription(templateDescription);
-			observationTemplate.setTier(templateTier);
+			observationTemplate.setDescription(fieldSet.readString(TEMPLATE_DESCRIPTION));
+			observationTemplate.setTier(fieldSet.readInt(TEMPLATE_TIER));
 			observationTemplateCache.put(templateName, observationTemplate);
 		}
 
+		String subject = fieldSet.readString(SUBJECT);
+		String evidence = fieldSet.readString(EVIDENCE);
 		if (subject.length() > 0) {
 			SubjectRole subjectRole = subjectRoleCache.get(subject);
 			if (subjectRole == null) {
 				subjectRole = dashboardFactory.create(SubjectRole.class);
-				subjectRole.setDisplayName(role);
+				subjectRole.setDisplayName(fieldSet.readString(ROLE));
 				subjectRoleCache.put(subject, subjectRole);
 			}
 			ObservedSubjectRole observedSubjectRole = dashboardFactory.create(ObservedSubjectRole.class);
 			observedSubjectRole.setSubjectRole(subjectRole);
-			observedSubjectRole.setColumnName(columnName);
-			observedSubjectRole.setDescription(description);
+			observedSubjectRole.setColumnName(fieldSet.readString(COLUMN_NAME));
+			observedSubjectRole.setDescription(fieldSet.readString(DESCRIPTION));
 			observedSubjectRole.setObservationTemplate(observationTemplate);
 			return new ControlledVocabulary(observationTemplate, subjectRole, observedSubjectRole);
 		}
@@ -79,15 +70,17 @@ public class ControlledVocabularyFieldSetMapper implements FieldSetMapper<Contro
 			EvidenceRole evidenceRole = evidenceRoleCache.get(evidence);
 			if (evidenceRole == null) {
 				evidenceRole = dashboardFactory.create(EvidenceRole.class);
-				evidenceRole.setDisplayName(role);
+				evidenceRole.setDisplayName(fieldSet.readString(ROLE));
 				evidenceRoleCache.put(evidence, evidenceRole);
 			}
 			ObservedEvidenceRole observedEvidenceRole = dashboardFactory.create(ObservedEvidenceRole.class);
 			observedEvidenceRole.setEvidenceRole(evidenceRole);
-			observedEvidenceRole.setColumnName(columnName);
-			observedEvidenceRole.setDescription(description);
+			observedEvidenceRole.setColumnName(fieldSet.readString(COLUMN_NAME));
+			observedEvidenceRole.setDescription(fieldSet.readString(DESCRIPTION));
 			observedEvidenceRole.setObservationTemplate(observationTemplate);
-			observedEvidenceRole.setType(getObservedEvidenceRoleType(mimeType, numericUnits, urlTemplate));
+			observedEvidenceRole.setType(getObservedEvidenceRoleType(fieldSet.readString(MIME_TYPE),
+																	 fieldSet.readString(NUMERIC_UNITS),
+																	 fieldSet.readString(URL_TEMPLATE)));
 			return new ControlledVocabulary(observationTemplate, evidenceRole, observedEvidenceRole);
 		}
 		return new ControlledVocabulary(null, null, null);
