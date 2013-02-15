@@ -183,25 +183,37 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
     }
 
     @Override
-    public ObservedSubjectRole findObservedSubjectRoleByColumnName(String columnName) {
+    public ObservedSubjectRole findObservedSubjectRole(String templateName, String columnName) {
         List<ObservedSubjectRole> list = new ArrayList<ObservedSubjectRole>();
-
-        for (Object o : getHibernateTemplate().find("from ObservedSubjectRoleImpl where columnName = ?", columnName)) {
-            assert o instanceof ObservedSubjectRole;
-            list.add((ObservedSubjectRole) o);
-        }
+		// first grab observation template name
+		for (Object ot : getHibernateTemplate()
+				 .find("from ObservationTemplateImpl where displayName = ?", templateName)) {
+			assert ot instanceof ObservationTemplate;
+			for (Object o : getHibernateTemplate().
+					 find("from ObservedSubjectRoleImpl as osr where columnName = ? and " +
+						  "osr.observationTemplate = ?", columnName, (ObservationTemplate)ot)) {
+				assert o instanceof ObservedSubjectRole;
+				list.add((ObservedSubjectRole) o);
+			}
+		}
 		assert list.size() <= 1;
 		return (list.size() == 1) ? list.iterator().next() : null;
     }
 
     @Override
-    public ObservedEvidenceRole findObservedEvidenceRoleByColumnName(String columnName) {
+    public ObservedEvidenceRole findObservedEvidenceRole(String templateName, String columnName) {
         List<ObservedEvidenceRole> list = new ArrayList<ObservedEvidenceRole>();
-
-        for (Object o : getHibernateTemplate().find("from ObservedEvidenceRoleImpl where columnName = ?", columnName)) {
-            assert o instanceof ObservedEvidenceRole;
-            list.add((ObservedEvidenceRole) o);
-        }
+		// first grab observation template name
+		for (Object ot : getHibernateTemplate()
+				 .find("from ObservationTemplateImpl where displayName = ?", templateName)) {
+			assert ot instanceof ObservationTemplate;
+			for (Object o : getHibernateTemplate()
+					 .find("from ObservedEvidenceRoleImpl as oer where columnName = ? and " +
+						   "oer.observationTemplate = ?", columnName, (ObservationTemplate)ot)) {
+				assert o instanceof ObservedEvidenceRole;
+				list.add((ObservedEvidenceRole) o);
+			}
+		}
 		assert list.size() <= 1;
 		return (list.size() == 1) ? list.iterator().next() : null;
     }
@@ -209,8 +221,8 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
 	@Override
     public ObservationTemplate findObservationTemplateByName(String templateName) {
 		List<ObservationTemplate> list = new ArrayList<ObservationTemplate>();
-
-        for (Object o : getHibernateTemplate().find("from ObservationTemplateImpl where displayName = ?", templateName)) {
+        for (Object o : getHibernateTemplate()
+				 .find("from ObservationTemplateImpl where displayName = ?", templateName)) {
             assert o instanceof ObservationTemplate;
             list.add((ObservationTemplate) o);
         }
@@ -221,8 +233,8 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
 	@Override
     public SubmissionCenter findSubmissionCenterByName(String submissionCenterName) {
 		List<SubmissionCenter> list = new ArrayList<SubmissionCenter>();
-
-        for (Object o : getHibernateTemplate().find("from SubmissionCenterImpl where displayName = ?", submissionCenterName)) {
+        for (Object o : getHibernateTemplate()
+				 .find("from SubmissionCenterImpl where displayName = ?", submissionCenterName)) {
             assert o instanceof SubmissionCenter;
             list.add((SubmissionCenter) o);
         }

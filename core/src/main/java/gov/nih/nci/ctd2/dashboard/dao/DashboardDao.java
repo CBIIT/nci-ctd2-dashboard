@@ -23,8 +23,8 @@ public interface DashboardDao {
     List<Organism> findOrganismByTaxonomyId(String taxonomyId);
     List<SubjectWithOrganism> findSubjectByOrganism(Organism organism);
     List<Subject> findSubjectsBySynonym(String synonym, boolean exact);
-    ObservedSubjectRole findObservedSubjectRoleByColumnName(String columnName);
-    ObservedEvidenceRole findObservedEvidenceRoleByColumnName(String columnName);
+    ObservedSubjectRole findObservedSubjectRole(String templateName, String columnName);
+    ObservedEvidenceRole findObservedEvidenceRole(String templateName, String columnName);
     ObservationTemplate findObservationTemplateByName(String templateName);
     SubmissionCenter findSubmissionCenterByName(String submissionCenterName);
 }
