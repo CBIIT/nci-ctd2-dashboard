@@ -190,8 +190,8 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
             assert o instanceof ObservedSubjectRole;
             list.add((ObservedSubjectRole) o);
         }
-		assert list.size() == 1;
-		return list.iterator().next();
+		assert list.size() <= 1;
+		return (list.size() == 1) ? list.iterator().next() : null;
     }
 
     @Override
@@ -202,8 +202,8 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
             assert o instanceof ObservedEvidenceRole;
             list.add((ObservedEvidenceRole) o);
         }
-		assert list.size() == 1;
-		return list.iterator().next();
+		assert list.size() <= 1;
+		return (list.size() == 1) ? list.iterator().next() : null;
     }
 
 	@Override
@@ -214,8 +214,8 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
             assert o instanceof ObservationTemplate;
             list.add((ObservationTemplate) o);
         }
-		assert list.size() == 1;
-        return list.iterator().next();
+		assert list.size() <= 1;
+		return (list.size() == 1) ? list.iterator().next() : null;
 	}
 
 	@Override
@@ -226,7 +226,7 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
             assert o instanceof SubmissionCenter;
             list.add((SubmissionCenter) o);
         }
-		assert list.size() == 1;
-        return list.iterator().next();
+		assert list.size() <= 1;
+		return (list.size() == 1) ? list.iterator().next() : null;
 	}
 }
