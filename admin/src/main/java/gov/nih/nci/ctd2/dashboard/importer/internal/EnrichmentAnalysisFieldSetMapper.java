@@ -44,10 +44,12 @@ public class EnrichmentAnalysisFieldSetMapper implements FieldSetMapper<Observat
 
 	public ObservationData mapFieldSet(FieldSet fieldSet) throws BindException {
 
+		String templateName = fieldSet.readString(TEMPLATE_NAME);
+
 		// create submission
 		Submission submission = observationDataFactory.createSubmission(fieldSet.readString(SUBMISSION_CENTER),
 																		fieldSet.readDate(SUBMISSION_DATE, "mm/DD/yyyy"),
-																		fieldSet.readString(TEMPLATE_NAME));
+																		templateName);
 
 		// create observation
 		Observation observation = dashboardFactory.create(Observation.class);
@@ -61,12 +63,12 @@ public class EnrichmentAnalysisFieldSetMapper implements FieldSetMapper<Observat
 		try {
 			ObservedSubject observedCompound = 
 				observationDataFactory.createObservedSubject(fieldSet.readString(COMPOUND_NAME),
-															 COMPOUND_NAME, observation, "findCompoundsByName");
+															 COMPOUND_NAME, templateName, observation, "findCompoundsByName");
 			observedEntitiesSet.add(observedCompound);
 
 			ObservedSubject observedGene =
 				observationDataFactory.createObservedSubject(fieldSet.readString(ENTREZ_GENE_ID),
-															 ENTREZ_GENE_ID, observation, "findGenesByEntrezId");
+															 ENTREZ_GENE_ID, templateName, observation, "findGenesByEntrezId");
 			//////////////////
 			// add lineage here
 			//////////////////
@@ -81,73 +83,73 @@ public class EnrichmentAnalysisFieldSetMapper implements FieldSetMapper<Observat
 		// create observed evidence
 		ObservedEvidence cellLineSubsetEvidence =
 			observationDataFactory.createObservedLabelEvidence(fieldSet.readString(CELL_LINE_SUBSET),
-															   CELL_LINE_SUBSET, observation);
+															   CELL_LINE_SUBSET, templateName, observation);
 		observedEntitiesSet.add(cellLineSubsetEvidence);
 		if (cellLineSubsetEvidence.getEvidence() != null) evidenceSet.add(cellLineSubsetEvidence.getEvidence());
 
 		ObservedEvidence cellLineExclusionEvidence =
 			observationDataFactory.createObservedLabelEvidence(fieldSet.readString(CELL_LINE_EXCLUSION),
-															   CELL_LINE_EXCLUSION, observation);
+															   CELL_LINE_EXCLUSION, templateName, observation);
 		observedEntitiesSet.add(cellLineExclusionEvidence);
 		if (cellLineExclusionEvidence.getEvidence() != null) evidenceSet.add(cellLineExclusionEvidence.getEvidence());
 
 		ObservedEvidence featureDatasetEvidence =
 			observationDataFactory.createObservedLabelEvidence(fieldSet.readString(FEATURE_DATASET),
-															   FEATURE_DATASET, observation);
+															   FEATURE_DATASET, templateName, observation);
 		observedEntitiesSet.add(featureDatasetEvidence);
 		if (featureDatasetEvidence.getEvidence() != null) evidenceSet.add(featureDatasetEvidence.getEvidence());
 
 		ObservedEvidence enrichedFeatureEvidence =
 			observationDataFactory.createObservedLabelEvidence(fieldSet.readString(ENRICHED_FEATURE),
-															   ENRICHED_FEATURE, observation);
+															   ENRICHED_FEATURE, templateName, observation);
 		observedEntitiesSet.add(enrichedFeatureEvidence);
 		if (enrichedFeatureEvidence.getEvidence() != null) evidenceSet.add(enrichedFeatureEvidence.getEvidence());
 
 		ObservedEvidence numberOfCellLinesEvidence = 
 			observationDataFactory.createObservedNumericEvidence(fieldSet.readInt(NUMBER_OF_CELL_LINES),
-																 NUMBER_OF_CELL_LINES, observation);
+																 NUMBER_OF_CELL_LINES, templateName, observation);
 		observedEntitiesSet.add(numberOfCellLinesEvidence);
 		if (numberOfCellLinesEvidence.getEvidence() != null) evidenceSet.add(numberOfCellLinesEvidence.getEvidence());
 
 		ObservedEvidence numberOfMutantCellLinesEvidence = 
 			observationDataFactory.createObservedNumericEvidence(fieldSet.readInt(NUMBER_OF_MUTANT_CELL_LINES),
-																 NUMBER_OF_MUTANT_CELL_LINES, observation);
+																 NUMBER_OF_MUTANT_CELL_LINES, templateName, observation);
 		observedEntitiesSet.add(numberOfMutantCellLinesEvidence);
 		if (numberOfMutantCellLinesEvidence.getEvidence() != null) evidenceSet.add(numberOfMutantCellLinesEvidence.getEvidence());
 
 		ObservedEvidence enrichmentDirectionEvidence = 
 			observationDataFactory.createObservedLabelEvidence(fieldSet.readString(ENRICHMENT_DIRECTION),
-															   ENRICHMENT_DIRECTION, observation);
+															   ENRICHMENT_DIRECTION, templateName, observation);
 		observedEntitiesSet.add(enrichmentDirectionEvidence);
 		if (enrichmentDirectionEvidence.getEvidence() != null) evidenceSet.add(enrichmentDirectionEvidence.getEvidence());
 
 		ObservedEvidence logQValueScoreEvidence = 
 			observationDataFactory.createObservedNumericEvidence(fieldSet.readDouble(LOG_Q_VALUE_SCORE),
-																 LOG_Q_VALUE_SCORE, observation);
+																 LOG_Q_VALUE_SCORE, templateName, observation);
 		observedEntitiesSet.add(logQValueScoreEvidence);
 		if (logQValueScoreEvidence.getEvidence() != null) evidenceSet.add(logQValueScoreEvidence.getEvidence());
 
 		ObservedEvidence respImagePathEvidence = 
 			observationDataFactory.createObservedFileEvidence(fieldSet.readString(RESP_IMAGE_PATH),
-															  RESP_IMAGE_PATH, observation);
+															  RESP_IMAGE_PATH, templateName, observation);
 		observedEntitiesSet.add(respImagePathEvidence);
 		if (respImagePathEvidence.getEvidence() != null) evidenceSet.add(respImagePathEvidence.getEvidence());
 
 		ObservedEvidence featImagePathEvidence = 
 			observationDataFactory.createObservedFileEvidence(fieldSet.readString(FEAT_IMAGE_PATH),
-															  FEAT_IMAGE_PATH, observation);
+															  FEAT_IMAGE_PATH, templateName, observation);
 		observedEntitiesSet.add(featImagePathEvidence);
 		if (featImagePathEvidence.getEvidence() != null) evidenceSet.add(featImagePathEvidence.getEvidence());
 
 		ObservedEvidence nciPortalPathEvidence = 
 			observationDataFactory.createObservedUrlEvidence(fieldSet.readString(NCI_PORTAL),
-															 NCI_PORTAL, observation);
+															 NCI_PORTAL, templateName, observation);
 		observedEntitiesSet.add(nciPortalPathEvidence);
 		if (nciPortalPathEvidence.getEvidence() != null) evidenceSet.add(nciPortalPathEvidence.getEvidence());
 
 		ObservedEvidence gctPathEvidence = 
 			observationDataFactory.createObservedFileEvidence(fieldSet.readString(GCT_PATH),
-															  GCT_PATH, observation);
+															  GCT_PATH, templateName, observation);
 		observedEntitiesSet.add(gctPathEvidence);
 		if (gctPathEvidence.getEvidence() != null) evidenceSet.add(gctPathEvidence.getEvidence());
 
