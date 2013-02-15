@@ -354,30 +354,37 @@ public class DashboardDaoTest {
 
     @Test
     public void findObservedRolesByColumnName() {
+
+		ObservationTemplate observationTemplate = dashboardFactory.create(ObservationTemplate.class);
+		observationTemplate.setDisplayName("template_name");
+        dashboardDao.save(observationTemplate);
+
         EvidenceRole evidenceRole = dashboardFactory.create(EvidenceRole.class);
         evidenceRole.setDisplayName("ER1");
         dashboardDao.save(evidenceRole);
 
         ObservedEvidenceRole observedEvidenceRole = dashboardFactory.create(ObservedEvidenceRole.class);
+		observedEvidenceRole.setObservationTemplate(observationTemplate);
         observedEvidenceRole.setEvidenceRole(evidenceRole);
         String columnName = "role_column1";
         observedEvidenceRole.setColumnName(columnName);
         observedEvidenceRole.setDescription("description 1");
         dashboardDao.save(observedEvidenceRole);
 
-		assertTrue(dashboardDao.findObservedEvidenceRoleByColumnName(columnName) != null);
+		assertTrue(dashboardDao.findObservedEvidenceRole("template_name", columnName) != null);
 
         SubjectRole subjectRole = dashboardFactory.create(SubjectRole.class);
         subjectRole.setDisplayName("SR1");
         dashboardDao.save(subjectRole);
 
         ObservedSubjectRole observedSubjectRole = dashboardFactory.create(ObservedSubjectRole.class);
+		observedSubjectRole.setObservationTemplate(observationTemplate);
         observedSubjectRole.setSubjectRole(subjectRole);
         observedSubjectRole.setColumnName(columnName);
         observedSubjectRole.setDescription("description 1");
         dashboardDao.save(observedSubjectRole);
 
-		assertTrue(dashboardDao.findObservedSubjectRoleByColumnName(columnName) != null);
+		assertTrue(dashboardDao.findObservedSubjectRole("template_name", columnName) != null);
     }
 }
 
