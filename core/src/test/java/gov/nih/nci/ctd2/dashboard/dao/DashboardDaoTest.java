@@ -365,6 +365,8 @@ public class DashboardDaoTest {
         observedEvidenceRole.setDescription("description 1");
         dashboardDao.save(observedEvidenceRole);
 
+		assertTrue(dashboardDao.findObservedEvidenceRoleByColumnName(columnName) != null);
+
         SubjectRole subjectRole = dashboardFactory.create(SubjectRole.class);
         subjectRole.setDisplayName("SR1");
         dashboardDao.save(subjectRole);
@@ -375,13 +377,7 @@ public class DashboardDaoTest {
         observedSubjectRole.setDescription("description 1");
         dashboardDao.save(observedSubjectRole);
 
-        List<ObservedEvidenceRole> observedEvidenceRoles
-                = dashboardDao.findObservedEvidenceRoleByColumnName(columnName);
-        assertEquals(1, observedEvidenceRoles.size());
-
-        List<ObservedSubjectRole> observedSubjectRoles
-                = dashboardDao.findObservedSubjectRoleByColumnName(columnName);
-        assertEquals(1, observedSubjectRoles.size());
+		assertTrue(dashboardDao.findObservedSubjectRoleByColumnName(columnName) != null);
     }
 }
 
