@@ -23,21 +23,28 @@ public class ObservationDataFactoryImpl implements ObservationDataFactory {
 	private DashboardDao dashboardDao;
 
 	// cache for fast lookup and prevention of duplicate role records
+	private HashMap<String, SubmissionCenter> submissionCenterCache = new HashMap<String, SubmissionCenter>();
     private HashMap<String, Subject> subjectCache = new HashMap<String, Subject>();
     private HashMap<String, ObservedSubjectRole> observedSubjectRoleCache = new HashMap<String, ObservedSubjectRole>();
     private HashMap<String, ObservedEvidenceRole> observedEvidenceRoleCache = new HashMap<String, ObservedEvidenceRole>();
 
 	@Override
 	public Submission createSubmission(String submissionCenterName, Date submissionDate, String observationTemplateName) {
-		SubmissionCenter submissionCenter = dashboardFactory.create(SubmissionCenter.class);
-		submissionCenter.setDisplayName(submissionCenterName);
+		SubmissionCenter submissionCenter = submissionCenterCache.get(submissionCenterName);
+		if (submissionCenter == null) {
+			submissionCenter = dashboardDao.findSubmissionCenterByName(submissionCenterName);
+			if (submissionCenter == null) {
+				submissionCenter = dashboardFactory.create(SubmissionCenter.class);
+				submissionCenter.setDisplayName(submissionCenterName);
+			}
+			submissionCenterCache.put(submissionCenterName, submissionCenter);
+		}
 		Submission submission = dashboardFactory.create(Submission.class);
 		submission.setSubmissionCenter(submissionCenter);
 		submission.setSubmissionDate(submissionDate);
-		List<ObservationTemplate> observationTemplates = 
-			dashboardDao.findObservationTemplateByName(observationTemplateName);
-		if (observationTemplates.size() == 1) {
-			submission.setObservationTemplate(observationTemplates.iterator().next());
+		ObservationTemplate observationTemplate  = dashboardDao.findObservationTemplateByName(observationTemplateName);
+		if (observationTemplate != null) {
+			submission.setObservationTemplate(observationTemplate);
 		}
 		return submission;
 	}
@@ -46,6 +53,7 @@ public class ObservationDataFactoryImpl implements ObservationDataFactory {
 	public ObservedSubject createObservedSubject(String subjectValue, String columnName,
 												 Observation observation, String daoFindQueryName) throws Exception {
 		ObservedSubject observedSubject = dashboardFactory.create(ObservedSubject.class);
+		observedSubject.setDisplayName(subjectValue);
 		observedSubject.setObservation(observation);
 		Subject subject = subjectCache.get(subjectValue);
 		if (subject == null) {
@@ -60,9 +68,8 @@ public class ObservationDataFactoryImpl implements ObservationDataFactory {
 		if (subject == null) log.info("Uknown subject: " + subjectValue);
 		ObservedSubjectRole observedSubjectRole = observedSubjectRoleCache.get(columnName);
 		if (observedSubjectRole == null) {
-			List<ObservedSubjectRole> observedSubjectRoles = dashboardDao.findObservedSubjectRoleByColumnName(columnName);
-			if (observedSubjectRoles.size() > 0) {
-				observedSubjectRole = observedSubjectRoles.iterator().next();
+			observedSubjectRole = dashboardDao.findObservedSubjectRoleByColumnName(columnName);
+			if (observedSubjectRole != null) {
 				observedSubjectRoleCache.put(columnName, observedSubjectRole);
 			}
 		}
@@ -74,6 +81,7 @@ public class ObservationDataFactoryImpl implements ObservationDataFactory {
 	@Override
 	public ObservedEvidence createObservedLabelEvidence(String evidenceValue, String columnName, Observation observation) {
 		ObservedEvidence observedEvidence = dashboardFactory.create(ObservedEvidence.class);
+		observedEvidence.setDisplayName(evidenceValue);
 		observedEvidence.setObservation(observation);
 		Evidence evidence = dashboardFactory.create(LabelEvidence.class);
 		evidence.setDisplayName(evidenceValue);
@@ -86,6 +94,7 @@ public class ObservationDataFactoryImpl implements ObservationDataFactory {
 	@Override
 	public ObservedEvidence createObservedNumericEvidence(Number evidenceValue, String columnName, Observation observation) {
 		ObservedEvidence observedEvidence = dashboardFactory.create(ObservedEvidence.class);
+		observedEvidence.setDisplayName(String.valueOf(evidenceValue));
 		observedEvidence.setObservation(observation);
 		ObservedEvidenceRole observedEvidenceRole = getObservedEvidenceRole(columnName);
 		if (observedEvidenceRole != null) observedEvidence.setObservedEvidenceRole(observedEvidenceRole);
@@ -101,6 +110,7 @@ public class ObservationDataFactoryImpl implements ObservationDataFactory {
 	@Override
 	public ObservedEvidence createObservedFileEvidence(String evidenceValue, String columnName, Observation observation) {
 		ObservedEvidence observedEvidence = dashboardFactory.create(ObservedEvidence.class);
+		observedEvidence.setDisplayName(evidenceValue);
 		observedEvidence.setObservation(observation);
 		ObservedEvidenceRole observedEvidenceRole = getObservedEvidenceRole(columnName);
 		if (observedEvidenceRole != null) observedEvidence.setObservedEvidenceRole(observedEvidenceRole);
@@ -120,6 +130,7 @@ public class ObservationDataFactoryImpl implements ObservationDataFactory {
 	@Override
 	public ObservedEvidence createObservedUrlEvidence(String evidenceValue, String columnName, Observation observation) {
 		ObservedEvidence observedEvidence = dashboardFactory.create(ObservedEvidence.class);
+		observedEvidence.setDisplayName(evidenceValue);
 		observedEvidence.setObservation(observation);
 		ObservedEvidenceRole observedEvidenceRole = getObservedEvidenceRole(columnName);
 		if (observedEvidenceRole != null) observedEvidence.setObservedEvidenceRole(observedEvidenceRole);
@@ -134,9 +145,8 @@ public class ObservationDataFactoryImpl implements ObservationDataFactory {
 	private ObservedEvidenceRole getObservedEvidenceRole(String columnName) {
 		ObservedEvidenceRole observedEvidenceRole = observedEvidenceRoleCache.get(columnName);
 		if (observedEvidenceRole == null) {
-			List<ObservedEvidenceRole> observedEvidenceRoles = dashboardDao.findObservedEvidenceRoleByColumnName(columnName);
-			if (observedEvidenceRoles.size() > 0) {
-				observedEvidenceRole = observedEvidenceRoles.iterator().next();
+			observedEvidenceRole = dashboardDao.findObservedEvidenceRoleByColumnName(columnName);
+			if (observedEvidenceRole != null) {
 				observedEvidenceRoleCache.put(columnName, observedEvidenceRole);
 			}
 		}

@@ -87,26 +87,20 @@ public class AdminTest {
 		// we get some subject/observed subject roles
 		assertEquals(3, dashboardDao.countEntities(SubjectRole.class).intValue());
 		assertEquals(3, dashboardDao.countEntities(ObservedSubjectRole.class).intValue());
-		List<ObservedSubjectRole> observedSubjectRoles = 
-			dashboardDao.findObservedSubjectRoleByColumnName("compound_name");
-		assertEquals(1, observedSubjectRoles.size());
+		assertTrue(dashboardDao.findObservedSubjectRoleByColumnName("compound_name") != null);
 		// we get some evidence/observed evidence roles
 		assertEquals(4, dashboardDao.countEntities(EvidenceRole.class).intValue());
 		assertEquals(12, dashboardDao.countEntities(ObservedEvidenceRole.class).intValue());
-		List<ObservedEvidenceRole> observedEvidenceRoles = 
-			dashboardDao.findObservedEvidenceRoleByColumnName("cell_line_subset");
-		assertEquals(1, observedEvidenceRoles.size());
+		assertTrue(dashboardDao.findObservedEvidenceRoleByColumnName("cell_line_subset") != null);
 		// we get observation template data
 		assertEquals(1, dashboardDao.countEntities(ObservationTemplate.class).intValue());
-		List<ObservationTemplate> observationTemplates =
-			dashboardDao.findObservationTemplateByName("enrichment_analysis");
-		assertEquals(1, observationTemplates.size());
+		assertTrue(dashboardDao.findObservationTemplateByName("enrichment_analysis") != null);
 
 		// import observation data
 		jobExecution = executeJob("observationDataImporterJob");
         assertEquals("COMPLETED", jobExecution.getExitStatus().getExitCode());
 		assertEquals(9, dashboardDao.countEntities(Submission.class).intValue());
-		assertEquals(9, dashboardDao.countEntities(SubmissionCenter.class).intValue());
+		assertEquals(1, dashboardDao.countEntities(SubmissionCenter.class).intValue());
 		assertEquals(9, dashboardDao.countEntities(Observation.class).intValue());
 		assertEquals(18, dashboardDao.countEntities(ObservedSubject.class).intValue());
 		assertEquals(108, dashboardDao.countEntities(ObservedEvidence.class).intValue());

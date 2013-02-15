@@ -1,6 +1,7 @@
 package gov.nih.nci.ctd2.dashboard.importer.internal;
 
 import gov.nih.nci.ctd2.dashboard.model.Observation;
+import gov.nih.nci.ctd2.dashboard.model.SubmissionCenter;
 import gov.nih.nci.ctd2.dashboard.model.DashboardEntity;
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
 import org.apache.commons.logging.Log;
@@ -21,9 +22,16 @@ public class ObservationDataWriter implements ItemWriter<ObservationData> {
  
 	public void write(List<? extends ObservationData> items) throws Exception {
 		for (ObservationData observationData : items) {
-			//log.info("Storing Observed Role: " + observedRoleName);
+
 			// check for existence
-			dashboardDao.save(observationData.observation.getSubmission().getSubmissionCenter());
+			SubmissionCenter submissionCenter =
+				dashboardDao.findSubmissionCenterByName(observationData.observation.getSubmission().
+														getSubmissionCenter().getDisplayName());
+			if (submissionCenter == null) {
+				dashboardDao.save(observationData.observation.getSubmission().getSubmissionCenter());
+				submissionCenter = observationData.observation.getSubmission().getSubmissionCenter();
+			}
+			log.info("Storing observation for submission center: " + submissionCenter.getDisplayName());
 			dashboardDao.save(observationData.observation.getSubmission());
 			dashboardDao.save(observationData.observation);
 			for (DashboardEntity evidence : observationData.evidence) {
