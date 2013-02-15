@@ -85,16 +85,16 @@ public class AdminTest {
 		jobExecution = executeJob("controlledVocabularyImporterJob");
         assertEquals("COMPLETED", jobExecution.getExitStatus().getExitCode());
 		// we get some subject/observed subject roles
-		assertEquals(3, dashboardDao.countEntities(SubjectRole.class).intValue());
-		assertEquals(3, dashboardDao.countEntities(ObservedSubjectRole.class).intValue());
-		assertTrue(dashboardDao.findObservedSubjectRoleByColumnName("compound_name") != null);
+		assertEquals(5, dashboardDao.countEntities(SubjectRole.class).intValue());
+		assertEquals(10, dashboardDao.countEntities(ObservedSubjectRole.class).intValue());
+		assertTrue(dashboardDao.findObservedSubjectRole("broad_enrichment_analysis", "compound_name") != null);
 		// we get some evidence/observed evidence roles
 		assertEquals(4, dashboardDao.countEntities(EvidenceRole.class).intValue());
-		assertEquals(12, dashboardDao.countEntities(ObservedEvidenceRole.class).intValue());
-		assertTrue(dashboardDao.findObservedEvidenceRoleByColumnName("cell_line_subset") != null);
+		assertEquals(32, dashboardDao.countEntities(ObservedEvidenceRole.class).intValue());
+		assertTrue(dashboardDao.findObservedEvidenceRole("broad_enrichment_analysis", "cell_line_subset") != null);
 		// we get observation template data
-		assertEquals(1, dashboardDao.countEntities(ObservationTemplate.class).intValue());
-		assertTrue(dashboardDao.findObservationTemplateByName("enrichment_analysis") != null);
+		assertEquals(3, dashboardDao.countEntities(ObservationTemplate.class).intValue());
+		assertTrue(dashboardDao.findObservationTemplateByName("broad_enrichment_analysis") != null);
 
 		// import observation data
 		jobExecution = executeJob("observationDataImporterJob");
