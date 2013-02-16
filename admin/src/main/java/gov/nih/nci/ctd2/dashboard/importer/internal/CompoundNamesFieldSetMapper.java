@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Component("compoundNamesMapper")
 public class CompoundNamesFieldSetMapper implements FieldSetMapper<CompoundData> {
 
-	public static final String BROAD_COMPOUND_DATABASE = "BROAD";
+	public static final String BROAD_COMPOUND_DATABASE = "BROAD_COMPOUND";
 
     @Autowired
     private DashboardFactory dashboardFactory;
