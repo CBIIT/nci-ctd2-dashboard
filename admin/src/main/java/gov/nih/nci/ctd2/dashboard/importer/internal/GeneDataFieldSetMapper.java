@@ -1,5 +1,6 @@
 package gov.nih.nci.ctd2.dashboard.importer.internal;
 
+import gov.nih.nci.ctd2.dashboard.model.Xref;
 import gov.nih.nci.ctd2.dashboard.model.Gene;
 import gov.nih.nci.ctd2.dashboard.model.Synonym;
 import gov.nih.nci.ctd2.dashboard.model.Organism;
@@ -16,6 +17,8 @@ import java.util.Map;
 @Component("geneDataMapper")
 public class GeneDataFieldSetMapper implements FieldSetMapper<GeneData> {
 
+	public static final String NCBI_GENE_DATABASE = "NCBI_GENE";
+
     @Autowired
     private DashboardFactory dashboardFactory;
 
@@ -23,8 +26,14 @@ public class GeneDataFieldSetMapper implements FieldSetMapper<GeneData> {
 
 	public GeneData mapFieldSet(FieldSet fieldSet) throws BindException {
         Gene gene = dashboardFactory.create(Gene.class);
-        gene.setEntrezGeneId(fieldSet.readString(1));
+		String entrezGeneId = fieldSet.readString(1);
+        gene.setEntrezGeneId(entrezGeneId);
         gene.setDisplayName(fieldSet.readString(2));
+		// create xref back to ncbik
+		Xref xref = dashboardFactory.create(Xref.class);
+		xref.setDatabaseId(entrezGeneId);
+		xref.setDatabaseName(NCBI_GENE_DATABASE);
+		gene.getXrefs().add(xref);
 		for (String synonymName : fieldSet.readString(4).split("\\|")) {
 			Synonym synonym = dashboardFactory.create(Synonym.class);
 			synonym.setDisplayName(synonymName);
