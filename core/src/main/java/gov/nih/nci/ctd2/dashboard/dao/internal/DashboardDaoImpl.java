@@ -75,6 +75,16 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
     }
 
     @Override
+    public List<Gene> findGenesBySymbol(String symbol) {
+        List<Gene> list = new ArrayList<Gene>();
+        for (Object o : getHibernateTemplate().find("from GeneImpl where displayName = ?", symbol)) {
+            assert o instanceof Gene;
+            list.add((Gene) o);
+        }
+        return list;
+    }
+
+    @Override
     public List<Protein> findProteinsByUniprotId(String uniprotId) {
         List<Protein> list = new ArrayList<Protein>();
         for (Object o : getHibernateTemplate().find("from ProteinImpl where uniprotId = ?", uniprotId)) {

@@ -146,6 +146,29 @@ public class DashboardDaoTest {
     }
 
     @Test
+    public void findGenesBySymbolTest() {
+        String e1 = "22880";
+        String s1 = "symbol-1";
+        String e2 = "74522";
+        String s2 = "symbol-2";
+
+        Gene gene1 = dashboardFactory.create(Gene.class);
+        gene1.setEntrezGeneId(e1);
+		gene1.setDisplayName(s1);
+        Gene gene2 = dashboardFactory.create(Gene.class);
+        gene2.setEntrezGeneId(e2);
+		gene2.setDisplayName(s2);
+        dashboardDao.save(gene1);
+        dashboardDao.save(gene2);
+
+        List<Gene> s1genes = dashboardDao.findGenesBySymbol(s1);
+        assertEquals(1, s1genes.size());
+        List<Gene> s2genes = dashboardDao.findGenesBySymbol(s2);
+        assertEquals(1, s2genes.size());
+        assertTrue(dashboardDao.findGenesBySymbol("symbol-3").isEmpty());
+    }
+
+    @Test
     public void findProteinsByUniprotIdTest() {
         String uid1 = "Q50496";
         String uid2 = "Q9Y6X9";

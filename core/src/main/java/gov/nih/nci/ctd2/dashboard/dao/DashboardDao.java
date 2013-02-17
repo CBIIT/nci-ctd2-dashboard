@@ -14,6 +14,7 @@ public interface DashboardDao {
     void setDashboardFactory(DashboardFactory dashboardFactory);
     <T extends DashboardEntity> List<T> findEntities(Class<T> entityClass);
     List<Gene> findGenesByEntrezId(String entrezId);
+    List<Gene> findGenesBySymbol(String symbol);
     List<Protein> findProteinsByUniprotId(String uniprotId);
     List<Transcript> findTranscriptsByRefseqId(String refseqId);
     List<Compound> findCompoundsByName(String compoundName);
