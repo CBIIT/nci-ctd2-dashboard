@@ -99,13 +99,13 @@ public class AdminTest {
 		// import observation data
 		jobExecution = executeJob("observationDataImporterJob");
         assertEquals("COMPLETED", jobExecution.getExitStatus().getExitCode());
-		assertEquals(17, dashboardDao.countEntities(Submission.class).intValue());
+		assertEquals(26, dashboardDao.countEntities(Submission.class).intValue());
 		assertEquals(2, dashboardDao.countEntities(SubmissionCenter.class).intValue());
-		assertEquals(17, dashboardDao.countEntities(Observation.class).intValue());
-		assertEquals(26, dashboardDao.countEntities(ObservedSubject.class).intValue());
-		assertEquals(196, dashboardDao.countEntities(ObservedEvidence.class).intValue());
+		assertEquals(26, dashboardDao.countEntities(Observation.class).intValue());
+		assertEquals(35, dashboardDao.countEntities(ObservedSubject.class).intValue());
+		assertEquals(277, dashboardDao.countEntities(ObservedEvidence.class).intValue());
 		assertEquals(61, dashboardDao.countEntities(LabelEvidence.class).intValue());
-		assertEquals(99, dashboardDao.countEntities(DataNumericValue.class).intValue());
+		assertEquals(180, dashboardDao.countEntities(DataNumericValue.class).intValue());
 		assertEquals(27, dashboardDao.countEntities(FileEvidence.class).intValue());
 		assertEquals(9, dashboardDao.countEntities(UrlEvidence.class).intValue());
 	}

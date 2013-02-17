@@ -25,4 +25,11 @@
 	<property name="linesToSkip" value="1" />
   </bean>
 
+  <!-- columbia differential representation analysis -->
+  <bean name="columbiaDifferentialRepresentationAnalysisReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="resource" value="${differential.representation.analysis.data.location}" />
+    <property name="lineMapper" ref="columbiaDifferentialRepresentationAnalysisLineMapper" />
+	<property name="linesToSkip" value="1" />
+  </bean>
+
 </beans>

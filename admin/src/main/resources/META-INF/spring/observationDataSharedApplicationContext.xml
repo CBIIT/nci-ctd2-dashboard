@@ -13,9 +13,14 @@
 		<batch:chunk reader="broadEnrichmentAnalysisReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	  </batch:tasklet>
 	</batch:step>
-	<batch:step id="columbiaSignalingAnalysisStep" parent="observationDataStep">
+	<batch:step id="columbiaSignalingAnalysisStep" parent="observationDataStep" next="columbiaDifferentialRepresentationAnalysisStep">
 	  <batch:tasklet>
 		<batch:chunk reader="columbiaSignalingAnalysisReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+	<batch:step id="columbiaDifferentialRepresentationAnalysisStep" parent="observationDataStep">
+	  <batch:tasklet>
+		<batch:chunk reader="columbiaDifferentialRepresentationAnalysisReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	  </batch:tasklet>
 	</batch:step>
   </batch:job>
@@ -52,6 +57,20 @@
   <bean name="columbiaSignalingAnalysisLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
 	<property name="names" value="SUBMISSION_CENTER,SUBMISSION_DATE,TEMPLATE_NAME,AFFY_PROBESET_ID,ENTREZ_GENE_ID,CELL_LINEAGE_TISSUE, CELL_LINEAGE_BLOOD_TYPE,LOG2_FOLD_CHANGE,AVG_EXPR,Z_SCORE,P_VALUE,ADJ_P_VALUE,FUNC_TYPE,SET_SIZE,GSEA_ENRICH_SCORE,GSEA_P_VALUE,GSEA_FDR"/>
+  </bean>
+
+  <!-- columbia differential representation analysis -->
+
+  <!-- columbiaSignalingAnalysisReader defined in: -->
+  <!-- observationDataApplicationContext.xml test observationDataApplicationContext.xml -->
+  <bean name="columbiaDifferentialRepresentationAnalysisLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+	<property name="fieldSetMapper" ref="observationDataMapper" />
+	<property name="lineTokenizer" ref="columbiaDifferentialRepresentationAnalysisLineTokenizer" />
+  </bean>
+
+  <bean name="columbiaDifferentialRepresentationAnalysisLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+	<property name="delimiter" value="\u0009"/>
+	<property name="names" value="SUBMISSION_CENTER,SUBMISSION_DATE,TEMPLATE_NAME,ENTREZ_GENE_ID,NUM_PROBS,CELL_LINEAGE,CELL_LINE_A,LOG2_FOLD_CHANGE_A,AVG_REP_A,Z_SCORE_A,P_VALUE_A,CELL_LINE_B,LOG2_FOLD_CHANGE_B,AVG_REP_B,Z_SCORE_B,P_VALUE_B"/>
   </bean>
 
   <!-- shared helper beans -->
@@ -91,6 +110,20 @@
 		<entry key="columbia_all_mr_tf_or_sig_analysis:GSEA_ENRICH_SCORE" value="EVIDENCE:readDouble:createObservedNumericEvidence" />
 		<entry key="columbia_all_mr_tf_or_sig_analysis:GSEA_P_VALUE" value="EVIDENCE:readDouble:createObservedNumericEvidence" />
 		<entry key="columbia_all_mr_tf_or_sig_analysis:GSEA_FDR" value="EVIDENCE:readDouble:createObservedNumericEvidence" />
+		<!-- columbia differential representation analysis template -->
+		<entry key="columbia_all_diff_repr_analysis:ENTREZ_GENE_ID" value="SUBJECT:findGenesBySymbol" />
+		<entry key="columbia_all_diff_repr_analysis:NUM_PROBS" value="EVIDENCE:readInt:createObservedNumericEvidence" />
+		<!--<entry key="columbia_all_diff_repr_analysis:CELL_LINEAGE" value="SUBJECT:" />-->
+		<!--<entry key="columbia_all_diff_repr_analysis:CELL_LINE_A" value="SUBJECT:" />-->
+		<entry key="columbia_all_diff_repr_analysis:LOG2_FOLD_CHANGE_A" value="EVIDENCE:readDouble:createObservedNumericEvidence" />
+		<entry key="columbia_all_diff_repr_analysis:AVG_REP_A" value="EVIDENCE:readDouble:createObservedNumericEvidence" />
+		<entry key="columbia_all_diff_repr_analysis:Z_SCORE_A" value="EVIDENCE:readDouble:createObservedNumericEvidence" />
+		<entry key="columbia_all_diff_repr_analysis:P_VALUE_A" value="EVIDENCE:readDouble:createObservedNumericEvidence" />
+		<!--<entry key="columbia_all_diff_repr_analysis:CELL_LINE_B" value="SUBJECT:" />-->
+		<entry key="columbia_all_diff_repr_analysis:LOG2_FOLD_CHANGE_B" value="EVIDENCE:readDouble:createObservedNumericEvidence" />
+		<entry key="columbia_all_diff_repr_analysis:AVG_REP_B" value="EVIDENCE:readDouble:createObservedNumericEvidence" />
+		<entry key="columbia_all_diff_repr_analysis:Z_SCORE_B" value="EVIDENCE:readDouble:createObservedNumericEvidence" />
+		<entry key="columbia_all_diff_repr_analysis:P_VALUE_B" value="EVIDENCE:readDouble:createObservedNumericEvidence" />
 	  </map>
 	</constructor-arg>
   </bean>
