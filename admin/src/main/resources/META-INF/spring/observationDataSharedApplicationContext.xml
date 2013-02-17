@@ -42,7 +42,7 @@
 
   <bean name="broadEnrichmentAnalysisLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="SUBMISSION_CENTER,SUBMISSION_DATE,TEMPLATE_NAME,CELL_LINE_SUBSET,CELL_LINE_EXCLUSION,FEATURE_DATASET,COMPOUND_NAME,ENTREZ_GENE_ID,LINEAGE,ENRICHED_FEATURE,NUMBER_OF_CELL_LINES,NUMBER_OF_MUTANT_CELL_LINES,ENRICHMENT_DIRECTION,LOG_Q_VALUE_SCORE,RESP_IMAGE_PATH,FEAT_IMAGE_PATH,NCI_PORTAL,GCT_PATH"/>
+	<property name="names" value="SUBMISSION_CENTER,SUBMISSION_DATE,TEMPLATE_NAME,CELL_LINE_SUBSET,CELL_LINE_EXCLUSION,FEATURE_DATASET,COMPOUND_NAME,ENTREZ_GENE_ID,CELL_LINEAGE,NUMBER_OF_CELL_LINES,NUMBER_OF_MUTANT_CELL_LINES,ENRICHMENT_DIRECTION,LOG_FDR,RESPONSE_IMAGE_PATH,FEATURE_IMAGE_PATH,NCI_PORTAL,GCT_PATH"/>
   </bean>
 
   <!-- columbia signaling analysis -->
@@ -79,22 +79,21 @@
   <bean name="observationTemplateMap" class="java.util.HashMap">
 	<constructor-arg index="0" type="java.util.Map">
 	  <map key-type="java.lang.String" value-type="java.lang.String">
-		<!-- broad_enrichment_analysis template -->
-		<entry key="broad_enrichment_analysis:CELL_LINE_SUBSET" value="EVIDENCE:readString:createObservedLabelEvidence" />
-		<entry key="broad_enrichment_analysis:CELL_LINE_EXCLUSION" value="EVIDENCE:readString:createObservedLabelEvidence" />
-		<entry key="broad_enrichment_analysis:FEATURE_DATASET" value="EVIDENCE:readString:createObservedLabelEvidence" />
-		<entry key="broad_enrichment_analysis:COMPOUND_NAME" value="SUBJECT:findCompoundsByName" />
-		<entry key="broad_enrichment_analysis:ENTREZ_GENE_ID" value="SUBJECT:findGenesByEntrezId" />
-		<!--<entry key="broad_enrichment_analysis:LINEAGE" value="SUBJECT:" />-->
-		<entry key="broad_enrichment_analysis:ENRICHED_FEATURE" value="EVIDENCE:readString:createObservedLabelEvidence" />
-		<entry key="broad_enrichment_analysis:NUMBER_OF_CELL_LINES" value="EVIDENCE:readInt:createObservedNumericEvidence" />
-		<entry key="broad_enrichment_analysis:NUMBER_OF_MUTANT_CELL_LINES" value="EVIDENCE:readInt:createObservedNumericEvidence" />
-		<entry key="broad_enrichment_analysis:ENRICHMENT_DIRECTION" value="EVIDENCE:readString:createObservedLabelEvidence" />
-		<entry key="broad_enrichment_analysis:LOG_Q_VALUE_SCORE" value="EVIDENCE:readDouble:createObservedNumericEvidence" />
-		<entry key="broad_enrichment_analysis:RESP_IMAGE_PATH" value="EVIDENCE:readString:createObservedFileEvidence" />
-		<entry key="broad_enrichment_analysis:FEAT_IMAGE_PATH" value="EVIDENCE:readString:createObservedFileEvidence" />
-		<entry key="broad_enrichment_analysis:NCI_PORTAL" value="EVIDENCE:readString:createObservedUrlEvidence" />
-		<entry key="broad_enrichment_analysis:GCT_PATH" value="EVIDENCE:readString:createObservedFileEvidence" />
+		<!-- broad_compound_sensitivity_enrichment template -->
+		<entry key="broad_compound_sensitivity_enrichment:CELL_LINE_SUBSET" value="EVIDENCE:readString:createObservedLabelEvidence" />
+		<entry key="broad_compound_sensitivity_enrichment:CELL_LINE_EXCLUSION" value="EVIDENCE:readString:createObservedLabelEvidence" />
+		<entry key="broad_compound_sensitivity_enrichment:FEATURE_DATASET" value="EVIDENCE:readString:createObservedLabelEvidence" />
+		<entry key="broad_compound_sensitivity_enrichment:COMPOUND_NAME" value="SUBJECT:findCompoundsByName" />
+		<entry key="broad_compound_sensitivity_enrichment:ENTREZ_GENE_ID" value="SUBJECT:findGenesByEntrezId" />
+		<!--<entry key="broad_compound_sensitivity_enrichment:CELL_LINEAGE" value="SUBJECT:" />-->
+		<entry key="broad_compound_sensitivity_enrichment:NUMBER_OF_CELL_LINES" value="EVIDENCE:readInt:createObservedNumericEvidence" />
+		<entry key="broad_compound_sensitivity_enrichment:NUMBER_OF_MUTANT_CELL_LINES" value="EVIDENCE:readInt:createObservedNumericEvidence" />
+		<entry key="broad_compound_sensitivity_enrichment:ENRICHMENT_DIRECTION" value="EVIDENCE:readString:createObservedLabelEvidence" />
+		<entry key="broad_compound_sensitivity_enrichment:LOG_FDR" value="EVIDENCE:readDouble:createObservedNumericEvidence" />
+		<entry key="broad_compound_sensitivity_enrichment:RESPONSE_IMAGE_PATH" value="EVIDENCE:readString:createObservedFileEvidence" />
+		<entry key="broad_compound_sensitivity_enrichment:FEATURE_IMAGE_PATH" value="EVIDENCE:readString:createObservedFileEvidence" />
+		<entry key="broad_compound_sensitivity_enrichment:NCI_PORTAL" value="EVIDENCE:readString:createObservedUrlEvidence" />
+		<entry key="broad_compound_sensitivity_enrichment:GCT_PATH" value="EVIDENCE:readString:createObservedFileEvidence" />
 		<!-- columbia signaling analysis template -->
 		<entry key="columbia_all_mr_tf_or_sig_analysis:AFFY_PROBESET_ID" value="EVIDENCE:readString:createObservedLabelEvidence" />
 		<entry key="columbia_all_mr_tf_or_sig_analysis:ENTREZ_GENE_ID" value="SUBJECT:findGenesByEntrezId" />
