@@ -87,14 +87,14 @@ public class AdminTest {
 		// we get some subject/observed subject roles
 		assertEquals(5, dashboardDao.countEntities(SubjectRole.class).intValue());
 		assertEquals(10, dashboardDao.countEntities(ObservedSubjectRole.class).intValue());
-		assertTrue(dashboardDao.findObservedSubjectRole("broad_enrichment_analysis", "compound_name") != null);
+		assertTrue(dashboardDao.findObservedSubjectRole("broad_compound_sensitivity_enrichment", "compound_name") != null);
 		// we get some evidence/observed evidence roles
 		assertEquals(4, dashboardDao.countEntities(EvidenceRole.class).intValue());
-		assertEquals(32, dashboardDao.countEntities(ObservedEvidenceRole.class).intValue());
-		assertTrue(dashboardDao.findObservedEvidenceRole("broad_enrichment_analysis", "cell_line_subset") != null);
+		assertEquals(31, dashboardDao.countEntities(ObservedEvidenceRole.class).intValue());
+		assertTrue(dashboardDao.findObservedEvidenceRole("broad_compound_sensitivity_enrichment", "cell_line_subset") != null);
 		// we get observation template data
 		assertEquals(3, dashboardDao.countEntities(ObservationTemplate.class).intValue());
-		assertTrue(dashboardDao.findObservationTemplateByName("broad_enrichment_analysis") != null);
+		assertTrue(dashboardDao.findObservationTemplateByName("broad_compound_sensitivity_enrichment") != null);
 
 		// import observation data
 		jobExecution = executeJob("observationDataImporterJob");
@@ -103,8 +103,8 @@ public class AdminTest {
 		assertEquals(2, dashboardDao.countEntities(SubmissionCenter.class).intValue());
 		assertEquals(26, dashboardDao.countEntities(Observation.class).intValue());
 		assertEquals(35, dashboardDao.countEntities(ObservedSubject.class).intValue());
-		assertEquals(277, dashboardDao.countEntities(ObservedEvidence.class).intValue());
-		assertEquals(61, dashboardDao.countEntities(LabelEvidence.class).intValue());
+		assertEquals(268, dashboardDao.countEntities(ObservedEvidence.class).intValue());
+		assertEquals(52, dashboardDao.countEntities(LabelEvidence.class).intValue());
 		assertEquals(180, dashboardDao.countEntities(DataNumericValue.class).intValue());
 		assertEquals(27, dashboardDao.countEntities(FileEvidence.class).intValue());
 		assertEquals(9, dashboardDao.countEntities(UrlEvidence.class).intValue());
