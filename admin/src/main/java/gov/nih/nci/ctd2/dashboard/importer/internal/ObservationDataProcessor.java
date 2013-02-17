@@ -10,6 +10,6 @@ public class ObservationDataProcessor implements ItemProcessor<ObservationData, 
 
     @Override
     public ObservationData process(ObservationData observationData) throws Exception {
-		return (observationData.observation.getSubmission().getSubmissionCenter() == null) ? null : observationData;
+		return (observationData.observation == null) ? null : observationData;
 	}
 }
