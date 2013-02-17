@@ -31,7 +31,7 @@
   <!-- broadEnrichmentAnalysisReader defined in: -->
   <!-- observationDataApplicationContext.xml test observationDataApplicationContext.xml -->
   <bean name="broadEnrichmentAnalysisLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
-	<property name="fieldSetMapper" ref="enrichmentAnalysisMapper" />
+	<property name="fieldSetMapper" ref="observationDataMapper" />
 	<property name="lineTokenizer" ref="broadEnrichmentAnalysisLineTokenizer" />
   </bean>
 
@@ -45,7 +45,7 @@
   <!-- columbiaSignalingAnalysisReader defined in: -->
   <!-- observationDataApplicationContext.xml test observationDataApplicationContext.xml -->
   <bean name="columbiaSignalingAnalysisLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
-	<property name="fieldSetMapper" ref="signalingAnalysisMapper" />
+	<property name="fieldSetMapper" ref="observationDataMapper" />
 	<property name="lineTokenizer" ref="columbiaSignalingAnalysisLineTokenizer" />
   </bean>
 
@@ -56,5 +56,43 @@
 
   <!-- shared helper beans -->
   <bean name="observationDataFactory" class="gov.nih.nci.ctd2.dashboard.importer.internal.ObservationDataFactoryImpl"/>
+
+  <bean name="observationTemplateMap" class="java.util.HashMap">
+	<constructor-arg index="0" type="java.util.Map">
+	  <map key-type="java.lang.String" value-type="java.lang.String">
+		<!-- broad_enrichment_analysis template -->
+		<entry key="broad_enrichment_analysis:CELL_LINE_SUBSET" value="EVIDENCE:readString:createObservedLabelEvidence" />
+		<entry key="broad_enrichment_analysis:CELL_LINE_EXCLUSION" value="EVIDENCE:readString:createObservedLabelEvidence" />
+		<entry key="broad_enrichment_analysis:FEATURE_DATASET" value="EVIDENCE:readString:createObservedLabelEvidence" />
+		<entry key="broad_enrichment_analysis:COMPOUND_NAME" value="SUBJECT:findCompoundsByName" />
+		<entry key="broad_enrichment_analysis:ENTREZ_GENE_ID" value="SUBJECT:findGenesByEntrezId" />
+		<!--<entry key="broad_enrichment_analysis:LINEAGE" value="SUBJECT:" />-->
+		<entry key="broad_enrichment_analysis:ENRICHED_FEATURE" value="EVIDENCE:readString:createObservedLabelEvidence" />
+		<entry key="broad_enrichment_analysis:NUMBER_OF_CELL_LINES" value="EVIDENCE:readInt:createObservedNumericEvidence" />
+		<entry key="broad_enrichment_analysis:NUMBER_OF_MUTANT_CELL_LINES" value="EVIDENCE:readInt:createObservedNumericEvidence" />
+		<entry key="broad_enrichment_analysis:ENRICHMENT_DIRECTION" value="EVIDENCE:readString:createObservedLabelEvidence" />
+		<entry key="broad_enrichment_analysis:LOG_Q_VALUE_SCORE" value="EVIDENCE:readDouble:createObservedNumericEvidence" />
+		<entry key="broad_enrichment_analysis:RESP_IMAGE_PATH" value="EVIDENCE:readString:createObservedFileEvidence" />
+		<entry key="broad_enrichment_analysis:FEAT_IMAGE_PATH" value="EVIDENCE:readString:createObservedFileEvidence" />
+		<entry key="broad_enrichment_analysis:NCI_PORTAL" value="EVIDENCE:readString:createObservedUrlEvidence" />
+		<entry key="broad_enrichment_analysis:GCT_PATH" value="EVIDENCE:readString:createObservedFileEvidence" />
+		<!-- columbia signaling analysis template -->
+		<entry key="columbia_all_mr_tf_or_sig_analysis:AFFY_PROBESET_ID" value="EVIDENCE:readString:createObservedLabelEvidence" />
+		<entry key="columbia_all_mr_tf_or_sig_analysis:ENTREZ_GENE_ID" value="SUBJECT:findGenesByEntrezId" />
+		<!--<entry key="columbia_all_mr_tf_or_sig_analysis:CELL_LINEAGE_TISSUE" value="SUBJECT:" />-->
+		<!--<entry key="columbia_all_mr_tf_or_sig_analysis:CELL_LINEAGE_BLOOD_TYPE" value="SUBJECT:" />-->
+		<entry key="columbia_all_mr_tf_or_sig_analysis:LOG2_FOLD_CHANGE" value="EVIDENCE:readDouble:createObservedNumericEvidence" />
+		<entry key="columbia_all_mr_tf_or_sig_analysis:AVG_EXPR" value="EVIDENCE:readDouble:createObservedNumericEvidence" />
+		<entry key="columbia_all_mr_tf_or_sig_analysis:Z_SCORE" value="EVIDENCE:readDouble:createObservedNumericEvidence" />
+		<entry key="columbia_all_mr_tf_or_sig_analysis:P_VALUE" value="EVIDENCE:readDouble:createObservedNumericEvidence" />
+		<entry key="columbia_all_mr_tf_or_sig_analysis:ADJ_P_VALUE" value="EVIDENCE:readDouble:createObservedNumericEvidence" />
+		<entry key="columbia_all_mr_tf_or_sig_analysis:FUNC_TYPE" value="EVIDENCE:readString:createObservedLabelEvidence" />
+		<entry key="columbia_all_mr_tf_or_sig_analysis:SET_SIZE" value="EVIDENCE:readInt:createObservedNumericEvidence" />
+		<entry key="columbia_all_mr_tf_or_sig_analysis:GSEA_ENRICH_SCORE" value="EVIDENCE:readDouble:createObservedNumericEvidence" />
+		<entry key="columbia_all_mr_tf_or_sig_analysis:GSEA_P_VALUE" value="EVIDENCE:readDouble:createObservedNumericEvidence" />
+		<entry key="columbia_all_mr_tf_or_sig_analysis:GSEA_FDR" value="EVIDENCE:readDouble:createObservedNumericEvidence" />
+	  </map>
+	</constructor-arg>
+  </bean>
 
 </beans>
