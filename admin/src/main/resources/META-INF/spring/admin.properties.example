@@ -8,3 +8,4 @@ compound.smiles.location=
 protein.data.location=
 enrichment.analysis.data.location=
 signaling.analysis.data.location=
+differential.representation.analysis.data.location=
