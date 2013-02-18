@@ -11,10 +11,10 @@
   <import resource="classpath*:META-INF/spring/observationDataSharedApplicationContext.xml" />
   <context:component-scan base-package="gov.nih.nci.ctd2.dashboard.importer.internal" />
 
-  <!-- broad enrichement analysis -->
-  <bean name="broadEnrichmentAnalysisReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-	<property name="resource" value="${enrichment.analysis.data.location}" />
-    <property name="lineMapper" ref="broadEnrichmentAnalysisLineMapper" />
+  <!-- broad compound sensitivity enrichment -->
+  <bean name="broadCompoundSensitivityEnrichmentReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="resource" value="${compound.sensitivity.enrichment.data.location}" />
+    <property name="lineMapper" ref="broadCompoundSensitivityEnrichmentLineMapper" />
 	<property name="linesToSkip" value="1" />
   </bean>
 
