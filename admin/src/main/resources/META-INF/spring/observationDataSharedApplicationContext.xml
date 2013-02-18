@@ -8,9 +8,9 @@
 							http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 
   <batch:job id="observationDataImporterJob">
-	<batch:step id="broadEnrichmentAnalysisStep" parent="observationDataStep" next="columbiaSignalingAnalysisStep">
+	<batch:step id="broadCompoundSensitivityEnrichmentStep" parent="observationDataStep" next="columbiaSignalingAnalysisStep">
 	  <batch:tasklet>
-		<batch:chunk reader="broadEnrichmentAnalysisReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+		<batch:chunk reader="broadCompoundSensitivityEnrichmentReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	  </batch:tasklet>
 	</batch:step>
 	<batch:step id="columbiaSignalingAnalysisStep" parent="observationDataStep" next="columbiaDifferentialRepresentationAnalysisStep">
@@ -33,14 +33,14 @@
 
   <!-- broad enrichement analysis -->
 
-  <!-- broadEnrichmentAnalysisReader defined in: -->
+  <!-- broadCompoundSensitivityEnrichmentReader defined in: -->
   <!-- observationDataApplicationContext.xml test observationDataApplicationContext.xml -->
-  <bean name="broadEnrichmentAnalysisLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+  <bean name="broadCompoundSensitivityEnrichmentLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
 	<property name="fieldSetMapper" ref="observationDataMapper" />
-	<property name="lineTokenizer" ref="broadEnrichmentAnalysisLineTokenizer" />
+	<property name="lineTokenizer" ref="broadCompoundSensitivityEnrichmentLineTokenizer" />
   </bean>
 
-  <bean name="broadEnrichmentAnalysisLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+  <bean name="broadCompoundSensitivityEnrichmentLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
 	<property name="names" value="SUBMISSION_CENTER,SUBMISSION_DATE,TEMPLATE_NAME,CELL_LINE_SUBSET,CELL_LINE_EXCLUSION,FEATURE_DATASET,COMPOUND_NAME,ENTREZ_GENE_ID,CELL_LINEAGE,NUMBER_OF_CELL_LINES,NUMBER_OF_MUTANT_CELL_LINES,ENRICHMENT_DIRECTION,LOG_FDR,RESPONSE_IMAGE_PATH,FEATURE_IMAGE_PATH,NCI_PORTAL,GCT_PATH"/>
   </bean>
