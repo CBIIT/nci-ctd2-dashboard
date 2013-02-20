@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:batch="http://www.springframework.org/schema/batch"
+		xmlns:context="http://www.springframework.org/schema/context"
+        xsi:schemaLocation="http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-2.1.xsd
+							http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+							http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+  <import resource="classpath*:META-INF/spring/adminApplicationContext.xml" />
+  <import resource="classpath*:META-INF/spring/observationDataSharedApplicationContext.xml" />
+  <context:component-scan base-package="gov.nih.nci.ctd2.dashboard.importer.internal" />
+
+  <!-- broad compound sensitivity enrichment -->
+  <bean name="broadCompoundSensitivityEnrichmentReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="resource" value="classpath:test-broad-compound-sensitivity-enrichment-data.txt" />
+    <property name="lineMapper" ref="broadCompoundSensitivityEnrichmentLineMapper" />
+	<property name="linesToSkip" value="1" />
+  </bean>
+
+  <!-- columbia signaling analysis -->
+  <bean name="columbiaSignalingAnalysisReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="resource" value="classpath:test-columbia-signaling-analysis-data.txt" />
+    <property name="lineMapper" ref="columbiaSignalingAnalysisLineMapper" />
+	<property name="linesToSkip" value="1" />
+  </bean>
+
+  <!-- columbia differential representation analysis -->
+  <bean name="columbiaDifferentialRepresentationAnalysisReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="resource" value="classpath:test-columbia-differential-representation-analysis-data.txt" />
+    <property name="lineMapper" ref="columbiaDifferentialRepresentationAnalysisLineMapper" />
+	<property name="linesToSkip" value="1" />
+  </bean>
+
+</beans>

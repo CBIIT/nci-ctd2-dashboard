@@ -1,0 +1,60 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>gov.nih.nci.ctd2.dashboard</groupId>
+        <artifactId>dashboard</artifactId>
+        <version>0.1.0-SNAPSHOT</version>
+    </parent>
+
+  <artifactId>dashboard-webapp</artifactId>
+  <packaging>war</packaging>
+  <version>0.1.0-SNAPSHOT</version>
+  <name>Web UI</name>
+  <url>http://maven.apache.org</url>
+
+  <dependencies>
+      <dependency>
+          <groupId>${project.groupId}</groupId>
+          <artifactId>core</artifactId>
+          <version>${project.version}</version>
+      </dependency>
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+
+      <!-- Spring 3 dependencies -->
+      <dependency>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-core</artifactId>
+          <version>${spring.version}</version>
+      </dependency>
+
+      <dependency>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-web</artifactId>
+          <version>${spring.version}</version>
+      </dependency>
+
+      <dependency>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-webmvc</artifactId>
+          <version>${spring.version}</version>
+      </dependency>
+
+      <dependency>
+          <groupId>net.sf.flexjson</groupId>
+          <artifactId>flexjson</artifactId>
+          <version>2.1</version>
+      </dependency>
+
+  </dependencies>
+  <build>
+    <finalName>ctd2-dashboard</finalName>
+  </build>
+</project>
