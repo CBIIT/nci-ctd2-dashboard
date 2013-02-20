@@ -260,37 +260,41 @@
     <script type="text/template" id="centers-tbl-row-tmpl">
         <tr>
             <td>{{displayName}}</td>
-            <td><a href="#center/{{id}}">Submissions</a></td>
+            <td><a href="#center/{{id}}">Submissions &raquo;</a></td>
         </tr>
     </script>
 
     <script type="text/template" id="center-tmpl">
-        <h1>{{displayName}}</h1>
+        <div class="container common-container" id="center-submission-container">
+            <h1>{{displayName}} <small>submissions</small></h1>
 
-        <h2>Submissions</h2>
-        <table id="center-submission-grid" class="table table-bordered table-striped">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Date</th>
-                    <th>Template</th>
-                    <th>Description</th>
-                    <th>Observations</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- here will go the rows -->
-            </tbody>
-        </table>
+            <table id="center-submission-grid" class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Date</th>
+                        <th>Description</th>
+                        <th>Observations</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- here will go the rows -->
+                </tbody>
+            </table>
+        </div>
     </script>
 
     <script type="text/template" id="center-submission-tbl-row-tmpl">
         <tr>
             <td>{{id}}</td>
             <td>{{submissionDate}}</td>
-            <td>{{observationTemplate.displayName}}</td>
-            <td>{{observationTemplate.description}}</td>
-            <td><a href="#observation/{{id}}">Observations</a></td>
+            <td>
+                <b></b>{{observationTemplate.description}}</b>
+                <small class="template-description" title="{{observationTemplate.displayName}}">
+                    (template)
+                </small>
+            </td>
+            <td><a href="#observation/{{id}}">Observations &raquo;</a></td>
         </tr>
     </script>
 

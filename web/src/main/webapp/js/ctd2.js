@@ -127,9 +127,9 @@ require(
 
             var CenterView = Backbone.View.extend({
                 el: $("#main-container"),
-                template: _.template($("#centers-tmpl").html()),
+                template: _.template($("#center-tmpl").html()),
                 render: function() {
-                    $(this.el).html(this.template({}));
+                    $(this.el).html(this.template(this.model.toJSON()));
 
                     var thatEl = this.el;
                     var centerSubmissions = new CenterSubmissions({ centerId: this.model.get("id") });
@@ -140,6 +140,8 @@ require(
                                     = new CenterSubmissionRowView({ el: $(thatEl).find("tbody"), model: submission });
                                 centerSubmissionRowView.render();
                             });
+
+                            $(".template-description").tooltip();
                         }
                     });
                 }
