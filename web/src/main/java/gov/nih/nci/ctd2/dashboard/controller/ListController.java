@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,19 +27,31 @@ public class ListController {
 
     @Transactional
     @RequestMapping(value="{type}", method = {RequestMethod.GET, RequestMethod.POST}, headers = "Accept=application/json")
-    public ResponseEntity<String> getSearchResultsInJson(@PathVariable String type) {
+    public ResponseEntity<String> getSearchResultsInJson(@PathVariable String type, @RequestParam("filterBy") Integer filterBy) {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json; charset=utf-8");
 
-        List<? extends DashboardEntity> entities;
+        List<? extends DashboardEntity> entities = new ArrayList<DashboardEntity>();
         if(type.equalsIgnoreCase("submission")) {
-            entities = dashboardDao.findEntities(Submission.class);
+            if(filterBy != null) {
+                SubmissionCenter submissionCenter = dashboardDao.getEntityById(SubmissionCenter.class, filterBy);
+                if(submissionCenter != null) {
+                    entities = dashboardDao.findSubmissionBySubmissionCenter(submissionCenter);
+                }
+            } else {
+                entities = dashboardDao.findEntities(Submission.class);
+            }
         } else if(type.equalsIgnoreCase("observation")) {
-            entities = dashboardDao.findEntities(Observation.class);
+            if(filterBy != null) {
+                Submission submission = dashboardDao.getEntityById(Submission.class, filterBy);
+                if(submission != null) {
+                    entities = dashboardDao.findObservationsBySubmission(submission);
+                }
+            } else {
+                entities = dashboardDao.findEntities(Observation.class);
+            }
         } else if(type.equals("center")) {
             entities = dashboardDao.findEntities(SubmissionCenter.class);
-        } else {
-            entities = new ArrayList<DashboardEntity>();
         }
 
         JSONSerializer jsonSerializer = new JSONSerializer().transform(new ImplTransformer(), Class.class);

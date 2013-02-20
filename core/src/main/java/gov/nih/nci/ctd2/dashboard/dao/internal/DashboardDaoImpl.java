@@ -251,4 +251,26 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
 		assert list.size() <= 1;
 		return (list.size() == 1) ? list.iterator().next() : null;
 	}
+
+    @Override
+    public List<Submission> findSubmissionBySubmissionCenter(SubmissionCenter submissionCenter) {
+        List<Submission> list = new ArrayList<Submission>();
+        for (Object o : getHibernateTemplate().find("from SubmissionImpl where submissionCenter = ?", submissionCenter)) {
+            assert o instanceof Submission;
+            list.add((Submission) o);
+        }
+
+        return list;
+    }
+
+    @Override
+    public List<Observation> findObservationsBySubmission(Submission submission) {
+        List<Observation> list = new ArrayList<Observation>();
+        for (Object o : getHibernateTemplate().find("from ObservationImpl where submission = ?", submission)) {
+            assert o instanceof Observation;
+            list.add((Observation) o);
+        }
+
+        return list;
+    }
 }
