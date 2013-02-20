@@ -389,8 +389,9 @@
                 <!-- here will go the rows -->
                 <tr id="loading-row">
                     <td colspan="5">
+                        <h3>Loading...</h3></br>
+
                         <div class="progress progress-striped active">
-                            <h3>Loading...</h3></br>
                             <div class="bar" style="width: 100%;"></div>
                         </div>
                     </td>
