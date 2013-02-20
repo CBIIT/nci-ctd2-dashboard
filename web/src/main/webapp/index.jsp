@@ -260,7 +260,7 @@
     <script type="text/template" id="centers-tbl-row-tmpl">
         <tr>
             <td>{{displayName}}</td>
-            <td><a href="#center/{{id}}">Submissions &raquo;</a></td>
+            <td><a href="#center/{{id}}">Submissions</a></td>
         </tr>
     </script>
 
@@ -274,6 +274,7 @@
                         <th>#</th>
                         <th>Date</th>
                         <th>Description</th>
+                        <th>Tier</th>
                         <th>Observations</th>
                     </tr>
                 </thead>
@@ -289,20 +290,126 @@
             <td>{{id}}</td>
             <td>{{submissionDate}}</td>
             <td>
-                <b></b>{{observationTemplate.description}}</b>
+                <b>{{observationTemplate.description}}</b>
                 <small class="template-description" title="{{observationTemplate.displayName}}">
                     (template)
                 </small>
             </td>
-            <td><a href="#observation/{{id}}">Observations &raquo;</a></td>
+            <td>{{observationTemplate.tier}}</td>
+            <td><a href="#submission/{{id}}">observations</a></td>
         </tr>
     </script>
 
+    <script type="text/template" id="submission-tmpl">
+        <div class="container common-container" id="submission-container">
+            <h1>Submission <small>(# {{id}})</small></h1>
+
+            <table id="submission-details-grid" class="table table-bordered table-striped">
+                <tr>
+                    <th>Center</th>
+                    <td>{{submissionCenter.displayName}}</td>
+                </tr>
+                <tr>
+                    <th>Tier</th>
+                    <td>{{observationTemplate.tier}}</td>
+                </tr>
+                <tr>
+                    <th>Description</th>
+                    <td>{{observationTemplate.description}}</td>
+                </tr>
+                <tr>
+                    <th>Template</th>
+                    <td>{{observationTemplate.displayName}}</td>
+                </tr>
+                <tr>
+                    <th>Date</th>
+                    <td>{{submissionDate}}</td>
+                </tr>
+            </table>
+
+            <h1>Observations within this submission</h1>
+            <table id="submission-observation-grid" class="table table-bordered table-striped observations">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Details</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- here will go the rows -->
+                </tbody>
+            </table>
+        </div>
+    </script>
+
+    <script type="text/template" id="submission-tbl-row-tmpl">
+        <tr>
+            <td>{{id}}</td>
+            <td><a href="#observation/{{id}}">details</a></td>
+        </tr>
+    </script>
+
+    <script type="text/template" id="search-empty-tmpl">
+        <tr>
+            <td colspan="5">
+                <div class="alert alert-error">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    <strong>Oh snap!</strong> We could not find any subjects related to your search.
+                    Please change a few things up and try submitting again.
+                </div>
+            </td>
+        </tr>
+    </script>
+
+    <script type="text/template" id="search-result-row-tmpl">
+        <tr>
+            <td>{{displayName}}</td>
+            <td>{{synonymsStr}}</td>
+            <td>{{type}}</td>
+            <td>{{organism.taxonomyId}}</td>
+            <td><a href="#subject/{{id}}">details</a></td>
+        </tr>
+    </script>
+
+    <script type="text/template" id="search-tmpl">
+        <div class="container common-container" id="search-results-container">
+            <h1>Search <small>for "{{term}}"</small></h1>
+
+            <table id="search-results-grid" class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Synonyms</th>
+                    <th>Type</th>
+                    <th>Organism</th>
+                    <th>Details</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- here will go the rows -->
+                <tr id="loading-row">
+                    <td colspan="5">
+                        <div class="progress progress-striped active">
+                            <h3>Loading...</h3></br>
+                            <div class="bar" style="width: 100%;"></div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </script>
 
     <!-- end of templates -->
 
     <script src="js/targets.js"></script>
     <script src="js/drugs.js"></script>
-    <script data-main="js/ctd2" src="js/require-jquery.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/holder.js"></script>
+    <script src="js/underscore.js"></script>
+    <script src="js/json2.js"></script>
+    <script src="js/backbone-min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/ctd2.js"></script>
   </body>
 </html>

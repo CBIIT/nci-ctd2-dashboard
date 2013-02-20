@@ -28,4 +28,6 @@ public interface DashboardDao {
     ObservedEvidenceRole findObservedEvidenceRole(String templateName, String columnName);
     ObservationTemplate findObservationTemplateByName(String templateName);
     SubmissionCenter findSubmissionCenterByName(String submissionCenterName);
+    List<Submission> findSubmissionBySubmissionCenter(SubmissionCenter submissionCenter);
+    List<Observation> findObservationsBySubmission(Submission submission);
 }
