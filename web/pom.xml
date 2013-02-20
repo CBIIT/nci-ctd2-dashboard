@@ -11,7 +11,7 @@
   <artifactId>dashboard-webapp</artifactId>
   <packaging>war</packaging>
   <version>0.1.0-SNAPSHOT</version>
-  <name>dashboard-webapp Maven Webapp</name>
+  <name>Web UI</name>
   <url>http://maven.apache.org</url>
 
   <dependencies>

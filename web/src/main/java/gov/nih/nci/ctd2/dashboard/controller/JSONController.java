@@ -22,12 +22,25 @@ public class JSONController {
     private DashboardDao dashboardDao;
 
     @Transactional
-    @RequestMapping(value="{id}", method = {RequestMethod.GET, RequestMethod.POST}, headers = "Accept=application/json")
-    public ResponseEntity<String> getEntityInJson(@PathVariable Integer id) {
-        DashboardEntity entityById = dashboardDao.getEntityById(Subject.class, id);
+    @RequestMapping(value="{type}/{id}", method = {RequestMethod.GET, RequestMethod.POST}, headers = "Accept=application/json")
+    public ResponseEntity<String> getEntityInJson(@PathVariable String type, @PathVariable Integer id) {
+        DashboardEntity entityById = null;
+
+        Class<? extends DashboardEntity> clazz = Subject.class;
+        if(type.equalsIgnoreCase("subject")) {
+            clazz = Subject.class;
+        } else if(type.equalsIgnoreCase("submission")) {
+            clazz = Submission.class;
+        } else if(type.equalsIgnoreCase("observation")) {
+            clazz = Observation.class;
+        } else if(type.equalsIgnoreCase("center")) {
+            clazz = SubmissionCenter.class;
+        }
+
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json; charset=utf-8");
 
+        entityById = dashboardDao.getEntityById(clazz, id);
         if(entityById == null) {
             return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
         }
