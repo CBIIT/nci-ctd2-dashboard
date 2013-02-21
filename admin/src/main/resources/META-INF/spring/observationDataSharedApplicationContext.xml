@@ -80,49 +80,49 @@
 	<constructor-arg index="0" type="java.util.Map">
 	  <map key-type="java.lang.String" value-type="java.lang.String">
 		<!-- broad_compound_sensitivity_enrichment template -->
-		<entry key="broad_compound_sensitivity_enrichment:cell_line_subset" value="EVIDENCE:readString:createObservedLabelEvidence" />
-		<entry key="broad_compound_sensitivity_enrichment:cell_line_exclusion" value="EVIDENCE:readString:createObservedLabelEvidence" />
-		<entry key="broad_compound_sensitivity_enrichment:feature_dataset" value="EVIDENCE:readString:createObservedLabelEvidence" />
-		<entry key="broad_compound_sensitivity_enrichment:compound_name" value="SUBJECT:findCompoundsByName" />
-		<entry key="broad_compound_sensitivity_enrichment:entrez_gene_id" value="SUBJECT:findGenesByEntrezId" />
-		<!--<entry key="broad_compound_sensitivity_enrichment:cell_lineage" value="SUBJECT:" />-->
-		<entry key="broad_compound_sensitivity_enrichment:number_of_cell_lines" value="EVIDENCE:readInt:createObservedNumericEvidence" />
-		<entry key="broad_compound_sensitivity_enrichment:number_of_mutant_cell_lines" value="EVIDENCE:readInt:createObservedNumericEvidence" />
-		<entry key="broad_compound_sensitivity_enrichment:enrichment_direction" value="EVIDENCE:readString:createObservedLabelEvidence" />
-		<entry key="broad_compound_sensitivity_enrichment:log_fdr" value="EVIDENCE:readDouble:createObservedNumericEvidence" />
-		<entry key="broad_compound_sensitivity_enrichment:response_image_path" value="EVIDENCE:readString:createObservedFileEvidence" />
-		<entry key="broad_compound_sensitivity_enrichment:feature_image_path" value="EVIDENCE:readString:createObservedFileEvidence" />
-		<entry key="broad_compound_sensitivity_enrichment:nci_portal" value="EVIDENCE:readString:createObservedUrlEvidence" />
-		<entry key="broad_compound_sensitivity_enrichment:gct_path" value="EVIDENCE:readString:createObservedFileEvidence" />
+		<entry key="broad_compound_sensitivity_enrichment:cell_line_subset" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="broad_compound_sensitivity_enrichment:cell_line_exclusion" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="broad_compound_sensitivity_enrichment:feature_dataset" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="broad_compound_sensitivity_enrichment:compound_name" value="subject:findCompoundsByName" />
+		<entry key="broad_compound_sensitivity_enrichment:entrez_gene_id" value="subject:findGenesByEntrezId" />
+		<!--<entry key="broad_compound_sensitivity_enrichment:cell_lineage" value="subject:" />-->
+		<entry key="broad_compound_sensitivity_enrichment:number_of_cell_lines" value="evidence:readInt:createObservedNumericEvidence" />
+		<entry key="broad_compound_sensitivity_enrichment:number_of_mutant_cell_lines" value="evidence:readInt:createObservedNumericEvidence" />
+		<entry key="broad_compound_sensitivity_enrichment:enrichment_direction" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="broad_compound_sensitivity_enrichment:log_fdr" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="broad_compound_sensitivity_enrichment:response_image_path" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="broad_compound_sensitivity_enrichment:feature_image_path" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="broad_compound_sensitivity_enrichment:nci_portal" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="broad_compound_sensitivity_enrichment:gct_path" value="evidence:readString:createObservedFileEvidence" />
 		<!-- columbia signaling analysis template -->
-		<entry key="columbia_all_mr_tf_or_sig_analysis:affy_probeset_id" value="EVIDENCE:readString:createObservedLabelEvidence" />
-		<entry key="columbia_all_mr_tf_or_sig_analysis:entrez_gene_id" value="SUBJECT:findGenesByEntrezId" />
-		<!--<entry key="columbia_all_mr_tf_or_sig_analysis:cell_lineage_tissue" value="SUBJECT:" />-->
-		<!--<entry key="columbia_all_mr_tf_or_sig_analysis:cell_lineage_blood_type" value="SUBJECT:" />-->
-		<entry key="columbia_all_mr_tf_or_sig_analysis:log2_fold_change" value="EVIDENCE:readDouble:createObservedNumericEvidence" />
-		<entry key="columbia_all_mr_tf_or_sig_analysis:avg_expr" value="EVIDENCE:readDouble:createObservedNumericEvidence" />
-		<entry key="columbia_all_mr_tf_or_sig_analysis:z_score" value="EVIDENCE:readDouble:createObservedNumericEvidence" />
-		<entry key="columbia_all_mr_tf_or_sig_analysis:p_value" value="EVIDENCE:readDouble:createObservedNumericEvidence" />
-		<entry key="columbia_all_mr_tf_or_sig_analysis:adj_p_value" value="EVIDENCE:readDouble:createObservedNumericEvidence" />
-		<entry key="columbia_all_mr_tf_or_sig_analysis:func_type" value="EVIDENCE:readString:createObservedLabelEvidence" />
-		<entry key="columbia_all_mr_tf_or_sig_analysis:set_size" value="EVIDENCE:readInt:createObservedNumericEvidence" />
-		<entry key="columbia_all_mr_tf_or_sig_analysis:gsea_enrich_score" value="EVIDENCE:readDouble:createObservedNumericEvidence" />
-		<entry key="columbia_all_mr_tf_or_sig_analysis:gsea_p_value" value="EVIDENCE:readDouble:createObservedNumericEvidence" />
-		<entry key="columbia_all_mr_tf_or_sig_analysis:gsea_fdr" value="EVIDENCE:readDouble:createObservedNumericEvidence" />
+		<entry key="columbia_all_mr_tf_or_sig_analysis:affy_probeset_id" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="columbia_all_mr_tf_or_sig_analysis:entrez_gene_id" value="subject:findGenesByEntrezId" />
+		<!--<entry key="columbia_all_mr_tf_or_sig_analysis:cell_lineage_tissue" value="subject:" />-->
+		<!--<entry key="columbia_all_mr_tf_or_sig_analysis:cell_lineage_blood_type" value="subject:" />-->
+		<entry key="columbia_all_mr_tf_or_sig_analysis:log2_fold_change" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="columbia_all_mr_tf_or_sig_analysis:avg_expr" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="columbia_all_mr_tf_or_sig_analysis:z_score" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="columbia_all_mr_tf_or_sig_analysis:p_value" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="columbia_all_mr_tf_or_sig_analysis:adj_p_value" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="columbia_all_mr_tf_or_sig_analysis:func_type" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="columbia_all_mr_tf_or_sig_analysis:set_size" value="evidence:readInt:createObservedNumericEvidence" />
+		<entry key="columbia_all_mr_tf_or_sig_analysis:gsea_enrich_score" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="columbia_all_mr_tf_or_sig_analysis:gsea_p_value" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="columbia_all_mr_tf_or_sig_analysis:gsea_fdr" value="evidence:readDouble:createObservedNumericEvidence" />
 		<!-- columbia differential representation analysis template -->
-		<entry key="columbia_all_diff_repr_analysis:entrez_gene_id" value="SUBJECT:findGenesBySymbol" />
-		<entry key="columbia_all_diff_repr_analysis:num_probs" value="EVIDENCE:readInt:createObservedNumericEvidence" />
-		<!--<entry key="columbia_all_diff_repr_analysis:cell_lineage" value="SUBJECT:" />-->
-		<!--<entry key="columbia_all_diff_repr_analysis:cell_line_a" value="SUBJECT:" />-->
-		<entry key="columbia_all_diff_repr_analysis:log2_fold_change_a" value="EVIDENCE:readDouble:createObservedNumericEvidence" />
-		<entry key="columbia_all_diff_repr_analysis:avg_rep_a" value="EVIDENCE:readDouble:createObservedNumericEvidence" />
-		<entry key="columbia_all_diff_repr_analysis:z_score_a" value="EVIDENCE:readDouble:createObservedNumericEvidence" />
-		<entry key="columbia_all_diff_repr_analysis:p_value_a" value="EVIDENCE:readDouble:createObservedNumericEvidence" />
-		<!--<entry key="columbia_all_diff_repr_analysis:cell_line_b" value="SUBJECT:" />-->
-		<entry key="columbia_all_diff_repr_analysis:log2_fold_change_b" value="EVIDENCE:readDouble:createObservedNumericEvidence" />
-		<entry key="columbia_all_diff_repr_analysis:avg_rep_b" value="EVIDENCE:readDouble:createObservedNumericEvidence" />
-		<entry key="columbia_all_diff_repr_analysis:z_score_b" value="EVIDENCE:readDouble:createObservedNumericEvidence" />
-		<entry key="columbia_all_diff_repr_analysis:p_value_b" value="EVIDENCE:readDouble:createObservedNumericEvidence" />
+		<entry key="columbia_all_diff_repr_analysis:entrez_gene_id" value="subject:findGenesBySymbol" />
+		<entry key="columbia_all_diff_repr_analysis:num_probs" value="evidence:readInt:createObservedNumericEvidence" />
+		<!--<entry key="columbia_all_diff_repr_analysis:cell_lineage" value="subject:" />-->
+		<!--<entry key="columbia_all_diff_repr_analysis:cell_line_a" value="subject:" />-->
+		<entry key="columbia_all_diff_repr_analysis:log2_fold_change_a" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="columbia_all_diff_repr_analysis:avg_rep_a" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="columbia_all_diff_repr_analysis:z_score_a" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="columbia_all_diff_repr_analysis:p_value_a" value="evidence:readDouble:createObservedNumericEvidence" />
+		<!--<entry key="columbia_all_diff_repr_analysis:cell_line_b" value="subject:" />-->
+		<entry key="columbia_all_diff_repr_analysis:log2_fold_change_b" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="columbia_all_diff_repr_analysis:avg_rep_b" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="columbia_all_diff_repr_analysis:z_score_b" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="columbia_all_diff_repr_analysis:p_value_b" value="evidence:readDouble:createObservedNumericEvidence" />
 	  </map>
 	</constructor-arg>
   </bean>

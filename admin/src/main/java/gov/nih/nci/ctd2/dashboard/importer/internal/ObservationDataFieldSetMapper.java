@@ -73,7 +73,7 @@ public class ObservationDataFieldSetMapper implements FieldSetMapper<Observation
 				String mapKey = templateName + MAP_DELIMITER + columnName;
 				if (!observationTemplateMap.containsKey(mapKey)) continue;
 				String[] mapValues = observationTemplateMap.get(mapKey).split(MAP_DELIMITER);
-				if (mapValues[ROLE_TYPE_INDEX].equals("SUBJECT")) {
+				if (mapValues[ROLE_TYPE_INDEX].equals("subject")) {
 					ObservedSubject observedSubject = 
 						observationDataFactory.createObservedSubject(fieldSet.readString(columnName),
 																	 columnName, templateName,
