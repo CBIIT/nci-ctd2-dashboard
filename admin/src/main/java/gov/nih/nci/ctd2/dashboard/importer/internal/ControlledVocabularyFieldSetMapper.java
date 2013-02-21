@@ -18,17 +18,17 @@ import java.util.HashSet;
 @Component("controlledVocabularyMapper")
 public class ControlledVocabularyFieldSetMapper implements FieldSetMapper<ControlledVocabulary> {
 
-	private static final String TEMPLATE_NAME = "TEMPLATE_NAME";
-	private static final String TEMPLATE_DESCRIPTION = "TEMPLATE_DESCRIPTION";
-	private static final String TEMPLATE_TIER = "TEMPLATE_TIER";
-	private static final String COLUMN_NAME = "COLUMN_NAME";
-	private static final String SUBJECT = "SUBJECT";
-	private static final String EVIDENCE = "EVIDENCE";
-	private static final String ROLE = "ROLE";
-	private static final String DESCRIPTION = "DESCRIPTION";
-	private static final String MIME_TYPE = "MIME_TYPE";
-	private static final String NUMERIC_UNITS = "NUMERIC_UNITS";
-	private static final String URL_TEMPLATE = "URL_TEMPLATE";
+	private static final String TEMPLATE_NAME = "template_name";
+	private static final String TEMPLATE_DESCRIPTION = "template_description";
+	private static final String TEMPLATE_TIER = "template_tier";
+	private static final String COLUMN_NAME = "column_name";
+	private static final String SUBJECT = "subject";
+	private static final String EVIDENCE = "evidence";
+	private static final String ROLE = "role";
+	private static final String DESCRIPTION = "description";
+	private static final String MIME_TYPE = "mime_type";
+	private static final String NUMERIC_UNITS = "numeric_units";
+	private static final String URL_TEMPLATE = "url_template";
 
     @Autowired
     private DashboardFactory dashboardFactory;
