@@ -12,24 +12,36 @@
   <context:component-scan base-package="gov.nih.nci.ctd2.dashboard.importer.internal" />
 
   <!-- broad compound sensitivity enrichment -->
-  <bean name="broadCompoundSensitivityEnrichmentReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+  <bean name="broadCompoundSensitivityEnrichmentReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
 	<property name="resource" value="${compound.sensitivity.enrichment.data.location}" />
-    <property name="lineMapper" ref="broadCompoundSensitivityEnrichmentLineMapper" />
-	<property name="linesToSkip" value="1" />
+	<property name="delegate">
+	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+		<property name="lineMapper" ref="broadCompoundSensitivityEnrichmentLineMapper" />
+		<property name="linesToSkip" value="1" />
+	  </bean>
+	</property>
   </bean>
 
   <!-- columbia signaling analysis -->
-  <bean name="columbiaSignalingAnalysisReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+  <bean name="columbiaSignalingAnalysisReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
 	<property name="resource" value="${signaling.analysis.data.location}" />
-    <property name="lineMapper" ref="columbiaSignalingAnalysisLineMapper" />
-	<property name="linesToSkip" value="1" />
+	<property name="delegate">
+	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+		<property name="lineMapper" ref="columbiaSignalingAnalysisLineMapper" />
+		<property name="linesToSkip" value="1" />
+	  </bean>
+	</property>
   </bean>
 
   <!-- columbia differential representation analysis -->
-  <bean name="columbiaDifferentialRepresentationAnalysisReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+  <bean name="columbiaDifferentialRepresentationAnalysisReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
 	<property name="resource" value="${differential.representation.analysis.data.location}" />
-    <property name="lineMapper" ref="columbiaDifferentialRepresentationAnalysisLineMapper" />
-	<property name="linesToSkip" value="1" />
+	<property name="delegate">
+	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+		<property name="lineMapper" ref="columbiaDifferentialRepresentationAnalysisLineMapper" />
+		<property name="linesToSkip" value="1" />
+	  </bean>
+	</property>
   </bean>
 
 </beans>

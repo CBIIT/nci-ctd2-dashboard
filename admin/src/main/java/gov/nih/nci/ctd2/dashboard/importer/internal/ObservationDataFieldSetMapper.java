@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.lang.reflect.Method;
@@ -39,14 +40,24 @@ public class ObservationDataFieldSetMapper implements FieldSetMapper<Observation
 	@Qualifier("observationTemplateMap")
 	private	HashMap<String, String> observationTemplateMap;
 
+	private HashMap<String, Submission> submissionCache = new HashMap<String, Submission>();
+
 	public ObservationData mapFieldSet(FieldSet fieldSet) throws BindException {
 
 		String templateName = fieldSet.readString(TEMPLATE_NAME);
+		String submissionCenter = fieldSet.readString(SUBMISSION_CENTER);
+		Date submissionDate = fieldSet.readDate(SUBMISSION_DATE, "mm/DD/yyyy");
 
 		// create submission
-		Submission submission = observationDataFactory.createSubmission(fieldSet.readString(SUBMISSION_CENTER),
-																		fieldSet.readDate(SUBMISSION_DATE, "mm/DD/yyyy"),
-																		templateName);
+		String submissionCacheKey = submissionCenter + submissionDate + templateName;
+		Submission submission = submissionCache.get(submissionCacheKey);
+		if (submission == null) {
+			System.out.println("new submission: " + submissionCacheKey);
+			submission = observationDataFactory.createSubmission(submissionCenter,
+																 submissionDate,
+																 templateName);
+			submissionCache.put(submissionCacheKey, submission);
+		}
 		// create observation
 		Observation observation = dashboardFactory.create(Observation.class);
 		observation.setSubmission(submission);
