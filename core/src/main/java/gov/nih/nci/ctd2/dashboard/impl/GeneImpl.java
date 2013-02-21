@@ -1,6 +1,7 @@
 package gov.nih.nci.ctd2.dashboard.impl;
 
 import gov.nih.nci.ctd2.dashboard.model.Gene;
+import org.hibernate.annotations.Index;
 import org.hibernate.annotations.Proxy;
 
 import javax.persistence.Column;
@@ -10,6 +11,10 @@ import javax.persistence.Table;
 @Entity
 @Proxy(proxyClass= Gene.class)
 @Table(name = "gene")
+@org.hibernate.annotations.Table(
+        appliesTo = "gene",
+        indexes = { @Index(name = "geneHgncIdx", columnNames = { "hgncId" })
+        })
 public class GeneImpl extends SubjectWithOrganismImpl implements Gene {
     private String entrezGeneId;
 	private String hgncId;
