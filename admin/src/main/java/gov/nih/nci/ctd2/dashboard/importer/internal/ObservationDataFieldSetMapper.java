@@ -26,9 +26,9 @@ public class ObservationDataFieldSetMapper implements FieldSetMapper<Observation
 	private static final int FIELDSET_METHOD_INDEX = 1;
 	private static final int OBSERVATION_DATA_FACTORY_METHOD_INDEX = 2;
 
-	private static final String SUBMISSION_CENTER = "SUBMISSION_CENTER";
-	private static final String	SUBMISSION_DATE = "SUBMISSION_DATE";
-	private static final String TEMPLATE_NAME = "TEMPLATE_NAME";
+	private static final String SUBMISSION_CENTER = "submission_center";
+	private static final String	SUBMISSION_DATE = "submission_date";
+	private static final String TEMPLATE_NAME = "template_name";
 
 	@Autowired
 	private ObservationDataFactory observationDataFactory;
@@ -52,7 +52,6 @@ public class ObservationDataFieldSetMapper implements FieldSetMapper<Observation
 		String submissionCacheKey = submissionCenter + submissionDate + templateName;
 		Submission submission = submissionCache.get(submissionCacheKey);
 		if (submission == null) {
-			System.out.println("new submission: " + submissionCacheKey);
 			submission = observationDataFactory.createSubmission(submissionCenter,
 																 submissionDate,
 																 templateName);
