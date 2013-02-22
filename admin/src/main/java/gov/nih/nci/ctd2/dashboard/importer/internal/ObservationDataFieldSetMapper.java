@@ -14,6 +14,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
 
 @Component("observationDataMapper")
 public class ObservationDataFieldSetMapper implements FieldSetMapper<ObservationData> {
@@ -30,6 +31,8 @@ public class ObservationDataFieldSetMapper implements FieldSetMapper<Observation
 	private static final String	SUBMISSION_DATE = "submission_date";
 	private static final String TEMPLATE_NAME = "template_name";
 
+	public static final SimpleDateFormat TEMPLATE_DATE_FORMAT = new SimpleDateFormat("mm/DD/yyyy");
+
 	@Autowired
 	private ObservationDataFactory observationDataFactory;
 
@@ -42,14 +45,21 @@ public class ObservationDataFieldSetMapper implements FieldSetMapper<Observation
 
 	private HashMap<String, Submission> submissionCache = new HashMap<String, Submission>();
 
+	/* Used by ObservationDataWriter */
+	public static String getSubmissionCacheKey(Submission submission) {
+		return submission.getSubmissionCenter().getDisplayName() +
+			ObservationDataFieldSetMapper.TEMPLATE_DATE_FORMAT.format(submission.getSubmissionDate()) +
+			submission.getObservationTemplate().getDisplayName();
+	}
+
 	public ObservationData mapFieldSet(FieldSet fieldSet) throws BindException {
 
 		String templateName = fieldSet.readString(TEMPLATE_NAME);
 		String submissionCenter = fieldSet.readString(SUBMISSION_CENTER);
 		Date submissionDate = fieldSet.readDate(SUBMISSION_DATE, "mm/DD/yyyy");
 
-		// create submission
-		String submissionCacheKey = submissionCenter + submissionDate + templateName;
+		// create submission - if cache key changes, update getSubmissionCacheKey() defined above
+		String submissionCacheKey = submissionCenter + TEMPLATE_DATE_FORMAT.format(submissionDate) + templateName;
 		Submission submission = submissionCache.get(submissionCacheKey);
 		if (submission == null) {
 			submission = observationDataFactory.createSubmission(submissionCenter,
