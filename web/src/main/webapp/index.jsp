@@ -178,7 +178,7 @@
                   <img data-src="holder.js/1500x450/#006bb9:#006bb9" alt="" class="cimg">
                   <div class="container">
                       <div class="carousel-caption">
-                          <h1>Alterations</h1>
+                          <h1>Search</h1>
                           <div class="well carousel-well">
                               <p class="lead">Cras justo odio, dapibus ac facilisis in, egestas eget quam.
                                   Donec id elit non mi porta gravida at eget metus.
@@ -188,8 +188,7 @@
                               </p>
                               <form class="form-search">
                                   <input type="text" class="input-medium search-query" id="alteration-search" placeholder="e.g. BRAF V600E">
-                                  <a class="btn btn-small btn-info" href="#">Search Alterations</a>
-                                  or <a class="btn btn-small" href="#"><i class="icon-th-list"></i> Browse all alterations</a>
+                                  <a class="btn btn-small btn-info" href="#">Search</a>
                               </form>
                           </div>
                       </div>
@@ -205,19 +204,19 @@
         <div class="container marketing ctd2-boxes">
           <div class="row">
             <div class="span3 stories" data-order="0">
-              <h2>Stories</h2>
+              <h3>Stories</h3>
               <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.</p>
             </div><!-- /.span3 -->
             <div class="span3 target" data-order="1">
-              <h2>Targets</h2>
+              <h3>Targets</h3>
                 <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
             </div><!-- /.span3 -->
             <div class="span3 drug" data-order="2">
-              <h2>Compounds</h2>
+              <h3>Compounds</h3>
                 <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.</p>
             </div><!-- /.span3 -->
             <div class="span3 genomics" data-order="3">
-              <h2>Alterations</h2>
+              <h3>Search</h3>
               <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
             </div><!-- /.span3 -->
           </div><!-- /.row -->
@@ -394,6 +393,27 @@
          </div>
     </script>
 
+    <script type="text/template" id="observedsubject-row-tmpl">
+        <tr>
+            <td>{{observedSubjectRole.subjectRole.displayName}}</td>
+            <td>
+                <a href="#/observation/{{observation.id}}">
+                    {{observation.id}}
+                </a>
+            </td>
+            <td>
+                <a href="#/submission/{{observation.submission.id}}">
+                    {{observation.submission.id}}
+                </a>
+            </td>
+            <td>
+                <a href="#/center/{{observation.submission.submissionCenter.id}}">
+                    {{observation.submission.submissionCenter.displayName}}
+                </a>
+            </td>
+        </tr>
+    </script>
+
     <script type="text/template" id="submission-tbl-row-tmpl">
         <tr>
             <td>{{id}}</td>
@@ -441,8 +461,7 @@
                 <!-- here will go the rows -->
                 <tr id="loading-row">
                     <td colspan="5">
-                        <h3>Loading...</h3></br>
-
+                        <h3>Searching...</h3>
                         <div class="progress progress-striped active">
                             <div class="bar" style="width: 100%;"></div>
                         </div>

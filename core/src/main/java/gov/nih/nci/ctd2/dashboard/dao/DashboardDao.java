@@ -30,4 +30,7 @@ public interface DashboardDao {
     SubmissionCenter findSubmissionCenterByName(String submissionCenterName);
     List<Submission> findSubmissionBySubmissionCenter(SubmissionCenter submissionCenter);
     List<Observation> findObservationsBySubmission(Submission submission);
+    List<ObservedSubject> findObservedSubjectBySubject(Subject subject);
+    List<ObservedSubject> findObservedSubjectByObservation(Observation observation);
+    List<ObservedEvidence> findObservedEvidenceByObservation(Observation observation);
 }

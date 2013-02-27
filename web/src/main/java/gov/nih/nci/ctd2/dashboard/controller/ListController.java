@@ -4,6 +4,7 @@ import flexjson.JSONSerializer;
 import flexjson.transformer.AbstractTransformer;
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
 import gov.nih.nci.ctd2.dashboard.model.*;
+import gov.nih.nci.ctd2.dashboard.util.DateTransformer;
 import gov.nih.nci.ctd2.dashboard.util.ImplTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -52,9 +54,28 @@ public class ListController {
             }
         } else if(type.equals("center")) {
             entities = dashboardDao.findEntities(SubmissionCenter.class);
+        } else if(type.equals("observedsubject") && filterBy != null) {
+            Subject subject = dashboardDao.getEntityById(Subject.class, filterBy);
+            if(subject != null) {
+                entities = dashboardDao.findObservedSubjectBySubject(subject);
+            } else {
+                Observation observation = dashboardDao.getEntityById(Observation.class, filterBy);
+                if(observation != null) {
+                    entities = dashboardDao.findObservedSubjectByObservation(observation);
+                }
+            }
+        } else if(type.equals("observedevidence") && filterBy != null) {
+            Observation observation = dashboardDao.getEntityById(Observation.class, filterBy);
+            if(observation != null) {
+                entities = dashboardDao.findObservedEvidenceByObservation(observation);
+            }
         }
 
-        JSONSerializer jsonSerializer = new JSONSerializer().transform(new ImplTransformer(), Class.class);
+        JSONSerializer jsonSerializer = new JSONSerializer()
+                .transform(new ImplTransformer(), Class.class)
+                .transform(new DateTransformer(), Date.class)
+        ;
+
         return new ResponseEntity<String>(
                 jsonSerializer.serialize(entities),
                 headers,
