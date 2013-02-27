@@ -25,17 +25,18 @@ public class SearchController {
     private DashboardDao dashboardDao;
 
     @Transactional
-    @RequestMapping(value="{keyword}", method = {RequestMethod.GET, RequestMethod.POST}, headers = "Accept=application/json")
-    public ResponseEntity<String> getSearchResultsInJson(@PathVariable String keyword) {
+    @RequestMapping(value="{type}/{keyword}", method = {RequestMethod.GET, RequestMethod.POST}, headers = "Accept=application/json")
+    public ResponseEntity<String> getSearchResultsInJson(@PathVariable String type, @PathVariable String keyword) {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json; charset=utf-8");
 
         // Do not allow search with really genetic keywords
         // This is to prevent unnecessary server loads
-        if(keyword.length() < 3)
+        if(keyword.length() < 2)
             return new ResponseEntity<String>(headers, HttpStatus.BAD_REQUEST);
 
-        List<Subject> subjectsBySynonym = dashboardDao.findSubjectsBySynonym(keyword, true);
+        boolean isExact = type.trim().equalsIgnoreCase("exact");
+        List<Subject> subjectsBySynonym = dashboardDao.findSubjectsBySynonym(keyword, isExact);
 
         JSONSerializer jsonSerializer = new JSONSerializer().transform(new ImplTransformer(), Class.class);
         return new ResponseEntity<String>(

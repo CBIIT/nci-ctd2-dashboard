@@ -157,7 +157,7 @@
               <img data-src="holder.js/1500x450/#f99910:#f99910" alt="" class="cimg">
               <div class="container">
                 <div class="carousel-caption">
-                  <h1>Drugs</h1>
+                  <h1>Compounds</h1>
                     <div class="well carousel-well">
                         <p class="lead">Cras justo odio, dapibus ac facilisis in, egestas eget quam.
                             Donec id elit non mi porta gravida at eget metus.
@@ -167,8 +167,8 @@
                         </p>
                         <form class="form-search">
                             <input type="text" class="input-medium search-query" id="drug-search" placeholder="e.g. Vemurafenib">
-                            <a class="btn btn-small btn-warning" href="#">Search Drugs</a>
-                            or <a class="btn btn-small" href="#"><i class="icon-th-list"></i> Browse all drugs</a>
+                            <a class="btn btn-small btn-warning" href="#">Search Compounds</a>
+                            or <a class="btn btn-small" href="#"><i class="icon-th-list"></i> Browse all compounds</a>
                         </form>
                     </div>
                 </div>
@@ -213,7 +213,7 @@
                 <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
             </div><!-- /.span3 -->
             <div class="span3 drug" data-order="2">
-              <h2>Drugs</h2>
+              <h2>Compounds</h2>
                 <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.</p>
             </div><!-- /.span3 -->
             <div class="span3 genomics" data-order="3">
@@ -342,6 +342,58 @@
         </div>
     </script>
 
+    <script type="text/template" id="gene-tmpl">
+         <div class="container common-container" id="gene-container">
+             <h1>{{displayName}} <small>(# {{id}})</small></h1>
+
+             <table id="gene-details-grid" class="table table-bordered table-striped">
+                 <tr>
+                     <th>Name</th>
+                     <td>{{displayName}}</td>
+                 </tr>
+                 <tr>
+                     <th>Synonyms</th>
+                     <td>{{synonymsStr}}</td>
+                 </tr>
+                 <tr>
+                     <th>Type</th>
+                     <td>Gene</td>
+                 </tr>
+                 <tr>
+                     <th>Organism</th>
+                     <td>{{organism.displayName}}</td>
+                 </tr>
+                 <tr>
+                     <th>Entrez Gene ID</th>
+                     <td>{{entrezGeneId}}</td>
+                 </tr>
+                 <tr>
+                     <th>HGNC ID</th>
+                     <td>{{HGNCId}}</td>
+                 </tr>
+                 <tr>
+                     <th>References</th>
+                     <td class="xrefsColumn">{{xrefStr}}</td>
+                 </tr>
+             </table>
+
+             <h1>Related Observations</h1>
+             <table id="gene-observation-grid" class="table table-bordered table-striped observations">
+                 <thead>
+                 <tr>
+                     <th>Role</th>
+                     <th>Observation</th>
+                     <th>Submission</th>
+                     <th>Center</th>
+                 </tr>
+                 </thead>
+                 <tbody>
+                 <!-- here will go the rows -->
+                 </tbody>
+             </table>
+         </div>
+    </script>
+
     <script type="text/template" id="submission-tbl-row-tmpl">
         <tr>
             <td>{{id}}</td>
@@ -366,7 +418,7 @@
             <td>{{displayName}}</td>
             <td>{{synonymsStr}}</td>
             <td>{{type}}</td>
-            <td>{{organism.taxonomyId}}</td>
+            <td>{{organism.displayName}}</td>
             <td><a href="#subject/{{id}}">details</a></td>
         </tr>
     </script>

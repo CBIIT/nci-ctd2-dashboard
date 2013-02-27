@@ -43,8 +43,16 @@
         }
     });
 
-    var SearchResults = Backbone.Model.extend({
-        urlRoot: CORE_API_URL + "search"
+    var FuzzySearchResults = Backbone.Model.extend({
+        urlRoot: CORE_API_URL + "search/fuzzy"
+    });
+
+    var ExactSearchResults = Backbone.Model.extend({
+        urlRoot: CORE_API_URL + "search/exact"
+    });
+
+    var Subject = Backbone.Model.extend({
+        urlRoot: CORE_API_URL + "get/subject"
     });
 
     /* Views */
@@ -143,6 +151,31 @@
         }
     });
 
+    var GeneView = Backbone.View.extend({
+        el: $("#main-container"),
+        template:  _.template($("#gene-tmpl").html()),
+        render: function() {
+            var result = this.model.toJSON();
+
+            var synonymsStr = "";
+            _.each(result.synonyms, function(aSynonym) {
+                synonymsStr += aSynonym.displayName + " ";
+            });
+            result["synonymsStr"] = synonymsStr;
+
+            var xrefStr = "";
+            _.each(result.xrefs, function(xref) {
+                xrefStr += xref.databaseName + ":" + xref.databaseId + " ";
+            });
+            result["xrefStr"] = xrefStr;
+
+            result["type"] = result.class;
+
+            $(this.el).append(this.template(result));
+            return this;
+        }
+    });
+
     var CenterView = Backbone.View.extend({
         el: $("#main-container"),
         template: _.template($("#center-tmpl").html()),
@@ -210,24 +243,6 @@
         }
     });
 
-    /*
-    var SearchResultsRowView = Backbone.View.extend({
-        template: _.template($("#search-result-row-tmpl").html()),
-        render: function() {
-            var result = this.model.toJSON();
-            var synonymsStr = "";
-            _.each(result.synonyms, function(aSynonym) {
-                synonymsStr += aSynonym.displayName + " ";
-            });
-            result["synonymsStr"] = synonymsStr;
-
-            $(this.el).append(this.template(result));
-
-            return this;
-        }
-    });
-    */
-
     var SearchResultsRowView = Backbone.View.extend({
         template: _.template($("#search-result-row-tmpl").html()),
         render: function() {
@@ -248,11 +263,19 @@
     var SearchView = Backbone.View.extend({
         el: $("#main-container"),
         template: _.template($("#search-tmpl").html()),
+        exact: true,
+        setExact: function(isExact) {
+            this.exact = isExact;
+        },
+
         render: function() {
             $(this.el).html(this.template(this.model));
 
             var thatEl = this.el;
-            var searchResults = new SearchResults({ id: this.model.term });
+            var searchResults = this.exact
+                ? new ExactSearchResults({ id: this.model.term })
+                : new FuzzySearchResults({ id: this.model.term });
+
             searchResults.fetch({
                 success: function() {
                     var results = searchResults.toJSON();
@@ -281,7 +304,8 @@
             "centers": "listCenters",
             "center/:id": "showCenter",
             "submission/:id": "showSubmission",
-            "search/:term": "search",
+            "search/:type/:term": "search",
+            "subject/:id": "showSubject",
             "*actions": "home"
         },
 
@@ -290,9 +314,30 @@
             homeView.render();
         },
 
-        search: function(term) {
+        search: function(type, term) {
             var searchView = new SearchView({ model: { term: term } });
+            var isExact = true;
+            if(type.toLowerCase() == "fuzzy") {
+                isExact = false;
+            }
+            searchView.setExact(isExact);
             searchView.render();
+        },
+
+        showSubject: function(id) {
+            var subject = new Subject({ id: id });
+            subject.fetch({
+                success: function() {
+                    var type = subject.get("class");
+                    var subjectView;
+                    if(type == "Gene") {
+                        subjectView = new GeneView({ model: subject });
+                    } else {
+                        subjectView = new GeneView({ model: subject });
+                    }
+                    subjectView.render();
+                }
+            });
         },
 
         showCenter: function(id) {
@@ -320,7 +365,6 @@
             centerListView.render();
         }
     });
-
 
     $(function(){
         new AppRouter();
