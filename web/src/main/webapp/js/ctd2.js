@@ -43,6 +43,24 @@
         }
     });
 
+    var ObservedSubject = Backbone.Model.extend({
+        urlRoot: CORE_API_URL + "get/observedsubject"
+    });
+
+    var ObservedSubjects = Backbone.Collection.extend({
+        url: CORE_API_URL + "list/observedsubject/?filterBy=",
+        model: Submission,
+
+        initialize: function(attributes) {
+            if(attributes.subjectId != undefined) {
+                this.url += attributes.subjectId;
+            } else {
+                this.url += attributes.observationId;
+            }
+        }
+    });
+
+
     var FuzzySearchResults = Backbone.Model.extend({
         urlRoot: CORE_API_URL + "search/fuzzy"
     });
@@ -171,7 +189,28 @@
 
             result["type"] = result.class;
 
-            $(this.el).append(this.template(result));
+            $(this.el).html(this.template(result));
+
+            var observedSubjects = new ObservedSubjects({ subjectId: result.id });
+            var thatEl = $("#gene-observation-grid");
+            observedSubjects.fetch({
+                success: function() {
+                    _.each(observedSubjects.toJSON(), function(observedSubject) {
+                        var observedSubjectRowView
+                            = new ObservedSubjectRowView({ el: $(thatEl).find("tbody"), model: observedSubject });
+                        observedSubjectRowView.render();
+                    });
+                }
+            });
+
+            return this;
+        }
+    });
+
+    var ObservedSubjectRowView = Backbone.View.extend({
+        template:  _.template($("#observedsubject-row-tmpl").html()),
+        render: function() {
+            $(this.el).append(this.template(this.model));
             return this;
         }
     });
