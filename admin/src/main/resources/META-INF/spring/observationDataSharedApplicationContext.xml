@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:batch="http://www.springframework.org/schema/batch"
+		xmlns:context="http://www.springframework.org/schema/context"
+        xsi:schemaLocation="http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-2.1.xsd
+							http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+							http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+  <batch:job id="observationDataImporterJob">
+	<batch:step id="broadCompoundSensitivityEnrichmentStep" parent="observationDataStep" next="columbiaSignalingAnalysisStep">
+	  <batch:tasklet>
+		<batch:chunk reader="broadCompoundSensitivityEnrichmentReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+	<batch:step id="columbiaSignalingAnalysisStep" parent="observationDataStep" next="columbiaDifferentialRepresentationAnalysisStep">
+	  <batch:tasklet>
+		<batch:chunk reader="columbiaSignalingAnalysisReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+	<batch:step id="columbiaDifferentialRepresentationAnalysisStep" parent="observationDataStep">
+	  <batch:tasklet>
+		<batch:chunk reader="columbiaDifferentialRepresentationAnalysisReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+  </batch:job>
+
+  <bean id="observationDataStep" class="org.springframework.batch.core.step.item.SimpleStepFactoryBean" abstract="true">
+	<property name="transactionManager" ref="transactionManager" />
+	<property name="jobRepository" ref="jobRepository" />
+	<property name="commitInterval" value="100" />
+  </bean>
+
+  <!-- broad enrichement analysis -->
+
+  <!-- broadCompoundSensitivityEnrichmentReader defined in: -->
+  <!-- observationDataApplicationContext.xml test observationDataApplicationContext.xml -->
+  <bean name="broadCompoundSensitivityEnrichmentLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+	<property name="fieldSetMapper" ref="observationDataMapper" />
+	<property name="lineTokenizer" ref="broadCompoundSensitivityEnrichmentLineTokenizer" />
+  </bean>
+
+  <bean name="broadCompoundSensitivityEnrichmentLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+	<property name="delimiter" value="\u0009"/>
+	<property name="names" value="submission_center,submission_date,template_name,cell_line_subset,cell_line_exclusion,feature_dataset,compound_name,entrez_gene_id,cell_lineage,number_of_cell_lines,number_of_mutant_cell_lines,enrichment_direction,log_fdr,response_image_path,feature_image_path,nci_portal,gct_path"/>
+  </bean>
+
+  <!-- columbia signaling analysis -->
+
+  <!-- columbiaSignalingAnalysisReader defined in: -->
+  <!-- observationDataApplicationContext.xml test observationDataApplicationContext.xml -->
+  <bean name="columbiaSignalingAnalysisLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+	<property name="fieldSetMapper" ref="observationDataMapper" />
+	<property name="lineTokenizer" ref="columbiaSignalingAnalysisLineTokenizer" />
+  </bean>
+
+  <bean name="columbiaSignalingAnalysisLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+	<property name="delimiter" value="\u0009"/>
+	<property name="names" value="submission_center,submission_date,template_name,affy_probeset_id,entrez_gene_id,cell_lineage_tissue, cell_lineage_blood_type,log2_fold_change,avg_expr,z_score,p_value,adj_p_value,func_type,set_size,gsea_enrich_score,gsea_p_value,gsea_fdr"/>
+  </bean>
+
+  <!-- columbia differential representation analysis -->
+
+  <!-- columbiaSignalingAnalysisReader defined in: -->
+  <!-- observationDataApplicationContext.xml test observationDataApplicationContext.xml -->
+  <bean name="columbiaDifferentialRepresentationAnalysisLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+	<property name="fieldSetMapper" ref="observationDataMapper" />
+	<property name="lineTokenizer" ref="columbiaDifferentialRepresentationAnalysisLineTokenizer" />
+  </bean>
+
+  <bean name="columbiaDifferentialRepresentationAnalysisLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+	<property name="delimiter" value="\u0009"/>
+	<property name="names" value="submission_center,submission_date,template_name,entrez_gene_id,num_probs,cell_lineage,cell_line_a,log2_fold_change_a,avg_rep_a,z_score_a,p_value_a,cell_line_b,log2_fold_change_b,avg_rep_b,z_score_b,p_value_b"/>
+  </bean>
+
+  <!-- shared helper beans -->
+  <bean name="observationDataFactory" class="gov.nih.nci.ctd2.dashboard.importer.internal.ObservationDataFactoryImpl"/>
+
+  <bean name="observationTemplateMap" class="java.util.HashMap">
+	<constructor-arg index="0" type="java.util.Map">
+	  <map key-type="java.lang.String" value-type="java.lang.String">
+		<!-- broad_compound_sensitivity_enrichment template -->
+		<entry key="broad_compound_sensitivity_enrichment:cell_line_subset" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="broad_compound_sensitivity_enrichment:cell_line_exclusion" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="broad_compound_sensitivity_enrichment:feature_dataset" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="broad_compound_sensitivity_enrichment:compound_name" value="subject:findCompoundsByName" />
+		<entry key="broad_compound_sensitivity_enrichment:entrez_gene_id" value="subject:findGenesByEntrezId" />
+		<!--<entry key="broad_compound_sensitivity_enrichment:cell_lineage" value="subject:" />-->
+		<entry key="broad_compound_sensitivity_enrichment:number_of_cell_lines" value="evidence:readInt:createObservedNumericEvidence" />
+		<entry key="broad_compound_sensitivity_enrichment:number_of_mutant_cell_lines" value="evidence:readInt:createObservedNumericEvidence" />
+		<entry key="broad_compound_sensitivity_enrichment:enrichment_direction" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="broad_compound_sensitivity_enrichment:log_fdr" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="broad_compound_sensitivity_enrichment:response_image_path" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="broad_compound_sensitivity_enrichment:feature_image_path" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="broad_compound_sensitivity_enrichment:nci_portal" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="broad_compound_sensitivity_enrichment:gct_path" value="evidence:readString:createObservedFileEvidence" />
+		<!-- columbia signaling analysis template -->
+		<entry key="columbia_all_mr_tf_or_sig_analysis:affy_probeset_id" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="columbia_all_mr_tf_or_sig_analysis:entrez_gene_id" value="subject:findGenesByEntrezId" />
+		<!--<entry key="columbia_all_mr_tf_or_sig_analysis:cell_lineage_tissue" value="subject:" />-->
+		<!--<entry key="columbia_all_mr_tf_or_sig_analysis:cell_lineage_blood_type" value="subject:" />-->
+		<entry key="columbia_all_mr_tf_or_sig_analysis:log2_fold_change" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="columbia_all_mr_tf_or_sig_analysis:avg_expr" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="columbia_all_mr_tf_or_sig_analysis:z_score" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="columbia_all_mr_tf_or_sig_analysis:p_value" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="columbia_all_mr_tf_or_sig_analysis:adj_p_value" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="columbia_all_mr_tf_or_sig_analysis:func_type" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="columbia_all_mr_tf_or_sig_analysis:set_size" value="evidence:readInt:createObservedNumericEvidence" />
+		<entry key="columbia_all_mr_tf_or_sig_analysis:gsea_enrich_score" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="columbia_all_mr_tf_or_sig_analysis:gsea_p_value" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="columbia_all_mr_tf_or_sig_analysis:gsea_fdr" value="evidence:readDouble:createObservedNumericEvidence" />
+		<!-- columbia differential representation analysis template -->
+		<entry key="columbia_all_diff_repr_analysis:entrez_gene_id" value="subject:findGenesBySymbol" />
+		<entry key="columbia_all_diff_repr_analysis:num_probs" value="evidence:readInt:createObservedNumericEvidence" />
+		<!--<entry key="columbia_all_diff_repr_analysis:cell_lineage" value="subject:" />-->
+		<!--<entry key="columbia_all_diff_repr_analysis:cell_line_a" value="subject:" />-->
+		<entry key="columbia_all_diff_repr_analysis:log2_fold_change_a" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="columbia_all_diff_repr_analysis:avg_rep_a" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="columbia_all_diff_repr_analysis:z_score_a" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="columbia_all_diff_repr_analysis:p_value_a" value="evidence:readDouble:createObservedNumericEvidence" />
+		<!--<entry key="columbia_all_diff_repr_analysis:cell_line_b" value="subject:" />-->
+		<entry key="columbia_all_diff_repr_analysis:log2_fold_change_b" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="columbia_all_diff_repr_analysis:avg_rep_b" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="columbia_all_diff_repr_analysis:z_score_b" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="columbia_all_diff_repr_analysis:p_value_b" value="evidence:readDouble:createObservedNumericEvidence" />
+	  </map>
+	</constructor-arg>
+  </bean>
+
+</beans>
