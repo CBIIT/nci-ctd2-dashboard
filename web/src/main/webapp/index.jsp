@@ -330,7 +330,10 @@
             <table id="submission-observation-grid" class="table table-bordered table-striped observations">
                 <thead>
                 <tr>
-                    <th>#</th>
+                    <th>Observation</th>
+                    <th>Subject</th>
+                    <th>Role</th>
+                    <th>Description</th>
                     <th>Details</th>
                 </tr>
                 </thead>
@@ -339,6 +342,16 @@
                 </tbody>
             </table>
         </div>
+    </script>
+
+    <script type="text/template" id="submission-tbl-row-tmpl">
+        <tr>
+            <td># {{id}}</td>
+            <td>{{subject.displayName}}</td>
+            <td>{{observedSubjectRole.subjectRole.displayName}}</td>
+            <td>{{observedSubjectRole.description}}</td>
+            <td><a href="#observation/{{id}}">details</a></td>
+        </tr>
     </script>
 
     <script type="text/template" id="gene-tmpl">
@@ -380,9 +393,11 @@
              <table id="gene-observation-grid" class="table table-bordered table-striped observations">
                  <thead>
                  <tr>
-                     <th>Role</th>
                      <th>Observation</th>
-                     <th>Submission</th>
+                     <th>Role</th>
+                     <th>Observation Type</th>
+                     <th>Tier</th>
+                     <th>Date</th>
                      <th>Center</th>
                  </tr>
                  </thead>
@@ -395,15 +410,19 @@
 
     <script type="text/template" id="observedsubject-row-tmpl">
         <tr>
-            <td>{{observedSubjectRole.subjectRole.displayName}}</td>
             <td>
                 <a href="#/observation/{{observation.id}}">
-                    {{observation.id}}
+                    # {{observation.id}}
                 </a>
             </td>
+            <td>{{observedSubjectRole.subjectRole.displayName}}</td>
+            <td>
+                {{observation.submission.observationTemplate.description}}
+            </td>
+            <td>{{observation.submission.observationTemplate.tier}}</td>
             <td>
                 <a href="#/submission/{{observation.submission.id}}">
-                    {{observation.submission.id}}
+                    {{observation.submission.submissionDate}}
                 </a>
             </td>
             <td>
@@ -411,13 +430,6 @@
                     {{observation.submission.submissionCenter.displayName}}
                 </a>
             </td>
-        </tr>
-    </script>
-
-    <script type="text/template" id="submission-tbl-row-tmpl">
-        <tr>
-            <td>{{id}}</td>
-            <td><a href="#observation/{{id}}">details</a></td>
         </tr>
     </script>
 
