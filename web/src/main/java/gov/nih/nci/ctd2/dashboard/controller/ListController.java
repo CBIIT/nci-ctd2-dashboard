@@ -47,7 +47,13 @@ public class ListController {
             if(filterBy != null) {
                 Submission submission = dashboardDao.getEntityById(Submission.class, filterBy);
                 if(submission != null) {
-                    entities = dashboardDao.findObservationsBySubmission(submission);
+                    List<ObservedSubject> entitiesTmp = new ArrayList<ObservedSubject>();
+
+                    for (Observation observation : dashboardDao.findObservationsBySubmission(submission)) {
+                        entitiesTmp.addAll(dashboardDao.findObservedSubjectByObservation(observation));
+                    }
+
+                    entities = entitiesTmp;
                 }
             } else {
                 entities = dashboardDao.findEntities(Observation.class);

@@ -60,13 +60,24 @@
         }
     });
 
+    var SearchResult = Backbone.Model.extend({});
 
-    var FuzzySearchResults = Backbone.Model.extend({
-        urlRoot: CORE_API_URL + "search/fuzzy"
+    var FuzzySearchResults = Backbone.Collection.extend({
+        url: CORE_API_URL + "search/fuzzy/",
+        model: SearchResult,
+
+        initialize: function(attributes) {
+            this.url += attributes.term;
+        }
     });
 
-    var ExactSearchResults = Backbone.Model.extend({
-        urlRoot: CORE_API_URL + "search/exact"
+    var ExactSearchResults = Backbone.Collection.extend({
+        url: CORE_API_URL + "search/exact/",
+        model: SearchResult,
+
+        initialize: function(attributes) {
+            this.url += attributes.term;
+        }
     });
 
     var Subject = Backbone.Model.extend({
@@ -312,14 +323,14 @@
 
             var thatEl = this.el;
             var searchResults = this.exact
-                ? new ExactSearchResults({ id: this.model.term })
-                : new FuzzySearchResults({ id: this.model.term });
+                ? new ExactSearchResults({ term: this.model.term })
+                : new FuzzySearchResults({ term: this.model.term });
 
             searchResults.fetch({
                 success: function() {
                     var results = searchResults.toJSON();
                     $("#loading-row").hide();
-                    if(results.lengh == 0) {
+                    if(results.length == 0) {
                         (new EmptyResultsView({ el: $(thatEl).find("tbody")})).render();
                     } else {
                         _.each(results, function(aResult) {
