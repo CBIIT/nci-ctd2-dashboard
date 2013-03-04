@@ -9,22 +9,33 @@ import org.springframework.batch.item.file.transform.FieldSet;
 import org.springframework.batch.item.file.mapping.FieldSetMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@Component("compoundNamesMapper")
-public class CompoundNamesFieldSetMapper implements FieldSetMapper<CompoundData> {
+@Component("compoundsMapper")
+public class CompoundsFieldSetMapper implements FieldSetMapper<Compound> {
 
 	public static final String BROAD_COMPOUND_DATABASE = "BROAD_COMPOUND";
+	
+	private static final String CPD_ID = "CPD_ID";
+	private static final String	CPD_PRIMARY_NAME = "CPD_PRIMARY_NAME";
+	private static final String	SMILES = "SMILES";
 
     @Autowired
     private DashboardFactory dashboardFactory;
 
-	public CompoundData mapFieldSet(FieldSet fieldSet) throws BindException {
+	public Compound mapFieldSet(FieldSet fieldSet) throws BindException {
+
+		String compoundId = fieldSet.readString(CPD_ID);
+		String primaryName = fieldSet.readString(CPD_PRIMARY_NAME);
+		String smiles = fieldSet.readString(SMILES);
+
 		Compound compound = dashboardFactory.create(Compound.class);
-        compound.setDisplayName(fieldSet.readString(1));
+        compound.setDisplayName(primaryName);
+		compound.setSmilesNotation(smiles);
 		// create xref back to broad
 		Xref xref = dashboardFactory.create(Xref.class);
-		xref.setDatabaseId(fieldSet.readString(0));
+		xref.setDatabaseId(compoundId);
 		xref.setDatabaseName(BROAD_COMPOUND_DATABASE);
 		compound.getXrefs().add(xref);
-		return new CompoundData(compound, fieldSet.readString(2));
+
+		return compound;
 	}
 }

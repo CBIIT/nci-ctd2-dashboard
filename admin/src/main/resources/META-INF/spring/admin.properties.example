@@ -2,7 +2,7 @@
 
 # data source locations
 gene.data.location=
-compound.names.location=
+compounds.location=
 compound.synonyms.location=
 compound.annotations.location=
 protein.data.location=
