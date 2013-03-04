@@ -51,7 +51,6 @@ public class UniProtDataReader implements ItemReader<ProteinData> {
 	private boolean recordFinished;
 
 	// these vars are used to return new organisms & transcripts to the writer
-	private HashSet<Organism> organismsToReturn = new HashSet<Organism>();
 	private HashSet<Transcript> transcriptsToReturn = new HashSet<Transcript>();
 
 	// vars to speed up lookup
@@ -72,9 +71,7 @@ public class UniProtDataReader implements ItemReader<ProteinData> {
 		if (protein == null) return null; // this would happen on eof
 		Protein proteinToReturn = protein;
 		protein = null;
-		return new ProteinData(proteinToReturn, 
-							   new HashSet<Transcript>(transcriptsToReturn),
-							   new HashSet<Organism>(organismsToReturn));
+		return new ProteinData(proteinToReturn, new HashSet<Transcript>(transcriptsToReturn));
 	}
 
 	private void process(FieldSet fieldSet) throws Exception {
@@ -144,7 +141,6 @@ public class UniProtDataReader implements ItemReader<ProteinData> {
 		geneId = "";
 		taxonomyId = "";
 		refseqIds.clear();
-		organismsToReturn.clear();
 		transcriptsToReturn.clear();
 	}
 
@@ -189,13 +185,8 @@ public class UniProtDataReader implements ItemReader<ProteinData> {
 				List<Organism> organisms = dashboardDao.findOrganismByTaxonomyId(taxonomyId);
 				if (organisms.size() == 1) {
 					toReturn = organisms.get(0);
+					organismsCache.put(taxonomyId, toReturn);
 				}
-				else {
-					toReturn = dashboardFactory.create(Organism.class);
-					toReturn.setTaxonomyId(taxonomyId);
-					organismsToReturn.add(toReturn);
-				}
-				organismsCache.put(taxonomyId, toReturn);
 			}
 		}
 		return toReturn;

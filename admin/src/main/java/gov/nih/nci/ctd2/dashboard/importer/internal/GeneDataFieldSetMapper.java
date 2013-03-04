@@ -4,6 +4,7 @@ import gov.nih.nci.ctd2.dashboard.model.Xref;
 import gov.nih.nci.ctd2.dashboard.model.Gene;
 import gov.nih.nci.ctd2.dashboard.model.Synonym;
 import gov.nih.nci.ctd2.dashboard.model.Organism;
+import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
 import gov.nih.nci.ctd2.dashboard.model.DashboardFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindException;
@@ -11,25 +12,30 @@ import org.springframework.batch.item.file.transform.FieldSet;
 import org.springframework.batch.item.file.mapping.FieldSetMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.HashMap;
+import java.util.List;
 
 @Component("geneDataMapper")
-public class GeneDataFieldSetMapper implements FieldSetMapper<GeneData> {
+public class GeneDataFieldSetMapper implements FieldSetMapper<Gene> {
 
 	public static final String NCBI_GENE_DATABASE = "NCBI_GENE";
 
     @Autowired
     private DashboardFactory dashboardFactory;
 
+    @Autowired
+	private DashboardDao dashboardDao;
+
     private HashMap<String, Organism> organismMap = new HashMap<String, Organism>();
 
-	public GeneData mapFieldSet(FieldSet fieldSet) throws BindException {
+	public Gene mapFieldSet(FieldSet fieldSet) throws BindException {
+
         Gene gene = dashboardFactory.create(Gene.class);
 		String entrezGeneId = fieldSet.readString(1);
         gene.setEntrezGeneId(entrezGeneId);
         gene.setDisplayName(fieldSet.readString(2));
-		// create xref back to ncbik
+		// create xref back to ncbi
 		Xref xref = dashboardFactory.create(Xref.class);
 		xref.setDatabaseId(entrezGeneId);
 		xref.setDatabaseName(NCBI_GENE_DATABASE);
@@ -47,19 +53,15 @@ public class GeneDataFieldSetMapper implements FieldSetMapper<GeneData> {
 				break;
 			}
 		}
-
-		boolean saveOrganism = false;
+		// set organism
         String taxonomyId = fieldSet.readString(0);
         Organism organism = organismMap.get(taxonomyId);
         if (organism == null) {
-            organism = dashboardFactory.create(Organism.class);
-            organism.setTaxonomyId(taxonomyId);
+			List<Organism> organisms = dashboardDao.findOrganismByTaxonomyId(taxonomyId);
+			if (organisms.size() == 1) organism = organisms.get(0);
             organismMap.put(taxonomyId, organism);
-			saveOrganism = true;
         }
-
-        gene.setOrganism(organism);
-
-        return new GeneData(gene, organism, saveOrganism);
+		if (organism != null) gene.setOrganism(organism);
+        return gene;
 	}
 }
