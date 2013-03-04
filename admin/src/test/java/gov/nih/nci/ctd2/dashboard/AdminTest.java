@@ -2,7 +2,7 @@ package gov.nih.nci.ctd2.dashboard;
 
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
 import gov.nih.nci.ctd2.dashboard.model.*;
-import gov.nih.nci.ctd2.dashboard.importer.internal.CompoundNamesFieldSetMapper;
+import gov.nih.nci.ctd2.dashboard.importer.internal.CompoundsFieldSetMapper;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -60,12 +60,13 @@ public class AdminTest {
 		// import some compound data
 		jobExecution = executeJob("compoundDataImporterJob");
         assertEquals("COMPLETED", jobExecution.getExitStatus().getExitCode());
-		assertEquals(2, dashboardDao.countEntities(Compound.class).intValue());
+		assertEquals(9, dashboardDao.countEntities(Compound.class).intValue());
 		List<Subject> subjects = 
-			dashboardDao.findSubjectsByXref(CompoundNamesFieldSetMapper.BROAD_COMPOUND_DATABASE, "31336");
+			dashboardDao.findSubjectsByXref(CompoundsFieldSetMapper.BROAD_COMPOUND_DATABASE, "411739");
 		assertEquals(1, subjects.size());
-		List<Compound> compounds = dashboardDao.findCompoundsBySmilesNotation("CC(C)Cc1ccc(cc1)[C@H](C)C(O)=O");
+		List<Compound> compounds = dashboardDao.findCompoundsBySmilesNotation("CCCCCCCCC1OC(=O)C(=C)C1C(O)=O");
         assertEquals(1, compounds.size());
+		assertEquals(2, compounds.iterator().next().getSynonyms().size());
 
 		// import some gene data
 		jobExecution = executeJob("geneDataImporterJob");

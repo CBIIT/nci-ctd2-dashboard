@@ -9,18 +9,18 @@ import org.springframework.batch.item.ItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 
-@Component("compoundSMILESWriter")
-public class CompoundSMILESWriter implements ItemWriter<Compound> {
+@Component("compoundsWriter")
+public class CompoundsWriter implements ItemWriter<Compound> {
 
     @Autowired
 	private DashboardDao dashboardDao;
  
-	private static final Log log = LogFactory.getLog(CompoundSMILESWriter.class);
+	private static final Log log = LogFactory.getLog(CompoundsWriter.class);
  
 	public void write(List<? extends Compound> items) throws Exception {
 		for (Compound compound : items) {
-			log.info("Storing compound w/SMILES: " + compound.getDisplayName() + ":" + compound.getSmilesNotation());
-			dashboardDao.update(compound);
+			log.info("Storing compound: " + compound.getDisplayName());
+			dashboardDao.save(compound);
 		}
 	}
 }

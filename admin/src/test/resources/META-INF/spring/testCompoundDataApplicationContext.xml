@@ -10,14 +10,14 @@
   <context:component-scan base-package="gov.nih.nci.ctd2.dashboard.importer.internal" />
 
   <batch:job id="compoundDataImporterJob">
-	<batch:step id="compoundNameStep" parent="compoundDataStep" next="compoundSMILESStep">
+	<batch:step id="compoundsStep" parent="compoundDataStep" next="compoundSynonymsStep">
 	  <batch:tasklet>
-		<batch:chunk reader="compoundNamesReader" processor="compoundNamesProcessor" writer="compoundNamesWriter"/>
+		<batch:chunk reader="compoundsReader" writer="compoundsWriter"/>
 	  </batch:tasklet>
 	</batch:step>
-	<batch:step id="compoundSMILESStep" parent="compoundDataStep">
+	<batch:step id="compoundSynonymsStep" parent="compoundDataStep">
 	  <batch:tasklet>
-		<batch:chunk reader="compoundSMILESReader" processor="compoundSMILESProcessor" writer="compoundSMILESWriter"/>
+		<batch:chunk reader="compoundSynonymsReader" processor="compoundSynonymsProcessor" writer="compoundSynonymsWriter"/>
 	  </batch:tasklet>
 	</batch:step>
   </batch:job>
@@ -28,31 +28,37 @@
 	<property name="commitInterval" value="100" />
   </bean>
 
-  <!-- compound names beans -->
-  <bean name="compoundNamesReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-	<property name="resource" value="classpath:test-compound-names.tsv" />
-    <property name="lineMapper" ref="compoundNamesLineMapper" />
+  <!-- compounds beans -->
+  <bean name="compoundsReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="resource" value="classpath:test-compounds.tsv" />
+    <property name="lineMapper" ref="compoundsLineMapper" />
 	<property name="linesToSkip" value="1" />
   </bean>
 
-  <bean name="compoundNamesLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
-	<property name="fieldSetMapper" ref="compoundNamesMapper" />
-	<property name="lineTokenizer" ref="compoundDataLineTokenizer" />
+  <bean name="compoundsLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+	<property name="fieldSetMapper" ref="compoundsMapper" />
+	<property name="lineTokenizer" ref="compoundsLineTokenizer" />
   </bean>
 
-  <!-- compound SMILES beans -->
-  <bean name="compoundSMILESReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-	<property name="resource" value="classpath:test-compound-smiles.tsv" />
-    <property name="lineMapper" ref="compoundSMILESLineMapper" />
+  <!-- compound synonyms beans -->
+  <bean name="compoundSynonymsReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="resource" value="classpath:test-compound-synonyms.tsv" />
+    <property name="lineMapper" ref="compoundSynonymsLineMapper" />
 	<property name="linesToSkip" value="1" />
   </bean>
 
-  <bean name="compoundSMILESLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
-	<property name="fieldSetMapper" ref="compoundSMILESMapper" />
-	<property name="lineTokenizer" ref="compoundDataLineTokenizer" />
+  <bean name="compoundSynonymsLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+	<property name="fieldSetMapper" ref="compoundSynonymsMapper" />
+	<property name="lineTokenizer" ref="compoundSynonymsLineTokenizer" />
   </bean>
 
-  <bean name="compoundDataLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+  <bean name="compoundsLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+	<property name="names" value="CPD_ID,CPD_PRIMARY_NAME,SMILES"/>
+	<property name="delimiter" value="\u0009"/>
+  </bean>
+
+  <bean name="compoundSynonymsLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+	<property name="names" value="CPD_ID,CPD_NAME"/>
 	<property name="delimiter" value="\u0009"/>
   </bean>
 
