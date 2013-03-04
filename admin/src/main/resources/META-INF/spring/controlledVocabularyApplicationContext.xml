@@ -25,7 +25,7 @@
   </bean>
 
   <bean name="controlledVocabularyReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-	<property name="resource" value="classpath:dashboard-controlled-vocabulary.txt" />
+	<property name="resource" value="classpath:dashboard-controlled-vocabulary.tsv" />
     <property name="lineMapper" ref="controlledVocabularyLineMapper" />
 	<property name="linesToSkip" value="1" />
   </bean>
