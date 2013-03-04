@@ -27,7 +27,6 @@ public class AdminTest {
     public void initiateDao() {
         this.appContext = new ClassPathXmlApplicationContext(
                 "classpath*:META-INF/spring/testApplicationContext.xml", // this is coming from the core module
-                "classpath*:META-INF/spring/testAdminApplicationContext.xml", // and this from the admin module
 				"classpath*:META-INF/spring/testCompoundDataApplicationContext.xml", // and tis is for compound data importer beans
 				"classpath*:META-INF/spring/testGeneDataApplicationContext.xml", // and this is for gene data importer beans
 				"classpath*:META-INF/spring/testProteinDataApplicationContext.xml", // and this is for protein data importer beans
