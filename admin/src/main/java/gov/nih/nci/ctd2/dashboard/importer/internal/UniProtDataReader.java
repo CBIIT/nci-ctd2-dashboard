@@ -4,6 +4,7 @@ import gov.nih.nci.ctd2.dashboard.model.Xref;
 import gov.nih.nci.ctd2.dashboard.model.Gene;
 import gov.nih.nci.ctd2.dashboard.model.Protein;
 import gov.nih.nci.ctd2.dashboard.model.Organism;
+import gov.nih.nci.ctd2.dashboard.model.Synonym;
 import gov.nih.nci.ctd2.dashboard.model.Transcript;
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
 import gov.nih.nci.ctd2.dashboard.model.DashboardFactory;
@@ -97,6 +98,10 @@ public class UniProtDataReader implements ItemReader<ProteinData> {
 				(protein.getDisplayName() == null ||
 				 protein.getDisplayName().length() == 0)) {
 				protein.setDisplayName(recordNameMatcher.group(1));
+				// create synonym back to self
+				Synonym synonym = dashboardFactory.create(Synonym.class);
+				synonym.setDisplayName(recordNameMatcher.group(1));
+				protein.getSynonyms().add(synonym);
 			}
 		}
 		else if (lineId.equals(LINE_ID_ACCESSION) && fieldSet.getValues().length == 2) {

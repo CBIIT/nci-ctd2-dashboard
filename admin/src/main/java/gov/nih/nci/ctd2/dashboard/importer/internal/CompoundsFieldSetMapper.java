@@ -2,6 +2,7 @@ package gov.nih.nci.ctd2.dashboard.importer.internal;
 
 import gov.nih.nci.ctd2.dashboard.model.Xref;
 import gov.nih.nci.ctd2.dashboard.model.Compound;
+import gov.nih.nci.ctd2.dashboard.model.Synonym;
 import gov.nih.nci.ctd2.dashboard.model.DashboardFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindException;
@@ -30,6 +31,10 @@ public class CompoundsFieldSetMapper implements FieldSetMapper<Compound> {
 		Compound compound = dashboardFactory.create(Compound.class);
         compound.setDisplayName(primaryName);
 		compound.setSmilesNotation(smiles);
+		// create synonym back to self
+		Synonym synonym = dashboardFactory.create(Synonym.class);
+		synonym.setDisplayName(primaryName);
+		compound.getSynonyms().add(synonym);
 		// create xref back to broad
 		Xref xref = dashboardFactory.create(Xref.class);
 		xref.setDatabaseId(compoundId);

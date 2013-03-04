@@ -61,12 +61,12 @@ public class AdminTest {
 		jobExecution = executeJob("compoundDataImporterJob");
         assertEquals("COMPLETED", jobExecution.getExitStatus().getExitCode());
 		assertEquals(9, dashboardDao.countEntities(Compound.class).intValue());
-		List<Subject> subjects = 
+		List<Subject> compoundSubjects = 
 			dashboardDao.findSubjectsByXref(CompoundsFieldSetMapper.BROAD_COMPOUND_DATABASE, "411739");
-		assertEquals(1, subjects.size());
+		assertEquals(1, compoundSubjects.size());
 		List<Compound> compounds = dashboardDao.findCompoundsBySmilesNotation("CCCCCCCCC1OC(=O)C(=C)C1C(O)=O");
         assertEquals(1, compounds.size());
-		assertEquals(2, compounds.iterator().next().getSynonyms().size());
+		assertEquals(3, compounds.iterator().next().getSynonyms().size());
 
 		// import some gene data
 		jobExecution = executeJob("geneDataImporterJob");
@@ -74,6 +74,9 @@ public class AdminTest {
 		assertEquals(19, dashboardDao.countEntities(Gene.class).intValue());
 		List<Gene> genes = dashboardDao.findGenesByEntrezId("7529");
 		assertEquals(1, genes.size());
+		assertEquals(5, genes.iterator().next().getSynonyms().size());
+		List<Subject> geneSubjects = dashboardDao.findSubjectsBySynonym("RB1", true);
+		assertEquals(1, geneSubjects.size());
 
 		// import some protein data
 		jobExecution = executeJob("proteinDataImporterJob");
