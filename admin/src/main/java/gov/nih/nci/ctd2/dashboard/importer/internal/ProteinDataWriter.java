@@ -1,6 +1,5 @@
 package gov.nih.nci.ctd2.dashboard.importer.internal;
 
-import gov.nih.nci.ctd2.dashboard.model.Organism;
 import gov.nih.nci.ctd2.dashboard.model.Transcript;
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
 import org.apache.commons.logging.Log;
@@ -22,9 +21,6 @@ public class ProteinDataWriter implements ItemWriter<ProteinData> {
 		for (ProteinData proteinData : items) {
 			for (Transcript transcript : proteinData.transcripts) {
 				dashboardDao.save(transcript);
-			}
-			for (Organism organism : proteinData.organisms) {
-				dashboardDao.save(organism);
 			}
 			log.info("Storing protein: " + proteinData.protein.getDisplayName());
 			dashboardDao.save(proteinData.protein);

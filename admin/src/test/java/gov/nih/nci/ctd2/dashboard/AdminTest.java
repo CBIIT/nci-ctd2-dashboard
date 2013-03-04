@@ -32,7 +32,8 @@ public class AdminTest {
 				"classpath*:META-INF/spring/testGeneDataApplicationContext.xml", // and this is for gene data importer beans
 				"classpath*:META-INF/spring/testProteinDataApplicationContext.xml", // and this is for protein data importer beans
 				"classpath*:META-INF/spring/testControlledVocabularyApplicationContext.xml", // and this is for controlled vocabulary importer beans
-				"classpath*:META-INF/spring/testObservationDataApplicationContext.xml" // and this is for observation data importer beans
+				"classpath*:META-INF/spring/testObservationDataApplicationContext.xml", // and this is for observation data importer beans
+				"classpath*:META-INF/spring/taxonomyDataApplicationContext.xml" // and this is for taxonomy data importer beans
         );
 
         this.dashboardDao = (DashboardDao) appContext.getBean("dashboardDao");
@@ -48,6 +49,14 @@ public class AdminTest {
 
 	@Test
 	public void importerTest() throws Exception {
+
+		// import taxonomy data
+		jobExecution = executeJob("taxonomyDataImporterJob");
+		assertEquals("COMPLETED", jobExecution.getExitStatus().getExitCode());
+		assertEquals(2, dashboardDao.countEntities(Organism.class).intValue());
+		List<Organism> organisms = dashboardDao.findOrganismByTaxonomyId("9606");
+		assertEquals(1, organisms.size());
+		assertEquals("Homo sapiens", organisms.iterator().next().getDisplayName());
 
 		// import some compound data
 		jobExecution = executeJob("compoundDataImporterJob");
@@ -65,10 +74,6 @@ public class AdminTest {
 		assertEquals(19, dashboardDao.countEntities(Gene.class).intValue());
 		List<Gene> genes = dashboardDao.findGenesByEntrezId("7529");
 		assertEquals(1, genes.size());
-		// we should get some organism records created
-		assertEquals(2, dashboardDao.countEntities(Organism.class).intValue());
-		List<Organism> organisms = dashboardDao.findOrganismByTaxonomyId("10090");
-		assertEquals(1, organisms.size());
 
 		// import some protein data
 		jobExecution = executeJob("proteinDataImporterJob");
