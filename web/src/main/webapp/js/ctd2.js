@@ -155,6 +155,12 @@
             $("#drug-search").typeahead({ source: drugs, items: 3 });
             $("#alteration-search").typeahead({ source: targets, items: 3 });
 
+            $("#omni-search-form").submit(function() {
+                var searchTerm = $("#omni-search").val();
+                window.location.hash = "search/exact/" + searchTerm;
+                return false;
+            });
+
             Holder.run();
             return this;
         }
@@ -512,6 +518,10 @@
                     } else {
                         _.each(searchResults.models, function(aResult) {
                             aResult = aResult.toJSON();
+                            if(aResult.organism == undefined) {
+                                aResult.organism = { displayName: "N/A" };
+                            }
+
                             var searchResultsRowView = new SearchResultsRowView({
                                 model: aResult,
                                 el: $(thatEl).find("tbody")
