@@ -308,8 +308,8 @@
                 <tr>
                     <th>Center</th>
                     <td>
-                        <a href="#/center/{{submission.submissionCenter.id}}">
-                            {{submission.submissionCenter.displayName}}
+                        <a href="#/center/{{submissionCenter.id}}">
+                            {{submissionCenter.displayName}}
                         </a>
                     </td>
                 </tr>
