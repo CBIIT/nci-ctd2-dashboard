@@ -9,6 +9,7 @@
     <meta name="author" content="">
 
     <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/jquery.dataTables.css" rel="stylesheet">
     <link href="css/ctd2.css" rel="stylesheet">
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -334,7 +335,6 @@
                     <th>Subject</th>
                     <th>Role</th>
                     <th>Description</th>
-                    <th>Details</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -346,11 +346,18 @@
 
     <script type="text/template" id="submission-tbl-row-tmpl">
         <tr>
-            <td># {{id}}</td>
-            <td>{{subject.displayName}}</td>
+            <td>
+                <a href="#/observation/{{observation.id}}">
+                    # {{observation.id}}
+                </a>
+            </td>
+            <td>
+                <a href="#/subject/{{subject.id}}">
+                    {{subject.displayName}}
+                </a>
+            </td>
             <td>{{observedSubjectRole.subjectRole.displayName}}</td>
             <td>{{observedSubjectRole.description}}</td>
-            <td><a href="#observation/{{id}}">details</a></td>
         </tr>
     </script>
 
@@ -489,6 +496,8 @@
     <script src="js/targets.js"></script>
     <script src="js/drugs.js"></script>
     <script src="js/jquery.min.js"></script>
+    <script src="js/jquery.dataTables.min.js"></script>
+    <script src="js/paging.js"></script>
     <script src="js/holder.js"></script>
     <script src="js/underscore.js"></script>
     <script src="js/json2.js"></script>
