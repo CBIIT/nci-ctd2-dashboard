@@ -48,13 +48,26 @@
         }
     });
 
+    var ObservedEvidence = Backbone.Model.extend({
+        urlRoot: CORE_API_URL + "get/observedevidence"
+    });
+
+    var ObservedEvidences = Backbone.Collection.extend({
+        url: CORE_API_URL + "list/observedevidence/?filterBy=",
+        model: ObservedEvidence,
+
+        initialize: function(attributes) {
+            this.url += attributes.observationId;
+        }
+    });
+
     var ObservedSubject = Backbone.Model.extend({
         urlRoot: CORE_API_URL + "get/observedsubject"
     });
 
     var ObservedSubjects = Backbone.Collection.extend({
         url: CORE_API_URL + "list/observedsubject/?filterBy=",
-        model: Submission,
+        model: ObservedSubject,
 
         initialize: function(attributes) {
             if(attributes.subjectId != undefined) {
@@ -143,6 +156,92 @@
             $("#alteration-search").typeahead({ source: targets, items: 3 });
 
             Holder.run();
+            return this;
+        }
+    });
+
+    var ObservationView = Backbone.View.extend({
+        el: $("#main-container"),
+        template: _.template($("#observation-tmpl").html()),
+        render: function() {
+            var result = this.model.toJSON();
+            $(this.el).html(this.template(result));
+
+            var observedSubjects = new ObservedSubjects({ observationId: result.id });
+            var thatEl = $("#observed-subjects-grid");
+            observedSubjects.fetch({
+                success: function() {
+                    _.each(observedSubjects.models, function(observedSubject) {
+                        observedSubject = observedSubject.toJSON();
+                        var observedSubjectRowView
+                            = new ObservedSubjectSummaryRowView({
+                            el: $(thatEl).find("tbody"),
+                            model: observedSubject
+                        });
+                        observedSubjectRowView.render();
+                    });
+
+                    $('#observed-subjects-grid').dataTable({
+                        "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
+                        "sPaginationType": "bootstrap"
+                    });
+                }
+            });
+
+            // Load evidences
+            var observedEvidences = new ObservedEvidences({ observationId: result.id });
+            var thatEl2 = $("#observed-evidences-grid");
+            observedEvidences.fetch({
+                success: function() {
+                    _.each(observedEvidences.models, function(observedEvidence) {
+                        observedEvidence = observedEvidence.toJSON();
+
+                        var observedEvidenceRowView = new ObservedEvidenceRowView({
+                            el: $(thatEl2).find("tbody"),
+                            model: observedEvidence
+                        });
+
+                        observedEvidenceRowView.render();
+                    });
+
+                    $('#observed-evidences-grid').dataTable({
+                        "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
+                        "sPaginationType": "bootstrap"
+                    });
+
+                    $('.desc-tooltip').popover({ trigger: 'hover' });
+                }
+            });
+
+            return this;
+        }
+    });
+
+    var ObservedEvidenceRowView = Backbone.View.extend({
+        render: function() {
+            var result = this.model;
+            var type = result.evidence.class;
+            result.evidence["type"] = type;
+
+            if(result.observedEvidenceRole == null) {
+                result.observedEvidenceRole = {
+                    description: "N/A"
+                };
+            }
+
+            var templateId = "#observedevidence-row-tmpl";
+            if(type == "FileEvidence") {
+                templateId = "#observedfileevidence-row-tmpl";
+            } else if(type == "UrlEvidence") {
+                templateId = "#observedurlevidence-row-tmpl";
+            } else if(type == "LabelEvidence") {
+                templateId = "#observedlabelevidence-row-tmpl";
+            } else if(type == "DataNumericValue") {
+                templateId = "#observeddatanumericevidence-row-tmpl";
+            }
+
+            this.template = _.template($(templateId).html());
+            $(this.el).append(this.template(result));
             return this;
         }
     });
@@ -279,6 +378,16 @@
         template:  _.template($("#observedsubject-row-tmpl").html()),
         render: function() {
             $(this.el).append(this.template(this.model));
+            return this;
+        }
+    });
+
+    var ObservedSubjectSummaryRowView = Backbone.View.extend({
+        template:  _.template($("#observedsubject-summary-row-tmpl").html()),
+        render: function() {
+            result = this.model;
+            result.subject["type"] = result.subject.class;
+            $(this.el).append(this.template(result));
             return this;
         }
     });
@@ -428,6 +537,7 @@
             "centers": "listCenters",
             "center/:id": "showCenter",
             "submission/:id": "showSubmission",
+            "observation/:id": "showObservation",
             "search/:type/:term": "search",
             "subject/:id": "showSubject",
             "*actions": "home"
@@ -482,6 +592,16 @@
                 success: function() {
                     var submissionView = new SubmissionView({model: submission});
                     submissionView.render();
+                }
+            });
+        },
+
+        showObservation: function(id) {
+            var observation = new Observation({id: id});
+            observation.fetch({
+                success: function() {
+                    var observationView = new ObservationView({model: observation});
+                    observationView.render();
                 }
             });
         },

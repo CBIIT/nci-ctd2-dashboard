@@ -307,7 +307,11 @@
             <table id="submission-details-grid" class="table table-bordered table-striped">
                 <tr>
                     <th>Center</th>
-                    <td>{{submissionCenter.displayName}}</td>
+                    <td>
+                        <a href="#/center/{{submission.submissionCenter.id}}">
+                            {{submission.submissionCenter.displayName}}
+                        </a>
+                    </td>
                 </tr>
                 <tr>
                     <th>Tier</th>
@@ -358,6 +362,128 @@
             </td>
             <td>{{observedSubjectRole.subjectRole.displayName}}</td>
             <td>{{observedSubjectRole.description}}</td>
+        </tr>
+    </script>
+
+    <script type="text/template" id="observation-tmpl">
+        <div class="container common-container" id="observation-container">
+            <h1>Observation <small>(# {{id}})</small></h1>
+
+            <table id="observation-details-grid" class="table table-bordered table-striped">
+                <tr>
+                    <th>Submission</th>
+                    <td>
+                        <a href="#/submission/{{submission.id}}"># {{submission.id}}</a>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Submission Date</th>
+                    <td>{{submission.submissionDate}}</td>
+                </tr>
+                <tr>
+                    <th>Submission Tier</th>
+                    <td>{{submission.observationTemplate.tier}}</td>
+                </tr>
+                <tr>
+                    <th>Submission Center</th>
+                    <td>
+                        <a href="#/center/{{submission.submissionCenter.id}}">
+                            {{submission.submissionCenter.displayName}}
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Template</th>
+                    <td>{{submission.observationTemplate.description}}</td>
+                </tr>
+            </table>
+
+            <h1>Observed Subjects</h1>
+            <table id="observed-subjects-grid" class="table table-bordered table-striped subjects">
+                <thead>
+                <tr>
+                    <th>Subject</th>
+                    <th>Type</th>
+                    <th>Role</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- here will go the rows -->
+                </tbody>
+            </table>
+
+            <h1>Evidences</h1>
+            <table id="observed-evidences-grid" class="table table-bordered table-striped evidences">
+                <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>Role</th>
+                    <th>Details</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- here will go the rows -->
+                </tbody>
+            </table>
+
+        </div>
+    </script>
+
+    <script type="text/template" id="observedevidence-row-tmpl">
+        <tr>
+            <td>
+                {{evidence.type}}
+            </td>
+            <td>{{observedEvidenceRole.description}}</td>
+            <td>{{displayName}}</td>
+        </tr>
+    </script>
+
+    <script type="text/template" id="observedfileevidence-row-tmpl">
+        <tr>
+            <td>
+                File
+            </td>
+            <td>{{observedEvidenceRole.description}}</td>
+            <td>(
+                <a href="{{evidence.filePath}}" target="_blank" title="File download" class="desc-tooltip" title="Download File" data-content="Type: {{evidence.mimeType}} Widget: N/A">
+                    download
+                </a>
+            )</td>
+        </tr>
+    </script>
+
+    <script type="text/template" id="observedlabelevidence-row-tmpl">
+        <tr>
+            <td>
+                Label
+            </td>
+            <td>{{observedEvidenceRole.description}}</td>
+            <td><span class="label">{{displayName}}</span></td>
+        </tr>
+    </script>
+
+    <script type="text/template" id="observedurlevidence-row-tmpl">
+        <tr>
+            <td>
+                URL
+            </td>
+            <td>{{observedEvidenceRole.description}}</td>
+            <td>(
+                <a href="{{evidence.url}}" target="_blank" title="{{displayName}}" class="desc-tooltip">
+                    open
+                </a>
+            )</td>
+        </tr>
+    </script>
+
+    <script type="text/template" id="observeddatanumericevidence-row-tmpl">
+        <tr>
+            <td>
+                Numeric value
+            </td>
+            <td>{{observedEvidenceRole.description}}</td>
+            <td>{{evidence.numericValue}} <em>{{evidence.unit}}</em></td>
         </tr>
     </script>
 
@@ -468,6 +594,18 @@
               </table>
           </div>
      </script>
+
+    <script type="text/template" id="observedsubject-summary-row-tmpl">
+        <tr>
+            <td>
+                <a href="#/subject/{{subject.id}}">
+                    {{subject.displayName}}
+                </a>
+            </td>
+            <td>{{subject.type}}</td>
+            <td>{{observedSubjectRole.subjectRole.displayName}}</td>
+        </tr>
+    </script>
 
     <script type="text/template" id="observedsubject-row-tmpl">
         <tr>
