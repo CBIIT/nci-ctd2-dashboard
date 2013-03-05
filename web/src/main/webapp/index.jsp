@@ -187,9 +187,9 @@
                                   Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.
 
                               </p>
-                              <form class="form-search">
-                                  <input type="text" class="input-medium search-query" id="alteration-search" placeholder="e.g. BRAF V600E">
-                                  <a class="btn btn-small btn-info" href="#">Search</a>
+                              <form class="form-search" id="omni-search-form">
+                                  <input type="text" class="input-medium search-query" id="omni-search" placeholder="e.g. BRAF or aspirin">
+                                  <button class="btn btn-small btn-info" href="#">Search</button>
                               </form>
                           </div>
                       </div>
