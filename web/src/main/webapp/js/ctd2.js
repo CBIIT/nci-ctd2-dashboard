@@ -185,6 +185,52 @@
         }
     });
 
+    var CompoundView = Backbone.View.extend({
+         el: $("#main-container"),
+         template:  _.template($("#compound-tmpl").html()),
+         render: function() {
+             var result = this.model.toJSON();
+
+             var synonymsStr = "";
+             _.each(result.synonyms, function(aSynonym) {
+                 synonymsStr += aSynonym.displayName + " ";
+             });
+             result["synonymsStr"] = synonymsStr;
+
+             var xrefStr = "";
+             _.each(result.xrefs, function(xref) {
+                 xrefStr += xref.databaseName + ":" + xref.databaseId + " ";
+             });
+             result["xrefStr"] = xrefStr;
+
+             result["type"] = result.class;
+
+             $(this.el).html(this.template(result));
+
+             var observedSubjects = new ObservedSubjects({ subjectId: result.id });
+             var thatEl = $("#compound-observation-grid");
+             observedSubjects.fetch({
+                 success: function() {
+                     _.each(observedSubjects.models, function(observedSubject) {
+                         observedSubject = observedSubject.toJSON();
+                         var observedSubjectRowView
+                             = new ObservedSubjectRowView({ el: $(thatEl).find("tbody"), model: observedSubject });
+                         observedSubjectRowView.render();
+                     });
+
+                     $('#compound-observation-grid').dataTable({
+                            "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
+                            "sPaginationType": "bootstrap"
+                     });
+                 }
+             });
+
+             Holder.run();
+
+             return this;
+         }
+     });
+
     var GeneView = Backbone.View.extend({
         el: $("#main-container"),
         template:  _.template($("#gene-tmpl").html()),
@@ -410,6 +456,8 @@
                     var subjectView;
                     if(type == "Gene") {
                         subjectView = new GeneView({ model: subject });
+                    } else if(type == "Compound") {
+                        subjectView = new CompoundView({ model: subject });
                     } else {
                         subjectView = new GeneView({ model: subject });
                     }

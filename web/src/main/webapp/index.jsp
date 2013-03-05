@@ -415,6 +415,60 @@
          </div>
     </script>
 
+    <script type="text/template" id="compound-tmpl">
+          <div class="container common-container" id="compound-container">
+              <h1>{{displayName}} <small>(# {{id}})</small></h1>
+
+              <div class="row">
+                  <div class="span9">
+                      <table id="compund-details-grid" class="table table-bordered table-striped">
+                          <tr>
+                              <th>Name</th>
+                              <td>{{displayName}}</td>
+                          </tr>
+                          <tr>
+                              <th>Synonyms</th>
+                              <td>{{synonymsStr}}</td>
+                          </tr>
+                          <tr>
+                              <th>Type</th>
+                              <td>Compound</td>
+                          </tr>
+                          <tr>
+                              <th>SMILES</th>
+                              <td>{{smilesNotation}}</td>
+                          </tr>
+                          <tr>
+                              <th>References</th>
+                              <td class="xrefsColumn">{{xrefStr}}</td>
+                          </tr>
+                      </table>
+                  </div>
+                  <div class="span3">
+                      <h4>Structure</h4>
+                      <img class="img-polaroid" data-src="holder.js/150x150">
+                  </div>
+              </div>
+
+              <h1>Related Observations</h1>
+              <table id="compound-observation-grid" class="table table-bordered table-striped observations">
+                  <thead>
+                  <tr>
+                      <th>Observation</th>
+                      <th>Role</th>
+                      <th>Observation Type</th>
+                      <th>Tier</th>
+                      <th>Date</th>
+                      <th>Center</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <!-- here will go the rows -->
+                  </tbody>
+              </table>
+          </div>
+     </script>
+
     <script type="text/template" id="observedsubject-row-tmpl">
         <tr>
             <td>
