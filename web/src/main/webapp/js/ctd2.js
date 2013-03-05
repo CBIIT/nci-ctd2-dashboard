@@ -8,6 +8,11 @@
         interpolate : /\{\{(.+?)\}\}/g
     };
 
+    // Datatables fix
+    $.extend($.fn.dataTableExt.oStdClasses, {
+        "sWrapper": "dataTables_wrapper form-inline"
+    });
+
     /* Models */
     var SubmissionCenter = Backbone.Model.extend({
         urlRoot: CORE_API_URL + "get/center"
@@ -206,10 +211,16 @@
             var thatEl = $("#gene-observation-grid");
             observedSubjects.fetch({
                 success: function() {
-                    _.each(observedSubjects.toJSON(), function(observedSubject) {
+                    _.each(observedSubjects.models, function(observedSubject) {
+                        observedSubject = observedSubject.toJSON();
                         var observedSubjectRowView
                             = new ObservedSubjectRowView({ el: $(thatEl).find("tbody"), model: observedSubject });
                         observedSubjectRowView.render();
+                    });
+
+                    $('#gene-observation-grid').dataTable({
+                           "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
+                           "sPaginationType": "bootstrap"
                     });
                 }
             });
@@ -243,6 +254,10 @@
                     });
 
                     $(".template-description").tooltip();
+                    $('#center-submission-grid').dataTable({
+                           "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
+                           "sPaginationType": "bootstrap"
+                    });
                 }
             });
 
@@ -268,7 +283,9 @@
             var observations = new Observations({ submissionId: this.model.get("id") });
             observations.fetch({
                 success: function() {
-                    _.each(observations.toJSON(), function(observation) {
+                    _.each(observations.models, function(observation) {
+                        observation = observation.toJSON();
+                        if(observation.subject == null) return;
                         var submissionRowView = new SubmissionRowView({
                             el: $(thatEl).find(".observations tbody"),
                             model: observation
@@ -277,8 +294,14 @@
                     });
 
                     $(".template-description").tooltip();
+
+                    $('#submission-observation-grid').dataTable({
+                           "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
+                           "sPaginationType": "bootstrap"
+                    });
                 }
             });
+
 
             return this;
         }
@@ -328,17 +351,22 @@
 
             searchResults.fetch({
                 success: function() {
-                    var results = searchResults.toJSON();
-                    $("#loading-row").hide();
-                    if(results.length == 0) {
+                    $("#loading-row").remove();
+                    if(searchResults.models.length == 0) {
                         (new EmptyResultsView({ el: $(thatEl).find("tbody")})).render();
                     } else {
-                        _.each(results, function(aResult) {
+                        _.each(searchResults.models, function(aResult) {
+                            aResult = aResult.toJSON();
                             var searchResultsRowView = new SearchResultsRowView({
                                 model: aResult,
                                 el: $(thatEl).find("tbody")
                             });
                             searchResultsRowView.render();
+                        });
+
+                        $("#search-results-grid").dataTable({
+                            "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
+                            "sPaginationType": "bootstrap"
                         });
                     }
                 }
