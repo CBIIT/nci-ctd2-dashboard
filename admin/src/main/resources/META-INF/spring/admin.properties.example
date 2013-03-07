@@ -1,0 +1,11 @@
+# Here will go admin specific options
+
+# data source locations
+gene.data.location=
+compounds.location=
+compound.synonyms.location=
+compound.annotations.location=
+protein.data.location=
+compound.sensitivity.enrichment.data.location=
+signaling.analysis.data.location=
+differential.representation.analysis.data.location=
