@@ -40,6 +40,11 @@
 	<property name="lineTokenizer" ref="compoundsLineTokenizer" />
   </bean>
 
+  <bean name="compoundsLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+	<property name="names" value="CPD_ID,CPD_PRIMARY_NAME,SMILES"/>
+	<property name="delimiter" value="\u0009"/>
+  </bean>
+
   <!-- compound synonyms beans -->
   <bean name="compoundSynonymsReader" class="org.springframework.batch.item.file.FlatFileItemReader">
 	<property name="resource" value="classpath:test-compound-synonyms.tsv" />
@@ -50,11 +55,6 @@
   <bean name="compoundSynonymsLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
 	<property name="fieldSetMapper" ref="compoundSynonymsMapper" />
 	<property name="lineTokenizer" ref="compoundSynonymsLineTokenizer" />
-  </bean>
-
-  <bean name="compoundsLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-	<property name="names" value="CPD_ID,CPD_PRIMARY_NAME,SMILES"/>
-	<property name="delimiter" value="\u0009"/>
   </bean>
 
   <bean name="compoundSynonymsLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
