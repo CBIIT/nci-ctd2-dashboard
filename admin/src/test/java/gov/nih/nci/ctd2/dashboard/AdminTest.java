@@ -27,7 +27,8 @@ public class AdminTest {
     public void initiateDao() {
         this.appContext = new ClassPathXmlApplicationContext(
                 "classpath*:META-INF/spring/testApplicationContext.xml", // this is coming from the core module
-				"classpath*:META-INF/spring/testCompoundDataApplicationContext.xml", // and tis is for compound data importer beans
+				"classpath*:META-INF/spring/testCellLineDataApplicationContext.xml", // and this is for cellLine data importer beans
+				"classpath*:META-INF/spring/testCompoundDataApplicationContext.xml", // and this is for compound data importer beans
 				"classpath*:META-INF/spring/testGeneDataApplicationContext.xml", // and this is for gene data importer beans
 				"classpath*:META-INF/spring/testProteinDataApplicationContext.xml", // and this is for protein data importer beans
 				"classpath*:META-INF/spring/testControlledVocabularyApplicationContext.xml", // and this is for controlled vocabulary importer beans
@@ -56,6 +57,18 @@ public class AdminTest {
 		List<Organism> organisms = dashboardDao.findOrganismByTaxonomyId("9606");
 		assertEquals(1, organisms.size());
 		assertEquals("Homo sapiens", organisms.iterator().next().getDisplayName());
+
+		// import some cell line data
+		jobExecution = executeJob("cellLineDataImporterJob");
+        assertEquals("COMPLETED", jobExecution.getExitStatus().getExitCode());
+		assertEquals(9, dashboardDao.countEntities(CellLine.class).intValue());
+		List<Subject> cellLineSubjects = dashboardDao.findSubjectsByXref("CCLE", "786O_KIDNEY");
+		assertEquals(1, cellLineSubjects.size());
+		CellLine cellLine = (CellLine)cellLineSubjects.iterator().next();
+		assertEquals("786O", cellLine.getDisplayName());
+		assertEquals("KIDNEY", cellLine.getTissue());
+		assertEquals(5, cellLine.getSynonyms().size());
+		assertEquals(7, cellLine.getXrefs().size());
 
 		// import some compound data
 		jobExecution = executeJob("compoundDataImporterJob");
