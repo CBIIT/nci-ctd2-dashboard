@@ -57,8 +57,15 @@ public class ObservationDataFactoryImpl implements ObservationDataFactory {
 		observedSubject.setObservation(observation);
 		Subject subject = subjectCache.get(subjectValue);
 		if (subject == null) {
-			Method method = dashboardDao.getClass().getMethod(daoFindQueryName, String.class);
-			List<Subject> dashboardEntities = (List<Subject>)method.invoke(dashboardDao, subjectValue);
+			List<Subject> dashboardEntities = null;
+			if (daoFindQueryName.contains("findSubjectsBySynonym")) {
+				Method method = dashboardDao.getClass().getMethod(daoFindQueryName, String.class, Boolean.TYPE);
+				dashboardEntities = (List<Subject>)method.invoke(dashboardDao, subjectValue, true);
+			}
+			else {
+				Method method = dashboardDao.getClass().getMethod(daoFindQueryName, String.class);
+				dashboardEntities = (List<Subject>)method.invoke(dashboardDao, subjectValue);
+			}
 			if (dashboardEntities.size() > 0) {
 				subject = dashboardEntities.iterator().next();
 				subjectCache.put(subjectValue, subject);

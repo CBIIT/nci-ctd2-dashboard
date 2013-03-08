@@ -20,6 +20,7 @@ public class DashboardAdminMain {
         "classpath*:META-INF/spring/applicationContext.xml", // This is for DAO/Dashboard Model
         "classpath*:META-INF/spring/adminApplicationContext.xml", // This is for admin-related beans
         "classpath*:META-INF/spring/geneDataApplicationContext.xml", // This is for gene data importer beans
+        "classpath*:META-INF/spring/cellLineDataApplicationContext.xml", // This is for cell line data importer beans
         "classpath*:META-INF/spring/compoundDataApplicationContext.xml", // This is for compound data importer beans
         "classpath*:META-INF/spring/proteinDataApplicationContext.xml", // This is for compound data importer beans
         "classpath*:META-INF/spring/controlledVocabularyApplicationContext.xml", // This is for controlled vocabulary importer beans
@@ -38,6 +39,7 @@ public class DashboardAdminMain {
         Options gnuOptions = new Options();
         gnuOptions
                 .addOption("h", "help", false, "shows this help document and quits.")
+			    .addOption("cl", "cell-line-data", false, "imports cell line data.")
 			    .addOption("cp", "compound-data", false, "imports compound data.")
 			    .addOption("g", "gene-data", false, "imports gene data.")
                 .addOption("p", "protein-data", false, "imports protein data.")
@@ -59,6 +61,10 @@ public class DashboardAdminMain {
             if( commandLine.hasOption("h") ) {
                 printHelpAndExit(gnuOptions, 0);
             }
+
+			if( commandLine.hasOption("cl") ) {
+                launchJob("cellLineDataImporterJob");
+			}
 
 			if( commandLine.hasOption("cp") ) {
                 launchJob("compoundDataImporterJob");
