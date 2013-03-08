@@ -15,9 +15,14 @@
 		<batch:chunk reader="compoundsReader" writer="compoundsWriter"/>
 	  </batch:tasklet>
 	</batch:step>
-	<batch:step id="compoundSynonymsStep" parent="compoundDataStep">
+	<batch:step id="compoundSynonymsStep" parent="compoundsStep" next="compoundStructuresStep">
 	  <batch:tasklet>
-		<batch:chunk reader="compoundSynonymsReader" processor="compoundSynonymsProcessor" writer="compoundSynonymsWriter"/>
+		<batch:chunk reader="compoundSynonymsReader" processor="compoundDataProcessor" writer="compoundDataWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+	<batch:step id="compoundStructuresStep" parent="compoundSynonymsStep">
+	  <batch:tasklet>
+		<batch:chunk reader="compoundStructuresReader" processor="compoundDataProcessor" writer="compoundDataWriter"/>
 	  </batch:tasklet>
 	</batch:step>
   </batch:job>
@@ -59,6 +64,23 @@
 
   <bean name="compoundSynonymsLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="names" value="CPD_ID,CPD_NAME"/>
+	<property name="delimiter" value="\u0009"/>
+  </bean>
+
+  <!-- compound structures beans -->
+  <bean name="compoundStructuresReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="resource" value="${compound.structures.location}" />
+    <property name="lineMapper" ref="compoundStructuresLineMapper" />
+	<property name="linesToSkip" value="1" />
+  </bean>
+
+  <bean name="compoundStructuresLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+	<property name="fieldSetMapper" ref="compoundStructuresMapper" />
+	<property name="lineTokenizer" ref="compoundStructuresLineTokenizer" />
+  </bean>
+
+  <bean name="compoundStructuresLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+	<property name="names" value="CPD_ID,CPD_PRIMARY_NAME,STRUCTURE_FILE"/>
 	<property name="delimiter" value="\u0009"/>
   </bean>
 

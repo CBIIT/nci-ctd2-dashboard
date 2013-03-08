@@ -9,13 +9,13 @@ import org.springframework.batch.item.ItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 
-@Component("compoundSynonymsWriter")
-public class CompoundSynonymsWriter implements ItemWriter<Compound> {
+@Component("compoundDataWriter")
+public class CompoundDataSharedWriter implements ItemWriter<Compound> {
 
     @Autowired
 	private DashboardDao dashboardDao;
  
-	private static final Log log = LogFactory.getLog(CompoundSynonymsWriter.class);
+	private static final Log log = LogFactory.getLog(CompoundDataSharedWriter.class);
  
 	public void write(List<? extends Compound> items) throws Exception {
 		for (Compound compound : items) {
