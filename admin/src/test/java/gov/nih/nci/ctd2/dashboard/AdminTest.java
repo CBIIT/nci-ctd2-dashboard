@@ -3,6 +3,7 @@ package gov.nih.nci.ctd2.dashboard;
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
 import gov.nih.nci.ctd2.dashboard.model.*;
 import gov.nih.nci.ctd2.dashboard.importer.internal.CompoundsFieldSetMapper;
+import gov.nih.nci.ctd2.dashboard.importer.internal.CompoundStructuresFieldSetMapper;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -80,6 +81,11 @@ public class AdminTest {
 		List<Compound> compounds = dashboardDao.findCompoundsBySmilesNotation("CCCCCCCCC1OC(=O)C(=C)C1C(O)=O");
         assertEquals(1, compounds.size());
 		assertEquals(3, compounds.iterator().next().getSynonyms().size());
+		List<Subject> compoundSubjectsWithImage = 
+			dashboardDao.findSubjectsByXref(CompoundStructuresFieldSetMapper.COMPOUND_IMAGE_DATABASE,
+											"BRD-A01145011.png");
+		assertEquals(1, compoundSubjectsWithImage.size());
+		assertEquals("zebularine", compoundSubjectsWithImage.iterator().next().getDisplayName());
 
 		// import some gene data
 		jobExecution = executeJob("geneDataImporterJob");

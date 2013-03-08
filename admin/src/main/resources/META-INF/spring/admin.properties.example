@@ -5,6 +5,7 @@ gene.data.location=
 cell.line.data.location=
 compounds.location=
 compound.synonyms.location=
+compound.structures.location=
 compound.annotations.location=
 protein.data.location=
 compound.sensitivity.enrichment.data.location=
