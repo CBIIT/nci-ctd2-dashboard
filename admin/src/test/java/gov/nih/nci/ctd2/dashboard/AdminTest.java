@@ -124,15 +124,15 @@ public class AdminTest {
 		assertTrue(dashboardDao.findObservationTemplateByName("broad_compound_sensitivity_enrichment") != null);
 
 		// import observation data
-		jobExecution = executeJob("observationDataImporterJob");
+		jobExecution = executeJob("testTierOneObservationDataImporterJob");
         assertEquals("COMPLETED", jobExecution.getExitStatus().getExitCode());
-		assertEquals(3, dashboardDao.countEntities(Submission.class).intValue());
-		assertEquals(2, dashboardDao.countEntities(SubmissionCenter.class).intValue());
-		assertEquals(26, dashboardDao.countEntities(Observation.class).intValue());
-		assertEquals(35, dashboardDao.countEntities(ObservedSubject.class).intValue());
-		assertEquals(268, dashboardDao.countEntities(ObservedEvidence.class).intValue());
-		assertEquals(52, dashboardDao.countEntities(LabelEvidence.class).intValue());
-		assertEquals(180, dashboardDao.countEntities(DataNumericValue.class).intValue());
+		assertEquals(1, dashboardDao.countEntities(Submission.class).intValue());
+		assertEquals(1, dashboardDao.countEntities(SubmissionCenter.class).intValue());
+		assertEquals(9, dashboardDao.countEntities(Observation.class).intValue());
+		assertEquals(18, dashboardDao.countEntities(ObservedSubject.class).intValue());
+		assertEquals(99, dashboardDao.countEntities(ObservedEvidence.class).intValue());
+		assertEquals(36, dashboardDao.countEntities(LabelEvidence.class).intValue());
+		assertEquals(27, dashboardDao.countEntities(DataNumericValue.class).intValue());
 		assertEquals(27, dashboardDao.countEntities(FileEvidence.class).intValue());
 		assertEquals(9, dashboardDao.countEntities(UrlEvidence.class).intValue());
 	}
