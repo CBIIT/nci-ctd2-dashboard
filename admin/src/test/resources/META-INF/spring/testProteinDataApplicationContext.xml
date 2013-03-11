@@ -32,7 +32,7 @@
   </bean>
 
   <bean id="uniprotFileItemReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
-	<property name="resources" value="classpath:test-sprot.tsv" />
+	<property name="resources" value="classpath:test-sprot.txt" />
 	<property name="delegate">
 	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
 		<property name="lineMapper">

@@ -20,7 +20,7 @@
   </batch:job>
 
   <bean name="tierOneObservationDataReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-	<property name="resource" value="classpath:test-tier-1-observation-data.tsv" />
+	<property name="resource" value="classpath:test-tier-1-observation-data.txt" />
     <property name="lineMapper" ref="tierOneObservationDataMapper" />
 	<property name="linesToSkip" value="1" />
   </bean>

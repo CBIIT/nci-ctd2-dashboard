@@ -35,7 +35,7 @@
 
   <!-- compounds beans -->
   <bean name="compoundsReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-	<property name="resource" value="classpath:test-compounds.tsv" />
+	<property name="resource" value="classpath:test-compounds.txt" />
     <property name="lineMapper" ref="compoundsLineMapper" />
 	<property name="linesToSkip" value="1" />
   </bean>
@@ -52,7 +52,7 @@
 
   <!-- compound synonyms beans -->
   <bean name="compoundSynonymsReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-	<property name="resource" value="classpath:test-compound-synonyms.tsv" />
+	<property name="resource" value="classpath:test-compound-synonyms.txt" />
     <property name="lineMapper" ref="compoundSynonymsLineMapper" />
 	<property name="linesToSkip" value="1" />
   </bean>
@@ -69,7 +69,7 @@
 
   <!-- compound structures beans -->
   <bean name="compoundStructuresReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-	<property name="resource" value="classpath:test-compound-structures.tsv" />
+	<property name="resource" value="classpath:test-compound-structures.txt" />
     <property name="lineMapper" ref="compoundStructuresLineMapper" />
 	<property name="linesToSkip" value="1" />
   </bean>
