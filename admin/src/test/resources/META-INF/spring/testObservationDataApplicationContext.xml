@@ -11,25 +11,45 @@
   <import resource="classpath*:META-INF/spring/observationDataSharedApplicationContext.xml" />
   <context:component-scan base-package="gov.nih.nci.ctd2.dashboard.importer.internal" />
 
+  <batch:job id="testTierOneObservationDataImporterJob">
+	<batch:step id="tierOneObservationDataStep" parent="observationDataStep">
+	  <batch:tasklet>
+		<batch:chunk reader="tierOneObservationDataReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+  </batch:job>
+
+  <bean name="tierOneObservationDataReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="resource" value="classpath:test-tier-1-observation-data.tsv" />
+    <property name="lineMapper" ref="tierOneObservationDataMapper" />
+	<property name="linesToSkip" value="1" />
+  </bean>
+
+  <bean name="tierOneObservationDataMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+	<property name="fieldSetMapper" ref="observationDataMapper" />
+	<property name="lineTokenizer" ref="tierOneObservationDataLineTokenizer" />
+  </bean>
+
+  <bean name="tierOneObservationDataLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+	<property name="delimiter" value="\u0009"/>
+	<property name="names" value="submission_center,submission_date,template_name,cell_line_subset,cell_line_exclusion,feature_dataset,compound_name,entrez_gene_id,cell_lineage,number_of_cell_lines,number_of_mutant_cell_lines,enrichment_direction,log_fdr,response_image_path,feature_image_path,nci_portal,gct_path"/>
+  </bean>
+
+  <!-- the following beans are not used during testing - only required for proper loading of context files -->
+
   <!-- broad compound sensitivity enrichment -->
   <bean name="broadCompoundSensitivityEnrichmentReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-	<property name="resource" value="classpath:test-broad-compound-sensitivity-enrichment-data.tsv" />
     <property name="lineMapper" ref="broadCompoundSensitivityEnrichmentLineMapper" />
-	<property name="linesToSkip" value="1" />
   </bean>
 
   <!-- columbia signaling analysis -->
   <bean name="columbiaSignalingAnalysisReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-	<property name="resource" value="classpath:test-columbia-signaling-analysis-data.tsv" />
     <property name="lineMapper" ref="columbiaSignalingAnalysisLineMapper" />
-	<property name="linesToSkip" value="1" />
   </bean>
 
   <!-- columbia differential representation analysis -->
   <bean name="columbiaDifferentialRepresentationAnalysisReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-	<property name="resource" value="classpath:test-columbia-differential-representation-analysis-data.tsv" />
     <property name="lineMapper" ref="columbiaDifferentialRepresentationAnalysisLineMapper" />
-	<property name="linesToSkip" value="1" />
   </bean>
 
 </beans>
