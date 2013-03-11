@@ -15,12 +15,12 @@
 		<batch:chunk reader="compoundsReader" writer="compoundsWriter"/>
 	  </batch:tasklet>
 	</batch:step>
-	<batch:step id="compoundSynonymsStep" parent="compoundsStep" next="compoundStructuresStep">
+	<batch:step id="compoundSynonymsStep" parent="compoundDataStep" next="compoundStructuresStep">
 	  <batch:tasklet>
 		<batch:chunk reader="compoundSynonymsReader" processor="compoundDataProcessor" writer="compoundDataWriter"/>
 	  </batch:tasklet>
 	</batch:step>
-	<batch:step id="compoundStructuresStep" parent="compoundSynonymsStep">
+	<batch:step id="compoundStructuresStep" parent="compoundDataStep">
 	  <batch:tasklet>
 		<batch:chunk reader="compoundStructuresReader" processor="compoundDataProcessor" writer="compoundDataWriter"/>
 	  </batch:tasklet>
