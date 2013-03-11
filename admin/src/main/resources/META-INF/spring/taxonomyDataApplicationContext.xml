@@ -25,7 +25,7 @@
   </bean>
 
   <bean name="taxonomyDataReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-	<property name="resource" value="classpath:simple-taxonomy-list.tsv" />
+	<property name="resource" value="classpath:simple-taxonomy-list.txt" />
     <property name="lineMapper" ref="taxonomyDataLineMapper" />
 	<property name="linesToSkip" value="1" />
   </bean>
