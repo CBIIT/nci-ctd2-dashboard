@@ -11,3 +11,4 @@ protein.data.location=
 compound.sensitivity.enrichment.data.location=
 signaling.analysis.data.location=
 differential.representation.analysis.data.location=
+master.regulator.analysis.data.location=

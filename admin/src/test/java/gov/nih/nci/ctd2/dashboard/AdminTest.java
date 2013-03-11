@@ -113,14 +113,14 @@ public class AdminTest {
         assertEquals("COMPLETED", jobExecution.getExitStatus().getExitCode());
 		// we get some subject/observed subject roles
 		assertEquals(5, dashboardDao.countEntities(SubjectRole.class).intValue());
-		assertEquals(10, dashboardDao.countEntities(ObservedSubjectRole.class).intValue());
+		assertEquals(16, dashboardDao.countEntities(ObservedSubjectRole.class).intValue());
 		assertTrue(dashboardDao.findObservedSubjectRole("broad_compound_sensitivity_enrichment", "compound_name") != null);
 		// we get some evidence/observed evidence roles
 		assertEquals(4, dashboardDao.countEntities(EvidenceRole.class).intValue());
-		assertEquals(31, dashboardDao.countEntities(ObservedEvidenceRole.class).intValue());
+		assertEquals(43, dashboardDao.countEntities(ObservedEvidenceRole.class).intValue());
 		assertTrue(dashboardDao.findObservedEvidenceRole("broad_compound_sensitivity_enrichment", "cell_line_subset") != null);
 		// we get observation template data
-		assertEquals(3, dashboardDao.countEntities(ObservationTemplate.class).intValue());
+		assertEquals(4, dashboardDao.countEntities(ObservationTemplate.class).intValue());
 		assertTrue(dashboardDao.findObservationTemplateByName("broad_compound_sensitivity_enrichment") != null);
 
 		// import observation data

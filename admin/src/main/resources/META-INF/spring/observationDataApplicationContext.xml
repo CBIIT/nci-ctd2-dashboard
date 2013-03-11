@@ -44,4 +44,15 @@
 	</property>
   </bean>
 
+  <!-- columbia master regulator analysis with shRNA knockdown -->
+  <bean name="columbiaMasterRegulatorAnalysisReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+	<property name="resources" value="${master.regulator.analysis.data.location}" />
+	<property name="delegate">
+	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+		<property name="lineMapper" ref="columbiaMasterRegulatorAnalysisLineMapper" />
+		<property name="linesToSkip" value="1" />
+	  </bean>
+	</property>
+  </bean>
+
 </beans>

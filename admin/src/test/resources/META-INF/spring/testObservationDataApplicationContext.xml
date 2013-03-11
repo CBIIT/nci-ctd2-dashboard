@@ -52,4 +52,9 @@
     <property name="lineMapper" ref="columbiaDifferentialRepresentationAnalysisLineMapper" />
   </bean>
 
+  <!-- columbia master regulator analysis with shRNA knockdown -->
+  <bean name="columbiaMasterRegulatorAnalysisReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="lineMapper" ref="columbiaMasterRegulatorAnalysisLineMapper" />
+  </bean>
+
 </beans>
