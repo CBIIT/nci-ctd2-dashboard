@@ -18,9 +18,14 @@
 		<batch:chunk reader="columbiaSignalingAnalysisReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	  </batch:tasklet>
 	</batch:step>
-	<batch:step id="columbiaDifferentialRepresentationAnalysisStep" parent="observationDataStep">
+	<batch:step id="columbiaDifferentialRepresentationAnalysisStep" parent="observationDataStep" next="columbiaMasterRegulatorAnalysisStep">
 	  <batch:tasklet>
 		<batch:chunk reader="columbiaDifferentialRepresentationAnalysisReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+	<batch:step id="columbiaMasterRegulatorAnalysisStep" parent="observationDataStep">
+	  <batch:tasklet>
+		<batch:chunk reader="columbiaMasterRegulatorAnalysisReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	  </batch:tasklet>
 	</batch:step>
   </batch:job>
@@ -73,6 +78,20 @@
 	<property name="names" value="submission_center,submission_date,template_name,entrez_gene_id,num_probs,cell_lineage,cell_line_a,log2_fold_change_a,avg_rep_a,z_score_a,p_value_a,cell_line_b,log2_fold_change_b,avg_rep_b,z_score_b,p_value_b"/>
   </bean>
 
+  <!-- columbia master regulator analysis with shRNA knockdown analysis -->
+
+  <!-- columbiaMasterRegulatorAnalysisReader defined in: -->
+  <!-- observationDataApplicationContext.xml test observationDataApplicationContext.xml -->
+  <bean name="columbiaMasterRegulatorAnalysisLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+	<property name="fieldSetMapper" ref="observationDataMapper" />
+	<property name="lineTokenizer" ref="columbiaMasterRegulatorAnalysisLineTokenizer" />
+  </bean>
+
+  <bean name="columbiaMasterRegulatorAnalysisLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+	<property name="delimiter" value="\u0009"/>
+	<property name="names" value="submission_center,submission_date,template_name,submission_description,probeset_id,disease_condition,gene_symbol,entrez_gene_id,func_type,mr_regulon_set_size,gsea_score,mr_gsea_p_value,mr_gsea_fdr,num_shRNAs,cell_line_1,lineage_1,cell_line_2,lineage_2,shrna_diff_rep_z_score_CUTLL1_HPB,shrna_diff_rep_p_value_CUTLL1_HPB,shrna_diff_rep_fdr_CUTLL1_HPB,shrna_diff_rep_net_direction_CUTLL1_HPB"/>
+  </bean>
+
   <!-- shared helper beans -->
   <bean name="observationDataFactory" class="gov.nih.nci.ctd2.dashboard.importer.internal.ObservationDataFactoryImpl"/>
 
@@ -123,6 +142,25 @@
 		<entry key="columbia_all_diff_repr_analysis:avg_rep_b" value="evidence:readDouble:createObservedNumericEvidence" />
 		<entry key="columbia_all_diff_repr_analysis:z_score_b" value="evidence:readDouble:createObservedNumericEvidence" />
 		<entry key="columbia_all_diff_repr_analysis:p_value_b" value="evidence:readDouble:createObservedNumericEvidence" />
+		<!-- columbia master regulator analysis with shRNA knockdown analysis -->
+		<entry key="columbia_t-all_joint_mr_shrna_diff_rep:probeset_id" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="columbia_t-all_joint_mr_shrna_diff_rep:disease_condition" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="columbia_t-all_joint_mr_shrna_diff_rep:gene_symbol" value="subject:findGenesBySymbol" />
+		<entry key="columbia_t-all_joint_mr_shrna_diff_rep:entrez_gene_id" value="subject:findGenesByEntrezId" />
+		<entry key="columbia_t-all_joint_mr_shrna_diff_rep:func_type" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="columbia_t-all_joint_mr_shrna_diff_rep:set_size" value="evidence:readInt:createObservedNumericEvidence" />
+		<entry key="columbia_t-all_joint_mr_shrna_diff_rep:gsea_score" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="columbia_t-all_joint_mr_shrna_diff_rep:mr_gsea_p_value" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="columbia_t-all_joint_mr_shrna_diff_rep:mr_gsea_fdr" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="columbia_t-all_joint_mr_shrna_diff_rep:num_shRNAs" value="evidence:readInt:createObservedNumericEvidence" />
+		<!--<entry key="columbia_t-all_joint_mr_shrna_diff_rep:cell_line_1" value="subject:findSubjectsBySynonym" />-->
+		<!--<entry key="columbia_t-all_joint_mr_shrna_diff_rep:lineage_1" value="subject:findSubjectsBySynonym" />-->
+		<!--<entry key="columbia_t-all_joint_mr_shrna_diff_rep:cell_line_2" value="subject:findSubjectsBySynonym" />-->
+		<!--<entry key="columbia_t-all_joint_mr_shrna_diff_rep:lineage_2" value="subject:findSubjectsBySynonym" />-->
+		<entry key="columbia_t-all_joint_mr_shrna_diff_rep:shrna_diff_rep_z_score_CUTLL1_HPB" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="columbia_t-all_joint_mr_shrna_diff_rep:shrna_diff_rep_p_value_CUTLL1_HPB" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="columbia_t-all_joint_mr_shrna_diff_rep:shrna_diff_rep_fdr_CUTLL1_HPB" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="columbia_t-all_joint_mr_shrna_diff_rep:shrna_diff_rep_net_direction_CUTLL1_HPB" value="evidence:readString:createObservedLabelEvidence" />
 	  </map>
 	</constructor-arg>
   </bean>
