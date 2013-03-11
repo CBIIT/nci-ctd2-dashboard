@@ -84,9 +84,10 @@ public class ObservationDataFieldSetMapper implements FieldSetMapper<Observation
 				if (!observationTemplateMap.containsKey(mapKey)) continue;
 				String[] mapValues = observationTemplateMap.get(mapKey).split(MAP_DELIMITER);
 				if (mapValues[ROLE_TYPE_INDEX].equals("subject")) {
+					String subjectValue = fieldSet.readString(columnName);
+					if (subjectValue.length() == 0) continue; // motivated by gene symbol vs gene id column usage
 					ObservedSubject observedSubject = 
-						observationDataFactory.createObservedSubject(fieldSet.readString(columnName),
-																	 columnName, templateName,
+						observationDataFactory.createObservedSubject(subjectValue, columnName, templateName,
 																	 observation, mapValues[SUBJECT_QUERY_METHOD_INDEX]);
 					observedEntitiesSet.add(observedSubject);
 				}
