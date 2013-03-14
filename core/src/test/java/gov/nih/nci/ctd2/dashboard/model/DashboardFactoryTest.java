@@ -17,7 +17,7 @@ public class DashboardFactoryTest {
         dashboardFactory = (DashboardFactory) appContext.getBean("dashboardFactory");
 
         assertNotNull(dashboardFactory.create(ShRna.class));
-        assertNotNull(dashboardFactory.create(CellLine.class));
+        assertNotNull(dashboardFactory.create(CellSample.class));
         assertNotNull(dashboardFactory.create(Gene.class));
         assertNotNull(dashboardFactory.create(AnimalModel.class));
         assertNotNull(dashboardFactory.create(Observation.class));
