@@ -104,7 +104,7 @@
 		<entry key="broad_compound_sensitivity_enrichment:feature_dataset" value="evidence:readString:createObservedLabelEvidence" />
 		<entry key="broad_compound_sensitivity_enrichment:compound_name" value="subject:findCompoundsByName" />
 		<entry key="broad_compound_sensitivity_enrichment:entrez_gene_id" value="subject:findGenesByEntrezId" />
-		<!--<entry key="broad_compound_sensitivity_enrichment:cell_lineage" value="subject:findSubjectsBySynonym" />-->
+		<entry key="broad_compound_sensitivity_enrichment:cell_lineage" value="subject:findSubjectsBySynonym" />
 		<entry key="broad_compound_sensitivity_enrichment:number_of_cell_lines" value="evidence:readInt:createObservedNumericEvidence" />
 		<entry key="broad_compound_sensitivity_enrichment:number_of_mutant_cell_lines" value="evidence:readInt:createObservedNumericEvidence" />
 		<entry key="broad_compound_sensitivity_enrichment:enrichment_direction" value="evidence:readString:createObservedLabelEvidence" />
@@ -116,8 +116,8 @@
 		<!-- columbia signaling analysis template -->
 		<entry key="columbia_all_mr_tf_or_sig_analysis:affy_probeset_id" value="evidence:readString:createObservedLabelEvidence" />
 		<entry key="columbia_all_mr_tf_or_sig_analysis:entrez_gene_id" value="subject:findGenesByEntrezId" />
-		<!--<entry key="columbia_all_mr_tf_or_sig_analysis:cell_lineage_tissue" value="subject:findSubjectsBySynonym" />-->
-		<!--<entry key="columbia_all_mr_tf_or_sig_analysis:cell_lineage_blood_type" value="subject:findSubjectsBySynonym" />-->
+		<entry key="columbia_all_mr_tf_or_sig_analysis:cell_lineage_tissue" value="subject:findSubjectsBySynonym" />
+		<entry key="columbia_all_mr_tf_or_sig_analysis:cell_lineage_blood_type" value="subject:findSubjectsBySynonym" />
 		<entry key="columbia_all_mr_tf_or_sig_analysis:log2_fold_change" value="evidence:readDouble:createObservedNumericEvidence" />
 		<entry key="columbia_all_mr_tf_or_sig_analysis:avg_expr" value="evidence:readDouble:createObservedNumericEvidence" />
 		<entry key="columbia_all_mr_tf_or_sig_analysis:z_score" value="evidence:readDouble:createObservedNumericEvidence" />
@@ -131,13 +131,13 @@
 		<!-- columbia differential representation analysis template -->
 		<entry key="columbia_all_diff_repr_analysis:entrez_gene_id" value="subject:findGenesBySymbol" />
 		<entry key="columbia_all_diff_repr_analysis:num_probs" value="evidence:readInt:createObservedNumericEvidence" />
-		<!--<entry key="columbia_all_diff_repr_analysis:cell_lineage" value="subject:findSubjectsBySynonym" />-->
-		<!--<entry key="columbia_all_diff_repr_analysis:cell_line_a" value="subject:findSubjectsBySynonym" />-->
+		<entry key="columbia_all_diff_repr_analysis:cell_lineage" value="subject:findSubjectsBySynonym" />
+		<entry key="columbia_all_diff_repr_analysis:cell_line_a" value="subject:findSubjectsBySynonym" />
 		<entry key="columbia_all_diff_repr_analysis:log2_fold_change_a" value="evidence:readDouble:createObservedNumericEvidence" />
 		<entry key="columbia_all_diff_repr_analysis:avg_rep_a" value="evidence:readDouble:createObservedNumericEvidence" />
 		<entry key="columbia_all_diff_repr_analysis:z_score_a" value="evidence:readDouble:createObservedNumericEvidence" />
 		<entry key="columbia_all_diff_repr_analysis:p_value_a" value="evidence:readDouble:createObservedNumericEvidence" />
-		<!--<entry key="columbia_all_diff_repr_analysis:cell_line_b" value="subject:findSubjectsBySynonym" />-->
+		<entry key="columbia_all_diff_repr_analysis:cell_line_b" value="subject:findSubjectsBySynonym" />
 		<entry key="columbia_all_diff_repr_analysis:log2_fold_change_b" value="evidence:readDouble:createObservedNumericEvidence" />
 		<entry key="columbia_all_diff_repr_analysis:avg_rep_b" value="evidence:readDouble:createObservedNumericEvidence" />
 		<entry key="columbia_all_diff_repr_analysis:z_score_b" value="evidence:readDouble:createObservedNumericEvidence" />
@@ -153,10 +153,10 @@
 		<entry key="columbia_t-all_joint_mr_shrna_diff_rep:mr_gsea_p_value" value="evidence:readDouble:createObservedNumericEvidence" />
 		<entry key="columbia_t-all_joint_mr_shrna_diff_rep:mr_gsea_fdr" value="evidence:readDouble:createObservedNumericEvidence" />
 		<entry key="columbia_t-all_joint_mr_shrna_diff_rep:num_shRNAs" value="evidence:readInt:createObservedNumericEvidence" />
-		<!--<entry key="columbia_t-all_joint_mr_shrna_diff_rep:cell_line_1" value="subject:findSubjectsBySynonym" />-->
-		<!--<entry key="columbia_t-all_joint_mr_shrna_diff_rep:lineage_1" value="subject:findSubjectsBySynonym" />-->
-		<!--<entry key="columbia_t-all_joint_mr_shrna_diff_rep:cell_line_2" value="subject:findSubjectsBySynonym" />-->
-		<!--<entry key="columbia_t-all_joint_mr_shrna_diff_rep:lineage_2" value="subject:findSubjectsBySynonym" />-->
+		<entry key="columbia_t-all_joint_mr_shrna_diff_rep:cell_line_1" value="subject:findSubjectsBySynonym" />
+		<entry key="columbia_t-all_joint_mr_shrna_diff_rep:lineage_1" value="subject:findSubjectsBySynonym" />
+		<entry key="columbia_t-all_joint_mr_shrna_diff_rep:cell_line_2" value="subject:findSubjectsBySynonym" />
+		<entry key="columbia_t-all_joint_mr_shrna_diff_rep:lineage_2" value="subject:findSubjectsBySynonym" />
 		<entry key="columbia_t-all_joint_mr_shrna_diff_rep:shrna_diff_rep_z_score_CUTLL1_HPB" value="evidence:readDouble:createObservedNumericEvidence" />
 		<entry key="columbia_t-all_joint_mr_shrna_diff_rep:shrna_diff_rep_p_value_CUTLL1_HPB" value="evidence:readDouble:createObservedNumericEvidence" />
 		<entry key="columbia_t-all_joint_mr_shrna_diff_rep:shrna_diff_rep_fdr_CUTLL1_HPB" value="evidence:readDouble:createObservedNumericEvidence" />
