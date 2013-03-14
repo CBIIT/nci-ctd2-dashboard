@@ -19,6 +19,7 @@ import java.util.HashMap;
 @Component("cellLineNameMapper")
 public class CellLineNameFieldSetMapper implements FieldSetMapper<CellSample> {
 
+	public static final String CBIO_PORTAL = "CBIO_PORTAL";
 	public static final String BROAD_CELL_LINE_DATABASE = "BROAD_CELL_LINE";
 
 	private static final String	CELL_SAMPLE_NAME_ID = "CELL_SAMPLE_NAME_ID";
@@ -76,6 +77,13 @@ public class CellLineNameFieldSetMapper implements FieldSetMapper<CellSample> {
 				xref.setDatabaseId(cellSampleName);
 				xref.setDatabaseName(cellNameTypePair[0]);
 				cellSample.getXrefs().add(xref);
+				// add xref to cbio portal
+				if (cellNameTypePair[0].equalsIgnoreCase("ccle")) {
+					xref = dashboardFactory.create(Xref.class);
+					xref.setDatabaseId(cellSampleName);
+					xref.setDatabaseName(CBIO_PORTAL);
+					cellSample.getXrefs().add(xref);
+				}
 			}
 
 		}
