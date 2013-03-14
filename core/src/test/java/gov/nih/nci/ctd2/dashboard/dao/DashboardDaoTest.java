@@ -251,28 +251,28 @@ public class DashboardDaoTest {
         xref3.setDatabaseId(id3);
         xref3.setDatabaseName(db3);
 
-        CellLine cellLine1 = dashboardFactory.create(CellLine.class);
-        cellLine1.setDisplayName("CL1");
-        cellLine1.getXrefs().add(xref1);
-        dashboardDao.save(cellLine1);
+        CellSample cellSample1 = dashboardFactory.create(CellSample.class);
+        cellSample1.setDisplayName("CL1");
+        cellSample1.getXrefs().add(xref1);
+        dashboardDao.save(cellSample1);
 
-        CellLine cellLine2 = dashboardFactory.create(CellLine.class);
-        cellLine2.setDisplayName("CL2");
-        cellLine2.getXrefs().add(xref2);
-        cellLine2.getXrefs().add(xref3);
-        dashboardDao.save(cellLine2);
+        CellSample cellSample2 = dashboardFactory.create(CellSample.class);
+        cellSample2.setDisplayName("CL2");
+        cellSample2.getXrefs().add(xref2);
+        cellSample2.getXrefs().add(xref3);
+        dashboardDao.save(cellSample2);
 
         List<Subject> subjects1 = dashboardDao.findSubjectsByXref(xref1);
         assertEquals(1, subjects1.size());
-        assertEquals(cellLine1, subjects1.iterator().next());
+        assertEquals(cellSample1, subjects1.iterator().next());
 
         List<Subject> subjects2 = dashboardDao.findSubjectsByXref(xref2);
         assertEquals(1, subjects2.size());
-        assertEquals(cellLine2, subjects2.iterator().next());
+        assertEquals(cellSample2, subjects2.iterator().next());
 
         subjects2 = dashboardDao.findSubjectsByXref(xref3.getDatabaseName(), xref3.getDatabaseId());
         assertEquals(1, subjects2.size());
-        assertEquals(cellLine2, subjects2.iterator().next());
+        assertEquals(cellSample2, subjects2.iterator().next());
 
         assertTrue(dashboardDao.findSubjectsByXref("RandomDB", "RandomId").isEmpty());
     }
