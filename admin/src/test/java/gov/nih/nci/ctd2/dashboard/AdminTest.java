@@ -2,6 +2,7 @@ package gov.nih.nci.ctd2.dashboard;
 
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
 import gov.nih.nci.ctd2.dashboard.model.*;
+import gov.nih.nci.ctd2.dashboard.importer.internal.CellLineNameFieldSetMapper;
 import gov.nih.nci.ctd2.dashboard.importer.internal.CompoundsFieldSetMapper;
 import gov.nih.nci.ctd2.dashboard.importer.internal.CompoundStructuresFieldSetMapper;
 
@@ -69,7 +70,10 @@ public class AdminTest {
 		assertEquals("697", cellSample.getDisplayName());
 		assertEquals("HAEMATOPOIETIC_AND_LYMPHOID_TISSUE", cellSample.getLineage());
 		assertEquals(3, cellSample.getSynonyms().size());
-		assertEquals(7, cellSample.getXrefs().size());
+		assertEquals(8, cellSample.getXrefs().size());
+		cellSampleSubjects = dashboardDao.findSubjectsByXref(CellLineNameFieldSetMapper.CBIO_PORTAL,
+															 "5637_URINARY_TRACT");
+		assertEquals(1, cellSampleSubjects.size());
 
 		// import some compound data
 		jobExecution = executeJob("compoundDataImporterJob");
