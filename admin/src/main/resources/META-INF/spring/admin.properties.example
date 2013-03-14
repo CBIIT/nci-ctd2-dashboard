@@ -2,7 +2,9 @@
 
 # data source locations
 gene.data.location=
-cell.line.data.location=
+cell.line.name.type.location=
+cell.line.sample.location=
+cell.line.name.location=
 compounds.location=
 compound.synonyms.location=
 compound.structures.location=

@@ -10,9 +10,19 @@
   <context:component-scan base-package="gov.nih.nci.ctd2.dashboard.importer.internal" />
 
   <batch:job id="cellLineDataImporterJob">
-	<batch:step id="cellLineDataStep" parent="cellLineDataSimpleStep">
+	<batch:step id="cellLineNameTypeStep" parent="cellLineDataSimpleStep" next="cellLineSampleStep">
 	  <batch:tasklet>
-		<batch:chunk reader="cellLineDataReader" writer="cellLineDataWriter"/>
+		<batch:chunk reader="cellLineNameTypeReader" writer="cellLineNameTypeWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+	<batch:step id="cellLineSampleStep" parent="cellLineDataSimpleStep" next="cellLineNameStep">
+	  <batch:tasklet>
+		<batch:chunk reader="cellLineSampleReader" writer="cellLineSampleWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+	<batch:step id="cellLineNameStep" parent="cellLineDataSimpleStep">
+	  <batch:tasklet>
+		<batch:chunk reader="cellLineNameReader" processor="cellLineNameProcessor" writer="cellLineNameWriter"/>
 	  </batch:tasklet>
 	</batch:step>
   </batch:job>
@@ -23,20 +33,65 @@
 	<property name="commitInterval" value="100" />
   </bean>
 
-  <bean name="cellLineDataReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-	<property name="resource" value="${cell.line.data.location}" />
-    <property name="lineMapper" ref="cellLineDataLineMapper" />
+  <!-- cell line name type beans -->
+
+  <bean name="cellLineNameTypeReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="resource" value="${cell.line.name.type.location}" />
+    <property name="lineMapper" ref="cellLineNameTypeLineMapper" />
 	<property name="linesToSkip" value="1" />
   </bean>
 
-  <bean name="cellLineDataLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
-	<property name="fieldSetMapper" ref="cellLineDataMapper" />
-	<property name="lineTokenizer" ref="cellLineDataTokenizer" />
+  <bean name="cellLineNameTypeLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+	<property name="fieldSetMapper" ref="cellLineNameTypeMapper" />
+	<property name="lineTokenizer" ref="cellLineNameTypeTokenizer" />
   </bean>
 
-  <bean name="cellLineDataTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-	<property name="names" value="Name,Achilles,BSP,CCLE,CTD2,PRISM,Sanger,Sanger_CELL_SAMPLE_BARCODE_Parsed,taxonomy_id"/>
+  <bean name="cellLineNameTypeTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+	<property name="names" value="CELL_NAME_TYPE_ID,CELL_NAME_TYPE,CELL_NAME_TYPE_PRIORITY"/>
 	<property name="delimiter" value="\u0009"/>
+  </bean>
+
+  <!-- cell line sample beans -->
+
+  <bean name="cellLineSampleReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="resource" value="${cell.line.sample.location}" />
+    <property name="lineMapper" ref="cellLineSampleLineMapper" />
+	<property name="linesToSkip" value="1" />
+  </bean>
+
+  <bean name="cellLineSampleLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+	<property name="fieldSetMapper" ref="cellLineSampleMapper" />
+	<property name="lineTokenizer" ref="cellLineSampleTokenizer" />
+  </bean>
+
+  <bean name="cellLineSampleTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+	<property name="names" value="CELL_SAMPLE_ID,CELL_LINEAGE,TAXONOMY_ID"/>
+	<property name="delimiter" value="\u0009"/>
+  </bean>
+
+  <!-- cell line name beans -->
+
+  <bean name="cellLineNameReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="resource" value="${cell.line.name.location}" />
+    <property name="lineMapper" ref="cellLineNameLineMapper" />
+	<property name="linesToSkip" value="1" />
+  </bean>
+
+  <bean name="cellLineNameLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+	<property name="fieldSetMapper" ref="cellLineNameMapper" />
+	<property name="lineTokenizer" ref="cellLineNameTokenizer" />
+  </bean>
+
+  <bean name="cellLineNameTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+	<property name="names" value="CELL_SAMPLE_NAME_ID,CELL_SAMPLE_ID,CELL_NAME_TYPE_ID,CELL_SAMPLE_NAME"/>
+	<property name="delimiter" value="\u0009"/>
+  </bean>
+
+  <!-- this bean is shared between all the steps of the cell line importer job -->
+  <bean name="cellLineNameTypeMap" class="java.util.HashMap">
+	<constructor-arg index="0" type="java.util.Map">
+	  <map key-type="java.lang.String" value-type="java.lang.String"/>
+	</constructor-arg>
   </bean>
 
 </beans>

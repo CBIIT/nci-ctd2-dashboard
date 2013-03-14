@@ -62,14 +62,14 @@ public class AdminTest {
 		// import some cell line data
 		jobExecution = executeJob("cellLineDataImporterJob");
         assertEquals("COMPLETED", jobExecution.getExitStatus().getExitCode());
-		assertEquals(9, dashboardDao.countEntities(CellLine.class).intValue());
-		List<Subject> cellLineSubjects = dashboardDao.findSubjectsByXref("CCLE", "786O_KIDNEY");
-		assertEquals(1, cellLineSubjects.size());
-		CellLine cellLine = (CellLine)cellLineSubjects.iterator().next();
-		assertEquals("786O", cellLine.getDisplayName());
-		assertEquals("KIDNEY", cellLine.getTissue());
-		assertEquals(5, cellLine.getSynonyms().size());
-		assertEquals(7, cellLine.getXrefs().size());
+		assertEquals(13, dashboardDao.countEntities(CellSample.class).intValue());
+		List<Subject> cellSampleSubjects = dashboardDao.findSubjectsByXref("CTD2", "idCell:9");
+		assertEquals(1, cellSampleSubjects.size());
+		CellSample cellSample = (CellSample)cellSampleSubjects.iterator().next();
+		assertEquals("697", cellSample.getDisplayName());
+		assertEquals("HAEMATOPOIETIC_AND_LYMPHOID_TISSUE", cellSample.getLineage());
+		assertEquals(3, cellSample.getSynonyms().size());
+		assertEquals(7, cellSample.getXrefs().size());
 
 		// import some compound data
 		jobExecution = executeJob("compoundDataImporterJob");
@@ -129,7 +129,7 @@ public class AdminTest {
 		assertEquals(1, dashboardDao.countEntities(Submission.class).intValue());
 		assertEquals(1, dashboardDao.countEntities(SubmissionCenter.class).intValue());
 		assertEquals(9, dashboardDao.countEntities(Observation.class).intValue());
-		assertEquals(18, dashboardDao.countEntities(ObservedSubject.class).intValue());
+		assertEquals(27, dashboardDao.countEntities(ObservedSubject.class).intValue());
 		assertEquals(99, dashboardDao.countEntities(ObservedEvidence.class).intValue());
 		assertEquals(36, dashboardDao.countEntities(LabelEvidence.class).intValue());
 		assertEquals(27, dashboardDao.countEntities(DataNumericValue.class).intValue());
