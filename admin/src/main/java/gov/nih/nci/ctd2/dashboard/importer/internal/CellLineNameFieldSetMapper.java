@@ -37,36 +37,27 @@ public class CellLineNameFieldSetMapper implements FieldSetMapper<CellSample> {
 	@Qualifier("cellLineNameTypeMap")
 	private HashMap<String,String> cellLineNameTypeMap;
 
-    private HashMap<String, CellSample> cellSampleMap = new HashMap<String, CellSample>();
-    private HashMap<String, Synonym> synonymMap = new HashMap<String, Synonym>();
+    @Autowired
+	@Qualifier("cellSampleMap")
+	private HashMap<String,CellSample> cellSampleMap;
 
 	public CellSample mapFieldSet(FieldSet fieldSet) throws BindException {
 
 		String cellSampleId = fieldSet.readString(CELL_SAMPLE_ID);
 		String cellNameTypeId = fieldSet.readString(CELL_NAME_TYPE_ID);
 		String cellSampleName = fieldSet.readString(CELL_SAMPLE_NAME);
-
-		// find cell line by xref (broad)
+		// this map was populated in cellLineSampleStep
 		CellSample cellSample = cellSampleMap.get(cellSampleId);
-		if (cellSample == null) {
-			List<Subject> cellSamples =
-				dashboardDao.findSubjectsByXref(CellLineSampleFieldSetMapper.BROAD_CELL_LINE_DATABASE,
-												cellSampleId);
-			if (cellSamples.size() == 1) {
-				cellSample = (CellSample)cellSamples.iterator().next();
-				cellSampleMap.put(cellSampleId, cellSample);
-			}
-		}
 		if (cellSample != null) {
 			if (cellSampleName.length() > 0) {
-				// create synonym
-				Synonym synonym  = synonymMap.get(cellSampleName);
-				if (synonym == null) {
-					synonym = dashboardFactory.create(Synonym.class);
+				// we are not concerned about creating dup synonyms
+				// across cell samples - the cost in terms of lookup
+				// to prevent this is not worth the benefit
+				if (createSynonym(cellSample, cellSampleName)) {
+					Synonym synonym = dashboardFactory.create(Synonym.class);
 					synonym.setDisplayName(cellSampleName);
-					synonymMap.put(cellSampleName, synonym);
+					cellSample.getSynonyms().add(synonym);
 				}
-				cellSample.getSynonyms().add(synonym);
 			}
 			// create xref
 			// [0] is name type, [1] is name type priority
@@ -85,8 +76,14 @@ public class CellLineNameFieldSetMapper implements FieldSetMapper<CellSample> {
 					cellSample.getXrefs().add(xref);
 				}
 			}
-
 		}
 		return cellSample;
+	}
+
+	private boolean createSynonym(CellSample cellSample, String cellSampleName) {
+		for (Synonym synonym : cellSample.getSynonyms()) {
+			if (synonym.getDisplayName().equals(cellSampleName)) return false;
+		}
+		return true;
 	}
 }

@@ -10,6 +10,7 @@ import org.springframework.validation.BindException;
 import org.springframework.batch.item.file.transform.FieldSet;
 import org.springframework.batch.item.file.mapping.FieldSetMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.util.List;
 import java.util.HashMap;
@@ -29,6 +30,10 @@ public class CellLineSampleFieldSetMapper implements FieldSetMapper<CellSample> 
     @Autowired
     private DashboardFactory dashboardFactory;
 
+    @Autowired
+	@Qualifier("cellSampleMap")
+	private HashMap<String,CellSample> cellSampleMap;
+
 	private HashMap<String, Organism> organismsCache = new HashMap<String, Organism>();
 
 	public CellSample mapFieldSet(FieldSet fieldSet) throws BindException {
@@ -46,7 +51,9 @@ public class CellLineSampleFieldSetMapper implements FieldSetMapper<CellSample> 
 		xref.setDatabaseId(cellSampleId);
 		xref.setDatabaseName(BROAD_CELL_LINE_DATABASE);
 		cellSample.getXrefs().add(xref);
-
+		// optimization - avoid persisting CellSamples
+		// - place in map and pass to cellLineNameStep
+		cellSampleMap.put(cellSampleId,cellSample);
 		return cellSample;
 	}
 

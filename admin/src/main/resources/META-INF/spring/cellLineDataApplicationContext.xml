@@ -20,10 +20,13 @@
 		<batch:chunk reader="cellLineSampleReader" writer="cellLineSampleWriter"/>
 	  </batch:tasklet>
 	</batch:step>
-	<batch:step id="cellLineNameStep" parent="cellLineDataSimpleStep">
+	<batch:step id="cellLineNameStep" parent="cellLineDataSimpleStep" next="cellLineWriterStep">
 	  <batch:tasklet>
-		<batch:chunk reader="cellLineNameReader" processor="cellLineNameProcessor" writer="cellLineNameWriter"/>
+		<batch:chunk reader="cellLineNameReader" processor="cellLineNameProcessor"/>
 	  </batch:tasklet>
+	</batch:step>
+	<batch:step id="cellLineWriterStep" parent="cellLineDataSimpleStep">
+	  <batch:tasklet ref="cellLineWriter"/>
 	</batch:step>
   </batch:job>
 
@@ -87,10 +90,19 @@
 	<property name="delimiter" value="\u0009"/>
   </bean>
 
-  <!-- this bean is shared between all the steps of the cell line importer job -->
+  <!-- used for cell line data writing -->
+
+  <bean name="cellLineWriter" class="gov.nih.nci.ctd2.dashboard.importer.internal.CellLineDataWriter"/>
+
+  <!-- the following beans are shared between all the steps of the cell line importer job -->
   <bean name="cellLineNameTypeMap" class="java.util.HashMap">
 	<constructor-arg index="0" type="java.util.Map">
 	  <map key-type="java.lang.String" value-type="java.lang.String"/>
+	</constructor-arg>
+  </bean>
+  <bean name="cellSampleMap" class="java.util.HashMap">
+	<constructor-arg index="0" type="java.util.Map">
+	  <map key-type="java.lang.String" value-type="gov.nih.nci.ctd2.dashboard.model.CellSample"/>
 	</constructor-arg>
   </bean>
 
