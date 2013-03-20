@@ -290,7 +290,7 @@
             <td>{{id}}</td>
             <td>{{submissionDate}}</td>
             <td>
-                <b>{{observationTemplate.description}}</b>
+                {{observationTemplate.description}}
                 <small class="template-description" title="{{observationTemplate.displayName}}">
                     (template)
                 </small>
@@ -541,6 +541,60 @@
          </div>
     </script>
 
+    <script type="text/template" id="cellsample-tmpl">
+        <div class="container common-container" id="cellsample-container">
+            <h1>{{displayName}} <small>(# {{id}})</small></h1>
+
+            <table id="cellsample-details-grid" class="table table-bordered table-striped">
+                <tr>
+                    <th>Name</th>
+                    <td>{{displayName}}</td>
+                </tr>
+                <tr>
+                    <th>Synonyms</th>
+                    <td>{{synonymsStr}}</td>
+                </tr>
+                <tr>
+                    <th>Type</th>
+                    <td>Cell Sample</td>
+                </tr>
+                <tr>
+                    <th>Organism</th>
+                    <td>{{organism.displayName}}</td>
+                </tr>
+                <tr>
+                    <th>Lineage</th>
+                    <td>{{lineage}}</td>
+                </tr>
+                <tr>
+                    <th width="200">Genomic alterations</th>
+                    <td><a class="btn btn-small" href="http://awabi.cbio.mskcc.org/ctd2-dashboard-portal/tumormap.do?case_id={{cbioPortalId}}&cancer_study_id=ccle_broad" target="blank">view in cBioPortal <i class="icon-share"></i></a></td>
+                </tr>
+                <tr>
+                    <th>References</th>
+                    <td class="xrefsColumn">{{xrefStr}}</td>
+                </tr>
+            </table>
+
+            <h1>Related Observations</h1>
+            <table id="cellsample-observation-grid" class="table table-bordered table-striped observations">
+                <thead>
+                <tr>
+                    <th>Observation</th>
+                    <th>Role</th>
+                    <th>Observation Type</th>
+                    <th>Tier</th>
+                    <th>Date</th>
+                    <th>Center</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- here will go the rows -->
+                </tbody>
+            </table>
+        </div>
+    </script>
+
     <script type="text/template" id="compound-tmpl">
           <div class="container common-container" id="compound-container">
               <h1>{{displayName}} <small>(# {{id}})</small></h1>
@@ -572,7 +626,7 @@
                   </div>
                   <div class="span3">
                       <h4>Structure</h4>
-                      <img class="img-polaroid" data-src="holder.js/150x150">
+                      <img class="img-polaroid" width=150 src="http://cbio.mskcc.org/cancergenomics/ctd2-dashboard/compounds/images/{{imageFile}}">
                   </div>
               </div>
 
