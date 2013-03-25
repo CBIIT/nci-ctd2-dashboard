@@ -2,6 +2,7 @@ package gov.nih.nci.ctd2.dashboard.dao;
 
 import gov.nih.nci.ctd2.dashboard.model.*;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface DashboardDao {
@@ -33,4 +34,5 @@ public interface DashboardDao {
     List<ObservedSubject> findObservedSubjectBySubject(Subject subject);
     List<ObservedSubject> findObservedSubjectByObservation(Observation observation);
     List<ObservedEvidence> findObservedEvidenceByObservation(Observation observation);
+    void saveStateless(Collection<DashboardEntity> entities);
 }

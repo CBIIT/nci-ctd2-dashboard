@@ -6,6 +6,8 @@ import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -74,6 +76,63 @@ public class DashboardDaoTest {
 
         LabelEvidence labelEvidence = dashboardFactory.create(LabelEvidence.class);
         labelEvidence.setDisplayName("L1");
+    }
+
+    @Test
+    public void createAndStatelessPersistTest() {
+        Collection<DashboardEntity> entities = new ArrayList<DashboardEntity>();
+        Synonym synonym = dashboardFactory.create(Synonym.class);
+        synonym.setDisplayName("S1");
+        entities.add(synonym);
+
+        Synonym synonym2 = dashboardFactory.create(Synonym.class);
+        synonym.setDisplayName("S2");
+        entities.add(synonym2);
+
+        Synonym synonym3 = dashboardFactory.create(Synonym.class);
+        synonym3.setDisplayName("S3");
+        entities.add(synonym3);
+
+        // Save with id
+        Gene gene = dashboardFactory.create(Gene.class);
+        gene.setDisplayName("G1");
+        gene.setEntrezGeneId("E1");
+        gene.getSynonyms().add(synonym);
+        gene.getSynonyms().add(synonym2);
+        entities.add(gene);
+
+        // save without id
+        Gene gene2 = dashboardFactory.create(Gene.class);
+        gene2.setEntrezGeneId("E2");
+        gene.setDisplayName("G2");
+        entities.add(gene2);
+
+        Transcript transcript = dashboardFactory.create(Transcript.class);
+        transcript.setGene(gene2);
+        transcript.setRefseqId("NM_21431");
+        gene.setDisplayName("T1");
+        entities.add(transcript);
+
+        Protein protein = dashboardFactory.create(Protein.class);
+        protein.getTranscripts().add(transcript);
+        protein.setUniprotId("1000");
+        protein.setDisplayName("P1");
+        entities.add(protein);
+
+        AnimalModel animalModel = dashboardFactory.create(AnimalModel.class);
+        animalModel.getSynonyms().add(synonym3);
+        animalModel.setDisplayName("MM1");
+        entities.add(animalModel);
+
+        UrlEvidence urlEvidence = dashboardFactory.create(UrlEvidence.class);
+        urlEvidence.setUrl("http://ctd2.nci.nih.gov/");
+        entities.add(urlEvidence);
+
+        LabelEvidence labelEvidence = dashboardFactory.create(LabelEvidence.class);
+        labelEvidence.setDisplayName("L1");
+        entities.add(labelEvidence);
+
+        dashboardDao.saveStateless(entities);
     }
 
     @Test
