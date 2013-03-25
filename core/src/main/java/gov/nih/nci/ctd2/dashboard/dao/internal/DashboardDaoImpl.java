@@ -4,13 +4,12 @@ import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
 import gov.nih.nci.ctd2.dashboard.impl.DashboardEntityImpl;
 import gov.nih.nci.ctd2.dashboard.model.*;
 import org.hibernate.Criteria;
+import org.hibernate.StatelessSession;
+import org.hibernate.Transaction;
 import org.hibernate.criterion.Projections;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDao {
     private DashboardFactory dashboardFactory;
@@ -26,6 +25,21 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
     @Override
     public void save(DashboardEntity entity) {
         getHibernateTemplate().save(entity);
+    }
+
+    @Override
+    public void saveStateless(Collection<DashboardEntity> entities) {
+        if(entities == null || entities.isEmpty())
+            return;
+
+        StatelessSession session = getHibernateTemplate().getSessionFactory().openStatelessSession();
+        Transaction tx = session.beginTransaction();
+
+        for (DashboardEntity entity : entities)
+            session.insert(entity);
+
+        tx.commit();
+        session.close();
     }
 
     @Override
