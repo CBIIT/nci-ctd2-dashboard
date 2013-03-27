@@ -446,7 +446,7 @@
             </td>
             <td>{{observedEvidenceRole.description}}</td>
             <td>(
-                <a href="{{evidence.filePath}}" target="_blank" title="File download" class="desc-tooltip" title="Download File" data-content="Type: {{evidence.mimeType}} Widget: N/A">
+                <a href="http://cbio.mskcc.org/cancergenomics/ctd2-dashboard/{{evidence.filePath}}" target="_blank" title="File download" class="desc-tooltip" title="Download File" data-content="Type: {{evidence.mimeType}} Widget: N/A">
                     download
                 </a>
             )</td>
@@ -626,7 +626,7 @@
                   </div>
                   <div class="span3">
                       <h4>Structure</h4>
-                      <img class="img-polaroid" width=150 src="http://cbio.mskcc.org/cancergenomics/ctd2-dashboard/compounds/images/{{imageFile}}">
+                      <img class="img-polaroid" width=150 src="http://cbio.mskcc.org/cancergenomics/ctd2-dashboard/images/compounds/{{imageFile}}">
                   </div>
               </div>
 
