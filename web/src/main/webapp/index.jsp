@@ -568,7 +568,7 @@
                 </tr>
                 <tr>
                     <th width="200">Genomic alterations</th>
-                    <td><a class="btn btn-small" href="http://awabi.cbio.mskcc.org/ctd2-dashboard-portal/tumormap.do?case_id={{cbioPortalId}}&cancer_study_id=ccle_broad" target="blank">view in cBioPortal <i class="icon-share"></i></a></td>
+                    <td><a class="btn btn-small" href="http://cbio.mskcc.org/ctd2-dashboard-portal/tumormap.do?case_id={{cbioPortalId}}&cancer_study_id=ccle_broad" target="blank">view in cBioPortal <i class="icon-share"></i></a></td>
                 </tr>
                 <tr>
                     <th>References</th>
