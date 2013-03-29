@@ -34,5 +34,5 @@ public interface DashboardDao {
     List<ObservedSubject> findObservedSubjectBySubject(Subject subject);
     List<ObservedSubject> findObservedSubjectByObservation(Observation observation);
     List<ObservedEvidence> findObservedEvidenceByObservation(Observation observation);
-    void saveStateless(Collection<DashboardEntity> entities);
+    void saveStateless(Collection<? extends DashboardEntity> entities);
 }

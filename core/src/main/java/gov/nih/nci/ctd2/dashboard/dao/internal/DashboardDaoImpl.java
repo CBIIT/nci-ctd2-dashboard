@@ -28,7 +28,7 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
     }
 
     @Override
-    public void saveStateless(Collection<DashboardEntity> entities) {
+    public void saveStateless(Collection<? extends DashboardEntity> entities) {
         if(entities == null || entities.isEmpty())
             return;
 
