@@ -22,7 +22,7 @@
 	</batch:step>
 	<batch:step id="cellLineNameStep" parent="cellLineDataSimpleStep" next="cellLineWriterStep">
 	  <batch:tasklet>
-		<batch:chunk reader="cellLineNameReader" processor="cellLineNameProcessor"/>
+		<batch:chunk reader="cellLineNameReader" writer="cellLineNameWriter"/>
 	  </batch:tasklet>
 	</batch:step>
 	<batch:step id="cellLineWriterStep" parent="cellLineDataSimpleStep">

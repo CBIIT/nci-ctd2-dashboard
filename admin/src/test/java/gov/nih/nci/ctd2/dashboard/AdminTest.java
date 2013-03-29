@@ -71,6 +71,21 @@ public class AdminTest {
 		assertEquals("HAEMATOPOIETIC_AND_LYMPHOID_TISSUE", cellSample.getLineage());
 		assertEquals(3, cellSample.getSynonyms().size());
 		assertEquals(8, cellSample.getXrefs().size());
+
+		cellSampleSubjects = dashboardDao.findSubjectsByXref("integrated", "862");
+		assertEquals(1, cellSampleSubjects.size());
+		cellSample = (CellSample)cellSampleSubjects.iterator().next();
+		assertEquals("862", cellSample.getDisplayName());
+		assertEquals("MENINGES", cellSample.getLineage());
+		assertEquals(4, cellSample.getSynonyms().size());
+		assertEquals(5, cellSample.getXrefs().size());
+		/*
+		String[] synonymsExpected = {"862", "idCell:1092", "862_LUNG", "862_MENINGES"};
+		int lc = 0;
+		for (Synonym synonym : cellSample.getSynonyms()) {
+			assertEquals(synonym.getDisplayName(), synonymsExpected[lc++]);
+		}
+		*/
 		cellSampleSubjects = dashboardDao.findSubjectsByXref(CellLineNameFieldSetMapper.CBIO_PORTAL,
 															 "5637_URINARY_TRACT");
 		assertEquals(1, cellSampleSubjects.size());
