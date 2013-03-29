@@ -1,8 +1,8 @@
 package gov.nih.nci.ctd2.dashboard.model;
 
 public interface ObservedSubjectRole extends DashboardEntity {
-    public String getDescription();
-    public void setDescription(String description);
+    public String getDisplayText();
+    public void setDisplayText(String displayText);
     public String getColumnName();
     public void setColumnName(String columnName);
     public SubjectRole getSubjectRole();

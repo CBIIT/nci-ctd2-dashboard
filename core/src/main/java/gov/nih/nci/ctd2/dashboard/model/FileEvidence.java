@@ -7,4 +7,6 @@ public interface FileEvidence extends Evidence {
 	void setFileName(String fileName);
 	String getMimeType();
 	void setMimeType(String mimeType);
+	Widget getWidget();
+	void setWidget(Widget widget);
 }

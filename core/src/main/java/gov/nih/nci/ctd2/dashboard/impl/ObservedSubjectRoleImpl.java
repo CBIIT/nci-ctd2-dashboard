@@ -11,18 +11,18 @@ import javax.persistence.*;
 @Table(name="observed_subject_role")
 @Proxy(proxyClass = ObservedSubjectRole.class)
 public class ObservedSubjectRoleImpl extends DashboardEntityImpl implements ObservedSubjectRole {
-    private String description;
+    private String displayText;
     private String columnName;
     private SubjectRole subjectRole;
     private ObservationTemplate observationTemplate;
 
     @Column(length = 1024)
-    public String getDescription() {
-        return description;
+    public String getDisplayText() {
+        return displayText;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setDisplayText(String displayText) {
+        this.displayText = displayText;
     }
 
     @Column(length = 1024)

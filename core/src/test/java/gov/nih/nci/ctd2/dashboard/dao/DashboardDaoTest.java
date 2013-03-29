@@ -450,7 +450,7 @@ public class DashboardDaoTest {
         observedEvidenceRole.setEvidenceRole(evidenceRole);
         String columnName = "role_column1";
         observedEvidenceRole.setColumnName(columnName);
-        observedEvidenceRole.setDescription("description 1");
+        observedEvidenceRole.setDisplayText("description 1");
         dashboardDao.save(observedEvidenceRole);
 
 		assertTrue(dashboardDao.findObservedEvidenceRole("template_name", columnName) != null);
@@ -463,7 +463,7 @@ public class DashboardDaoTest {
 		observedSubjectRole.setObservationTemplate(observationTemplate);
         observedSubjectRole.setSubjectRole(subjectRole);
         observedSubjectRole.setColumnName(columnName);
-        observedSubjectRole.setDescription("description 1");
+        observedSubjectRole.setDisplayText("description 1");
         dashboardDao.save(observedSubjectRole);
 
 		assertTrue(dashboardDao.findObservedSubjectRole("template_name", columnName) != null);
