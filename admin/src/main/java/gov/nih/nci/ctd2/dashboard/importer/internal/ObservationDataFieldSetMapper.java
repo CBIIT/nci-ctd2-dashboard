@@ -29,7 +29,7 @@ public class ObservationDataFieldSetMapper implements FieldSetMapper<Observation
 
 	private static final String SUBMISSION_CENTER = "submission_center";
 	private static final String	SUBMISSION_DATE = "submission_date";
-	private static final String TEMPLATE_NAME = "template_name";
+	private static final String TEMPLATE_NAME = "observation_template";
 
 	public static final SimpleDateFormat TEMPLATE_DATE_FORMAT = new SimpleDateFormat("mm/DD/yyyy");
 

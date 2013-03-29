@@ -11,44 +11,38 @@ import org.springframework.validation.BindException;
 import org.springframework.batch.item.file.transform.FieldSet;
 import org.springframework.batch.item.file.mapping.FieldSetMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.util.HashMap;
-import java.util.HashSet;
 
-@Component("controlledVocabularyMapper")
-public class ControlledVocabularyFieldSetMapper implements FieldSetMapper<ControlledVocabulary> {
+@Component("controlledVocabularyPerColumnMapper")
+public class ControlledVocabularyPerColumnFieldSetMapper implements FieldSetMapper<ControlledVocabulary> {
 
 	private static final String TEMPLATE_NAME = "template_name";
-	private static final String TEMPLATE_DESCRIPTION = "template_description";
-	private static final String TEMPLATE_TIER = "template_tier";
 	private static final String COLUMN_NAME = "column_name";
 	private static final String SUBJECT = "subject";
 	private static final String EVIDENCE = "evidence";
 	private static final String ROLE = "role";
-	private static final String DESCRIPTION = "description";
 	private static final String MIME_TYPE = "mime_type";
 	private static final String NUMERIC_UNITS = "numeric_units";
-	private static final String URL_TEMPLATE = "url_template";
+	private static final String DISPLAY_TEXT = "display_text";
 
     @Autowired
     private DashboardFactory dashboardFactory;
 
+    @Autowired
+	@Qualifier("observationTemplateMap")
+	private HashMap<String,ObservationTemplate> observationTemplateMap;
+
 	// cache for fast lookup and prevention of duplicate role records
     private HashMap<String, SubjectRole> subjectRoleCache = new HashMap<String, SubjectRole>();
     private HashMap<String, EvidenceRole> evidenceRoleCache = new HashMap<String, EvidenceRole>();
-    private HashMap<String, ObservationTemplate> observationTemplateCache = new HashMap<String, ObservationTemplate>();
 
 	public ControlledVocabulary mapFieldSet(FieldSet fieldSet) throws BindException {
 
 		String templateName = fieldSet.readString(TEMPLATE_NAME);
-		ObservationTemplate observationTemplate = observationTemplateCache.get(templateName);
-		if (observationTemplate == null) {
-			observationTemplate = dashboardFactory.create(ObservationTemplate.class);
-			observationTemplate.setDisplayName(templateName);
-			observationTemplate.setDescription(fieldSet.readString(TEMPLATE_DESCRIPTION));
-			observationTemplate.setTier(fieldSet.readInt(TEMPLATE_TIER));
-			observationTemplateCache.put(templateName, observationTemplate);
-		}
+		ObservationTemplate observationTemplate = observationTemplateMap.get(templateName);
+		if (observationTemplate == null) return new ControlledVocabulary(null, null, null);
 
 		String subject = fieldSet.readString(SUBJECT);
 		String evidence = fieldSet.readString(EVIDENCE);
@@ -62,7 +56,7 @@ public class ControlledVocabularyFieldSetMapper implements FieldSetMapper<Contro
 			ObservedSubjectRole observedSubjectRole = dashboardFactory.create(ObservedSubjectRole.class);
 			observedSubjectRole.setSubjectRole(subjectRole);
 			observedSubjectRole.setColumnName(fieldSet.readString(COLUMN_NAME));
-			observedSubjectRole.setDescription(fieldSet.readString(DESCRIPTION));
+			observedSubjectRole.setDisplayText(fieldSet.readString(DISPLAY_TEXT));
 			observedSubjectRole.setObservationTemplate(observationTemplate);
 			return new ControlledVocabulary(observationTemplate, subjectRole, observedSubjectRole);
 		}
@@ -76,20 +70,18 @@ public class ControlledVocabularyFieldSetMapper implements FieldSetMapper<Contro
 			ObservedEvidenceRole observedEvidenceRole = dashboardFactory.create(ObservedEvidenceRole.class);
 			observedEvidenceRole.setEvidenceRole(evidenceRole);
 			observedEvidenceRole.setColumnName(fieldSet.readString(COLUMN_NAME));
-			observedEvidenceRole.setDescription(fieldSet.readString(DESCRIPTION));
+			observedEvidenceRole.setDisplayText(fieldSet.readString(DISPLAY_TEXT));
 			observedEvidenceRole.setObservationTemplate(observationTemplate);
-			observedEvidenceRole.setType(getObservedEvidenceRoleType(fieldSet.readString(MIME_TYPE),
-																	 fieldSet.readString(NUMERIC_UNITS),
-																	 fieldSet.readString(URL_TEMPLATE)));
+			observedEvidenceRole.setAttribute(getObservedEvidenceRoleAttribute(fieldSet.readString(MIME_TYPE),
+																			   fieldSet.readString(NUMERIC_UNITS)));
 			return new ControlledVocabulary(observationTemplate, evidenceRole, observedEvidenceRole);
 		}
 		return new ControlledVocabulary(null, null, null);
 	}
 	
-	private String getObservedEvidenceRoleType(String mimeType, String numericUnits, String urlTemplate) {
+	private String getObservedEvidenceRoleAttribute(String mimeType, String numericUnits) {
 		if (mimeType.length() > 0) return mimeType;
 		if (numericUnits.length() > 0) return numericUnits;
-		if (urlTemplate.length() > 0) return urlTemplate;
 		return "";
 	}
 }

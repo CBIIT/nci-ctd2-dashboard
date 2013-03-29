@@ -146,9 +146,7 @@ public class ObservationDataFactoryImpl implements ObservationDataFactory {
 		ObservedEvidenceRole observedEvidenceRole = getObservedEvidenceRole(templateName, columnName);
 		if (observedEvidenceRole != null) observedEvidence.setObservedEvidenceRole(observedEvidenceRole);
 		Evidence evidence = dashboardFactory.create(UrlEvidence.class);
-		if (observedEvidenceRole != null && observedEvidenceRole.getAttribute().length() > 0) {
-			((UrlEvidence)evidence).setUrl(observedEvidenceRole.getAttribute() + evidenceValue);				
-		}
+		((UrlEvidence)evidence).setUrl(evidenceValue);				
 		observedEvidence.setEvidence(evidence);
 		return observedEvidence;
 	}
