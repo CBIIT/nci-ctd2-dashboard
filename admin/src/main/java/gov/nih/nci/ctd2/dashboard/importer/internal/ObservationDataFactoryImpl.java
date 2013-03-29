@@ -109,8 +109,8 @@ public class ObservationDataFactoryImpl implements ObservationDataFactory {
 		if (observedEvidenceRole != null) observedEvidence.setObservedEvidenceRole(observedEvidenceRole);
 		Evidence evidence = dashboardFactory.create(DataNumericValue.class);
 		((DataNumericValue)evidence).setNumericValue(evidenceValue);
-		if (observedEvidenceRole != null && observedEvidenceRole.getType().length() > 0) {
-			((DataNumericValue)evidence).setUnit(observedEvidenceRole.getType());
+		if (observedEvidenceRole != null && observedEvidenceRole.getAttribute().length() > 0) {
+			((DataNumericValue)evidence).setUnit(observedEvidenceRole.getAttribute());
 		}
 		observedEvidence.setEvidence(evidence);
 		return observedEvidence;
@@ -129,8 +129,8 @@ public class ObservationDataFactoryImpl implements ObservationDataFactory {
 
 		((FileEvidence)evidence).setFileName(file.getName());
 		((FileEvidence)evidence).setFilePath(file.getPath());
-		if (observedEvidenceRole != null && observedEvidenceRole.getType().length() > 0) {
-			((FileEvidence)evidence).setMimeType(observedEvidenceRole.getType());
+		if (observedEvidenceRole != null && observedEvidenceRole.getAttribute().length() > 0) {
+			((FileEvidence)evidence).setMimeType(observedEvidenceRole.getAttribute());
 		}
 		observedEvidence.setEvidence(evidence);
 		return observedEvidence;
@@ -146,8 +146,8 @@ public class ObservationDataFactoryImpl implements ObservationDataFactory {
 		ObservedEvidenceRole observedEvidenceRole = getObservedEvidenceRole(templateName, columnName);
 		if (observedEvidenceRole != null) observedEvidence.setObservedEvidenceRole(observedEvidenceRole);
 		Evidence evidence = dashboardFactory.create(UrlEvidence.class);
-		if (observedEvidenceRole != null && observedEvidenceRole.getType().length() > 0) {
-			((UrlEvidence)evidence).setUrl(observedEvidenceRole.getType() + evidenceValue);				
+		if (observedEvidenceRole != null && observedEvidenceRole.getAttribute().length() > 0) {
+			((UrlEvidence)evidence).setUrl(observedEvidenceRole.getAttribute() + evidenceValue);				
 		}
 		observedEvidence.setEvidence(evidence);
 		return observedEvidence;
