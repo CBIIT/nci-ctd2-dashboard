@@ -5,10 +5,10 @@ public interface ObservedEvidenceRole extends DashboardEntity {
     public void setObservationTemplate(ObservationTemplate observationTemplate);
     public EvidenceRole getEvidenceRole();
     public void setEvidenceRole(EvidenceRole evidenceRole);
-    public String getDescription();
-    public void setDescription(String description);
+    public String getDisplayText();
+    public void setDisplayText(String displayText);
     public String getColumnName();
     public void setColumnName(String columnName);
-    public String getType();
-    public void setType(String type);
+    public String getAttribute();
+    public void setAttribute(String attribute);
 }

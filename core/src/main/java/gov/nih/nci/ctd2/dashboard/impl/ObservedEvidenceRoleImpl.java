@@ -16,9 +16,9 @@ import javax.persistence.Table;
 public class ObservedEvidenceRoleImpl extends DashboardEntityImpl implements ObservedEvidenceRole {
     private ObservationTemplate observationTemplate;
     private EvidenceRole evidenceRole;
-    private String description;
+    private String displayText;
     private String columnName;
-    private String type;
+    private String attribute;
 
     @ManyToOne(targetEntity = ObservationTemplateImpl.class)
     public ObservationTemplate getObservationTemplate() {
@@ -39,12 +39,12 @@ public class ObservedEvidenceRoleImpl extends DashboardEntityImpl implements Obs
     }
 
     @Column(length = 1024)
-    public String getDescription() {
-        return description;
+    public String getDisplayText() {
+        return displayText;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setDisplayText(String displayText) {
+        this.displayText = displayText;
     }
 
     @Column(length = 1024)
@@ -57,11 +57,11 @@ public class ObservedEvidenceRoleImpl extends DashboardEntityImpl implements Obs
     }
 
     @Column(length = 64)
-    public String getType() {
-        return type;
+    public String getAttribute() {
+        return attribute;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setAttribute(String attribute) {
+        this.attribute = attribute;
     }
 }

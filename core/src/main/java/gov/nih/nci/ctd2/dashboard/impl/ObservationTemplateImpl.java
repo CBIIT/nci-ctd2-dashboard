@@ -13,6 +13,7 @@ import javax.persistence.Table;
 @Table(name = "observation_template")
 public class ObservationTemplateImpl extends DashboardEntityImpl implements ObservationTemplate {
     private String description;
+	private String observationSummary;
     private Integer tier = 0;
 
     @Column(length = 1024)
@@ -22,6 +23,15 @@ public class ObservationTemplateImpl extends DashboardEntityImpl implements Obse
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Column(length = 1024)
+    public String getObservationSummary() {
+        return observationSummary;
+    }
+
+    public void setObservationSummary(String observationSummary) {
+        this.observationSummary = observationSummary;
     }
 
     public Integer getTier() {
