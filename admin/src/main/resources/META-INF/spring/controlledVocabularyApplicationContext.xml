@@ -11,9 +11,14 @@
   <context:component-scan base-package="gov.nih.nci.ctd2.dashboard.importer.internal" />
 
   <batch:job id="controlledVocabularyImporterJob">
-	<batch:step id="controlledVocabularyStep" parent="controlledVocabularySimpleStep">
+	<batch:step id="controlledVocabularyPerTemplateStep" parent="controlledVocabularySimpleStep" next="controlledVocabularyPerColumnStep">
 	  <batch:tasklet>
-		<batch:chunk reader="controlledVocabularyReader" processor="controlledVocabularyProcessor" writer="controlledVocabularyWriter"/>
+		<batch:chunk reader="controlledVocabularyPerTemplateReader" writer="controlledVocabularyPerTemplateWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+	<batch:step id="controlledVocabularyPerColumnStep" parent="controlledVocabularySimpleStep">
+	  <batch:tasklet>
+		<batch:chunk reader="controlledVocabularyPerColumnReader" processor="controlledVocabularyPerColumnProcessor" writer="controlledVocabularyPerColumnWriter"/>
 	  </batch:tasklet>
 	</batch:step>
   </batch:job>
@@ -24,19 +29,47 @@
 	<property name="commitInterval" value="100" />
   </bean>
 
-  <bean name="controlledVocabularyReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-	<property name="resource" value="classpath:dashboard-controlled-vocabulary.txt" />
-    <property name="lineMapper" ref="controlledVocabularyLineMapper" />
+  <!-- cv per template beans -->
+
+  <bean name="controlledVocabularyPerTemplateReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="resource" value="classpath:dashboard-controlled-vocabulary-per-template.txt" />
+    <property name="lineMapper" ref="controlledVocabularyPerTemplateLineMapper" />
 	<property name="linesToSkip" value="1" />
   </bean>
 
-  <bean name="controlledVocabularyLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
-	<property name="fieldSetMapper" ref="controlledVocabularyMapper" />
-	<property name="lineTokenizer" ref="controlledVocabularyLineTokenizer" />
+  <bean name="controlledVocabularyPerTemplateLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+	<property name="fieldSetMapper" ref="controlledVocabularyPerTemplateMapper" />
+	<property name="lineTokenizer" ref="controlledVocabularyPerTemplateLineTokenizer" />
   </bean>
 
-  <bean name="controlledVocabularyLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+  <bean name="controlledVocabularyPerTemplateLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="template_name,template_description,template_tier,column_name,subject,evidence,role,description,mime_type,numeric_units,url_template,refers_to"/>
+	<property name="names" value="template_tier,template_name,observation_summary,template_description"/>
   </bean>
+
+  <!-- cv per column beans -->
+
+  <bean name="controlledVocabularyPerColumnReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="resource" value="classpath:dashboard-controlled-vocabulary-per-column.txt" />
+    <property name="lineMapper" ref="controlledVocabularyPerColumnLineMapper" />
+	<property name="linesToSkip" value="1" />
+  </bean>
+
+  <bean name="controlledVocabularyPerColumnLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+	<property name="fieldSetMapper" ref="controlledVocabularyPerColumnMapper" />
+	<property name="lineTokenizer" ref="controlledVocabularyPerColumnLineTokenizer" />
+  </bean>
+
+  <bean name="controlledVocabularyPerColumnLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+	<property name="delimiter" value="\u0009"/>
+	<property name="names" value="template_name,column_name,subject,evidence,role,mime_type,numeric_units,display_text"/>
+  </bean>
+
+  <!-- the following beans are shared between all the steps of the cell line importer job -->
+  <bean name="observationTemplateMap" class="java.util.HashMap">
+	<constructor-arg index="0" type="java.util.Map">
+	  <map key-type="java.lang.String" value-type="gov.nih.nci.ctd2.dashboard.model.ObservationTemplate"/>
+	</constructor-arg>
+  </bean>
+
 </beans>

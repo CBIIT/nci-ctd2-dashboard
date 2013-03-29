@@ -1,0 +1,72 @@
+template_name	column_name	subject	evidence	role	mime_type	numeric_units	display_text
+broad_compound_sensitivity_lineage_enrichment	cell_line_subset		label	context			subset of cell lines used in calculated enrichment
+broad_compound_sensitivity_lineage_enrichment	cell_line_exclusion		label	context			subset of cell lines excluded from calculated enrichment
+broad_compound_sensitivity_lineage_enrichment	feature_data_set		label	context			dataset from which mutant calls were made
+broad_compound_sensitivity_lineage_enrichment	compound_name	compound		perturbagen			compound used in cancer cell-line sensitivity profiling
+broad_compound_sensitivity_lineage_enrichment	cell_lineage	tissue_sample		enriched feature			lineage that correlates with <enrichment_direction>
+broad_compound_sensitivity_lineage_enrichment	number_of_cell_lines		numeric	computed			total number of cell lines used in calculated enrichment
+broad_compound_sensitivity_lineage_enrichment	number_of_example_cell_lines		numeric	computed			number of cell lines of lineage used in calculated enrichment
+broad_compound_sensitivity_lineage_enrichment	enrichment_direction		label	computed			calculated enrichment direction (sensitive or resistant)
+broad_compound_sensitivity_lineage_enrichment	log_fdr		numeric	computed			Benjamini-Hochberg false-discovery rate score
+broad_compound_sensitivity_lineage_enrichment	response_image_path		file	computed	image/png		compound response heatmap
+broad_compound_sensitivity_lineage_enrichment	feature_image_path		file	computed	image/png		lineage feature heatmap
+broad_compound_sensitivity_lineage_enrichment	nci_portal		url	measured			link to source data
+broad_compound_sensitivity_lineage_enrichment	gct_path		file	measured	text/plain		"data in GCT format (e.g., for use in GENE-E)"
+broad_compound_sensitivity_mutation_enrichment	cell_line_subset		label	context			subset of cell lines used in calculated enrichment
+broad_compound_sensitivity_mutation_enrichment	cell_line_exclusion		label	context			subset of cell lines excluded from calculated enrichment
+broad_compound_sensitivity_mutation_enrichment	feature_data_set		label	context			dataset from which mutant calls were made
+broad_compound_sensitivity_mutation_enrichment	compound_name	compound		perturbagen			compound used in cancer cell-line sensitivity profiling
+broad_compound_sensitivity_mutation_enrichment	entrez_gene_id	gene		enriched feature			mutated gene that correlates with <enrichment_direction>
+broad_compound_sensitivity_mutation_enrichment	number_of_cell_lines		numeric	computed			total number of cell lines used in calculated enrichment
+broad_compound_sensitivity_mutation_enrichment	number_of_mutant_cell_lines		numeric	computed			number of mutant cell lines used in calculated enrichment
+broad_compound_sensitivity_mutation_enrichment	enrichment_direction		label	computed			calculated enrichment direction (sensitive or resistant)
+broad_compound_sensitivity_mutation_enrichment	log_fdr		numeric	computed			Benjamini-Hochberg false-discovery rate score
+broad_compound_sensitivity_mutation_enrichment	response_image_path		file	computed	image/png		compound response heatmap
+broad_compound_sensitivity_mutation_enrichment	feature_image_path		file	computed	image/png		mutated gene feature heatmap
+broad_compound_sensitivity_mutation_enrichment	nci_portal		url	measured			link to source data
+broad_compound_sensitivity_mutation_enrichment	gct_path		file	measured	text/plain		"data in GCT format (e.g., for use in GENE-E)"
+columbia_all_mr_tf_or_sig_analysis	affy_probeset_id		label	context			Affymetrix probeset id
+columbia_all_mr_tf_or_sig_analysis	entrez_gene_id	gene		enriched regulon			regulon of gene is enriched in signature of glucocorticoid-resistant vs glucocorticoid-sensitive T-cells
+columbia_all_mr_tf_or_sig_analysis	cell_lineage_tissue	cell_lineage		context			Tissue from which blood samples obtained
+columbia_all_mr_tf_or_sig_analysis	cell_lineage_blood_type	cell_lineage		context			Blood cell type 
+columbia_all_mr_tf_or_sig_analysis	log2_fold_change		numeric	computed			
+columbia_all_mr_tf_or_sig_analysis	avg_expr		numeric	computed			
+columbia_all_mr_tf_or_sig_analysis	z_score		numeric	computed			
+columbia_all_mr_tf_or_sig_analysis	p_value		numeric	computed			
+columbia_all_mr_tf_or_sig_analysis	adj_p_value		numeric	computed			
+columbia_all_mr_tf_or_sig_analysis	func_type		label	context			"Functional type of gene product, either transcription factor or signalling molecule"
+columbia_all_mr_tf_or_sig_analysis	set_size		numeric	computed			Number of targets in gene's regulon (from ARACNe network)
+columbia_all_mr_tf_or_sig_analysis	gsea_enrich_score		numeric	computed			maxmean statistic restandarized over all genes in the reference list
+columbia_all_mr_tf_or_sig_analysis	gsea_p_value		numeric	computed			
+columbia_all_mr_tf_or_sig_analysis	gsea_fdr		numeric	computed			Benjamini-Hochberg FDR method
+columbia_all_diff_repr_analysis	entrez_gene_id	gene		differential representation			genes with altered representation  in pooled shRNA experiment
+columbia_all_diff_repr_analysis	num_probes		numeric	computed			number of shRNA probes tested against gene
+columbia_all_diff_repr_analysis	cell_lineage	cell_lineage		context			cell line type
+columbia_all_diff_repr_analysis	cell_line_a	cell_line		context			T-cell line
+columbia_all_diff_repr_analysis	log2_fold_change_a		numeric	computed			
+columbia_all_diff_repr_analysis	avg_rep_a		numeric	computed			
+columbia_all_diff_repr_analysis	z_score_a		numeric	computed			
+columbia_all_diff_repr_analysis	p_value_a		numeric	computed			
+columbia_all_diff_repr_analysis	cell_line_b	cell_line		context			T-cell line
+columbia_all_diff_repr_analysis	log2_fold_change_b		numeric	computed			
+columbia_all_diff_repr_analysis	avg_rep_b		numeric	computed			
+columbia_all_diff_repr_analysis	z_score_b		numeric	computed			
+columbia_all_diff_repr_analysis	p_value_b		numeric	computed			
+columbia_t-all_joint_mr_shrna_diff_rep	probeset_id		label	context			Affymetrix probeset id
+columbia_t-all_joint_mr_shrna_diff_rep	disease_condition		label	context			Condition/Disease investigated
+columbia_t-all_joint_mr_shrna_diff_rep	gene_symbol	gene		enriched feature			Gene symbol
+columbia_t-all_joint_mr_shrna_diff_rep	entrez_gene_id	gene		enriched feature			Entrez Gene ID
+columbia_t-all_joint_mr_shrna_diff_rep	func_type		label	context			Gene functional type
+columbia_t-all_joint_mr_shrna_diff_rep	mr_regulon_set_size		numeric	computed			Regulon size for each Master Regulator of T-ALL glucocorticoid resistance
+columbia_t-all_joint_mr_shrna_diff_rep	gsea_score		numeric	computed			Gene set enrichment score for gene's regulatory targets in T-ALL glucocorticoid resistance signature
+columbia_t-all_joint_mr_shrna_diff_rep	mr_gsea_p_value		numeric	computed			"P-value of T-ALL Master Regulator evidence by treating all regulons as one gene set, for enrichment of gene's regulatory targets in glucocorticoid resistance signature"
+columbia_t-all_joint_mr_shrna_diff_rep	mr_gsea_fdr		numeric	computed			"FDR of T-ALL Master Regulator evidence by treating all regulons as one gene set, for enrichment of gene's regulatory targets in glucocorticoid resistance signature"
+columbia_t-all_joint_mr_shrna_diff_rep	num_shRNAs		numeric	context			The number of shRNA hairpins for this gene in the tested library
+columbia_t-all_joint_mr_shrna_diff_rep	cell_line_1	cell_line		context			T-ALL cell line in which shRNA knockdown tested
+columbia_t-all_joint_mr_shrna_diff_rep	lineage_1	lineage		context			
+columbia_t-all_joint_mr_shrna_diff_rep	cell_line_2	cell_line		context			T-ALL cell line in which shRNA knockdown tested
+columbia_t-all_joint_mr_shrna_diff_rep	lineage_2	lineage		context			
+columbia_t-all_joint_mr_shrna_diff_rep	shrna_diff_rep_z_score_CUTLL1_HPB		numeric	computed			Combined z-statistic  for shRNA knockdown differential representation in CUTLL1 and HPB-ALL lines
+columbia_t-all_joint_mr_shrna_diff_rep	shrna_diff_rep_p_value_CUTLL1_HPB		numeric	computed			Combined p-value for shRNA knockdown differential representation in  CUTLL1 and HPB-ALL lines
+columbia_t-all_joint_mr_shrna_diff_rep	shrna_diff_rep_fdr_CUTLL1_HPB		numeric	computed			Benjamini-Hochberg False Discovery Rate for shRNA knockdown combined differential representation in CUTLL1 and HPB-ALL cell lines
+columbia_t-all_joint_mr_shrna_diff_rep	shrna_diff_rep_net_direction_CUTLL1_HPB		label	context			Direction of net significant shRNA knockdown differential representation in CUTLL1 and HPB-ALL lines

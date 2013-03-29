@@ -33,7 +33,7 @@ public class AdminTest {
 				"classpath*:META-INF/spring/testCompoundDataApplicationContext.xml", // and this is for compound data importer beans
 				"classpath*:META-INF/spring/testGeneDataApplicationContext.xml", // and this is for gene data importer beans
 				"classpath*:META-INF/spring/testProteinDataApplicationContext.xml", // and this is for protein data importer beans
-				"classpath*:META-INF/spring/testControlledVocabularyApplicationContext.xml", // and this is for controlled vocabulary importer beans
+				"classpath*:META-INF/spring/controlledVocabularyApplicationContext.xml", // and this is for controlled vocabulary importer beans
 				"classpath*:META-INF/spring/testObservationDataApplicationContext.xml", // and this is for observation data importer beans
 				"classpath*:META-INF/spring/taxonomyDataApplicationContext.xml" // and this is for taxonomy data importer beans
         );
@@ -131,16 +131,16 @@ public class AdminTest {
 		jobExecution = executeJob("controlledVocabularyImporterJob");
         assertEquals("COMPLETED", jobExecution.getExitStatus().getExitCode());
 		// we get some subject/observed subject roles
-		assertEquals(5, dashboardDao.countEntities(SubjectRole.class).intValue());
-		assertEquals(16, dashboardDao.countEntities(ObservedSubjectRole.class).intValue());
-		assertTrue(dashboardDao.findObservedSubjectRole("broad_compound_sensitivity_enrichment", "compound_name") != null);
+		assertEquals(6, dashboardDao.countEntities(SubjectRole.class).intValue());
+		assertEquals(17, dashboardDao.countEntities(ObservedSubjectRole.class).intValue());
+		assertTrue(dashboardDao.findObservedSubjectRole("broad_compound_sensitivity_lineage_enrichment", "compound_name") != null);
 		// we get some evidence/observed evidence roles
 		assertEquals(4, dashboardDao.countEntities(EvidenceRole.class).intValue());
-		assertEquals(43, dashboardDao.countEntities(ObservedEvidenceRole.class).intValue());
-		assertTrue(dashboardDao.findObservedEvidenceRole("broad_compound_sensitivity_enrichment", "cell_line_subset") != null);
+		assertEquals(54, dashboardDao.countEntities(ObservedEvidenceRole.class).intValue());
+		assertTrue(dashboardDao.findObservedEvidenceRole("broad_compound_sensitivity_lineage_enrichment", "cell_line_subset") != null);
 		// we get observation template data
-		assertEquals(4, dashboardDao.countEntities(ObservationTemplate.class).intValue());
-		assertTrue(dashboardDao.findObservationTemplateByName("broad_compound_sensitivity_enrichment") != null);
+		assertEquals(5, dashboardDao.countEntities(ObservationTemplate.class).intValue());
+		assertTrue(dashboardDao.findObservationTemplateByName("broad_compound_sensitivity_mutation_enrichment") != null);
 
 		// import observation data
 		jobExecution = executeJob("testTierOneObservationDataImporterJob");
@@ -148,7 +148,7 @@ public class AdminTest {
 		assertEquals(1, dashboardDao.countEntities(Submission.class).intValue());
 		assertEquals(1, dashboardDao.countEntities(SubmissionCenter.class).intValue());
 		assertEquals(9, dashboardDao.countEntities(Observation.class).intValue());
-		assertEquals(27, dashboardDao.countEntities(ObservedSubject.class).intValue());
+		assertEquals(18, dashboardDao.countEntities(ObservedSubject.class).intValue());
 		assertEquals(99, dashboardDao.countEntities(ObservedEvidence.class).intValue());
 		assertEquals(36, dashboardDao.countEntities(LabelEvidence.class).intValue());
 		assertEquals(27, dashboardDao.countEntities(DataNumericValue.class).intValue());
