@@ -56,20 +56,22 @@ public class CellLineNameFieldSetMapper implements FieldSetMapper<CellSample> {
 				if (createSynonym(cellSample, cellSampleName)) {
 					Synonym synonym = dashboardFactory.create(Synonym.class);
 					synonym.setDisplayName(cellSampleName);
+					// cell line name types are ordered by priority in the cell sample name file
+					// if this is our first synonym, it has the highest priority -
+					// in which case we should use it as the cell sample display name
+					if (cellSample.getSynonyms().size() == 0) cellSample.setDisplayName(cellSampleName);
 					cellSample.getSynonyms().add(synonym);
 				}
 			}
 			// create xref
-			// [0] is name type, [1] is name type priority
-			String[] cellNameTypePair = cellLineNameTypeMap.get(cellNameTypeId)
-				.split(CellLineNameTypeFieldSetMapper.CELL_NAME_TYPE_MAP_DELIMITER);
-			if (cellNameTypePair.length == 2) {
+			String cellNameType = cellLineNameTypeMap.get(cellNameTypeId);
+			if (cellNameType != null) {
 				Xref xref = dashboardFactory.create(Xref.class);
 				xref.setDatabaseId(cellSampleName);
-				xref.setDatabaseName(cellNameTypePair[0]);
+				xref.setDatabaseName(cellNameType);
 				cellSample.getXrefs().add(xref);
 				// add xref to cbio portal
-				if (cellNameTypePair[0].equalsIgnoreCase("ccle")) {
+				if (cellNameType.equalsIgnoreCase("ccle")) {
 					xref = dashboardFactory.create(Xref.class);
 					xref.setDatabaseId(cellSampleName);
 					xref.setDatabaseName(CBIO_PORTAL);

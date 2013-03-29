@@ -14,8 +14,6 @@ import java.util.HashMap;
 @Component("cellLineNameTypeMapper")
 public class CellLineNameTypeFieldSetMapper implements FieldSetMapper<CellSample> {
 
-	public static final String CELL_NAME_TYPE_MAP_DELIMITER = ":";
-
 	private static final String CELL_NAME_TYPE_ID = "CELL_NAME_TYPE_ID";
 	private static final String CELL_NAME_TYPE = "CELL_NAME_TYPE";
 	private static final String CELL_NAME_TYPE_PRIORITY = "CELL_NAME_TYPE_PRIORITY";
@@ -30,9 +28,7 @@ public class CellLineNameTypeFieldSetMapper implements FieldSetMapper<CellSample
 	public CellSample mapFieldSet(FieldSet fieldSet) throws BindException {
 
 		cellLineNameTypeMap.put(fieldSet.readString(CELL_NAME_TYPE_ID),
-								fieldSet.readString(CELL_NAME_TYPE) +
-								CELL_NAME_TYPE_MAP_DELIMITER +
-								fieldSet.readString(CELL_NAME_TYPE_PRIORITY));
+								fieldSet.readString(CELL_NAME_TYPE));
 
 		// if we don't return something, spring batch will think EOF has been reached
 		return dashboardFactory.create(CellSample.class);
