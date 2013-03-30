@@ -485,7 +485,9 @@
                  </tr>
                  <tr>
                      <th>Synonyms</th>
-                     <td>{{synonymsStr}}</td>
+                     <td>
+                         <ul class="synonyms"></ul>
+                     </td>
                  </tr>
                  <tr>
                      <th>Type</th>
@@ -535,7 +537,9 @@
                 </tr>
                 <tr>
                     <th>Synonyms</th>
-                    <td>{{synonymsStr}}</td>
+                    <td>
+                        <ul class="synonyms"></ul>
+                    </td>
                 </tr>
                 <tr>
                     <th>Type</th>
@@ -586,7 +590,9 @@
                           </tr>
                           <tr>
                               <th>Synonyms</th>
-                              <td>{{synonymsStr}}</td>
+                              <td>
+                                  <ul class="synonyms"></ul>
+                              </td>
                           </tr>
                           <tr>
                               <th>Type</th>
@@ -609,7 +615,7 @@
                   <thead>
                   <tr>
                       <th>Observation</th>
-                      <th>Role</th>
+                      <th>Subject Role</th>
                       <th>Observation Type</th>
                       <th>Tier</th>
                       <th>Date</th>
@@ -711,6 +717,9 @@
         </div>
     </script>
 
+    <script type="text/template" id="synonym-item-tmpl">
+        <li class="synonym">{{displayName}}</li>
+    </script>
     <!-- end of templates -->
 
     <script src="js/targets.js"></script>
