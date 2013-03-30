@@ -503,10 +503,6 @@
                      <th>HGNC ID</th>
                      <td>{{HGNCId}}</td>
                  </tr>
-                 <tr>
-                     <th>References</th>
-                     <td class="xrefsColumn">{{xrefStr}}</td>
-                 </tr>
              </table>
 
              <h3>Related observations</h3>
@@ -557,12 +553,7 @@
                     <th width="200">Genomic alterations</th>
                     <td><a class="btn btn-small" href="http://cbio.mskcc.org/ctd2-dashboard-portal/tumormap.do?case_id={{cbioPortalId}}&cancer_study_id=ccle_broad" target="blank">view in cBioPortal <i class="icon-share"></i></a></td>
                 </tr>
-                <tr>
-                    <th>References</th>
-                    <td class="xrefsColumn">{{xrefStr}}</td>
-                </tr>
             </table>
-
             <h3>Related observations</h3>
             <table id="cellsample-observation-grid" class="table table-bordered table-striped observations">
                 <thead>
@@ -604,10 +595,6 @@
                           <tr>
                               <th>SMILES</th>
                               <td>{{smilesNotation}}</td>
-                          </tr>
-                          <tr>
-                              <th>References</th>
-                              <td class="xrefsColumn">{{xrefStr}}</td>
                           </tr>
                       </table>
                   </div>

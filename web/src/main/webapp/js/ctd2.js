@@ -353,13 +353,6 @@
                 synonymsStr += aSynonym.displayName + " ";
             });
             result["synonymsStr"] = synonymsStr;
-
-            var xrefStr = "";
-            _.each(result.xrefs, function(xref) {
-                xrefStr += xref.databaseName + ":" + xref.databaseId + " ";
-            });
-            result["xrefStr"] = xrefStr;
-
             result["type"] = result.class;
 
             $(this.el).html(this.template(result));
@@ -398,14 +391,12 @@
             });
             result["synonymsStr"] = synonymsStr;
 
-            var xrefStr = "";
+            // Look for cbioPortal Id
             var cbioPortalId = null;
             _.each(result.xrefs, function(xref) {
                 if(xref.databaseName == "CBIO_PORTAL") {
                     cbioPortalId = xref.databaseId;
-                    return;
                 }
-                xrefStr += xref.databaseName + ":" + xref.databaseId + " ";
             });
 
             result["cbioPortalId"] = cbioPortalId;
