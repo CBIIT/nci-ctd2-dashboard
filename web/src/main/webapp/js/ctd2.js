@@ -326,10 +326,12 @@
                          observedSubjectRowView.render();
                      });
 
-                     $('#compound-observation-grid').dataTable({
+                     var oTable = $('#compound-observation-grid').dataTable({
                             "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
                             "sPaginationType": "bootstrap"
                      });
+
+                     oTable.fnSort( [ [3, 'desc'] ] );
                  }
              });
 
@@ -366,10 +368,12 @@
                         observedSubjectRowView.render();
                     });
 
-                    $('#gene-observation-grid').dataTable({
+                    var oTable = $('#gene-observation-grid').dataTable({
                            "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
                            "sPaginationType": "bootstrap"
                     });
+
+                    oTable.fnSort( [ [3, 'desc'] ] );
                 }
             });
 
@@ -416,10 +420,11 @@
                         observedSubjectRowView.render();
                     });
 
-                    $('#cellsample-observation-grid').dataTable({
+                    var oTable = $('#cellsample-observation-grid').dataTable({
                         "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
                         "sPaginationType": "bootstrap"
                     });
+                    oTable.fnSort( [ [3, 'desc'] ] );
                 }
             });
 
