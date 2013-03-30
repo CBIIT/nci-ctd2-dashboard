@@ -331,7 +331,7 @@
                 </tr>
             </table>
 
-            <h1>Observations within this submission</h1>
+            <h3>Observations within this submission</h3>
             <table id="submission-observation-grid" class="table table-bordered table-striped observations">
                 <thead>
                 <tr>
@@ -398,7 +398,7 @@
                 </tr>
             </table>
 
-            <h1>Observed Subjects</h1>
+            <h3>Observed subjects</h3>
             <table id="observed-subjects-grid" class="table table-bordered table-striped subjects">
                 <thead>
                 <tr>
@@ -412,7 +412,7 @@
                 </tbody>
             </table>
 
-            <h1>Evidence</h1>
+            <h3>Evidence</h3>
             <table id="observed-evidences-grid" class="table table-bordered table-striped evidences">
                 <thead>
                 <tr>
@@ -522,7 +522,7 @@
                  </tr>
              </table>
 
-             <h1>Related Observations</h1>
+             <h3>Related observations</h3>
              <table id="gene-observation-grid" class="table table-bordered table-striped observations">
                  <thead>
                  <tr>
@@ -576,7 +576,7 @@
                 </tr>
             </table>
 
-            <h1>Related Observations</h1>
+            <h3>Related observations</h3>
             <table id="cellsample-observation-grid" class="table table-bordered table-striped observations">
                 <thead>
                 <tr>
@@ -630,7 +630,7 @@
                   </div>
               </div>
 
-              <h1>Related Observations</h1>
+              <h3>Related Observations</h3>
               <table id="compound-observation-grid" class="table table-bordered table-striped observations">
                   <thead>
                   <tr>
