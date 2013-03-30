@@ -630,7 +630,7 @@
                   </div>
               </div>
 
-              <h3>Related Observations</h3>
+              <h3>Related observations</h3>
               <table id="compound-observation-grid" class="table table-bordered table-striped observations">
                   <thead>
                   <tr>
