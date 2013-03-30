@@ -231,7 +231,8 @@
 
             if(result.observedEvidenceRole == null) {
                 result.observedEvidenceRole = {
-                    description: "N/A"
+                    displayText: "N/A",
+                    evidenceRole: { displayName: "N/A" }
                 };
             }
 

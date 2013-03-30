@@ -39,25 +39,25 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </a>
-            <a class="brand" href="#">CTD<sup>2</sup>
-            </a>
             <div class="nav-collapse collapse">
               <ul class="nav">
-                <li class="active"><a href="#">Dashboard</a></li>
+                <li class="active"><a href="#">CTD<sup>2</sup> Dashboard</a></li>
                 <li><a href="#centers">Centers</a></li>
                 <li class="dropdown">
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown">Resources <b class="caret"></b></a>
                       <ul class="dropdown-menu">
-                          <li><a href="#">Bioinformatics Tools</a></li>
-                          <li><a href="#">Funding opportunities</a></li>
+                          <li><a target="_blank" href="http://ctd2.nci.nih.gov/publication.html">CTD<sup>2</sup> Home page</a></li>
+                          <li><a target="_blank" href="http://ctd2.nci.nih.gov/publication.html">Publications</a></li>
+                          <li><a target="_blank" href="http://ctd2.nci.nih.gov/DataMatrix/CTD2_DataMatrix.html">Data Matrix</a></li>
+                          <li><a target="_blank" href="http://ocg.cancer.gov/resources/fnd.asp">Funding opportunities</a></li>
                       </ul>
                   </li>
-                  <li><a href="#pub">Publications</a></li>
-                  <li><a href="#dm">Data Matrix</a></li>
               </ul>
+              <!-- This will be replaced with the search box
               <ul class="nav pull-right">
                   <li><a href="#about">About</a></li>
               </ul>
+              -->
             </div><!--/.nav-collapse -->
           </div><!-- /.navbar-inner -->
         </div><!-- /.navbar -->
@@ -291,9 +291,6 @@
             <td>{{submissionDate}}</td>
             <td>
                 {{observationTemplate.description}}
-                <small class="template-description" title="{{observationTemplate.displayName}}">
-                    (template)
-                </small>
             </td>
             <td>{{observationTemplate.tier}}</td>
             <td><a href="#submission/{{id}}">observations</a></td>
@@ -336,8 +333,8 @@
                 <thead>
                 <tr>
                     <th>Observation</th>
-                    <th>Subject</th>
-                    <th>Role</th>
+                    <th>Subject Name</th>
+                    <th>Subject Role</th>
                     <th>Description</th>
                 </tr>
                 </thead>
@@ -361,7 +358,7 @@
                 </a>
             </td>
             <td>{{observedSubjectRole.subjectRole.displayName}}</td>
-            <td>{{observedSubjectRole.description}}</td>
+            <td>{{observedSubjectRole.displayText}}</td>
         </tr>
     </script>
 
@@ -402,8 +399,8 @@
             <table id="observed-subjects-grid" class="table table-bordered table-striped subjects">
                 <thead>
                 <tr>
-                    <th>Subject</th>
-                    <th>Type</th>
+                    <th>Subject Name</th>
+                    <th>Subject Type</th>
                     <th>Role</th>
                 </tr>
                 </thead>
@@ -416,8 +413,8 @@
             <table id="observed-evidences-grid" class="table table-bordered table-striped evidences">
                 <thead>
                 <tr>
-                    <th>Type</th>
                     <th>Role</th>
+                    <th>Description</th>
                     <th>Details</th>
                 </tr>
                 </thead>
@@ -431,20 +428,16 @@
 
     <script type="text/template" id="observedevidence-row-tmpl">
         <tr>
-            <td>
-                {{evidence.type}}
-            </td>
-            <td>{{observedEvidenceRole.description}}</td>
+            <td>{{observedEvidenceRole.evidenceRole.displayName}}</td>
+            <td>{{observedEvidenceRole.displayText}}</td>
             <td>{{displayName}}</td>
         </tr>
     </script>
 
     <script type="text/template" id="observedfileevidence-row-tmpl">
         <tr>
-            <td>
-                File
-            </td>
-            <td>{{observedEvidenceRole.description}}</td>
+            <td>{{observedEvidenceRole.evidenceRole.displayName}}</td>
+            <td>{{observedEvidenceRole.displayText}}</td>
             <td>(
                 <a href="http://cbio.mskcc.org/cancergenomics/ctd2-dashboard/{{evidence.filePath}}" target="_blank" title="File download" class="desc-tooltip" title="Download File" data-content="Type: {{evidence.mimeType}} Widget: N/A">
                     download
@@ -455,20 +448,16 @@
 
     <script type="text/template" id="observedlabelevidence-row-tmpl">
         <tr>
-            <td>
-                Label
-            </td>
-            <td>{{observedEvidenceRole.description}}</td>
+            <td>{{observedEvidenceRole.evidenceRole.displayName}}</td>
+            <td>{{observedEvidenceRole.displayText}}</td>
             <td><span class="label">{{displayName}}</span></td>
         </tr>
     </script>
 
     <script type="text/template" id="observedurlevidence-row-tmpl">
         <tr>
-            <td>
-                URL
-            </td>
-            <td>{{observedEvidenceRole.description}}</td>
+            <td>{{observedEvidenceRole.evidenceRole.displayName}}</td>
+            <td>{{observedEvidenceRole.displayText}}</td>
             <td>(
                 <a href="{{evidence.url}}" target="_blank" title="{{displayName}}" class="desc-tooltip">
                     open
@@ -479,10 +468,8 @@
 
     <script type="text/template" id="observeddatanumericevidence-row-tmpl">
         <tr>
-            <td>
-                Numeric value
-            </td>
-            <td>{{observedEvidenceRole.description}}</td>
+            <td>{{observedEvidenceRole.evidenceRole.displayName}}</td>
+            <td>{{observedEvidenceRole.displayText}}</td>
             <td>{{evidence.numericValue}} <em>{{evidence.unit}}</em></td>
         </tr>
     </script>
