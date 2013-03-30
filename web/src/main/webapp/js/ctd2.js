@@ -297,29 +297,26 @@
          render: function() {
              var result = this.model.toJSON();
 
-             var synonymsStr = "";
-             _.each(result.synonyms, function(aSynonym) {
-                 synonymsStr += aSynonym.displayName + " ";
-             });
-             result["synonymsStr"] = synonymsStr;
-
-             var xrefStr = "";
              _.each(result.xrefs, function(xref) {
                  if(xref.databaseName == "IMAGE") {
                      result["imageFile"] = xref.databaseId;
-                     return;
                  }
 
-                 xrefStr += xref.databaseName + ":" + xref.databaseId + " ";
              });
-             result["xrefStr"] = xrefStr;
-
              result["type"] = result.class;
 
              $(this.el).html(this.template(result));
 
+             var thatEl = $("ul.synonyms");
+             _.each(result.synonyms, function(aSynonym) {
+                 if(aSynonym.displayName == result.displayName ) return;
+
+                 var synonymView = new SynonymView({ model: aSynonym, el: thatEl });
+                 synonymView.render();
+             });
+
              var observedSubjects = new ObservedSubjects({ subjectId: result.id });
-             var thatEl = $("#compound-observation-grid");
+             thatEl = $("#compound-observation-grid");
              observedSubjects.fetch({
                  success: function() {
                      _.each(observedSubjects.models, function(observedSubject) {
@@ -347,18 +344,19 @@
         template:  _.template($("#gene-tmpl").html()),
         render: function() {
             var result = this.model.toJSON();
-
-            var synonymsStr = "";
-            _.each(result.synonyms, function(aSynonym) {
-                synonymsStr += aSynonym.displayName + " ";
-            });
-            result["synonymsStr"] = synonymsStr;
             result["type"] = result.class;
-
             $(this.el).html(this.template(result));
 
+            var thatEl = $("ul.synonyms");
+            _.each(result.synonyms, function(aSynonym) {
+                if(aSynonym.displayName == result.displayName ) return;
+
+                var synonymView = new SynonymView({ model: aSynonym, el: thatEl });
+                synonymView.render();
+            });
+
             var observedSubjects = new ObservedSubjects({ subjectId: result.id });
-            var thatEl = $("#gene-observation-grid");
+            thatEl = $("#gene-observation-grid");
             observedSubjects.fetch({
                 success: function() {
                     _.each(observedSubjects.models, function(observedSubject) {
@@ -384,12 +382,7 @@
         template:  _.template($("#cellsample-tmpl").html()),
         render: function() {
             var result = this.model.toJSON();
-
-            var synonymsStr = "";
-            _.each(result.synonyms, function(aSynonym) {
-                synonymsStr += aSynonym.displayName + " ";
-            });
-            result["synonymsStr"] = synonymsStr;
+            result["type"] = result.class;
 
             // Look for cbioPortal Id
             var cbioPortalId = null;
@@ -400,13 +393,20 @@
             });
 
             result["cbioPortalId"] = cbioPortalId;
-            result["xrefStr"] = xrefStr;
             result["type"] = result.class;
 
             $(this.el).html(this.template(result));
 
+            var thatEl = $("ul.synonyms");
+            _.each(result.synonyms, function(aSynonym) {
+                if(aSynonym.displayName == result.displayName ) return;
+
+                var synonymView = new SynonymView({ model: aSynonym, el: thatEl });
+                synonymView.render();
+            });
+
             var observedSubjects = new ObservedSubjects({ subjectId: result.id });
-            var thatEl = $("#gene-observation-grid");
+            thatEl = $("#gene-observation-grid");
             observedSubjects.fetch({
                 success: function() {
                     _.each(observedSubjects.models, function(observedSubject) {
@@ -511,6 +511,14 @@
             });
 
 
+            return this;
+        }
+    });
+
+    var SynonymView = Backbone.View.extend({
+        template: _.template($("#synonym-item-tmpl").html()),
+        render: function() {
+            $(this.el).append(this.template(this.model));
             return this;
         }
     });
