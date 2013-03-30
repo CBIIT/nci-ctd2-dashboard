@@ -11,12 +11,23 @@
   <import resource="classpath*:META-INF/spring/observationDataSharedApplicationContext.xml" />
   <context:component-scan base-package="gov.nih.nci.ctd2.dashboard.importer.internal" />
 
-  <!-- broad compound sensitivity enrichment -->
-  <bean name="broadCompoundSensitivityEnrichmentReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
-	<property name="resources" value="${compound.sensitivity.enrichment.data.location}" />
+  <!-- broad compound sensitivity mutation enrichment -->
+  <bean name="broadCompoundSensitivityMutationEnrichmentReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+	<property name="resources" value="${compound.sensitivity.mutation.enrichment.data.location}" />
 	<property name="delegate">
 	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
-		<property name="lineMapper" ref="broadCompoundSensitivityEnrichmentLineMapper" />
+		<property name="lineMapper" ref="broadCompoundSensitivityMutationEnrichmentLineMapper" />
+		<property name="linesToSkip" value="1" />
+	  </bean>
+	</property>
+  </bean>
+
+  <!-- broad compound sensitivity lineage enrichment -->
+  <bean name="broadCompoundSensitivityLineageEnrichmentReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+	<property name="resources" value="${compound.sensitivity.lineage.enrichment.data.location}" />
+	<property name="delegate">
+	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+		<property name="lineMapper" ref="broadCompoundSensitivityLineageEnrichmentLineMapper" />
 		<property name="linesToSkip" value="1" />
 	  </bean>
 	</property>

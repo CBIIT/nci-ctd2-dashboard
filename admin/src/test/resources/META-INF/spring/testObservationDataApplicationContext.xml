@@ -37,9 +37,14 @@
 
   <!-- the following beans are not used during testing - only required for proper loading of context files -->
 
-  <!-- broad compound sensitivity enrichment -->
-  <bean name="broadCompoundSensitivityEnrichmentReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="broadCompoundSensitivityEnrichmentLineMapper" />
+  <!-- broad compound sensitivity mutation enrichment -->
+  <bean name="broadCompoundSensitivityMutationEnrichmentReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+    <property name="lineMapper" ref="broadCompoundSensitivityMutationEnrichmentLineMapper" />
+  </bean>
+
+  <!-- broad compound sensitivity lineage enrichment -->
+  <bean name="broadCompoundSensitivityLineageEnrichmentReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+    <property name="lineMapper" ref="broadCompoundSensitivityLineageEnrichmentLineMapper" />
   </bean>
 
   <!-- columbia signaling analysis -->
