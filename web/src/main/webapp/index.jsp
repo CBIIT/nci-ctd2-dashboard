@@ -412,7 +412,7 @@
                 </tbody>
             </table>
 
-            <h1>Evidences</h1>
+            <h1>Evidence</h1>
             <table id="observed-evidences-grid" class="table table-bordered table-striped evidences">
                 <thead>
                 <tr>
