@@ -8,9 +8,14 @@
 							http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 
   <batch:job id="observationDataImporterJob">
-	<batch:step id="broadCompoundSensitivityEnrichmentStep" parent="observationDataStep" next="columbiaSignalingAnalysisStep">
+	<batch:step id="broadCompoundSensitivityMutationEnrichmentStep" parent="observationDataStep" next="broadCompoundSensitivityLineageEnrichmentStep">
 	  <batch:tasklet>
-		<batch:chunk reader="broadCompoundSensitivityEnrichmentReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+		<batch:chunk reader="broadCompoundSensitivityMutationEnrichmentReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+	<batch:step id="broadCompoundSensitivityLineageEnrichmentStep" parent="observationDataStep" next="columbiaSignalingAnalysisStep">
+	  <batch:tasklet>
+		<batch:chunk reader="broadCompoundSensitivityLineageEnrichmentReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	  </batch:tasklet>
 	</batch:step>
 	<batch:step id="columbiaSignalingAnalysisStep" parent="observationDataStep" next="columbiaDifferentialRepresentationAnalysisStep">
@@ -36,18 +41,32 @@
 	<property name="commitInterval" value="100" />
   </bean>
 
-  <!-- broad enrichement analysis -->
+  <!-- broad compound sensitivity mutation enrichment analysis -->
 
-  <!-- broadCompoundSensitivityEnrichmentReader defined in: -->
+  <!-- broadCompoundSensitivityMutationEnrichmentReader defined in: -->
   <!-- observationDataApplicationContext.xml test observationDataApplicationContext.xml -->
-  <bean name="broadCompoundSensitivityEnrichmentLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+  <bean name="broadCompoundSensitivityMutationEnrichmentLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
 	<property name="fieldSetMapper" ref="observationDataMapper" />
-	<property name="lineTokenizer" ref="broadCompoundSensitivityEnrichmentLineTokenizer" />
+	<property name="lineTokenizer" ref="broadCompoundSensitivityMutationEnrichmentLineTokenizer" />
   </bean>
 
-  <bean name="broadCompoundSensitivityEnrichmentLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+  <bean name="broadCompoundSensitivityMutationEnrichmentLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="submission_center,submission_date,template_name,cell_line_subset,cell_line_exclusion,feature_dataset,compound_name,entrez_gene_id,cell_lineage,number_of_cell_lines,number_of_mutant_cell_lines,enrichment_direction,log_fdr,response_image_path,feature_image_path,nci_portal,gct_path"/>
+	<property name="names" value="submission_center,submission_date,observation_template,cell_line_subset,cell_line_exclusion,feature_dataset,compound_name,entrez_gene_id,number_of_cell_lines,number_of_mutant_cell_lines,enrichment_direction,log_fdr,response_image_path,feature_image_path,nci_portal,gct_path"/>
+  </bean>
+
+  <!-- broad compound sensitivity lineage enrichment analysis -->
+
+  <!-- broadCompoundSensitivityLineageEnrichmentReader defined in: -->
+  <!-- observationDataApplicationContext.xml test observationDataApplicationContext.xml -->
+  <bean name="broadCompoundSensitivityLineageEnrichmentLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+	<property name="fieldSetMapper" ref="observationDataMapper" />
+	<property name="lineTokenizer" ref="broadCompoundSensitivityLineageEnrichmentLineTokenizer" />
+  </bean>
+
+  <bean name="broadCompoundSensitivityLineageEnrichmentLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+	<property name="delimiter" value="\u0009"/>
+	<property name="names" value="submission_center,submission_date,observation_template,cell_line_subset,cell_line_exclusion,feature_data_set,compound_name,lineage,number_of_cell_lines,number_of_example_cell_lines,enrichment_direction,log_fdr,response_image_path,feature_image_path,nci_portal,gct_path"/>
   </bean>
 
   <!-- columbia signaling analysis -->
@@ -61,7 +80,7 @@
 
   <bean name="columbiaSignalingAnalysisLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="submission_center,submission_date,template_name,affy_probeset_id,entrez_gene_id,cell_lineage_tissue, cell_lineage_blood_type,log2_fold_change,avg_expr,z_score,p_value,adj_p_value,func_type,set_size,gsea_enrich_score,gsea_p_value,gsea_fdr"/>
+	<property name="names" value="submission_center,submission_date,observation_template,affy_probeset_id,entrez_gene_id,cell_lineage_tissue, cell_lineage_blood_type,log2_fold_change,avg_expr,z_score,p_value,adj_p_value,func_type,set_size,gsea_enrich_score,gsea_p_value,gsea_fdr"/>
   </bean>
 
   <!-- columbia differential representation analysis -->
@@ -75,7 +94,7 @@
 
   <bean name="columbiaDifferentialRepresentationAnalysisLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="submission_center,submission_date,template_name,entrez_gene_id,num_probs,cell_lineage,cell_line_a,log2_fold_change_a,avg_rep_a,z_score_a,p_value_a,cell_line_b,log2_fold_change_b,avg_rep_b,z_score_b,p_value_b"/>
+	<property name="names" value="submission_center,submission_date,observation_template,entrez_gene_id,num_probs,cell_lineage,cell_line_a,log2_fold_change_a,avg_rep_a,z_score_a,p_value_a,cell_line_b,log2_fold_change_b,avg_rep_b,z_score_b,p_value_b"/>
   </bean>
 
   <!-- columbia master regulator analysis with shRNA knockdown analysis -->
@@ -89,7 +108,7 @@
 
   <bean name="columbiaMasterRegulatorAnalysisLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="submission_center,submission_date,template_name,submission_description,probeset_id,disease_condition,gene_symbol,entrez_gene_id,func_type,mr_regulon_set_size,gsea_score,mr_gsea_p_value,mr_gsea_fdr,num_shRNAs,cell_line_1,lineage_1,cell_line_2,lineage_2,shrna_diff_rep_z_score_CUTLL1_HPB,shrna_diff_rep_p_value_CUTLL1_HPB,shrna_diff_rep_fdr_CUTLL1_HPB,shrna_diff_rep_net_direction_CUTLL1_HPB"/>
+	<property name="names" value="submission_center,submission_date,observation_template,submission_description,probeset_id,disease_condition,gene_symbol,entrez_gene_id,func_type,mr_regulon_set_size,gsea_score,mr_gsea_p_value,mr_gsea_fdr,num_shRNAs,cell_line_1,lineage_1,cell_line_2,lineage_2,shrna_diff_rep_z_score_CUTLL1_HPB,shrna_diff_rep_p_value_CUTLL1_HPB,shrna_diff_rep_fdr_CUTLL1_HPB,shrna_diff_rep_net_direction_CUTLL1_HPB"/>
   </bean>
 
   <!-- shared helper beans -->
@@ -98,7 +117,7 @@
   <bean name="observationTemplateMap" class="java.util.HashMap">
 	<constructor-arg index="0" type="java.util.Map">
 	  <map key-type="java.lang.String" value-type="java.lang.String">
-		<!-- broad_compound_sensitivity_enrichment template -->
+		<!-- broad compound sensitivity mutation enrichment template -->
 		<entry key="broad_compound_sensitivity_mutation_enrichment:cell_line_subset" value="evidence:readString:createObservedLabelEvidence" />
 		<entry key="broad_compound_sensitivity_mutation_enrichment:cell_line_exclusion" value="evidence:readString:createObservedLabelEvidence" />
 		<entry key="broad_compound_sensitivity_mutation_enrichment:feature_dataset" value="evidence:readString:createObservedLabelEvidence" />
@@ -112,6 +131,20 @@
 		<entry key="broad_compound_sensitivity_mutation_enrichment:feature_image_path" value="evidence:readString:createObservedFileEvidence" />
 		<entry key="broad_compound_sensitivity_mutation_enrichment:nci_portal" value="evidence:readString:createObservedUrlEvidence" />
 		<entry key="broad_compound_sensitivity_mutation_enrichment:gct_path" value="evidence:readString:createObservedFileEvidence" />
+		<!-- broad compound sensitivity lineage enrichment template -->
+		<entry key="broad_compound_sensitivity_lineage_enrichment:cell_line_subset" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="broad_compound_sensitivity_lineage_enrichment:cell_line_exclusion" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="broad_compound_sensitivity_lineage_enrichment:feature_dataset" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="broad_compound_sensitivity_lineage_enrichment:compound_name" value="subject:findCompoundsByName" />
+		<entry key="broad_compound_sensitivity_lineage_enrichment:lineage" value="subject:findSubjectsBySynonym" />
+		<entry key="broad_compound_sensitivity_lineage_enrichment:number_of_cell_lines" value="evidence:readInt:createObservedNumericEvidence" />
+		<entry key="broad_compound_sensitivity_lineage_enrichment:number_of_example_cell_lines" value="evidence:readInt:createObservedNumericEvidence" />
+		<entry key="broad_compound_sensitivity_lineage_enrichment:enrichment_direction" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="broad_compound_sensitivity_lineage_enrichment:log_fdr" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="broad_compound_sensitivity_lineage_enrichment:response_image_path" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="broad_compound_sensitivity_lineage_enrichment:feature_image_path" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="broad_compound_sensitivity_lineage_enrichment:nci_portal" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="broad_compound_sensitivity_lineage_enrichment:gct_path" value="evidence:readString:createObservedFileEvidence" />
 		<!-- columbia signaling analysis template -->
 		<entry key="columbia_all_mr_tf_or_sig_analysis:affy_probeset_id" value="evidence:readString:createObservedLabelEvidence" />
 		<entry key="columbia_all_mr_tf_or_sig_analysis:entrez_gene_id" value="subject:findGenesByEntrezId" />
