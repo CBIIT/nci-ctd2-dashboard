@@ -319,10 +319,6 @@
                     <td>{{observationTemplate.description}}</td>
                 </tr>
                 <tr>
-                    <th>Template</th>
-                    <td>{{observationTemplate.displayName}}</td>
-                </tr>
-                <tr>
                     <th>Date</th>
                     <td>{{submissionDate}}</td>
                 </tr>
