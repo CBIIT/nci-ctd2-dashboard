@@ -490,7 +490,7 @@
                      </td>
                  </tr>
                  <tr>
-                     <th>Type</th>
+                     <th>Subject Type</th>
                      <td>Gene</td>
                  </tr>
                  <tr>
@@ -542,7 +542,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <th>Type</th>
+                    <th>Subject Type</th>
                     <td>Cell Sample</td>
                 </tr>
                 <tr>
@@ -595,7 +595,7 @@
                               </td>
                           </tr>
                           <tr>
-                              <th>Type</th>
+                              <th>Subject Type</th>
                               <td>Compound</td>
                           </tr>
                           <tr>
