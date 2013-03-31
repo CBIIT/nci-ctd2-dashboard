@@ -443,7 +443,8 @@
     var ObservedSubjectSummaryRowView = Backbone.View.extend({
         template:  _.template($("#observedsubject-summary-row-tmpl").html()),
         render: function() {
-            result = this.model;
+            var result = this.model;
+            if(result.subject == null) return;
             result.subject["type"] = result.subject.class;
             $(this.el).append(this.template(result));
             return this;
