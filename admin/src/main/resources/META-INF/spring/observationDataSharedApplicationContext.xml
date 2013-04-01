@@ -136,7 +136,7 @@
 		<entry key="broad_compound_sensitivity_lineage_enrichment:cell_line_exclusion" value="evidence:readString:createObservedLabelEvidence" />
 		<entry key="broad_compound_sensitivity_lineage_enrichment:feature_dataset" value="evidence:readString:createObservedLabelEvidence" />
 		<entry key="broad_compound_sensitivity_lineage_enrichment:compound_name" value="subject:findCompoundsByName" />
-		<entry key="broad_compound_sensitivity_lineage_enrichment:lineage" value="subject:findSubjectsBySynonym" />
+		<entry key="broad_compound_sensitivity_lineage_enrichment:lineage" value="subject:findCellSampleByLineage" />
 		<entry key="broad_compound_sensitivity_lineage_enrichment:number_of_cell_lines" value="evidence:readInt:createObservedNumericEvidence" />
 		<entry key="broad_compound_sensitivity_lineage_enrichment:number_of_example_cell_lines" value="evidence:readInt:createObservedNumericEvidence" />
 		<entry key="broad_compound_sensitivity_lineage_enrichment:enrichment_direction" value="evidence:readString:createObservedLabelEvidence" />
@@ -186,9 +186,9 @@
 		<entry key="columbia_t-all_joint_mr_shrna_diff_rep:mr_gsea_fdr" value="evidence:readDouble:createObservedNumericEvidence" />
 		<entry key="columbia_t-all_joint_mr_shrna_diff_rep:num_shRNAs" value="evidence:readInt:createObservedNumericEvidence" />
 		<entry key="columbia_t-all_joint_mr_shrna_diff_rep:cell_line_1" value="subject:findSubjectsBySynonym" />
-		<entry key="columbia_t-all_joint_mr_shrna_diff_rep:lineage_1" value="subject:findSubjectsBySynonym" />
+		<entry key="columbia_t-all_joint_mr_shrna_diff_rep:lineage_1" value="subject:findCellSampleByLineage" />
 		<entry key="columbia_t-all_joint_mr_shrna_diff_rep:cell_line_2" value="subject:findSubjectsBySynonym" />
-		<entry key="columbia_t-all_joint_mr_shrna_diff_rep:lineage_2" value="subject:findSubjectsBySynonym" />
+		<entry key="columbia_t-all_joint_mr_shrna_diff_rep:lineage_2" value="subject:findCellSampleByLineage" />
 		<entry key="columbia_t-all_joint_mr_shrna_diff_rep:shrna_diff_rep_z_score_CUTLL1_HPB" value="evidence:readDouble:createObservedNumericEvidence" />
 		<entry key="columbia_t-all_joint_mr_shrna_diff_rep:shrna_diff_rep_p_value_CUTLL1_HPB" value="evidence:readDouble:createObservedNumericEvidence" />
 		<entry key="columbia_t-all_joint_mr_shrna_diff_rep:shrna_diff_rep_fdr_CUTLL1_HPB" value="evidence:readDouble:createObservedNumericEvidence" />
