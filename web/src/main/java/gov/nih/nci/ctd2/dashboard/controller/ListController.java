@@ -81,6 +81,10 @@ public class ListController {
             }
         }
 
+        // TODO: Remove this and add a pagination option
+        if(entities.size() > 50)
+            entities = entities.subList(0, 49);
+
         JSONSerializer jsonSerializer = new JSONSerializer()
                 .transform(new ImplTransformer(), Class.class)
                 .transform(new DateTransformer(), Date.class)

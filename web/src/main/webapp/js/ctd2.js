@@ -810,11 +810,7 @@
             return false;
         });
 
-        $("#omni-input").focus(function() {
-            $(this).removeClass("span2").addClass("span3").attr("placeholder", "e.g. CTNNB1 or aspirin");
-        }).blur(function() {
-            $(this).removeClass("span3").addClass("span2").attr("placeholder", "e.g. CTNNB1");
-        }).popover({
+        $("#omni-input").popover({
            placement: "bottom",
            trigger: "hover",
            html: true,
@@ -824,7 +820,7 @@
            content: function() {
                return $("#search-help-content").html();
            },
-           delay: {hide: 2500}
+           delay: {hide: 2000}
         });
 
     });
