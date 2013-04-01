@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:batch="http://www.springframework.org/schema/batch"
+		xmlns:context="http://www.springframework.org/schema/context"
+        xsi:schemaLocation="http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-2.1.xsd
+							http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+							http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+  <import resource="classpath*:META-INF/spring/adminApplicationContext.xml" />
+  <import resource="classpath*:META-INF/spring/observationDataSharedApplicationContext.xml" />
+  <context:component-scan base-package="gov.nih.nci.ctd2.dashboard.importer.internal" />
+
+  <!-- broad compound sensitivity mutation enrichment -->
+  <bean name="broadCompoundSensitivityMutationEnrichmentReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+	<property name="resources" value="${compound.sensitivity.mutation.enrichment.data.location}" />
+	<property name="delegate">
+	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+		<property name="lineMapper" ref="broadCompoundSensitivityMutationEnrichmentLineMapper" />
+		<property name="linesToSkip" value="1" />
+	  </bean>
+	</property>
+  </bean>
+
+  <!-- broad compound sensitivity lineage enrichment -->
+  <bean name="broadCompoundSensitivityLineageEnrichmentReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+	<property name="resources" value="${compound.sensitivity.lineage.enrichment.data.location}" />
+	<property name="delegate">
+	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+		<property name="lineMapper" ref="broadCompoundSensitivityLineageEnrichmentLineMapper" />
+		<property name="linesToSkip" value="1" />
+	  </bean>
+	</property>
+  </bean>
+
+  <!-- columbia signaling analysis -->
+  <bean name="columbiaSignalingAnalysisReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+	<property name="resources" value="${signaling.analysis.data.location}" />
+	<property name="delegate">
+	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+		<property name="lineMapper" ref="columbiaSignalingAnalysisLineMapper" />
+		<property name="linesToSkip" value="1" />
+	  </bean>
+	</property>
+  </bean>
+
+  <!-- columbia differential representation analysis -->
+  <bean name="columbiaDifferentialRepresentationAnalysisReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+	<property name="resources" value="${differential.representation.analysis.data.location}" />
+	<property name="delegate">
+	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+		<property name="lineMapper" ref="columbiaDifferentialRepresentationAnalysisLineMapper" />
+		<property name="linesToSkip" value="1" />
+	  </bean>
+	</property>
+  </bean>
+
+  <!-- columbia master regulator analysis with shRNA knockdown -->
+  <bean name="columbiaMasterRegulatorAnalysisReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+	<property name="resources" value="${master.regulator.analysis.data.location}" />
+	<property name="delegate">
+	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+		<property name="lineMapper" ref="columbiaMasterRegulatorAnalysisLineMapper" />
+		<property name="linesToSkip" value="1" />
+	  </bean>
+	</property>
+  </bean>
+
+</beans>
