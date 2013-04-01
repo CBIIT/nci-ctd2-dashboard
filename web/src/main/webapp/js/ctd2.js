@@ -311,7 +311,7 @@
                 success: function() {
                     _.each(centers.toJSON(), function(aCenter) {
                        var centerListRowView
-                           = new CenterListRowView({ el: $(thatEl).find("tbody"), model: aCenter });
+                           = new CenterListRowView({ el: $(thatEl).find(".thumbnails"), model: aCenter });
                         centerListRowView.render();
                     });
                 }
