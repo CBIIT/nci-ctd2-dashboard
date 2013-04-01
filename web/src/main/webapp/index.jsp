@@ -40,7 +40,7 @@
               <span class="icon-bar"></span>
             </a>
             <div class="nav-collapse collapse">
-              <ul class="nav">
+              <ul class="nav topmenu">
                 <li class="active"><a href="#">CTD<sup>2</sup> Dashboard</a></li>
                 <li><a href="#centers">Centers</a></li>
                 <li class="dropdown">
@@ -53,11 +53,14 @@
                       </ul>
                   </li>
               </ul>
-              <!-- This will be replaced with the search box
               <ul class="nav pull-right">
-                  <li><a href="#about">About</a></li>
+                  <form class="form-search" id="omnisearch">
+                      <div class="input-append">
+                          <input type="text" id="omni-input" class="span3 search-query">
+                          <button type="submit" class="btn search-button">Search</button>
+                      </div>
+                  </form>
               </ul>
-              -->
             </div><!--/.nav-collapse -->
           </div><!-- /.navbar-inner -->
         </div><!-- /.navbar -->
@@ -198,8 +201,9 @@
 
           </div>
 
-          <a class="left carousel-control" id="prevSlideControl" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+         <!-- <a class="left carousel-control" id="prevSlideControl" href="#myCarousel" data-slide="prev">&lsaquo;</a>
           <a class="right carousel-control" id="nextSlideControl" href="#myCarousel" data-slide="next">&rsaquo;</a>
+          -->
         </div><!-- /.carousel -->
 
         <div class="container marketing ctd2-boxes">
