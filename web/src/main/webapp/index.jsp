@@ -63,7 +63,7 @@
 
                               <strong>Examples:</strong>
                               <ul>
-                                <li><em>Gene: </em> <a href="#search/exact/BRAF">BRAF</a></li>
+                                <li><em>Gene: </em> <a href="#search/exact/CTNNB1">CTNNB1</a></li>
                                 <li><em>Compound: </em> <a href="#search/exact/ABT-737">ABT-737</a></li>
                                 <li><em>Cell Sample: </em> <a href="#search/exact/HPBALL">HPBALL</a></li>
                               </ul>
