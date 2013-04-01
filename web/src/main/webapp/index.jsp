@@ -329,9 +329,7 @@
                 <thead>
                 <tr>
                     <th>Observation</th>
-                    <th>Subject Name</th>
-                    <th>Subject Role</th>
-                    <th>Description</th>
+                    <th>Observation Summary</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -344,17 +342,13 @@
     <script type="text/template" id="submission-tbl-row-tmpl">
         <tr>
             <td>
-                <a href="#/observation/{{observation.id}}">
-                    # {{observation.id}}
+                <a href="#/observation/{{id}}">
+                    # {{id}}
                 </a>
             </td>
-            <td>
-                <a href="#/subject/{{subject.id}}">
-                    {{subject.displayName}}
-                </a>
+            <td id="submission-observation-summary-{{id}}">
+                Loading...
             </td>
-            <td>{{observedSubjectRole.subjectRole.displayName}}</td>
-            <td>{{observedSubjectRole.displayText}}</td>
         </tr>
     </script>
 
@@ -439,7 +433,7 @@
 
     <script type="text/template" id="observedevidence-row-tmpl">
         <tr>
-            <td></td>
+            <td>&nbsp;&nbsp;</td>
             <td>{{observedEvidenceRole.evidenceRole.displayName}}</td>
             <td>{{observedEvidenceRole.displayText}}</td>
             <td>{{displayName}}</td>
