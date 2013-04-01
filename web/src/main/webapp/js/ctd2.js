@@ -229,12 +229,14 @@
                         $("#observation-summary").html(summary);
                     });
 
-                    $('#observed-evidences-grid').dataTable({
+                    var oTable = $('#observed-evidences-grid').dataTable({
                         "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
                         "sPaginationType": "bootstrap"
                     });
 
-                    $('.desc-tooltip').popover({ trigger: 'hover' });
+                    oTable.fnSort( [ [1, 'asc'] ] );
+
+                    $('.desc-tooltip').tooltip({ placement: "bottom" });
 
                 }
             });
@@ -253,13 +255,17 @@
             if(result.observedEvidenceRole == null) {
                 result.observedEvidenceRole = {
                     displayText: "N/A",
-                    evidenceRole: { displayName: "N/A" }
+                    evidenceRole: { displayName: "unknown" }
                 };
             }
 
             var templateId = "#observedevidence-row-tmpl";
             if(type == "FileEvidence") {
-                templateId = "#observedfileevidence-row-tmpl";
+                if(result.evidence.mimeType.toLowerCase().search("image") > -1) {
+                    templateId = "#observedimageevidence-row-tmpl";
+                } else {
+                    templateId = "#observedfileevidence-row-tmpl";
+                }
             } else if(type == "UrlEvidence") {
                 templateId = "#observedurlevidence-row-tmpl";
             } else if(type == "LabelEvidence") {
