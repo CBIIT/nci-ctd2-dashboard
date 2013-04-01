@@ -243,25 +243,22 @@
     <script type="text/template" id="centers-tmpl">
         <div class="container common-container" id="centers-container">
             <h1>Centers</h1>
-            <table id="centers-grid" class="table table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Submissions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- here will go the rows -->
-                </tbody>
-            </table>
+            <br>
+            <ul class="thumbnails">
+                <!-- here will come the centers... -->
+            </ul>
         </div>
     </script>
 
     <script type="text/template" id="centers-tbl-row-tmpl">
-        <tr>
-            <td>{{displayName}}</td>
-            <td><a href="#center/{{id}}">Submissions</a></td>
-        </tr>
+        <li class="span4">
+            <a href="#center/{{id}}" class="thumbnail">
+                <img src="img/{{displayName}}.png" alt="{{displayName}}" class="img-polaroid"><br>
+                <center>
+                    {{displayName}} submissions &raquo;
+                </center>
+            </a>
+        </li>
     </script>
 
     <script type="text/template" id="center-tmpl">
