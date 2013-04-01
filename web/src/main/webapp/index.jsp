@@ -311,10 +311,10 @@
                 <div class="span9">
                     <table id="submission-details-grid" class="table table-bordered table-striped">
                         <tr>
-                            <th>Center</th>
+                            <th>Submission Center</th>
                             <td>
                                 <a href="#/center/{{submissionCenter.id}}">
-                                    {{submissionCenter.displayName}}
+                                    <img src="img/{{submissionCenter.displayName}}.png" class="img-polaroid" height=30 alt="{{submissionCenter.displayName}}">
                                 </a>
                             </td>
                         </tr>
@@ -323,11 +323,11 @@
                             <td>{{observationTemplate.tier}}</td>
                         </tr>
                         <tr>
-                            <th>Description</th>
+                            <th>Template Description</th>
                             <td>{{observationTemplate.description}}</td>
                         </tr>
                         <tr>
-                            <th>Date</th>
+                            <th>Submission Date</th>
                             <td>{{submissionDate}}</td>
                         </tr>
                     </table>
@@ -390,7 +390,7 @@
                             <th>Submission Center</th>
                             <td>
                                 <a href="#/center/{{submission.submissionCenter.id}}">
-                                    {{submission.submissionCenter.displayName}}
+                                    <img src="img/{{submission.submissionCenter.displayName}}.png" class="img-polaroid" height=30 alt="{{submission.submissionCenter.displayName}}">
                                 </a>
                             </td>
                         </tr>
