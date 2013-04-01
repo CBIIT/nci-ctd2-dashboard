@@ -329,9 +329,7 @@
                 <thead>
                 <tr>
                     <th>Observation</th>
-                    <th>Subject Name</th>
-                    <th>Subject Role</th>
-                    <th>Description</th>
+                    <th>Observation Summary</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -344,17 +342,13 @@
     <script type="text/template" id="submission-tbl-row-tmpl">
         <tr>
             <td>
-                <a href="#/observation/{{observation.id}}">
-                    # {{observation.id}}
+                <a href="#/observation/{{id}}">
+                    # {{id}}
                 </a>
             </td>
-            <td>
-                <a href="#/subject/{{subject.id}}">
-                    {{subject.displayName}}
-                </a>
+            <td id="submission-observation-summary-{{id}}">
+                Loading...
             </td>
-            <td>{{observedSubjectRole.subjectRole.displayName}}</td>
-            <td>{{observedSubjectRole.displayText}}</td>
         </tr>
     </script>
 
@@ -386,10 +380,16 @@
                     </td>
                 </tr>
                 <tr>
-                    <th>Template</th>
+                    <th>Template Description</th>
                     <td>{{submission.observationTemplate.description}}</td>
                 </tr>
             </table>
+
+            <h3>Summary</h3>
+            <blockquote>
+                <p id="observation-summary"></p>
+            </blockquote>
+
 
             <h3>Observed subjects</h3>
             <table id="observed-subjects-grid" class="table table-bordered table-striped subjects">
@@ -409,6 +409,7 @@
             <table id="observed-evidences-grid" class="table table-bordered table-striped evidences">
                 <thead>
                 <tr>
+                    <th></th>
                     <th>Role</th>
                     <th>Description</th>
                     <th>Details</th>
@@ -422,8 +423,17 @@
         </div>
     </script>
 
+    <script type="text/template" id="summary-subject-replacement-tmpl">
+        <a class="summary-replacement" href="#/subject/{{id}}">{{displayName}}</a>
+    </script>
+
+    <script type="text/template" id="summary-evidence-replacement-tmpl">
+        <strong class="summary-replacement">{{displayName}}</strong>
+    </script>
+
     <script type="text/template" id="observedevidence-row-tmpl">
         <tr>
+            <td>&nbsp;&nbsp;</td>
             <td>{{observedEvidenceRole.evidenceRole.displayName}}</td>
             <td>{{observedEvidenceRole.displayText}}</td>
             <td>{{displayName}}</td>
@@ -432,18 +442,40 @@
 
     <script type="text/template" id="observedfileevidence-row-tmpl">
         <tr>
+            <td>
+                <img src="img/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}">
+            </td>
             <td>{{observedEvidenceRole.evidenceRole.displayName}}</td>
             <td>{{observedEvidenceRole.displayText}}</td>
             <td>(
-                <a href="http://cbio.mskcc.org/cancergenomics/ctd2-dashboard/{{evidence.filePath}}" target="_blank" title="File download" class="desc-tooltip" title="Download File" data-content="Type: {{evidence.mimeType}} Widget: N/A">
-                    download
+                <a href="http://cbio.mskcc.org/cancergenomics/ctd2-dashboard/{{evidence.filePath}}" target="_blank" title="Download file ({{evidence.mimeType}})" class="desc-tooltip" title="Download File">
+                    download file
                 </a>
             )</td>
         </tr>
     </script>
 
+    <script type="text/template" id="observedimageevidence-row-tmpl">
+        <tr>
+            <td>
+                <img src="img/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}">
+            </td>
+            <td>{{observedEvidenceRole.evidenceRole.displayName}}</td>
+            <td>{{observedEvidenceRole.displayText}}</td>
+            <td>
+                <a href="http://cbio.mskcc.org/cancergenomics/ctd2-dashboard/{{evidence.filePath}}" target="_blank" title="Open image">
+                    <img src="http://cbio.mskcc.org/cancergenomics/ctd2-dashboard/{{evidence.filePath}}" class="img-polaroid img-evidence" height="60">
+                </a>
+                </td>
+        </tr>
+    </script>
+
+
     <script type="text/template" id="observedlabelevidence-row-tmpl">
         <tr>
+            <td>
+                <img src="img/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}">
+            </td>
             <td>{{observedEvidenceRole.evidenceRole.displayName}}</td>
             <td>{{observedEvidenceRole.displayText}}</td>
             <td><span class="label">{{displayName}}</span></td>
@@ -452,18 +484,24 @@
 
     <script type="text/template" id="observedurlevidence-row-tmpl">
         <tr>
+            <td>
+                <img src="img/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}">
+            </td>
             <td>{{observedEvidenceRole.evidenceRole.displayName}}</td>
             <td>{{observedEvidenceRole.displayText}}</td>
-            <td>(
-                <a href="{{evidence.url}}" target="_blank" title="{{displayName}}" class="desc-tooltip">
-                    open
-                </a>
-            )</td>
+            <td>
+                (<a href="{{evidence.url}}" target="_blank" class="desc-tooltip" title="Open link in a new window">
+                    open link
+                </a>)
+            </td>
         </tr>
     </script>
 
     <script type="text/template" id="observeddatanumericevidence-row-tmpl">
         <tr>
+            <td>
+                <img src="img/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}">
+            </td>
             <td>{{observedEvidenceRole.evidenceRole.displayName}}</td>
             <td>{{observedEvidenceRole.displayText}}</td>
             <td>{{evidence.numericValue}} <em>{{evidence.unit}}</em></td>
@@ -508,8 +546,7 @@
                  <thead>
                  <tr>
                      <th>Observation</th>
-                     <th>Role</th>
-                     <th>Observation Type</th>
+                     <th>Observation Summary</th>
                      <th>Tier</th>
                      <th>Date</th>
                      <th>Center</th>
@@ -559,8 +596,7 @@
                 <thead>
                 <tr>
                     <th>Observation</th>
-                    <th>Role</th>
-                    <th>Observation Type</th>
+                    <th>Observation Summary</th>
                     <th>Tier</th>
                     <th>Date</th>
                     <th>Center</th>
@@ -611,8 +647,7 @@
                   <thead>
                   <tr>
                       <th>Observation</th>
-                      <th>Subject Role</th>
-                      <th>Observation Type</th>
+                      <th>Observation Summary</th>
                       <th>Tier</th>
                       <th>Date</th>
                       <th>Center</th>
@@ -657,6 +692,30 @@
             <td>
                 <a href="#/center/{{observation.submission.submissionCenter.id}}">
                     {{observation.submission.submissionCenter.displayName}}
+                </a>
+            </td>
+        </tr>
+    </script>
+
+    <script type="text/template" id="observation-row-tmpl">
+        <tr>
+            <td>
+                <a href="#/observation/{{id}}">
+                    # {{id}}
+                </a>
+            </td>
+            <td id="observation-summary-{{id}}">
+                Loading...
+            </td>
+            <td>{{submission.observationTemplate.tier}}</td>
+            <td>
+                <a href="#/submission/{{submission.id}}">
+                    {{submission.submissionDate}}
+                </a>
+            </td>
+            <td>
+                <a href="#/center/{{submission.submissionCenter.id}}">
+                    {{submission.submissionCenter.displayName}}
                 </a>
             </td>
         </tr>
