@@ -773,8 +773,8 @@
             <td colspan="7">
                 <div class="alert alert-error">
                     <button type="button" class="close" data-dismiss="alert">&times;</button>
-                    <strong>Oh snap!</strong> We could not find any subjects related to your search.
-                    Please change a few things up and try submitting again.
+                    <strong>No results found!</strong> We could not find any subjects related to your search.
+                    Please try again with another keyword.
                 </div>
             </td>
         </tr>
