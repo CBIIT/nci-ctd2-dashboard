@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
 @Controller
@@ -47,13 +48,16 @@ public class ListController {
             if(filterBy != null) {
                 Submission submission = dashboardDao.getEntityById(Submission.class, filterBy);
                 if(submission != null) {
-                    List<ObservedSubject> entitiesTmp = new ArrayList<ObservedSubject>();
-
-                    for (Observation observation : dashboardDao.findObservationsBySubmission(submission)) {
-                        entitiesTmp.addAll(dashboardDao.findObservedSubjectByObservation(observation));
+                    entities = dashboardDao.findObservationsBySubmission(submission);
+                } else {
+                    Subject subject = dashboardDao.getEntityById(Subject.class, filterBy);
+                    if(subject != null) {
+                        ArrayList<Observation> observations = new ArrayList<Observation>();
+                        for (ObservedSubject observedSubject : dashboardDao.findObservedSubjectBySubject(subject)) {
+                            observations.add(observedSubject.getObservation());
+                        }
+                        entities = observations;
                     }
-
-                    entities = entitiesTmp;
                 }
             } else {
                 entities = dashboardDao.findEntities(Observation.class);

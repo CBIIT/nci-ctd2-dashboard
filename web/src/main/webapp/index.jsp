@@ -552,8 +552,7 @@
                  <thead>
                  <tr>
                      <th>Observation</th>
-                     <th>Role</th>
-                     <th>Observation Type</th>
+                     <th>Observation Summary</th>
                      <th>Tier</th>
                      <th>Date</th>
                      <th>Center</th>
@@ -603,8 +602,7 @@
                 <thead>
                 <tr>
                     <th>Observation</th>
-                    <th>Role</th>
-                    <th>Observation Type</th>
+                    <th>Observation Summary</th>
                     <th>Tier</th>
                     <th>Date</th>
                     <th>Center</th>
@@ -655,8 +653,7 @@
                   <thead>
                   <tr>
                       <th>Observation</th>
-                      <th>Subject Role</th>
-                      <th>Observation Type</th>
+                      <th>Observation Summary</th>
                       <th>Tier</th>
                       <th>Date</th>
                       <th>Center</th>
@@ -701,6 +698,30 @@
             <td>
                 <a href="#/center/{{observation.submission.submissionCenter.id}}">
                     {{observation.submission.submissionCenter.displayName}}
+                </a>
+            </td>
+        </tr>
+    </script>
+
+    <script type="text/template" id="observation-row-tmpl">
+        <tr>
+            <td>
+                <a href="#/observation/{{id}}">
+                    # {{id}}
+                </a>
+            </td>
+            <td id="observation-summary-{{id}}">
+                Loading...
+            </td>
+            <td>{{submission.observationTemplate.tier}}</td>
+            <td>
+                <a href="#/submission/{{submission.id}}">
+                    {{submission.submissionDate}}
+                </a>
+            </td>
+            <td>
+                <a href="#/center/{{submission.submissionCenter.id}}">
+                    {{submission.submissionCenter.displayName}}
                 </a>
             </td>
         </tr>
