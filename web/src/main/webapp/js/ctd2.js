@@ -1,5 +1,7 @@
 !function ($) {
     var onWhichSlide = 0;
+    var leftSep = "<";
+    var rightSep = ">";
     var CORE_API_URL = "./";
 
     // This is for the moustache-like templates
@@ -41,10 +43,15 @@
 
     var Observations = Backbone.Collection.extend({
         url: CORE_API_URL + "list/observation/?filterBy=",
-        model: Submission,
+        model: Observation,
 
         initialize: function(attributes) {
-            this.url += attributes.submissionId;
+            if(attributes.subjectId != undefined) {
+                this.url += attributes.subjectId;
+            } else {
+                this.url += attributes.submissionId;
+            }
+
         }
     });
 
@@ -173,6 +180,10 @@
             var result = this.model.toJSON();
             $(this.el).html(this.template(result));
 
+            // We will replace the values in this summary
+            var summary = result.submission.observationTemplate.observationSummary;
+
+            // Load Subjects
             var observedSubjects = new ObservedSubjects({ observationId: result.id });
             var thatEl = $("#observed-subjects-grid");
             observedSubjects.fetch({
@@ -185,6 +196,16 @@
                             model: observedSubject
                         });
                         observedSubjectRowView.render();
+
+                        if(observedSubject.observedSubjectRole == null || observedSubject.subject == null)
+                            return;
+
+                        summary = summary.replace(
+                            leftSep + observedSubject.observedSubjectRole.columnName + rightSep,
+                            _.template($("#summary-subject-replacement-tmpl").html(), observedSubject.subject)
+                        );
+
+                        $("#observation-summary").html(summary);
                     });
 
                     $('#observed-subjects-grid').dataTable({
@@ -208,16 +229,26 @@
                         });
 
                         observedEvidenceRowView.render();
+                        summary = summary.replace(
+                            leftSep + observedEvidence.observedEvidenceRole.columnName + rightSep,
+                            _.template($("#summary-evidence-replacement-tmpl").html(), observedEvidence.evidence)
+                        );
+
+                        $("#observation-summary").html(summary);
                     });
 
-                    $('#observed-evidences-grid').dataTable({
+                    var oTable = $('#observed-evidences-grid').dataTable({
                         "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
                         "sPaginationType": "bootstrap"
                     });
 
-                    $('.desc-tooltip').popover({ trigger: 'hover' });
+                    oTable.fnSort( [ [1, 'asc'] ] );
+
+                    $('.desc-tooltip').tooltip({ placement: "bottom" });
+
                 }
             });
+
 
             return this;
         }
@@ -232,13 +263,17 @@
             if(result.observedEvidenceRole == null) {
                 result.observedEvidenceRole = {
                     displayText: "N/A",
-                    evidenceRole: { displayName: "N/A" }
+                    evidenceRole: { displayName: "unknown" }
                 };
             }
 
             var templateId = "#observedevidence-row-tmpl";
             if(type == "FileEvidence") {
-                templateId = "#observedfileevidence-row-tmpl";
+                if(result.evidence.mimeType.toLowerCase().search("image") > -1) {
+                    templateId = "#observedimageevidence-row-tmpl";
+                } else {
+                    templateId = "#observedfileevidence-row-tmpl";
+                }
             } else if(type == "UrlEvidence") {
                 templateId = "#observedurlevidence-row-tmpl";
             } else if(type == "LabelEvidence") {
@@ -249,6 +284,8 @@
 
             this.template = _.template($(templateId).html());
             $(this.el).append(this.template(result));
+
+            $(".img-rounded").tooltip({ placement: "left" });
             return this;
         }
     });
@@ -315,23 +352,24 @@
                  synonymView.render();
              });
 
-             var observedSubjects = new ObservedSubjects({ subjectId: result.id });
+             var observations = new Observations({ subjectId: result.id });
              thatEl = $("#compound-observation-grid");
-             observedSubjects.fetch({
+             observations.fetch({
                  success: function() {
-                     _.each(observedSubjects.models, function(observedSubject) {
-                         observedSubject = observedSubject.toJSON();
-                         var observedSubjectRowView
-                             = new ObservedSubjectRowView({ el: $(thatEl).find("tbody"), model: observedSubject });
-                         observedSubjectRowView.render();
+                     _.each(observations.models, function(observation) {
+                         observation = observation.toJSON();
+
+                         var observationRowView
+                             = new ObservationRowView({ el: $(thatEl).find("tbody"), model: observation });
+                         observationRowView.render();
                      });
 
                      var oTable = $('#compound-observation-grid').dataTable({
-                            "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
-                            "sPaginationType": "bootstrap"
+                         "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
+                         "sPaginationType": "bootstrap"
                      });
 
-                     oTable.fnSort( [ [3, 'desc'] ] );
+                     oTable.fnSort( [ [2, 'desc'] ] );
                  }
              });
 
@@ -357,15 +395,16 @@
                 synonymView.render();
             });
 
-            var observedSubjects = new ObservedSubjects({ subjectId: result.id });
+            var observations = new Observations({ subjectId: result.id });
             thatEl = $("#gene-observation-grid");
-            observedSubjects.fetch({
+            observations.fetch({
                 success: function() {
-                    _.each(observedSubjects.models, function(observedSubject) {
-                        observedSubject = observedSubject.toJSON();
-                        var observedSubjectRowView
-                            = new ObservedSubjectRowView({ el: $(thatEl).find("tbody"), model: observedSubject });
-                        observedSubjectRowView.render();
+                    _.each(observations.models, function(observation) {
+                        observation = observation.toJSON();
+
+                        var observationRowView
+                            = new ObservationRowView({ el: $(thatEl).find("tbody"), model: observation });
+                        observationRowView.render();
                     });
 
                     var oTable = $('#gene-observation-grid').dataTable({
@@ -373,7 +412,7 @@
                            "sPaginationType": "bootstrap"
                     });
 
-                    oTable.fnSort( [ [3, 'desc'] ] );
+                    oTable.fnSort( [ [2, 'desc'] ] );
                 }
             });
 
@@ -409,22 +448,72 @@
                 synonymView.render();
             });
 
-            var observedSubjects = new ObservedSubjects({ subjectId: result.id });
-            thatEl = $("#gene-observation-grid");
-            observedSubjects.fetch({
+            var observations = new Observations({ subjectId: result.id });
+            thatEl = $("#cellsample-observation-grid");
+            observations.fetch({
                 success: function() {
-                    _.each(observedSubjects.models, function(observedSubject) {
-                        observedSubject = observedSubject.toJSON();
-                        var observedSubjectRowView
-                            = new ObservedSubjectRowView({ el: $(thatEl).find("tbody"), model: observedSubject });
-                        observedSubjectRowView.render();
+                    _.each(observations.models, function(observation) {
+                        observation = observation.toJSON();
+
+                        var observationRowView
+                            = new ObservationRowView({ el: $(thatEl).find("tbody"), model: observation });
+                        observationRowView.render();
                     });
 
                     var oTable = $('#cellsample-observation-grid').dataTable({
                         "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
                         "sPaginationType": "bootstrap"
                     });
-                    oTable.fnSort( [ [3, 'desc'] ] );
+
+                    oTable.fnSort( [ [2, 'desc'] ] );
+                }
+            });
+
+            return this;
+        }
+    });
+
+    var ObservationRowView = Backbone.View.extend({
+        template: _.template($("#observation-row-tmpl").html()),
+        render: function() {
+            $(this.el).append(this.template(this.model));
+            var summary = this.model.submission.observationTemplate.observationSummary;
+
+            var thatModel = this.model;
+            var thatEl = $("#observation-summary-" + this.model.id);
+            var observedSubjects = new ObservedSubjects({ observationId: this.model.id });
+            observedSubjects.fetch({
+                success: function() {
+                    _.each(observedSubjects.models, function(observedSubject) {
+                        observedSubject = observedSubject.toJSON();
+
+                        if(observedSubject.observedSubjectRole == null || observedSubject.subject == null)
+                            return;
+
+                        summary = summary.replace(
+                            leftSep + observedSubject.observedSubjectRole.columnName + rightSep,
+                            _.template($("#summary-subject-replacement-tmpl").html(), observedSubject.subject)
+                        );
+                    });
+
+                    var observedEvidences = new ObservedEvidences({ observationId: thatModel.id });
+                    observedEvidences.fetch({
+                        success: function() {
+                            _.each(observedEvidences.models, function(observedEvidence) {
+                                observedEvidence = observedEvidence.toJSON();
+
+                                if(observedEvidence.observedEvidenceRole == null || observedEvidence.evidence == null)
+                                    return;
+
+                                summary = summary.replace(
+                                    leftSep + observedEvidence.observedEvidenceRole.columnName + rightSep,
+                                    _.template($("#summary-evidence-replacement-tmpl").html(), observedEvidence.evidence)
+                                );
+                            });
+
+                            $(thatEl).html(summary);
+                        }
+                    })
                 }
             });
 
@@ -483,6 +572,47 @@
         template:  _.template($("#submission-tbl-row-tmpl").html()),
         render: function() {
             $(this.el).append(this.template(this.model));
+
+            var summary = this.model.submission.observationTemplate.observationSummary;
+
+            var thatModel = this.model;
+            var thatEl = $("#submission-observation-summary-" + this.model.id);
+            var observedSubjects = new ObservedSubjects({ observationId: this.model.id });
+            observedSubjects.fetch({
+                success: function() {
+                    _.each(observedSubjects.models, function(observedSubject) {
+                        observedSubject = observedSubject.toJSON();
+
+                        if(observedSubject.observedSubjectRole == null || observedSubject.subject == null)
+                            return;
+
+                        summary = summary.replace(
+                            leftSep + observedSubject.observedSubjectRole.columnName + rightSep,
+                            _.template($("#summary-subject-replacement-tmpl").html(), observedSubject.subject)
+                        );
+                    });
+
+                    var observedEvidences = new ObservedEvidences({ observationId: thatModel.id });
+                    observedEvidences.fetch({
+                        success: function() {
+                            _.each(observedEvidences.models, function(observedEvidence) {
+                                observedEvidence = observedEvidence.toJSON();
+
+                                if(observedEvidence.observedEvidenceRole == null || observedEvidence.evidence == null)
+                                    return;
+
+                                summary = summary.replace(
+                                    leftSep + observedEvidence.observedEvidenceRole.columnName + rightSep,
+                                    _.template($("#summary-evidence-replacement-tmpl").html(), observedEvidence.evidence)
+                                );
+                            });
+
+                            $(thatEl).html(summary);
+                        }
+                    })
+                }
+            });
+
             return this;
         }
     });
@@ -499,7 +629,7 @@
                 success: function() {
                     _.each(observations.models, function(observation) {
                         observation = observation.toJSON();
-                        if(observation.subject == null) return;
+
                         var submissionRowView = new SubmissionRowView({
                             el: $(thatEl).find(".observations tbody"),
                             model: observation
@@ -507,15 +637,12 @@
                         submissionRowView.render();
                     });
 
-                    $(".template-description").tooltip();
-
                     $('#submission-observation-grid').dataTable({
-                           "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
-                           "sPaginationType": "bootstrap"
+                        "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
+                        "sPaginationType": "bootstrap"
                     });
                 }
             });
-
 
             return this;
         }
