@@ -386,10 +386,16 @@
                     </td>
                 </tr>
                 <tr>
-                    <th>Template</th>
+                    <th>Template Description</th>
                     <td>{{submission.observationTemplate.description}}</td>
                 </tr>
             </table>
+
+            <h3>Summary</h3>
+            <blockquote>
+                <p id="observation-summary"></p>
+            </blockquote>
+
 
             <h3>Observed subjects</h3>
             <table id="observed-subjects-grid" class="table table-bordered table-striped subjects">
@@ -422,6 +428,14 @@
         </div>
     </script>
 
+    <script type="text/template" id="summary-subject-replacement-tmpl">
+        <a class="summary-replacement" href="#/subject/{{id}}">{{displayName}}</a>
+    </script>
+
+    <script type="text/template" id="summary-evidence-replacement-tmpl">
+        <strong class="summary-replacement">{{displayName}}</strong>
+    </script>
+
     <script type="text/template" id="observedevidence-row-tmpl">
         <tr>
             <td>{{observedEvidenceRole.evidenceRole.displayName}}</td>
@@ -432,7 +446,9 @@
 
     <script type="text/template" id="observedfileevidence-row-tmpl">
         <tr>
-            <td>{{observedEvidenceRole.evidenceRole.displayName}}</td>
+            <td>
+                <img src="img/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}">
+            </td>
             <td>{{observedEvidenceRole.displayText}}</td>
             <td>(
                 <a href="http://cbio.mskcc.org/cancergenomics/ctd2-dashboard/{{evidence.filePath}}" target="_blank" title="File download" class="desc-tooltip" title="Download File" data-content="Type: {{evidence.mimeType}} Widget: N/A">
@@ -444,7 +460,9 @@
 
     <script type="text/template" id="observedlabelevidence-row-tmpl">
         <tr>
-            <td>{{observedEvidenceRole.evidenceRole.displayName}}</td>
+            <td>
+                <img src="img/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}">
+            </td>
             <td>{{observedEvidenceRole.displayText}}</td>
             <td><span class="label">{{displayName}}</span></td>
         </tr>
@@ -452,7 +470,9 @@
 
     <script type="text/template" id="observedurlevidence-row-tmpl">
         <tr>
-            <td>{{observedEvidenceRole.evidenceRole.displayName}}</td>
+            <td>
+                <img src="img/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}">
+            </td>
             <td>{{observedEvidenceRole.displayText}}</td>
             <td>(
                 <a href="{{evidence.url}}" target="_blank" title="{{displayName}}" class="desc-tooltip">
@@ -464,7 +484,9 @@
 
     <script type="text/template" id="observeddatanumericevidence-row-tmpl">
         <tr>
-            <td>{{observedEvidenceRole.evidenceRole.displayName}}</td>
+            <td>
+                <img src="img/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}">
+            </td>
             <td>{{observedEvidenceRole.displayText}}</td>
             <td>{{evidence.numericValue}} <em>{{evidence.unit}}</em></td>
         </tr>

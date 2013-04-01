@@ -173,6 +173,12 @@
             var result = this.model.toJSON();
             $(this.el).html(this.template(result));
 
+            // We will replace the values in this summary
+            var leftSep = "<";
+            var rightSep = ">";
+            var summary = result.submission.observationTemplate.observationSummary;
+
+            // Load Subjects
             var observedSubjects = new ObservedSubjects({ observationId: result.id });
             var thatEl = $("#observed-subjects-grid");
             observedSubjects.fetch({
@@ -185,6 +191,13 @@
                             model: observedSubject
                         });
                         observedSubjectRowView.render();
+
+                        summary = summary.replace(
+                            leftSep + observedSubject.observedSubjectRole.columnName + rightSep,
+                            _.template($("#summary-subject-replacement-tmpl").html(), observedSubject.subject)
+                        );
+
+                        $("#observation-summary").html(summary);
                     });
 
                     $('#observed-subjects-grid').dataTable({
@@ -208,6 +221,12 @@
                         });
 
                         observedEvidenceRowView.render();
+                        summary = summary.replace(
+                            leftSep + observedEvidence.observedEvidenceRole.columnName + rightSep,
+                            _.template($("#summary-evidence-replacement-tmpl").html(), observedEvidence.evidence)
+                        );
+
+                        $("#observation-summary").html(summary);
                     });
 
                     $('#observed-evidences-grid').dataTable({
@@ -216,8 +235,10 @@
                     });
 
                     $('.desc-tooltip').popover({ trigger: 'hover' });
+
                 }
             });
+
 
             return this;
         }
@@ -249,6 +270,8 @@
 
             this.template = _.template($(templateId).html());
             $(this.el).append(this.template(result));
+
+            $(".img-rounded").tooltip({ placement: "left" });
             return this;
         }
     });
