@@ -811,9 +811,9 @@
         });
 
         $("#omni-input").focus(function() {
-            $(this).removeClass("span2").addClass("span3").attr("placeholder", "e.g. BRAF or aspirin");
+            $(this).removeClass("span2").addClass("span3").attr("placeholder", "e.g. CTNNB1 or aspirin");
         }).blur(function() {
-            $(this).removeClass("span3").addClass("span2").attr("placeholder", "e.g. BRAF");
+            $(this).removeClass("span3").addClass("span2").attr("placeholder", "e.g. CTNNB1");
         }).popover({
            placement: "bottom",
            trigger: "hover",
