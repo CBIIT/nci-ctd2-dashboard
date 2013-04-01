@@ -59,7 +59,8 @@ public class CellLineNameFieldSetMapper implements FieldSetMapper<CellSample> {
 					// cell line name types are ordered by priority in the cell sample name file
 					// if this is our first synonym, it has the highest priority -
 					// in which case we should use it as the cell sample display name
-					if (cellSample.getSynonyms().size() == 0) cellSample.setDisplayName(cellSampleName);
+					// we've created a synonym from lineage in CellLineSampleFieldSetMapper, so chk size == 1
+					if (cellSample.getSynonyms().size() == 1) cellSample.setDisplayName(cellSampleName);
 					cellSample.getSynonyms().add(synonym);
 				}
 			}
