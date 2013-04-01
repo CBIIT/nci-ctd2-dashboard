@@ -119,6 +119,18 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
     }
 
 	@Override
+    public List<CellSample> findCellSampleByLineage(String lineage) {
+		List<CellSample> cellSamples = new ArrayList<CellSample>();
+
+        for (Object o : getHibernateTemplate().find("from CellSampleImpl where lineage = ?", lineage)) {
+            assert o instanceof CellSample;
+            cellSamples.add((CellSample) o);
+        }
+
+        return cellSamples;
+	}
+
+	@Override
     public List<Compound> findCompoundsByName(String compoundName) {
 		List<Compound> compounds = new ArrayList<Compound>();
 
