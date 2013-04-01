@@ -118,6 +118,7 @@
 
             $('#myCarousel').carousel('pause');
 
+            /*
             var ctd2Boxes = $('.ctd2-boxes .span3');
             ctd2Boxes.hover( function() {
               $('.ctd2-boxes .span3').removeClass('active-box');
@@ -152,6 +153,7 @@
               $('.ctd2-boxes .span3').removeClass('active-box');
               $('.ctd2-boxes .span3[data-order="' + idx + '"]').addClass('active-box');
             };
+            */
 
             $(".target-link").tooltip();
             $(".drug-link").tooltip();
@@ -815,6 +817,13 @@
     $(function(){
         new AppRouter();
         Backbone.history.start();
+
+        $("#omnisearch").submit(function() {
+            var searchTerm = $("#omni-input").val();
+            window.location.hash = "search/exact/" + searchTerm;
+            return false;
+        });
+
     });
 
 }(window.jQuery);
