@@ -429,7 +429,7 @@
             <table id="observed-evidences-grid" class="table table-bordered table-striped evidences">
                 <thead>
                 <tr>
-                    <th></th>
+                    <th>&nbsp;&nbsp;</th>
                     <th>Role</th>
                     <th>Description</th>
                     <th>Details</th>
