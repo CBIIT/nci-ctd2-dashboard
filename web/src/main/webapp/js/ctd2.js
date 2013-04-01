@@ -521,10 +521,12 @@
                     });
 
                     $(".template-description").tooltip();
-                    $('#center-submission-grid').dataTable({
+                    var oTable = $('#center-submission-grid').dataTable({
                            "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
                            "sPaginationType": "bootstrap"
                     });
+                    oTable.fnSort( [ [3, 'desc'] ] );
+
                 }
             });
 
