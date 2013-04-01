@@ -415,6 +415,7 @@
             <table id="observed-evidences-grid" class="table table-bordered table-striped evidences">
                 <thead>
                 <tr>
+                    <th></th>
                     <th>Role</th>
                     <th>Description</th>
                     <th>Details</th>
@@ -438,6 +439,7 @@
 
     <script type="text/template" id="observedevidence-row-tmpl">
         <tr>
+            <td></td>
             <td>{{observedEvidenceRole.evidenceRole.displayName}}</td>
             <td>{{observedEvidenceRole.displayText}}</td>
             <td>{{displayName}}</td>
@@ -449,20 +451,38 @@
             <td>
                 <img src="img/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}">
             </td>
+            <td>{{observedEvidenceRole.evidenceRole.displayName}}</td>
             <td>{{observedEvidenceRole.displayText}}</td>
             <td>(
-                <a href="http://cbio.mskcc.org/cancergenomics/ctd2-dashboard/{{evidence.filePath}}" target="_blank" title="File download" class="desc-tooltip" title="Download File" data-content="Type: {{evidence.mimeType}} Widget: N/A">
-                    download
+                <a href="http://cbio.mskcc.org/cancergenomics/ctd2-dashboard/{{evidence.filePath}}" target="_blank" title="Download file ({{evidence.mimeType}})" class="desc-tooltip" title="Download File">
+                    download file
                 </a>
             )</td>
         </tr>
     </script>
+
+    <script type="text/template" id="observedimageevidence-row-tmpl">
+        <tr>
+            <td>
+                <img src="img/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}">
+            </td>
+            <td>{{observedEvidenceRole.evidenceRole.displayName}}</td>
+            <td>{{observedEvidenceRole.displayText}}</td>
+            <td>
+                <a href="http://cbio.mskcc.org/cancergenomics/ctd2-dashboard/{{evidence.filePath}}" target="_blank" title="Open image">
+                    <img src="http://cbio.mskcc.org/cancergenomics/ctd2-dashboard/{{evidence.filePath}}" class="img-polaroid img-evidence" height="60">
+                </a>
+                </td>
+        </tr>
+    </script>
+
 
     <script type="text/template" id="observedlabelevidence-row-tmpl">
         <tr>
             <td>
                 <img src="img/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}">
             </td>
+            <td>{{observedEvidenceRole.evidenceRole.displayName}}</td>
             <td>{{observedEvidenceRole.displayText}}</td>
             <td><span class="label">{{displayName}}</span></td>
         </tr>
@@ -473,12 +493,13 @@
             <td>
                 <img src="img/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}">
             </td>
+            <td>{{observedEvidenceRole.evidenceRole.displayName}}</td>
             <td>{{observedEvidenceRole.displayText}}</td>
-            <td>(
-                <a href="{{evidence.url}}" target="_blank" title="{{displayName}}" class="desc-tooltip">
-                    open
-                </a>
-            )</td>
+            <td>
+                (<a href="{{evidence.url}}" target="_blank" class="desc-tooltip" title="Open link in a new window">
+                    open link
+                </a>)
+            </td>
         </tr>
     </script>
 
@@ -487,6 +508,7 @@
             <td>
                 <img src="img/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}">
             </td>
+            <td>{{observedEvidenceRole.evidenceRole.displayName}}</td>
             <td>{{observedEvidenceRole.displayText}}</td>
             <td>{{evidence.numericValue}} <em>{{evidence.unit}}</em></td>
         </tr>
