@@ -56,7 +56,7 @@
               <ul class="nav pull-right">
                   <form class="form-search" id="omnisearch">
                       <div class="input-append">
-                          <input type="text" id="omni-input" class="span2 search-query" title="Search" placeholder="e.g. BRAF">
+                          <input type="text" id="omni-input" class="span3 search-query" title="Search" placeholder="e.g. BRAF or ABT-137">
                           <button type="submit" class="btn search-button">Search</button>
                           <span class="hide" id="search-help-content">
                               <p>Please enter the name of the subject you would like to search in the database.</p>
@@ -850,7 +850,7 @@
     </script>
 
     <script type="text/template" id="synonym-item-tmpl">
-        <li class="synonym">{{displayName}}</li>
+        <li class="synonym"><small>{{displayName}}</small></li>
     </script>
     <!-- end of templates -->
 
