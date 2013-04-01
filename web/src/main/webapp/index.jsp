@@ -266,7 +266,16 @@
 
     <script type="text/template" id="center-tmpl">
         <div class="container common-container" id="center-submission-container">
-            <h1>{{displayName}} <small>submissions</small></h1>
+            <div class="row">
+                <div class="span9">
+                    <h1>{{displayName}} <small>submissions</small></h1>
+                </div>
+                <div class="span3">
+                    <img src="img/{{displayName}}.png" class="img-polaroid" width=200>
+                </div>
+            </div>
+
+            </br>
 
             <table id="center-submission-grid" class="table table-bordered table-striped">
                 <thead>
@@ -301,28 +310,35 @@
         <div class="container common-container" id="submission-container">
             <h1>Submission <small>(# {{id}})</small></h1>
 
-            <table id="submission-details-grid" class="table table-bordered table-striped">
-                <tr>
-                    <th>Center</th>
-                    <td>
-                        <a href="#/center/{{submissionCenter.id}}">
-                            {{submissionCenter.displayName}}
-                        </a>
-                    </td>
-                </tr>
-                <tr>
-                    <th>Tier</th>
-                    <td>{{observationTemplate.tier}}</td>
-                </tr>
-                <tr>
-                    <th>Description</th>
-                    <td>{{observationTemplate.description}}</td>
-                </tr>
-                <tr>
-                    <th>Date</th>
-                    <td>{{submissionDate}}</td>
-                </tr>
-            </table>
+            <div class="row">
+                <div class="span9">
+                    <table id="submission-details-grid" class="table table-bordered table-striped">
+                        <tr>
+                            <th>Center</th>
+                            <td>
+                                <a href="#/center/{{submissionCenter.id}}">
+                                    {{submissionCenter.displayName}}
+                                </a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Tier</th>
+                            <td>{{observationTemplate.tier}}</td>
+                        </tr>
+                        <tr>
+                            <th>Description</th>
+                            <td>{{observationTemplate.description}}</td>
+                        </tr>
+                        <tr>
+                            <th>Date</th>
+                            <td>{{submissionDate}}</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="span3">
+                    <img src="img/submission.png" class="img-polaroid" width=200 height=200>
+                </div>
+            </div>
 
             <h3>Observations within this submission</h3>
             <table id="submission-observation-grid" class="table table-bordered table-striped observations">
@@ -356,34 +372,41 @@
         <div class="container common-container" id="observation-container">
             <h1>Observation <small>(# {{id}})</small></h1>
 
-            <table id="observation-details-grid" class="table table-bordered table-striped">
-                <tr>
-                    <th>Submission</th>
-                    <td>
-                        <a href="#/submission/{{submission.id}}"># {{submission.id}}</a>
-                    </td>
-                </tr>
-                <tr>
-                    <th>Submission Date</th>
-                    <td>{{submission.submissionDate}}</td>
-                </tr>
-                <tr>
-                    <th>Submission Tier</th>
-                    <td>{{submission.observationTemplate.tier}}</td>
-                </tr>
-                <tr>
-                    <th>Submission Center</th>
-                    <td>
-                        <a href="#/center/{{submission.submissionCenter.id}}">
-                            {{submission.submissionCenter.displayName}}
-                        </a>
-                    </td>
-                </tr>
-                <tr>
-                    <th>Template Description</th>
-                    <td>{{submission.observationTemplate.description}}</td>
-                </tr>
-            </table>
+            <div class="row">
+                <div class="span9">
+                    <table id="observation-details-grid" class="table table-bordered table-striped">
+                        <tr>
+                            <th>Submission</th>
+                            <td>
+                                <a href="#/submission/{{submission.id}}"># {{submission.id}}</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Submission Date</th>
+                            <td>{{submission.submissionDate}}</td>
+                        </tr>
+                        <tr>
+                            <th>Submission Tier</th>
+                            <td>{{submission.observationTemplate.tier}}</td>
+                        </tr>
+                        <tr>
+                            <th>Submission Center</th>
+                            <td>
+                                <a href="#/center/{{submission.submissionCenter.id}}">
+                                    {{submission.submissionCenter.displayName}}
+                                </a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Template Description</th>
+                            <td>{{submission.observationTemplate.description}}</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="span3">
+                    <img src="img/observation.png" class="img-polaroid" width=200 height=200>
+                </div>
+            </div>
 
             <h3>Summary</h3>
             <blockquote>
@@ -512,34 +535,43 @@
          <div class="container common-container" id="gene-container">
              <h1>{{displayName}} <small>(# {{id}})</small></h1>
 
-             <table id="gene-details-grid" class="table table-bordered table-striped">
-                 <tr>
-                     <th>Name</th>
-                     <td>{{displayName}}</td>
-                 </tr>
-                 <tr>
-                     <th>Synonyms</th>
-                     <td>
-                         <ul class="synonyms"></ul>
-                     </td>
-                 </tr>
-                 <tr>
-                     <th>Subject Type</th>
-                     <td>Gene</td>
-                 </tr>
-                 <tr>
-                     <th>Organism</th>
-                     <td>{{organism.displayName}}</td>
-                 </tr>
-                 <tr>
-                     <th>Entrez Gene ID</th>
-                     <td>{{entrezGeneId}}</td>
-                 </tr>
-                 <tr>
-                     <th>HGNC ID</th>
-                     <td>{{HGNCId}}</td>
-                 </tr>
-             </table>
+             <div class="row">
+                 <div class="span9">
+                     <table id="gene-details-grid" class="table table-bordered table-striped">
+                         <tr>
+                             <th>Name</th>
+                             <td>{{displayName}}</td>
+                         </tr>
+                         <tr>
+                             <th>Synonyms</th>
+                             <td>
+                                 <ul class="synonyms"></ul>
+                             </td>
+                         </tr>
+                         <tr>
+                             <th>Organism</th>
+                             <td>{{organism.displayName}}</td>
+                         </tr>
+                         <tr>
+                             <th>References</th>
+                             <td>
+                                 Entrez:<a href="http://www.ncbi.nlm.nih.gov/gene/{{entrezGeneId}}" target="_blank">{{entrezGeneId}} <i class="icon-share"></i></a> <br>
+                                 HGNC:<a href="http://www.genenames.org/data/hgnc_data.php?hgnc_id={{HGNCId}}" target="_blank">{{HGNCId}} <i class="icon-share"></i></a> <br>
+                             </td>
+                         </tr>
+                         <tr>
+                             <th>Genomic alterations</th>
+                             <td>
+                                 <a class="btn btn-small" href="http://cbio.mskcc.org/ctd2-dashboard-portal/cross_cancer.do?tab_index=tab_visualize&clinical_param_selection=null&cancer_study_id=all&genetic_profile_ids_PROFILE_MUTATION_EXTENDED=gbm_tcga_mutations&genetic_profile_ids_PROFILE_COPY_NUMBER_ALTERATION=gbm_tcga_gistic&Z_SCORE_THRESHOLD=2.0&RPPA_SCORE_THRESHOLD=1.0&case_set_id=gbm_tcga_cnaseq&case_ids=&gene_list={{displayName}}&gene_set_choice=user-defined-list&Action=Submit" target="blank">view in cBioPortal <i class="icon-share"></i></a>
+                             </td>
+                         </tr>
+                     </table>
+                 </div>
+                 <div class="span3">
+                     <h4>Gene</h4>
+                     <img src="img/gene.png" class="img-polaroid" width=175 height=175>
+                 </div>
+             </div>
 
              <h3>Related observations</h3>
              <table id="gene-observation-grid" class="table table-bordered table-striped observations">
@@ -562,35 +594,40 @@
     <script type="text/template" id="cellsample-tmpl">
         <div class="container common-container" id="cellsample-container">
             <h1>{{displayName}} <small>(# {{id}})</small></h1>
-
-            <table id="cellsample-details-grid" class="table table-bordered table-striped">
-                <tr>
-                    <th>Name</th>
-                    <td>{{displayName}}</td>
-                </tr>
-                <tr>
-                    <th>Synonyms</th>
-                    <td>
-                        <ul class="synonyms"></ul>
-                    </td>
-                </tr>
-                <tr>
-                    <th>Subject Type</th>
-                    <td>Cell Sample</td>
-                </tr>
-                <tr>
-                    <th>Organism</th>
-                    <td>{{organism.displayName}}</td>
-                </tr>
-                <tr>
-                    <th>Lineage</th>
-                    <td>{{lineage}}</td>
-                </tr>
-                <tr>
-                    <th width="200">Genomic alterations</th>
-                    <td><a class="btn btn-small" href="http://cbio.mskcc.org/ctd2-dashboard-portal/tumormap.do?case_id={{cbioPortalId}}&cancer_study_id=ccle_broad" target="blank">view in cBioPortal <i class="icon-share"></i></a></td>
-                </tr>
-            </table>
+            <div class="row">
+                <div class="span9">
+                    <table id="cellsample-details-grid" class="table table-bordered table-striped">
+                        <tr>
+                            <th>Name</th>
+                            <td>{{displayName}}</td>
+                        </tr>
+                        <tr>
+                            <th>Synonyms</th>
+                            <td>
+                                <ul class="synonyms"></ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Organism</th>
+                            <td>{{organism.displayName}}</td>
+                        </tr>
+                        <tr>
+                            <th>Lineage</th>
+                            <td>{{lineage}}</td>
+                        </tr>
+                        <tr>
+                            <th>Genomic alterations</th>
+                            <td>
+                                <a class="btn btn-small" href="http://cbio.mskcc.org/ctd2-dashboard-portal/tumormap.do?case_id={{cbioPortalId}}&cancer_study_id=ccle_broad" target="blank">view in cBioPortal <i class="icon-share"></i></a>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="span3">
+                        <h4>Cell Sample</h4>
+                        <img src="img/cellsample.png" class="img-polaroid" width=175 height=175>
+                </div>
+            </div>
             <h3>Related observations</h3>
             <table id="cellsample-observation-grid" class="table table-bordered table-striped observations">
                 <thead>
@@ -627,18 +664,16 @@
                               </td>
                           </tr>
                           <tr>
-                              <th>Subject Type</th>
-                              <td>Compound</td>
-                          </tr>
-                          <tr>
                               <th>SMILES</th>
                               <td>{{smilesNotation}}</td>
                           </tr>
                       </table>
                   </div>
                   <div class="span3">
-                      <h4>Structure</h4>
-                      <img class="img-polaroid" width=150 src="http://cbio.mskcc.org/cancergenomics/ctd2-dashboard/images/compounds/{{imageFile}}">
+                      <h4>Compound</h4>
+                      <a href="http://cbio.mskcc.org/cancergenomics/ctd2-dashboard/images/compounds/{{imageFile}}" target="_blank">
+                        <img class="img-polaroid" width=200 src="http://cbio.mskcc.org/cancergenomics/ctd2-dashboard/images/compounds/{{imageFile}}">
+                      </a>
                   </div>
               </div>
 
