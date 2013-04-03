@@ -132,7 +132,74 @@ public class DashboardDaoTest {
         labelEvidence.setDisplayName("L1");
         entities.add(labelEvidence);
 
-        dashboardDao.saveStateless(entities);
+        dashboardDao.batchSave(entities, 10);
+    }
+
+    @Test
+    public void issue24Test() {
+        // See https://bitbucket.org/cbio_mskcc/ctd2-dashboard/issue/24/savestateless-issue
+        Collection<DashboardEntity> xrefEntities = new ArrayList<DashboardEntity>();
+
+        // Ok let's create the xrefs
+        Xref
+                // For the first compound
+                xref11 = createXref("11"),
+                xref12 = createXref("12"),
+                xref13 = createXref("13"),
+                // For the second compound
+                xref21 = createXref("21"),
+                xref22 = createXref("22"),
+                xref23 = createXref("23"),
+                xref24 = createXref("24");
+        xrefEntities.add(xref11);
+        xrefEntities.add(xref12);
+        xrefEntities.add(xref13);
+        xrefEntities.add(xref21);
+        xrefEntities.add(xref22);
+        xrefEntities.add(xref23);
+        xrefEntities.add(xref24);
+        dashboardDao.batchSave(xrefEntities, 3);
+        assertEquals(7, dashboardDao.countEntities(Xref.class).intValue());
+
+        // And then the compounds
+        Collection<DashboardEntity> compoundEntities = new ArrayList<DashboardEntity>();
+        Compound compound1 = dashboardFactory.create(Compound.class);
+        compound1.setDisplayName("cmp1");
+        compound1.setSmilesNotation("OHO");
+        compound1.getXrefs().add(xref11);
+        compound1.getXrefs().add(xref12);
+        compound1.getXrefs().add(xref13);
+
+        Compound compound2 = dashboardFactory.create(Compound.class);
+        compound2.setDisplayName("cmp2");
+        compound2.setSmilesNotation("OH");
+        compound2.getXrefs().add(xref21);
+        compound2.getXrefs().add(xref22);
+        compound2.getXrefs().add(xref23);
+        compound2.getXrefs().add(xref24);
+
+        compoundEntities.add(compound1);
+        compoundEntities.add(compound2);
+        dashboardDao.batchSave(compoundEntities, 2);
+
+        // Let's check if everything is alright
+        assertEquals(7, dashboardDao.countEntities(Xref.class).intValue());
+        assertEquals(2, dashboardDao.countEntities(Compound.class).intValue());
+
+        List<Compound> ohos = dashboardDao.findCompoundsBySmilesNotation("OHO");
+        assertEquals(1, ohos.size());
+        assertEquals(3, ohos.get(0).getXrefs().size());
+
+        List<Compound> ohs = dashboardDao.findCompoundsBySmilesNotation("OH");
+        assertEquals(1, ohs.size());
+        assertEquals(4, ohs.get(0).getXrefs().size());
+    }
+
+    private Xref createXref(String id) {
+        Xref xref = dashboardFactory.create(Xref.class);
+        xref.setDatabaseId(id);
+        xref.setDatabaseName("dummy");
+        return xref;
     }
 
     @Test
