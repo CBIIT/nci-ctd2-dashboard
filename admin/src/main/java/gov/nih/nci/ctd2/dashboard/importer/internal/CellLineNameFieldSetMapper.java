@@ -71,8 +71,8 @@ public class CellLineNameFieldSetMapper implements FieldSetMapper<CellSample> {
 				xref.setDatabaseId(cellSampleName);
 				xref.setDatabaseName(cellNameType);
 				cellSample.getXrefs().add(xref);
-				// add xref to cbio portal
-				if (cellNameType.equalsIgnoreCase("ccle")) {
+				// add xref to cbio portal - temp hack until CUTLL1 is in cBio, skip
+				if (cellNameType.equalsIgnoreCase("ccle") && !cellSampleName.contains("CUTLL1")) {
 					xref = dashboardFactory.create(Xref.class);
 					xref.setDatabaseId(cellSampleName);
 					xref.setDatabaseName(CBIO_PORTAL);
