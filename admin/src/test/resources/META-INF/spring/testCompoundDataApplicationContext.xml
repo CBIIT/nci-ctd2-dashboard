@@ -15,15 +15,13 @@
 		<batch:chunk reader="compoundsReader" writer="compoundsWriter"/>
 	  </batch:tasklet>
 	</batch:step>
-	<batch:step id="compoundSynonymsStep" parent="compoundsStep" next="compoundStructuresStep">
+	<batch:step id="compoundSynonymsStep" parent="compoundDataStep" next="compoundWriterStep">
 	  <batch:tasklet>
-		<batch:chunk reader="compoundSynonymsReader" processor="compoundDataProcessor" writer="compoundDataWriter"/>
+		<batch:chunk reader="compoundSynonymsReader" writer="compoundSynonymsWriter"/>
 	  </batch:tasklet>
 	</batch:step>
-	<batch:step id="compoundStructuresStep" parent="compoundSynonymsStep">
-	  <batch:tasklet>
-		<batch:chunk reader="compoundStructuresReader" processor="compoundDataProcessor" writer="compoundDataWriter"/>
-	  </batch:tasklet>
+	<batch:step id="compoundWriterStep" parent="compoundDataStep">
+	  <batch:tasklet ref="compoundDataWriter"/>
 	</batch:step>
   </batch:job>
 
@@ -46,7 +44,7 @@
   </bean>
 
   <bean name="compoundsLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-	<property name="names" value="CPD_ID,CPD_PRIMARY_NAME,SMILES"/>
+	<property name="names" value="CPD_ID,CPD_PRIMARY_NAME,SMILES,STRUCTURE_FILE"/>
 	<property name="delimiter" value="\u0009"/>
   </bean>
 
@@ -67,21 +65,15 @@
 	<property name="delimiter" value="\u0009"/>
   </bean>
 
-  <!-- compound structures beans -->
-  <bean name="compoundStructuresReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-	<property name="resource" value="classpath:test-compound-structures.txt" />
-    <property name="lineMapper" ref="compoundStructuresLineMapper" />
-	<property name="linesToSkip" value="1" />
-  </bean>
+  <!-- used for compound data writing -->
 
-  <bean name="compoundStructuresLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
-	<property name="fieldSetMapper" ref="compoundStructuresMapper" />
-	<property name="lineTokenizer" ref="compoundStructuresLineTokenizer" />
-  </bean>
+  <bean name="compoundDataWriter" class="gov.nih.nci.ctd2.dashboard.importer.internal.CompoundDataWriter"/>
 
-  <bean name="compoundStructuresLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-	<property name="names" value="CPD_ID,CPD_PRIMARY_NAME,STRUCTURE_FILE"/>
-	<property name="delimiter" value="\u0009"/>
+  <!-- the following beans are shared between all the steps of the compound importer job -->
+  <bean name="compoundMap" class="java.util.HashMap">
+	<constructor-arg index="0" type="java.util.Map">
+	  <map key-type="java.lang.String" value-type="gov.nih.nci.ctd2.dashboard.model.Compound"/>
+	</constructor-arg>
   </bean>
 
 </beans>

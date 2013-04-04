@@ -5,8 +5,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.batch.item.ItemWriter;
 import java.util.List;
 
-@Component("compoundsWriter")
-public class CompoundsWriter implements ItemWriter<Compound> {
-	// optimization - all writing is done in CompoundsDataWriter
+@Component("compoundSynonymsWriter")
+public class CompoundSynonymsWriter implements ItemWriter<Compound> {
+	// optimization - all writing is done in CompoundDataWriter
 	public void write(List<? extends Compound> items) throws Exception {}
 }
