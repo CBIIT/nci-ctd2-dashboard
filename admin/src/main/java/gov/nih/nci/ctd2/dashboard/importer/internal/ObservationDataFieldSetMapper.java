@@ -89,6 +89,12 @@ public class ObservationDataFieldSetMapper implements FieldSetMapper<Observation
 					ObservedSubject observedSubject = 
 						observationDataFactory.createObservedSubject(subjectValue, columnName, templateName,
 																	 observation, mapValues[SUBJECT_QUERY_METHOD_INDEX]);
+					if (observedSubject.getSubject() == null) {
+						// cannot find underlying subject behind
+						// the observed subject, log and bail
+						log.info("Cannot find subject: " + templateName + ", " + columnName + ", " + subjectValue);
+						return new ObservationData(null, null, null);
+					}
 					observedEntitiesSet.add(observedSubject);
 				}
 				else {
@@ -104,6 +110,10 @@ public class ObservationDataFieldSetMapper implements FieldSetMapper<Observation
 						(ObservedEvidence)observationDataFactoryMethod.invoke(observationDataFactory,
 																			  fieldSetMethod.invoke(fieldSet, columnName),
 																			  columnName, templateName, observation);
+					if (observedEvidence.getObservedEvidenceRole() == null) {
+						log.info("Cannot find observed evidence role via column: " + templateName + ", " + columnName);
+						return new ObservationData(null, null, null);
+					}
 					observedEntitiesSet.add(observedEvidence);
 					if (observedEvidence.getEvidence() != null) evidenceSet.add(observedEvidence.getEvidence());
 				}

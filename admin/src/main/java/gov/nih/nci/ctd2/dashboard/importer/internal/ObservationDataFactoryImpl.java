@@ -72,13 +72,6 @@ public class ObservationDataFactoryImpl implements ObservationDataFactory {
 			}
 		}
 		if (subject != null) observedSubject.setSubject(subject);
-		if (subject == null) {
-			log.info("******");
-			log.info("Uknown subject value: " + subjectValue);
-			log.info("columnName: " + columnName);
-			log.info("templateName: " + templateName);
-			log.info("query method: " + daoFindQueryName);
-		}
 		ObservedSubjectRole observedSubjectRole = observedSubjectRoleCache.get(columnName);
 		if (observedSubjectRole == null) {
 			observedSubjectRole = dashboardDao.findObservedSubjectRole(templateName, columnName);
@@ -87,7 +80,6 @@ public class ObservationDataFactoryImpl implements ObservationDataFactory {
 			}
 		}
 		if (observedSubjectRole != null) observedSubject.setObservedSubjectRole(observedSubjectRole);
-		if (observedSubjectRole == null) log.info("Cannot find observed subject role via column: " + columnName);
 		return observedSubject;
 	}
 
@@ -165,7 +157,6 @@ public class ObservationDataFactoryImpl implements ObservationDataFactory {
 				observedEvidenceRoleCache.put(columnName, observedEvidenceRole);
 			}
 		}
-		if (observedEvidenceRole == null) log.info("Cannot find observed evidence role via column: " + columnName);
 		return observedEvidenceRole;
 	}
 
