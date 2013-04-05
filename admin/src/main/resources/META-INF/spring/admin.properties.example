@@ -8,6 +8,7 @@ cell.line.name.location=
 compounds.location=
 compound.synonyms.location=
 protein.data.location=
+tissue.sample.data.location=
 dashboard.cv.per.template.data.location=
 dashboard.cv.per.column.data.location=
 broad.cmp.sens.lineage.enrich.data.location=
