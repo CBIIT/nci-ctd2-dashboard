@@ -23,6 +23,7 @@ public class DashboardAdminMain {
         "classpath*:META-INF/spring/cellLineDataApplicationContext.xml", // This is for cell line data importer beans
         "classpath*:META-INF/spring/compoundDataApplicationContext.xml", // This is for compound data importer beans
         "classpath*:META-INF/spring/proteinDataApplicationContext.xml", // This is for compound data importer beans
+        "classpath*:META-INF/spring/tissueSampleDataApplicationContext.xml", // This is for cell line data importer beans
         "classpath*:META-INF/spring/controlledVocabularyApplicationContext.xml", // This is for controlled vocabulary importer beans
         "classpath*:META-INF/spring/observationDataApplicationContext.xml", // This is for observation data importer beans
         "classpath*:META-INF/spring/taxonomyDataApplicationContext.xml" // This is for taxonomy data importer beans
@@ -43,6 +44,7 @@ public class DashboardAdminMain {
 			    .addOption("cp", "compound-data", false, "imports compound data.")
 			    .addOption("g", "gene-data", false, "imports gene data.")
                 .addOption("p", "protein-data", false, "imports protein data.")
+			    .addOption("ts", "tissue-sample-data", false, "imports tissue sample data.")
                 .addOption("cv", "controlled-vocabulary", false, "imports the dashboard controlled vocabulary.")
                 .addOption("o", "observation-data", false, "imports dashboard observation data.")
                 .addOption("s", "sample-data", false, "imports sample data.")
@@ -76,6 +78,10 @@ public class DashboardAdminMain {
 
 			if( commandLine.hasOption("p") ) {
                 launchJob("proteinDataImporterJob");
+			}
+
+			if( commandLine.hasOption("ts") ) {
+                launchJob("tissueSampleDataImporterJob");
 			}
 
 			if( commandLine.hasOption("cv") ) {

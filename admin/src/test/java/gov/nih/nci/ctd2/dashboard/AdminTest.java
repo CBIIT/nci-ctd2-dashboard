@@ -28,10 +28,11 @@ public class AdminTest {
     public void initiateDao() {
         this.appContext = new ClassPathXmlApplicationContext(
                 "classpath*:META-INF/spring/testApplicationContext.xml", // this is coming from the core module
-				"classpath*:META-INF/spring/testCellLineDataApplicationContext.xml", // and this is for cellLine data importer beans
+				"classpath*:META-INF/spring/testCellLineDataApplicationContext.xml", // and this is for cell line data importer beans
 				"classpath*:META-INF/spring/testCompoundDataApplicationContext.xml", // and this is for compound data importer beans
 				"classpath*:META-INF/spring/testGeneDataApplicationContext.xml", // and this is for gene data importer beans
 				"classpath*:META-INF/spring/testProteinDataApplicationContext.xml", // and this is for protein data importer beans
+				"classpath*:META-INF/spring/testTissueSampleDataApplicationContext.xml", // and this is for tissue sample data importer beans
 				"classpath*:META-INF/spring/controlledVocabularyApplicationContext.xml", // and this is for controlled vocabulary importer beans
 				"classpath*:META-INF/spring/testObservationDataApplicationContext.xml", // and this is for observation data importer beans
 				"classpath*:META-INF/spring/taxonomyDataApplicationContext.xml" // and this is for taxonomy data importer beans
@@ -131,6 +132,13 @@ public class AdminTest {
 		assertEquals(35, dashboardDao.countEntities(Transcript.class).intValue());
 		List<Transcript> transcripts = dashboardDao.findTranscriptsByRefseqId("NM_003404.3");
 		assertEquals(1, transcripts.size());
+
+		// import some tissue sample data
+		jobExecution = executeJob("tissueSampleDataImporterJob");
+        assertEquals("COMPLETED", jobExecution.getExitStatus().getExitCode());
+		assertEquals(10, dashboardDao.countEntities(TissueSample.class).intValue());
+		List<TissueSample> tissueSamples = dashboardDao.findTissueSampleByLineage("autonomic_ganglia, mediastinum");
+		assertEquals(1, tissueSamples.size());
 
 		// import controlled vocabulary
 		jobExecution = executeJob("controlledVocabularyImporterJob");
