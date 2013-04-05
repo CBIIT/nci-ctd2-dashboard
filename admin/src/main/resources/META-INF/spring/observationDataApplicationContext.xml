@@ -17,7 +17,7 @@
 	<property name="delegate">
 	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
 		<property name="lineMapper" ref="broadCompoundSensitivityLineageEnrichmentLineMapper" />
-		<property name="linesToSkip" value="1" />
+		<property name="linesToSkip" value="7" />
 	  </bean>
 	</property>
   </bean>
@@ -28,7 +28,7 @@
 	<property name="delegate">
 	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
 		<property name="lineMapper" ref="broadCompoundSensitivityMutationEnrichmentLineMapper" />
-		<property name="linesToSkip" value="1" />
+		<property name="linesToSkip" value="7" />
 	  </bean>
 	</property>
   </bean>
@@ -39,7 +39,7 @@
 	<property name="delegate">
 	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
 		<property name="lineMapper" ref="broadTier3NavitoclaxStoryLineMapper" />
-		<property name="linesToSkip" value="1" />
+		<property name="linesToSkip" value="7" />
 	  </bean>
 	</property>
   </bean>
@@ -50,7 +50,7 @@
 	<property name="delegate">
 	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
 		<property name="lineMapper" ref="columbiaMarinaAnalysisLineMapper" />
-		<property name="linesToSkip" value="1" />
+		<property name="linesToSkip" value="7" />
 	  </bean>
 	</property>
   </bean>
@@ -61,7 +61,7 @@
 	<property name="delegate">
 	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
 		<property name="lineMapper" ref="columbiaMRAFetAnalysisLineMapper" />
-		<property name="linesToSkip" value="1" />
+		<property name="linesToSkip" value="7" />
 	  </bean>
 	</property>
   </bean>
@@ -72,7 +72,7 @@
 	<property name="delegate">
 	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
 		<property name="lineMapper" ref="columbiaJointMRSHRNADiffAnalysisLineMapper" />
-		<property name="linesToSkip" value="1" />
+		<property name="linesToSkip" value="7" />
 	  </bean>
 	</property>
   </bean>
@@ -83,7 +83,7 @@
 	<property name="delegate">
 	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
 		<property name="lineMapper" ref="columbiaTier4GliomaStoryLineMapper" />
-		<property name="linesToSkip" value="1" />
+		<property name="linesToSkip" value="7" />
 	  </bean>
 	</property>
   </bean>
@@ -94,7 +94,7 @@
 	<property name="delegate">
 	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
 		<property name="lineMapper" ref="cshlTier4FGF19StoryLineMapper" />
-		<property name="linesToSkip" value="1" />
+		<property name="linesToSkip" value="7" />
 	  </bean>
 	</property>
   </bean>
@@ -105,7 +105,7 @@
 	<property name="delegate">
 	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
 		<property name="lineMapper" ref="dfciTier4BetaCateninStoryLineMapper" />
-		<property name="linesToSkip" value="1" />
+		<property name="linesToSkip" value="7" />
 	  </bean>
 	</property>
   </bean>
