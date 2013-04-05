@@ -18,6 +18,8 @@ public class ControlledVocabularyPerTemplateFieldSetMapper implements FieldSetMa
 	private static final String TEMPLATE_NAME = "template_name";
 	private static final String OBSERVATION_SUMMARY = "observation_summary";
 	private static final String TEMPLATE_DESCRIPTION = "template_description";
+	private static final String SUBMISSION_NAME = "submission_name";
+	private static final String SUBMISSION_DESCRIPTION = "submission_description";
 
     @Autowired
     private DashboardFactory dashboardFactory;
