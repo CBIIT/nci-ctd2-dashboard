@@ -32,34 +32,54 @@
 
   <bean name="tierOneObservationDataLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="submission_center,submission_date,observation_template,cell_line_subset,cell_line_exclusion,feature_dataset,compound_name,entrez_gene_id,number_of_cell_lines,number_of_mutant_cell_lines,enrichment_direction,log_fdr,response_image_path,feature_image_path,nci_portal,gct_path"/>
+	<property name="names" value="submission_center,submission_date,template_name,cell_line_subset,cell_line_exclusion,feature_data_set,compound_name,entrez_gene_id,number_of_cell_lines,number_of_mutant_cell_lines,enrichment_direction,log_fdr,response_image_path,feature_image_path,nci_portal,gct_path"/>
   </bean>
 
   <!-- the following beans are not used during testing - only required for proper loading of context files -->
-
-  <!-- broad compound sensitivity mutation enrichment -->
-  <bean name="broadCompoundSensitivityMutationEnrichmentReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="broadCompoundSensitivityMutationEnrichmentLineMapper" />
-  </bean>
 
   <!-- broad compound sensitivity lineage enrichment -->
   <bean name="broadCompoundSensitivityLineageEnrichmentReader" class="org.springframework.batch.item.file.FlatFileItemReader">
     <property name="lineMapper" ref="broadCompoundSensitivityLineageEnrichmentLineMapper" />
   </bean>
 
-  <!-- columbia signaling analysis -->
-  <bean name="columbiaSignalingAnalysisReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="columbiaSignalingAnalysisLineMapper" />
+  <!-- broad compound sensitivity mutation enrichment -->
+  <bean name="broadCompoundSensitivityMutationEnrichmentReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+    <property name="lineMapper" ref="broadCompoundSensitivityMutationEnrichmentLineMapper" />
   </bean>
 
-  <!-- columbia differential representation analysis -->
-  <bean name="columbiaDifferentialRepresentationAnalysisReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="columbiaDifferentialRepresentationAnalysisLineMapper" />
+  <!-- broad tier3 navitoclax story analysis -->
+  <bean name="broadTier3NavitoclaxStoryReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="lineMapper" ref="broadTier3NavitoclaxStoryLineMapper" />
+  </bean>
+
+  <!-- columbia marina analysis -->
+  <bean name="columbiaMarinaAnalysisReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="lineMapper" ref="columbiaMarinaAnalysisLineMapper" />
+  </bean>
+
+  <!-- columbia mra fet analysis -->
+  <bean name="columbiaMRAFetAnalysisReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="lineMapper" ref="columbiaMRAFetAnalysisLineMapper" />
   </bean>
 
   <!-- columbia master regulator analysis with shRNA knockdown -->
-  <bean name="columbiaMasterRegulatorAnalysisReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-	<property name="lineMapper" ref="columbiaMasterRegulatorAnalysisLineMapper" />
+  <bean name="columbiaJointMRSHRNADiffAnalysisReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="lineMapper" ref="columbiaJointMRSHRNADiffAnalysisLineMapper" />
+  </bean>
+
+  <!-- columbia tier4 glioma story -->
+  <bean name="columbiaTier4GliomaStoryReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="lineMapper" ref="columbiaTier4GliomaStoryLineMapper" />
+  </bean>
+
+  <!-- cshl tier4 fgf19 story -->
+  <bean name="cshlTier4FGF19StoryReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="lineMapper" ref="cshlTier4FGF19StoryLineMapper" />
+  </bean>
+
+  <!-- dfci tier4 beta-catenin story -->
+  <bean name="dfciTier4BetaCateninStoryReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="lineMapper" ref="dfciTier4BetaCateninStoryLineMapper" />
   </bean>
 
 </beans>

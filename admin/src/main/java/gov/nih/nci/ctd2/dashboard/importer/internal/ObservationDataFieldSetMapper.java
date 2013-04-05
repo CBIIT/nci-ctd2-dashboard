@@ -29,9 +29,9 @@ public class ObservationDataFieldSetMapper implements FieldSetMapper<Observation
 
 	private static final String SUBMISSION_CENTER = "submission_center";
 	private static final String	SUBMISSION_DATE = "submission_date";
-	private static final String TEMPLATE_NAME = "observation_template";
+	private static final String TEMPLATE_NAME = "template_name";
 
-	public static final SimpleDateFormat TEMPLATE_DATE_FORMAT = new SimpleDateFormat("mm/DD/yyyy");
+	public static final SimpleDateFormat TEMPLATE_DATE_FORMAT = new SimpleDateFormat("yyyy.MM.dd");
 
 	@Autowired
 	private ObservationDataFactory observationDataFactory;
@@ -56,7 +56,7 @@ public class ObservationDataFieldSetMapper implements FieldSetMapper<Observation
 
 		String templateName = fieldSet.readString(TEMPLATE_NAME);
 		String submissionCenter = fieldSet.readString(SUBMISSION_CENTER);
-		Date submissionDate = fieldSet.readDate(SUBMISSION_DATE, "mm/DD/yyyy");
+		Date submissionDate = fieldSet.readDate(SUBMISSION_DATE, "yyyy.MM.dd");
 
 		// create submission - if cache key changes, update getSubmissionCacheKey() defined above
 		String submissionCacheKey = submissionCenter + TEMPLATE_DATE_FORMAT.format(submissionDate) + templateName;

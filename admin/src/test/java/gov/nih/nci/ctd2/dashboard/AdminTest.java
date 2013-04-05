@@ -136,16 +136,16 @@ public class AdminTest {
 		jobExecution = executeJob("controlledVocabularyImporterJob");
         assertEquals("COMPLETED", jobExecution.getExitStatus().getExitCode());
 		// we get some subject/observed subject roles
-		assertEquals(6, dashboardDao.countEntities(SubjectRole.class).intValue());
-		assertEquals(17, dashboardDao.countEntities(ObservedSubjectRole.class).intValue());
-		assertTrue(dashboardDao.findObservedSubjectRole("broad_compound_sensitivity_lineage_enrichment", "compound_name") != null);
+		assertEquals(4, dashboardDao.countEntities(SubjectRole.class).intValue());
+		assertEquals(38, dashboardDao.countEntities(ObservedSubjectRole.class).intValue());
+		assertTrue(dashboardDao.findObservedSubjectRole("broad_cpd_sens_lineage_enrich", "compound_name") != null);
 		// we get some evidence/observed evidence roles
 		assertEquals(4, dashboardDao.countEntities(EvidenceRole.class).intValue());
-		assertEquals(54, dashboardDao.countEntities(ObservedEvidenceRole.class).intValue());
-		assertTrue(dashboardDao.findObservedEvidenceRole("broad_compound_sensitivity_lineage_enrichment", "cell_line_subset") != null);
+		assertEquals(60, dashboardDao.countEntities(ObservedEvidenceRole.class).intValue());
+		assertTrue(dashboardDao.findObservedEvidenceRole("broad_cpd_sens_lineage_enrich", "cell_line_subset") != null);
 		// we get observation template data
-		assertEquals(5, dashboardDao.countEntities(ObservationTemplate.class).intValue());
-		assertTrue(dashboardDao.findObservationTemplateByName("broad_compound_sensitivity_mutation_enrichment") != null);
+		assertEquals(9, dashboardDao.countEntities(ObservationTemplate.class).intValue());
+		assertTrue(dashboardDao.findObservationTemplateByName("broad_cpd_sens_lineage_enrich") != null);
 
 		// import observation data
 		jobExecution = executeJob("testTierOneObservationDataImporterJob");

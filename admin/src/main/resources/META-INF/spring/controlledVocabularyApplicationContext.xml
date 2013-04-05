@@ -32,7 +32,7 @@
   <!-- cv per template beans -->
 
   <bean name="controlledVocabularyPerTemplateReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-	<property name="resource" value="classpath:dashboard-controlled-vocabulary-per-template.txt" />
+	<property name="resource" value="${dashboard.cv.per.template.data.location}" />
     <property name="lineMapper" ref="controlledVocabularyPerTemplateLineMapper" />
 	<property name="linesToSkip" value="1" />
   </bean>
@@ -44,13 +44,13 @@
 
   <bean name="controlledVocabularyPerTemplateLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="template_tier,template_name,observation_summary,template_description"/>
+	<property name="names" value="template_tier,template_name,observation_summary,template_description,submission_name,submission_description"/>
   </bean>
 
   <!-- cv per column beans -->
 
   <bean name="controlledVocabularyPerColumnReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-	<property name="resource" value="classpath:dashboard-controlled-vocabulary-per-column.txt" />
+	<property name="resource" value="${dashboard.cv.per.column.data.location}" />
     <property name="lineMapper" ref="controlledVocabularyPerColumnLineMapper" />
 	<property name="linesToSkip" value="1" />
   </bean>
@@ -62,7 +62,7 @@
 
   <bean name="controlledVocabularyPerColumnLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="template_name,column_name,subject,evidence,role,mime_type,numeric_units,display_text"/>
+	<property name="names" value="id,template_name,column_name,subject,evidence,role,mime_type,numeric_units,display_text"/>
   </bean>
 
   <!-- the following beans are shared between all the steps of the cell line importer job -->
