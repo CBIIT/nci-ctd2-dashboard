@@ -56,7 +56,7 @@ public class ObservedEvidenceRoleImpl extends DashboardEntityImpl implements Obs
         this.columnName = columnName;
     }
 
-    @Column(length = 64)
+    @Column(length = 128)
     public String getAttribute() {
         return attribute;
     }

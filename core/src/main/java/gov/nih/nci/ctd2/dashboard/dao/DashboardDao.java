@@ -19,6 +19,7 @@ public interface DashboardDao {
     List<Protein> findProteinsByUniprotId(String uniprotId);
     List<Transcript> findTranscriptsByRefseqId(String refseqId);
     List<CellSample> findCellSampleByLineage(String lineage);
+    List<TissueSample> findTissueSampleByLineage(String lineage);
     List<Compound> findCompoundsByName(String compoundName);
     List<Compound> findCompoundsBySmilesNotation(String smilesNotation);
     List<Subject> findSubjectsByXref(String databaseName, String databaseId);
