@@ -131,6 +131,18 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
 	}
 
 	@Override
+    public List<TissueSample> findTissueSampleByLineage(String lineage) {
+		List<TissueSample> tissueSamples = new ArrayList<TissueSample>();
+
+        for (Object o : getHibernateTemplate().find("from TissueSampleImpl where lineage = ?", lineage)) {
+            assert o instanceof TissueSample;
+            tissueSamples.add((TissueSample) o);
+        }
+
+        return tissueSamples;
+	}
+
+	@Override
     public List<Compound> findCompoundsByName(String compoundName) {
 		List<Compound> compounds = new ArrayList<Compound>();
 
