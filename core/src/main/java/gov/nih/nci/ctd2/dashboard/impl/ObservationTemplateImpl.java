@@ -15,6 +15,8 @@ public class ObservationTemplateImpl extends DashboardEntityImpl implements Obse
     private String description;
 	private String observationSummary;
     private Integer tier = 0;
+	private String submissionName;
+	private String submissionDescription;
 
     @Column(length = 1024)
     public String getDescription() {
@@ -40,5 +42,23 @@ public class ObservationTemplateImpl extends DashboardEntityImpl implements Obse
 
     public void setTier(Integer tier) {
         this.tier = tier;
+    }
+
+    @Column(length = 128)
+    public String getSubmissionName() {
+        return submissionName;
+    }
+
+    public void setSubmissionName(String submissionName) {
+        this.submissionName = submissionName;
+    }
+
+    @Column(length = 1024)
+    public String getSubmissionDescription() {
+        return submissionDescription;
+    }
+
+    public void setSubmissionDescription(String submissionDescription) {
+        this.submissionDescription = submissionDescription;
     }
 }

@@ -7,4 +7,8 @@ public interface ObservationTemplate extends DashboardEntity {
     public void setObservationSummary(String observationSummary);
     public Integer getTier();
     public void setTier(Integer tier);
+    public String getSubmissionName();
+    public void setSubmissionName(String submissionName);
+    public String getSubmissionDescription();
+    public void setSubmissionDescription(String submissionDescription);
 }
