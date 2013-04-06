@@ -35,6 +35,8 @@ public class ControlledVocabularyPerTemplateFieldSetMapper implements FieldSetMa
 		observationTemplate.setDisplayName(fieldSet.readString(TEMPLATE_NAME));
 		observationTemplate.setObservationSummary(fieldSet.readString(OBSERVATION_SUMMARY));
 		observationTemplate.setDescription(fieldSet.readString(TEMPLATE_DESCRIPTION));
+		observationTemplate.setSubmissionName(fieldSet.readString(SUBMISSION_NAME));
+		observationTemplate.setSubmissionDescription(fieldSet.readString(SUBMISSION_DESCRIPTION));
 
 		observationTemplateMap.put(fieldSet.readString(TEMPLATE_NAME), observationTemplate);
 
