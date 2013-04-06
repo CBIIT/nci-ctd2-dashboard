@@ -3,8 +3,9 @@
 # data source locations
 gene.data.location=
 cell.line.name.type.location=
-cell.line.sample.location=
+cell.line.id.location=
 cell.line.name.location=
+cell.line.lineage.location=
 compounds.location=
 compound.synonyms.location=
 protein.data.location=

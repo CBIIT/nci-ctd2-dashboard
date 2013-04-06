@@ -22,10 +22,9 @@ public class CellLineNameFieldSetMapper implements FieldSetMapper<CellSample> {
 	public static final String CBIO_PORTAL = "CBIO_PORTAL";
 	public static final String BROAD_CELL_LINE_DATABASE = "BROAD_CELL_LINE";
 
-	private static final String	CELL_SAMPLE_NAME_ID = "CELL_SAMPLE_NAME_ID";
-	private static final String	CELL_SAMPLE_ID = "CELL_SAMPLE_ID";
-	private static final String	CELL_NAME_TYPE_ID = "CELL_NAME_TYPE_ID";
-	private static final String	CELL_SAMPLE_NAME = "CELL_SAMPLE_NAME";
+	private static final String	CELL_SAMPLE_ID = "cell_sample_id";
+	private static final String	CELL_NAME_TYPE_ID = "cell_name_type_id";
+	private static final String	CELL_SAMPLE_NAME = "cell_sample_name";
 
     @Autowired
     private DashboardDao dashboardDao;

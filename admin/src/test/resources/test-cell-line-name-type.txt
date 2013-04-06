@@ -1,4 +1,4 @@
-CELL_NAME_TYPE_ID	CELL_NAME_TYPE	CELL_NAME_TYPE_PRIORITY
+cell_name_type_id	cell_name_type	cell_name_type_priority
 1	integrated	10
 2	CCLE	20
 3	CTD2	30
