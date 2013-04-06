@@ -117,42 +117,6 @@
             $(this.el).html(this.template({}));
 
             $('#myCarousel').carousel('pause');
-
-            var ctd2Boxes = $('.ctd2-boxes .span3');
-            ctd2Boxes.hover( function() {
-              $('.ctd2-boxes .span3').removeClass('active-box');
-              var val = parseInt($(this).attr("data-order"));
-              $(this).addClass('active-box');
-              if(onWhichSlide != val) {
-                  $('#myCarousel').carousel(val);
-              }
-              onWhichSlide = val;
-              $('#myCarousel').carousel('pause');
-            });
-
-            ctd2Boxes.first().addClass('active-box');
-
-            $('#prevSlideControl').bind("click", function() {
-              changeBoxFocus($('#myCarousel .active').index()-1);
-            });
-
-            $('#nextSlideControl').bind("click", function() {
-              changeBoxFocus($('#myCarousel .active').index()+1);
-            });
-
-
-            var changeBoxFocus = function(idx) {
-              // Do the modulo
-              if(idx < 0) {
-                  idx += 4;
-              } else {
-                  idx = idx % 4;
-              }
-
-              $('.ctd2-boxes .span3').removeClass('active-box');
-              $('.ctd2-boxes .span3[data-order="' + idx + '"]').addClass('active-box');
-            };
-
             $(".target-link").tooltip();
             $(".drug-link").tooltip();
             $(".genomics-link").tooltip();
@@ -557,10 +521,12 @@
                     });
 
                     $(".template-description").tooltip();
-                    $('#center-submission-grid').dataTable({
+                    var oTable = $('#center-submission-grid').dataTable({
                            "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
                            "sPaginationType": "bootstrap"
                     });
+                    oTable.fnSort( [ [3, 'desc'] ] );
+
                 }
             });
 
@@ -669,14 +635,32 @@
         template: _.template($("#search-result-row-tmpl").html()),
         render: function() {
             var result = this.model;
-            var synonymsStr = "";
-            _.each(result.synonyms, function(aSynonym) {
-                synonymsStr += aSynonym.displayName + " ";
-            });
-            result["synonymsStr"] = synonymsStr;
             result["type"] = result.class;
 
             $(this.el).append(this.template(result));
+
+            var thatEl = $("#synonyms-" + result.id);
+            _.each(result.synonyms, function(aSynonym) {
+                var synonymView = new SynonymView({model: aSynonym, el: thatEl});
+                synonymView.render();
+            });
+
+            thatEl = $("#search-image-" + result.id);
+            var imgTemplate = $("#search-results-unknown-image-tmpl");
+            if(result.class == "Compound") {
+                _.each(result.xrefs, function(xref) {
+                    if(xref.databaseName == "IMAGE") {
+                        result["imageFile"] = xref.databaseId;
+                    }
+                });
+
+                imgTemplate = $("#search-results-compund-image-tmpl");
+            } else if( result.class == "CellSample" ) {
+                imgTemplate = $("#search-results-cellsample-image-tmpl");
+            } else if( result.class == "Gene" ) {
+                imgTemplate = $("#search-results-gene-image-tmpl");
+            }
+            thatEl.append(_.template(imgTemplate.html(), result));
 
             return this;
         }
@@ -692,6 +676,9 @@
 
         render: function() {
             $(this.el).html(this.template(this.model));
+
+            // update the search box accordingly
+            $("#omni-input").val(this.model.term);
 
             var thatEl = this.el;
             var searchResults = this.exact
@@ -717,10 +704,13 @@
                             searchResultsRowView.render();
                         });
 
-                        $("#search-results-grid").dataTable({
+                        $(".search-info").tooltip({ placement: "left" });
+
+                        var oTable = $("#search-results-grid").dataTable({
                             "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
                             "sPaginationType": "bootstrap"
                         });
+                        oTable.fnSort( [ [1, 'desc'] ] );
                     }
                 }
             });
@@ -815,6 +805,26 @@
     $(function(){
         new AppRouter();
         Backbone.history.start();
+
+        $("#omnisearch").submit(function() {
+            var searchTerm = $("#omni-input").val();
+            window.location.hash = "search/exact/" + searchTerm;
+            return false;
+        });
+
+        $("#omni-input").popover({
+           placement: "bottom",
+           trigger: "hover",
+           html: true,
+           title: function() {
+                $(this).attr("title");
+           },
+           content: function() {
+               return $("#search-help-content").html();
+           },
+           delay: {hide: 2000}
+        });
+
     });
 
 }(window.jQuery);

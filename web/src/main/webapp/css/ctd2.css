@@ -190,14 +190,6 @@
         color: #5A5A5A;
     }
 
-    .form-search {
-        margin-top: 30px;
-    }
-
-    input.search-query {
-        width: 300px;
-    }
-
     .lead {
         font-size: 18px;
     }
@@ -281,6 +273,18 @@
     .img-evidence {
         width: auto;
         height: 60px;
+    }
+
+    #omnisearch {
+        margin: 5px 0 0 0;
+    }
+
+    .topmenu li {
+        line-height: 28px;
+    }
+
+    .popover-content {
+        font-size: 14px;
     }
 
 
