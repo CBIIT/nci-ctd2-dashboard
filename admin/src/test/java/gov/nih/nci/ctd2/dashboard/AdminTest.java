@@ -63,18 +63,18 @@ public class AdminTest {
 		// import some cell line data
 		jobExecution = executeJob("cellLineDataImporterJob");
         assertEquals("COMPLETED", jobExecution.getExitStatus().getExitCode());
-		assertEquals(13, dashboardDao.countEntities(CellSample.class).intValue());
-		List<CellSample> cellSamples = dashboardDao.findCellSampleByLineage("HAEMATOPOIETIC_AND_LYMPHOID_TISSUE");
+		assertEquals(11, dashboardDao.countEntities(CellSample.class).intValue());
+		List<CellSample> cellSamples = dashboardDao.findCellSampleByLineage("haematopoietic_and_lymphoid_tissue");
 		assertEquals(1, cellSamples.size());
 
-		List<Subject> cellSampleSubjects = dashboardDao.findSubjectsBySynonym("HAEMATOPOIETIC_AND_LYMPHOID_TISSUE", true);
+		List<Subject> cellSampleSubjects = dashboardDao.findSubjectsBySynonym("haematopoietic_and_lymphoid_tissue", true);
 		assertEquals(1, cellSampleSubjects.size());
 
 		cellSampleSubjects = dashboardDao.findSubjectsByXref("CTD2", "idCell:9");
 		assertEquals(1, cellSampleSubjects.size());
 		CellSample cellSample = (CellSample)cellSampleSubjects.iterator().next();
 		assertEquals("697", cellSample.getDisplayName());
-		assertEquals("HAEMATOPOIETIC_AND_LYMPHOID_TISSUE", cellSample.getLineage());
+		assertEquals("haematopoietic_and_lymphoid_tissue", cellSample.getLineage());
 		assertEquals(4, cellSample.getSynonyms().size());
 		assertEquals(8, cellSample.getXrefs().size());
 
@@ -82,7 +82,7 @@ public class AdminTest {
 		assertEquals(1, cellSampleSubjects.size());
 		cellSample = (CellSample)cellSampleSubjects.iterator().next();
 		assertEquals("862", cellSample.getDisplayName());
-		assertEquals("MENINGES", cellSample.getLineage());
+		assertEquals("meninges", cellSample.getLineage());
 		assertEquals(5, cellSample.getSynonyms().size());
 		assertEquals(5, cellSample.getXrefs().size());
 		/*
@@ -95,6 +95,11 @@ public class AdminTest {
 		cellSampleSubjects = dashboardDao.findSubjectsByXref(CellLineNameFieldSetMapper.CBIO_PORTAL,
 															 "5637_URINARY_TRACT");
 		assertEquals(1, cellSampleSubjects.size());
+
+		cellSampleSubjects = dashboardDao.findSubjectsBySynonym("2313287", true);
+		assertEquals(1, cellSampleSubjects.size());
+		cellSample = (CellSample)cellSampleSubjects.iterator().next();
+		assertEquals(null, cellSample.getLineage());
 
 		// import some compound data
 		jobExecution = executeJob("compoundDataImporterJob");

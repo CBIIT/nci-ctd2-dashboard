@@ -21,15 +21,21 @@ public class CellLineSampleFieldSetMapper implements FieldSetMapper<CellSample> 
 
 	public static final String BROAD_CELL_LINE_DATABASE = "BROAD_CELL_LINE";
 
-	private static final String CELL_SAMPLE_ID = "CELL_SAMPLE_ID";
-	private static final String	CELL_LINEAGE = "CELL_LINEAGE";
-	private static final String	TAXONOMY_ID = "TAXONOMY_ID";
+	private static final String CELL_SAMPLE_ID = "cell_sample_id";
+	private static final String GENDER = "gender";
+	private static final String	TAXONOMY_ID = "taxonomy_id";
+	private static final String	HIST_INDEX = "hist_index";
+	private static final String	SITE_INDEX = "site_index";
 
     @Autowired
     private DashboardDao dashboardDao;
 
     @Autowired
     private DashboardFactory dashboardFactory;
+
+    @Autowired
+	@Qualifier("cellLineLineageMap")
+	private HashMap<String,String> cellLineLineageMap;
 
     @Autowired
 	@Qualifier("cellSampleMap")
@@ -40,14 +46,15 @@ public class CellLineSampleFieldSetMapper implements FieldSetMapper<CellSample> 
 	public CellSample mapFieldSet(FieldSet fieldSet) throws BindException {
 
 		String cellSampleId = fieldSet.readString(CELL_SAMPLE_ID);
-		String cellLineage = fieldSet.readString(CELL_LINEAGE);
 		String taxonomyId = fieldSet.readString(TAXONOMY_ID);
+		String siteIndex = fieldSet.readString(SITE_INDEX);
 
 		CellSample cellSample = dashboardFactory.create(CellSample.class);
 		// display name will be set in next step
 		Organism organism = getOrganism(taxonomyId);
 		if (organism != null) cellSample.setOrganism(organism);
-		if (cellLineage.length() > 0) {
+		String cellLineage = cellLineLineageMap.get(siteIndex);
+		if (cellLineage != null && cellLineage.length() > 0) {
 			cellSample.setLineage(cellLineage);
 			// create a synonym from lineage
 			Synonym synonym = dashboardFactory.create(Synonym.class);
