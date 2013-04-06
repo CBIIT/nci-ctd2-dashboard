@@ -40,7 +40,7 @@
               <span class="icon-bar"></span>
             </a>
             <div class="nav-collapse collapse">
-              <ul class="nav">
+              <ul class="nav topmenu">
                 <li class="active"><a href="#">CTD<sup>2</sup> Dashboard</a></li>
                 <li><a href="#centers">Centers</a></li>
                 <li class="dropdown">
@@ -53,11 +53,25 @@
                       </ul>
                   </li>
               </ul>
-              <!-- This will be replaced with the search box
               <ul class="nav pull-right">
-                  <li><a href="#about">About</a></li>
+                  <form class="form-search" id="omnisearch">
+                      <div class="input-append">
+                          <input type="text" id="omni-input" class="span3 search-query" title="Search" placeholder="e.g. BRAF or ABT-137">
+                          <button type="submit" class="btn search-button">Search</button>
+                          <span class="hide" id="search-help-content">
+                              <p>Please enter the name of the subject you would like to search in the database.</p>
+
+                              <strong>Examples:</strong>
+                              <ul>
+                                <li><em>Gene: </em> <a href="#search/exact/CTNNB1">CTNNB1</a></li>
+                                <li><em>Compound: </em> <a href="#search/exact/ABT-737">ABT-737</a></li>
+                                <li><em>Cell Sample: </em> <a href="#search/exact/HPBALL">HPBALL</a></li>
+                              </ul>
+                              <br>
+                          </span>
+                      </div>
+                  </form>
               </ul>
-              -->
             </div><!--/.nav-collapse -->
           </div><!-- /.navbar-inner -->
         </div><!-- /.navbar -->
@@ -198,8 +212,9 @@
 
           </div>
 
-          <a class="left carousel-control" id="prevSlideControl" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+         <!-- <a class="left carousel-control" id="prevSlideControl" href="#myCarousel" data-slide="prev">&lsaquo;</a>
           <a class="right carousel-control" id="nextSlideControl" href="#myCarousel" data-slide="next">&rsaquo;</a>
+          -->
         </div><!-- /.carousel -->
 
         <div class="container marketing ctd2-boxes">
@@ -217,7 +232,7 @@
                 <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.</p>
             </div><!-- /.span3 -->
             <div class="span3 genomics" data-order="3">
-              <h3>Search</h3>
+              <h3>Context</h3>
               <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
             </div><!-- /.span3 -->
           </div><!-- /.row -->
@@ -429,7 +444,7 @@
             <table id="observed-evidences-grid" class="table table-bordered table-striped evidences">
                 <thead>
                 <tr>
-                    <th></th>
+                    <th>&nbsp;&nbsp;</th>
                     <th>Role</th>
                     <th>Description</th>
                     <th>Details</th>
@@ -755,23 +770,52 @@
 
     <script type="text/template" id="search-empty-tmpl">
         <tr>
-            <td colspan="5">
+            <td colspan="7">
                 <div class="alert alert-error">
                     <button type="button" class="close" data-dismiss="alert">&times;</button>
-                    <strong>Oh snap!</strong> We could not find any subjects related to your search.
-                    Please change a few things up and try submitting again.
+                    <strong>No results found!</strong> We could not find any subjects related to your search.
+                    Please try again with another keyword.
                 </div>
             </td>
         </tr>
     </script>
 
+    <script type="text/template" id="search-results-gene-image-tmpl">
+        <a href="#subject/{{id}}">
+            <img src="img/gene.png" class="img-polaroid search-info" title="Gene" height="50" width="50">
+        </a>
+    </script>
+
+    <script type="text/template" id="search-results-compund-image-tmpl">
+        <a href="#subject/{{id}}">
+            <img class="img-polaroid search-info" title="Compound" width=50 height=50 src="http://cbio.mskcc.org/cancergenomics/ctd2-dashboard/images/compounds/{{imageFile}}">
+        </a>
+    </script>
+
+    <script type="text/template" id="search-results-cellsample-image-tmpl">
+        <a href="#subject/{{id}}">
+            <img src="img/cellsample.png" title="Cell sample" class="img-polaroid search-info" height="50" width="50">
+        </a>
+    </script>
+
+    <script type="text/template" id="search-results-unknown-image-tmpl">
+        <a href="#subject/{{id}}">
+            <img src="img/unknown.png" title="{{type}}" class="img-polaroid search-info" height="50" width="50">
+        </a>
+    </script>
+
     <script type="text/template" id="search-result-row-tmpl">
         <tr>
-            <td>{{displayName}}</td>
-            <td>{{synonymsStr}}</td>
+            <td id="search-image-{{id}}"></td>
+            <td><a href="#subject/{{id}}">{{displayName}}</a></td>
+            <td>
+                <ul id="synonyms-{{id}}">
+                    <!-- here will go the synonyms -->
+                </ul>
+            </td>
             <td>{{type}}</td>
             <td>{{organism.displayName}}</td>
-            <td><a href="#subject/{{id}}">details</a></td>
+            <td><a href="#subject/{{id}}">observations</a></td>
         </tr>
     </script>
 
@@ -782,17 +826,18 @@
             <table id="search-results-grid" class="table table-bordered table-striped">
                 <thead>
                 <tr>
+                    <th>&nbsp; &nbsp;</th>
                     <th>Name</th>
                     <th>Synonyms</th>
-                    <th>Type</th>
+                    <th>Subject Type</th>
                     <th>Organism</th>
-                    <th>Details</th>
+                    <th>Observations</th>
                 </tr>
                 </thead>
                 <tbody>
                 <!-- here will go the rows -->
                 <tr id="loading-row">
-                    <td colspan="5">
+                    <td colspan="7">
                         <h3>Searching...</h3>
                         <div class="progress progress-striped active">
                             <div class="bar" style="width: 100%;"></div>
@@ -805,7 +850,7 @@
     </script>
 
     <script type="text/template" id="synonym-item-tmpl">
-        <li class="synonym">{{displayName}}</li>
+        <li class="synonym"><small>{{displayName}}</small></li>
     </script>
     <!-- end of templates -->
 

@@ -6,6 +6,7 @@ import gov.nih.nci.ctd2.dashboard.model.*;
 import org.hibernate.Criteria;
 import org.hibernate.StatelessSession;
 import org.hibernate.Transaction;
+import org.hibernate.classic.Session;
 import org.hibernate.criterion.Projections;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
@@ -28,17 +29,30 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
     }
 
     @Override
-    public void saveStateless(Collection<? extends DashboardEntity> entities) {
+    public void batchSave(Collection<? extends DashboardEntity> entities, int batchSize) {
         if(entities == null || entities.isEmpty())
             return;
 
-        StatelessSession session = getHibernateTemplate().getSessionFactory().openStatelessSession();
-        Transaction tx = session.beginTransaction();
+        // Insert new element super fast with a stateless session
+        StatelessSession statelessSession = getHibernateTemplate().getSessionFactory().openStatelessSession();
+        Transaction tx = statelessSession.beginTransaction();
 
         for (DashboardEntity entity : entities)
-            session.insert(entity);
+            statelessSession.insert(entity);
 
         tx.commit();
+        statelessSession.close();
+
+        // And then update them all to create the actual mappings
+        Session session = getHibernateTemplate().getSessionFactory().openSession();
+        int i = 0;
+        for (DashboardEntity entity : entities) {
+            session.merge(entity);
+            if(++i % batchSize == 0) {
+                session.flush();
+                session.clear();
+            }
+        }
         session.close();
     }
 
