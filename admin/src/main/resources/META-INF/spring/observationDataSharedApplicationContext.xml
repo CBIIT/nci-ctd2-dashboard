@@ -38,25 +38,21 @@
 		<batch:chunk reader="columbiaJointMRSHRNADiffAnalysisReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	  </batch:tasklet>
 	</batch:step>
-
 	<batch:step id="columbiaTier4GliomaStoryStep" parent="observationDataStep" next="cshlTier4FGF19StoryStep">
 	  <batch:tasklet>
 		<batch:chunk reader="columbiaTier4GliomaStoryReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	  </batch:tasklet>
 	</batch:step>
-
 	<batch:step id="cshlTier4FGF19StoryStep" parent="observationDataStep" next="dfciTier4BetaCateninStoryStep">
 	  <batch:tasklet>
 		<batch:chunk reader="cshlTier4FGF19StoryReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	  </batch:tasklet>
 	</batch:step>
-
 	<batch:step id="dfciTier4BetaCateninStoryStep" parent="observationDataStep">
 	  <batch:tasklet>
 		<batch:chunk reader="dfciTier4BetaCateninStoryReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	  </batch:tasklet>
 	</batch:step>
-
   </batch:job>
 
   <bean id="observationDataStep" class="org.springframework.batch.core.step.item.SimpleStepFactoryBean" abstract="true">
@@ -76,7 +72,7 @@
 
   <bean name="broadCompoundSensitivityLineageEnrichmentLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="submission_center,submission_date,template_name,cell_line_subset,cell_line_exclusion,feature_data_set,compound_name,cell_lineage,number_of_cell_lines,number_of_example_cell_lines,enrichment_direction,log_fdr,response_image_path,feature_image_path,nci_portal,gct_path"/>
+	<property name="names" value="dummy,submission_center,submission_date,template_name,cell_line_subset,cell_line_exclusion,feature_data_set,compound_name,cell_lineage,number_of_cell_lines,number_of_example_cell_lines,enrichment_direction,log_fdr,response_image_path,feature_image_path,nci_portal,gct_path"/>
   </bean>
 
   <!-- broad compound sensitivity mutation enrichment analysis -->
@@ -90,7 +86,7 @@
 
   <bean name="broadCompoundSensitivityMutationEnrichmentLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="submission_center,submission_date,template_name,cell_line_subset,cell_line_exclusion,feature_data_set,compound_name,entrez_gene_id,number_of_cell_lines,number_of_mutant_cell_lines,enrichment_direction,log_fdr,response_image_path,feature_image_path,nci_portal,gct_path"/>
+	<property name="names" value="dummy,submission_center,submission_date,template_name,cell_line_subset,cell_line_exclusion,feature_data_set,compound_name,entrez_gene_id,number_of_cell_lines,number_of_mutant_cell_lines,enrichment_direction,log_fdr,response_image_path,feature_image_path,nci_portal,gct_path"/>
   </bean>
 
   <!-- broad tier3 navitoclax story analysis -->
@@ -104,7 +100,7 @@
 
   <bean name="broadTier3NavitoclaxStoryLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="submission_center,submission_date,template_name,compound,gene_symbol,figure_1,figure_2,figure_3,figure_4,figure_5,figure_6,tier1_evidence"/>
+	<property name="names" value="dummy,submission_center,submission_date,template_name,compound,gene_symbol,figure_1,figure_2,figure_3,figure_4,figure_5,figure_6,tier1_evidence"/>
   </bean>
 
   <!-- columbia marina analysis -->
@@ -118,7 +114,7 @@
 
   <bean name="columbiaMarinaAnalysisLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="submission_center,submission_date,template_name,probeset_id,disease_condition,tissue,cell_type,cell_lineage,gene_symbol,entrez_gene_id,func_type,mr_regulon_set_size,mr_gsea_es,mr_gsea_p_value,mr_gsea_fdr"/>
+	<property name="names" value="dummy,submission_center,submission_date,template_name,probeset_id,disease_condition,tissue,cell_type,cell_lineage,gene_symbol,entrez_gene_id,func_type,mr_regulon_set_size,mr_gsea_es,mr_gsea_p_value,mr_gsea_fdr"/>
   </bean>
 
   <!-- columbia mra fet analysis -->
@@ -132,7 +128,7 @@
 
   <bean name="columbiaMRAFetAnalysisLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="submission_center,submission_date,template_name,disease_condition,tissue,gene_symbol,func_type,mra_regulon_signature_overlap,mra_overlap_rank,mra_fet_p_value,figure_1,publication_url,publication_reference"/>
+	<property name="names" value="dummy,submission_center,submission_date,template_name,disease_condition,tissue,gene_symbol,func_type,mra_regulon_signature_overlap,mra_overlap_rank,mra_fet_p_value,figure_1,publication_url,publication_reference"/>
   </bean>
 
   <!-- columbia master regulator analysis with shRNA knockdown analysis -->
@@ -146,7 +142,7 @@
 
   <bean name="columbiaJointMRSHRNADiffAnalysisLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="submission_center,submission_date,template_name,probeset_id,disease_condition,cell_line_1,cell_line_2,gene_symbol,entrez_gene_id,func_type,mr_regulon_set_size,mr_gsea_es,mr_gsea_p_value,mr_gsea_fdr,num_shRNAs,shrna_diff_rep_z_score_combined,shrna_diff_rep_p_value_combined,shrna_diff_rep_fdr_combined,shrna_diff_rep_net_direction_combined"/>
+	<property name="names" value="dummy,submission_center,submission_date,template_name,probeset_id,disease_condition,cell_line_1,cell_line_2,gene_symbol,entrez_gene_id,func_type,mr_regulon_set_size,mr_gsea_es,mr_gsea_p_value,mr_gsea_fdr,num_shRNAs,shrna_diff_rep_z_score_combined,shrna_diff_rep_p_value_combined,shrna_diff_rep_fdr_combined,shrna_diff_rep_net_direction_combined,nci_portal"/>
   </bean>
 
   <!-- columbia tier4 glioma story -->
@@ -160,7 +156,7 @@
 
   <bean name="columbiaTier4GliomaStoryLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="submission_center,submission_date,template_name,disease_condition,tissue_sample,gene_symbol_1,gene_symbol_2,gene_symbol_3,gene_symbol_4,gene_symbol_5,story_location"/>
+	<property name="names" value="dummy,submission_center,submission_date,template_name,disease_condition,tissue_sample,gene_symbol_1,gene_symbol_2,gene_symbol_3,gene_symbol_4,gene_symbol_5,story_location"/>
   </bean>
 
   <!-- cshl tier4 fgf19 story -->
@@ -174,7 +170,7 @@
 
   <bean name="cshlTier4FGF19StoryLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="submission_center,submission_date,template_name,disease_condition,tissue_sample,gene_symbol_1,gene_symbol_2,gene_symbol_3,gene_symbol_4,drug_candidate,story_location"/>
+	<property name="names" value="dummy,submission_center,submission_date,template_name,disease_condition,tissue_sample,gene_symbol_1,gene_symbol_2,gene_symbol_3,gene_symbol_4,drug_candidate,story_location"/>
   </bean>
 
   <!-- dfci tier4 beta-catenin story -->
@@ -188,7 +184,7 @@
 
   <bean name="dfciTier4BetaCateninStoryLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="submission_center,submission_date,template_name,disease_condition,tissue_sample,gene_symbol_1,gene_symbol_2,gene_symbol_3,gene_symbol_4,drug_candidate,story_location"/>
+	<property name="names" value="dummy,submission_center,submission_date,template_name,disease_condition,tissue_sample,gene_symbol_1,gene_symbol_2,gene_symbol_3,gene_symbol_4,drug_candidate,story_location"/>
   </bean>
 
   <!-- shared helper beans -->
@@ -262,8 +258,8 @@
 		<!-- columbia master regulator analysis with shRNA knockdown analysis -->
 		<entry key="columbia_joint_mr_shrna_diff:probeset_id" value="evidence:readString:createObservedLabelEvidence" />
 		<entry key="columbia_joint_mr_shrna_diff:disease_condition" value="subject:findTissueSampleByLineage" />
-		<entry key="columbia_joint_mr_shrna_diff:cell_line_1" value="subject:findCellSampleByLineage" />
-		<entry key="columbia_joint_mr_shrna_diff:cell_line_2" value="subject:findCellSampleByLineage" />
+		<entry key="columbia_joint_mr_shrna_diff:cell_line_1" value="subject:findSubjectsBySynonym" />
+		<entry key="columbia_joint_mr_shrna_diff:cell_line_2" value="subject:findSubjectsBySynonym" />
 		<entry key="columbia_joint_mr_shrna_diff:gene_symbol" value="subject:findSubjectsBySynonym" />
 		<entry key="columbia_joint_mr_shrna_diff:entrez_gene_id" value="subject:findGenesByEntrezId" />
 		<entry key="columbia_joint_mr_shrna_diff:func_type" value="evidence:readString:createObservedLabelEvidence" />
