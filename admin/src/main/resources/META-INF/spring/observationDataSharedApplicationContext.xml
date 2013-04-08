@@ -100,7 +100,7 @@
 
   <bean name="broadTier3NavitoclaxStoryLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="dummy,submission_center,submission_date,template_name,compound,gene_symbol,figure_1,figure_2,figure_3,figure_4,figure_5,figure_6,tier1_evidence"/>
+	<property name="names" value="dummy,submission_center,submission_date,template_name,compound_name,gene_symbol,figure_1,figure_2,figure_3,figure_4,figure_5,figure_6,tier1_evidence"/>
   </bean>
 
   <!-- columbia marina analysis -->
