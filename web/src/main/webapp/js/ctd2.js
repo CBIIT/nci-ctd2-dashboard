@@ -154,12 +154,43 @@
                 success: function() {
                     _.each(observedSubjects.models, function(observedSubject) {
                         observedSubject = observedSubject.toJSON();
+
                         var observedSubjectRowView
                             = new ObservedSubjectSummaryRowView({
                             el: $(thatEl).find("tbody"),
                             model: observedSubject
                         });
                         observedSubjectRowView.render();
+
+
+                        var subject = observedSubject.subject;
+                        var thatEl2 = $("#subject-image-" + subject.id);
+                        var imgTemplate = $("#search-results-unknown-image-tmpl");
+                        if(subject.class == "Compound") {
+                            var compound = new Subject({id: subject.id });
+                            compound.fetch({
+                               success: function() {
+                                   compound = compound.toJSON();
+                                   _.each(compound.xrefs, function(xref) {
+                                       if(xref.databaseName == "IMAGE") {
+                                           compound["imageFile"] = xref.databaseId;
+                                       }
+                                   });
+
+                                   imgTemplate = $("#search-results-compund-image-tmpl");
+                                   thatEl2.append(_.template(imgTemplate.html(), compound));
+                               }
+                            });
+
+                        } else if( subject.class == "CellSample" ) {
+                            imgTemplate = $("#search-results-cellsample-image-tmpl");
+                            thatEl2.append(_.template(imgTemplate.html(), subject));
+                        } else if( subject.class == "Gene" ) {
+                            imgTemplate = $("#search-results-gene-image-tmpl");
+                            thatEl2.append(_.template(imgTemplate.html(), subject));
+                        } else {
+                            thatEl2.append(_.template(imgTemplate.html(), subject));
+                        }
 
                         if(observedSubject.observedSubjectRole == null || observedSubject.subject == null)
                             return;
@@ -172,10 +203,12 @@
                         $("#observation-summary").html(summary);
                     });
 
+                    /* We decided to get rid of this one since we don't expect too many subjects here
                     $('#observed-subjects-grid').dataTable({
                         "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
                         "sPaginationType": "bootstrap"
                     });
+                    */
                 }
             });
 

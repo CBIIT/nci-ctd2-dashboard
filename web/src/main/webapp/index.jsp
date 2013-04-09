@@ -424,9 +424,11 @@
             <table id="observed-subjects-grid" class="table table-bordered table-striped subjects">
                 <thead>
                 <tr>
-                    <th>Subject Name</th>
-                    <th>Subject Type</th>
+                    <th>&nbsp;&nbsp;</th>
+                    <th>Name</th>
+                    <th>Type</th>
                     <th>Role</th>
+                    <th>Description</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -703,6 +705,7 @@
 
     <script type="text/template" id="observedsubject-summary-row-tmpl">
         <tr>
+            <td id="subject-image-{{subject.id}}"></td>
             <td>
                 <a href="#/subject/{{subject.id}}">
                     {{subject.displayName}}
@@ -710,6 +713,7 @@
             </td>
             <td>{{subject.type}}</td>
             <td>{{observedSubjectRole.subjectRole.displayName}}</td>
+            <td>{{observedSubjectRole.displayText}}</td>
         </tr>
     </script>
 
