@@ -350,6 +350,10 @@
                 </div>
             </div>
 
+            <div id="optional-submission-description">
+
+            </div>
+
             <h3>Observations within this submission</h3>
             <table id="submission-observation-grid" class="table table-bordered table-striped observations">
                 <thead>
@@ -390,10 +394,7 @@
                                 Submission<br>
                             </th>
                             <td>
-                                <p>{{submission.observationTemplate.description}}</p>
-                                <p class="pull-right">
-                                    <a href="#/submission/{{submission.id}}">{{submission.submissionDate}}</a>
-                                </p>
+                                <p>{{submission.observationTemplate.description}} (<a href="#/submission/{{submission.id}}">details &raquo;</a>)</p>
                             </td>
                         </tr>
                         <tr>
@@ -452,6 +453,13 @@
             </table>
 
         </div>
+    </script>
+
+    <script type="text/template" id="submission-description-tmpl">
+        <h3>Submission summary</h3>
+        <blockquote>
+            <p>{{observationTemplate.submissionDescription}}</p>
+        </blockquote>
     </script>
 
     <script type="text/template" id="summary-subject-replacement-tmpl">
@@ -586,7 +594,7 @@
                  <thead>
                  <tr>
                      <th>Observation</th>
-                     <th>Observation Summary</th>
+                     <th width=400>Observation Summary</th>
                      <th>Tier</th>
                      <th>Date</th>
                      <th>Center</th>
@@ -752,7 +760,7 @@
             <td id="observation-summary-{{id}}">
                 Loading...
             </td>
-            <td>{{submission.observationTemplate.tier}}</td>
+            <td><span class="badge tier-badge">{{submission.observationTemplate.tier}}</span></td>
             <td>
                 <a href="#/submission/{{submission.id}}">
                     {{submission.submissionDate}}

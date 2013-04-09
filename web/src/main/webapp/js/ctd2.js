@@ -328,6 +328,15 @@
         }
     });
 
+    var SubmissionDescriptionView = Backbone.View.extend({
+        el: "#optional-submission-description",
+        template:  _.template($("#submission-description-tmpl").html()),
+        render: function() {
+            $(this.el).html(this.template(this.model));
+            return this;
+        }
+    });
+
     var CompoundView = Backbone.View.extend({
          el: $("#main-container"),
          template:  _.template($("#compound-tmpl").html()),
@@ -623,7 +632,13 @@
         el: $("#main-container"),
         template: _.template($("#submission-tmpl").html()),
         render: function() {
-            $(this.el).html(this.template(this.model.toJSON()));
+            var submission = this.model.toJSON();
+            $(this.el).html(this.template(submission));
+
+            if(submission.observationTemplate.submissionDescription.length > 0) {
+                var submissionDescriptionView = new SubmissionDescriptionView({ model: submission });
+                submissionDescriptionView.render();
+            }
 
             var thatEl = this.el;
             var observations = new Observations({ submissionId: this.model.get("id") });
