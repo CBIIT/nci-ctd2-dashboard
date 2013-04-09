@@ -312,7 +312,7 @@
             <td>
                 {{observationTemplate.description}}
             </td>
-            <td><span class="badge tier-badge">{{observationTemplate.tier}}<span></td>
+            <td><span class="badge tier-badge">Tier {{observationTemplate.tier}}<span></td>
             <td><a href="#submission/{{id}}">observations</a></td>
         </tr>
     </script>
@@ -743,7 +743,7 @@
             <td>
                 {{observation.submission.observationTemplate.description}}
             </td>
-            <td>{{observation.submission.observationTemplate.tier}}</td>
+            <td><span class="badge tier-badge">Tier {{observation.submission.observationTemplate.tier}}</span></td>
             <td>
                 <a href="#/submission/{{observation.submission.id}}">
                     {{observation.submission.submissionDate}}
@@ -767,7 +767,7 @@
             <td id="observation-summary-{{id}}">
                 Loading...
             </td>
-            <td><span class="badge tier-badge">{{submission.observationTemplate.tier}}</span></td>
+            <td><span class="badge tier-badge">Tier {{submission.observationTemplate.tier}}</span></td>
             <td>
                 <a href="#/submission/{{submission.id}}">
                     {{submission.submissionDate}}
