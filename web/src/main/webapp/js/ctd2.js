@@ -365,6 +365,7 @@
              thatEl = $("#compound-observation-grid");
              observations.fetch({
                  success: function() {
+                     $("#subject-observations-loading").remove();
                      _.each(observations.models, function(observation) {
                          observation = observation.toJSON();
 
@@ -408,6 +409,7 @@
             thatEl = $("#gene-observation-grid");
             observations.fetch({
                 success: function() {
+                    $("#subject-observations-loading").remove();
                     _.each(observations.models, function(observation) {
                         observation = observation.toJSON();
 
@@ -422,6 +424,7 @@
                     });
 
                     oTable.fnSort( [ [2, 'desc'] ] );
+
                 }
             });
 
@@ -461,6 +464,7 @@
             thatEl = $("#cellsample-observation-grid");
             observations.fetch({
                 success: function() {
+                    $("#subject-observations-loading").remove();
                     _.each(observations.models, function(observation) {
                         observation = observation.toJSON();
 

@@ -602,6 +602,14 @@
                  </thead>
                  <tbody>
                  <!-- here will go the rows -->
+                 <tr id="subject-observations-loading">
+                     <td colspan="5">
+                         <h3>Loading observations...</h3>
+                         <div class="progress progress-striped active">
+                             <div class="bar" style="width: 100%;"></div>
+                         </div>
+                     </td>
+                 </tr>
                  </tbody>
              </table>
          </div>
@@ -770,6 +778,7 @@
                 <a href="#/center/{{submission.submissionCenter.id}}">
                     {{submission.submissionCenter.displayName}}
                 </a>
+
             </td>
         </tr>
     </script>
