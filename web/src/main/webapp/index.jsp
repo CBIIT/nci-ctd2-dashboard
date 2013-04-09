@@ -425,7 +425,7 @@
             <table id="observed-subjects-grid" class="table table-bordered table-striped subjects">
                 <thead>
                 <tr>
-                    <th>&nbsp;&nbsp;</th>
+                    <th width="60">&nbsp;&nbsp;&nbsp;&nbsp;</th>
                     <th>Name</th>
                     <th>Type</th>
                     <th>Role</th>
