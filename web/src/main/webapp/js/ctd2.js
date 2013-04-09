@@ -210,6 +210,7 @@
 
                     $('.desc-tooltip').tooltip({ placement: "bottom" });
 
+                    $("a.evidence-images").fancybox({titlePosition: 'inside'});
                 }
             });
 

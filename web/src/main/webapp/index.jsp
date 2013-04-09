@@ -10,6 +10,7 @@
 
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/jquery.dataTables.css" rel="stylesheet">
+    <link href="css/jquery.fancybox-1.3.4.css" rel="stylesheet" type="text/css" media="screen">
     <link href="css/ctd2.css" rel="stylesheet">
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -440,7 +441,7 @@
                     <th>&nbsp;&nbsp;</th>
                     <th>Role</th>
                     <th>Description</th>
-                    <th>Details</th>
+                    <th width="150">Details</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -491,7 +492,7 @@
             <td>{{observedEvidenceRole.evidenceRole.displayName}}</td>
             <td>{{observedEvidenceRole.displayText}}</td>
             <td>
-                <a href="http://cbio.mskcc.org/cancergenomics/ctd2-dashboard/{{evidence.filePath}}" target="_blank" title="Open image">
+                <a href="http://cbio.mskcc.org/cancergenomics/ctd2-dashboard/{{evidence.filePath}}" target="_blank" title="{{observedEvidenceRole.displayText}}" rel="evidence-images" class="evidence-images">
                     <img src="http://cbio.mskcc.org/cancergenomics/ctd2-dashboard/{{evidence.filePath}}" class="img-polaroid img-evidence" height="60">
                 </a>
                 </td>
@@ -857,6 +858,8 @@
     <script src="js/json2.js"></script>
     <script src="js/backbone-min.js"></script>
     <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.fancybox-1.3.4.pack.js"></script>
+    <script src="js/jquery.easing-1.3.pack.js"></script>
     <script src="js/ctd2.js"></script>
   </body>
 </html>

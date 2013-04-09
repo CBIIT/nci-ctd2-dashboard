@@ -287,5 +287,10 @@
         font-size: 14px;
     }
 
+    .fancybox-title-inside {
+        font-size: 110%;
+        background-color: #f6f6f6;
+    }
+
 
 
