@@ -555,7 +555,7 @@
                  <div class="span9">
                      <table id="gene-details-grid" class="table table-bordered table-striped">
                          <tr>
-                             <th>Name</th>
+                             <th>Gene symbol</th>
                              <td>{{displayName}}</td>
                          </tr>
                          <tr>
