@@ -572,7 +572,6 @@
                              <th>References</th>
                              <td>
                                  Entrez:<a href="http://www.ncbi.nlm.nih.gov/gene/{{entrezGeneId}}" target="_blank">{{entrezGeneId}} <i class="icon-share"></i></a> <br>
-                                 HGNC:<a href="http://www.genenames.org/data/hgnc_data.php?hgnc_id={{HGNCId}}" target="_blank">{{HGNCId}} <i class="icon-share"></i></a> <br>
                              </td>
                          </tr>
                          <tr>
