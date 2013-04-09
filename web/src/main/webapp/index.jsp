@@ -292,11 +292,10 @@
             <table id="center-submission-grid" class="table table-bordered table-striped">
                 <thead>
                     <tr>
-                        <th>#</th>
-                        <th>Date</th>
+                        <th width="150">Submission Date</th>
                         <th>Description</th>
                         <th>Tier</th>
-                        <th>Observations</th>
+                        <th>Details</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -308,12 +307,11 @@
 
     <script type="text/template" id="center-submission-tbl-row-tmpl">
         <tr>
-            <td>{{id}}</td>
             <td>{{submissionDate}}</td>
             <td>
                 {{observationTemplate.description}}
             </td>
-            <td>{{observationTemplate.tier}}</td>
+            <td><span class="badge tier-badge">{{observationTemplate.tier}}<span></td>
             <td><a href="#submission/{{id}}">observations</a></td>
         </tr>
     </script>
@@ -326,6 +324,14 @@
                 <div class="span9">
                     <table id="submission-details-grid" class="table table-bordered table-striped">
                         <tr>
+                            <th>Description</th>
+                            <td>{{observationTemplate.description}}</td>
+                        </tr>
+                        <tr>
+                            <th width="175">Submission Date</th>
+                            <td>{{submissionDate}}</td>
+                        </tr>
+                        <tr>
                             <th>Submission Center</th>
                             <td>
                                 <a href="#/center/{{submissionCenter.id}}">
@@ -333,22 +339,13 @@
                                 </a>
                             </td>
                         </tr>
-                        <tr>
-                            <th>Tier</th>
-                            <td>{{observationTemplate.tier}}</td>
-                        </tr>
-                        <tr>
-                            <th>Template Description</th>
-                            <td>{{observationTemplate.description}}</td>
-                        </tr>
-                        <tr>
-                            <th>Submission Date</th>
-                            <td>{{submissionDate}}</td>
-                        </tr>
                     </table>
                 </div>
                 <div class="span3">
-                    <img src="img/submission.png" class="img-polaroid" width=200 height=200>
+                    <img src="img/submission.png" class="img-polaroid" width=200 height=200><br>
+                    <center>
+                        <span class="badge">Tier {{observationTemplate.tier}}</span>
+                    </center>
                 </div>
             </div>
 
@@ -369,7 +366,7 @@
 
     <script type="text/template" id="submission-tbl-row-tmpl">
         <tr>
-            <td>
+            <td width="60">
                 <a href="#/observation/{{id}}">
                     # {{id}}
                 </a>
@@ -388,18 +385,15 @@
                 <div class="span9">
                     <table id="observation-details-grid" class="table table-bordered table-striped">
                         <tr>
-                            <th>Submission</th>
+                            <th>
+                                Submission<br>
+                            </th>
                             <td>
-                                <a href="#/submission/{{submission.id}}"># {{submission.id}}</a>
+                                <p>{{submission.observationTemplate.description}}</p>
+                                <p class="pull-right">
+                                    <a href="#/submission/{{submission.id}}">{{submission.submissionDate}}</a>
+                                </p>
                             </td>
-                        </tr>
-                        <tr>
-                            <th>Submission Date</th>
-                            <td>{{submission.submissionDate}}</td>
-                        </tr>
-                        <tr>
-                            <th>Submission Tier</th>
-                            <td>{{submission.observationTemplate.tier}}</td>
                         </tr>
                         <tr>
                             <th>Submission Center</th>
@@ -409,18 +403,17 @@
                                 </a>
                             </td>
                         </tr>
-                        <tr>
-                            <th>Template Description</th>
-                            <td>{{submission.observationTemplate.description}}</td>
-                        </tr>
                     </table>
                 </div>
                 <div class="span3">
-                    <img src="img/observation.png" class="img-polaroid" width=200 height=200>
+                    <img src="img/observation.png" class="img-polaroid" width=200 height=200><br>
+                    <center>
+                        <span class="badge">Tier {{submission.observationTemplate.tier}}</span>
+                    </center>
                 </div>
             </div>
 
-            <h3>Summary</h3>
+            <h3>Observation summary</h3>
             <blockquote>
                 <p id="observation-summary"></p>
             </blockquote>
