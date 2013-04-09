@@ -233,6 +233,8 @@
 
             var templateId = "#observedevidence-row-tmpl";
             if(type == "FileEvidence") {
+                result.evidence.filePath = result.evidence.filePath.replace(/\\/g, "/");
+
                 if(result.evidence.mimeType.toLowerCase().search("image") > -1) {
                     templateId = "#observedimageevidence-row-tmpl";
                 } else {
