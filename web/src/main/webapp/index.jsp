@@ -268,7 +268,7 @@
     <script type="text/template" id="centers-tbl-row-tmpl">
         <li class="span4">
             <a href="#center/{{id}}" class="thumbnail">
-                <img src="img/{{displayName}}.png" alt="{{displayName}}" class="img-polaroid"><br>
+                <img src="img/{{displayName}}.png" alt="{{displayName}}" class="img-polaroid" height="50"><br>
                 <center>
                     {{displayName}} submissions &raquo;
                 </center>
@@ -283,7 +283,7 @@
                     <h1>{{displayName}} <small>submissions</small></h1>
                 </div>
                 <div class="span3">
-                    <img src="img/{{displayName}}.png" class="img-polaroid" width=200>
+                    <img src="img/{{displayName}}.png" class="img-polaroid" width="200">
                 </div>
             </div>
 
