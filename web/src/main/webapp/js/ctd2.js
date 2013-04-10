@@ -365,7 +365,7 @@
              thatEl = $("#compound-observation-grid");
              observations.fetch({
                  success: function() {
-                     $("#subject-observations-loading").remove();
+                     $(".subject-observations-loading").remove();
                      _.each(observations.models, function(observation) {
                          observation = observation.toJSON();
 
@@ -409,7 +409,7 @@
             thatEl = $("#gene-observation-grid");
             observations.fetch({
                 success: function() {
-                    $("#subject-observations-loading").remove();
+                    $(".subject-observations-loading").remove();
                     _.each(observations.models, function(observation) {
                         observation = observation.toJSON();
 
@@ -464,7 +464,7 @@
             thatEl = $("#cellsample-observation-grid");
             observations.fetch({
                 success: function() {
-                    $("#subject-observations-loading").remove();
+                    $(".subject-observations-loading").remove();
                     _.each(observations.models, function(observation) {
                         observation = observation.toJSON();
 
@@ -648,6 +648,7 @@
             var observations = new Observations({ submissionId: this.model.get("id") });
             observations.fetch({
                 success: function() {
+                    $(".submission-observations-loading").remove();
                     _.each(observations.models, function(observation) {
                         observation = observation.toJSON();
 

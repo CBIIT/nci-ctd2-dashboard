@@ -308,7 +308,7 @@
 
     <script type="text/template" id="center-submission-tbl-row-tmpl">
         <tr>
-            <td>{{submissionDate}}</td>
+            <td><a href="#submission/{{id}}">{{submissionDate}}</a></td>
             <td>
                 {{observationTemplate.description}}
             </td>
@@ -364,6 +364,14 @@
                 </thead>
                 <tbody>
                 <!-- here will go the rows -->
+                <tr class="submission-observations-loading">
+                    <td colspan="5">
+                        <h3>Loading observations...</h3>
+                        <div class="progress progress-striped active">
+                            <div class="bar" style="width: 100%;"></div>
+                        </div>
+                    </td>
+                </tr>
                 </tbody>
             </table>
         </div>
@@ -601,7 +609,7 @@
                  </thead>
                  <tbody>
                  <!-- here will go the rows -->
-                 <tr id="subject-observations-loading">
+                 <tr class="subject-observations-loading">
                      <td colspan="5">
                          <h3>Loading observations...</h3>
                          <div class="progress progress-striped active">
@@ -664,6 +672,14 @@
                 </thead>
                 <tbody>
                 <!-- here will go the rows -->
+                <tr class="subject-observations-loading">
+                    <td colspan="5">
+                        <h3>Loading observations...</h3>
+                        <div class="progress progress-striped active">
+                            <div class="bar" style="width: 100%;"></div>
+                        </div>
+                    </td>
+                </tr>
                 </tbody>
             </table>
         </div>
@@ -713,6 +729,14 @@
                   </thead>
                   <tbody>
                   <!-- here will go the rows -->
+                  <tr class="subject-observations-loading">
+                      <td colspan="5">
+                          <h3>Loading observations...</h3>
+                          <div class="progress progress-striped active">
+                              <div class="bar" style="width: 100%;"></div>
+                          </div>
+                      </td>
+                  </tr>
                   </tbody>
               </table>
           </div>
