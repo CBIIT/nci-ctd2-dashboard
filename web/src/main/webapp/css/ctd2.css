@@ -1,0 +1,291 @@
+    /* GLOBAL STYLES
+    -------------------------------------------------- */
+    /* Padding below the footer and lighter body text */
+
+    body {
+      padding-bottom: 40px;
+      color: #5a5a5a;
+    }
+
+
+    /* CUSTOMIZE THE NAVBAR
+    -------------------------------------------------- */
+
+    /* Special class on .container surrounding .navbar, used for positioning it into place. */
+    .navbar-wrapper {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 9999;
+      margin-top: 10px;
+      margin-bottom: -90px; /* Negative margin to pull up carousel. 90px is roughly margins and height of navbar. */
+    }
+    .navbar-wrapper .navbar {
+
+    }
+
+    /* Remove border and change up box shadow for more contrast */
+    .navbar .navbar-inner {
+      border: 0;
+      -webkit-box-shadow: 0 2px 10px rgba(0,0,0,.25);
+         -moz-box-shadow: 0 2px 10px rgba(0,0,0,.25);
+              box-shadow: 0 2px 10px rgba(0,0,0,.25);
+    }
+
+    /* Downsize the brand/project name a bit */
+    .navbar .brand {
+      padding: 10px 20px 10px; /* Increase vertical padding to match navbar links */
+      font-size: 16px;
+      font-weight: bold;
+      text-shadow: 0 -1px 0 rgba(0,0,0,.5);
+    }
+
+    /* Navbar links: increase padding for taller navbar */
+    .navbar .nav > li > a {
+      padding: 10px 20px;
+    }
+
+    /* Offset the responsive button for proper vertical alignment */
+    .navbar .btn-navbar {
+      margin-top: 10px;
+    }
+
+    .navbar-inner {
+        min-height: 0px;
+    }
+
+
+
+    /* CUSTOMIZE THE NAVBAR
+    -------------------------------------------------- */
+
+    /* Carousel base class */
+    .carousel {
+      margin-bottom: 0px;
+    }
+
+    .carousel .container {
+      position: relative;
+      z-index: 10;
+    }
+
+    .carousel-control {
+      height: 80px;
+      margin-top: 0;
+      font-size: 120px;
+      background-color: transparent;
+      border: 0;
+    }
+
+    .carousel .item {
+      height: 450px;
+    }
+
+    .carousel img.cimg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      min-width: 100%;
+      height: 450px;
+    }
+
+    .carousel-caption {
+      background-color: #f6f6f6;
+      background-image: url('../img/ctd2_bg.png');
+      background-repeat: no-repeat;
+      background-position: right 60px;
+      position: static;
+      padding: 0 20px;
+      height: 370px;
+      padding-top: 80px;
+
+    }
+    .carousel-caption h1,
+    .carousel-caption .lead {
+      margin: 0;
+      line-height: 1.25;
+    }
+
+    .marketing .span4 {
+      text-align: center;
+    }
+    .marketing h2 {
+      font-weight: normal;
+    }
+    .marketing .span4 p {
+      margin-left: 10px;
+      margin-right: 10px;
+    }
+
+    .featurette {
+      overflow: hidden; /* Vertically center images part 2: clear their floats. */
+    }
+    .featurette-image {
+      margin-top: 100px; /* Vertically center images part 3: negative margin up the image the same amount of the padding to center it. */
+      margin-bottom: 20px;
+    }
+
+    /* Give some space on the sides of the floated elements so text doesn't run right into it. */
+    .featurette-image.pull-left {
+      margin-right: 40px;
+    }
+    .featurette-image.pull-right {
+      margin-left: 40px;
+    }
+
+    /* Thin out the marketing headings */
+    .featurette-heading {
+      font-size: 50px;
+      font-weight: 300;
+      line-height: 1;
+      letter-spacing: -1px;
+    }
+
+    .stories {
+        border-top: 15px solid #a70001;
+    }
+
+    .story-link {
+        color: #a70001;
+    }
+
+    .target {
+        border-top: 15px solid #1ea44b;
+    }
+
+    .target-link {
+        color: #1ea44b;
+    }
+
+    .drug {
+        border-top: 15px solid #f99910;
+    }
+
+    .drug-link {
+        color: #f99910;
+    }
+
+    .genomics {
+        border-top: 15px solid #006bb9;
+    }
+
+    .genomics-link {
+        color: #006bb9;
+    }
+
+    .active-box {
+        border-top-width: 30px;
+    }
+
+    .active-box h2 {
+        font-weight: bold;
+    }
+
+    .carousel-well p {
+        color: #5A5A5A;
+    }
+
+    .carousel-caption h1 {
+        color: #5A5A5A;
+    }
+
+    .lead {
+        font-size: 18px;
+    }
+
+    .stories-lead {
+        font-weight: bold;
+        padding-bottom: 10px;
+    }
+
+    .stories-text {
+        font-size: 16px;
+    }
+
+    .stories-pagination {
+        margin-bottom: 5px;
+        margin-top: 10px;
+    }
+
+    .browse-by {
+        font-size: 16px;
+        padding-left: 10px;
+        font-weight: bold;
+    }
+
+    .common-container {
+        margin-top: 80px;
+    }
+
+    /* for data tables integration */
+    table.table thead .sorting,
+    table.table thead .sorting_asc,
+    table.table thead .sorting_desc,
+    table.table thead .sorting_asc_disabled,
+    table.table thead .sorting_desc_disabled {
+        cursor: pointer;
+        *cursor: hand;
+    }
+
+    table.table thead .sorting { background: url('../images/sort_both.png') no-repeat center right; }
+    table.table thead .sorting_asc { background: url('../images/sort_asc.png') no-repeat center right; }
+    table.table thead .sorting_desc { background: url('../images/sort_desc.png') no-repeat center right; }
+
+    table.table thead .sorting_asc_disabled { background: url('../images/sort_asc_disabled.png') no-repeat center right; }
+    table.table thead .sorting_desc_disabled { background: url('../images/sort_desc_disabled.png') no-repeat center right; }
+
+    div.dataTables_info {
+        padding-top: 8px;
+    }
+
+    div.dataTables_paginate {
+        float: right;
+        margin: 0;
+    }
+
+    table {
+        margin-bottom: 6px !important;
+        clear: both;
+    }
+
+    .sorting_1, .sorting_2, .sorting_3 {
+        background-color: transparent;
+    }
+
+    .navbar-inner {
+        padding-left: 1px;
+    }
+
+    ul.synonyms {
+        margin-bottom: 0px;
+    }
+
+    blockquote {
+        border-left: 5px solid #a70001;
+    }
+
+    blockquote p {
+        font-size: 22px;
+        font-style: italic;
+    }
+
+    .img-evidence {
+        width: auto;
+        height: 60px;
+    }
+
+    #omnisearch {
+        margin: 5px 0 0 0;
+    }
+
+    .topmenu li {
+        line-height: 28px;
+    }
+
+    .popover-content {
+        font-size: 14px;
+    }
+
+
+
