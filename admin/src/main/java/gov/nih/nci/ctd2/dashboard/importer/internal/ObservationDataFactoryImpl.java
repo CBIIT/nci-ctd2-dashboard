@@ -72,11 +72,12 @@ public class ObservationDataFactoryImpl implements ObservationDataFactory {
 			}
 		}
 		if (subject != null) observedSubject.setSubject(subject);
-		ObservedSubjectRole observedSubjectRole = observedSubjectRoleCache.get(columnName);
+		String observedSubjectRoleCacheKey = templateName+columnName;
+		ObservedSubjectRole observedSubjectRole = observedSubjectRoleCache.get(observedSubjectRoleCacheKey);
 		if (observedSubjectRole == null) {
 			observedSubjectRole = dashboardDao.findObservedSubjectRole(templateName, columnName);
 			if (observedSubjectRole != null) {
-				observedSubjectRoleCache.put(columnName, observedSubjectRole);
+				observedSubjectRoleCache.put(observedSubjectRoleCacheKey, observedSubjectRole);
 			}
 		}
 		if (observedSubjectRole != null) observedSubject.setObservedSubjectRole(observedSubjectRole);
@@ -150,11 +151,12 @@ public class ObservationDataFactoryImpl implements ObservationDataFactory {
 	}
 
 	private ObservedEvidenceRole getObservedEvidenceRole(String templateName, String columnName) {
-		ObservedEvidenceRole observedEvidenceRole = observedEvidenceRoleCache.get(columnName);
+		String observedEvidenceRoleCacheKey = templateName+columnName;
+		ObservedEvidenceRole observedEvidenceRole = observedEvidenceRoleCache.get(observedEvidenceRoleCacheKey);
 		if (observedEvidenceRole == null) {
 			observedEvidenceRole = dashboardDao.findObservedEvidenceRole(templateName, columnName);
 			if (observedEvidenceRole != null) {
-				observedEvidenceRoleCache.put(columnName, observedEvidenceRole);
+				observedEvidenceRoleCache.put(observedEvidenceRoleCacheKey, observedEvidenceRole);
 			}
 		}
 		return observedEvidenceRole;

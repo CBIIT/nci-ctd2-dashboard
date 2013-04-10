@@ -12,7 +12,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 
@@ -72,8 +72,8 @@ public class ObservationDataFieldSetMapper implements FieldSetMapper<Observation
 		observation.setSubmission(submission);
 
 		// these will contain all observed entities / evidence we will persist
-		HashSet<DashboardEntity> evidenceSet = new HashSet<DashboardEntity>();
-		HashSet<DashboardEntity> observedEntitiesSet = new HashSet<DashboardEntity>();
+		LinkedHashSet<DashboardEntity> evidenceSet = new LinkedHashSet<DashboardEntity>();
+		LinkedHashSet<DashboardEntity> observedEntitiesSet = new LinkedHashSet<DashboardEntity>();
 
 		for (String columnName : fieldSet.getNames()) {
 			if (columnName.equals(SUBMISSION_CENTER) ||
