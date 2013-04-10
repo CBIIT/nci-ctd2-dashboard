@@ -154,12 +154,43 @@
                 success: function() {
                     _.each(observedSubjects.models, function(observedSubject) {
                         observedSubject = observedSubject.toJSON();
+
                         var observedSubjectRowView
                             = new ObservedSubjectSummaryRowView({
                             el: $(thatEl).find("tbody"),
                             model: observedSubject
                         });
                         observedSubjectRowView.render();
+
+
+                        var subject = observedSubject.subject;
+                        var thatEl2 = $("#subject-image-" + subject.id);
+                        var imgTemplate = $("#search-results-unknown-image-tmpl");
+                        if(subject.class == "Compound") {
+                            var compound = new Subject({id: subject.id });
+                            compound.fetch({
+                               success: function() {
+                                   compound = compound.toJSON();
+                                   _.each(compound.xrefs, function(xref) {
+                                       if(xref.databaseName == "IMAGE") {
+                                           compound["imageFile"] = xref.databaseId;
+                                       }
+                                   });
+
+                                   imgTemplate = $("#search-results-compund-image-tmpl");
+                                   thatEl2.append(_.template(imgTemplate.html(), compound));
+                               }
+                            });
+
+                        } else if( subject.class == "CellSample" ) {
+                            imgTemplate = $("#search-results-cellsample-image-tmpl");
+                            thatEl2.append(_.template(imgTemplate.html(), subject));
+                        } else if( subject.class == "Gene" ) {
+                            imgTemplate = $("#search-results-gene-image-tmpl");
+                            thatEl2.append(_.template(imgTemplate.html(), subject));
+                        } else {
+                            thatEl2.append(_.template(imgTemplate.html(), subject));
+                        }
 
                         if(observedSubject.observedSubjectRole == null || observedSubject.subject == null)
                             return;
@@ -172,10 +203,12 @@
                         $("#observation-summary").html(summary);
                     });
 
+                    /* We decided to get rid of this one since we don't expect too many subjects here
                     $('#observed-subjects-grid').dataTable({
                         "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
                         "sPaginationType": "bootstrap"
                     });
+                    */
                 }
             });
 
@@ -210,6 +243,7 @@
 
                     $('.desc-tooltip').tooltip({ placement: "bottom" });
 
+                    $("a.evidence-images").fancybox({titlePosition: 'inside'});
                 }
             });
 
@@ -233,6 +267,8 @@
 
             var templateId = "#observedevidence-row-tmpl";
             if(type == "FileEvidence") {
+                result.evidence.filePath = result.evidence.filePath.replace(/\\/g, "/");
+
                 if(result.evidence.mimeType.toLowerCase().search("image") > -1) {
                     templateId = "#observedimageevidence-row-tmpl";
                 } else {
@@ -292,6 +328,15 @@
         }
     });
 
+    var SubmissionDescriptionView = Backbone.View.extend({
+        el: "#optional-submission-description",
+        template:  _.template($("#submission-description-tmpl").html()),
+        render: function() {
+            $(this.el).html(this.template(this.model));
+            return this;
+        }
+    });
+
     var CompoundView = Backbone.View.extend({
          el: $("#main-container"),
          template:  _.template($("#compound-tmpl").html()),
@@ -320,6 +365,7 @@
              thatEl = $("#compound-observation-grid");
              observations.fetch({
                  success: function() {
+                     $(".subject-observations-loading").remove();
                      _.each(observations.models, function(observation) {
                          observation = observation.toJSON();
 
@@ -363,6 +409,7 @@
             thatEl = $("#gene-observation-grid");
             observations.fetch({
                 success: function() {
+                    $(".subject-observations-loading").remove();
                     _.each(observations.models, function(observation) {
                         observation = observation.toJSON();
 
@@ -377,6 +424,7 @@
                     });
 
                     oTable.fnSort( [ [2, 'desc'] ] );
+
                 }
             });
 
@@ -416,6 +464,7 @@
             thatEl = $("#cellsample-observation-grid");
             observations.fetch({
                 success: function() {
+                    $(".subject-observations-loading").remove();
                     _.each(observations.models, function(observation) {
                         observation = observation.toJSON();
 
@@ -525,7 +574,7 @@
                            "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
                            "sPaginationType": "bootstrap"
                     });
-                    oTable.fnSort( [ [3, 'desc'] ] );
+                    oTable.fnSort( [ [2, 'desc'] ] );
 
                 }
             });
@@ -587,12 +636,19 @@
         el: $("#main-container"),
         template: _.template($("#submission-tmpl").html()),
         render: function() {
-            $(this.el).html(this.template(this.model.toJSON()));
+            var submission = this.model.toJSON();
+            $(this.el).html(this.template(submission));
+
+            if(submission.observationTemplate.submissionDescription.length > 0) {
+                var submissionDescriptionView = new SubmissionDescriptionView({ model: submission });
+                submissionDescriptionView.render();
+            }
 
             var thatEl = this.el;
             var observations = new Observations({ submissionId: this.model.get("id") });
             observations.fetch({
                 success: function() {
+                    $(".submission-observations-loading").remove();
                     _.each(observations.models, function(observation) {
                         observation = observation.toJSON();
 

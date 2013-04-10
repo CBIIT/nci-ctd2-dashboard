@@ -10,6 +10,7 @@
 
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/jquery.dataTables.css" rel="stylesheet">
+    <link href="css/jquery.fancybox-1.3.4.css" rel="stylesheet" type="text/css" media="screen">
     <link href="css/ctd2.css" rel="stylesheet">
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -268,7 +269,7 @@
     <script type="text/template" id="centers-tbl-row-tmpl">
         <li class="span4">
             <a href="#center/{{id}}" class="thumbnail">
-                <img src="img/{{displayName}}.png" alt="{{displayName}}" class="img-polaroid"><br>
+                <img src="img/{{displayName}}.png" alt="{{displayName}}" class="img-polaroid" height="50"><br>
                 <center>
                     {{displayName}} submissions &raquo;
                 </center>
@@ -283,7 +284,7 @@
                     <h1>{{displayName}} <small>submissions</small></h1>
                 </div>
                 <div class="span3">
-                    <img src="img/{{displayName}}.png" class="img-polaroid" width=200>
+                    <img src="img/{{displayName}}.png" class="img-polaroid" width="200">
                 </div>
             </div>
 
@@ -292,11 +293,10 @@
             <table id="center-submission-grid" class="table table-bordered table-striped">
                 <thead>
                     <tr>
-                        <th>#</th>
-                        <th>Date</th>
+                        <th width="150">Submission Date</th>
                         <th>Description</th>
                         <th>Tier</th>
-                        <th>Observations</th>
+                        <th>Details</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -308,12 +308,11 @@
 
     <script type="text/template" id="center-submission-tbl-row-tmpl">
         <tr>
-            <td>{{id}}</td>
-            <td>{{submissionDate}}</td>
+            <td><a href="#submission/{{id}}">{{submissionDate}}</a></td>
             <td>
                 {{observationTemplate.description}}
             </td>
-            <td>{{observationTemplate.tier}}</td>
+            <td><span class="badge tier-badge">Tier {{observationTemplate.tier}}<span></td>
             <td><a href="#submission/{{id}}">observations</a></td>
         </tr>
     </script>
@@ -326,6 +325,14 @@
                 <div class="span9">
                     <table id="submission-details-grid" class="table table-bordered table-striped">
                         <tr>
+                            <th>Description</th>
+                            <td>{{observationTemplate.description}}</td>
+                        </tr>
+                        <tr>
+                            <th width="175">Submission Date</th>
+                            <td>{{submissionDate}}</td>
+                        </tr>
+                        <tr>
                             <th>Submission Center</th>
                             <td>
                                 <a href="#/center/{{submissionCenter.id}}">
@@ -333,23 +340,18 @@
                                 </a>
                             </td>
                         </tr>
-                        <tr>
-                            <th>Tier</th>
-                            <td>{{observationTemplate.tier}}</td>
-                        </tr>
-                        <tr>
-                            <th>Template Description</th>
-                            <td>{{observationTemplate.description}}</td>
-                        </tr>
-                        <tr>
-                            <th>Submission Date</th>
-                            <td>{{submissionDate}}</td>
-                        </tr>
                     </table>
                 </div>
                 <div class="span3">
-                    <img src="img/submission.png" class="img-polaroid" width=200 height=200>
+                    <img src="img/submission.png" class="img-polaroid" width=200 height=200><br>
+                    <center>
+                        <span class="badge">Tier {{observationTemplate.tier}}</span>
+                    </center>
                 </div>
+            </div>
+
+            <div id="optional-submission-description">
+
             </div>
 
             <h3>Observations within this submission</h3>
@@ -362,6 +364,14 @@
                 </thead>
                 <tbody>
                 <!-- here will go the rows -->
+                <tr class="submission-observations-loading">
+                    <td colspan="5">
+                        <h3>Loading observations...</h3>
+                        <div class="progress progress-striped active">
+                            <div class="bar" style="width: 100%;"></div>
+                        </div>
+                    </td>
+                </tr>
                 </tbody>
             </table>
         </div>
@@ -369,7 +379,7 @@
 
     <script type="text/template" id="submission-tbl-row-tmpl">
         <tr>
-            <td>
+            <td width="60">
                 <a href="#/observation/{{id}}">
                     # {{id}}
                 </a>
@@ -388,18 +398,12 @@
                 <div class="span9">
                     <table id="observation-details-grid" class="table table-bordered table-striped">
                         <tr>
-                            <th>Submission</th>
+                            <th>
+                                Submission<br>
+                            </th>
                             <td>
-                                <a href="#/submission/{{submission.id}}"># {{submission.id}}</a>
+                                <p>{{submission.observationTemplate.description}} (<a href="#/submission/{{submission.id}}">details &raquo;</a>)</p>
                             </td>
-                        </tr>
-                        <tr>
-                            <th>Submission Date</th>
-                            <td>{{submission.submissionDate}}</td>
-                        </tr>
-                        <tr>
-                            <th>Submission Tier</th>
-                            <td>{{submission.observationTemplate.tier}}</td>
                         </tr>
                         <tr>
                             <th>Submission Center</th>
@@ -409,18 +413,17 @@
                                 </a>
                             </td>
                         </tr>
-                        <tr>
-                            <th>Template Description</th>
-                            <td>{{submission.observationTemplate.description}}</td>
-                        </tr>
                     </table>
                 </div>
                 <div class="span3">
-                    <img src="img/observation.png" class="img-polaroid" width=200 height=200>
+                    <img src="img/observation.png" class="img-polaroid" width=200 height=200><br>
+                    <center>
+                        <span class="badge">Tier {{submission.observationTemplate.tier}}</span>
+                    </center>
                 </div>
             </div>
 
-            <h3>Summary</h3>
+            <h3>Observation summary</h3>
             <blockquote>
                 <p id="observation-summary"></p>
             </blockquote>
@@ -430,9 +433,11 @@
             <table id="observed-subjects-grid" class="table table-bordered table-striped subjects">
                 <thead>
                 <tr>
-                    <th>Subject Name</th>
-                    <th>Subject Type</th>
+                    <th width="60">&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                    <th>Name</th>
+                    <th>Type</th>
                     <th>Role</th>
+                    <th>Description</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -447,7 +452,7 @@
                     <th>&nbsp;&nbsp;</th>
                     <th>Role</th>
                     <th>Description</th>
-                    <th>Details</th>
+                    <th width="150">Details</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -456,6 +461,13 @@
             </table>
 
         </div>
+    </script>
+
+    <script type="text/template" id="submission-description-tmpl">
+        <h3>Submission summary</h3>
+        <blockquote>
+            <p>{{observationTemplate.submissionDescription}}</p>
+        </blockquote>
     </script>
 
     <script type="text/template" id="summary-subject-replacement-tmpl">
@@ -498,7 +510,7 @@
             <td>{{observedEvidenceRole.evidenceRole.displayName}}</td>
             <td>{{observedEvidenceRole.displayText}}</td>
             <td>
-                <a href="http://cbio.mskcc.org/cancergenomics/ctd2-dashboard/{{evidence.filePath}}" target="_blank" title="Open image">
+                <a href="http://cbio.mskcc.org/cancergenomics/ctd2-dashboard/{{evidence.filePath}}" target="_blank" title="{{observedEvidenceRole.displayText}}" rel="evidence-images" class="evidence-images">
                     <img src="http://cbio.mskcc.org/cancergenomics/ctd2-dashboard/{{evidence.filePath}}" class="img-polaroid img-evidence" height="60">
                 </a>
                 </td>
@@ -551,7 +563,7 @@
                  <div class="span9">
                      <table id="gene-details-grid" class="table table-bordered table-striped">
                          <tr>
-                             <th>Name</th>
+                             <th>Gene symbol</th>
                              <td>{{displayName}}</td>
                          </tr>
                          <tr>
@@ -568,7 +580,6 @@
                              <th>References</th>
                              <td>
                                  Entrez:<a href="http://www.ncbi.nlm.nih.gov/gene/{{entrezGeneId}}" target="_blank">{{entrezGeneId}} <i class="icon-share"></i></a> <br>
-                                 HGNC:<a href="http://www.genenames.org/data/hgnc_data.php?hgnc_id={{HGNCId}}" target="_blank">{{HGNCId}} <i class="icon-share"></i></a> <br>
                              </td>
                          </tr>
                          <tr>
@@ -590,7 +601,7 @@
                  <thead>
                  <tr>
                      <th>Observation</th>
-                     <th>Observation Summary</th>
+                     <th width=400>Observation Summary</th>
                      <th>Tier</th>
                      <th>Date</th>
                      <th>Center</th>
@@ -598,6 +609,14 @@
                  </thead>
                  <tbody>
                  <!-- here will go the rows -->
+                 <tr class="subject-observations-loading">
+                     <td colspan="5">
+                         <h3>Loading observations...</h3>
+                         <div class="progress progress-striped active">
+                             <div class="bar" style="width: 100%;"></div>
+                         </div>
+                     </td>
+                 </tr>
                  </tbody>
              </table>
          </div>
@@ -653,6 +672,14 @@
                 </thead>
                 <tbody>
                 <!-- here will go the rows -->
+                <tr class="subject-observations-loading">
+                    <td colspan="5">
+                        <h3>Loading observations...</h3>
+                        <div class="progress progress-striped active">
+                            <div class="bar" style="width: 100%;"></div>
+                        </div>
+                    </td>
+                </tr>
                 </tbody>
             </table>
         </div>
@@ -702,6 +729,14 @@
                   </thead>
                   <tbody>
                   <!-- here will go the rows -->
+                  <tr class="subject-observations-loading">
+                      <td colspan="5">
+                          <h3>Loading observations...</h3>
+                          <div class="progress progress-striped active">
+                              <div class="bar" style="width: 100%;"></div>
+                          </div>
+                      </td>
+                  </tr>
                   </tbody>
               </table>
           </div>
@@ -709,6 +744,7 @@
 
     <script type="text/template" id="observedsubject-summary-row-tmpl">
         <tr>
+            <td id="subject-image-{{subject.id}}"></td>
             <td>
                 <a href="#/subject/{{subject.id}}">
                     {{subject.displayName}}
@@ -716,6 +752,7 @@
             </td>
             <td>{{subject.type}}</td>
             <td>{{observedSubjectRole.subjectRole.displayName}}</td>
+            <td>{{observedSubjectRole.displayText}}</td>
         </tr>
     </script>
 
@@ -730,7 +767,7 @@
             <td>
                 {{observation.submission.observationTemplate.description}}
             </td>
-            <td>{{observation.submission.observationTemplate.tier}}</td>
+            <td><span class="badge tier-badge">Tier {{observation.submission.observationTemplate.tier}}</span></td>
             <td>
                 <a href="#/submission/{{observation.submission.id}}">
                     {{observation.submission.submissionDate}}
@@ -754,7 +791,7 @@
             <td id="observation-summary-{{id}}">
                 Loading...
             </td>
-            <td>{{submission.observationTemplate.tier}}</td>
+            <td><span class="badge tier-badge">Tier {{submission.observationTemplate.tier}}</span></td>
             <td>
                 <a href="#/submission/{{submission.id}}">
                     {{submission.submissionDate}}
@@ -764,6 +801,7 @@
                 <a href="#/center/{{submission.submissionCenter.id}}">
                     {{submission.submissionCenter.displayName}}
                 </a>
+
             </td>
         </tr>
     </script>
@@ -864,6 +902,8 @@
     <script src="js/json2.js"></script>
     <script src="js/backbone-min.js"></script>
     <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.fancybox-1.3.4.pack.js"></script>
+    <script src="js/jquery.easing-1.3.pack.js"></script>
     <script src="js/ctd2.js"></script>
   </body>
 </html>

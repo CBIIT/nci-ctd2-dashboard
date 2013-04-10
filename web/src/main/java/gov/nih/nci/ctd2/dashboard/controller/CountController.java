@@ -23,8 +23,8 @@ import java.util.HashSet;
 import java.util.List;
 
 @Controller
-@RequestMapping("/list")
-public class ListController {
+@RequestMapping("/count")
+public class CountController {
     @Autowired
     private DashboardDao dashboardDao;
 
@@ -81,17 +81,13 @@ public class ListController {
             }
         }
 
-        // TODO: Remove this and add a pagination option
-        if(entities.size() > 100)
-            entities = entities.subList(0, 99);
-
         JSONSerializer jsonSerializer = new JSONSerializer()
                 .transform(new ImplTransformer(), Class.class)
                 .transform(new DateTransformer(), Date.class)
-        ;
+                ;
 
         return new ResponseEntity<String>(
-                jsonSerializer.serialize(entities),
+                jsonSerializer.serialize(entities.size()),
                 headers,
                 HttpStatus.OK
         );
