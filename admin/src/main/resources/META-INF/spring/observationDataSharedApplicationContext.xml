@@ -223,7 +223,7 @@
 		<entry key="broad_cpd_sens_mutation_enrich:gct_path" value="evidence:readString:createObservedFileEvidence" />
 		<!-- broad tier3 navitoclax story -->
 		<entry key="broad_tier3_navitoclax_story:compound_name" value="subject:findCompoundsByName" />
-		<entry key="broad_tier3_navitoclax_story:gene_symbol" value="subject:findSubjectsBySynonym" />
+		<entry key="broad_tier3_navitoclax_story:gene_symbol" value="subject:findGenesBySymbol" />
 		<entry key="broad_tier3_navitoclax_story:figure_1" value="evidence:readString:createObservedFileEvidence" />
 		<entry key="broad_tier3_navitoclax_story:figure_2" value="evidence:readString:createObservedFileEvidence" />
 		<entry key="broad_tier3_navitoclax_story:figure_3" value="evidence:readString:createObservedFileEvidence" />
@@ -237,7 +237,7 @@
 		<entry key="columbia_marina_analysis:tissue" value="evidence:readString:createObservedLabelEvidence" />
 		<entry key="columbia_marina_analysis:cell_type" value="evidence:readString:createObservedLabelEvidence" />
 		<entry key="columbia_marina_analysis:cell_lineage" value="subject:findTissueSampleByLineage" />
-		<entry key="columbia_marina_analysis:gene_symbol" value="subject:findSubjectsBySynonym" />
+		<entry key="columbia_marina_analysis:gene_symbol" value="subject:findGenesBySymbol" />
 		<entry key="columbia_marina_analysis:entrez_gene_id" value="subject:findGenesByEntrezId" />
 		<entry key="columbia_marina_analysis:func_type" value="evidence:readString:createObservedLabelEvidence" />
 		<entry key="columbia_marina_analysis:mr_regulon_set_size" value="evidence:readInt:createObservedNumericEvidence" />
@@ -247,7 +247,7 @@
 		<!-- columbia mra fet analysis template -->
 		<entry key="columbia_mra_fet_analysis:disease_condition" value="subject:findTissueSampleByLineage" />
 		<entry key="columbia_mra_fet_analysis:tissue" value="evidence:readString:createObservedLabelEvidence" />
-		<entry key="columbia_mra_fet_analysis:gene_symbol" value="subject:findSubjectsBySynonym" />
+		<entry key="columbia_mra_fet_analysis:gene_symbol" value="subject:findGenesBySymbol" />
 		<entry key="columbia_mra_fet_analysis:func_type" value="evidence:readString:createObservedLabelEvidence" />
 		<entry key="columbia_mra_fet_analysis:mra_regulon_signature_overlap" value="evidence:readInt:createObservedNumericEvidence" />
 		<entry key="columbia_mra_fet_analysis:mra_overlap_rank" value="evidence:readInt:createObservedNumericEvidence" />
@@ -260,7 +260,7 @@
 		<entry key="columbia_joint_mr_shrna_diff:disease_condition" value="subject:findTissueSampleByLineage" />
 		<entry key="columbia_joint_mr_shrna_diff:cell_line_1" value="subject:findSubjectsBySynonym" />
 		<entry key="columbia_joint_mr_shrna_diff:cell_line_2" value="subject:findSubjectsBySynonym" />
-		<entry key="columbia_joint_mr_shrna_diff:gene_symbol" value="subject:findSubjectsBySynonym" />
+		<entry key="columbia_joint_mr_shrna_diff:gene_symbol" value="subject:findGenesBySymbol" />
 		<entry key="columbia_joint_mr_shrna_diff:entrez_gene_id" value="subject:findGenesByEntrezId" />
 		<entry key="columbia_joint_mr_shrna_diff:func_type" value="evidence:readString:createObservedLabelEvidence" />
 		<entry key="columbia_joint_mr_shrna_diff:mr_regulon_set_size" value="evidence:readInt:createObservedNumericEvidence" />
@@ -275,28 +275,28 @@
 		<!-- columbia tier4 glioma story -->
 		<entry key="columbia_tier4_glioma_story:disease_condition" value="subject:findTissueSampleByLineage" />
 		<entry key="columbia_tier4_glioma_story:tissue_sample" value="subject:findTissueSampleByLineage" />
-		<entry key="columbia_tier4_glioma_story:gene_symbol_1" value="subject:findSubjectsBySynonym" />
-		<entry key="columbia_tier4_glioma_story:gene_symbol_2" value="subject:findSubjectsBySynonym" />
-		<entry key="columbia_tier4_glioma_story:gene_symbol_3" value="subject:findSubjectsBySynonym" />
-		<entry key="columbia_tier4_glioma_story:gene_symbol_4" value="subject:findSubjectsBySynonym" />
-		<entry key="columbia_tier4_glioma_story:gene_symbol_5" value="subject:findSubjectsBySynonym" />
+		<entry key="columbia_tier4_glioma_story:gene_symbol_1" value="subject:findGenesBySymbol" />
+		<entry key="columbia_tier4_glioma_story:gene_symbol_2" value="subject:findGenesBySymbol" />
+		<entry key="columbia_tier4_glioma_story:gene_symbol_3" value="subject:findGenesBySymbol" />
+		<entry key="columbia_tier4_glioma_story:gene_symbol_4" value="subject:findGenesBySymbol" />
+		<entry key="columbia_tier4_glioma_story:gene_symbol_5" value="subject:findGenesBySymbol" />
 		<entry key="columbia_tier4_glioma_story:story_location" value="evidence:readString:createObservedFileEvidence" />
 		<!-- cshl tier4 fgf19 story -->
 		<entry key="cshl_tier4_fgf19_story:disease_condition" value="subject:findTissueSampleByLineage" />
 		<entry key="cshl_tier4_fgf19_story:tissue_sample" value="subject:findTissueSampleByLineage" />
-		<entry key="cshl_tier4_fgf19_story:gene_symbol_1" value="subject:findSubjectsBySynonym" />
-		<entry key="cshl_tier4_fgf19_story:gene_symbol_2" value="subject:findSubjectsBySynonym" />
-		<entry key="cshl_tier4_fgf19_story:gene_symbol_3" value="subject:findSubjectsBySynonym" />
-		<entry key="cshl_tier4_fgf19_story:gene_symbol_4" value="subject:findSubjectsBySynonym" />
+		<entry key="cshl_tier4_fgf19_story:gene_symbol_1" value="subject:findGenesBySymbol" />
+		<entry key="cshl_tier4_fgf19_story:gene_symbol_2" value="subject:findGenesBySymbol" />
+		<entry key="cshl_tier4_fgf19_story:gene_symbol_3" value="subject:findGenesBySymbol" />
+		<entry key="cshl_tier4_fgf19_story:gene_symbol_4" value="subject:findGenesBySymbol" />
 		<entry key="cshl_tier4_fgf19_story:drug_candidate" value="subject:findCompoundsByName" />
 		<entry key="cshl_tier4_fgf19_story:story_location" value="evidence:readString:createObservedFileEvidence" />
 		<!-- dfci tier4 beta-catenin story -->
 		<entry key="dfci_tier4_beta-catenin_story:disease_condition" value="subject:findTissueSampleByLineage" />
 		<entry key="dfci_tier4_beta-catenin_story:tissue_sample" value="subject:findTissueSampleByLineage" />
-		<entry key="dfci_tier4_beta-catenin_story:gene_symbol_1" value="subject:findSubjectsBySynonym" />
-		<entry key="dfci_tier4_beta-catenin_story:gene_symbol_2" value="subject:findSubjectsBySynonym" />
-		<entry key="dfci_tier4_beta-catenin_story:gene_symbol_3" value="subject:findSubjectsBySynonym" />
-		<entry key="dfci_tier4_beta-catenin_story:gene_symbol_4" value="subject:findSubjectsBySynonym" />
+		<entry key="dfci_tier4_beta-catenin_story:gene_symbol_1" value="subject:findGenesBySymbol" />
+		<entry key="dfci_tier4_beta-catenin_story:gene_symbol_2" value="subject:findGenesBySymbol" />
+		<entry key="dfci_tier4_beta-catenin_story:gene_symbol_3" value="subject:findGenesBySymbol" />
+		<entry key="dfci_tier4_beta-catenin_story:gene_symbol_4" value="subject:findGenesBySymbol" />
 		<entry key="dfci_tier4_beta-catenin_story:drug_candidate" value="subject:findCompoundsByName" />
 		<entry key="dfci_tier4_beta-catenin_story:story_location" value="evidence:readString:createObservedFileEvidence" />
 	  </map>

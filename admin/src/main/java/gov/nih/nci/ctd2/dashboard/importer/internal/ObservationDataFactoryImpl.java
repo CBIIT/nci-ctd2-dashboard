@@ -58,13 +58,18 @@ public class ObservationDataFactoryImpl implements ObservationDataFactory {
 		Subject subject = subjectCache.get(subjectValue);
 		if (subject == null) {
 			List<Subject> dashboardEntities = null;
-			if (daoFindQueryName.contains("findSubjectsBySynonym")) {
+			if (daoFindQueryName.equals("findSubjectsBySynonym")) {
 				Method method = dashboardDao.getClass().getMethod(daoFindQueryName, String.class, Boolean.TYPE);
 				dashboardEntities = (List<Subject>)method.invoke(dashboardDao, subjectValue, true);
 			}
 			else {
 				Method method = dashboardDao.getClass().getMethod(daoFindQueryName, String.class);
 				dashboardEntities = (List<Subject>)method.invoke(dashboardDao, subjectValue);
+				// if we've searched for gene by symbol and come up empty, try by synonym
+				if (dashboardEntities.isEmpty() && daoFindQueryName.equals("findGenesBySymbol")) {
+					method = dashboardDao.getClass().getMethod("findSubjectsBySynonym", String.class, Boolean.TYPE);
+					dashboardEntities = (List<Subject>)method.invoke(dashboardDao, subjectValue, true);
+				}
 			}
 			if (dashboardEntities.size() > 0) {
 				subject = dashboardEntities.iterator().next();
