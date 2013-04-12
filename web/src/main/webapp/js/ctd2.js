@@ -164,7 +164,7 @@
 
 
                         var subject = observedSubject.subject;
-                        var thatEl2 = $("#subject-image-" + subject.id);
+                        var thatEl2 = $("#subject-image-" + observedSubject.id);
                         var imgTemplate = $("#search-results-unknown-image-tmpl");
                         if(subject.class == "Compound") {
                             var compound = new Subject({id: subject.id });
