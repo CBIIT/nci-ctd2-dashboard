@@ -325,7 +325,7 @@
                 <div class="span9">
                     <table id="submission-details-grid" class="table table-bordered table-striped">
                         <tr>
-                            <th>Description</th>
+                            <th>Template Description</th>
                             <td>{{observationTemplate.description}}</td>
                         </tr>
                         <tr>
