@@ -57,7 +57,7 @@
               <ul class="nav pull-right">
                   <form class="form-search" id="omnisearch">
                       <div class="input-append">
-                          <input type="text" id="omni-input" class="span3 search-query" title="Search" placeholder="e.g. BRAF or ABT-137">
+                          <input type="text" id="omni-input" class="span3 search-query" title="Search" placeholder="e.g. BRAF or ABT-737">
                           <button type="submit" class="btn search-button">Search</button>
                           <span class="hide" id="search-help-content">
                               <p>Please enter the name of the subject you would like to search in the database.</p>
