@@ -234,9 +234,11 @@
                         $("#observation-summary").html(summary);
                     });
 
+                    var tableLength = (observedEvidences.models.length > 25 ? 10 : 25);
                     var oTable = $('#observed-evidences-grid').dataTable({
                         "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
-                        "sPaginationType": "bootstrap"
+                        "sPaginationType": "bootstrap",
+                        "iDisplayLength": tableLength
                     });
 
                     oTable.fnSort( [ [1, 'asc'], [2, 'asc'] ] );
