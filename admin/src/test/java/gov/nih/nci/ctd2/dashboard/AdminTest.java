@@ -67,15 +67,12 @@ public class AdminTest {
 		List<CellSample> cellSamples = dashboardDao.findCellSampleByLineage("haematopoietic_and_lymphoid_tissue");
 		assertEquals(1, cellSamples.size());
 
-		List<Subject> cellSampleSubjects = dashboardDao.findSubjectsBySynonym("haematopoietic_and_lymphoid_tissue", true);
-		assertEquals(1, cellSampleSubjects.size());
-
-		cellSampleSubjects = dashboardDao.findSubjectsByXref("CTD2", "idCell:9");
+		List<Subject> cellSampleSubjects = dashboardDao.findSubjectsByXref("CTD2", "idCell:9");
 		assertEquals(1, cellSampleSubjects.size());
 		CellSample cellSample = (CellSample)cellSampleSubjects.iterator().next();
 		assertEquals("697", cellSample.getDisplayName());
 		assertEquals("haematopoietic_and_lymphoid_tissue", cellSample.getLineage());
-		assertEquals(4, cellSample.getSynonyms().size());
+		assertEquals(3, cellSample.getSynonyms().size());
 		assertEquals(8, cellSample.getXrefs().size());
 
 		cellSampleSubjects = dashboardDao.findSubjectsByXref("integrated", "862");
@@ -83,7 +80,7 @@ public class AdminTest {
 		cellSample = (CellSample)cellSampleSubjects.iterator().next();
 		assertEquals("862", cellSample.getDisplayName());
 		assertEquals("meninges", cellSample.getLineage());
-		assertEquals(5, cellSample.getSynonyms().size());
+		assertEquals(4, cellSample.getSynonyms().size());
 		assertEquals(5, cellSample.getXrefs().size());
 		/*
 		String[] synonymsExpected = {"862", "idCell:1092", "862_LUNG", "862_MENINGES"};
