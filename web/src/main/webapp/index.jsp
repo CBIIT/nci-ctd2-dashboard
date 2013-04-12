@@ -744,7 +744,7 @@
 
     <script type="text/template" id="observedsubject-summary-row-tmpl">
         <tr>
-            <td id="subject-image-{{subject.id}}"></td>
+            <td id="subject-image-{{id}}"></td>
             <td>
                 <a href="#/subject/{{subject.id}}">
                     {{subject.displayName}}
