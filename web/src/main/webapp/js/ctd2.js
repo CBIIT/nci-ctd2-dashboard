@@ -649,6 +649,13 @@
             observations.fetch({
                 success: function() {
                     $(".submission-observations-loading").remove();
+
+                    // If there is only one observation, directly go there
+                    if(observations.models.length == 1) {
+                        var observation =  observations.models[0].toJSON().id;
+                        window.location.hash = "observation/" + observation;
+                    }
+
                     _.each(observations.models, function(observation) {
                         observation = observation.toJSON();
 
