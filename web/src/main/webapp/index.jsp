@@ -525,7 +525,7 @@
             </td>
             <td>{{observedEvidenceRole.evidenceRole.displayName}}</td>
             <td>{{observedEvidenceRole.displayText}}</td>
-            <td><span class="label">{{displayName}}</span></td>
+            <td><div class="labelevidence expandable">{{displayName}}</div></td>
         </tr>
     </script>
 
@@ -904,6 +904,7 @@
     <script src="js/bootstrap.min.js"></script>
     <script src="js/jquery.fancybox-1.3.4.pack.js"></script>
     <script src="js/jquery.easing-1.3.pack.js"></script>
+    <script src="js/jquery.expander.min.js"></script>
     <script src="js/ctd2.js"></script>
   </body>
 </html>

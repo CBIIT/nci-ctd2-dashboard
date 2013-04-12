@@ -244,6 +244,12 @@
                     $('.desc-tooltip').tooltip({ placement: "bottom" });
 
                     $("a.evidence-images").fancybox({titlePosition: 'inside'});
+                    $("div.expandable").expander({
+                        slicePoint: 50,
+                        expandText:       '[...]',
+                        expandPrefix:     ' ',
+                        userCollapseText: ''
+                    });
                 }
             });
 
