@@ -90,10 +90,10 @@
        <footer>
      	<p>
              CTD<sup>2</sup> Dashboard &middot;
-             <a href="#">Contact</a>
+             <a href="http://ctd2.nci.nih.gov/centers.html" target="_blank">Contact</a>
          </p>
          <p class="pull-right">
-             <a href=""><img src="img/logos/footer_logo_nci.jpg"></a><a href=""><img src="img/logos/footer_logo_hhs.jpg"></a><a href=""><img src="img/logos/footer_logo_nih.jpg"></a><a href=""><img src="img/logos/footer_logo_firstgov.jpg"></a>
+             <a href="http://cancer.gov"><img src="img/logos/footer_logo_nci.jpg"></a><a href="http://www.dhhs.gov/"><img src="img/logos/footer_logo_hhs.jpg"></a><a href="http://www.nih.gov/"><img src="img/logos/footer_logo_nih.jpg"></a><a href="http://www.firstgov.gov/"><img src="img/logos/footer_logo_firstgov.jpg"></a>
          </p>
        </footer>
     </div>
