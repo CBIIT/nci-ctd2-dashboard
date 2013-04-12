@@ -47,10 +47,10 @@
                 <li class="dropdown">
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown">Resources <b class="caret"></b></a>
                       <ul class="dropdown-menu">
-                          <li><a target="_blank" href="http://ctd2.nci.nih.gov/publication.html">CTD<sup>2</sup> Home page</a></li>
+                          <li><a target="_blank" href="http://ctd2.nci.nih.gov/index.html">CTD<sup>2</sup> Home page</a></li>
                           <li><a target="_blank" href="http://ctd2.nci.nih.gov/publication.html">Publications</a></li>
                           <li><a target="_blank" href="http://ctd2.nci.nih.gov/DataMatrix/CTD2_DataMatrix.html">Data Matrix</a></li>
-                          <li><a target="_blank" href="http://ocg.cancer.gov/resources/fnd.asp">Funding opportunities</a></li>
+                          <li><a target="_blank" href="http://ocg.cancer.gov/resources/fnd.asp">Funding Oportunities</a></li>
                       </ul>
                   </li>
               </ul>
