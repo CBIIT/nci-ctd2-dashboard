@@ -625,6 +625,58 @@
          </div>
     </script>
 
+    <script type="text/template" id="tissuesample-tmpl">
+        <div class="container common-container" id="tissuesample-container">
+            <h1>{{displayName}} <small>(# {{id}})</small></h1>
+
+            <div class="row">
+                <div class="span9">
+                    <table id="tissuesample-details-grid" class="table table-bordered table-striped">
+                        <tr>
+                            <th>Lineage</th>
+                            <td>{{lineage}}</td>
+                        </tr>
+                        <tr>
+
+                            <th>Synonyms</th>
+                            <td>
+                                <ul class="synonyms"></ul>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="span3">
+                    <h4>Tissue Sample</h4>
+                    <img src="img/tissuesample.png" class="img-polaroid" width=175 height=175>
+                </div>
+            </div>
+
+            <h3>Related observations</h3>
+            <table id="tissuesample-observation-grid" class="table table-bordered table-striped observations">
+                <thead>
+                <tr>
+                    <th>Observation</th>
+                    <th width=400>Observation Summary</th>
+                    <th>Tier</th>
+                    <th>Date</th>
+                    <th>Center</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- here will go the rows -->
+                <tr class="subject-observations-loading">
+                    <td colspan="5">
+                        <h3>Loading observations...</h3>
+                        <div class="progress progress-striped active">
+                            <div class="bar" style="width: 100%;"></div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </script>
+
     <script type="text/template" id="cellsample-tmpl">
         <div class="container common-container" id="cellsample-container">
             <h1>{{displayName}} <small>(# {{id}})</small></h1>
@@ -836,6 +888,12 @@
     <script type="text/template" id="search-results-cellsample-image-tmpl">
         <a href="#subject/{{id}}">
             <img src="img/cellsample.png" title="Cell sample" class="img-polaroid search-info" height="50" width="50">
+        </a>
+    </script>
+
+    <script type="text/template" id="search-results-tissuesample-image-tmpl">
+        <a href="#subject/{{id}}">
+            <img src="img/tissuesample.png" title="Cell sample" class="img-polaroid search-info" height="50" width="50">
         </a>
     </script>
 
