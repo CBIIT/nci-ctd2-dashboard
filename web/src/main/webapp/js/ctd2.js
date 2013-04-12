@@ -239,7 +239,7 @@
                         "sPaginationType": "bootstrap"
                     });
 
-                    oTable.fnSort( [ [1, 'asc'] ] );
+                    oTable.fnSort( [ [1, 'asc'], [2, 'asc'] ] );
 
                     $('.desc-tooltip').tooltip({ placement: "bottom" });
 
