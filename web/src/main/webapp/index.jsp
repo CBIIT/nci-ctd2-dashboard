@@ -579,7 +579,7 @@
                          <tr>
                              <th>References</th>
                              <td>
-                                 Entrez:<a href="http://www.ncbi.nlm.nih.gov/gene/{{entrezGeneId}}" target="_blank">{{entrezGeneId}} <i class="icon-share"></i></a> <br>
+                                 Entrez: <a href="http://www.ncbi.nlm.nih.gov/gene/{{entrezGeneId}}" target="_blank">{{entrezGeneId}} <i class="icon-share"></i></a> <br>
                              </td>
                          </tr>
                          <tr>
