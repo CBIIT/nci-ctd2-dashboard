@@ -198,7 +198,7 @@
 		<entry key="broad_cpd_sens_lineage_enrich:cell_line_exclusion" value="evidence:readString:createObservedLabelEvidence" />
 		<entry key="broad_cpd_sens_lineage_enrich:feature_data_set" value="evidence:readString:createObservedLabelEvidence" />
 		<entry key="broad_cpd_sens_lineage_enrich:compound_name" value="subject:findCompoundsByName" />
-		<entry key="broad_cpd_sens_lineage_enrich:cell_lineage" value="subject:findCellSampleByLineage" />
+		<entry key="broad_cpd_sens_lineage_enrich:cell_lineage" value="subject:findTissueSampleByLineage" />
 		<entry key="broad_cpd_sens_lineage_enrich:number_of_cell_lines" value="evidence:readInt:createObservedNumericEvidence" />
 		<entry key="broad_cpd_sens_lineage_enrich:number_of_example_cell_lines" value="evidence:readInt:createObservedNumericEvidence" />
 		<entry key="broad_cpd_sens_lineage_enrich:enrichment_direction" value="evidence:readString:createObservedLabelEvidence" />
