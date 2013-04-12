@@ -50,7 +50,7 @@
                           <li><a target="_blank" href="http://ctd2.nci.nih.gov/index.html">CTD<sup>2</sup> Home page</a></li>
                           <li><a target="_blank" href="http://ctd2.nci.nih.gov/publication.html">Publications</a></li>
                           <li><a target="_blank" href="http://ctd2.nci.nih.gov/DataMatrix/CTD2_DataMatrix.html">Data Matrix</a></li>
-                          <li><a target="_blank" href="http://ocg.cancer.gov/resources/fnd.asp">Funding Oportunities</a></li>
+                          <li><a target="_blank" href="http://ocg.cancer.gov/resources/fnd.asp">Funding Opportunities</a></li>
                       </ul>
                   </li>
               </ul>
