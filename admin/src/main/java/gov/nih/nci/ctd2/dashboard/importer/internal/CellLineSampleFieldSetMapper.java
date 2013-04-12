@@ -3,7 +3,6 @@ package gov.nih.nci.ctd2.dashboard.importer.internal;
 import gov.nih.nci.ctd2.dashboard.model.Xref;
 import gov.nih.nci.ctd2.dashboard.model.CellSample;
 import gov.nih.nci.ctd2.dashboard.model.Organism;
-import gov.nih.nci.ctd2.dashboard.model.Synonym;
 import gov.nih.nci.ctd2.dashboard.model.DashboardFactory;
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
 import org.springframework.stereotype.Component;
@@ -56,10 +55,6 @@ public class CellLineSampleFieldSetMapper implements FieldSetMapper<CellSample> 
 		String cellLineage = cellLineLineageMap.get(siteIndex);
 		if (cellLineage != null && cellLineage.length() > 0) {
 			cellSample.setLineage(cellLineage);
-			// create a synonym from lineage
-			Synonym synonym = dashboardFactory.create(Synonym.class);
-			synonym.setDisplayName(cellLineage);
-			cellSample.getSynonyms().add(synonym);
 		}
 		Xref xref = dashboardFactory.create(Xref.class);
 		xref.setDatabaseId(cellSampleId);

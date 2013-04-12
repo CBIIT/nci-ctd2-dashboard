@@ -1,6 +1,7 @@
 package gov.nih.nci.ctd2.dashboard.importer.internal;
 
 import gov.nih.nci.ctd2.dashboard.model.TissueSample;
+import gov.nih.nci.ctd2.dashboard.model.Synonym;
 import gov.nih.nci.ctd2.dashboard.model.DashboardFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindException;
@@ -26,6 +27,10 @@ public class TissueSampleDataFieldSetMapper implements FieldSetMapper<TissueSamp
         TissueSample tissueSample = dashboardFactory.create(TissueSample.class);
 		tissueSample.setDisplayName(fieldSet.readString(TISSUE_SAMPLE_NAME));
 		tissueSample.setLineage(fieldSet.readString(TISSUE_SAMPLE_LINEAGE));
+		// create a synonym to self
+		Synonym synonym = dashboardFactory.create(Synonym.class);
+		synonym.setDisplayName(fieldSet.readString(TISSUE_SAMPLE_NAME));
+		tissueSample.getSynonyms().add(synonym);
 
         return tissueSample;
 	}
