@@ -321,6 +321,10 @@
                        var centerListRowView
                            = new CenterListRowView({ el: $(thatEl).find(".thumbnails"), model: aCenter });
                         centerListRowView.render();
+
+                        $.ajax("count/submission/?filterBy=" + aCenter.id).done(function(count) {
+                            $("#submission-count-" + aCenter.id).html(count);
+                        });
                     });
                 }
             });
@@ -575,6 +579,10 @@
                         var centerSubmissionRowView
                             = new CenterSubmissionRowView({ el: $(thatEl).find("tbody"), model: submission });
                         centerSubmissionRowView.render();
+
+                        $.ajax("count/observation/?filterBy=" + submission.id).done(function(count) {
+                            $("#observation-count-" + submission.id).html(count);
+                        });
                     });
 
                     $(".template-description").tooltip();
@@ -732,6 +740,10 @@
                 imgTemplate = $("#search-results-gene-image-tmpl");
             }
             thatEl.append(_.template(imgTemplate.html(), result));
+
+            $.ajax("count/observation/?filterBy=" + result.id).done(function(count) {
+               $("#subject-observation-count-" + result.id).html(count);
+            });
 
             return this;
         }

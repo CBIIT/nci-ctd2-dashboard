@@ -271,7 +271,8 @@
             <a href="#center/{{id}}" class="thumbnail">
                 <img src="img/{{displayName}}.png" alt="{{displayName}}" class="img-polaroid" height="50"><br>
                 <center>
-                    {{displayName}} submissions &raquo;
+                    {{displayName}}<br>
+                    <span id="submission-count-{{id}}"></span> submissions &raquo;
                 </center>
             </a>
         </li>
@@ -312,8 +313,8 @@
             <td>
                 {{observationTemplate.description}}
             </td>
-            <td><span class="badge tier-badge">Tier {{observationTemplate.tier}}<span></td>
-            <td><a href="#submission/{{id}}">observations</a></td>
+            <td><span class="badge tier-badge">Tier {{observationTemplate.tier}}</span></td>
+            <td width=150><a href="#submission/{{id}}"><span id="observation-count-{{id}}"></span> observation(s)</a></td>
         </tr>
     </script>
 
@@ -855,7 +856,7 @@
             </td>
             <td>{{type}}</td>
             <td>{{organism.displayName}}</td>
-            <td><a href="#subject/{{id}}">observations</a></td>
+            <td><a href="#subject/{{id}}"><span id="subject-observation-count-{{id}}"></span> observation(s)</a></td>
         </tr>
     </script>
 
