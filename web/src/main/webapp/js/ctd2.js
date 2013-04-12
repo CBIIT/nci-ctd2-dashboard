@@ -185,6 +185,9 @@
                         } else if( subject.class == "CellSample" ) {
                             imgTemplate = $("#search-results-cellsample-image-tmpl");
                             thatEl2.append(_.template(imgTemplate.html(), subject));
+                        } else if( subject.class == "TissueSample" ) {
+                            imgTemplate = $("#search-results-tissuesample-image-tmpl");
+                            thatEl2.append(_.template(imgTemplate.html(), subject));
                         } else if( subject.class == "Gene" ) {
                             imgTemplate = $("#search-results-gene-image-tmpl");
                             thatEl2.append(_.template(imgTemplate.html(), subject));
@@ -433,6 +436,49 @@
                     var oTable = $('#gene-observation-grid').dataTable({
                            "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
                            "sPaginationType": "bootstrap"
+                    });
+
+                    oTable.fnSort( [ [2, 'desc'] ] );
+
+                }
+            });
+
+            return this;
+        }
+    });
+
+    var TissueSampleView = Backbone.View.extend({
+        el: $("#main-container"),
+        template:  _.template($("#tissuesample-tmpl").html()),
+        render: function() {
+            var result = this.model.toJSON();
+            result["type"] = result.class;
+            $(this.el).html(this.template(result));
+
+            var thatEl = $("ul.synonyms");
+            _.each(result.synonyms, function(aSynonym) {
+                if(aSynonym.displayName == result.displayName ) return;
+
+                var synonymView = new SynonymView({ model: aSynonym, el: thatEl });
+                synonymView.render();
+            });
+
+            var observations = new Observations({ subjectId: result.id });
+            thatEl = $("#tissuesample-observation-grid");
+            observations.fetch({
+                success: function() {
+                    $(".subject-observations-loading").remove();
+                    _.each(observations.models, function(observation) {
+                        observation = observation.toJSON();
+
+                        var observationRowView
+                            = new ObservationRowView({ el: $(thatEl).find("tbody"), model: observation });
+                        observationRowView.render();
+                    });
+
+                    var oTable = $('#tissuesample-observation-grid').dataTable({
+                        "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
+                        "sPaginationType": "bootstrap"
                     });
 
                     oTable.fnSort( [ [2, 'desc'] ] );
@@ -841,6 +887,8 @@
                         subjectView = new CompoundView({ model: subject });
                     } else if(type == "CellSample") {
                         subjectView = new CellSampleView({ model: subject });
+                    } else if(type == "TissueSample") {
+                        subjectView = new TissueSampleView({ model: subject });
                     } else {
                         subjectView = new GeneView({ model: subject });
                     }
