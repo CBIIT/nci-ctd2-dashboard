@@ -114,7 +114,7 @@
 
   <bean name="columbiaMarinaAnalysisLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="dummy,submission_center,submission_date,template_name,probeset_id,disease_condition,tissue,cell_type,cell_lineage,gene_symbol,entrez_gene_id,func_type,mr_regulon_set_size,mr_gsea_es,mr_gsea_p_value,mr_gsea_fdr"/>
+	<property name="names" value="dummy,submission_center,submission_date,template_name,probeset_id,disease_condition,tissue,cell_type,cell_lineage,gene_symbol,func_type,mr_regulon_set_size,mr_gsea_es,mr_gsea_p_value,mr_gsea_fdr"/>
   </bean>
 
   <!-- columbia mra fet analysis -->
@@ -128,7 +128,7 @@
 
   <bean name="columbiaMRAFetAnalysisLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="dummy,submission_center,submission_date,template_name,disease_condition,tissue,gene_symbol,func_type,mra_regulon_signature_overlap,mra_overlap_rank,mra_fet_p_value,figure_1,publication_url,publication_reference"/>
+	<property name="names" value="dummy,submission_center,submission_date,template_name,disease_condition,tissue,gene_symbol,func_type,mra_regulon_signature_overlap,mra_overlap_rank,mra_fet_p_value,figure_1,network_1,publication_url,publication_reference"/>
   </bean>
 
   <!-- columbia master regulator analysis with shRNA knockdown analysis -->
@@ -142,7 +142,7 @@
 
   <bean name="columbiaJointMRSHRNADiffAnalysisLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="dummy,submission_center,submission_date,template_name,probeset_id,disease_condition,cell_line_1,cell_line_2,gene_symbol,entrez_gene_id,func_type,mr_regulon_set_size,mr_gsea_es,mr_gsea_p_value,mr_gsea_fdr,num_shRNAs,shrna_diff_rep_z_score_combined,shrna_diff_rep_p_value_combined,shrna_diff_rep_fdr_combined,shrna_diff_rep_net_direction_combined,nci_portal"/>
+	<property name="names" value="dummy,submission_center,submission_date,template_name,probeset_id,disease_condition,cell_line_1,cell_line_2,gene_symbol,func_type,mr_regulon_set_size,mr_gsea_es,mr_gsea_p_value,mr_gsea_fdr,num_shRNAs,shrna_diff_rep_z_score_combined,shrna_diff_rep_p_value_combined,shrna_diff_rep_fdr_combined,shrna_diff_rep_net_direction_combined,nci_portal"/>
   </bean>
 
   <!-- columbia tier4 glioma story -->
@@ -238,7 +238,6 @@
 		<entry key="columbia_marina_analysis:cell_type" value="evidence:readString:createObservedLabelEvidence" />
 		<entry key="columbia_marina_analysis:cell_lineage" value="subject:findTissueSampleByLineage" />
 		<entry key="columbia_marina_analysis:gene_symbol" value="subject:findGenesBySymbol" />
-		<entry key="columbia_marina_analysis:entrez_gene_id" value="subject:findGenesByEntrezId" />
 		<entry key="columbia_marina_analysis:func_type" value="evidence:readString:createObservedLabelEvidence" />
 		<entry key="columbia_marina_analysis:mr_regulon_set_size" value="evidence:readInt:createObservedNumericEvidence" />
 		<entry key="columbia_marina_analysis:mr_gsea_es" value="evidence:readDouble:createObservedNumericEvidence" />
@@ -253,6 +252,7 @@
 		<entry key="columbia_mra_fet_analysis:mra_overlap_rank" value="evidence:readInt:createObservedNumericEvidence" />
 		<entry key="columbia_mra_fet_analysis:mra_fet_p_value" value="evidence:readDouble:createObservedNumericEvidence" />
 		<entry key="columbia_mra_fet_analysis:figure_1" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="columbia_mra_fet_analysis:network_1" value="evidence:readString:createObservedFileEvidence" />
 		<entry key="columbia_mra_fet_analysis:publication_url" value="evidence:readString:createObservedUrlEvidence" />
 		<entry key="columbia_mra_fet_analysis:publication_reference" value="evidence:readString:createObservedLabelEvidence" />
 		<!-- columbia master regulator analysis with shRNA knockdown analysis -->
@@ -261,7 +261,6 @@
 		<entry key="columbia_joint_mr_shrna_diff:cell_line_1" value="subject:findSubjectsBySynonym" />
 		<entry key="columbia_joint_mr_shrna_diff:cell_line_2" value="subject:findSubjectsBySynonym" />
 		<entry key="columbia_joint_mr_shrna_diff:gene_symbol" value="subject:findGenesBySymbol" />
-		<entry key="columbia_joint_mr_shrna_diff:entrez_gene_id" value="subject:findGenesByEntrezId" />
 		<entry key="columbia_joint_mr_shrna_diff:func_type" value="evidence:readString:createObservedLabelEvidence" />
 		<entry key="columbia_joint_mr_shrna_diff:mr_regulon_set_size" value="evidence:readInt:createObservedNumericEvidence" />
 		<entry key="columbia_joint_mr_shrna_diff:mr_gsea_es" value="evidence:readDouble:createObservedNumericEvidence" />
