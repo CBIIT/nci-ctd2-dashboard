@@ -20,6 +20,8 @@ public class ControlledVocabularyPerTemplateFieldSetMapper implements FieldSetMa
 	private static final String TEMPLATE_DESCRIPTION = "template_description";
 	private static final String SUBMISSION_NAME = "submission_name";
 	private static final String SUBMISSION_DESCRIPTION = "submission_description";
+	private static final String SUBMISSION_STORY = "submission_story";
+	private static final String SUBMISSION_STORY_RANK = "submission_story_rank";
 
     @Autowired
     private DashboardFactory dashboardFactory;
@@ -37,6 +39,8 @@ public class ControlledVocabularyPerTemplateFieldSetMapper implements FieldSetMa
 		observationTemplate.setDescription(fieldSet.readString(TEMPLATE_DESCRIPTION));
 		observationTemplate.setSubmissionName(fieldSet.readString(SUBMISSION_NAME));
 		observationTemplate.setSubmissionDescription(fieldSet.readString(SUBMISSION_DESCRIPTION));
+		observationTemplate.setIsSubmissionStory(fieldSet.readBoolean(SUBMISSION_STORY, "TRUE"));
+		observationTemplate.setSubmissionStoryRank(fieldSet.readInt(SUBMISSION_STORY_RANK));
 
 		observationTemplateMap.put(fieldSet.readString(TEMPLATE_NAME), observationTemplate);
 
