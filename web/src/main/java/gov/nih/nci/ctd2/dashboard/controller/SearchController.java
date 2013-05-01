@@ -36,11 +36,13 @@ public class SearchController {
             return new ResponseEntity<String>(headers, HttpStatus.BAD_REQUEST);
 
         boolean isExact = type.trim().equalsIgnoreCase("exact");
-        List<Subject> subjectsBySynonym = dashboardDao.findSubjectsBySynonym(keyword, isExact);
+        //List<Subject> subjectsBySynonym = dashboardDao.findSubjectsBySynonym(keyword, isExact);
+        if(!isExact) keyword += keyword + "*";
+        List<DashboardEntity> results = dashboardDao.search(keyword);
 
         JSONSerializer jsonSerializer = new JSONSerializer().transform(new ImplTransformer(), Class.class);
         return new ResponseEntity<String>(
-                jsonSerializer.deepSerialize(subjectsBySynonym),
+                jsonSerializer.deepSerialize(results),
                 headers,
                 HttpStatus.OK
         );

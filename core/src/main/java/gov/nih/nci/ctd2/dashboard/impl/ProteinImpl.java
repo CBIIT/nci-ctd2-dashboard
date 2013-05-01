@@ -4,6 +4,8 @@ import gov.nih.nci.ctd2.dashboard.model.Protein;
 import gov.nih.nci.ctd2.dashboard.model.Transcript;
 import org.hibernate.annotations.CollectionId;
 import org.hibernate.annotations.Proxy;
+import org.hibernate.search.annotations.Indexed;
+
 import javax.persistence.*;
 
 import java.util.Set;
@@ -12,6 +14,7 @@ import java.util.HashSet;
 @Entity
 @Proxy(proxyClass = Protein.class)
 @Table(name = "protein")
+@Indexed
 public class ProteinImpl extends SubjectWithOrganismImpl implements Protein {
     private String uniprotId;
     private Set<Transcript> transcripts = new HashSet<Transcript>();

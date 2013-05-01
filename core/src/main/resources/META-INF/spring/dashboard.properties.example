@@ -13,3 +13,6 @@ hibernate.hbm2ddl.auto=update
 hibernate.hbm2ddl.auto.test=create
 hibernate.ejb.naming_strategy=org.hibernate.cfg.ImprovedNamingStrategy
 hibernate.connection.charSet=UTF-8
+
+# lucene
+search.indexDir=/tmp/dashboard-index

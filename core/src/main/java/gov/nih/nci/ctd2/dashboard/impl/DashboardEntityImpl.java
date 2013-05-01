@@ -3,6 +3,8 @@ package gov.nih.nci.ctd2.dashboard.impl;
 import gov.nih.nci.ctd2.dashboard.model.DashboardEntity;
 import org.hibernate.annotations.Index;
 import org.hibernate.annotations.Proxy;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
 
 import javax.persistence.*;
 
@@ -15,10 +17,13 @@ import javax.persistence.*;
         appliesTo = "dashboard_entity",
         indexes = { @Index(name = "entityNameIdx", columnNames = { "displayName" })
 })
+@Indexed
 public class DashboardEntityImpl implements DashboardEntity {
+    public final static String FIELD_DISPLAYNAME = "keyword";
     private Integer id;
     private String displayName;
 
+    @Field(name = FIELD_DISPLAYNAME, index = org.hibernate.search.annotations.Index.TOKENIZED)
     public String getDisplayName() {
         return displayName;
     }

@@ -502,7 +502,7 @@ public class DashboardDaoTest {
     }
 
     @Test
-    public void findObservedRolesByColumnName() {
+    public void findObservedRolesByColumnNameTest() {
 
 		ObservationTemplate observationTemplate = dashboardFactory.create(ObservationTemplate.class);
 		observationTemplate.setDisplayName("template_name");
@@ -534,6 +534,71 @@ public class DashboardDaoTest {
         dashboardDao.save(observedSubjectRole);
 
 		assertTrue(dashboardDao.findObservedSubjectRole("template_name", columnName) != null);
+    }
+
+    @Test
+    public void indexTest() {
+        String synonymStr = "Synonym";
+
+        String synStr1 = synonymStr + "11";
+        Synonym synonym1 = dashboardFactory.create(Synonym.class);
+        synonym1.setDisplayName(synStr1);
+
+        String synStr2 = synonymStr + "12";
+        Synonym synonym2 = dashboardFactory.create(Synonym.class);
+        synonym2.setDisplayName(synStr2);
+
+        String synStr3 = synonymStr + " 21";
+        Synonym synonym3 = dashboardFactory.create(Synonym.class);
+        synonym3.setDisplayName(synStr3);
+
+        String synStr4 = synonymStr + " 22";
+        Synonym synonym4 = dashboardFactory.create(Synonym.class);
+        synonym4.setDisplayName(synStr4);
+
+        Gene gene1 = dashboardFactory.create(Gene.class);
+        gene1.setEntrezGeneId("E1");
+        gene1.getSynonyms().add(synonym1);
+        gene1.getSynonyms().add(synonym2);
+        dashboardDao.save(gene1);
+
+        Gene gene2 = dashboardFactory.create(Gene.class);
+        gene2.setEntrezGeneId("E2");
+        gene2.getSynonyms().add(synonym3);
+        gene2.getSynonyms().add(synonym4);
+        dashboardDao.save(gene2);
+
+        CellSample cellSample1 = dashboardFactory.create(CellSample.class);
+        cellSample1.setDisplayName("CL1");
+        String lineageTest = "LineageTest";
+        cellSample1.setLineage(lineageTest);
+        dashboardDao.save(cellSample1);
+
+        ObservationTemplate observationTemplate = dashboardFactory.create(ObservationTemplate.class);
+        String obsDesc = "ObsDesc";
+        observationTemplate.setDescription(obsDesc);
+        String submsDesc = "SubmsDesc";
+        observationTemplate.setSubmissionDescription(submsDesc);
+        String submsName = "SubmsName";
+        observationTemplate.setSubmissionName(submsName);
+        dashboardDao.save(observationTemplate);
+
+        dashboardDao.createIndex();
+        assertTrue(dashboardDao.search("something").isEmpty());
+        assertEquals(2, dashboardDao.search(synonymStr + "*").size());
+        assertEquals(1, dashboardDao.search(synonymStr + "1*").size());
+        assertEquals(1, dashboardDao.search(synStr4).size());
+
+        assertTrue(dashboardDao.search(submsDesc).isEmpty());
+        assertTrue(dashboardDao.search(obsDesc).isEmpty());
+        assertTrue(dashboardDao.search(submsName).isEmpty());
+        Submission submission = dashboardFactory.create(Submission.class);
+        submission.setObservationTemplate(observationTemplate);
+        dashboardDao.save(submission);
+        assertFalse(dashboardDao.search(submsDesc).isEmpty());
+        assertFalse(dashboardDao.search(obsDesc).isEmpty());
+        assertFalse(dashboardDao.search(submsName).isEmpty());
+
     }
 }
 

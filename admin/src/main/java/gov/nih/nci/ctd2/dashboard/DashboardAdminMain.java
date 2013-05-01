@@ -49,6 +49,7 @@ public class DashboardAdminMain {
                 .addOption("o", "observation-data", false, "imports dashboard observation data.")
                 .addOption("s", "sample-data", false, "imports sample data.")
                 .addOption("t", "taxonomy-data", false, "imports organism data.")
+                .addOption("i", "index", false, "creates lucene index.")
         ;
 
         // Here goes the parsing attempt
@@ -102,6 +103,11 @@ public class DashboardAdminMain {
 			if( commandLine.hasOption("t") ) {
                 launchJob("taxonomyDataImporterJob");
 			}
+
+            if( commandLine.hasOption("i") ) {
+                DashboardDao dashboardDao = (DashboardDao) appContext.getBean("dasboardDao");
+                dashboardDao.createIndex();
+            }
 
             log.info("All done.");
         } catch (ParseException e) {
