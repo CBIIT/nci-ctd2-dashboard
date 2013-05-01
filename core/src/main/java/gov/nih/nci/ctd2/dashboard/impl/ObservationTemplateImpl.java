@@ -10,7 +10,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-
 @Entity
 @Proxy(proxyClass= ObservationTemplate.class)
 @Table(name = "observation_template")
@@ -25,6 +24,8 @@ public class ObservationTemplateImpl extends DashboardEntityImpl implements Obse
     private Integer tier = 0;
 	private String submissionName;
 	private String submissionDescription;
+	private Boolean isSubmissionStory;
+	private Integer submissionStoryRank = 0;
 
     @Field(name=FIELD_DESCRIPTION, index = Index.TOKENIZED)
     @Column(length = 1024)
@@ -71,5 +72,21 @@ public class ObservationTemplateImpl extends DashboardEntityImpl implements Obse
 
     public void setSubmissionDescription(String submissionDescription) {
         this.submissionDescription = submissionDescription;
+    }
+
+	public Boolean getIsSubmissionStory() {
+		return isSubmissionStory;
+	}
+
+	public void setIsSubmissionStory(Boolean isSubmissionStory) {
+		this.isSubmissionStory = isSubmissionStory;
+	}
+
+    public Integer getSubmissionStoryRank() {
+        return submissionStoryRank;
+    }
+
+    public void setSubmissionStoryRank(Integer submissionStoryRank) {
+        this.submissionStoryRank = submissionStoryRank;
     }
 }
