@@ -272,7 +272,7 @@
 
     .img-evidence {
         width: auto;
-        height: 60px;
+        max-height: 140px;
     }
 
     #omnisearch {
@@ -290,6 +290,12 @@
     .fancybox-title-inside {
         font-size: 110%;
         background-color: #f6f6f6;
+    }
+
+    .image-evidence-wrapper {
+        max-height: 150px;
+        max-width: 150px;
+        overflow: hidden;
     }
 
 

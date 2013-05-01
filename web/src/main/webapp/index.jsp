@@ -47,17 +47,17 @@
                 <li class="dropdown">
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown">Resources <b class="caret"></b></a>
                       <ul class="dropdown-menu">
-                          <li><a target="_blank" href="http://ctd2.nci.nih.gov/publication.html">CTD<sup>2</sup> Home page</a></li>
+                          <li><a target="_blank" href="http://ctd2.nci.nih.gov/index.html">CTD<sup>2</sup> Home page</a></li>
                           <li><a target="_blank" href="http://ctd2.nci.nih.gov/publication.html">Publications</a></li>
                           <li><a target="_blank" href="http://ctd2.nci.nih.gov/DataMatrix/CTD2_DataMatrix.html">Data Matrix</a></li>
-                          <li><a target="_blank" href="http://ocg.cancer.gov/resources/fnd.asp">Funding opportunities</a></li>
+                          <li><a target="_blank" href="http://ocg.cancer.gov/resources/fnd.asp">Funding Opportunities</a></li>
                       </ul>
                   </li>
               </ul>
               <ul class="nav pull-right">
                   <form class="form-search" id="omnisearch">
                       <div class="input-append">
-                          <input type="text" id="omni-input" class="span3 search-query" title="Search" placeholder="e.g. BRAF or ABT-137">
+                          <input type="text" id="omni-input" class="span3 search-query" title="Search" placeholder="e.g. BRAF or ABT-737">
                           <button type="submit" class="btn search-button">Search</button>
                           <span class="hide" id="search-help-content">
                               <p>Please enter the name of the subject you would like to search in the database.</p>
@@ -90,10 +90,10 @@
        <footer>
      	<p>
              CTD<sup>2</sup> Dashboard &middot;
-             <a href="#">Contact</a>
+             <a href="http://ctd2.nci.nih.gov/centers.html" target="_blank">Contact</a>
          </p>
          <p class="pull-right">
-             <a href=""><img src="img/logos/footer_logo_nci.jpg"></a><a href=""><img src="img/logos/footer_logo_hhs.jpg"></a><a href=""><img src="img/logos/footer_logo_nih.jpg"></a><a href=""><img src="img/logos/footer_logo_firstgov.jpg"></a>
+             <a href="http://cancer.gov"><img src="img/logos/footer_logo_nci.jpg"></a><a href="http://www.dhhs.gov/"><img src="img/logos/footer_logo_hhs.jpg"></a><a href="http://www.nih.gov/"><img src="img/logos/footer_logo_nih.jpg"></a><a href="http://www.firstgov.gov/"><img src="img/logos/footer_logo_firstgov.jpg"></a>
          </p>
        </footer>
     </div>
@@ -271,7 +271,8 @@
             <a href="#center/{{id}}" class="thumbnail">
                 <img src="img/{{displayName}}.png" alt="{{displayName}}" class="img-polaroid" height="50"><br>
                 <center>
-                    {{displayName}} submissions &raquo;
+                    {{displayName}}<br>
+                    <span id="submission-count-{{id}}"></span> submissions &raquo;
                 </center>
             </a>
         </li>
@@ -312,8 +313,8 @@
             <td>
                 {{observationTemplate.description}}
             </td>
-            <td><span class="badge tier-badge">Tier {{observationTemplate.tier}}<span></td>
-            <td><a href="#submission/{{id}}">observations</a></td>
+            <td><span class="badge tier-badge">Tier {{observationTemplate.tier}}</span></td>
+            <td width=150><a href="#submission/{{id}}"><span id="observation-count-{{id}}"></span> observation(s)</a></td>
         </tr>
     </script>
 
@@ -325,7 +326,7 @@
                 <div class="span9">
                     <table id="submission-details-grid" class="table table-bordered table-striped">
                         <tr>
-                            <th>Description</th>
+                            <th>Template Description</th>
                             <td>{{observationTemplate.description}}</td>
                         </tr>
                         <tr>
@@ -510,10 +511,12 @@
             <td>{{observedEvidenceRole.evidenceRole.displayName}}</td>
             <td>{{observedEvidenceRole.displayText}}</td>
             <td>
-                <a href="http://cbio.mskcc.org/cancergenomics/ctd2-dashboard/{{evidence.filePath}}" target="_blank" title="{{observedEvidenceRole.displayText}}" rel="evidence-images" class="evidence-images">
-                    <img src="http://cbio.mskcc.org/cancergenomics/ctd2-dashboard/{{evidence.filePath}}" class="img-polaroid img-evidence" height="60">
-                </a>
-                </td>
+                <div class="image-evidence-wrapper">
+                    <a href="http://cbio.mskcc.org/cancergenomics/ctd2-dashboard/{{evidence.filePath}}" target="_blank" title="{{observedEvidenceRole.displayText}}" rel="evidence-images" class="evidence-images">
+                        <img src="http://cbio.mskcc.org/cancergenomics/ctd2-dashboard/{{evidence.filePath}}" class="img-polaroid img-evidence" height="140">
+                    </a>
+                </div>
+            </td>
         </tr>
     </script>
 
@@ -525,7 +528,7 @@
             </td>
             <td>{{observedEvidenceRole.evidenceRole.displayName}}</td>
             <td>{{observedEvidenceRole.displayText}}</td>
-            <td><span class="label">{{displayName}}</span></td>
+            <td><div class="labelevidence expandable">{{displayName}}</div></td>
         </tr>
     </script>
 
@@ -579,7 +582,7 @@
                          <tr>
                              <th>References</th>
                              <td>
-                                 Entrez:<a href="http://www.ncbi.nlm.nih.gov/gene/{{entrezGeneId}}" target="_blank">{{entrezGeneId}} <i class="icon-share"></i></a> <br>
+                                 Entrez: <a href="http://www.ncbi.nlm.nih.gov/gene/{{entrezGeneId}}" target="_blank">{{entrezGeneId}} <i class="icon-share"></i></a> <br>
                              </td>
                          </tr>
                          <tr>
@@ -620,6 +623,58 @@
                  </tbody>
              </table>
          </div>
+    </script>
+
+    <script type="text/template" id="tissuesample-tmpl">
+        <div class="container common-container" id="tissuesample-container">
+            <h1>{{displayName}} <small>(# {{id}})</small></h1>
+
+            <div class="row">
+                <div class="span9">
+                    <table id="tissuesample-details-grid" class="table table-bordered table-striped">
+                        <tr>
+                            <th>Lineage</th>
+                            <td>{{lineage}}</td>
+                        </tr>
+                        <tr>
+
+                            <th>Synonyms</th>
+                            <td>
+                                <ul class="synonyms"></ul>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="span3">
+                    <h4>Tissue Sample</h4>
+                    <img src="img/tissuesample.png" class="img-polaroid" width=175 height=175>
+                </div>
+            </div>
+
+            <h3>Related observations</h3>
+            <table id="tissuesample-observation-grid" class="table table-bordered table-striped observations">
+                <thead>
+                <tr>
+                    <th>Observation</th>
+                    <th width=400>Observation Summary</th>
+                    <th>Tier</th>
+                    <th>Date</th>
+                    <th>Center</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- here will go the rows -->
+                <tr class="subject-observations-loading">
+                    <td colspan="5">
+                        <h3>Loading observations...</h3>
+                        <div class="progress progress-striped active">
+                            <div class="bar" style="width: 100%;"></div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </script>
 
     <script type="text/template" id="cellsample-tmpl">
@@ -744,7 +799,7 @@
 
     <script type="text/template" id="observedsubject-summary-row-tmpl">
         <tr>
-            <td id="subject-image-{{subject.id}}"></td>
+            <td id="subject-image-{{id}}"></td>
             <td>
                 <a href="#/subject/{{subject.id}}">
                     {{subject.displayName}}
@@ -836,6 +891,12 @@
         </a>
     </script>
 
+    <script type="text/template" id="search-results-tissuesample-image-tmpl">
+        <a href="#subject/{{id}}">
+            <img src="img/tissuesample.png" title="Cell sample" class="img-polaroid search-info" height="50" width="50">
+        </a>
+    </script>
+
     <script type="text/template" id="search-results-unknown-image-tmpl">
         <a href="#subject/{{id}}">
             <img src="img/unknown.png" title="{{type}}" class="img-polaroid search-info" height="50" width="50">
@@ -853,7 +914,7 @@
             </td>
             <td>{{type}}</td>
             <td>{{organism.displayName}}</td>
-            <td><a href="#subject/{{id}}">observations</a></td>
+            <td><a href="#subject/{{id}}"><span id="subject-observation-count-{{id}}"></span> observation(s)</a></td>
         </tr>
     </script>
 
@@ -904,6 +965,7 @@
     <script src="js/bootstrap.min.js"></script>
     <script src="js/jquery.fancybox-1.3.4.pack.js"></script>
     <script src="js/jquery.easing-1.3.pack.js"></script>
+    <script src="js/jquery.expander.min.js"></script>
     <script src="js/ctd2.js"></script>
   </body>
 </html>
