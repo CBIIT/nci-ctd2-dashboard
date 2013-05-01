@@ -164,7 +164,7 @@
 
 
                         var subject = observedSubject.subject;
-                        var thatEl2 = $("#subject-image-" + subject.id);
+                        var thatEl2 = $("#subject-image-" + observedSubject.id);
                         var imgTemplate = $("#search-results-unknown-image-tmpl");
                         if(subject.class == "Compound") {
                             var compound = new Subject({id: subject.id });
@@ -184,6 +184,9 @@
 
                         } else if( subject.class == "CellSample" ) {
                             imgTemplate = $("#search-results-cellsample-image-tmpl");
+                            thatEl2.append(_.template(imgTemplate.html(), subject));
+                        } else if( subject.class == "TissueSample" ) {
+                            imgTemplate = $("#search-results-tissuesample-image-tmpl");
                             thatEl2.append(_.template(imgTemplate.html(), subject));
                         } else if( subject.class == "Gene" ) {
                             imgTemplate = $("#search-results-gene-image-tmpl");
@@ -234,16 +237,24 @@
                         $("#observation-summary").html(summary);
                     });
 
+                    var tableLength = (observedEvidences.models.length > 25 ? 10 : 25);
                     var oTable = $('#observed-evidences-grid').dataTable({
                         "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
-                        "sPaginationType": "bootstrap"
+                        "sPaginationType": "bootstrap",
+                        "iDisplayLength": tableLength
                     });
 
-                    oTable.fnSort( [ [1, 'asc'] ] );
+                    oTable.fnSort( [ [1, 'asc'], [2, 'asc'] ] );
 
                     $('.desc-tooltip').tooltip({ placement: "bottom" });
 
                     $("a.evidence-images").fancybox({titlePosition: 'inside'});
+                    $("div.expandable").expander({
+                        slicePoint: 50,
+                        expandText:       '[...]',
+                        expandPrefix:     ' ',
+                        userCollapseText: ''
+                    });
                 }
             });
 
@@ -313,6 +324,10 @@
                        var centerListRowView
                            = new CenterListRowView({ el: $(thatEl).find(".thumbnails"), model: aCenter });
                         centerListRowView.render();
+
+                        $.ajax("count/submission/?filterBy=" + aCenter.id).done(function(count) {
+                            $("#submission-count-" + aCenter.id).html(count);
+                        });
                     });
                 }
             });
@@ -421,6 +436,49 @@
                     var oTable = $('#gene-observation-grid').dataTable({
                            "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
                            "sPaginationType": "bootstrap"
+                    });
+
+                    oTable.fnSort( [ [2, 'desc'] ] );
+
+                }
+            });
+
+            return this;
+        }
+    });
+
+    var TissueSampleView = Backbone.View.extend({
+        el: $("#main-container"),
+        template:  _.template($("#tissuesample-tmpl").html()),
+        render: function() {
+            var result = this.model.toJSON();
+            result["type"] = result.class;
+            $(this.el).html(this.template(result));
+
+            var thatEl = $("ul.synonyms");
+            _.each(result.synonyms, function(aSynonym) {
+                if(aSynonym.displayName == result.displayName ) return;
+
+                var synonymView = new SynonymView({ model: aSynonym, el: thatEl });
+                synonymView.render();
+            });
+
+            var observations = new Observations({ subjectId: result.id });
+            thatEl = $("#tissuesample-observation-grid");
+            observations.fetch({
+                success: function() {
+                    $(".subject-observations-loading").remove();
+                    _.each(observations.models, function(observation) {
+                        observation = observation.toJSON();
+
+                        var observationRowView
+                            = new ObservationRowView({ el: $(thatEl).find("tbody"), model: observation });
+                        observationRowView.render();
+                    });
+
+                    var oTable = $('#tissuesample-observation-grid').dataTable({
+                        "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
+                        "sPaginationType": "bootstrap"
                     });
 
                     oTable.fnSort( [ [2, 'desc'] ] );
@@ -567,6 +625,10 @@
                         var centerSubmissionRowView
                             = new CenterSubmissionRowView({ el: $(thatEl).find("tbody"), model: submission });
                         centerSubmissionRowView.render();
+
+                        $.ajax("count/observation/?filterBy=" + submission.id).done(function(count) {
+                            $("#observation-count-" + submission.id).html(count);
+                        });
                     });
 
                     $(".template-description").tooltip();
@@ -649,6 +711,13 @@
             observations.fetch({
                 success: function() {
                     $(".submission-observations-loading").remove();
+
+                    // If there is only one observation, directly go there
+                    if(observations.models.length == 1) {
+                        var observation =  observations.models[0].toJSON().id;
+                        window.location.hash = "observation/" + observation;
+                    }
+
                     _.each(observations.models, function(observation) {
                         observation = observation.toJSON();
 
@@ -717,6 +786,10 @@
                 imgTemplate = $("#search-results-gene-image-tmpl");
             }
             thatEl.append(_.template(imgTemplate.html(), result));
+
+            $.ajax("count/observation/?filterBy=" + result.id).done(function(count) {
+               $("#subject-observation-count-" + result.id).html(count);
+            });
 
             return this;
         }
@@ -814,6 +887,8 @@
                         subjectView = new CompoundView({ model: subject });
                     } else if(type == "CellSample") {
                         subjectView = new CellSampleView({ model: subject });
+                    } else if(type == "TissueSample") {
+                        subjectView = new TissueSampleView({ model: subject });
                     } else {
                         subjectView = new GeneView({ model: subject });
                     }
