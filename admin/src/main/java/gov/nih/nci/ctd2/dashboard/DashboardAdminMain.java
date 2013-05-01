@@ -105,7 +105,7 @@ public class DashboardAdminMain {
 			}
 
             if( commandLine.hasOption("i") ) {
-                DashboardDao dashboardDao = (DashboardDao) appContext.getBean("dasboardDao");
+                DashboardDao dashboardDao = (DashboardDao) appContext.getBean("dashboardDao");
                 dashboardDao.createIndex();
             }
 
