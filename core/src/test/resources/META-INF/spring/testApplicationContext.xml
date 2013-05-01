@@ -29,7 +29,7 @@
                 <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto.test}</prop>
                 <prop key="hibernate.ejb.naming_strategy">${hibernate.ejb.naming_strategy}</prop>
                 <prop key="hibernate.connection.charSet">${hibernate.connection.charSet}</prop>
-                <prop key="hibernate.search.default.indexBase">${search.indexDir}</prop>
+                <prop key="hibernate.search.default.indexBase">${search.test.indexDir}</prop>
             </props>
         </property>
 

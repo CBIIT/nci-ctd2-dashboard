@@ -16,3 +16,4 @@ hibernate.connection.charSet=UTF-8
 
 # lucene
 search.indexDir=/tmp/dashboard-index
+search.test.indexDir=/tmp/dashboard-index-test
