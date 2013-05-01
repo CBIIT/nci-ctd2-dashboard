@@ -151,11 +151,18 @@ public class AdminTest {
 		assertTrue(dashboardDao.findObservedSubjectRole("broad_cpd_sens_lineage_enrich", "compound_name") != null);
 		// we get some evidence/observed evidence roles
 		assertEquals(4, dashboardDao.countEntities(EvidenceRole.class).intValue());
-		assertEquals(60, dashboardDao.countEntities(ObservedEvidenceRole.class).intValue());
+		assertEquals(61, dashboardDao.countEntities(ObservedEvidenceRole.class).intValue());
 		assertTrue(dashboardDao.findObservedEvidenceRole("broad_cpd_sens_lineage_enrich", "cell_line_subset") != null);
 		// we get observation template data
 		assertEquals(9, dashboardDao.countEntities(ObservationTemplate.class).intValue());
-		assertTrue(dashboardDao.findObservationTemplateByName("broad_cpd_sens_lineage_enrich") != null);
+		ObservationTemplate observationTemplate = dashboardDao.findObservationTemplateByName("broad_cpd_sens_lineage_enrich");
+		assertTrue(observationTemplate != null);
+		assertTrue(observationTemplate.getIsSubmissionStory() == Boolean.FALSE);
+		assertTrue(observationTemplate.getSubmissionStoryRank() == 0);
+		observationTemplate = dashboardDao.findObservationTemplateByName("broad_tier3_navitoclax_story");
+		assertTrue(observationTemplate != null);
+		assertTrue(observationTemplate.getIsSubmissionStory() == Boolean.TRUE);
+		assertTrue(observationTemplate.getSubmissionStoryRank() == 1);
 
 		// import observation data
 		jobExecution = executeJob("testTierOneObservationDataImporterJob");
