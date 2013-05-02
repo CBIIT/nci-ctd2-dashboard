@@ -37,6 +37,6 @@ public interface DashboardDao {
     List<ObservedSubject> findObservedSubjectByObservation(Observation observation);
     List<ObservedEvidence> findObservedEvidenceByObservation(Observation observation);
     void batchSave(Collection<? extends DashboardEntity> entities, int batchSize);
-    void createIndex();
+    void createIndex(int batchSize);
     List<DashboardEntity> search(String keyword);
 }

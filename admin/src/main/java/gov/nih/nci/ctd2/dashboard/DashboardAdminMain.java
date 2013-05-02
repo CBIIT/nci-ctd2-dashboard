@@ -11,6 +11,7 @@ import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.launch.JobLauncher;
+import org.springframework.transaction.annotation.Transactional;
 
 public class DashboardAdminMain {
     private static final Log log = LogFactory.getLog(DashboardAdminMain.class);
@@ -29,6 +30,7 @@ public class DashboardAdminMain {
         "classpath*:META-INF/spring/taxonomyDataApplicationContext.xml" // This is for taxonomy data importer beans
     );
 
+    @Transactional
     public static void main(String[] args) {
 
         // These two should not be exposed in the main method, but were put here
@@ -106,7 +108,8 @@ public class DashboardAdminMain {
 
             if( commandLine.hasOption("i") ) {
                 DashboardDao dashboardDao = (DashboardDao) appContext.getBean("dashboardDao");
-                dashboardDao.createIndex();
+                dashboardDao.createIndex((Integer) appContext.getBean("indexBatchSize"));
+                System.exit(0);
             }
 
             log.info("All done.");
