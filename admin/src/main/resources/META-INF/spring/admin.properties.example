@@ -21,3 +21,6 @@ columbia.joint.mr.shrna.diff.analysis.data.location=
 columbia.tier4.glioma.story.data.location=
 cshl.tier4.fgf19.story.data.location=
 dfci.tier4.beta.catenin.story.data.location=
+
+# batch sizes
+batch.size.index=10000
