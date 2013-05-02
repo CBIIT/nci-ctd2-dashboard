@@ -583,7 +583,7 @@ public class DashboardDaoTest {
         observationTemplate.setSubmissionName(submsName);
         dashboardDao.save(observationTemplate);
 
-        dashboardDao.createIndex();
+        dashboardDao.createIndex(10);
         assertTrue(dashboardDao.search("something").isEmpty());
         assertEquals(2, dashboardDao.search(synonymStr + "*").size());
         assertEquals(1, dashboardDao.search(synonymStr + "1*").size());

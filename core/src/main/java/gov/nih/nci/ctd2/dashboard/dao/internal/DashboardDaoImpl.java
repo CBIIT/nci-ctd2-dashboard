@@ -382,23 +382,29 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
     }
 
     @Override
-    public void createIndex() {
+    public void createIndex(int batchSize) {
         FullTextSession fullTextSession = Search.getFullTextSession(getSession());
-        fullTextSession.setFlushMode(FlushMode.AUTO);
+        fullTextSession.setFlushMode(FlushMode.MANUAL);
         for (Class searchableClass : searchableClasses) {
-            createIndexForClass(fullTextSession, searchableClass);
+            createIndexForClass(fullTextSession, searchableClass, batchSize);
         }
         fullTextSession.flushToIndexes();
         fullTextSession.clear();
     }
 
-    private void createIndexForClass(FullTextSession fullTextSession, Class<DashboardEntity> clazz) {
+    private void createIndexForClass(FullTextSession fullTextSession, Class<DashboardEntity> clazz, int batchSize) {
         ScrollableResults scrollableResults
                 = fullTextSession.createCriteria(clazz).scroll(ScrollMode.FORWARD_ONLY);
+        int cnt = 0;
         while(scrollableResults.next()) {
             DashboardEntity entity = (DashboardEntity) scrollableResults.get(0);
             fullTextSession.purge(DashboardEntityImpl.class, entity);
             fullTextSession.index(entity);
+
+            if(++cnt % batchSize == 0) {
+                fullTextSession.flushToIndexes();
+                fullTextSession.clear();
+            }
         }
     }
 
