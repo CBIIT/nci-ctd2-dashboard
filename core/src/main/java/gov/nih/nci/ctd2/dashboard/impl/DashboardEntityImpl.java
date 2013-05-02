@@ -23,7 +23,7 @@ public class DashboardEntityImpl implements DashboardEntity {
     private Integer id;
     private String displayName;
 
-    @Field(name = FIELD_DISPLAYNAME, index = org.hibernate.search.annotations.Index.TOKENIZED)
+    @Field(name = FIELD_DISPLAYNAME, index = org.hibernate.search.annotations.Index.UN_TOKENIZED)
     public String getDisplayName() {
         return displayName;
     }
