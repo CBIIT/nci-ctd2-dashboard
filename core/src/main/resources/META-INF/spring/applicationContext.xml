@@ -36,8 +36,4 @@
         <property name="packagesToScan" value="gov.nih.nci.ctd2.dashboard.impl"/>
     </bean>
 
-    <bean id="indexBatchSize" class="java.lang.Integer">
-        <constructor-arg index="0" value="${batch.size.index}"/>
-    </bean>
-
 </beans>
