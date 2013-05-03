@@ -246,7 +246,7 @@
 
                     oTable.fnSort( [ [1, 'asc'], [2, 'asc'] ] );
 
-                    $('.desc-tooltip').tooltip({ placement: "bottom" });
+                    $('.desc-tooltip').tooltip({ placement: "left" });
 
                     $("a.evidence-images").fancybox({titlePosition: 'inside'});
                     $("div.expandable").expander({
@@ -282,6 +282,8 @@
 
                 if(result.evidence.mimeType.toLowerCase().search("image") > -1) {
                     templateId = "#observedimageevidence-row-tmpl";
+                } else if(result.evidence.mimeType.toLowerCase().search("gct") > -1) {
+                    templateId = "#observedgctfileevidence-row-tmpl";
                 } else {
                     templateId = "#observedfileevidence-row-tmpl";
                 }
