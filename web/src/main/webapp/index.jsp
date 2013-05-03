@@ -64,9 +64,9 @@
 
                               <strong>Examples:</strong>
                               <ul>
-                                <li><em>Gene: </em> <a href="#search/exact/CTNNB1">CTNNB1</a></li>
-                                <li><em>Compound: </em> <a href="#search/exact/ABT-737">ABT-737</a></li>
-                                <li><em>Cell Sample: </em> <a href="#search/exact/HPBALL">HPBALL</a></li>
+                                <li><em>Gene: </em> <a href="#search/CTNNB1">CTNNB1</a> or <a href="#search/YAP*">YAP*</a></li>
+                                <li><em>Compound: </em> <a href="#search/ABT-737">ABT-737</a></li>
+                                <li><em>Cell Sample: </em> <a href="#search/HPBALL">HPBALL</a></li>
                               </ul>
                               <br>
                           </span>
@@ -892,8 +892,11 @@
             <td colspan="7">
                 <div class="alert alert-error">
                     <button type="button" class="close" data-dismiss="alert">&times;</button>
-                    <strong>No results found!</strong> We could not find any subjects related to your search.
-                    Please try again with another keyword.
+                    <h3>Sorry, no results found</h3>
+                    <p>
+                        Would you like to extend your search with a wildcard?
+                        (<i>e.g.</i> <a href="#/search/{{term}}">{{term}}*</a>)
+                    </p>
                 </div>
             </td>
         </tr>
@@ -954,7 +957,7 @@
                     <th>&nbsp; &nbsp;</th>
                     <th>Name</th>
                     <th>Synonyms</th>
-                    <th>Subject Type</th>
+                    <th>Type</th>
                     <th>Organism</th>
                     <th>Observations</th>
                 </tr>
@@ -971,7 +974,36 @@
                 </tr>
                 </tbody>
             </table>
+
+            <div id="submission-search-results" class="hide">
+                <h3>Submissions</h3>
+                <table id="searched-submissions" class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <th>&nbsp; &nbsp;</th>
+                        <th>Date</th>
+                        <th>Description</th>
+                        <th>Center</th>
+                        <th>Tier</th>
+                        <th>Details</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
         </div>
+    </script>
+
+    <script type="text/template" id="search-submission-tbl-row-tmpl">
+        <tr>
+            <td><a href="#submission/{{id}}"><img src="img/submission.png" width="50"></a></td>
+            <td><a href="#submission/{{id}}">{{submissionDate}}</a></td>
+            <td>{{observationTemplate.description}}</td>
+            <td><a href="#submission/{{id}}"><img src="img/{{submissionCenter.displayName}}.png" height="50"></a></td>
+            <td><span class="badge tier-badge">Tier {{observationTemplate.tier}}</span></td>
+            <td width=150><a href="#submission/{{id}}"><span id="search-observation-count-{{id}}"></span> observation(s)</a></td>
+        </tr>
     </script>
 
     <script type="text/template" id="synonym-item-tmpl">
