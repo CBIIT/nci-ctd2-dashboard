@@ -320,10 +320,11 @@
 
     <script type="text/template" id="submission-tmpl">
         <div class="container common-container" id="submission-container">
-            <h1>Submission <small>(# {{id}})</small></h1>
 
             <div class="row">
-                <div class="span9">
+                <div class="span10">
+                    <h1>Submission <small>(Tier {{observationTemplate.tier}})</small></h1>
+
                     <table id="submission-details-grid" class="table table-bordered table-striped">
                         <tr>
                             <th>Template Description</th>
@@ -333,21 +334,18 @@
                             <th width="175">Submission Date</th>
                             <td>{{submissionDate}}</td>
                         </tr>
-                        <tr>
-                            <th>Submission Center</th>
-                            <td>
-                                <a href="#/center/{{submissionCenter.id}}">
-                                    <img src="img/{{submissionCenter.displayName}}.png" class="img-polaroid" height=30 alt="{{submissionCenter.displayName}}">
-                                </a>
-                            </td>
-                        </tr>
                     </table>
                 </div>
-                <div class="span3">
-                    <img src="img/submission.png" class="img-polaroid" width=200 height=200><br>
-                    <center>
-                        <span class="badge">Tier {{observationTemplate.tier}}</span>
-                    </center>
+                <div class="span2">
+                    <a href="#/center/{{submissionCenter.id}}">
+                        <img src="img/{{submissionCenter.displayName}}.png" class="img-polaroid" height=30 alt="{{submissionCenter.displayName}}">
+                    </a>
+
+                    <br>
+                    <br>
+
+
+                    <img src="img/submission.png" class="img-polaroid" width=150 height=150><br>
                 </div>
             </div>
 
@@ -359,7 +357,6 @@
             <table id="submission-observation-grid" class="table table-bordered table-striped observations">
                 <thead>
                 <tr>
-                    <th>Observation</th>
                     <th>Observation Summary</th>
                 </tr>
                 </thead>
@@ -378,73 +375,53 @@
         </div>
     </script>
 
+    <script type="text/template" id="submission-obs-tbl-row-tmpl">
+        <small>(<a href="#/observation/{{id}}">details &raquo;</a>)</small>
+    </script>
+
     <script type="text/template" id="submission-tbl-row-tmpl">
         <tr>
-            <td width="60">
-                <a href="#/observation/{{id}}">
-                    # {{id}}
-                </a>
-            </td>
             <td id="submission-observation-summary-{{id}}">
                 Loading...
             </td>
-        </tr>
+         /tr>
     </script>
 
     <script type="text/template" id="observation-tmpl">
         <div class="container common-container" id="observation-container">
-            <h1>Observation <small>(# {{id}})</small></h1>
 
             <div class="row">
-                <div class="span9">
-                    <table id="observation-details-grid" class="table table-bordered table-striped">
+                <div class="span10">
+                    <h1>Observation <small>(Tier {{submission.observationTemplate.tier}})</small></h1>
+                    <blockquote>
+                        <p id="observation-summary"></p>
+                    </blockquote>
+
+                    <table id="observed-subjects-grid" class="table table-bordered table-striped subjects">
+                        <thead>
                         <tr>
-                            <th>
-                                Submission<br>
-                            </th>
-                            <td>
-                                <p>{{submission.observationTemplate.description}} (<a href="#/submission/{{submission.id}}">details &raquo;</a>)</p>
-                            </td>
+                            <th width="60">&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Role</th>
+                            <th>Description</th>
                         </tr>
-                        <tr>
-                            <th>Submission Center</th>
-                            <td>
-                                <a href="#/center/{{submission.submissionCenter.id}}">
-                                    <img src="img/{{submission.submissionCenter.displayName}}.png" class="img-polaroid" height=30 alt="{{submission.submissionCenter.displayName}}">
-                                </a>
-                            </td>
-                        </tr>
+                        </thead>
+                        <tbody>
+                        <!-- here will go the rows -->
+                        </tbody>
                     </table>
+
+
                 </div>
-                <div class="span3">
-                    <img src="img/observation.png" class="img-polaroid" width=200 height=200><br>
-                    <center>
-                        <span class="badge">Tier {{submission.observationTemplate.tier}}</span>
-                    </center>
+                <div class="span2">
+                    <a href="#/center/{{submission.submissionCenter.id}}"><img src="img/{{submission.submissionCenter.displayName}}.png" class="img-polaroid" height=30 alt="{{submission.submissionCenter.displayName}}"></a>
+                    <br><br>
+                    <img src="img/observation.png" class="img-polaroid" width=150 height=150><br>
                 </div>
             </div>
 
-            <h3>Observation summary</h3>
-            <blockquote>
-                <p id="observation-summary"></p>
-            </blockquote>
 
-
-            <h3>Observed subjects</h3>
-            <table id="observed-subjects-grid" class="table table-bordered table-striped subjects">
-                <thead>
-                <tr>
-                    <th width="60">&nbsp;&nbsp;&nbsp;&nbsp;</th>
-                    <th>Name</th>
-                    <th>Type</th>
-                    <th>Role</th>
-                    <th>Description</th>
-                </tr>
-                </thead>
-                <tbody>
-                <!-- here will go the rows -->
-                </tbody>
-            </table>
 
             <h3>Evidence</h3>
             <table id="observed-evidences-grid" class="table table-bordered table-striped evidences">
@@ -586,7 +563,7 @@
 
     <script type="text/template" id="gene-tmpl">
          <div class="container common-container" id="gene-container">
-             <h1>{{displayName}} <small>(# {{id}})</small></h1>
+             <h1>{{displayName}}</h1>
 
              <div class="row">
                  <div class="span9">
@@ -629,10 +606,9 @@
              <table id="gene-observation-grid" class="table table-bordered table-striped observations">
                  <thead>
                  <tr>
-                     <th>Observation</th>
-                     <th width=400>Observation Summary</th>
-                     <th>Tier</th>
                      <th>Date</th>
+                     <th width=500>Observation Summary</th>
+                     <th>Tier</th>
                      <th>Center</th>
                  </tr>
                  </thead>
@@ -653,7 +629,7 @@
 
     <script type="text/template" id="tissuesample-tmpl">
         <div class="container common-container" id="tissuesample-container">
-            <h1>{{displayName}} <small>(# {{id}})</small></h1>
+            <h1>{{displayName}}</h1>
 
             <div class="row">
                 <div class="span9">
@@ -705,7 +681,7 @@
 
     <script type="text/template" id="cellsample-tmpl">
         <div class="container common-container" id="cellsample-container">
-            <h1>{{displayName}} <small>(# {{id}})</small></h1>
+            <h1>{{displayName}}</h1>
             <div class="row">
                 <div class="span9">
                     <table id="cellsample-details-grid" class="table table-bordered table-striped">
@@ -768,7 +744,7 @@
 
     <script type="text/template" id="compound-tmpl">
           <div class="container common-container" id="compound-container">
-              <h1>{{displayName}} <small>(# {{id}})</small></h1>
+              <h1>{{displayName}}</h1>
 
               <div class="row">
                   <div class="span9">
@@ -841,7 +817,7 @@
         <tr>
             <td>
                 <a href="#/observation/{{observation.id}}">
-                    # {{observation.id}}
+                    {{observation.submission.submissionDate}}
                 </a>
             </td>
             <td>{{observedSubjectRole.subjectRole.displayName}}</td>
@@ -850,13 +826,8 @@
             </td>
             <td><span class="badge tier-badge">Tier {{observation.submission.observationTemplate.tier}}</span></td>
             <td>
-                <a href="#/submission/{{observation.submission.id}}">
-                    {{observation.submission.submissionDate}}
-                </a>
-            </td>
-            <td>
                 <a href="#/center/{{observation.submission.submissionCenter.id}}">
-                    {{observation.submission.submissionCenter.displayName}}
+                    <img alt="{{observation.submission.submissionCenter.displayName}}" title="{{submission.submissionCenter.displayName}}" width="150" src="img/{{observation.submission.submissionCenter.displayName}}.png">
                 </a>
             </td>
         </tr>
@@ -866,7 +837,7 @@
         <tr>
             <td>
                 <a href="#/observation/{{id}}">
-                    # {{id}}
+                    {{submission.submissionDate}}
                 </a>
             </td>
             <td id="observation-summary-{{id}}">
@@ -874,15 +845,9 @@
             </td>
             <td><span class="badge tier-badge">Tier {{submission.observationTemplate.tier}}</span></td>
             <td>
-                <a href="#/submission/{{submission.id}}">
-                    {{submission.submissionDate}}
-                </a>
-            </td>
-            <td>
                 <a href="#/center/{{submission.submissionCenter.id}}">
-                    {{submission.submissionCenter.displayName}}
+                    <img alt="{{submission.submissionCenter.displayName}}" title="{{submission.submissionCenter.displayName}}" width="150" src="img/{{submission.submissionCenter.displayName}}.png">
                 </a>
-
             </td>
         </tr>
     </script>
