@@ -400,8 +400,7 @@
                  }
              });
 
-             Holder.run();
-
+             $("a.compound-image").fancybox({titlePosition: 'inside'});
              return this;
          }
      });
