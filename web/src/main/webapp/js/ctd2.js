@@ -87,17 +87,8 @@
 
     var SearchResult = Backbone.Model.extend({});
 
-    var FuzzySearchResults = Backbone.Collection.extend({
-        url: CORE_API_URL + "search/fuzzy/",
-        model: SearchResult,
-
-        initialize: function(attributes) {
-            this.url += attributes.term;
-        }
-    });
-
-    var ExactSearchResults = Backbone.Collection.extend({
-        url: CORE_API_URL + "search/exact/",
+    var SearchResults = Backbone.Collection.extend({
+        url: CORE_API_URL + "search/",
         model: SearchResult,
 
         initialize: function(attributes) {
@@ -128,7 +119,7 @@
 
             $("#omni-search-form").submit(function() {
                 var searchTerm = $("#omni-search").val();
-                window.location.hash = "search/exact/" + searchTerm;
+                window.location.hash = "search/" + searchTerm;
                 return false;
             });
 
@@ -344,6 +335,16 @@
             return this;
         }
     });
+
+    var SearchSubmissionRowView = Backbone.View.extend({
+        el: "#searched-submissions tbody",
+        template:  _.template($("#search-submission-tbl-row-tmpl").html()),
+        render: function() {
+            $(this.el).append(this.template(this.model));
+            return this;
+        }
+    });
+
 
     var SubmissionDescriptionView = Backbone.View.extend({
         el: "#optional-submission-description",
@@ -751,7 +752,7 @@
     var EmptyResultsView = Backbone.View.extend({
         template: _.template($("#search-empty-tmpl").html()),
         render: function() {
-            $(this.el).append(this.template({}));
+            $(this.el).append(this.template(this.model));
 
             return this;
         }
@@ -799,11 +800,6 @@
     var SearchView = Backbone.View.extend({
         el: $("#main-container"),
         template: _.template($("#search-tmpl").html()),
-        exact: true,
-        setExact: function(isExact) {
-            this.exact = isExact;
-        },
-
         render: function() {
             $(this.el).html(this.template(this.model));
 
@@ -811,20 +807,25 @@
             $("#omni-input").val(this.model.term);
 
             var thatEl = this.el;
-            var searchResults = this.exact
-                ? new ExactSearchResults({ term: this.model.term })
-                : new FuzzySearchResults({ term: this.model.term });
+            var thatModel = this.model;
+            var searchResults = new SearchResults({ term: this.model.term });
 
             searchResults.fetch({
                 success: function() {
                     $("#loading-row").remove();
                     if(searchResults.models.length == 0) {
-                        (new EmptyResultsView({ el: $(thatEl).find("tbody")})).render();
+                        (new EmptyResultsView({ el: $(thatEl).find("tbody"), model: thatModel})).render();
                     } else {
+                        var submissions = [];
                         _.each(searchResults.models, function(aResult) {
                             aResult = aResult.toJSON();
                             if(aResult.organism == undefined) {
                                 aResult.organism = { displayName: "N/A" };
+                            }
+
+                            if(aResult.class == "Submission") {
+                                submissions.push(aResult);
+                                return;
                             }
 
                             var searchResultsRowView = new SearchResultsRowView({
@@ -841,6 +842,26 @@
                             "sPaginationType": "bootstrap"
                         });
                         oTable.fnSort( [ [1, 'desc'] ] );
+
+                        // OK done with the subjects; let's build the submissions table
+                        if(submissions.length > 0) {
+                            $("#submission-search-results").fadeIn();
+
+                            _.each(submissions, function(submission) {
+                                var searchSubmissionRowView = new SearchSubmissionRowView({ model: submission });
+                                searchSubmissionRowView.render();
+
+                                $.ajax("count/observation/?filterBy=" + submission.id).done(function(count) {
+                                    $("#search-observation-count-" + submission.id).html(count);
+                                });
+                            });
+
+                            var sTable = $("#searched-submissions").dataTable({
+                                "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
+                                "sPaginationType": "bootstrap"
+                            });
+                            sTable.fnSort( [ [1, 'desc'] ] );
+                        }
                     }
                 }
             });
@@ -856,7 +877,7 @@
             "center/:id": "showCenter",
             "submission/:id": "showSubmission",
             "observation/:id": "showObservation",
-            "search/:type/:term": "search",
+            "search/:term": "search",
             "subject/:id": "showSubject",
             "*actions": "home"
         },
@@ -866,13 +887,8 @@
             homeView.render();
         },
 
-        search: function(type, term) {
-            var searchView = new SearchView({ model: { term: term } });
-            var isExact = true;
-            if(type.toLowerCase() == "fuzzy") {
-                isExact = false;
-            }
-            searchView.setExact(isExact);
+        search: function(term) {
+            var searchView = new SearchView({ model: { term: term.replace("<", "").replace(">", "") } });
             searchView.render();
         },
 
@@ -940,7 +956,7 @@
 
         $("#omnisearch").submit(function() {
             var searchTerm = $("#omni-input").val();
-            window.location.hash = "search/exact/" + searchTerm;
+            window.location.hash = "search/" + searchTerm;
             return false;
         });
 

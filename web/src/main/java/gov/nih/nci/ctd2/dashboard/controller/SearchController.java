@@ -5,6 +5,7 @@ import flexjson.transformer.AbstractTransformer;
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
 import gov.nih.nci.ctd2.dashboard.model.DashboardEntity;
 import gov.nih.nci.ctd2.dashboard.model.Subject;
+import gov.nih.nci.ctd2.dashboard.util.DateTransformer;
 import gov.nih.nci.ctd2.dashboard.util.ImplTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -25,8 +27,8 @@ public class SearchController {
     private DashboardDao dashboardDao;
 
     @Transactional
-    @RequestMapping(value="{type}/{keyword}", method = {RequestMethod.GET, RequestMethod.POST}, headers = "Accept=application/json")
-    public ResponseEntity<String> getSearchResultsInJson(@PathVariable String type, @PathVariable String keyword) {
+    @RequestMapping(value="{keyword}", method = {RequestMethod.GET, RequestMethod.POST}, headers = "Accept=application/json")
+    public ResponseEntity<String> getSearchResultsInJson(@PathVariable String keyword) {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json; charset=utf-8");
 
@@ -34,13 +36,11 @@ public class SearchController {
         // This is to prevent unnecessary server loads
         if(keyword.length() < 2)
             return new ResponseEntity<String>(headers, HttpStatus.BAD_REQUEST);
-
-        boolean isExact = type.trim().equalsIgnoreCase("exact");
-        //List<Subject> subjectsBySynonym = dashboardDao.findSubjectsBySynonym(keyword, isExact);
-        if(!isExact) keyword += keyword + "*";
         List<DashboardEntity> results = dashboardDao.search(keyword);
 
-        JSONSerializer jsonSerializer = new JSONSerializer().transform(new ImplTransformer(), Class.class);
+        JSONSerializer jsonSerializer = new JSONSerializer()
+                .transform(new ImplTransformer(), Class.class)
+                .transform(new DateTransformer(), Date.class);
         return new ResponseEntity<String>(
                 jsonSerializer.deepSerialize(results),
                 headers,
