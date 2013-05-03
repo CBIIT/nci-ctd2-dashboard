@@ -3,6 +3,8 @@ package gov.nih.nci.ctd2.dashboard.dao.internal;
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
 import gov.nih.nci.ctd2.dashboard.impl.*;
 import gov.nih.nci.ctd2.dashboard.model.*;
+import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.WhitespaceAnalyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.queryParser.MultiFieldQueryParser;
 import org.apache.lucene.queryParser.ParseException;
@@ -21,6 +23,7 @@ import java.util.*;
 public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDao {
     private static final String[] defaultSearchFields = {
             DashboardEntityImpl.FIELD_DISPLAYNAME,
+            DashboardEntityImpl.FIELD_DISPLAYNAME_UT,
             CellSampleImpl.FIELD_LINEAGE,
             ObservationTemplateImpl.FIELD_DESCRIPTION,
             ObservationTemplateImpl.FIELD_SUBMISSIONDESC,
@@ -413,45 +416,49 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
         HashSet<DashboardEntity> entitiesUnique = new HashSet<DashboardEntity>();
 
         FullTextSession fullTextSession = Search.getFullTextSession(getSession());
-        MultiFieldQueryParser multiFieldQueryParser = new MultiFieldQueryParser(
-                Version.LUCENE_31,
-                defaultSearchFields,
-                new StandardAnalyzer(Version.LUCENE_31)
-        );
-        Query luceneQuery = null;
-        try {
-            luceneQuery = multiFieldQueryParser.parse(keyword);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        FullTextQuery fullTextQuery = fullTextSession.createFullTextQuery(luceneQuery, searchableClasses);
+        Analyzer[] analyzers = {new StandardAnalyzer(Version.LUCENE_31), new WhitespaceAnalyzer(Version.LUCENE_31)};
+        for (Analyzer analyzer : analyzers) {
+            MultiFieldQueryParser multiFieldQueryParser = new MultiFieldQueryParser(
+                    Version.LUCENE_31,
+                    defaultSearchFields,
+                    analyzer
+            );
+            Query luceneQuery = null;
+            try {
+                luceneQuery = multiFieldQueryParser.parse(keyword);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            FullTextQuery fullTextQuery = fullTextSession.createFullTextQuery(luceneQuery, searchableClasses);
 
-        for (Object o : fullTextQuery.list()) {
-            assert o instanceof DashboardEntity;
+            for (Object o : fullTextQuery.list()) {
+                assert o instanceof DashboardEntity;
 
-            if(o instanceof Synonym) {
-                // Second: find subjects with the synonym
-                List subjectList = getHibernateTemplate()
-                        .find("select o from SubjectImpl as o where ? member of o.synonyms", (Synonym) o);
-                for (Object o2 : subjectList) {
-                    assert o2 instanceof Subject;
-                    if(!entitiesUnique.contains(o2)) entities.add((Subject) o2);
+                if(o instanceof Synonym) {
+                    // Second: find subjects with the synonym
+                    List subjectList = getHibernateTemplate()
+                            .find("select o from SubjectImpl as o where ? member of o.synonyms", (Synonym) o);
+                    for (Object o2 : subjectList) {
+                        assert o2 instanceof Subject;
+                        if(!entitiesUnique.contains(o2)) entities.add((Subject) o2);
+                    }
+
+                } else if(o instanceof ObservationTemplate) {
+                    // Second: find subjects with the synonym
+                    List submissionList = getHibernateTemplate()
+                            .find("select o from SubmissionImpl as o where o.observationTemplate = ?", (ObservationTemplate) o);
+                    for (Object o2 : submissionList) {
+                        assert o2 instanceof Submission;
+                        if(!entitiesUnique.contains(o2)) entities.add((Submission) o2);
+                    }
+
+                } else {
+                    if(!entitiesUnique.contains(o)) entities.add((DashboardEntity) o);
                 }
 
-            } else if(o instanceof ObservationTemplate) {
-                // Second: find subjects with the synonym
-                List submissionList = getHibernateTemplate()
-                        .find("select o from SubmissionImpl as o where o.observationTemplate = ?", (ObservationTemplate) o);
-                for (Object o2 : submissionList) {
-                    assert o2 instanceof Submission;
-                    if(!entitiesUnique.contains(o2)) entities.add((Submission) o2);
-                }
-
-            } else {
-                if(!entitiesUnique.contains(o)) entities.add((DashboardEntity) o);
+                entitiesUnique.addAll(entities);
             }
 
-            entitiesUnique.addAll(entities);
         }
 
         return entities;

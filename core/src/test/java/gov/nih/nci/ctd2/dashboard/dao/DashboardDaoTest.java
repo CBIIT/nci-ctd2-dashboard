@@ -574,16 +574,22 @@ public class DashboardDaoTest {
         cellSample1.setLineage(lineageTest);
         dashboardDao.save(cellSample1);
 
+        Compound compound = dashboardFactory.create(Compound.class);
+        compound.setDisplayName("ABT-737");
+        compound.setSmilesNotation("0=0");
+        dashboardDao.save(compound);
+
         ObservationTemplate observationTemplate = dashboardFactory.create(ObservationTemplate.class);
-        String obsDesc = "ObsDesc";
+        String obsDesc = "OBS DSEC";
         observationTemplate.setDescription(obsDesc);
-        String submsDesc = "SubmsDesc";
+        String submsDesc = "SUBMDESC";
         observationTemplate.setSubmissionDescription(submsDesc);
-        String submsName = "SubmsName";
+        String submsName = "SUBMNAME";
         observationTemplate.setSubmissionName(submsName);
         dashboardDao.save(observationTemplate);
 
         dashboardDao.createIndex(10);
+
         assertTrue(dashboardDao.search("something").isEmpty());
         assertEquals(2, dashboardDao.search(synonymStr + "*").size());
         assertEquals(1, dashboardDao.search(synonymStr + "1*").size());
@@ -595,10 +601,16 @@ public class DashboardDaoTest {
         Submission submission = dashboardFactory.create(Submission.class);
         submission.setObservationTemplate(observationTemplate);
         dashboardDao.save(submission);
-        assertFalse(dashboardDao.search(submsDesc).isEmpty());
+
+        assertFalse(dashboardDao.search("OBS").isEmpty());
         assertFalse(dashboardDao.search(obsDesc).isEmpty());
         assertFalse(dashboardDao.search(submsName).isEmpty());
 
+        // The following are tests for tokenization
+        assertFalse(dashboardDao.search("ABT-737").isEmpty());
+        assertTrue(dashboardDao.search("ABT").isEmpty());
+        assertTrue(dashboardDao.search("737").isEmpty());
+        assertFalse(dashboardDao.search("ABT*").isEmpty());
     }
 }
 
