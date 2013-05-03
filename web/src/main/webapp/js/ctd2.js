@@ -686,9 +686,11 @@
                                 );
                             });
 
+                            summary += _.template($("#submission-obs-tbl-row-tmpl").html(), thatModel);
                             $(thatEl).html(summary);
                         }
-                    })
+                    });
+
                 }
             });
 
