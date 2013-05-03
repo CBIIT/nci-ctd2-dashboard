@@ -791,7 +791,7 @@
                   </div>
                   <div class="span3">
                       <h4>Compound</h4>
-                      <a href="http://cbio.mskcc.org/cancergenomics/ctd2-dashboard/images/compounds/{{imageFile}}" target="_blank">
+                      <a href="http://cbio.mskcc.org/cancergenomics/ctd2-dashboard/images/compounds/{{imageFile}}" target="_blank" class="compound-image" title="Compound: {{displayName}}">
                         <img class="img-polaroid" width=200 src="http://cbio.mskcc.org/cancergenomics/ctd2-dashboard/images/compounds/{{imageFile}}">
                       </a>
                   </div>
