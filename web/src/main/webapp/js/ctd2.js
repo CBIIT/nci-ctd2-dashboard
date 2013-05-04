@@ -257,6 +257,11 @@
                             }));
                         }
                     });
+
+                    $("a.pdf-file-link").fancybox({
+                        width: "100%",
+                        height: "100%"
+                    });
                 }
             });
 
@@ -295,6 +300,8 @@
                     templateId = "#observedimageevidence-row-tmpl";
                 } else if(result.evidence.mimeType.toLowerCase().search("gct") > -1) {
                     templateId = "#observedgctfileevidence-row-tmpl";
+                } else if(result.evidence.mimeType.toLowerCase().search("pdf") > -1) {
+                    templateId = "#observedpdffileevidence-row-tmpl";
                 } else {
                     templateId = "#observedfileevidence-row-tmpl";
                 }

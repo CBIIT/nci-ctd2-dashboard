@@ -496,6 +496,21 @@
         </tr>
     </script>
 
+    <script type="text/template" id="observedpdffileevidence-row-tmpl">
+        <tr>
+            <td>
+                <img src="img/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}">
+            </td>
+            <td>{{observedEvidenceRole.evidenceRole.displayName}}</td>
+            <td>{{observedEvidenceRole.displayText}}</td>
+            <td>(
+                <a href="http://cbio.mskcc.org/cancergenomics/ctd2-dashboard/{{evidence.filePath}}" target="_blank" title="{{observedEvidenceRole.displayText}}" class="desc-tooltip pdf-file-link">
+                    view PDF
+                </a>
+                )</td>
+        </tr>
+    </script>
+
     <script type="text/template" id="observedgctfileevidence-row-tmpl">
         <tr>
             <td>
