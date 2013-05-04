@@ -246,6 +246,17 @@
                         expandPrefix:     ' ',
                         userCollapseText: ''
                     });
+
+                    $(".numeric-value").each(function(idx) {
+                        var val = $(this).html();
+                        var vals = val.split("e"); // capture scientific notation
+                        if(vals.length > 1) {
+                            $(this).html(_.template($("#observeddatanumericevidence-val-tmpl").html(), {
+                                firstPart: vals[0],
+                                secondPart: vals[1].replace("+", "")
+                            }));
+                        }
+                    });
                 }
             });
 
