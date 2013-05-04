@@ -320,7 +320,6 @@
 
     <script type="text/template" id="submission-tmpl">
         <div class="container common-container" id="submission-container">
-
             <div class="row">
                 <div class="span10">
                     <h1>Submission <small>(Tier {{observationTemplate.tier}})</small></h1>
@@ -395,6 +394,7 @@
                     <h1>Observation <small>(Tier {{submission.observationTemplate.tier}})</small></h1>
                     <blockquote>
                         <p id="observation-summary"></p>
+                        <p><small>{{submission.submissionDate}}</small></p>
                     </blockquote>
 
                     <table id="observed-subjects-grid" class="table table-bordered table-striped subjects">
@@ -412,7 +412,6 @@
                         </tbody>
                     </table>
 
-
                 </div>
                 <div class="span2">
                     <a href="#/center/{{submission.submissionCenter.id}}"><img src="img/{{submission.submissionCenter.displayName}}.png" class="img-polaroid" height=30 alt="{{submission.submissionCenter.displayName}}"></a>
@@ -421,6 +420,23 @@
                 </div>
             </div>
 
+
+            <h3>Submission <small>(<a href="#" id="small-hide-sub-details">show details</a>)</small></h3>
+            <div id="obs-submission-details" class="hide">
+                <table id="obs-submission-details-grid" class="table table-bordered table-striped">
+                    <tr>
+                        <th>Description</th>
+                        <td>
+                            {{submission.observationTemplate.description}}
+                            <small>(<a href="#submission/{{submission.id}}">details &raquo;</a>)</small>
+                        </td>
+                    </tr>
+                    <tr id="obs-submission-summary">
+                        <th>Summary</th>
+                        <td>{{submission.observationTemplate.submissionDescription}}</td>
+                    </tr>
+                </table>
+            </div>
 
 
             <h3>Evidence</h3>

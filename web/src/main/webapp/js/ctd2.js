@@ -249,6 +249,15 @@
                 }
             });
 
+            $("#small-hide-sub-details").click(function(event) {
+                event.preventDefault();
+                $("#obs-submission-details").fadeIn();
+                $("#small-hide-sub-details").parent().hide();
+            });
+
+            if(result.submission.observationTemplate.submissionDescription == "") {
+                $("#obs-submission-summary").hide();
+            }
 
             return this;
         }
