@@ -492,15 +492,44 @@
                     ( <a class="dropdown-toggle" data-toggle="dropdown" href="#">view file <b class="caret"></b></a> )
                     <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                         <li>
-                            <a href="http://www.broadinstitute.org/cancer/software/GENE-E/dynamic.php?data=http://cbio.mskcc.org/cancergenomics/ctd2-dashboard/{{evidence.filePath}}" target="_blank" title="open in GENE-E (Java Web-start)" class="desc-tooltip" title="Download File">
+                            <a href="http://www.broadinstitute.org/cancer/software/GENE-E/dynamic.php?data=http://cbio.mskcc.org/cancergenomics/ctd2-dashboard/{{evidence.filePath}}" target="_blank" title="open in GENE-E (Java Web-start)" class="desc-tooltip">
                                 open with GENE-E
                             </a>
                         </li>
                         <li>
-                            <a href="http://cbio.mskcc.org/cancergenomics/ctd2-dashboard/{{evidence.filePath}}" class="desc-tooltip" title="type: ({{evidence.mimeType}})">view in browser</a>
+                            <a href="http://cbio.mskcc.org/cancergenomics/ctd2-dashboard/{{evidence.filePath}}" class="desc-tooltip" target="_blank" title="type: ({{evidence.mimeType}})">view in browser</a>
                         </li>
 
                     </ul>
+                </div>
+            </td>
+        </tr>
+    </script>
+
+    <script type="text/template" id="observedsiffileevidence-row-tmpl">
+        <tr>
+            <td>
+                <img src="img/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}">
+            </td>
+            <td>{{observedEvidenceRole.evidenceRole.displayName}}</td>
+            <td>{{observedEvidenceRole.displayText}}</td>
+            <td>
+                <div class="dropdown">
+                    ( <a class="dropdown-toggle" data-toggle="dropdown" href="#">view file <b class="caret"></b></a> )
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                        <li>
+                            <a href="#cytoscape-view-port" data-href="http://cbio.mskcc.org/cancergenomics/ctd2-dashboard/{{evidence.filePath}}" target="_blank" title="open in Cytoscape.js" class="desc-tooltip cytoscape-view">
+                                interactive network view
+                            </a>
+                        </li>
+                        <li>
+                            <a href="http://cbio.mskcc.org/cancergenomics/ctd2-dashboard/{{evidence.filePath}}" class="desc-tooltip" target="_blank" title="type: ({{evidence.mimeType}})">view in browser</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="hide" id="cytoscape-view-port">
+                    <h1>Here will come the network.</h1>
                 </div>
             </td>
         </tr>

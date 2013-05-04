@@ -246,6 +246,22 @@
                         expandPrefix:     ' ',
                         userCollapseText: ''
                     });
+
+
+                    $(".cytoscape-view").click(function(event) {
+                        event.preventDefault();
+
+                        $.fancybox(
+                            $("#cytoscape-view-port").html(),
+                            {
+                                'autoDimensions' : false,
+                                'width' : '100%',
+                                'height' : '100%',
+                                'transitionIn' : 'none',
+                                'transitionOut' : 'none'
+                            }
+                        );
+                    });
                 }
             });
 
@@ -275,6 +291,8 @@
                     templateId = "#observedimageevidence-row-tmpl";
                 } else if(result.evidence.mimeType.toLowerCase().search("gct") > -1) {
                     templateId = "#observedgctfileevidence-row-tmpl";
+                } else if(result.evidence.mimeType.toLowerCase().search("sif") > -1) {
+                    templateId = "#observedsiffileevidence-row-tmpl";
                 } else {
                     templateId = "#observedfileevidence-row-tmpl";
                 }
