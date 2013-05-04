@@ -657,10 +657,9 @@
             <table id="tissuesample-observation-grid" class="table table-bordered table-striped observations">
                 <thead>
                 <tr>
-                    <th>Observation</th>
-                    <th width=400>Observation Summary</th>
-                    <th>Tier</th>
                     <th>Date</th>
+                    <th width=500>Observation Summary</th>
+                    <th>Tier</th>
                     <th>Center</th>
                 </tr>
                 </thead>
@@ -720,10 +719,9 @@
             <table id="cellsample-observation-grid" class="table table-bordered table-striped observations">
                 <thead>
                 <tr>
-                    <th>Observation</th>
-                    <th>Observation Summary</th>
-                    <th>Tier</th>
                     <th>Date</th>
+                    <th width=500>Observation Summary</th>
+                    <th>Tier</th>
                     <th>Center</th>
                 </tr>
                 </thead>
@@ -777,10 +775,9 @@
               <table id="compound-observation-grid" class="table table-bordered table-striped observations">
                   <thead>
                   <tr>
-                      <th>Observation</th>
-                      <th>Observation Summary</th>
-                      <th>Tier</th>
                       <th>Date</th>
+                      <th width=500>Observation Summary</th>
+                      <th>Tier</th>
                       <th>Center</th>
                   </tr>
                   </thead>
