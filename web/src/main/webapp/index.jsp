@@ -573,8 +573,12 @@
             </td>
             <td>{{observedEvidenceRole.evidenceRole.displayName}}</td>
             <td>{{observedEvidenceRole.displayText}}</td>
-            <td>{{evidence.numericValue}} <em>{{evidence.unit}}</em></td>
+            <td><span class="numeric-value">{{evidence.numericValue}}</span> <em>{{evidence.unit}}</em></td>
         </tr>
+    </script>
+
+    <script type="text/template" id="observeddatanumericevidence-val-tmpl">
+        {{firstPart}} &times; 10<sup>{{secondPart}}</sup>
     </script>
 
     <script type="text/template" id="gene-tmpl">
