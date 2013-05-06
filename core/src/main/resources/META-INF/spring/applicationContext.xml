@@ -36,4 +36,8 @@
         <property name="packagesToScan" value="gov.nih.nci.ctd2.dashboard.impl"/>
     </bean>
 
+    <bean id="allowedProxyHosts" class="java.lang.String">
+        <constructor-arg index="0" value="${allowed.hosts}"/>
+    </bean>
+
 </beans>
