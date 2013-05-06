@@ -247,20 +247,92 @@
                         userCollapseText: ''
                     });
 
-
                     $(".cytoscape-view").click(function(event) {
                         event.preventDefault();
 
-                        $.fancybox(
-                            $("#cytoscape-view-port").html(),
-                            {
-                                'autoDimensions' : false,
-                                'width' : '100%',
-                                'height' : '100%',
-                                'transitionIn' : 'none',
-                                'transitionOut' : 'none'
+                        var sifUrl = $(this).attr("data-sif-url");
+                        var sifDesc = $(this).attr("data-description");
+                        $.ajax({
+                            url: "sif/",
+                            data: { url: sifUrl },
+                            dataType: "json",
+                            contentType: "json",
+                            success: function(data) {
+                                $.fancybox(
+                                    _.template($("#cytoscape-tmpl").html(), { description: sifDesc }),
+                                    {
+                                        'autoDimensions' : false,
+                                        'width' : '100%',
+                                        'height' : '100%',
+                                        'transitionIn' : 'none',
+                                        'transitionOut' : 'none'
+                                    }
+                                );
+
+                                // load cytoscape
+                                //var div_id = "cytoscape-sif";
+
+                                var container = $('#cytoscape-sif');
+                                var cyOptions = {
+                                    layout: { name: 'arbor' },
+                                    elements: data,
+                                    style: cytoscape.stylesheet()
+                                        .selector("node")
+                                        .css({
+                                            "content": "data(id)",
+                                            "shape": "data(shape)",
+                                            "border-width": 3,
+                                            "background-color": "#DDD",
+                                            "border-color": "#555"
+                                        })
+                                        .selector("edge")
+                                        .css({
+                                            "width": "mapData(weight, 0, 100, 1, 4)",
+                                            "target-arrow-shape": "triangle",
+                                            "source-arrow-shape": "circle",
+                                            "line-color": "#444"
+                                        })
+                                        .selector(":selected")
+                                        .css({
+                                            "background-color": "#000",
+                                            "line-color": "#000",
+                                            "source-arrow-color": "#000",
+                                            "target-arrow-color": "#000"
+                                        })
+                                        .selector(".ui-cytoscape-edgehandles-source")
+                                        .css({
+                                            "border-color": "#5CC2ED",
+                                            "border-width": 3
+                                        })
+                                        .selector(".ui-cytoscape-edgehandles-target, node.ui-cytoscape-edgehandles-preview")
+                                        .css({
+                                            "background-color": "#5CC2ED"
+                                        })
+                                        .selector("edge.ui-cytoscape-edgehandles-preview")
+                                        .css({
+                                            "line-color": "#5CC2ED"
+                                        })
+                                        .selector("node.ui-cytoscape-edgehandles-preview, node.intermediate")
+                                        .css({
+                                            "shape": "rectangle",
+                                            "width": 15,
+                                            "height": 15
+                                        })
+                                    ,
+
+                                    ready: function(){
+                                        window.cy = this; // for debugging
+                                    }
+                                };
+
+                                container.cy(cyOptions);
+
+
+
+                                // end load cytoscape
                             }
-                        );
+                        });
+
                     });
                 }
             });
