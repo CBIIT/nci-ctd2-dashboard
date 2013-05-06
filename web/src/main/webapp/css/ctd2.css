@@ -303,9 +303,20 @@
         overflow: hidden;
     }
 
-    .cytoscape-view-port {
-        height: 500px;
-        width: 500px;
+    #cytoscape-sif {
+        width: 93%;
+        height: 70%;
+        border: 1px solid #dddddd;
+        border-radius: 3px;
+        margin: 15px;
+    }
+
+    .sif-legend {
+        width: 90%;
+        text-align: center;
+        font-size: 75%;
+        margin-left: 15px;
+        margin-right: 15px;
     }
 
 
