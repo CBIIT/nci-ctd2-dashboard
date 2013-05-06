@@ -39,4 +39,6 @@ public interface DashboardDao {
     void batchSave(Collection<? extends DashboardEntity> entities, int batchSize);
     void createIndex(int batchSize);
     List<DashboardEntity> search(String keyword);
+    List<Submission> findSubmissionByIsStory(boolean isSubmissionStory, boolean sortByPriority);
+    List<Submission> findSubmissionByObservationTemplate(ObservationTemplate observationTemplate);
 }

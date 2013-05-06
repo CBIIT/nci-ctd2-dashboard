@@ -330,6 +330,34 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
 	}
 
     @Override
+    public List<Submission> findSubmissionByIsStory(boolean isSubmissionStory, boolean sortByPriority) {
+        List<Submission> list = new ArrayList<Submission>();
+        List tmpList = sortByPriority
+                ? getHibernateTemplate()
+                    .find("from ObservationTemplateImpl where isSubmissionStory = ? order by submissionStoryRank desc", isSubmissionStory)
+                : getHibernateTemplate().find("from ObservationTemplateImpl where isSubmissionStory = ?", isSubmissionStory);
+
+        for (Object o : tmpList) {
+            assert o instanceof ObservationTemplate;
+            list.addAll(findSubmissionByObservationTemplate((ObservationTemplate) o));
+        }
+
+        return list;
+    }
+
+    @Override
+    public List<Submission> findSubmissionByObservationTemplate(ObservationTemplate observationTemplate) {
+        List<Submission> list = new ArrayList<Submission>();
+        for (Object o : getHibernateTemplate()
+                .find("from SubmissionImpl where observationTemplate = ?", observationTemplate)) {
+            assert o instanceof Submission;
+            list.add((Submission) o);
+        }
+
+        return list;
+    }
+
+    @Override
     public List<Submission> findSubmissionBySubmissionCenter(SubmissionCenter submissionCenter) {
         List<Submission> list = new ArrayList<Submission>();
         for (Object o : getHibernateTemplate().find("from SubmissionImpl where submissionCenter = ?", submissionCenter)) {
