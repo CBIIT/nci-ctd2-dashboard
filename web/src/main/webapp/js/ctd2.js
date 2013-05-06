@@ -1,7 +1,12 @@
 !function ($) {
-    var onWhichSlide = 0;
+    // This is strictly coupled to the homepage design!
+    var numOfStoriesHomePage = 3;
+
+    // These seperators are for replacing items within the observation summary
     var leftSep = "<";
     var rightSep = ">";
+
+    // To make URL constructing more configurable
     var CORE_API_URL = "./";
 
     // This is for the moustache-like templates
@@ -35,6 +40,11 @@
         initialize: function(attributes) {
             this.url += attributes.centerId;
         }
+    });
+
+    var StorySubmissions = Backbone.Collection.extend({
+        url: CORE_API_URL + "stories/?limit=" + numOfStoriesHomePage,
+        model: Submission
     });
 
     var Observation = Backbone.Model.extend({
@@ -105,25 +115,47 @@
         el: $("#main-container"),
         template: _.template($("#home-tmpl").html()),
         render: function() {
+            // Load the template
             $(this.el).html(this.template({}));
 
+            // and load the stories
+            var storySubmissions = new StorySubmissions();
+            storySubmissions.fetch({
+                success: function() {
+                    var counter = 1;
+                    _.each(storySubmissions.models, function(aStory) {
+                        var storyView = new StorySubmissionView({
+                            el: $("#story-" + counter),
+                            model: aStory.toJSON()
+                        });
+                        storyView.render();
+                        counter++;
+                    });
+
+                    Holder.run();
+
+                    $('.stories-pagination a').click(function (e) {
+                        e.preventDefault();
+                        $(this).tab('show');
+                    })
+                }
+            });
+
             $('#myCarousel').carousel('pause');
-            $(".target-link").tooltip();
-            $(".drug-link").tooltip();
-            $(".genomics-link").tooltip();
-            $(".story-link").tooltip();
-
-            $("#target-search").typeahead({ source: targets, items: 3 });
-            $("#drug-search").typeahead({ source: drugs, items: 3 });
-            $("#alteration-search").typeahead({ source: targets, items: 3 });
-
             $("#omni-search-form").submit(function() {
                 var searchTerm = $("#omni-search").val();
                 window.location.hash = "search/" + searchTerm;
                 return false;
             });
 
-            Holder.run();
+            return this;
+        }
+    });
+
+    var StorySubmissionView = Backbone.View.extend({
+        template:_.template($("#story-homepage-tmpl").html()),
+        render: function() {
+            $(this.el).append(this.template(this.model));
             return this;
         }
     });

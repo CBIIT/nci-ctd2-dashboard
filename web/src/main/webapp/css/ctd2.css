@@ -319,5 +319,9 @@
         margin-right: 15px;
     }
 
+    .stories-tabs {
+        overflow: hidden;
+    }
+
 
 

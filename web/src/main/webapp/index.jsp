@@ -60,7 +60,7 @@
                           <input type="text" id="omni-input" class="span3 search-query" title="Search" placeholder="e.g. CTNNB1 or ABT-737">
                           <button type="submit" class="btn search-button">Search</button>
                           <span class="hide" id="search-help-content">
-                              <p>Please enter the name of the subject you would like to search in the database.</p>
+                              <p>Please enter the keyword you would like to search on the website.</p>
 
                               <strong>Examples:</strong>
                               <ul>
@@ -111,36 +111,17 @@
                   <div class="carousel-caption">
                         <h1>Stories</h1>
                         <div class="well carousel-well">
-                            <div class="container">
-                            <div class="row">
-                                <div class="span8">
-                                    <p class="lead stories-lead">Cras justo odio, dapibus ac facilisis in, egestas eget quam.
-                                    </p>
-                                    <p class="stories-text">
-                                        Donec id elit <a href="#" class="target-link" title="Information about target">sample target</a> gravida at eget metus.
-                                        Nullam id dolor id nibh ultricies vehicula ut id elit.
-                                        Cras mattis <a href="#" class="drug-link" title="Information about drug">sample drug</a> purus sit amet fermentum.
-                                        Duis mollis, est non commodo luctus,
-                                        nisi erat porttitor ligula, eget lacinia odio sem nec elit.
-                                        Fusce dapibus,
-                                        tellus ac cursus <a href="#" class="genomics-link" title="Information about alteration">sample alteration</a>,
-                                        tortor mauris condimentum nibh,
-                                        ut fermentum massa justo sit amet risus... (<a href="#">read more</a>)
-                                    </p>
-                                </div>
-                                <div class="span4">
-                                    <img class="img-circle" data-src="holder.js/180x180/text:portrait or logo">
-                                </div>
-                            </div>
+                            <div class="tab-content stories-tabs">
+                                <div class="container tab-pane active" id="story-1"></div>
+                                <div class="container tab-pane" id="story-2"></div>
+                                <div class="container tab-pane" id="story-3"></div>
                             </div>
                             <br/>
                             <div class="pagination pagination-centered stories-pagination">
-                                <ul>
-                                    <li class="active"><a href="#">1</a></li>
-                                    <li><a href="#">2</a></li>
-                                    <li><a href="#">3</a></li>
-                                    <li><a href="#">4</a></li>
-                                    <li><a href="#">5</a></li>
+                                <ul class="nav">
+                                    <li class="active"><a href="#story-1">1</a></li>
+                                    <li><a href="#story-2">2</a></li>
+                                    <li><a href="#story-3">3</a></li>
                                     <li><a href="#">More stories →</a></li>
                                 </ul>
                             </div>
@@ -148,74 +129,8 @@
                   </div>
               </div>
             </div>
-            <div class="item">
-              <img data-src="holder.js/1500x450/#1ea44b:#1ea44b" class="cimg" alt="">
-              <div class="container">
-                <div class="carousel-caption">
-                  <h1>Targets</h1>
-                    <div class="well carousel-well">
-                        <p class="lead">Cras justo odio, dapibus ac facilisis in, egestas eget quam.
-                            Donec id elit non mi porta gravida at eget metus.
-                            Nullam id dolor id nibh ultricies vehicula ut id elit.
-                            Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.
-
-                        </p>
-                            <form class="form-search">
-                                <input type="text" class="input-medium search-query" id="target-search" placeholder="e.g. BRAF">
-                                <a class="btn btn-small btn-success" href="#">Search Targets</a>
-                                or <a class="btn btn-small" href="#"><i class="icon-th-list"></i> Browse all targets</a>
-                            </form>
-                    </div>
-                </div>
-              </div>
-            </div>
-            <div class="item">
-              <img data-src="holder.js/1500x450/#f99910:#f99910" alt="" class="cimg">
-              <div class="container">
-                <div class="carousel-caption">
-                  <h1>Compounds</h1>
-                    <div class="well carousel-well">
-                        <p class="lead">Cras justo odio, dapibus ac facilisis in, egestas eget quam.
-                            Donec id elit non mi porta gravida at eget metus.
-                            Nullam id dolor id nibh ultricies vehicula ut id elit.
-                            Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.
-
-                        </p>
-                        <form class="form-search">
-                            <input type="text" class="input-medium search-query" id="drug-search" placeholder="e.g. Vemurafenib">
-                            <a class="btn btn-small btn-warning" href="#">Search Compounds</a>
-                            or <a class="btn btn-small" href="#"><i class="icon-th-list"></i> Browse all compounds</a>
-                        </form>
-                    </div>
-                </div>
-              </div>
-            </div>
-            <div class="item">
-                  <img data-src="holder.js/1500x450/#006bb9:#006bb9" alt="" class="cimg">
-                  <div class="container">
-                      <div class="carousel-caption">
-                          <h1>Search</h1>
-                          <div class="well carousel-well">
-                              <p class="lead">Cras justo odio, dapibus ac facilisis in, egestas eget quam.
-                                  Donec id elit non mi porta gravida at eget metus.
-                                  Nullam id dolor id nibh ultricies vehicula ut id elit.
-                                  Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.
-
-                              </p>
-                              <form class="form-search" id="omni-search-form">
-                                  <input type="text" class="input-medium search-query" id="omni-search" placeholder="e.g. BRAF or aspirin">
-                                  <button class="btn btn-small btn-info" href="#">Search</button>
-                              </form>
-                          </div>
-                      </div>
-                  </div>
-             </div>
-
           </div>
 
-         <!-- <a class="left carousel-control" id="prevSlideControl" href="#myCarousel" data-slide="prev">&lsaquo;</a>
-          <a class="right carousel-control" id="nextSlideControl" href="#myCarousel" data-slide="next">&rsaquo;</a>
-          -->
         </div><!-- /.carousel -->
 
         <div class="container marketing ctd2-boxes">
@@ -394,7 +309,6 @@
                     <h1>Observation <small>(Tier {{submission.observationTemplate.tier}})</small></h1>
                     <blockquote>
                         <p id="observation-summary"></p>
-                        <p><small>{{submission.submissionDate}}</small></p>
                     </blockquote>
 
                     <table id="observed-subjects-grid" class="table table-bordered table-striped subjects">
@@ -435,6 +349,12 @@
                         <th>Summary</th>
                         <td>{{submission.observationTemplate.submissionDescription}}</td>
                     </tr>
+                    <tr>
+                        <th>Date</th>
+                        <td>{{submission.submissionDate}}</td>
+                    </tr>
+
+
                 </table>
             </div>
 
@@ -1036,6 +956,23 @@
         <div id="cytoscape-sif"></div>
         <div class="well sif-legend">
             {{description}}
+        </div>
+    </script>
+
+    <script type="text/template" id="story-homepage-tmpl">
+        <div class="row one-story">
+            <div class="span8">
+                <p class="lead stories-lead">{{submission.observationTemplate.description}}</p>
+                <p class="stories-text">
+                    <span>{{submission.observationTemplate.observationSummary}}</span>
+                </p>
+                <p class="pull-right">
+                    (<small></small><a href="#observation/{{id}}">read more...</a></small>)
+                </p>
+            </div>
+            <div class="span4">
+                <img class="img-circle" data-src="holder.js/180x180/text:portrait or logo">
+            </div>
         </div>
     </script>
 
