@@ -316,7 +316,7 @@
                         slicePoint: 50,
                         expandText:       '[...]',
                         expandPrefix:     ' ',
-                        userCollapseText: ''
+                        userCollapseText: '[^]'
                     });
 
                     $(".numeric-value").each(function(idx) {
