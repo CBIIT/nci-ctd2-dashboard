@@ -1,6 +1,6 @@
 !function ($) {
     // This is strictly coupled to the homepage design!
-    var numOfStoriesHomePage = 3;
+    var numOfStoriesHomePage = 4;
 
     // These seperators are for replacing items within the observation summary
     var leftSep = "<";

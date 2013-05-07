@@ -115,6 +115,7 @@
                                 <div class="container tab-pane active" id="story-1"></div>
                                 <div class="container tab-pane" id="story-2"></div>
                                 <div class="container tab-pane" id="story-3"></div>
+                                <div class="container tab-pane" id="story-4"></div>
                             </div>
                             <br/>
                             <div class="pagination pagination-centered stories-pagination">
@@ -122,6 +123,7 @@
                                     <li class="active"><a href="#story-1">1</a></li>
                                     <li><a href="#story-2">2</a></li>
                                     <li><a href="#story-3">3</a></li>
+                                    <li><a href="#story-4">4</a></li>
                                     <li><a href="#">More stories →</a></li>
                                 </ul>
                             </div>
@@ -968,7 +970,7 @@
                     <!-- leaving this blank, we have to construct the summary from the scratch. -->
                 </p>
                 <p class="pull-right">
-                    (<small></small><a href="#observation/{{id}}">read more...</a></small>)
+                    (<small><a href="#observation/{{id}}">see observation</a></small>)
                 </p>
             </div>
             <div class="span4">
