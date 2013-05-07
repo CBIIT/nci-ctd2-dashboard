@@ -424,11 +424,20 @@
                 }
             });
 
+            $("#small-show-sub-details").click(function(event) {
+                event.preventDefault();
+                $("#obs-submission-details").slideDown();
+                $("#small-show-sub-details").hide();
+                $("#small-hide-sub-details").show();
+            });
+
             $("#small-hide-sub-details").click(function(event) {
                 event.preventDefault();
-                $("#obs-submission-details").fadeIn();
-                $("#small-hide-sub-details").parent().hide();
+                $("#obs-submission-details").slideUp();
+                $("#small-hide-sub-details").hide();
+                $("#small-show-sub-details").show();
             });
+
 
             if(result.submission.observationTemplate.submissionDescription == "") {
                 $("#obs-submission-summary").hide();
