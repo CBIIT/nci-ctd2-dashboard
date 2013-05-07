@@ -356,7 +356,11 @@
 
                                 var container = $('#cytoscape-sif');
                                 var cyOptions = {
-                                    layout: { name: 'arbor' },
+                                    layout: {
+                                        name: 'arbor',
+                                        liveUpdate: false,
+                                        maxSimulationTime: 1000
+                                    },
                                     elements: data,
                                     style: cytoscape.stylesheet()
                                         .selector("node")
