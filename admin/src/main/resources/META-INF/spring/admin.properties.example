@@ -9,6 +9,7 @@ cell.line.lineage.location=
 compounds.location=
 compound.synonyms.location=
 protein.data.location=
+trc.shrna.data.location=
 tissue.sample.data.location=
 dashboard.cv.per.template.data.location=
 dashboard.cv.per.column.data.location=
