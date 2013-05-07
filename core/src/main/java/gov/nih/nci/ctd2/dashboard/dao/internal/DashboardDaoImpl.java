@@ -35,9 +35,16 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
             SubjectImpl.class,
             SynonymImpl.class,
             SubmissionImpl.class,
-            SubmissionCenterImpl.class,
             ObservationTemplateImpl.class
     };
+
+    private static final Class[] fuzzySearchableClasses = {
+            SubjectImpl.class,
+            SubmissionImpl.class,
+            ObservationTemplateImpl.class
+    };
+
+
     private DashboardFactory dashboardFactory;
 
     public DashboardFactory getDashboardFactory() {
@@ -46,6 +53,16 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
 
     public void setDashboardFactory(DashboardFactory dashboardFactory) {
         this.dashboardFactory = dashboardFactory;
+    }
+
+    private Integer maxNumberOfSearchResults = 50;
+
+    public Integer getMaxNumberOfSearchResults() {
+        return maxNumberOfSearchResults;
+    }
+
+    public void setMaxNumberOfSearchResults(Integer maxNumberOfSearchResults) {
+        this.maxNumberOfSearchResults = maxNumberOfSearchResults;
     }
 
     @Override
@@ -457,7 +474,11 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            FullTextQuery fullTextQuery = fullTextSession.createFullTextQuery(luceneQuery, searchableClasses);
+
+            Class[] classes = keyword.endsWith("*") ? fuzzySearchableClasses : searchableClasses;
+            FullTextQuery fullTextQuery = fullTextSession.createFullTextQuery(luceneQuery, classes);
+            fullTextQuery.setReadOnly(true);
+            fullTextQuery.setMaxResults(getMaxNumberOfSearchResults());
 
             for (Object o : fullTextQuery.list()) {
                 assert o instanceof DashboardEntity;

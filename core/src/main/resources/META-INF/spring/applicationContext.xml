@@ -19,6 +19,7 @@
     <bean class="gov.nih.nci.ctd2.dashboard.dao.internal.DashboardDaoImpl" id="dashboardDao">
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="dashboardFactory" ref="dashboardFactory"/>
+        <property name="maxNumberOfSearchResults" value="${search.max.number.results}"/>
     </bean>
 
     <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
