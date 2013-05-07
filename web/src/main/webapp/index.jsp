@@ -124,7 +124,7 @@
                                     <li><a href="#story-2">2</a></li>
                                     <li><a href="#story-3">3</a></li>
                                     <li><a href="#story-4">4</a></li>
-                                    <li><a href="#">More stories →</a></li>
+                                    <!--<li><a href="#">More stories →</a></li>-->
                                 </ul>
                             </div>
                         </div>
