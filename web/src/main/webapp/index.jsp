@@ -962,9 +962,10 @@
     <script type="text/template" id="story-homepage-tmpl">
         <div class="row one-story">
             <div class="span8">
-                <p class="lead stories-lead">{{submission.observationTemplate.description}}</p>
-                <p class="stories-text">
-                    <span>{{submission.observationTemplate.observationSummary}}</span>
+                <h4>{{submission.observationTemplate.description}}</h4>
+                <!--<p class="lead stories-lead">{{submission.observationTemplate.description}}</p>-->
+                <p id="story-summary-{{id}}" class="stories-text">
+                    <!-- leaving this blank, we have to construct the summary from the scratch. -->
                 </p>
                 <p class="pull-right">
                     (<small></small><a href="#observation/{{id}}">read more...</a></small>)
