@@ -32,6 +32,7 @@ public class AdminTest {
 				"classpath*:META-INF/spring/testCompoundDataApplicationContext.xml", // and this is for compound data importer beans
 				"classpath*:META-INF/spring/testGeneDataApplicationContext.xml", // and this is for gene data importer beans
 				"classpath*:META-INF/spring/testProteinDataApplicationContext.xml", // and this is for protein data importer beans
+				"classpath*:META-INF/spring/testTRCshRNADataApplicationContext.xml", // and this is for trc-shRNA data importer beans
 				"classpath*:META-INF/spring/testTissueSampleDataApplicationContext.xml", // and this is for tissue sample data importer beans
 				"classpath*:META-INF/spring/controlledVocabularyApplicationContext.xml", // and this is for controlled vocabulary importer beans
 				"classpath*:META-INF/spring/testObservationDataApplicationContext.xml", // and this is for observation data importer beans
@@ -135,6 +136,16 @@ public class AdminTest {
 		List<Transcript> transcripts = dashboardDao.findTranscriptsByRefseqId("NM_003404.3");
 		assertEquals(1, transcripts.size());
 
+		// import some shrna
+		jobExecution = executeJob("TRCshRNADataImporterJob");
+        assertEquals("COMPLETED", jobExecution.getExitStatus().getExitCode());
+		assertEquals(1, dashboardDao.countEntities(ShRna.class).intValue());
+		List<Subject> shRNASubjects = dashboardDao.findSubjectsByXref("BROAD_SHRNA", "TRCN0000000001");
+		assertEquals(1, shRNASubjects.size());
+		ShRna shRNA = (ShRna)shRNASubjects.get(0);
+		assertEquals("NM_001356.x-2866s1c1", shRNA.getDisplayName());
+		assertEquals("CCCTGCCAAACAAGCTAATAT", shRNA.getTargetSequence());
+
 		// import some tissue sample data
 		jobExecution = executeJob("tissueSampleDataImporterJob");
         assertEquals("COMPLETED", jobExecution.getExitStatus().getExitCode());
@@ -162,7 +173,7 @@ public class AdminTest {
 		observationTemplate = dashboardDao.findObservationTemplateByName("broad_tier3_navitoclax_story");
 		assertTrue(observationTemplate != null);
 		assertTrue(observationTemplate.getIsSubmissionStory() == Boolean.TRUE);
-		assertTrue(observationTemplate.getSubmissionStoryRank() == 1);
+		assertTrue(observationTemplate.getSubmissionStoryRank() == 4);
 
 		// import observation data
 		jobExecution = executeJob("testTierOneObservationDataImporterJob");
