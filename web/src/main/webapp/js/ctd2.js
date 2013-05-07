@@ -156,6 +156,46 @@
         template:_.template($("#story-homepage-tmpl").html()),
         render: function() {
             $(this.el).append(this.template(this.model));
+
+            var summary = this.model.submission.observationTemplate.observationSummary;
+            var thatModel = this.model;
+            var thatEl = $("#story-summary-" + this.model.id);
+            var observedSubjects = new ObservedSubjects({ observationId: this.model.id });
+            observedSubjects.fetch({
+                success: function() {
+                    _.each(observedSubjects.models, function(observedSubject) {
+                        observedSubject = observedSubject.toJSON();
+
+                        if(observedSubject.observedSubjectRole == null || observedSubject.subject == null)
+                            return;
+
+                        summary = summary.replace(
+                            leftSep + observedSubject.observedSubjectRole.columnName + rightSep,
+                            _.template($("#summary-subject-replacement-tmpl").html(), observedSubject.subject)
+                        );
+                    });
+
+                    var observedEvidences = new ObservedEvidences({ observationId: thatModel.id });
+                    observedEvidences.fetch({
+                        success: function() {
+                            _.each(observedEvidences.models, function(observedEvidence) {
+                                observedEvidence = observedEvidence.toJSON();
+
+                                if(observedEvidence.observedEvidenceRole == null || observedEvidence.evidence == null)
+                                    return;
+
+                                summary = summary.replace(
+                                    leftSep + observedEvidence.observedEvidenceRole.columnName + rightSep,
+                                    _.template($("#summary-evidence-replacement-tmpl").html(), observedEvidence.evidence)
+                                );
+                            });
+
+                            $(thatEl).html(summary);
+                        }
+                    })
+                }
+            });
+
             return this;
         }
     });
