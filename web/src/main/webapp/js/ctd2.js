@@ -418,8 +418,14 @@
                     });
 
                     $("a.pdf-file-link").fancybox({
-                        width: "100%",
-                        height: "100%"
+                        openEffect: 'none',
+                        closeEffect: 'none',
+                        width: '100%',
+                        height: '100%',
+                        type: "iframe",
+                        iframe: {
+                            preload: false
+                        }
                     });
                 }
             });
