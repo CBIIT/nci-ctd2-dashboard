@@ -12,6 +12,7 @@ import org.springframework.validation.BindException;
 import org.springframework.batch.item.file.transform.FieldSet;
 import org.springframework.batch.item.file.mapping.FieldSetMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.util.Map;
 import java.util.HashMap;
@@ -36,16 +37,24 @@ public class TRCshRNADataFieldSetMapper implements FieldSetMapper<ShRna> {
     @Autowired
 	private DashboardDao dashboardDao;
 
+    @Autowired
+	@Qualifier("TRCshRNAFilterMap")
+	private HashMap<String,String> tRCshRNAFilterMap;
+
     private HashMap<String, Organism> organismMap = new HashMap<String, Organism>();
     private HashMap<String, Transcript> transcriptMap = new HashMap<String, Transcript>();
 
 	public ShRna mapFieldSet(FieldSet fieldSet) throws BindException {
 
+        ShRna shRNA = dashboardFactory.create(ShRna.class);
+
 		// sanity check
 		String cloneId = fieldSet.readString(CLONE_ID_COL_INDEX);
-		if (cloneId.equalsIgnoreCase(MISSING_ENTRY)) return null;
+		if (cloneId.equalsIgnoreCase(MISSING_ENTRY)) return shRNA;
 
-        ShRna shRNA = dashboardFactory.create(ShRna.class);
+		// only process records that exist in our map
+		if (!tRCshRNAFilterMap.isEmpty() && !tRCshRNAFilterMap.containsKey(cloneId)) return shRNA;
+
         shRNA.setDisplayName(fieldSet.readString(CLONE_NAME_COL_INDEX));
 		// create synonym back to self
 		Synonym synonym = dashboardFactory.create(Synonym.class);
