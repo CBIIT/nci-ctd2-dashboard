@@ -184,6 +184,12 @@
                                 if(observedEvidence.observedEvidenceRole == null || observedEvidence.evidence == null)
                                     return;
 
+                                // If this is a summary, then it should be a pdf file evidence
+                                $("#file-link-" + thatModel.id).attr(
+                                    "href",
+                                    $("#file-link-" + thatModel.id).attr("href") + observedEvidence.evidence.filePath
+                                );
+
                                 summary = summary.replace(
                                     leftSep + observedEvidence.observedEvidenceRole.columnName + rightSep,
                                     _.template($("#summary-evidence-replacement-tmpl").html(), observedEvidence.evidence)
@@ -421,6 +427,7 @@
 
                     });
 
+                    /*
                     $("a.pdf-file-link").fancybox({
                         openEffect: 'none',
                         closeEffect: 'none',
@@ -431,6 +438,7 @@
                             preload: false
                         }
                     });
+                    */
                 }
             });
 
