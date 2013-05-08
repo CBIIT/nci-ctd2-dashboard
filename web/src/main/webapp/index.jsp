@@ -970,7 +970,12 @@
                     <!-- leaving this blank, we have to construct the summary from the scratch. -->
                 </p>
                 <p class="pull-right">
-                    (<small><a href="#observation/{{id}}">see observation</a></small>)
+                    (<small>
+                        <a target="_blank" href="http://cbio.mskcc.org/cancergenomics/ctd2-dashboard/" id="file-link-{{id}}">
+                            view full story</a>
+                    </small>
+                    |
+                    <small><a href="#observation/{{id}}">see observation</a></small>)
                 </p>
             </div>
             <div class="span4">
