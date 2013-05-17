@@ -195,4 +195,14 @@ public class AdminTest {
 		Job job = (Job) appContext.getBean(jobName);
         return jobLauncher.run(job, builder.toJobParameters());
 	}
+
+    @Test
+    public void saveAndIndexError() throws Exception {
+        // import some cell line data
+        jobExecution = executeJob("cellLineDataImporterJob");
+        assertEquals("COMPLETED", jobExecution.getExitStatus().getExitCode());
+        assertEquals(11, dashboardDao.countEntities(CellSample.class).intValue());
+        List<CellSample> cellSamples = dashboardDao.findCellSampleByLineage("haematopoietic_and_lymphoid_tissue");
+        assertEquals(1, cellSamples.size());
+    }
 }
