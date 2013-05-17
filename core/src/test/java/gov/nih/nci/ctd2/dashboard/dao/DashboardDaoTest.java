@@ -557,6 +557,7 @@ public class DashboardDaoTest {
         synonym4.setDisplayName(synStr4);
 
         Gene gene1 = dashboardFactory.create(Gene.class);
+        gene1.setDisplayName("Gene1");
         gene1.setEntrezGeneId("E1");
         gene1.getSynonyms().add(synonym1);
         gene1.getSynonyms().add(synonym2);
@@ -564,6 +565,7 @@ public class DashboardDaoTest {
 
         Gene gene2 = dashboardFactory.create(Gene.class);
         gene2.setEntrezGeneId("E2");
+        gene2.setDisplayName("Gene2");
         gene2.getSynonyms().add(synonym3);
         gene2.getSynonyms().add(synonym4);
         dashboardDao.save(gene2);
@@ -591,9 +593,15 @@ public class DashboardDaoTest {
         dashboardDao.createIndex(10);
 
         assertTrue(dashboardDao.search("something").isEmpty());
-        assertEquals(2, dashboardDao.search(synonymStr + "*").size());
-        assertEquals(1, dashboardDao.search(synonymStr + "1*").size());
-        assertEquals(1, dashboardDao.search(synStr4).size());
+        assertFalse(dashboardDao.search(synStr4).isEmpty());
+
+        // Wild-card search does not look in the synonyms (optimization)
+        assertTrue(dashboardDao.search(synonymStr + "*").isEmpty());
+        assertTrue(dashboardDao.search(synonymStr + "1*").isEmpty());
+        // But these should work since they are part of the displayName
+        assertEquals(2, dashboardDao.search("Gene*").size());
+        assertEquals(1, dashboardDao.search("Gene1*").size());
+        assertEquals(1, dashboardDao.search("Gene2*").size());
 
         assertTrue(dashboardDao.search(submsDesc).isEmpty());
         assertTrue(dashboardDao.search(obsDesc).isEmpty());
