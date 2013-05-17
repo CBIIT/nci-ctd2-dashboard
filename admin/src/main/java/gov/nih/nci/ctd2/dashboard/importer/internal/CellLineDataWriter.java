@@ -8,6 +8,8 @@ import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.HashMap;
 
 public class CellLineDataWriter implements Tasklet {
@@ -18,11 +20,13 @@ public class CellLineDataWriter implements Tasklet {
     @Autowired
 	@Qualifier("cellSampleMap")
 	private HashMap<String,CellSample> cellSampleMap;
- 
+
+    @Autowired
+    @Qualifier("indexBatchSize")
+    private Integer batchSize;
+
 	public RepeatStatus execute(StepContribution arg0, ChunkContext arg1) throws Exception {
-		for (String key : cellSampleMap.keySet()) {
-			dashboardDao.save(cellSampleMap.get(key));
-		}
+        dashboardDao.batchSave(cellSampleMap.values(), batchSize);
         return RepeatStatus.FINISHED;
     }
 }

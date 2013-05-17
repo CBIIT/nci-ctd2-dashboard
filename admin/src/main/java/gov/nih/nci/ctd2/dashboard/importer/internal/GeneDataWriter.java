@@ -4,6 +4,7 @@ import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
 import gov.nih.nci.ctd2.dashboard.model.Gene;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +17,14 @@ public class GeneDataWriter implements ItemWriter<Gene> {
 
     @Autowired
 	private DashboardDao dashboardDao;
+
+    @Autowired
+    @Qualifier("indexBatchSize")
+    private Integer batchSize;
  
 	private static final Log log = LogFactory.getLog(GeneDataWriter.class);
  
 	public void write(List<? extends Gene> items) throws Exception {
-		for (Gene gene : items) {
-			log.info("Storing gene: " + gene.getDisplayName());
-			dashboardDao.save(gene);
-		}
+        dashboardDao.batchSave(items, batchSize);
 	}
 }
