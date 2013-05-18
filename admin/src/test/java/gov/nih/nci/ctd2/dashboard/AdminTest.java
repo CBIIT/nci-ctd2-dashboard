@@ -204,5 +204,15 @@ public class AdminTest {
         assertEquals(11, dashboardDao.countEntities(CellSample.class).intValue());
         List<CellSample> cellSamples = dashboardDao.findCellSampleByLineage("haematopoietic_and_lymphoid_tissue");
         assertEquals(1, cellSamples.size());
+
+        List<Subject> cellSampleSubjects = dashboardDao.findSubjectsByXref("CTD2", "idCell:9");
+        assertEquals(1, cellSampleSubjects.size());
+        CellSample cellSample = (CellSample)cellSampleSubjects.iterator().next();
+        assertEquals("697", cellSample.getDisplayName());
+        assertEquals("haematopoietic_and_lymphoid_tissue", cellSample.getLineage());
+        assertEquals(3, cellSample.getSynonyms().size());
+        assertEquals(8, cellSample.getXrefs().size());
     }
+
+
 }
