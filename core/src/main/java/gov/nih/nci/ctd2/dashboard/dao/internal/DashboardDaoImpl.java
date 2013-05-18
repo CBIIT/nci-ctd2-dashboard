@@ -75,11 +75,21 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
         if(entities == null || entities.isEmpty())
             return;
 
+        ArrayList<DashboardEntity> allEntities = new ArrayList<DashboardEntity>();
+        for (DashboardEntity entity : entities) {
+            if(entity instanceof Subject) {
+                Subject subject = (Subject) entity;
+                allEntities.addAll(subject.getXrefs());
+                allEntities.addAll(subject.getSynonyms());
+            }
+        }
+        allEntities.addAll(entities);
+
         // Insert new element super fast with a stateless session
         StatelessSession statelessSession = getHibernateTemplate().getSessionFactory().openStatelessSession();
         Transaction tx = statelessSession.beginTransaction();
 
-        for (DashboardEntity entity : entities)
+        for (DashboardEntity entity : allEntities)
             statelessSession.insert(entity);
 
         tx.commit();
@@ -88,13 +98,15 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
         // And then update them all to create the actual mappings
         Session session = getHibernateTemplate().getSessionFactory().openSession();
         int i = 0;
-        for (DashboardEntity entity : entities) {
-            session.merge(entity);
+        for (DashboardEntity entity : allEntities) {
+            session.update(entity);
             if(++i % batchSize == 0) {
                 session.flush();
                 session.clear();
             }
         }
+        session.flush();
+        session.clear();
         session.close();
     }
 
