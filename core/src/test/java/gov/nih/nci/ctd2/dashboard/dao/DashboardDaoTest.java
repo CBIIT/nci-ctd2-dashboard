@@ -160,6 +160,9 @@ public class DashboardDaoTest {
         xrefEntities.add(xref24);
         dashboardDao.batchSave(xrefEntities, 3);
         assertEquals(7, dashboardDao.countEntities(Xref.class).intValue());
+        for (Xref xref : dashboardDao.findEntities(Xref.class)) {
+            dashboardDao.delete(xref);
+        }
 
         // And then the compounds
         Collection<DashboardEntity> compoundEntities = new ArrayList<DashboardEntity>();
