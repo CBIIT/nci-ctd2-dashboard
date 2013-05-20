@@ -149,23 +149,23 @@ public class AdminTest {
         jobExecution = executeJob("controlledVocabularyImporterJob");
         assertEquals("COMPLETED", jobExecution.getExitStatus().getExitCode());
         // we get some subject/observed subject roles
-        assertEquals(4, dashboardDao.countEntities(SubjectRole.class).intValue());
-        assertEquals(38, dashboardDao.countEntities(ObservedSubjectRole.class).intValue());
+        assertEquals(7, dashboardDao.countEntities(SubjectRole.class).intValue());
+        assertEquals(48, dashboardDao.countEntities(ObservedSubjectRole.class).intValue());
         assertTrue(dashboardDao.findObservedSubjectRole("broad_cpd_sens_lineage_enrich", "compound_name") != null);
         // we get some evidence/observed evidence roles
-        assertEquals(4, dashboardDao.countEntities(EvidenceRole.class).intValue());
-        assertEquals(61, dashboardDao.countEntities(ObservedEvidenceRole.class).intValue());
+        assertEquals(8, dashboardDao.countEntities(EvidenceRole.class).intValue());
+        assertEquals(98, dashboardDao.countEntities(ObservedEvidenceRole.class).intValue());
         assertTrue(dashboardDao.findObservedEvidenceRole("broad_cpd_sens_lineage_enrich", "cell_line_subset") != null);
         // we get observation template data
-        assertEquals(9, dashboardDao.countEntities(ObservationTemplate.class).intValue());
+        assertEquals(15, dashboardDao.countEntities(ObservationTemplate.class).intValue());
         ObservationTemplate observationTemplate = dashboardDao.findObservationTemplateByName("broad_cpd_sens_lineage_enrich");
-        assertTrue(observationTemplate != null);
-        assertTrue(observationTemplate.getIsSubmissionStory() == Boolean.FALSE);
-        assertTrue(observationTemplate.getSubmissionStoryRank() == 0);
+        assertNotNull(observationTemplate);
+        assertFalse(observationTemplate.getIsSubmissionStory());
+        assertEquals(0, observationTemplate.getSubmissionStoryRank().intValue());
         observationTemplate = dashboardDao.findObservationTemplateByName("broad_tier3_navitoclax_story");
-        assertTrue(observationTemplate != null);
-        assertTrue(observationTemplate.getIsSubmissionStory() == Boolean.TRUE);
-        assertTrue(observationTemplate.getSubmissionStoryRank() == 4);
+        assertNotNull(observationTemplate);
+        assertTrue(observationTemplate.getIsSubmissionStory());
+        assertEquals(4, observationTemplate.getSubmissionStoryRank().intValue());
 
         // import observation data
         jobExecution = executeJob("testTierOneObservationDataImporterJob");

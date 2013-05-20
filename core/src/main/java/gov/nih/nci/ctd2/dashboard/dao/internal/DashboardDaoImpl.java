@@ -67,12 +67,7 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
 
     @Override
     public void save(DashboardEntity entity) {
-        // TODO: well we have to think about this more
-        Session session = getHibernateTemplate().getSessionFactory().openSession();
-        session.save(entity);
-        session.flush();
-        session.clear();
-        session.close();
+        getHibernateTemplate().save(entity);
     }
 
     @Override
