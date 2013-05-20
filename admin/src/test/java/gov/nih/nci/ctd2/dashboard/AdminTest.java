@@ -144,31 +144,6 @@ public class AdminTest {
         assertEquals(10, dashboardDao.countEntities(TissueSample.class).intValue());
         List<TissueSample> tissueSamples = dashboardDao.findTissueSampleByLineage("autonomic_ganglia, mediastinum");
         assertEquals(1, tissueSamples.size());
-    }
-
-	private JobExecution executeJob(String jobName) throws Exception {
-
-		JobParametersBuilder builder = new JobParametersBuilder();
-		Job job = (Job) appContext.getBean(jobName);
-        return jobLauncher.run(job, builder.toJobParameters());
-	}
-
-    @Test
-    public void saveAndIndexErrorCellLineData() throws Exception {
-        // import some cell line data
-        jobExecution = executeJob("cellLineDataImporterJob");
-        assertEquals("COMPLETED", jobExecution.getExitStatus().getExitCode());
-        assertEquals(11, dashboardDao.countEntities(CellSample.class).intValue());
-        List<CellSample> cellSamples = dashboardDao.findCellSampleByLineage("haematopoietic_and_lymphoid_tissue");
-        assertEquals(1, cellSamples.size());
-
-        List<Subject> cellSampleSubjects = dashboardDao.findSubjectsByXref("CTD2", "idCell:9");
-        assertEquals(1, cellSampleSubjects.size());
-        CellSample cellSample = (CellSample)cellSampleSubjects.iterator().next();
-        assertEquals("697", cellSample.getDisplayName());
-        assertEquals("haematopoietic_and_lymphoid_tissue", cellSample.getLineage());
-        assertEquals(3, cellSample.getSynonyms().size());
-        assertEquals(8, cellSample.getXrefs().size());
 
         // import controlled vocabulary
         jobExecution = executeJob("controlledVocabularyImporterJob");
@@ -206,4 +181,10 @@ public class AdminTest {
         assertEquals(9, dashboardDao.countEntities(UrlEvidence.class).intValue());
     }
 
+	private JobExecution executeJob(String jobName) throws Exception {
+
+		JobParametersBuilder builder = new JobParametersBuilder();
+		Job job = (Job) appContext.getBean(jobName);
+        return jobLauncher.run(job, builder.toJobParameters());
+	}
 }
