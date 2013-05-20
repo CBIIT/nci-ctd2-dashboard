@@ -29,9 +29,7 @@ public class ProteinDataWriter implements ItemWriter<ProteinData> {
         ArrayList<DashboardEntity> entities = new ArrayList<DashboardEntity>();
 
 		for (ProteinData proteinData : items) {
-			for (Transcript transcript : proteinData.transcripts) {
-                entities.add(transcript);
-			}
+            entities.addAll(proteinData.transcripts);
 			log.info("Storing protein: " + proteinData.protein.getDisplayName());
             entities.add(proteinData.protein);
 		}
