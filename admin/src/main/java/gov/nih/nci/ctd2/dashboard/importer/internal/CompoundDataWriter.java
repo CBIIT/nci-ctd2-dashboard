@@ -18,11 +18,13 @@ public class CompoundDataWriter implements Tasklet {
     @Autowired
 	@Qualifier("compoundMap")
 	private HashMap<String,Compound> compoundMap;
+
+    @Autowired
+    @Qualifier("indexBatchSize")
+    private Integer batchSize;
  
 	public RepeatStatus execute(StepContribution arg0, ChunkContext arg1) throws Exception {
-		for (String key : compoundMap.keySet()) {
-			dashboardDao.save(compoundMap.get(key));
-		}
+        dashboardDao.batchSave(compoundMap.values(), batchSize);
         return RepeatStatus.FINISHED;
     }
 }
