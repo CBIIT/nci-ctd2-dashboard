@@ -18,7 +18,6 @@ import java.util.HashMap;
 @Component("controlledVocabularyPerColumnMapper")
 public class ControlledVocabularyPerColumnFieldSetMapper implements FieldSetMapper<ControlledVocabulary> {
 
-	private static final String ID = "id";
 	private static final String TEMPLATE_NAME = "template_name";
 	private static final String COLUMN_NAME = "column_name";
 	private static final String SUBJECT = "subject";
