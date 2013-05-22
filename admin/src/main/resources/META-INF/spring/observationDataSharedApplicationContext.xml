@@ -8,14 +8,6 @@
 							http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 
   <batch:job id="observationDataImporterJob">
-	<batch:step id="utswTier4DiscoipyrrolesStoryStep" parent="observationDataStep">
-	  <batch:tasklet>
-		<batch:chunk reader="utswTier4DiscoipyrrolesStoryReader" processor="observationDataProcessor" writer="observationDataWriter"/>
-	  </batch:tasklet>
-	</batch:step>
-  </batch:job>
-<!--
-  <batch:job id="observationDataImporterJob">
 	<batch:step id="broadCompoundSensitivityLineageEnrichmentStep" parent="observationDataStep" next="broadCompoundSensitivityMutationEnrichmentStep">
 	  <batch:tasklet>
 		<batch:chunk reader="broadCompoundSensitivityLineageEnrichmentReader" processor="observationDataProcessor" writer="observationDataWriter"/>
@@ -87,7 +79,6 @@
 	  </batch:tasklet>
 	</batch:step>
   </batch:job>
--->
 
   <bean id="observationDataStep" class="org.springframework.batch.core.step.item.SimpleStepFactoryBean" abstract="true">
 	<property name="transactionManager" ref="transactionManager" />

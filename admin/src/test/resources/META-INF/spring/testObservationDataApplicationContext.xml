@@ -82,4 +82,29 @@
 	<property name="lineMapper" ref="dfciTier4BetaCateninStoryLineMapper" />
   </bean>
 
+  <!-- dfci reporter analysis reader -->
+  <bean name="dfciReporterAnalysisReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="lineMapper" ref="dfciReporterAnalysisLineMapper" />
+  </bean>
+
+  <!-- dfci ataris analysis reader -->
+  <bean name="dfciAtarisAnalysisReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="lineMapper" ref="dfciAtarisAnalysisLineMapper" />
+  </bean>
+
+  <!-- dfci ovarian analysis reader -->
+  <bean name="dfciOvarianAnalysisReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="lineMapper" ref="dfciOvarianAnalysisLineMapper" />
+  </bean>
+
+  <!-- dfci pax 8 tier 3 reader -->
+  <bean name="dfciPax8Tier3Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="lineMapper" ref="dfciPax8Tier3LineMapper" />
+  </bean>
+
+  <!-- utsw tier 4 discoipyrroles story reader -->
+  <bean name="utswTier4DiscoipyrrolesStoryReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="lineMapper" ref="utswTier4DiscoipyrrolesStoryLineMapper" />
+  </bean>
+
 </beans>
