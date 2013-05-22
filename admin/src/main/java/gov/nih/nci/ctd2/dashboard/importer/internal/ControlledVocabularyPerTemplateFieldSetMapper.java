@@ -14,7 +14,7 @@ import java.util.HashMap;
 @Component("controlledVocabularyPerTemplateMapper")
 public class ControlledVocabularyPerTemplateFieldSetMapper implements FieldSetMapper<ObservationTemplate> {
 
-	private static final String TEMPLATE_TIER = "template_tier";
+	private static final String TEMPLATE_TIER = "observation_tier";
 	private static final String TEMPLATE_NAME = "template_name";
 	private static final String OBSERVATION_SUMMARY = "observation_summary";
 	private static final String TEMPLATE_DESCRIPTION = "template_description";
