@@ -110,4 +110,59 @@
 	</property>
   </bean>
 
+  <!-- dfci reporter analysis -->
+  <bean name="dfciReporterAnalysisReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+	<property name="resources" value="${dfci.reporter.analysis.data.location}" />
+	<property name="delegate">
+	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+		<property name="lineMapper" ref="dfciReporterAnalysisLineMapper" />
+		<property name="linesToSkip" value="7" />
+	  </bean>
+	</property>
+  </bean>
+
+  <!-- dfci ataris analysis -->
+  <bean name="dfciAtarisAnalysisReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+	<property name="resources" value="${dfci.ataris.analysis.data.location}" />
+	<property name="delegate">
+	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+		<property name="lineMapper" ref="dfciAtarisAnalysisLineMapper" />
+		<property name="linesToSkip" value="7" />
+	  </bean>
+	</property>
+  </bean>
+
+  <!-- dfci ovarian analysis -->
+  <bean name="dfciOvarianAnalysisReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+	<property name="resources" value="${dfci.ovarian.analysis.data.location}" />
+	<property name="delegate">
+	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+		<property name="lineMapper" ref="dfciOvarianAnalysisLineMapper" />
+		<property name="linesToSkip" value="7" />
+	  </bean>
+	</property>
+  </bean>
+
+  <!-- dfci pax8 tier 3 -->
+  <bean name="dfciPax8Tier3Reader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+	<property name="resources" value="${dfci.pax8.tier3.data.location}" />
+	<property name="delegate">
+	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+		<property name="lineMapper" ref="dfciPax8Tier3LineMapper" />
+		<property name="linesToSkip" value="7" />
+	  </bean>
+	</property>
+  </bean>
+
+  <!-- uts tier 4 discoipyrroles story -->
+  <bean name="utswTier4DiscoipyrrolesStoryReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+	<property name="resources" value="${utsw.tier4.discoipyrroles.story.data.location}" />
+	<property name="delegate">
+	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+		<property name="lineMapper" ref="utswTier4DiscoipyrrolesStoryLineMapper" />
+		<property name="linesToSkip" value="7" />
+	  </bean>
+	</property>
+  </bean>
+
 </beans>

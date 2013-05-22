@@ -8,6 +8,14 @@
 							http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 
   <batch:job id="observationDataImporterJob">
+	<batch:step id="utswTier4DiscoipyrrolesStoryStep" parent="observationDataStep">
+	  <batch:tasklet>
+		<batch:chunk reader="utswTier4DiscoipyrrolesStoryReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+  </batch:job>
+<!--
+  <batch:job id="observationDataImporterJob">
 	<batch:step id="broadCompoundSensitivityLineageEnrichmentStep" parent="observationDataStep" next="broadCompoundSensitivityMutationEnrichmentStep">
 	  <batch:tasklet>
 		<batch:chunk reader="broadCompoundSensitivityLineageEnrichmentReader" processor="observationDataProcessor" writer="observationDataWriter"/>
@@ -48,12 +56,38 @@
 		<batch:chunk reader="cshlTier4FGF19StoryReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	  </batch:tasklet>
 	</batch:step>
-	<batch:step id="dfciTier4BetaCateninStoryStep" parent="observationDataStep">
+	<batch:step id="dfciTier4BetaCateninStoryStep" parent="observationDataStep" next="dfciReporterAnalysisStep">
 	  <batch:tasklet>
 		<batch:chunk reader="dfciTier4BetaCateninStoryReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	  </batch:tasklet>
 	</batch:step>
+	<batch:step id="dfciReporterAnalysisStep" parent="observationDataStep" next="dfciAtarisAnalysisStep">
+	  <batch:tasklet>
+		<batch:chunk reader="dfciReporterAnalysisReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+	<batch:step id="dfciAtarisAnalysisStep" parent="observationDataStep" next="dfciOvarianAnalysisStep">
+	  <batch:tasklet>
+		<batch:chunk reader="dfciAtarisAnalysisReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+	<batch:step id="dfciOvarianAnalysisStep" parent="observationDataStep" next="dfciPax8Tier3Step">
+	  <batch:tasklet>
+		<batch:chunk reader="dfciOvarianAnalysisReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+	<batch:step id="dfciPax8Tier3Step" parent="observationDataStep" next="utswTier4DiscoipyrrolesStoryStep">
+	  <batch:tasklet>
+		<batch:chunk reader="dfciPax8Tier3Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+	<batch:step id="utswTier4DiscoipyrrolesStoryStep" parent="observationDataStep">
+	  <batch:tasklet>
+		<batch:chunk reader="utswTier4DiscoipyrrolesStoryReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	  </batch:tasklet>
+	</batch:step>
   </batch:job>
+-->
 
   <bean id="observationDataStep" class="org.springframework.batch.core.step.item.SimpleStepFactoryBean" abstract="true">
 	<property name="transactionManager" ref="transactionManager" />
@@ -187,6 +221,76 @@
 	<property name="names" value="dummy,submission_center,submission_date,template_name,disease_condition,tissue_sample,gene_symbol_1,gene_symbol_2,gene_symbol_3,gene_symbol_4,drug_candidate,story_location"/>
   </bean>
 
+  <!-- dfci reporter analysis -->
+
+  <!-- dfciReporterAnalysisReader defined in: -->
+  <!-- observationDataApplicationContext.xml testObservationDataApplicationContext.xml -->
+  <bean name="dfciReporterAnalysisLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+	<property name="fieldSetMapper" ref="observationDataMapper" />
+	<property name="lineTokenizer" ref="dfciReporterAnalysisLineTokenizer" />
+  </bean>
+
+  <bean name="dfciReporterAnalysisLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+	<property name="delimiter" value="\u0009"/>
+	<property name="names" value="dummy,submission_center,submission_date,template_name,target_group,number_of_cell_lines,number_of_cell_lines_in_target_group,gene_symbol,p_value,fdr,nci_portal,gct_path,publication_reference,publication_url"/>
+  </bean>
+
+  <!-- dfci ataris analysis -->
+
+  <!-- dfciAtarisAnalysisReader defined in: -->
+  <!-- observationDataApplicationContext.xml testObservationDataApplicationContext.xml -->
+  <bean name="dfciAtarisAnalysisLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+	<property name="fieldSetMapper" ref="observationDataMapper" />
+	<property name="lineTokenizer" ref="dfciAtarisAnalysisLineTokenizer" />
+  </bean>
+
+  <bean name="dfciAtarisAnalysisLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+	<property name="delimiter" value="\u0009"/>
+	<property name="names" value="dummy,submission_center,submission_date,template_name,number_of_cell_lines,shRNA_id,gene_symbol,solution_name,c_score,p_value,fdr,nci_portal,gct_path_shrna,gct_path_ataris,publication_reference,publication_url"/>
+  </bean>
+
+  <!-- dfci ovarian analysis -->
+
+  <!-- dfciOvarianAnalysisReader defined in: -->
+  <!-- observationDataApplicationContext.xml testObservationDataApplicationContext.xml -->
+  <bean name="dfciOvarianAnalysisLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+	<property name="fieldSetMapper" ref="observationDataMapper" />
+	<property name="lineTokenizer" ref="dfciOvarianAnalysisLineTokenizer" />
+  </bean>
+
+  <bean name="dfciOvarianAnalysisLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+	<property name="delimiter" value="\u0009"/>
+	<property name="names" value="dummy,submission_center,submission_date,template_name,target_group,number_of_cell_lines,number_of_cell_lines_in_target_group,gene_symbol,gene_scoring,additional_evidence,nci_portal,gct_path,publication_reference,publication_url"/>
+  </bean>
+
+  <!-- dfci pax8 tier 3 -->
+
+  <!-- dfciPax8Tier3Reader defined in: -->
+  <!-- observationDataApplicationContext.xml testObservationDataApplicationContext.xml -->
+  <bean name="dfciPax8Tier3LineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+	<property name="fieldSetMapper" ref="observationDataMapper" />
+	<property name="lineTokenizer" ref="dfciPax8Tier3LineTokenizer" />
+  </bean>
+
+  <bean name="dfciPax8Tier3LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+	<property name="delimiter" value="\u0009"/>
+	<property name="names" value="dummy,submission_center,submission_date,template_name,target_group,gene_symbol,figure_1,figure_2,figure_3,figure_4,figure_5,tier1_evidence,publication_reference,publication_url"/>
+  </bean>
+
+  <!-- uts tier 4 discoipyrroles story -->
+
+  <!-- utsTier4DiscoipyrrolesStoryReader defined in: -->
+  <!-- observationDataApplicationContext.xml testObservationDataApplicationContext.xml -->
+  <bean name="utswTier4DiscoipyrrolesStoryLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+	<property name="fieldSetMapper" ref="observationDataMapper" />
+	<property name="lineTokenizer" ref="utswTier4DiscoipyrrolesStoryLineTokenizer" />
+  </bean>
+
+  <bean name="utswTier4DiscoipyrrolesStoryLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+	<property name="delimiter" value="\u0009"/>
+	<property name="names" value="dummy,submission_center,submission_date,template_name,disease_condition_1,tissue_sample_1,disease_condition_2,tissue_sample_2,gene_symbol_1,drug_candidate_class,story_location"/>
+  </bean>
+
   <!-- shared helper beans -->
   <bean name="observationDataFactory" class="gov.nih.nci.ctd2.dashboard.importer.internal.ObservationDataFactoryImpl"/>
 
@@ -298,6 +402,60 @@
 		<entry key="dfci_tier4_beta-catenin_story:gene_symbol_4" value="subject:findGenesBySymbol" />
 		<entry key="dfci_tier4_beta-catenin_story:drug_candidate" value="subject:findCompoundsByName" />
 		<entry key="dfci_tier4_beta-catenin_story:story_location" value="evidence:readString:createObservedFileEvidence" />
+		<!-- dfci reporter analysis -->
+		<entry key="dfci_reporter_analysis:target_group" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="dfci_reporter_analysis:number_of_cell_lines" value="evidence:readInt:createObservedNumericEvidence" />
+		<entry key="dfci_reporter_analysis:number_of_cell_lines_in_target_group" value="evidence:readInt:createObservedNumericEvidence" />
+		<entry key="dfci_reporter_analysis:gene_symbol" value="subject:findGenesBySymbol" />
+		<entry key="dfci_reporter_analysis:p_value" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="dfci_reporter_analysis:fdr" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="dfci_reporter_analysis:nci_portal" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="dfci_reporter_analysis:gct_path" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="dfci_reporter_analysis:publication_reference" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="dfci_reporter_analysis:publication_url" value="evidence:readString:createObservedUrlEvidence" />
+		<!-- dfci ataris analysis -->
+		<entry key="dfci_ataris_analysis:number_of_cell_lines" value="evidence:readInt:createObservedNumericEvidence" />
+		<entry key="dfci_ataris_analysis:shRNA_id" value="subject:findSubjectsByXref-BROAD_SHRNA" />
+		<entry key="dfci_ataris_analysis:gene_symbol" value="subject:findGenesBySymbol" />
+		<entry key="dfci_ataris_analysis:solution_name" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="dfci_ataris_analysis:c_score" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="dfci_ataris_analysis:p_value" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="dfci_ataris_analysis:fdr" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="dfci_ataris_analysis:nci_portal" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="dfci_ataris_analysis:gct_path_shrna" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="dfci_ataris_analysis:gct_path_ataris" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="dfci_ataris_analysis:publication_reference" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="dfci_ataris_analysis:publication_url" value="evidence:readString:createObservedUrlEvidence" />
+		<!-- dfci ovarian analysis -->
+		<entry key="dfci_ovarian_analysis:target_group" value="subject:findTissueSampleByLineage" />
+		<entry key="dfci_ovarian_analysis:number_of_cell_lines" value="evidence:readInt:createObservedNumericEvidence" />
+		<entry key="dfci_ovarian_analysis:number_of_cell_lines_in_target_group" value="evidence:readInt:createObservedNumericEvidence" />
+		<entry key="dfci_ovarian_analysis:gene_symbol" value="subject:findGenesBySymbol" />
+		<entry key="dfci_ovarian_analysis:gene_scoring" value="evidence:readInt:createObservedNumericEvidence" />
+		<entry key="dfci_ovarian_analysis:additional_evidence" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="dfci_ovarian_analysis:nci_portal" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="dfci_ovarian_analysis:gct_path" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="dfci_ovarian_analysis:publication_reference" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="dfci_ovarian_analysis:publication_url" value="evidence:readString:createObservedUrlEvidence" />
+		<!-- dfci pax8 tier 3 -->
+		<entry key="dfci_pax8_tier3:target_group" value="subject:findTissueSampleByLineage" />
+		<entry key="dfci_pax8_tier3:gene_symbol" value="subject:findGenesBySymbol" />
+		<entry key="dfci_pax8_tier3:figure_1" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="dfci_pax8_tier3:figure_2" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="dfci_pax8_tier3:figure_3" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="dfci_pax8_tier3:figure_4" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="dfci_pax8_tier3:figure_5" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="dfci_pax8_tier3:tier1_evidence" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="dfci_pax8_tier3:publication_reference" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="dfci_pax8_tier3:publication_url" value="evidence:readString:createObservedUrlEvidence" />
+		<!-- utsw tier 4 discoipyrroles story -->
+		<entry key="utsw_tier4_discoipyrroles_story:disease_condition_1" value="subject:findTissueSampleByLineage" />
+		<entry key="utsw_tier4_discoipyrroles_story:tissue_sample_1" value="subject:findTissueSampleByLineage" />
+		<entry key="utsw_tier4_discoipyrroles_story:disease_condition_2" value="subject:findTissueSampleByLineage" />
+		<entry key="utsw_tier4_discoipyrroles_story:tissue_sample_2" value="subject:findTissueSampleByLineage" />
+		<entry key="utsw_tier4_discoipyrroles_story:gene_symbol_1" value="subject:findGenesBySymbol" />
+		<entry key="utsw_tier4_discoipyrroles_story:drug_candidate_class" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="utsw_tier4_discoipyrroles_story:story_location" value="evidence:readString:createObservedFileEvidence" />
 	  </map>
 	</constructor-arg>
   </bean>
