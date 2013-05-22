@@ -31,6 +31,7 @@ public class ObservationDataFieldSetMapper implements FieldSetMapper<Observation
 	private static final String	SUBMISSION_DATE = "submission_date";
 	private static final String TEMPLATE_NAME = "template_name";
 
+	public static final String XREF_DELIMITER = "-";
 	public static final SimpleDateFormat TEMPLATE_DATE_FORMAT = new SimpleDateFormat("yyyy.MM.dd");
 
 	@Autowired

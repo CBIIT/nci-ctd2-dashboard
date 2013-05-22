@@ -62,6 +62,11 @@ public class ObservationDataFactoryImpl implements ObservationDataFactory {
 				Method method = dashboardDao.getClass().getMethod(daoFindQueryName, String.class, Boolean.TYPE);
 				dashboardEntities = (List<Subject>)method.invoke(dashboardDao, subjectValue, true);
 			}
+			else if (daoFindQueryName.startsWith("findSubjectsByXref")) {
+				String[] parts = daoFindQueryName.split(ObservationDataFieldSetMapper.XREF_DELIMITER);
+				Method method = dashboardDao.getClass().getMethod(parts[0], String.class, String.class);
+				dashboardEntities = (List<Subject>)method.invoke(dashboardDao, parts[1], subjectValue);
+			}
 			else {
 				Method method = dashboardDao.getClass().getMethod(daoFindQueryName, String.class);
 				dashboardEntities = (List<Subject>)method.invoke(dashboardDao, subjectValue);
@@ -69,6 +74,11 @@ public class ObservationDataFactoryImpl implements ObservationDataFactory {
 				if (dashboardEntities.isEmpty() && daoFindQueryName.equals("findGenesBySymbol")) {
 					method = dashboardDao.getClass().getMethod("findSubjectsBySynonym", String.class, Boolean.TYPE);
 					dashboardEntities = (List<Subject>)method.invoke(dashboardDao, subjectValue, true);
+				}
+				// if we've searched for gene by synonym and come up empty, try entrez id
+				if (dashboardEntities.isEmpty() && daoFindQueryName.equals("findGenesBySymbol")) {
+					method = dashboardDao.getClass().getMethod("findGenesByEntrezId", String.class);
+					dashboardEntities = (List<Subject>)method.invoke(dashboardDao, subjectValue);
 				}
 			}
 			if (dashboardEntities.size() > 0) {
