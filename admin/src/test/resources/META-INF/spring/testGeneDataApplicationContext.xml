@@ -20,7 +20,7 @@
   <bean id="geneDataSimpleStep" class="org.springframework.batch.core.step.item.SimpleStepFactoryBean" abstract="true">
 	<property name="transactionManager" ref="transactionManager" />
 	<property name="jobRepository" ref="jobRepository" />
-	<property name="commitInterval" value="100" />
+	<property name="commitInterval" value="${spring.batch.commit.interval}" />
   </bean>
 
   <bean name="geneDataReader" class="org.springframework.batch.item.file.FlatFileItemReader">
