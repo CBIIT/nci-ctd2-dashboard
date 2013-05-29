@@ -35,23 +35,26 @@ public class ControlledVocabularyPerColumnFieldSetMapper implements FieldSetMapp
 	private HashMap<String,ObservationTemplate> observationTemplateMap;
 
 	// cache for fast lookup and prevention of duplicate role records
-    private HashMap<String, SubjectRole> subjectRoleCache = new HashMap<String, SubjectRole>();
-    private HashMap<String, EvidenceRole> evidenceRoleCache = new HashMap<String, EvidenceRole>();
+    private HashMap<String, SubjectRole> subjectRoleCache;
+    private HashMap<String, EvidenceRole> evidenceRoleCache;
 
 	public ControlledVocabulary mapFieldSet(FieldSet fieldSet) throws BindException {
-
 		String templateName = fieldSet.readString(TEMPLATE_NAME);
 		ObservationTemplate observationTemplate = observationTemplateMap.get(templateName);
 		if (observationTemplate == null) return new ControlledVocabulary(null, null, null);
 
+		if (subjectRoleCache == null) subjectRoleCache = new HashMap<String, SubjectRole>();
+		if (evidenceRoleCache == null) evidenceRoleCache = new HashMap<String, EvidenceRole>();
+
 		String subject = fieldSet.readString(SUBJECT);
 		String evidence = fieldSet.readString(EVIDENCE);
 		if (subject.length() > 0) {
-			SubjectRole subjectRole = subjectRoleCache.get(subject);
+			String subjectRoleStr = fieldSet.readString(ROLE);
+			SubjectRole subjectRole = subjectRoleCache.get(subjectRoleStr);
 			if (subjectRole == null) {
 				subjectRole = dashboardFactory.create(SubjectRole.class);
-				subjectRole.setDisplayName(fieldSet.readString(ROLE));
-				subjectRoleCache.put(subject, subjectRole);
+				subjectRole.setDisplayName(subjectRoleStr);
+				subjectRoleCache.put(subjectRoleStr, subjectRole);
 			}
 			ObservedSubjectRole observedSubjectRole = dashboardFactory.create(ObservedSubjectRole.class);
 			observedSubjectRole.setSubjectRole(subjectRole);
@@ -61,11 +64,12 @@ public class ControlledVocabularyPerColumnFieldSetMapper implements FieldSetMapp
 			return new ControlledVocabulary(observationTemplate, subjectRole, observedSubjectRole);
 		}
 		else if (evidence.length() > 0) {
-			EvidenceRole evidenceRole = evidenceRoleCache.get(evidence);
+			String evidenceRoleStr = fieldSet.readString(ROLE);
+			EvidenceRole evidenceRole = evidenceRoleCache.get(evidenceRoleStr);
 			if (evidenceRole == null) {
 				evidenceRole = dashboardFactory.create(EvidenceRole.class);
-				evidenceRole.setDisplayName(fieldSet.readString(ROLE));
-				evidenceRoleCache.put(evidence, evidenceRole);
+				evidenceRole.setDisplayName(evidenceRoleStr);
+				evidenceRoleCache.put(evidenceRoleStr, evidenceRole);
 			}
 			ObservedEvidenceRole observedEvidenceRole = dashboardFactory.create(ObservedEvidenceRole.class);
 			observedEvidenceRole.setEvidenceRole(evidenceRole);

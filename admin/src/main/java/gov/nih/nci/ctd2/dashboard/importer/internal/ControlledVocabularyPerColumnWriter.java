@@ -28,9 +28,13 @@ public class ControlledVocabularyPerColumnWriter implements ItemWriter<Controlle
     @Qualifier("indexBatchSize")
     private Integer batchSize;
 
+	private ArrayList<DashboardEntity> entities;
+	private HashSet<DashboardEntity> entityCache;
+
     public void write(List<? extends ControlledVocabulary> items) throws Exception {
-        HashSet<DashboardEntity> entityCache = new HashSet<DashboardEntity>();
-        ArrayList<DashboardEntity> entities = new ArrayList<DashboardEntity>();
+
+		if (entityCache == null) entityCache = new HashSet<DashboardEntity>();
+		if (entities == null) entities = new ArrayList<DashboardEntity>();
 
 		for (ControlledVocabulary controlledVocabulary : items) {
 			String observedRoleName = "";
