@@ -23,6 +23,14 @@ columbia.joint.mr.shrna.diff.analysis.data.location=
 columbia.tier4.glioma.story.data.location=
 cshl.tier4.fgf19.story.data.location=
 dfci.tier4.beta.catenin.story.data.location=
+dfci.reporter.analysis.data.location=
+dfci.ataris.analysis.data.location=
+dfci.ovarian.analysis.data.location=
+dfci.pax8.tier3.data.location=
+utsw.tier4.discoipyrroles.story.data.location=
+
+# spring commit interval
+spring.batch.commit.interval=10000
 
 # batch sizes
 batch.size.index=10000
