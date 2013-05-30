@@ -747,8 +747,8 @@
                   </div>
                   <div class="span3">
                       <h4>Compound</h4>
-                      <a href="http://cbio.mskcc.org/cancergenomics/ctd2-dashboard/images/compounds/{{imageFile}}" target="_blank" class="compound-image" title="Compound: {{displayName}}">
-                        <img class="img-polaroid" width=200 src="http://cbio.mskcc.org/cancergenomics/ctd2-dashboard/images/compounds/{{imageFile}}">
+                      <a href="http://cbio.mskcc.org/cancergenomics/ctd2-dashboard/compounds/{{imageFile}}" target="_blank" class="compound-image" title="Compound: {{displayName}}">
+                        <img class="img-polaroid" width=200 src="http://cbio.mskcc.org/cancergenomics/ctd2-dashboard/compounds/{{imageFile}}">
                       </a>
                   </div>
               </div>
@@ -854,7 +854,7 @@
 
     <script type="text/template" id="search-results-compund-image-tmpl">
         <a href="#subject/{{id}}">
-            <img class="img-polaroid search-info" title="Compound" width=50 height=50 src="http://cbio.mskcc.org/cancergenomics/ctd2-dashboard/images/compounds/{{imageFile}}">
+            <img class="img-polaroid search-info" title="Compound" width=50 height=50 src="http://cbio.mskcc.org/cancergenomics/ctd2-dashboard/compounds/{{imageFile}}">
         </a>
     </script>
 
