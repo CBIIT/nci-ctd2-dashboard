@@ -632,6 +632,10 @@
                                 <a href="#subject/{{transcript.gene.id}}">{{transcript.gene.displayName}}</a>
                             </td>
                         </tr>
+                        <tr>
+                            <th>Organism</th>
+                            <td>{{organism.displayName}}</td>
+                        </tr>
                     </table>
                 </div>
                 <div class="span3">
@@ -642,6 +646,62 @@
 
             <h3>Related observations</h3>
             <table id="shrna-observation-grid" class="table table-bordered table-striped observations">
+                <thead>
+                <tr>
+                    <th>Date</th>
+                    <th width=500>Observation Summary</th>
+                    <th>Tier</th>
+                    <th>Center</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- here will go the rows -->
+                <tr class="subject-observations-loading">
+                    <td colspan="5">
+                        <h3>Loading observations...</h3>
+                        <div class="progress progress-striped active">
+                            <div class="bar" style="width: 100%;"></div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </script>
+
+    <script type="text/template" id="transcript-tmpl">
+        <div class="container common-container" id="transcript-container">
+            <h1>{{refseqId}}</h1>
+
+            <div class="row">
+                <div class="span9">
+                    <table id="transcript-details-grid" class="table table-bordered table-striped">
+                        <tr>
+                            <th>Gene</th>
+                            <td>
+                                <a href="#subject/{{gene.id}}">{{gene.displayName}}</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Organism</th>
+                            <td>{{organism.displayName}}</td>
+                        </tr>
+                        <tr>
+                            <th>References</th>
+                            <td>
+                                Entrez: <a href="http://www.ncbi.nlm.nih.gov/nuccore/{{refseqId}}" target="blank">{{refseqId}} <i class="icon-share"></i></a>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="span3">
+                    <h4>Transcript</h4>
+                    <img src="img/transcript.png" class="img-polaroid" width=175 height=175>
+                </div>
+            </div>
+
+            <h3>Related observations</h3>
+            <table id="transcript-observation-grid" class="table table-bordered table-striped observations">
                 <thead>
                 <tr>
                     <th>Date</th>
@@ -911,6 +971,12 @@
     <script type="text/template" id="search-results-shrna-image-tmpl">
         <a href="#subject/{{id}}">
             <img src="img/shrna.png" class="img-polaroid search-info" title="shRNA" height="50" width="50">
+        </a>
+    </script>
+
+    <script type="text/template" id="search-results-transcript-image-tmpl">
+        <a href="#subject/{{id}}">
+            <img src="img/transcript.png" class="img-polaroid search-info" title="shRNA" height="50" width="50">
         </a>
     </script>
 
