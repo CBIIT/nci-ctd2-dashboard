@@ -260,6 +260,9 @@
                         } else if( subject.class == "Gene" ) {
                             imgTemplate = $("#search-results-gene-image-tmpl");
                             thatEl2.append(_.template(imgTemplate.html(), subject));
+                        } else if( subject.class == "ShRna" ) {
+                            imgTemplate = $("#search-results-shrna-image-tmpl");
+                            thatEl2.append(_.template(imgTemplate.html(), subject));
                         } else {
                             thatEl2.append(_.template(imgTemplate.html(), subject));
                         }
@@ -653,6 +656,49 @@
                     var oTable = $('#gene-observation-grid').dataTable({
                            "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
                            "sPaginationType": "bootstrap"
+                    });
+
+                    oTable.fnSort( [ [2, 'desc'] ] );
+
+                }
+            });
+
+            return this;
+        }
+    });
+
+    var ShrnaView = Backbone.View.extend({
+        el: $("#main-container"),
+        template:  _.template($("#shrna-tmpl").html()),
+        render: function() {
+            var result = this.model.toJSON();
+            result["type"] = result.class;
+            $(this.el).html(this.template(result));
+
+            var thatEl = $("ul.synonyms");
+            _.each(result.synonyms, function(aSynonym) {
+                if(aSynonym.displayName == result.displayName ) return;
+
+                var synonymView = new SynonymView({ model: aSynonym, el: thatEl });
+                synonymView.render();
+            });
+
+            var observations = new Observations({ subjectId: result.id });
+            thatEl = $("#shrna-observation-grid");
+            observations.fetch({
+                success: function() {
+                    $(".subject-observations-loading").remove();
+                    _.each(observations.models, function(observation) {
+                        observation = observation.toJSON();
+
+                        var observationRowView
+                            = new ObservationRowView({ el: $(thatEl).find("tbody"), model: observation });
+                        observationRowView.render();
+                    });
+
+                    var oTable = $('#shrna-observation-grid').dataTable({
+                        "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
+                        "sPaginationType": "bootstrap"
                     });
 
                     oTable.fnSort( [ [2, 'desc'] ] );
@@ -1123,6 +1169,8 @@
                         subjectView = new CellSampleView({ model: subject });
                     } else if(type == "TissueSample") {
                         subjectView = new TissueSampleView({ model: subject });
+                    } else if(type == "ShRna") {
+                        subjectView = new ShrnaView({ model: subject });
                     } else {
                         subjectView = new GeneView({ model: subject });
                     }

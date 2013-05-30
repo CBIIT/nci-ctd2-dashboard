@@ -609,6 +609,62 @@
          </div>
     </script>
 
+    <script type="text/template" id="shrna-tmpl">
+        <div class="container common-container" id="shrna-container">
+            <h1>{{displayName}}</h1>
+
+            <div class="row">
+                <div class="span9">
+                    <table id="shrna-details-grid" class="table table-bordered table-striped">
+                        <tr>
+                            <th>Target Sequence</th>
+                            <td>{{targetSequence}}</td>
+                        </tr>
+                        <tr>
+                            <th>Target Transcript</th>
+                            <td>
+                                <a href="#subject/{{transcript.id}}">{{transcript.refseqId}}</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Target Gene</th>
+                            <td>
+                                <a href="#subject/{{transcript.gene.id}}">{{transcript.gene.displayName}}</a>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="span3">
+                    <h4>shRNA</h4>
+                    <img src="img/shrna.png" class="img-polaroid" width=175 height=175>
+                </div>
+            </div>
+
+            <h3>Related observations</h3>
+            <table id="shrna-observation-grid" class="table table-bordered table-striped observations">
+                <thead>
+                <tr>
+                    <th>Date</th>
+                    <th width=500>Observation Summary</th>
+                    <th>Tier</th>
+                    <th>Center</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- here will go the rows -->
+                <tr class="subject-observations-loading">
+                    <td colspan="5">
+                        <h3>Loading observations...</h3>
+                        <div class="progress progress-striped active">
+                            <div class="bar" style="width: 100%;"></div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </script>
+
     <script type="text/template" id="tissuesample-tmpl">
         <div class="container common-container" id="tissuesample-container">
             <h1>{{displayName}}</h1>
@@ -849,6 +905,12 @@
     <script type="text/template" id="search-results-gene-image-tmpl">
         <a href="#subject/{{id}}">
             <img src="img/gene.png" class="img-polaroid search-info" title="Gene" height="50" width="50">
+        </a>
+    </script>
+
+    <script type="text/template" id="search-results-shrna-image-tmpl">
+        <a href="#subject/{{id}}">
+            <img src="img/shrna.png" class="img-polaroid search-info" title="shRNA" height="50" width="50">
         </a>
     </script>
 
