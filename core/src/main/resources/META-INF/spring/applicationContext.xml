@@ -41,4 +41,9 @@
         <constructor-arg index="0" value="${allowed.hosts}"/>
     </bean>
 
+    <bean id="dataURL" class="java.lang.String">
+        <constructor-arg index="0" value="${web.data.url}"/>
+    </bean>
+
+
 </beans>

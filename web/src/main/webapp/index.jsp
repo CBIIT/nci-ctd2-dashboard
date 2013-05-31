@@ -1,4 +1,11 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@page import="org.springframework.web.context.WebApplicationContext"%>
+<%@page import="org.springframework.web.context.support.WebApplicationContextUtils"%>
+<%
+    WebApplicationContext context = WebApplicationContextUtils
+            .getWebApplicationContext(application);
+    String dataURL = (String) context.getBean("dataURL");
+%>
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/html">
   <head>
@@ -411,7 +418,7 @@
             <td>{{observedEvidenceRole.evidenceRole.displayName}}</td>
             <td>{{observedEvidenceRole.displayText}}</td>
             <td>(
-                <a href="http://cbio.mskcc.org/cancergenomics/ctd2-dashboard/{{evidence.filePath}}" target="_blank" title="Download file ({{evidence.mimeType}})" class="desc-tooltip" title="Download File">
+                <a href="<%=dataURL%>{{evidence.filePath}}" target="_blank" title="Download file ({{evidence.mimeType}})" class="desc-tooltip" title="Download File">
                     download file
                 </a>
             )</td>
@@ -426,7 +433,7 @@
             <td>{{observedEvidenceRole.evidenceRole.displayName}}</td>
             <td>{{observedEvidenceRole.displayText}}</td>
             <td>(
-                <a href="http://cbio.mskcc.org/cancergenomics/ctd2-dashboard/{{evidence.filePath}}" target="_blank" title="{{observedEvidenceRole.displayText}}" class="desc-tooltip pdf-file-link">
+                <a href="<%=dataURL%>{{evidence.filePath}}" target="_blank" title="{{observedEvidenceRole.displayText}}" class="desc-tooltip pdf-file-link">
                     view PDF
                 </a>
                 )</td>
@@ -445,12 +452,12 @@
                     ( <a class="dropdown-toggle" data-toggle="dropdown" href="#">view file <b class="caret"></b></a> )
                     <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                         <li>
-                            <a href="http://www.broadinstitute.org/cancer/software/GENE-E/dynamic.php?data=http://cbio.mskcc.org/cancergenomics/ctd2-dashboard/{{evidence.filePath}}" target="_blank" title="open in GENE-E (Java Web-start)" class="desc-tooltip">
+                            <a href="http://www.broadinstitute.org/cancer/software/GENE-E/dynamic.php?data=<%=dataURL%>{{evidence.filePath}}" target="_blank" title="open in GENE-E (Java Web-start)" class="desc-tooltip">
                                 open with GENE-E
                             </a>
                         </li>
                         <li>
-                            <a href="http://cbio.mskcc.org/cancergenomics/ctd2-dashboard/{{evidence.filePath}}" class="desc-tooltip" target="_blank" title="type: ({{evidence.mimeType}})">view in browser</a>
+                            <a href="<%=dataURL%>{{evidence.filePath}}" class="desc-tooltip" target="_blank" title="type: ({{evidence.mimeType}})">view in browser</a>
                         </li>
 
                     </ul>
@@ -471,12 +478,12 @@
                     ( <a class="dropdown-toggle" data-toggle="dropdown" href="#">view file <b class="caret"></b></a> )
                     <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                         <li>
-                            <a href="#" data-description="{{observedEvidenceRole.displayText}}" data-sif-url="http://cbio.mskcc.org/cancergenomics/ctd2-dashboard/{{evidence.filePath}}" target="_blank" title="open in Cytoscape.js" class="desc-tooltip cytoscape-view">
+                            <a href="#" data-description="{{observedEvidenceRole.displayText}}" data-sif-url="<%=dataURL%>{{evidence.filePath}}" target="_blank" title="open in Cytoscape.js" class="desc-tooltip cytoscape-view">
                                 interactive network view
                             </a>
                         </li>
                         <li>
-                            <a href="http://cbio.mskcc.org/cancergenomics/ctd2-dashboard/{{evidence.filePath}}" class="desc-tooltip" target="_blank" title="type: ({{evidence.mimeType}})">view in browser</a>
+                            <a href="<%=dataURL%>{{evidence.filePath}}" class="desc-tooltip" target="_blank" title="type: ({{evidence.mimeType}})">view in browser</a>
                         </li>
                     </ul>
                 </div>
@@ -493,8 +500,8 @@
             <td>{{observedEvidenceRole.displayText}}</td>
             <td>
                 <div class="image-evidence-wrapper">
-                    <a href="http://cbio.mskcc.org/cancergenomics/ctd2-dashboard/{{evidence.filePath}}" target="_blank" title="{{observedEvidenceRole.displayText}}" rel="evidence-images" class="evidence-images">
-                        <img src="http://cbio.mskcc.org/cancergenomics/ctd2-dashboard/{{evidence.filePath}}" class="img-polaroid img-evidence" height="140">
+                    <a href="<%=dataURL%>{{evidence.filePath}}" target="_blank" title="{{observedEvidenceRole.displayText}}" rel="evidence-images" class="evidence-images">
+                        <img src="<%=dataURL%>{{evidence.filePath}}" class="img-polaroid img-evidence" height="140">
                     </a>
                 </div>
             </td>
@@ -863,8 +870,8 @@
                   </div>
                   <div class="span3">
                       <h4>Compound</h4>
-                      <a href="http://cbio.mskcc.org/cancergenomics/ctd2-dashboard/compounds/{{imageFile}}" target="_blank" class="compound-image" title="Compound: {{displayName}}">
-                        <img class="img-polaroid" width=200 src="http://cbio.mskcc.org/cancergenomics/ctd2-dashboard/compounds/{{imageFile}}">
+                      <a href="<%=dataURL%>compounds/{{imageFile}}" target="_blank" class="compound-image" title="Compound: {{displayName}}">
+                        <img class="img-polaroid" width=200 src="<%=dataURL%>compounds/{{imageFile}}">
                       </a>
                   </div>
               </div>
@@ -982,7 +989,7 @@
 
     <script type="text/template" id="search-results-compund-image-tmpl">
         <a href="#subject/{{id}}">
-            <img class="img-polaroid search-info" title="Compound" width=50 height=50 src="http://cbio.mskcc.org/cancergenomics/ctd2-dashboard/compounds/{{imageFile}}">
+            <img class="img-polaroid search-info" title="Compound" width=50 height=50 src="<%=dataURL%>compounds/{{imageFile}}">
         </a>
     </script>
 
@@ -1099,7 +1106,7 @@
                 </p>
                 <p class="pull-right">
                     (<small>
-                        <a target="_blank" href="http://cbio.mskcc.org/cancergenomics/ctd2-dashboard/" id="file-link-{{id}}">
+                        <a target="_blank" href="<%=dataURL%>" id="file-link-{{id}}">
                             view full story</a>
                     </small>
                     |

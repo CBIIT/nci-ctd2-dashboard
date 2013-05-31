@@ -21,3 +21,6 @@ search.max.number.results=20
 
 # when proxying files through dashboard, these hosts will be allowed to serve resource
 allowed.hosts=http://cbio.mskcc.org,http://localhost
+
+# this is the URL of where the downloadable data files are located
+web.data.url=http://cbio.mskcc.org/cancergenomics/ctd2-dashboard/
