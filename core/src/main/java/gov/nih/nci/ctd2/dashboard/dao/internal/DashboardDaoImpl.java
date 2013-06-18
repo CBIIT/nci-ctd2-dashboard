@@ -153,7 +153,9 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
         List<Compound> list = new ArrayList<Compound>();
         for (Object o : getHibernateTemplate().find("from CompoundImpl where displayName LIKE CONCAT(?, '%')", startsWith)) {
             assert o instanceof Compound;
-            list.add((Compound) o);
+            Compound compound = (Compound) o;
+            if(!findObservedSubjectBySubject(compound).isEmpty())
+                list.add(compound);
         }
         return list;
     }
@@ -164,7 +166,9 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
         List<Gene> list = new ArrayList<Gene>();
         for (Object o : getHibernateTemplate().find("from GeneImpl where displayName LIKE CONCAT(?, '%')", startsWith)) {
             assert o instanceof Gene;
-            list.add((Gene) o);
+            Gene gene = (Gene) o;
+            if(!findObservedSubjectBySubject(gene).isEmpty())
+                list.add(gene);
         }
         return list;
     }
