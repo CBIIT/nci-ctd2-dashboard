@@ -235,7 +235,7 @@
         <tr>
             <td><a href="#submission/{{id}}">{{submissionDate}}</a></td>
             <td>
-                {{observationTemplate.description}}
+                {{(observationTemplate.submissionDescription != "") ? observationTemplate.submissionDescription : observationTemplate.description}}
             </td>
             <td><span class="badge tier-badge">Tier {{observationTemplate.tier}}</span></td>
             <td width=150><a href="#submission/{{id}}"><span id="observation-count-{{id}}"></span> observation(s)</a></td>
