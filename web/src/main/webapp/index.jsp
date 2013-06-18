@@ -286,6 +286,13 @@
 
     <script type="text/template" id="submission-tmpl">
         <div class="container common-container" id="submission-container">
+            <div class="alert alert-block" id="redirect-message">
+
+                <p>There is only a single observation in this submission.
+                    Redirecting to the observation page in <b id="seconds-left">10</b> seconds.
+                    <a href="#" id="cancel-redirect">(cancel)</a>
+                </p>
+            </div>
             <div class="row">
                 <div class="span10">
                     <h1>Submission <small>(Tier {{observationTemplate.tier}})</small></h1>
