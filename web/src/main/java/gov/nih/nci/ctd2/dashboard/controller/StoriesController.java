@@ -34,6 +34,9 @@ public class StoriesController {
         headers.add("Content-Type", "application/json; charset=utf-8");
         ArrayList<Observation> entities = new ArrayList<Observation>();
 
+        // If no limit, then show everything
+        if(limit == -1) limit = Integer.MAX_VALUE;
+
         for (Submission submission : dashboardDao.findSubmissionByIsStory(true, true)) {
             List<Observation> observationsBySubmission = dashboardDao.findObservationsBySubmission(submission);
             // Story submissions have a single observation in them
@@ -47,7 +50,7 @@ public class StoriesController {
                 ;
 
         return new ResponseEntity<String>(
-                jsonSerializer.serialize(entities.subList(0, limit)),
+                jsonSerializer.serialize(entities.subList(0, Math.min(limit, entities.size()))),
                 headers,
                 HttpStatus.OK
         );

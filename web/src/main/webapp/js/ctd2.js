@@ -43,8 +43,17 @@
     });
 
     var StorySubmissions = Backbone.Collection.extend({
-        url: CORE_API_URL + "stories/?limit=" + numOfStoriesHomePage,
-        model: Submission
+        url: CORE_API_URL + "stories/?limit=",
+        model: Submission,
+
+        initialize: function(attributes) {
+            if(attributes != undefined && attributes.limit != undefined) {
+                this.url += attributes.limit;
+            } else {
+                this.url += numOfStoriesHomePage;
+            }
+        }
+
     });
 
     var Observation = Backbone.Model.extend({
@@ -134,7 +143,7 @@
 
                     Holder.run();
 
-                    $('.stories-pagination a').click(function (e) {
+                    $('.stories-pagination a.story-link').click(function (e) {
                         e.preventDefault();
                         $(this).tab('show');
                     })
@@ -146,6 +155,76 @@
                 var searchTerm = $("#omni-search").val();
                 window.location.hash = "search/" + searchTerm;
                 return false;
+            });
+
+            return this;
+        }
+    });
+
+    var StoryListItemView = Backbone.View.extend({
+        template:_.template($("#stories-tbl-row-tmpl").html()),
+
+        render: function() {
+            $(this.el).append(this.template(this.model));
+
+            var summary = this.model.submission.observationTemplate.observationSummary;
+            var thatModel = this.model;
+            var thatEl = $("#story-list-summary-" + this.model.id);
+            var observedSubjects = new ObservedSubjects({ observationId: this.model.id });
+            observedSubjects.fetch({
+                success: function() {
+                    _.each(observedSubjects.models, function(observedSubject) {
+                        observedSubject = observedSubject.toJSON();
+
+                        if(observedSubject.observedSubjectRole == null || observedSubject.subject == null)
+                            return;
+
+                        summary = summary.replace(
+                            new RegExp(leftSep + observedSubject.observedSubjectRole.columnName + rightSep, "g"),
+                            _.template($("#summary-subject-replacement-tmpl").html(), observedSubject.subject)
+                        );
+                    });
+
+                    var observedEvidences = new ObservedEvidences({ observationId: thatModel.id });
+                    observedEvidences.fetch({
+                        success: function() {
+                            _.each(observedEvidences.models, function(observedEvidence) {
+                                observedEvidence = observedEvidence.toJSON();
+
+                                if(observedEvidence.observedEvidenceRole == null || observedEvidence.evidence == null)
+                                    return;
+
+                                // If this is a summary, then it should be a pdf file evidence
+                                $("#file-link2-" + thatModel.id).attr(
+                                    "href",
+                                    $("#file-link2-" + thatModel.id).attr("href") + observedEvidence.evidence.filePath
+                                );
+
+                                summary = summary.replace(
+                                    new RegExp(leftSep + observedEvidence.observedEvidenceRole.columnName + rightSep, "g"),
+                                    _.template($("#summary-evidence-replacement-tmpl").html(), observedEvidence.evidence)
+                                );
+                            });
+
+                            $(thatEl).html(summary);
+                        }
+                    })
+                }
+            });
+
+            $("#story-observation-link-" + thatModel.id).tooltip({ placement: 'bottom' });
+            $("#story-observation-link-" + thatModel.id).click(function(e) {
+                e.preventDefault();
+
+                var back = flippant.flip(
+                    this,
+                    $("#back-of-story-" + thatModel.id).html(),
+                    'card'
+                );
+
+                $(back).click(function(e) {
+                    back.close();
+                });
             });
 
             return this;
@@ -422,19 +501,6 @@
                         });
 
                     });
-
-                    /*
-                    $("a.pdf-file-link").fancybox({
-                        openEffect: 'none',
-                        closeEffect: 'none',
-                        width: '100%',
-                        height: '100%',
-                        type: "iframe",
-                        iframe: {
-                            preload: false
-                        }
-                    });
-                    */
                 }
             });
 
@@ -535,6 +601,35 @@
                     });
                 }
             });
+            return this;
+        }
+    });
+
+    var StoriesListView = Backbone.View.extend({
+        el: $("#main-container"),
+        template: _.template($("#stories-tmpl").html()),
+
+        render: function() {
+            $(this.el).html(this.template({}));
+
+            // and load the stories
+            var storySubmissions = new StorySubmissions({ limit: -1 });
+            storySubmissions.fetch({
+                success: function() {
+                    var counter = 1;
+                    _.each(storySubmissions.models, function(aStory) {
+                        var storyView = new StoryListItemView({
+                            el: $("#stories-container .stories-list"),
+                            model: aStory.toJSON()
+                        });
+                        storyView.render();
+                        counter++;
+                    });
+
+                    Holder.run();
+                }
+            });
+
             return this;
         }
     });
@@ -1157,6 +1252,7 @@
     AppRouter = Backbone.Router.extend({
         routes: {
             "centers": "listCenters",
+            "stories": "listStories",
             "center/:id": "showCenter",
             "submission/:id": "showSubmission",
             "observation/:id": "showObservation",
@@ -1238,7 +1334,13 @@
         listCenters: function() {
             var centerListView = new CenterListView();
             centerListView.render();
+        },
+
+        listStories: function() {
+            var storiesListView = new StoriesListView();
+            storiesListView.render();
         }
+
     });
 
     $(function(){

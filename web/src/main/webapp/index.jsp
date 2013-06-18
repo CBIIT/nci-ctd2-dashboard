@@ -18,6 +18,7 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/jquery.dataTables.css" rel="stylesheet">
     <link href="css/jquery.fancybox-1.3.4.css" rel="stylesheet" type="text/css" media="screen">
+    <link href="css/flippant.css" rel="stylesheet">
     <link href="css/ctd2.css" rel="stylesheet">
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -119,19 +120,19 @@
                         <h1>Stories</h1>
                         <div class="well carousel-well">
                             <div class="tab-content stories-tabs">
-                                <div class="container tab-pane active" id="story-1"></div>
-                                <div class="container tab-pane" id="story-2"></div>
-                                <div class="container tab-pane" id="story-3"></div>
-                                <div class="container tab-pane" id="story-4"></div>
+                                <div class="container tab-pane active fade in" id="story-1"></div>
+                                <div class="container tab-pane fade" id="story-2"></div>
+                                <div class="container tab-pane fade" id="story-3"></div>
+                                <div class="container tab-pane fade" id="story-4"></div>
                             </div>
                             <br/>
                             <div class="pagination pagination-centered stories-pagination">
                                 <ul class="nav">
-                                    <li class="active"><a href="#story-1">1</a></li>
-                                    <li><a href="#story-2">2</a></li>
-                                    <li><a href="#story-3">3</a></li>
-                                    <li><a href="#story-4">4</a></li>
-                                    <!--<li><a href="#">More stories →</a></li>-->
+                                    <li class="active"><a href="#story-1" class="story-link">&bull;</a></li>
+                                    <li><a href="#story-2" class="story-link">&bull;</a></li>
+                                    <li><a href="#story-3" class="story-link">&bull;</a></li>
+                                    <li><a href="#story-4" class="story-link">&bull;</a></li>
+                                    <li><a href="#stories">More stories →</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -189,6 +190,47 @@
             </ul>
         </div>
     </script>
+
+    <script type="text/template" id="stories-tmpl">
+        <div class="container common-container" id="stories-container">
+            <h1>Stories</h1>
+            <br>
+            <ul class="thumbnails stories-list">
+                <!-- here will come the stories... -->
+            </ul>
+        </div>
+    </script>
+
+
+    <script type="text/template" id="stories-tbl-row-tmpl">
+        <li class="span6" id="story-observation-link-{{id}}" title="Click for more details">
+            <a href="#observation/{{id}}" class="thumbnail">
+                <img class="stories-feature-image img-circle" data-src="holder.js/180x180/text:portrait or logo"><br>
+                <center>
+                    {{submission.observationTemplate.description}}<br>
+                    <small>({{submission.submissionDate}})</small><br>
+                    <br>
+                </center>
+            </a>
+        </li>
+        <div class="hide" id="back-of-story-{{id}}">
+            <h4>{{submission.observationTemplate.description}}</h4>
+
+            <p id="story-list-summary-{{id}}" class="stories-text"></p>
+
+            <p class="pull-right">
+                (<small>
+                <a target="_blank" href="<%=dataURL%>" id="file-link2-{{id}}">
+                    view full story
+                </a>
+            </small>
+                |
+                <small><a href="#observation/{{id}}">see observation</a></small>)
+            </p>
+        </div>
+    </script>
+
+
 
     <script type="text/template" id="centers-tbl-row-tmpl">
         <li class="span4">
@@ -1136,6 +1178,7 @@
     <script src="js/jquery.expander.min.js"></script>
     <script src="js/arbor.js"></script>
     <script src="js/cytoscape.min.js"></script>
+    <script src="js/flippant.js"></script>
     <script src="js/ctd2.js"></script>
   </body>
 </html>
