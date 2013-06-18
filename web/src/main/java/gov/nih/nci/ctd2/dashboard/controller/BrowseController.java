@@ -28,21 +28,20 @@ public class BrowseController {
     public ResponseEntity<String> browseByCharacter(@PathVariable String type, @PathVariable String c) {
         type = type.toLowerCase().trim();
         c = c.toLowerCase().trim();
-        Class<? extends DashboardEntity> clazz;
-
-        if(type.equals("target")) {
-            clazz = Gene.class;
-        } else if (type.equals("compound")) {
-            clazz = Compound.class;
-        } else {
-            clazz = Subject.class;
-        }
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json; charset=utf-8");
 
         List<DashboardEntity> matches = new ArrayList<DashboardEntity>();
-        List<? extends DashboardEntity> entities = dashboardDao.findEntities(clazz);
+        List<? extends DashboardEntity> entities;
+        if(type.equals("target")) {
+            entities = dashboardDao.browseTargets(c);
+        } else if (type.equals("compound")) {
+            entities = dashboardDao.browseCompounds(c);
+        } else {
+            entities = new ArrayList<DashboardEntity>();
+        }
+
         for (DashboardEntity entity : entities) {
             assert entities instanceof Subject;
 
