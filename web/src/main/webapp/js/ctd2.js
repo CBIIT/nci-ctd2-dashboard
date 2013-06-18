@@ -170,7 +170,7 @@
                             return;
 
                         summary = summary.replace(
-                            leftSep + observedSubject.observedSubjectRole.columnName + rightSep,
+                            new RegExp(leftSep + observedSubject.observedSubjectRole.columnName + rightSep, "g"),
                             _.template($("#summary-subject-replacement-tmpl").html(), observedSubject.subject)
                         );
                     });
@@ -191,7 +191,7 @@
                                 );
 
                                 summary = summary.replace(
-                                    leftSep + observedEvidence.observedEvidenceRole.columnName + rightSep,
+                                    new RegExp(leftSep + observedEvidence.observedEvidenceRole.columnName + rightSep, "g"),
                                     _.template($("#summary-evidence-replacement-tmpl").html(), observedEvidence.evidence)
                                 );
                             });
@@ -271,19 +271,12 @@
                             return;
 
                         summary = summary.replace(
-                            leftSep + observedSubject.observedSubjectRole.columnName + rightSep,
+                            new RegExp(leftSep + observedSubject.observedSubjectRole.columnName + rightSep, "g"),
                             _.template($("#summary-subject-replacement-tmpl").html(), observedSubject.subject)
                         );
 
                         $("#observation-summary").html(summary);
                     });
-
-                    /* We decided to get rid of this one since we don't expect too many subjects here
-                    $('#observed-subjects-grid').dataTable({
-                        "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
-                        "sPaginationType": "bootstrap"
-                    });
-                    */
                 }
             });
 
@@ -302,7 +295,7 @@
 
                         observedEvidenceRowView.render();
                         summary = summary.replace(
-                            leftSep + observedEvidence.observedEvidenceRole.columnName + rightSep,
+                            new RegExp(leftSep + observedEvidence.observedEvidenceRole.columnName + rightSep, "g"),
                             _.template($("#summary-evidence-replacement-tmpl").html(), observedEvidence.evidence)
                         );
 
@@ -852,7 +845,7 @@
                             return;
 
                         summary = summary.replace(
-                            leftSep + observedSubject.observedSubjectRole.columnName + rightSep,
+                            new RegExp(leftSep + observedSubject.observedSubjectRole.columnName + rightSep, "g"),
                             _.template($("#summary-subject-replacement-tmpl").html(), observedSubject.subject)
                         );
                     });
@@ -867,7 +860,7 @@
                                     return;
 
                                 summary = summary.replace(
-                                    leftSep + observedEvidence.observedEvidenceRole.columnName + rightSep,
+                                    new RegExp(leftSep + observedEvidence.observedEvidenceRole.columnName + rightSep, "g"),
                                     _.template($("#summary-evidence-replacement-tmpl").html(), observedEvidence.evidence)
                                 );
                             });
@@ -954,7 +947,7 @@
                             return;
 
                         summary = summary.replace(
-                            leftSep + observedSubject.observedSubjectRole.columnName + rightSep,
+                            new RegExp(leftSep + observedSubject.observedSubjectRole.columnName + rightSep, "g"),
                             _.template($("#summary-subject-replacement-tmpl").html(), observedSubject.subject)
                         );
                     });
@@ -969,7 +962,7 @@
                                     return;
 
                                 summary = summary.replace(
-                                    leftSep + observedEvidence.observedEvidenceRole.columnName + rightSep,
+                                    new RegExp(leftSep + observedEvidence.observedEvidenceRole.columnName + rightSep, "g"),
                                     _.template($("#summary-evidence-replacement-tmpl").html(), observedEvidence.evidence)
                                 );
                             });
@@ -1178,7 +1171,11 @@
         },
 
         search: function(term) {
-            var searchView = new SearchView({ model: { term: term.replace("<", "").replace(">", "") } });
+            var searchView = new SearchView({
+                model: {
+                    term: term.replace(new RegExp("<", "g"), "").replace(new RegExp(">", "g"), "")
+                }
+            });
             searchView.render();
         },
 
