@@ -41,4 +41,7 @@ public interface DashboardDao {
     List<DashboardEntity> search(String keyword);
     List<Submission> findSubmissionByIsStory(boolean isSubmissionStory, boolean sortByPriority);
     List<Submission> findSubmissionByObservationTemplate(ObservationTemplate observationTemplate);
+    List<Gene> browseTargets(String startsWith);
+    List<Compound> browseCompounds(String startsWith);
 }
+

@@ -148,14 +148,17 @@
             <div class="span3 stories" data-order="0">
               <h3>Stories</h3>
               <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.</p>
+              <a class="btn btn-danger btn-block" href="#stories">Browse &raquo;</a>
             </div><!-- /.span3 -->
             <div class="span3 target" data-order="1">
               <h3>Targets</h3>
                 <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+                <a class="btn btn-success btn-block" href="#browse/target/A">Browse &raquo;</a>
             </div><!-- /.span3 -->
             <div class="span3 drug" data-order="2">
               <h3>Compounds</h3>
                 <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.</p>
+                <a class="btn btn-warning btn-block" href="#browse/compound/A">Browse &raquo;</a>
             </div><!-- /.span3 -->
             <div class="span3 genomics" data-order="3">
               <h3>Context</h3>
@@ -1166,6 +1169,41 @@
                 <img class="img-circle" data-src="holder.js/180x180/text:portrait or logo">
             </div>
         </div>
+    </script>
+
+    <script type="text/template" id="browse-tmpl">
+        <div class="container common-container" id="browse-container">
+            <h1>Browse {{type}}s</h1>
+
+            <div class="pagination browse-pagination" id="browse-pagination">
+                <ul class="nav">
+                </ul>
+            </div>
+
+
+            <h3 class="loading">Loading...</h3>
+
+            <div class="alert alert-error alert-block hide" id="noitems-to-browse">
+                No {{type}}s were found starting with <strong>{{character.toUpperCase()}}</strong>
+            </div>
+
+            <ul id="browsed-items-list">
+
+            </ul>
+        </div>
+    </script>
+
+    <script type="text/template" id="browse-pagination-template">
+        <li class="{{className}}">
+            <a href="#browse/{{type}}/{{character}}" id="character-link-{{character}}" class="character-link">{{character.toUpperCase()}}</a>
+        </li>
+    </script>
+
+    <script type="text/template" id="browsed-item-tmpl">
+        <li class="browsed-item">
+            <a href="#subject/{{id}}">{{displayName}}</a>
+            (<small></small><span id="browsed-item-count-{{id}}"></span> observation(s)</small>)
+        </li>
     </script>
 
     <!-- end of templates -->

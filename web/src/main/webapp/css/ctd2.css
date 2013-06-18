@@ -331,5 +331,9 @@
         font-size: 95%;
     }
 
+    #browse-pagination a {
+        padding: 4px 8px;
+    }
+
 
 
