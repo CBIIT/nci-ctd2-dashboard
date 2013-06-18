@@ -148,6 +148,28 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
     }
 
     @Override
+    @Cacheable(value = "browseCompoundCache")
+    public List<Compound> browseCompounds(String startsWith) {
+        List<Compound> list = new ArrayList<Compound>();
+        for (Object o : getHibernateTemplate().find("from CompoundImpl where displayName LIKE CONCAT(?, '%')", startsWith)) {
+            assert o instanceof Compound;
+            list.add((Compound) o);
+        }
+        return list;
+    }
+
+    @Override
+    @Cacheable(value = "browseTargetCache")
+    public List<Gene> browseTargets(String startsWith) {
+        List<Gene> list = new ArrayList<Gene>();
+        for (Object o : getHibernateTemplate().find("from GeneImpl where displayName LIKE CONCAT(?, '%')", startsWith)) {
+            assert o instanceof Gene;
+            list.add((Gene) o);
+        }
+        return list;
+    }
+
+    @Override
     public List<Gene> findGenesByEntrezId(String entrezId) {
         List<Gene> list = new ArrayList<Gene>();
         for (Object o : getHibernateTemplate().find("from GeneImpl where entrezGeneId = ?", entrezId)) {
@@ -469,6 +491,7 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
         }
     }
 
+    @Override
     @Cacheable(value = "searchCache")
     public List<DashboardEntity> search(String keyword) {
         ArrayList<DashboardEntity> entities = new ArrayList<DashboardEntity>();

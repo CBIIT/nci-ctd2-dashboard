@@ -1376,8 +1376,8 @@
         browse: function(type, character) {
             var browseView = new BrowseView({
                 model: {
-                    type: type,
-                    character: character
+                    type: type.replace(new RegExp("<", "g"), "").replace(new RegExp(">", "g"), ""),
+                    character: character.replace(new RegExp("<", "g"), "").replace(new RegExp(">", "g"), "")
                 }
             });
             browseView.render();
