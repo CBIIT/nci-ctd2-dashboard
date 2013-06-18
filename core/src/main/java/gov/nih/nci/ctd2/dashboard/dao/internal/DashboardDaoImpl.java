@@ -16,6 +16,7 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.search.FullTextQuery;
 import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import java.util.*;
@@ -468,6 +469,7 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
         }
     }
 
+    @Cacheable(value = "searchCache")
     public List<DashboardEntity> search(String keyword) {
         ArrayList<DashboardEntity> entities = new ArrayList<DashboardEntity>();
         HashSet<DashboardEntity> entitiesUnique = new HashSet<DashboardEntity>();
