@@ -53,6 +53,13 @@
           <version>2.1</version>
       </dependency>
 
+      <!-- ehcache -->
+      <dependency>
+          <groupId>net.sf.ehcache</groupId>
+          <artifactId>ehcache-core</artifactId>
+          <version>2.5.1</version>
+      </dependency>
+
   </dependencies>
   <build>
     <finalName>ctd2-dashboard</finalName>
