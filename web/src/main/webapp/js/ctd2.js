@@ -74,6 +74,19 @@
         }
     });
 
+    var BrowsedItems = Backbone.Collection.extend({
+        url: CORE_API_URL + "browse/",
+        defaults: {
+            type: "target",
+            character: "A"
+        },
+
+        initialize: function(attributes) {
+            var attr = _.extend(this.defaults, attributes);
+            this.url += attr.type + "/" + attr.character;
+        }
+    });
+
     var ObservedEvidence = Backbone.Model.extend({
         urlRoot: CORE_API_URL + "get/observedevidence"
     });
@@ -1269,11 +1282,75 @@
         }
     });
 
+    var BrowseView = Backbone.View.extend({
+        template: _.template($("#browse-tmpl").html()),
+        el: $("#main-container"),
+
+        render: function() {
+            $(this.el).html(this.template(this.model));
+
+            var str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            for(var i = 0; i < str.length; i++) {
+                var nextChar = str.charAt(i);
+
+                $("#browse-pagination ul.nav").append(
+                    _.template(
+                        $("#browse-pagination-template").html(),
+                        {
+                            className: this.model.character == nextChar ? "active" : "",
+                            character: nextChar,
+                            type: this.model.type
+                        }
+                    )
+                );
+            }
+
+            var browsedItems = new BrowsedItems(this.model);
+            browsedItems.fetch({
+                success: function() {
+                    if(browsedItems.models.length < 1) {
+                        $("#noitems-to-browse").slideDown();
+                    }
+
+                    _.each(browsedItems.models, function(browseItem) {
+                        (new BrowsedItemView({
+                            el: $("#browsed-items-list"),
+                            model: browseItem.toJSON()
+                        })).render();
+
+                    });
+
+                    $(".loading").hide();
+                }
+            });
+
+            return this;
+        }
+    });
+
+    var BrowsedItemView = Backbone.View.extend({
+        template: _.template($("#browsed-item-tmpl").html()),
+
+        render: function() {
+            $(this.el).append(this.template(this.model));
+
+            var observedSubjects = new ObservedSubjects({ subjectId: this.model.id });
+            var thatId = this.model.id;
+
+            observedSubjects.fetch({
+                success: function() {
+                    $("#browsed-item-count-" + thatId).text(observedSubjects.models.length);
+                }
+            });
+        }
+    });
+
     /* Routers */
     AppRouter = Backbone.Router.extend({
         routes: {
             "centers": "listCenters",
             "stories": "listStories",
+            "browse/:type/:character": "browse",
             "center/:id": "showCenter",
             "submission/:id": "showSubmission",
             "observation/:id": "showObservation",
@@ -1294,6 +1371,16 @@
                 }
             });
             searchView.render();
+        },
+
+        browse: function(type, character) {
+            var browseView = new BrowseView({
+                model: {
+                    type: type.replace(new RegExp("<", "g"), "").replace(new RegExp(">", "g"), ""),
+                    character: character.replace(new RegExp("<", "g"), "").replace(new RegExp(">", "g"), "")
+                }
+            });
+            browseView.render();
         },
 
         showSubject: function(id) {
