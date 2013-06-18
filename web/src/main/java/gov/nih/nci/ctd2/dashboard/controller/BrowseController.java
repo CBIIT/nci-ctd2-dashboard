@@ -32,7 +32,6 @@ public class BrowseController {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json; charset=utf-8");
 
-        List<DashboardEntity> matches = new ArrayList<DashboardEntity>();
         List<? extends DashboardEntity> entities;
         if(type.equals("target")) {
             entities = dashboardDao.browseTargets(c);
@@ -42,16 +41,7 @@ public class BrowseController {
             entities = new ArrayList<DashboardEntity>();
         }
 
-        for (DashboardEntity entity : entities) {
-            assert entities instanceof Subject;
-
-            if(entity.getDisplayName().toLowerCase().startsWith(c)
-                    && !dashboardDao.findObservedSubjectBySubject((Subject) entity).isEmpty()) {
-                matches.add(entity);
-            }
-        }
-
-        Collections.sort(matches, new Comparator<Object>() {
+        Collections.sort(entities, new Comparator<Object>() {
             @Override
             public int compare(Object o, Object o1) {
                 assert o instanceof DashboardEntity && o1 instanceof DashboardEntity;
@@ -64,7 +54,7 @@ public class BrowseController {
                 .transform(new DateTransformer(), Date.class)
                 ;
         return new ResponseEntity<String>(
-                jsonSerializer.deepSerialize(matches),
+                jsonSerializer.deepSerialize(entities),
                 headers,
                 HttpStatus.OK
         );
