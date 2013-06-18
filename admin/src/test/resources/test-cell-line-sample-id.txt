@@ -1,0 +1,1 @@
+cell_sample_id	gender	taxonomy_id	hist_index	site_index1	M	9606	327	712		9606	391	1083	M	9606	81	2174		9606		5		9606		6		9606		7	M	9606	81	1248		9606	176	2179		9606		10		9606		11		9606	365	142
