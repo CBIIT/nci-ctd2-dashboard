@@ -225,7 +225,6 @@
                 }
             });
 
-            $("#story-observation-link-" + thatModel.id).tooltip({ placement: 'bottom' });
             $("#story-observation-link-" + thatModel.id).click(function(e) {
                 e.preventDefault();
 
