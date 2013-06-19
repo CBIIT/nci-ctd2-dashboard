@@ -1200,7 +1200,7 @@
     </script>
 
     <script type="text/template" id="browsed-item-tmpl">
-        <li class="browsed-item">
+        <li class="browsed-item span3">
             <a href="#subject/{{id}}">{{displayName}}</a>
             (<small><i><span id="browsed-item-count-{{id}}"></span> observation(s)</i></small>)
         </li>
