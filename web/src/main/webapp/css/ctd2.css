@@ -332,7 +332,11 @@
     }
 
     #browse-pagination a {
-        padding: 4px 8px;
+        padding: 4px 11px;
+    }
+
+    li.browsed-item {
+        margin-left: 0;
     }
 
 
