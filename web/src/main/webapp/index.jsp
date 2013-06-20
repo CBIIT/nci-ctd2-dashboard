@@ -1175,6 +1175,14 @@
         <div class="container common-container" id="browse-container">
             <h1>Browse {{type}}s</h1>
 
+            <div class="alert alert-block">
+                <a href="#" class="close">&times;</a>
+                <p>
+                    Below is a list of {{type}}s that have at least one observation associated with it.
+                    The number in the parentheses show how many observations there are for the corresponding {{type}}.
+                </p>
+            </div>
+
             <div class="pagination browse-pagination" id="browse-pagination">
                 <ul class="nav">
                 </ul>
@@ -1202,7 +1210,7 @@
     <script type="text/template" id="browsed-item-tmpl">
         <li class="browsed-item span3">
             <a href="#subject/{{id}}">{{displayName}}</a>
-            (<small><i><span id="browsed-item-count-{{id}}"></span> observation(s)</i></small>)
+            (<small><i><span id="browsed-item-count-{{id}}"></span></i></small>)
         </li>
     </script>
 
