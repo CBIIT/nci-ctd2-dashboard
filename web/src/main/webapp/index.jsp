@@ -1492,7 +1492,7 @@
                 </div>
 
                 <div class="span4 offset4 template-download">
-                    <button class="btn btn-large btn-warning btn-block">Download template</button>
+                    <button class="btn btn-large btn-warning btn-block disabled">Download template</button>
                 </div>
             </div>
         </div>
