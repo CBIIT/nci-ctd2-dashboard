@@ -1,0 +1,36 @@
+# Here will go admin specific options
+
+# data source locations
+gene.data.location=
+cell.line.name.type.location=
+cell.line.id.location=
+cell.line.name.location=
+cell.line.lineage.location=
+compounds.location=
+compound.synonyms.location=
+protein.data.location=
+trc.shrna.data.location=
+trc.shrna.filter.location=
+tissue.sample.data.location=
+dashboard.cv.per.template.data.location=
+dashboard.cv.per.column.data.location=
+broad.cmp.sens.lineage.enrich.data.location=
+broad.cmp.sens.mutation.enrich.data.location=
+broad.tier3.navitoclax.story.data.location=
+columbia.marina.analysis.data.location=
+columbia.mra.fet.analysis.data.location=
+columbia.joint.mr.shrna.diff.analysis.data.location=
+columbia.tier4.glioma.story.data.location=
+cshl.tier4.fgf19.story.data.location=
+dfci.tier4.beta.catenin.story.data.location=
+dfci.reporter.analysis.data.location=
+dfci.ataris.analysis.data.location=
+dfci.ovarian.analysis.data.location=
+dfci.pax8.tier3.data.location=
+utsw.tier4.discoipyrroles.story.data.location=
+
+# spring commit interval
+spring.batch.commit.interval=10000
+
+# batch sizes
+batch.size.index=10000
