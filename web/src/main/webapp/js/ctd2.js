@@ -1350,12 +1350,16 @@
         table: "#template-table",
         preview: "#template-preview",
 
-        addColumn: function(identifier) {
+        addColumn: function(identifier, displayTextEditable) {
             $(this.table).find("tr")
                 .append(_.template($("#template-header-col-tmpl").html(), {id: identifier}));
             $(this.table).find("#template-header td").last().text(identifier);
-            $(this.table).find("tr.sample-data td." + identifier)
-                .append(_.template($("#template-sample-data-tmpl").html(), {}));
+            var inputTemplate = _.template($("#template-sample-data-tmpl").html(), {});
+            $(this.table).find("tr.sample-data td." + identifier).append(inputTemplate);
+
+            if(displayTextEditable)
+                $(this.table).find("#template-display_text td." + identifier).append(inputTemplate);
+
 
             return this;
         },
@@ -1382,7 +1386,7 @@
 
                 $("#step1").fadeOut();
                 $("#step2").slideDown();
-                self.addColumn("submission_center");
+                self.addColumn("submission_center", false);
                 $(self.table).find("tr.sample-data td.submission_center").each(function() {
                     $(this).find("input").val(centerName);
                 });
@@ -1394,7 +1398,7 @@
 
                 $("#step2").fadeOut();
                 $("#step3").slideDown();
-                self.addColumn("template_name");
+                self.addColumn("template_name", false);
                 $(self.table).find("tr.sample-data td.template_name").each(function() {
                     $(this).find("input").val(tmplName);
                 });
@@ -1404,6 +1408,63 @@
 
             $("#add-evidence").click(function() {
                 $("#evidence-modal").modal('show');
+            });
+
+            $("#apply-evidence-type").click(function() {
+                var stype = $("#evidence-type").val();
+                if(stype.length == 0) return;
+
+                $("#evidence-step1").fadeOut();
+                $("#evidence-step2").slideDown();
+            });
+
+            $("#apply-evidence-cname").click(function() {
+                var cname = $("#evidence-cname").val();
+                if(cname.length == 0) return;
+
+                $("#evidence-step2").fadeOut();
+                $("#evidence-step3").slideDown();
+            });
+
+            $("#apply-evidence-role").click(function() {
+                var role = $("#evidence-role").val();
+                if(role.length == 0) return;
+
+                $("#evidence-step3").fadeOut();
+                $("#evidence-step4").slideDown();
+            });
+
+            var mimes = ["application/pdf", "image/png", "application/gct"];
+            var units = ["", " uM"];
+
+            $("#apply-evidence-desc").click(function() {
+                var desc = $("#evidence-desc").val();
+                if(desc.length == 0) return;
+
+                var stype = $("#evidence-type").val();
+                var cname = $("#evidence-cname").val();
+                var role = $("#evidence-role").val();
+
+                self.addColumn(cname, true);
+
+                if(stype == "File") {
+                    var mime = mimes[Math.floor(Math.random()*mimes.length)];
+                    $(self.table).find("#template-mime_type td." + cname).text(mime);
+                } else if(stype == "Numeric") {
+                    var unit = units[Math.floor(Math.random()*units.length)];
+                    $(self.table).find("#template-numeric_units td." + cname).text(unit);
+                }
+
+                $(self.table).find("#template-evidence td." + cname).text(stype);
+                $(self.table).find("#template-role td." + cname).text(role);
+                $(self.table).find("#template-display_text td." + cname + " input").val(desc);
+                $(self.table).find("tr.sample-data td." + cname + " input").val(stype + " value");
+
+                $("#evidence-step4").hide();
+                $("#evidence-step1").show();
+
+                $("#evidence-modal").modal('hide');
+
             });
 
             $("#add-subject").click(function() {
@@ -1442,10 +1503,10 @@
                 var cname = $("#subject-cname").val();
                 var role = $("#subject-role").val();
 
-                self.addColumn(cname);
+                self.addColumn(cname, true);
                 $(self.table).find("#template-subject td." + cname).text(stype);
                 $(self.table).find("#template-role td." + cname).text(role);
-                $(self.table).find("#template-display_text td." + cname).text(desc);
+                $(self.table).find("#template-display_text td." + cname + " input").val(desc);
                 $(self.table).find("tr.sample-data td." + cname + " input").val(stype + " ID");
 
                 $("#subject-step4").hide();

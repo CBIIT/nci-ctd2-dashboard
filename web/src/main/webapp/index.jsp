@@ -1313,11 +1313,11 @@
                                 <td>
                                     <select id="subject-cname">
                                         <option value="">Select a column name</option>
-                                        <option value="sample_column1">sample_column1</option>
-                                        <option value="sample_column2">sample_column2</option>
-                                        <option value="sample_column3">sample_column3</option>
-                                        <option value="sample_column4">sample_column4</option>
-                                        <option value="sample_column5">sample_column5</option>
+                                        <option value="sample_scolumn1">sample_scolumn1</option>
+                                        <option value="sample_scolumn2">sample_scolumn2</option>
+                                        <option value="sample_scolumn3">sample_scolumn3</option>
+                                        <option value="sample_scolumn4">sample_scolumn4</option>
+                                        <option value="sample_scolumn5">sample_scolumn5</option>
                                     </select>
                                 </td>
                                 <td>
@@ -1374,11 +1374,85 @@
                     <h3>Add an evidence</h3>
                 </div>
                 <div class="modal-body">
-                    <h3>Step #1: </h3>
+                    <div id="evidence-step1">
+                        <h4>Step #1: Evidence type</h4>
+                        <table>
+                            <tr>
+                                <td>
+                                    <select id="evidence-type">
+                                        <option value="">Select a type</option>
+                                        <option value="File">File</option>
+                                        <option value="Label">Label</option>
+                                        <option value="Label">Numeric</option>
+                                        <option value="URL">URL</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <button id="apply-evidence-type" class="btn">Apply</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div id="evidence-step2" class="hide">
+                        <h4>Step #2: Subject column name</h4>
+                        <table>
+                            <tr>
+                                <td>
+                                    <select id="evidence-cname">
+                                        <option value="">Select a column name</option>
+                                        <option value="sample_ecolumn1">sample_ecolumn1</option>
+                                        <option value="sample_ecolumn2">sample_ecolumn2</option>
+                                        <option value="sample_ecolumn3">sample_ecolumn3</option>
+                                        <option value="sample_ecolumn4">sample_ecolumn4</option>
+                                        <option value="sample_ecolumn5">sample_ecolumn5</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <button id="apply-evidence-cname" class="btn">Apply</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div id="evidence-step3" class="hide">
+                        <h4>Step #3: Select a role</h4>
+                        <table>
+                            <tr>
+                                <td>
+                                    <select id="evidence-role">
+                                        <option value="">Select a role</option>
+                                        <option value="role1">role1</option>
+                                        <option value="role2">role2</option>
+                                        <option value="role3">role3</option>
+                                        <option value="role4">role4</option>
+                                        <option value="role5">role5</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <button id="apply-evidence-role" class="btn">Apply</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div id="evidence-step4" class="hide">
+                        <h4>Step #4: Enter description</h4>
+                        <table>
+                            <tr>
+                                <td>
+                                    <input id="evidence-desc" placeholder="e.g. mutated gene" class="input-xlarge">
+                                </td>
+                                <td>
+                                    <button id="apply-evidence-desc" class="btn">Apply</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
                 </div>
                 <div class="modal-footer">
-                    <a href="#" class="btn btn-primary">Close</a>
-                    <a href="#" class="btn hide" id="add-evidence-button">Add</a>
+                    <button class="btn btn-primary" data-dismiss="modal">Close</button>
                 </div>
             </div>
 
