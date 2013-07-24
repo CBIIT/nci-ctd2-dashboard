@@ -1,4 +1,5 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@page import="org.springframework.web.context.WebApplicationContext"%>
 <%@page import="org.springframework.web.context.support.WebApplicationContextUtils"%>
 <%
@@ -59,6 +60,8 @@
                           <li><a target="_blank" href="http://ctd2.nci.nih.gov/publication.html">Publications</a></li>
                           <li><a target="_blank" href="http://ctd2.nci.nih.gov/DataMatrix/CTD2_DataMatrix.html">Data Matrix</a></li>
                           <li><a target="_blank" href="http://ocg.cancer.gov/resources/fnd.asp">Funding Opportunities</a></li>
+                          <li class="divider"></li>
+                          <li><a href="#template-helper">Submission Template Helper</a></li>
                       </ul>
                   </li>
               </ul>
@@ -298,7 +301,13 @@
             </div>
             <div class="row">
                 <div class="span10">
-                    <h1>Submission <small>(Tier {{observationTemplate.tier}})</small></h1>
+                    <h1>
+                        Submission
+                        <span class="badge-tier-container">
+                            <span class="badge badge-tier">Tier {{observationTemplate.tier}}</span>
+                        </span>
+                    </h1>
+
 
                     <table id="submission-details-grid" class="table table-bordered table-striped">
                         <tr>
@@ -1176,7 +1185,7 @@
             <h1>Browse {{type}}s</h1>
 
             <div class="alert alert-block">
-                <a href="#" class="close">&times;</a>
+                <a href="#" class="close" data-dismiss="alert">&times;</a>
                 <p>
                     Below is a list of {{type}}s that have at least one observation associated with it.
                     The number in the parentheses show how many observations there are for the corresponding {{type}}.
@@ -1212,6 +1221,219 @@
             <a href="#subject/{{id}}">{{displayName}}</a>
             (<small><i><span id="browsed-item-count-{{id}}"></span></i></small>)
         </li>
+    </script>
+
+    <script type="text/template" id="template-helper-tmpl">
+        <div class="container common-container" id="template-helper-container">
+            <h1>Submission Template Helper</h1>
+
+            <div class="alert alert-warning alert-block">
+                <a href="#" class="close" data-dismiss="alert">&times;</a>
+                <p>
+                    <strong>Welcome to the submission template helper!</strong><br>
+                    This tool will help you create a basic submission template from the scratch.
+                    Once a basic template is prepared, you will be able to download the template for local use and preparation for the submission.
+                </p>
+            </div>
+
+            <div id="step1">
+                <h3>Step 1: Select submission center</h3>
+                <table>
+                    <tr>
+                        <td>
+                            <select id="template-submission-centers">
+                                <option value="">Select a center</option>
+                            </select>
+                        </td>
+                        <td>
+                            <button id="apply-submission-center" class="btn">Apply</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div id="step2" class="hide">
+                <h3>Step 2: Enter a template name</h3>
+                <table>
+                    <tr>
+                        <td>
+                            <input id="template-name" placeholder="e.g. centername_your_description" class="input-xxlarge">
+                        </td>
+                        <td>
+                            <button id="apply-template-name" class="btn">Apply</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div id="step3" class="hide">
+                <h3>Add subject/evidence</h3>
+                <table>
+                    <tr>
+                        <td>
+                            <button class="btn" id="add-subject">Subject <i class="icon-plus"></i></button>
+                        </td>
+                        <td>
+                            <button class="btn" id="add-evidence">Evidence <i class="icon-plus"></i></button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="modal hide fade" id="subject-modal">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h3>Add a subject</h3>
+                </div>
+                <div class="modal-body">
+                    <div id="subject-step1">
+                        <h4>Step #1: Subject type</h4>
+                        <table>
+                            <tr>
+                                <td>
+                                    <select id="subject-type">
+                                        <option value="">Select a type</option>
+                                        <option value="CellSample">Cell Sample</option>
+                                        <option value="Compound">Compound</option>
+                                        <option value="Gene">Gene</option>
+                                        <option value="ShRna">shRNA</option>
+                                        <option value="TissueSample">Tissue Sample</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <button id="apply-subject-type" class="btn">Apply</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div id="subject-step2" class="hide">
+                        <h4>Step #2: Subject column name</h4>
+                        <table>
+                            <tr>
+                                <td>
+                                    <select id="subject-cname">
+                                        <option value="">Select a column name</option>
+                                        <option value="sample_column1">sample_column1</option>
+                                        <option value="sample_column2">sample_column2</option>
+                                        <option value="sample_column3">sample_column3</option>
+                                        <option value="sample_column4">sample_column4</option>
+                                        <option value="sample_column5">sample_column5</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <button id="apply-subject-cname" class="btn">Apply</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div id="subject-step3" class="hide">
+                        <h4>Step #3: Select a role</h4>
+                        <table>
+                            <tr>
+                                <td>
+                                    <select id="subject-role">
+                                        <option value="">Select a role</option>
+                                        <option value="role1">role1</option>
+                                        <option value="role2">role2</option>
+                                        <option value="role3">role3</option>
+                                        <option value="role4">role4</option>
+                                        <option value="role5">role5</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <button id="apply-subject-role" class="btn">Apply</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div id="subject-step4" class="hide">
+                        <h4>Step #4: Enter description</h4>
+                        <table>
+                            <tr>
+                                <td>
+                                    <input id="subject-desc" placeholder="e.g. mutated gene" class="input-xlarge">
+                                </td>
+                                <td>
+                                    <button id="apply-subject-desc" class="btn">Apply</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+            <div class="modal hide fade" id="evidence-modal">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h3>Add an evidence</h3>
+                </div>
+                <div class="modal-body">
+                    <h3>Step #1: </h3>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="btn btn-primary">Close</a>
+                    <a href="#" class="btn hide" id="add-evidence-button">Add</a>
+                </div>
+            </div>
+
+            <div class="row hide" id="template-preview">
+                <hr>
+                <div class="template-preview-wrapper span12">
+                    <h2>Template Preview</h2>
+                    <table class="table table-bordered table-striped" id="template-table">
+                        <tr id="template-header">
+                            <td><!--intentionally left blank--></td>
+                        </tr>
+                        <tr id="template-subject">
+                            <th>subject</th>
+                        </tr>
+                        <tr id="template-evidence">
+                            <th>evidence</th>
+                        </tr>
+                        <tr id="template-role">
+                            <th>role</th>
+                        </tr>
+                        <tr id="template-mime_type">
+                            <th>mime_type</th>
+                        </tr>
+                        <tr id="template-numeric_units">
+                            <th>numeric_units</th>
+                        </tr>
+                        <tr id="template-display_text">
+                            <th>display_text</th>
+                        </tr>
+                        <tr id="template-sample-data1" class="sample-data">
+                            <th><!--intentionally left blank--></th>
+                        </tr>
+                        <tr id="template-sample-data2" class="sample-data">
+                            <th><!--intentionally left blank--></th>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="span4 offset4 template-download">
+                    <button class="btn btn-large btn-warning btn-block">Download template</button>
+                </div>
+            </div>
+        </div>
+    </script>
+
+    <script type="text/template" id="template-helper-center-tmpl">
+        <option value="{{displayName}}">{{displayName}}</option>
+    </script>
+
+    <script type="text/template" id="template-header-col-tmpl">
+        <td class="{{id}}"></td>
+    </script>
+
+    <script type="text/template" id="template-sample-data-tmpl">
+        <input placeholder="enter data" class="sample-data-input">
     </script>
 
     <!-- end of templates -->

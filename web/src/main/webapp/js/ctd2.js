@@ -1344,6 +1344,130 @@
         }
     });
 
+    var TemplateHelperView = Backbone.View.extend({
+        template: _.template($("#template-helper-tmpl").html()),
+        el: $("#main-container"),
+        table: "#template-table",
+        preview: "#template-preview",
+
+        addColumn: function(identifier) {
+            $(this.table).find("tr")
+                .append(_.template($("#template-header-col-tmpl").html(), {id: identifier}));
+            $(this.table).find("#template-header td").last().text(identifier);
+            $(this.table).find("tr.sample-data td." + identifier)
+                .append(_.template($("#template-sample-data-tmpl").html(), {}));
+
+            return this;
+        },
+
+        render: function() {
+            $(this.el).html(this.template(this.model));
+
+            var submissionCenters = new SubmissionCenters();
+            submissionCenters.fetch({
+                success: function() {
+                    _.each(submissionCenters.models, function(aCenter) {
+                        (new TemplateHelperCenterView({
+                            model: aCenter.toJSON(),
+                            el: $("#template-submission-centers")
+                        })).render();
+                    });
+                }
+            });
+
+            var self = this;
+            $("#apply-submission-center").click(function() {
+                var centerName = $("#template-submission-centers").val();
+                if(centerName.length == 0) return;
+
+                $("#step1").fadeOut();
+                $("#step2").slideDown();
+                self.addColumn("submission_center");
+                $(self.table).find("tr.sample-data td.submission_center").each(function() {
+                    $(this).find("input").val(centerName);
+                });
+            });
+
+            $("#apply-template-name").click(function() {
+                var tmplName = $("#template-name").val();
+                if(tmplName.length == 0) return;
+
+                $("#step2").fadeOut();
+                $("#step3").slideDown();
+                self.addColumn("template_name");
+                $(self.table).find("tr.sample-data td.template_name").each(function() {
+                    $(this).find("input").val(tmplName);
+                });
+
+                $(self.preview).slideDown();
+            });
+
+            $("#add-evidence").click(function() {
+                $("#evidence-modal").modal('show');
+            });
+
+            $("#add-subject").click(function() {
+                $("#subject-modal").modal('show');
+            });
+
+            $("#apply-subject-type").click(function() {
+                var stype = $("#subject-type").val();
+                if(stype.length == 0) return;
+
+                $("#subject-step1").fadeOut();
+                $("#subject-step2").slideDown();
+            });
+
+            $("#apply-subject-cname").click(function() {
+                var cname = $("#subject-cname").val();
+                if(cname.length == 0) return;
+
+                $("#subject-step2").fadeOut();
+                $("#subject-step3").slideDown();
+            });
+
+            $("#apply-subject-role").click(function() {
+                var role = $("#subject-role").val();
+                if(role.length == 0) return;
+
+                $("#subject-step3").fadeOut();
+                $("#subject-step4").slideDown();
+            });
+
+            $("#apply-subject-desc").click(function() {
+                var desc = $("#subject-desc").val();
+                if(desc.length == 0) return;
+
+                var stype = $("#subject-type").val();
+                var cname = $("#subject-cname").val();
+                var role = $("#subject-role").val();
+
+                self.addColumn(cname);
+                $(self.table).find("#template-subject td." + cname).text(stype);
+                $(self.table).find("#template-role td." + cname).text(role);
+                $(self.table).find("#template-display_text td." + cname).text(desc);
+                $(self.table).find("tr.sample-data td." + cname + " input").val(stype + " ID");
+
+                $("#subject-step4").hide();
+                $("#subject-step1").show();
+
+                $("#subject-modal").modal('hide');
+
+            });
+
+            return this;
+        }
+    });
+
+    var TemplateHelperCenterView = Backbone.View.extend({
+        template: _.template($("#template-helper-center-tmpl").html()),
+
+        render: function() {
+            $(this.el).append(this.template(this.model));
+            return this;
+        }
+    });
+
     /* Routers */
     AppRouter = Backbone.Router.extend({
         routes: {
@@ -1355,6 +1479,7 @@
             "observation/:id": "showObservation",
             "search/:term": "search",
             "subject/:id": "showSubject",
+            "template-helper": "showTemplateHelper",
             "*actions": "home"
         },
 
@@ -1446,8 +1571,12 @@
         listStories: function() {
             var storiesListView = new StoriesListView();
             storiesListView.render();
-        }
+        },
 
+        showTemplateHelper: function() {
+            var templateHelperView = new TemplateHelperView();
+            templateHelperView.render();
+        }
     });
 
     $(function(){

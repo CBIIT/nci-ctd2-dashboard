@@ -339,5 +339,19 @@
         margin-left: 0;
     }
 
+    #template-helper-container input, #template-helper-container select {
+        margin-bottom: 0;
+    }
+
+    .template-preview-wrapper {
+        width: 100%;
+        overflow-x: scroll;
+        border: 1px solid gray;
+    }
+
+    .template-download button {
+        margin-top: 20px;
+    }
+
 
 
