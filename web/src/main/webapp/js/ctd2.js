@@ -564,6 +564,8 @@
                     templateId = "#observedpdffileevidence-row-tmpl";
                 } else if(result.evidence.mimeType.toLowerCase().search("sif") > -1) {
                     templateId = "#observedsiffileevidence-row-tmpl";
+                } else if(result.evidence.mimeType.toLowerCase().search("mra") > -1) {
+                    templateId = "#observedmrafileevidence-row-tmpl";
                 } else {
                     templateId = "#observedfileevidence-row-tmpl";
                 }
@@ -1343,6 +1345,262 @@
             });
         }
     });
+    
+    //MRA View
+    var MraView = Backbone.View.extend({
+        el: $("#main-container"),
+        template: _.template($("#mra-view-tmpl").html()),
+        render: function() { 
+        	var result = this.model.toJSON();         
+        	var mra_data_url = $("#mra-view-tmpl").attr("mra-data-url")  + result.evidence.filePath;
+            $(this.el).html(this.template(result));            
+            $.ajax({
+               url: "mra/",
+               data: {url : mra_data_url, dataType : "mra", filterBy: "none", throttle : ""},
+               dataType: "json",
+               contentType: "json",
+               
+               success: function(data) {            	      
+            	   var thatEl = $("#master-regulator-grid");   
+            	   var thatE2 = $("#mra-barcode-grid");   
+                   _.each(data, function(aData){                   	 
+                   	    var mraViewRowView = new MraViewRowView({
+                           el: $(thatEl).find("tbody"),
+                            model: aData
+                        });
+                        mraViewRowView.render();
+                      
+                        var mraBarcodeRowView = new MraBarcodeRowView({
+                            el: $(thatE2).find("tbody"),
+                            model: aData
+                        });
+                        mraBarcodeRowView.render();                   
+                      
+                   });            
+                 
+                   var oTable1 = $('#master-regulator-grid').dataTable({
+                	 "sScrollY": "200px",
+                     "bPaginate": false           		 
+             	   });
+                 
+                 
+                   var oTable2 = $('#mra-barcode-grid').dataTable({
+                     "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
+                     "sPaginationType": "bootstrap"
+                   });
+              }
+           });  //ajax 
+            
+       
+           $(".mra-cytoscape-view").click(function(event) {            	
+                event.preventDefault();               
+                var mraDesc = $(this).attr("data-description");
+                var throttle = $("#throttle-input").val();               
+                var layoutName = $("#cytoscape-layouts").val();
+                
+                if((throttle.length != 0) &&  !($.isNumeric(throttle))) {
+                    alert("Value must be a number");
+                    return;
+                }          
+                
+                var filters = "";              
+                $('input[type="checkbox"]:checked').each(function() {                 
+                	    filters = filters + ($(this).val() + ',');                 	   
+                });   
+                
+               
+                if (filters.length == 0) {
+                	  alert("Please select at least one master regulator.");
+                      return;
+                }
+               
+                $.ajax({
+                	url: "mra/",
+                    data: {url : mra_data_url, dataType : "cytoscape", filterBy: filters, throttle : throttle},
+                    dataType: "json",
+                    contentType: "json",
+                    success: function(data) {   
+                    	
+                    	if (data == null)
+                        {
+                    		alert("The network is empty.");
+                    		return;
+                        }
+                    	
+                        $.fancybox(
+                            _.template($("#cytoscape-tmpl").html(), { description: mraDesc }),
+                            {
+                                'autoDimensions' : false,
+                                'width' : '100%',
+                                'height' : '85%',
+                                'transitionIn' : 'none',
+                                'transitionOut' : 'none'
+                            }
+                        );
+ 
+                        var container = $('#cytoscape-sif');
+                        var cyOptions = {                        	             	 
+                            layout: {
+                            	 name: layoutName,
+                            	 fit: true, // whether to fit the viewport to the graph
+                            	 ready: undefined, // callback on layoutready
+                            	 stop: undefined, // callback on layoutstop 
+                            	 //ungrabifyWhileSimulating: true,
+                            	 
+                            	 liveUpdate: false,                       
+                            	 maxSimulationTime: 8000 // max length in ms to run the layout
+                             
+                            	
+                            },
+                            elements: data,
+                            style: cytoscape.stylesheet()
+                                .selector("node")
+                                .css({
+                                    "content": "data(id)",
+                                    "shape": "data(shape)",                                  
+                                    "border-width": 2,
+                                    "labelValign": "middle",
+                                    "font-size": 10,                                                                  
+                                    "width": "20px",
+                                    "height": "20px",                                   
+                                    "background-color": "data(color)",
+                                    "border-color": "#555"
+                                })
+                                .selector("edge")
+                                .css({
+                                    "width": "mapData(weight, 0, 100, 1, 3)",
+                                    "target-arrow-shape": "triangle",
+                                    "source-arrow-shape": "circle",
+                                    "line-color": "#444"
+                                })
+                                .selector(":selected")
+                                .css({
+                                    "background-color": "#000",
+                                    "line-color": "#000",
+                                    "source-arrow-color": "#000",
+                                    "target-arrow-color": "#000"
+                                })
+                                .selector(".ui-cytoscape-edgehandles-source")
+                                .css({
+                                    "border-color": "#5CC2ED",
+                                    "border-width": 1
+                                })
+                                .selector(".ui-cytoscape-edgehandles-target, node.ui-cytoscape-edgehandles-preview")
+                                .css({
+                                    "background-color": "#5CC2ED"
+                                })
+                                .selector("edge.ui-cytoscape-edgehandles-preview")
+                                .css({
+                                    "line-color": "#5CC2ED"
+                                })
+                                .selector("node.ui-cytoscape-edgehandles-preview, node.intermediate")
+                                .css({
+                                    "shape": "rectangle",
+                                    "width": 15,
+                                    "height": 15
+                                })
+                            ,
+
+                            ready: function(){
+                                window.cy = this; // for debugging
+                            }
+                        };  
+
+                        container.cy(cyOptions); 
+                  
+                    }
+                });  //end ajax              
+              
+
+            });  //end .cytoscape-view         
+           
+            $("#master-regulator-grid").on("change", ":checkbox", function() {                    
+            	var filters = "";
+                $('input[type="checkbox"]:checked').each(function() {                 
+            	    filters = filters + ($(this).val() + ',');             	    
+                });             
+            
+                $.ajax({
+                	url: "mra/",
+                    data: {url : mra_data_url, dataType : "throttle", filterBy: filters, throttle : ""},
+                    dataType: "json",
+                    contentType: "json",
+                    success: function(data) {  
+                        if (data != null)
+                    	   $("#throttle-input").val(data);
+                        else
+                           $("#throttle-input").val("");
+                    }
+                });
+               
+
+            });  //end mra-checked   
+            
+ 
+            return this;
+        }
+    });   
+    
+
+    var MraViewRowView = Backbone.View.extend({
+        render: function() {
+            var result = this.model;
+            
+            var templateId = "#mra-view-row-tmpl";     
+
+            this.template = _.template($(templateId).html());
+            $(this.el).append(this.template(result));
+
+            
+            return this;
+        }
+    });
+    
+    
+    var MraBarcodeRowView = Backbone.View.extend({
+        render: function() {
+            var result = this.model;
+            
+            var templateId = "#mra-barcode-view-row-tmpl";     
+
+            this.template = _.template($(templateId).html());
+            $(this.el).append(this.template(result));            
+          
+            if (result.daColor != null)
+                $(".da-color-" + result.entrezId).css({"background-color": result.daColor});           
+            
+            if (result.deColor != null)
+                $(".de-color-" + result.entrezId).css({"background-color": result.deColor});           
+           
+            
+            var canvasId = "draw-" + result.entrezId;            
+            var ctx = document.getElementById(canvasId).getContext("2d");
+            
+            _.each(result.mraTargets, function(mraTarget){
+            	
+            	var colorIndex = 255 - mraTarget.colorIndex;             
+            	if (mraTarget.arrayIndex == 0)
+            	{            		
+            		ctx.fillStyle = 'rgb(255,'+colorIndex+','+colorIndex+')';
+            		ctx.fillRect(mraTarget.position, 0, 1, 15);
+            	}
+            	else
+            	{
+            		ctx.fillStyle = 'rgb('+colorIndex+', '+colorIndex+', 255)';
+            		ctx.fillRect(mraTarget.position, 15, 1, 15);
+            	}
+             
+            	
+            });
+            
+            return this;
+        }
+    });
+    
+    
+    
+    
+    
 
     /* Routers */
     AppRouter = Backbone.Router.extend({
@@ -1355,6 +1613,7 @@
             "observation/:id": "showObservation",
             "search/:term": "search",
             "subject/:id": "showSubject",
+            "evidence/:id": "showMraView",
             "*actions": "home"
         },
 
@@ -1446,6 +1705,18 @@
         listStories: function() {
             var storiesListView = new StoriesListView();
             storiesListView.render();
+        },
+        
+        showMraView: function(id) {
+        	  var observedEvidence = new ObservedEvidence({id: id});
+        	  observedEvidence.fetch({
+                  success: function() {
+                     var mraView = new MraView({model: observedEvidence});
+                     mraView.render();
+                  }        
+        	  
+              });  
+            
         }
 
     });

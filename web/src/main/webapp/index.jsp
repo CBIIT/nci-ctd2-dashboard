@@ -5,6 +5,7 @@
     WebApplicationContext context = WebApplicationContextUtils
             .getWebApplicationContext(application);
     String dataURL = (String) context.getBean("dataURL");
+    String dataURL1 = "http://localhost:8080/ctd2-dashboard/";
 %>
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/html">
@@ -1213,6 +1214,104 @@
             (<small><i><span id="browsed-item-count-{{id}}"></span></i></small>)
         </li>
     </script>
+    
+    <script type="text/template" id="observedmrafileevidence-row-tmpl">
+        <tr>
+            <td>
+                <img src="img/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}">
+            </td>
+            <td>{{observedEvidenceRole.evidenceRole.displayName}}</td>
+            <td>{{observedEvidenceRole.displayText}}</td>
+            <td>
+                <div class="dropdown">
+                    ( <a class="dropdown-toggle" data-toggle="dropdown" href="#">view mra file<b class="caret"></b></a> )
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                        <li>
+                            <a href="#/evidence/{{id}}" title="open in mra view" class="desc-tooltip">
+                                mra view
+                            </a>
+                        </li>
+                        <li>
+                            <a href="<%=dataURL1%>{{evidence.filePath}}" class="desc-tooltip" target="_blank" title="type: ({{evidence.mimeType}})">view in browser</a>
+                        </li>
+                    </ul>
+                </div>
+            </td>
+        </tr>
+    </script>  
+    
+     <script type="text/template" id="mra-view-tmpl" mra-data-url="<%=dataURL1%>">
+         <div class="container common-container" id="mra-container" > 
+                
+                    <h3>Master Regulator View</h2>
+                   
+                    <table id="master-regulator-grid" class="table table-bordered table-striped ">
+                        <thead>
+                        <tr>
+                            <th width="20">&nbsp;</th>
+                            <th>Master Regulator</th>
+                            <th>Score</th>
+                            <th>Markers in regulon</th>                             
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <!-- here will go the rows -->
+                        </tbody>
+                    </table>                
+                   
+                   <br/>
+                   <br/>
+                   <div>                     
+					  <b>Throttle:</b>				      
+					  <input type="text" id="throttle-input" title="Throttle" placeholder="e.g. 0.01">					 
+				      <b>&nbsp;&nbsp;&nbsp;</b>  
+                      <b>Layout:</b>	
+                      <select id="cytoscape-layouts">
+                           <option value="arbor" selected="selected">Arbor</option>\                         
+                           <option value="grid">Grid</option>                           
+                           <option value="random">Random</option>
+                           <option value="circle">Circle</option>
+                      </select>
+                      <b>&nbsp;&nbsp;&nbsp;</b>  
+					  <a href="#" id="createnetwork" data-description="{{observedEvidenceRole.displayText}}" target="_blank" title="please select master regulator to create network" class="mra-cytoscape-view">Create Network</a>   				 
+			      </div>
+                  <br/>
+                  <table id="mra-barcode-grid" class="table table-bordered table-striped">
+                     <thead>
+                        <tr>
+                          <th width="450">barcode</th>
+                          <th width="50">DA</th>
+                          <th width="50">DE</th>
+                          <th>DE Rank</th>
+                          <th>Regulator</th>
+                       </tr>
+                     </thead>
+                     <tbody>
+                       <!-- here will go the rows -->
+                     </tbody>
+                  </table>
+
+        </div>
+    </script>   
+    
+    <script type="text/template" id="mra-view-row-tmpl">
+        <tr>
+            <td><input type="checkbox" id="checkbox_{{entrezId}}" value="{{entrezId}}"></td>
+            <td>{{geneSymbol}}</td>
+            <td>{{score}}</td>
+            <td>{{dataRowCount}}</td>
+        </tr>
+    </script>
+    
+    <script type="text/template" id="mra-barcode-view-row-tmpl">
+        <tr>             
+			<td><canvas id="draw-{{entrezId}}" width="450" height="36"></canvas></td>				  
+            <td class="da-color-{{entrezId}}"></td>
+            <td class="de-color-{{entrezId}}"></td>
+            <td>{{deRank}}</td>
+            <td>{{geneSymbol}}</td>
+        </tr>
+    </script>      
 
     <!-- end of templates -->
 
