@@ -4,8 +4,7 @@
 <%
     WebApplicationContext context = WebApplicationContextUtils
             .getWebApplicationContext(application);
-    String dataURL = (String) context.getBean("dataURL");
-    String dataURL1 = "http://localhost:8080/ctd2-dashboard/";
+    String dataURL = (String) context.getBean("dataURL");    
 %>
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/html">
@@ -1232,7 +1231,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="<%=dataURL1%>{{evidence.filePath}}" class="desc-tooltip" target="_blank" title="type: ({{evidence.mimeType}})">view in browser</a>
+                            <a href="<%=dataURL%>{{evidence.filePath}}" class="desc-tooltip" target="_blank" title="type: ({{evidence.mimeType}})">view in browser</a>
                         </li>
                     </ul>
                 </div>
@@ -1240,7 +1239,7 @@
         </tr>
     </script>  
     
-    <script type="text/template" id="mra-view-tmpl" mra-data-url="<%=dataURL1%>">
+    <script type="text/template" id="mra-view-tmpl" mra-data-url="<%=dataURL%>">
          <div class="container common-container" id="mra-container" > 
                 
                     <h3>Master Regulator View</h2>
