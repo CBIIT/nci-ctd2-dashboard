@@ -352,7 +352,7 @@
     </script>
 
     <script type="text/template" id="submission-obs-tbl-row-tmpl">
-        <small>(<a href="#/observation/{{id}}">details &raquo;</a>)</small>
+        (<a class="button-link" href="#/observation/{{id}}">details &raquo;</a>)
     </script>
 
     <script type="text/template" id="submission-tbl-row-tmpl">
