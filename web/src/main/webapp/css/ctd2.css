@@ -339,5 +339,26 @@
         margin-left: 0;
     }
 
-
-
+    #cytoscape-mra {
+        width: 93%;
+        height: 70%;
+        border: 1px solid #dddddd;
+        border-radius: 3px;
+        margin: 15px;
+    }
+    .mra-legend {
+        width: 90%;
+        text-align: center;
+        font-size: 75%;
+        margin-left: 15px;
+        margin-right: 15px;
+     }
+     .centeredImage {      
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-left: -(Y/2)px;
+        margin-top: -(Y/2)px;
+     }
+     
+     
