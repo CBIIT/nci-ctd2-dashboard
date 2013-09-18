@@ -48,9 +48,7 @@ public class MraController {
 		shapeMap.put("P", "diamond");
 		shapeMap.put("none", "triangle");
 	}
-
-	static private int LIMIT_NODE_NUMBER = 200;
-
+ 
 	public String getAllowedProxyHosts() {
 		return allowedProxyHosts;
 	}
@@ -65,6 +63,7 @@ public class MraController {
 			@RequestParam("url") String url,
 			@RequestParam("dataType") String dataType,
 			@RequestParam("filterBy") String filterBy,
+			@RequestParam("nodeNumLimit") int nodeNumLimit,
 			@RequestParam("throttle") String throttle) {
 
 		HttpHeaders headers = new HttpHeaders();
@@ -76,17 +75,16 @@ public class MraController {
 
 		if (isURLValid(url)) {
 			URLConnection urlConnection = null;
-			try {
+			try {			 
 				urlConnection = new URL(url).openConnection();
 				InputStream inputStream = urlConnection.getInputStream();
 				Scanner scanner = new Scanner(inputStream);
 				if (dataType != null && dataType.trim().equals("cytoscape"))
-					cyNetwork = convertToCyNetwork(scanner, filterBy, throttle);
+					cyNetwork = convertToCyNetwork(scanner, filterBy, nodeNumLimit, throttle);
 				else if (dataType != null && dataType.trim().equals("mra"))
 					masterRegulators = convertToMasterRegulator(scanner);
 				else
-					throttleValue = getThrottleValue(scanner, filterBy,
-							throttle);
+					throttleValue = getThrottleValue(scanner, filterBy, nodeNumLimit);							 
 				inputStream.close();
 
 			} catch (IOException e) {
@@ -204,10 +202,10 @@ public class MraController {
 
 	}
 
-	private CyNetwork convertToCyNetwork(Scanner scanner, String filterBy,
+	private CyNetwork convertToCyNetwork(Scanner scanner, String filterBy, int nodeNumLimit, 
 			String throttle) {
 
-		Object[] edgeNodeList = getEdgeNodeList(scanner, filterBy, throttle);
+		Object[] edgeNodeList = getEdgeNodeList(scanner, filterBy, nodeNumLimit, throttle);
 		CyNetwork cyNetwork = new CyNetwork();
 		@SuppressWarnings("unchecked")
 		List<CyEdge> edgeList = (List<CyEdge>) edgeNodeList[0];
@@ -224,13 +222,13 @@ public class MraController {
 			}
 		});
 
-		float minValue = getMinValue(edgeList);
+		float minValue = getMinValue(edgeList, nodeNumLimit);
 		float maxValue = (Float) edgeList.get(edgeList.size() - 1).getData()
 				.get(CyElement.WEIGHT);
 		float divisor = getDivisorValue(maxValue, minValue);
 		HashSet<String> nodeNames = new HashSet<String>();
 		for (int i = 1; i <= edgeList.size(); i++) {
-			if (nodeNames.size() > LIMIT_NODE_NUMBER)
+			if (nodeNames.size() >= nodeNumLimit)
 				break;
 			int index = edgeList.size() - i;
 			float confValue = new Float(edgeList.get(index).getData()
@@ -260,10 +258,10 @@ public class MraController {
 
 	}
 
-	private Float getThrottleValue(Scanner scanner, String filterBy,
-			String throttle) {
+	private Float getThrottleValue(Scanner scanner, String filterBy, 
+			int nodeNumLimit) {
 
-		Object[] edgeNodeList = getEdgeNodeList(scanner, filterBy, throttle);
+		Object[] edgeNodeList = getEdgeNodeList(scanner, filterBy, nodeNumLimit, null);
 
 		@SuppressWarnings("unchecked")
 		List<CyEdge> edgeList = (List<CyEdge>) edgeNodeList[0];
@@ -278,12 +276,12 @@ public class MraController {
 
 		if (edgeList == null || edgeList.size() == 0)
 			return null;
-		float minValue = getMinValue(edgeList);
+		float minValue = getMinValue(edgeList, nodeNumLimit);
 		return minValue;
 	}
 
 	private Object[] getEdgeNodeList(Scanner scanner, String filterBy,
-			String throttle) {
+			int  nodeNumLimit, String throttle) {
 		double absMaxDeScore = 0;
 		Object[] edgeNodeList = new Object[2];
 		List<CyEdge> edgeList = new ArrayList<CyEdge>();
@@ -383,11 +381,11 @@ public class MraController {
 
 	}
 
-	private float getMinValue(List<CyEdge> edgeList) {
+	private float getMinValue(List<CyEdge> edgeList, int nodeNumLimit) {
 		HashSet<String> nodeNames = new HashSet<String>();
 		int index = 0;
 		for (int i = 1; i <= edgeList.size(); i++) {
-			if (nodeNames.size() > LIMIT_NODE_NUMBER)
+			if (nodeNames.size() > nodeNumLimit)
 				break;
 			index = edgeList.size() - i;
 			String sourceId = (String) edgeList.get(index).getData()
@@ -472,8 +470,8 @@ public class MraController {
 		String dataUrl = "http://localhost:8080/ctd2-dashboard/submissions/MRA_Combine-gbm-filtered.txt";
 	   //  mraController.convertMRAtoJSON(dataUrl, "mra", "", "");
 
-		//mraController.convertMRAtoJSON(dataUrl, "cytoscape", "2355,1051", "0.5");
-		mraController.convertMRAtoJSON(dataUrl, "throttle", "", null);
+		mraController.convertMRAtoJSON(dataUrl, "cytoscape", "2355,1051", 1000, "");
+		//mraController.convertMRAtoJSON(dataUrl, "throttle", "", 150, null);
 
 	}
 }

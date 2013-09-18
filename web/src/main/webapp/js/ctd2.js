@@ -1356,7 +1356,7 @@
             $(this.el).html(this.template(result));            
             $.ajax({
                url: "mra/",
-               data: {url : mra_data_url, dataType : "mra", filterBy: "none", throttle : ""},
+               data: {url : mra_data_url, dataType : "mra", filterBy: "none", nodeNumLimit: 0, throttle : ""},
                dataType: "json",
                contentType: "json",
                
@@ -1390,19 +1390,15 @@
                    });
               }
            });  //ajax 
-            
        
+         
            $(".mra-cytoscape-view").click(function(event) {            	
                 event.preventDefault();               
                 var mraDesc = $(this).attr("data-description");
-                var throttle = $("#throttle-input").val();               
+                var throttle = $("#throttle-input").text();               
                 var layoutName = $("#cytoscape-layouts").val();
-                
-                if((throttle.length != 0) &&  !($.isNumeric(throttle))) {
-                    alert("Value must be a number");
-                    return;
-                }          
-                
+                var nodeLimit = $("#cytoscape-node-limit").val();
+              
                 var filters = "";              
                 $('input[type="checkbox"]:checked').each(function() {                 
                 	    filters = filters + ($(this).val() + ',');                 	   
@@ -1416,7 +1412,7 @@
                
                 $.ajax({
                 	url: "mra/",
-                    data: {url : mra_data_url, dataType : "cytoscape", filterBy: filters, throttle : throttle},
+                    data: {url : mra_data_url, dataType : "cytoscape", filterBy: filters, nodeNumLimit: nodeLimit, throttle : ""},
                     dataType: "json",
                     contentType: "json",
                     success: function(data) {   
@@ -1428,7 +1424,7 @@
                         }
                     	
                         $.fancybox(
-                            _.template($("#cytoscape-tmpl").html(), { description: mraDesc }),
+                            _.template($("#mra-cytoscape-tmpl").html(), { description: mraDesc }),
                             {
                                 'autoDimensions' : false,
                                 'width' : '100%',
@@ -1438,18 +1434,18 @@
                             }
                         );
  
-                        var container = $('#cytoscape-sif');
+                        var container = $('#cytoscape-mra');                        
+                        
                         var cyOptions = {                        	             	 
                             layout: {
                             	 name: layoutName,
-                            	 fit: true, // whether to fit the viewport to the graph
-                            	 ready: undefined, // callback on layoutready
-                            	 stop: undefined, // callback on layoutstop 
-                            	 //ungrabifyWhileSimulating: true,
-                            	 
+                            	 fit: true,                                                  	 
                             	 liveUpdate: false,                       
-                            	 maxSimulationTime: 8000 // max length in ms to run the layout
-                             
+                            	 maxSimulationTime: 8000, // max length in ms to run the layout
+                            	 ready: undefined, // callback on layoutready
+                            	 stop: function(){
+                            		 $("#mra_progress_indicator").hide();
+                            	 } // callback on layoutstop 
                             	
                             },
                             elements: data,
@@ -1483,7 +1479,7 @@
                                 .selector(".ui-cytoscape-edgehandles-source")
                                 .css({
                                     "border-color": "#5CC2ED",
-                                    "border-width": 1
+                                    "border-width": 2
                                 })
                                 .selector(".ui-cytoscape-edgehandles-target, node.ui-cytoscape-edgehandles-preview")
                                 .css({
@@ -1514,34 +1510,60 @@
 
             });  //end .cytoscape-view         
            
-            $("#master-regulator-grid").on("change", ":checkbox", function() {                    
-            	var filters = "";
-                $('input[type="checkbox"]:checked').each(function() {                 
-            	    filters = filters + ($(this).val() + ',');             	    
-                });             
-            
-                $.ajax({
-                	url: "mra/",
-                    data: {url : mra_data_url, dataType : "throttle", filterBy: filters, throttle : ""},
-                    dataType: "json",
-                    contentType: "json",
-                    success: function(data) {  
-                        if (data != null)
-                    	   $("#throttle-input").val(data);
-                        else
-                           $("#throttle-input").val("");
-                    }
-                });
-               
+            $("#master-regulator-grid").on("change", ":checkbox", function() {           	 
+            	 var nodeLimit = $("#cytoscape-node-limit").val();
+            	 var filters = "";
+                 $('input[type="checkbox"]:checked').each(function() {                 
+             	    filters = filters + ($(this).val() + ',');             	    
+                 });             
+             
+                 $.ajax({
+                 	url: "mra/",
+                     data: {url : mra_data_url, dataType : "throttle", filterBy: filters, nodeNumLimit: nodeLimit, throttle : ""},
+                     dataType: "json",
+                     contentType: "json",
+                     success: function(data) {                     	 
+                         if (data != null)                                	 
+                            $("#throttle-input").text(data);                      
+                         else
+                            $("#throttle-input").text("e.g. 0.01");
+                         $("#throttle-input").css('color', 'grey');                          
+                     }
+                 });
+                
 
-            });  //end mra-checked   
+            });  //end mra-checked  
+            
+            $("#cytoscape-node-limit").change(function(evt) {            	 
+            	//the following block code is same as above, shall make it as function,
+            	//but for somehow the function call does not work here for me. 
+            	 var nodeLimit = $("#cytoscape-node-limit").val();
+            	 var filters = "";
+                 $('input[type="checkbox"]:checked').each(function() {                 
+             	    filters = filters + ($(this).val() + ',');             	    
+                 });             
+             
+                 $.ajax({
+                 	url: "mra/",
+                     data: {url : mra_data_url, dataType : "throttle", filterBy: filters, nodeNumLimit: nodeLimit, throttle : ""},
+                     dataType: "json",
+                     contentType: "json",
+                     success: function(data) {                     	 
+                         if (data != null)                                	 
+                            $("#throttle-input").text(data);                      
+                         else
+                            $("#throttle-input").text("e.g. 0.01");
+                         $("#throttle-input").css('color', 'grey');                          
+                     }
+                 });
+                
+            });
             
  
             return this;
         }
-    });   
-    
-
+    });      
+   
     var MraViewRowView = Backbone.View.extend({
         render: function() {
             var result = this.model;
