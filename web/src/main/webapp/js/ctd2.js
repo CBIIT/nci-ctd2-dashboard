@@ -1452,55 +1452,83 @@
                 $("#evidence-modal").modal('show');
             });
 
+            // The following variables are shared across evidence/subject add buttons
+            var stype, cname, role, mime, unit;
+
             $("#apply-evidence-type").click(function() {
-                var stype = $("#evidence-type").val();
+                stype = $("#evidence-type").val();
                 if(stype.length == 0) return;
 
                 $("#evidence-step1").fadeOut();
+                if(stype == "File") {
+                    $("#evidence-step1-mime").slideDown();
+                } else if(stype == "Numeric") {
+                    $("#evidence-step1-unit").slideDown();
+                } else {
+                    $("#evidence-step2").slideDown();
+                }
+            });
+
+            $("#apply-evidence-mime-type").click(function() {
+                mime = $("#evidence-mime-type").val();
+                if(mime.length == 0) {
+                    mime = $("#evidence-mime-type-custom").val();
+                }
+
+                if(mime.length == 0) {
+                    return; // error control
+                }
+
+                $("#evidence-step1-mime").fadeOut();
+                $("#evidence-step2").slideDown();
+            });
+
+            $("#apply-evidence-numeric-unit").click(function() {
+                unit = $("#evidence-numeric-unit").val();
+                $("#evidence-step1-unit").fadeOut();
                 $("#evidence-step2").slideDown();
             });
 
             $("#apply-evidence-cname").click(function() {
-                var cname = $("#evidence-cname").val();
-                if(cname.length == 0) return;
+                cname = $("#evidence-cname").val();
+                if(cname.length == 0) {
+                    cname = $("#evidence-cname-custom").val();
+                }
+
+                if(cname.length == 0) {
+                    return; // error control
+                }
 
                 $("#evidence-step2").fadeOut();
                 $("#evidence-step3").slideDown();
             });
 
             $("#apply-evidence-role").click(function() {
-                var role = $("#evidence-role").val();
-                if(role.length == 0) return;
+                role = $("#evidence-role").val();
+                if(role.length == 0) {
+                    role = $("#evidence-role-custom").val();
+                }
+
+                if(role.length == 0) {
+                    return; // error control
+                }
 
                 $("#evidence-step3").fadeOut();
                 $("#evidence-step4").slideDown();
             });
 
-            var mimes = ["application/pdf", "image/png", "application/gct"];
-            var units = ["", " uM"];
-
             $("#apply-evidence-desc").click(function() {
                 var desc = $("#evidence-desc").val();
                 if(desc.length == 0) return;
 
-                var stype = $("#evidence-type").val();
-                var cname = $("#evidence-cname").val();
-                var role = $("#evidence-role").val();
-
                 self.addColumn(cname, true);
-
-                if(stype == "File") {
-                    var mime = mimes[Math.floor(Math.random()*mimes.length)];
-                    $(self.table).find("#template-mime_type td." + cname).text(mime);
-                } else if(stype == "Numeric") {
-                    var unit = units[Math.floor(Math.random()*units.length)];
-                    $(self.table).find("#template-numeric_units td." + cname).text(unit);
-                }
 
                 $(self.table).find("#template-evidence td." + cname).text(stype);
                 $(self.table).find("#template-role td." + cname).text(role);
                 $(self.table).find("#template-display_text td." + cname + " input").val(desc);
                 $(self.table).find("tr.sample-data td." + cname + " input").val(stype + " value");
+                $(self.table).find("#template-mime_type td." + cname).text(mime);
+                $(self.table).find("#template-numeric_units td." + cname).text(unit);
 
                 $("#evidence-step4").hide();
                 $("#evidence-step1").show();
@@ -1514,7 +1542,7 @@
             });
 
             $("#apply-subject-type").click(function() {
-                var stype = $("#subject-type").val();
+                stype = $("#subject-type").val();
                 if(stype.length == 0) return;
 
                 $("#subject-step1").fadeOut();
@@ -1522,16 +1550,28 @@
             });
 
             $("#apply-subject-cname").click(function() {
-                var cname = $("#subject-cname").val();
-                if(cname.length == 0) return;
+                cname = $("#subject-cname").val();
+                if(cname.length == 0) {
+                    cname = $("#subject-cname-custom").val();
+                }
+
+                if(cname.length == 0) {
+                    return; // error control
+                }
 
                 $("#subject-step2").fadeOut();
                 $("#subject-step3").slideDown();
             });
 
             $("#apply-subject-role").click(function() {
-                var role = $("#subject-role").val();
-                if(role.length == 0) return;
+                role = $("#subject-role").val();
+                if(role.length == 0) {
+                    role = $("#subject-role-custom").val();
+                }
+
+                if(role.length == 0) {
+                    return; // error control
+                }
 
                 $("#subject-step3").fadeOut();
                 $("#subject-step4").slideDown();
@@ -1540,10 +1580,6 @@
             $("#apply-subject-desc").click(function() {
                 var desc = $("#subject-desc").val();
                 if(desc.length == 0) return;
-
-                var stype = $("#subject-type").val();
-                var cname = $("#subject-cname").val();
-                var role = $("#subject-role").val();
 
                 self.addColumn(cname, true);
                 $(self.table).find("#template-subject td." + cname).text(stype);
@@ -1557,6 +1593,17 @@
                 $("#subject-modal").modal('hide');
 
             });
+
+            $("#download-template").click(function() {
+                self.addMetaColumn("observation_summary", $("#template-obs-summary").val())
+                return this;
+            });
+
+            $("#preview-template").click(function() {
+                self.addMetaColumn("observation_summary", $("#template-obs-summary").val())
+                return this;
+            });
+
 
             return this;
         }

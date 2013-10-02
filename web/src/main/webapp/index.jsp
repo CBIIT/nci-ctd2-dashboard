@@ -1280,16 +1280,16 @@
                 <table  class="table">
                     <tr>
                         <th>
-                            Template Description
+                            Template description
                         </th>
                         <td>
-                            <input id="template-desc" placeholder="e.g. Analysis of differentially expressed transcripts in some condition" class="input-xxlarge">
+                            <input id="template-desc" placeholder="e.g. Analysis of differentially expressed transcripts in some condition" class="input-xxxlarge">
                         </td>
                     </tr>
                     <tr>
-                        <th>Submission Description</th>
+                        <th>Submission description</th>
                         <td>
-                            <input id="template-submission-desc" placeholder="e.g. Down-regulated genes in PTEN-null cell lines" class="input-xxlarge">
+                            <input id="template-submission-desc" placeholder="e.g. Down-regulated genes in PTEN-null cell lines" class="input-xxxlarge">
                         </td>
                     </tr>
                     <tr>
@@ -1327,6 +1327,17 @@
                         </td>
                     </tr>
                 </table>
+
+                <hr>
+                <h3>Step 6: Create an observation summary</h3>
+                <table class="table">
+                    <tr>
+                        <th>Observation summary</th>
+                        <td>
+                            <input id="template-obs-summary" placeholder="e.g. <gene_column> is down-regulated in <label_evidence> cells" class="input-xxxlarge">
+                        </td>
+                    </tr>
+                </table>
             </div>
 
             <div class="modal hide fade" id="subject-modal">
@@ -1339,18 +1350,17 @@
                         <h4>Step #1: Subject type</h4>
                         <table class="table">
                             <tr>
+                                <th>Select a type</th>
                                 <td>
                                     <select id="subject-type">
-                                        <option value="">Select a type</option>
+                                        <option value="">-</option>
                                         <option value="CellSample">Cell Sample</option>
                                         <option value="Compound">Compound</option>
                                         <option value="Gene">Gene</option>
                                         <option value="ShRna">shRNA</option>
                                         <option value="TissueSample">Tissue Sample</option>
                                     </select>
-                                </td>
-                                <td>
-                                    <button id="apply-subject-type" class="btn">Apply</button>
+                                    <button id="apply-subject-type" class="btn">Next</button>
                                 </td>
                             </tr>
                         </table>
@@ -1374,7 +1384,7 @@
                             </tr>
                             <tr>
                                 <th>
-                                    or enter a new one:
+                                    or enter new one:
                                 </th>
                                 <td>
                                     <input id="subject-cname-custom" placeholder="e.g. gene_symbol" class="input-large">
@@ -1396,17 +1406,22 @@
                                 <td>
                                     <select id="subject-role">
                                         <option value="">-</option>
-                                        <option value="role1">role1</option>
-                                        <option value="role2">role2</option>
-                                        <option value="role3">role3</option>
-                                        <option value="role4">role4</option>
-                                        <option value="role5">role5</option>
+                                        <option value='drug candidate'>drug candidate</option>
+                                        <option value='enriched feature'>enriched feature</option>
+                                        <option value='enriched regulon'>enriched regulon</option>
+                                        <option value='histology type'>histology type</option>
+                                        <option value='master regulator'>master regulator</option>
+                                        <option value='modulator'>modulator</option>
+                                        <option value='oncogene'>oncogene</option>
+                                        <option value='perturbagen'>perturbagen</option>
+                                        <option value='primary site'>primary site</option>
+                                        <option value='regulator'>regulator</option>
                                     </select>
                                 </td>
                             </tr>
                             <tr>
                                 <th>
-                                    or enter a new one:
+                                    ... or enter new one:
                                 </th>
                                 <td>
                                     <input id="subject-role-custom" placeholder="e.g. perturbagen" class="input-large">
@@ -1426,8 +1441,6 @@
                             <tr>
                                 <td>
                                     <input id="subject-desc" placeholder="e.g. mutated gene" class="input-xlarge">
-                                </td>
-                                <td>
                                     <button id="apply-subject-desc" class="btn">Next</button>
                                 </td>
                             </tr>
@@ -1463,6 +1476,48 @@
                         </table>
                     </div>
 
+                    <div id="evidence-step1-mime" class="hide">
+                        <h4>Step #1 cont.: File (MIME) type</h4>
+                        <table class="table">
+                            <tr>
+                                <th>Select a file type</th>
+                                <td>
+                                    <select id="evidence-mime-type">
+                                        <option value="">-</option>
+                                        <option value="application/pdf">PDF (application/pdf)</option>
+                                        <option value="image/png">PNG (image/png)</option>
+                                        <option value="text/gct">GCT (text/gct)</option>
+                                        <option value="text/sif">SIF (text/sif)</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>... or enter new one</th>
+                                <td>
+                                    <input id="evidence-mime-type-custom" placeholder="e.g. image/gif" class="input-large">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan=2 class="next-cell">
+                                    <button id="apply-evidence-mime-type" class="btn">Next</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div id="evidence-step1-unit" class="hide">
+                        <h4>Step #1 cont.: Numeric unit</h4>
+                        <table class="table">
+                            <tr>
+                                <th>Numeric unit (optional)</th>
+                                <td>
+                                    <input id="evidence-numeric-unit" placeholder="e.g. pL" class="input-large">
+                                    <button id="apply-evidence-numeric-unit" class="btn">Next</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
                     <div id="evidence-step2" class="hide">
                         <h4>Step #2: Subject column name</h4>
                         <table class="table">
@@ -1471,11 +1526,6 @@
                                 <td>
                                     <select id="evidence-cname">
                                         <option value="">-</option>
-                                        <option value="sample_ecolumn1">sample_ecolumn1</option>
-                                        <option value="sample_ecolumn2">sample_ecolumn2</option>
-                                        <option value="sample_ecolumn3">sample_ecolumn3</option>
-                                        <option value="sample_ecolumn4">sample_ecolumn4</option>
-                                        <option value="sample_ecolumn5">sample_ecolumn5</option>
                                     </select>
                                 </td>
                             </tr>
@@ -1501,11 +1551,14 @@
                                 <td>
                                     <select id="evidence-role">
                                         <option value="">-</option>
-                                        <option value="role1">role1</option>
-                                        <option value="role2">role2</option>
-                                        <option value="role3">role3</option>
-                                        <option value="role4">role4</option>
-                                        <option value="role5">role5</option>
+                                        <option value='computed'>computed</option>
+                                        <option value='context'>context</option>
+                                        <option value='literature'>literature</option>
+                                        <option value='modulator'>modulator</option>
+                                        <option value='oncogene'>oncogene</option>
+                                        <option value='perturbagen'>perturbagen</option>
+                                        <option value='primary site'>primary site</option>
+                                        <option value='regulator'>regulator</option>
                                     </select>
                                 </td>
                             </tr>
@@ -1517,7 +1570,7 @@
                             </tr>
                             <tr>
                                 <td colspan="2" class="next-cell">
-                                    <button id="apply-evidence-role" class="btn">Apply</button>
+                                    <button id="apply-evidence-role" class="btn">Next</button>
                                 </td>
                             </tr>
                         </table>
