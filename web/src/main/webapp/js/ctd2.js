@@ -536,6 +536,110 @@
         }
     });
 
+
+    var ObservationPreviewView = Backbone.View.extend({
+        template: _.template($("#observation-tmpl").html()),
+        render: function() {
+            var result = this.model.observation;
+            $(this.el).html(this.template(result));
+
+            // We will replace the values in this summary
+            var summary = result.submission.observationTemplate.observationSummary;
+
+            // Load Subjects
+            var thatEl = $("#observed-subjects-grid");
+            _.each(this.model.observedSubjects, function(observedSubject) {
+                var observedSubjectRowView
+                    = new ObservedSubjectSummaryRowView({
+                    el: $(thatEl).find("tbody"),
+                    model: observedSubject
+                });
+                observedSubjectRowView.render();
+
+                var subject = observedSubject.subject;
+                var thatEl2 = $("#subject-image-" + observedSubject.id);
+                var imgTemplate = $("#search-results-unknown-image-tmpl");
+                thatEl2.append(_.template(imgTemplate.html(), subject));
+
+                if(observedSubject.observedSubjectRole == null || observedSubject.subject == null)
+                    return;
+
+                summary = summary.replace(
+                    new RegExp(leftSep + observedSubject.observedSubjectRole.columnName + rightSep, "g"),
+                    _.template($("#summary-subject-replacement-tmpl").html(), observedSubject.subject)
+                );
+
+                $("#observation-summary").html(summary);
+            });
+
+            // Load evidences
+            var thatEl2 = $("#observed-evidences-grid");
+            _.each(this.model.observedEvidences, function(observedEvidence) {
+                var observedEvidenceRowView = new ObservedEvidenceRowView({
+                    el: $(thatEl2).find("tbody"),
+                    model: observedEvidence
+                });
+
+                observedEvidenceRowView.render();
+                summary = summary.replace(
+                    new RegExp(leftSep + observedEvidence.observedEvidenceRole.columnName + rightSep, "g"),
+                    _.template($("#summary-evidence-replacement-tmpl").html(), observedEvidence.evidence)
+                );
+
+                $("#observation-summary").html(summary);
+            });
+
+            var tableLength = (this.model.observedEvidences.length > 25 ? 10 : 25);
+            var oTable = $('#observed-evidences-grid').dataTable({
+                "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
+                "sPaginationType": "bootstrap",
+                "iDisplayLength": tableLength
+            });
+
+            oTable.fnSort( [ [1, 'asc'], [2, 'asc'] ] );
+
+            $('.desc-tooltip').tooltip({ placement: "left" });
+            $("div.expandable").expander({
+                slicePoint: 50,
+                expandText:       '[...]',
+                expandPrefix:     ' ',
+                userCollapseText: '[^]'
+            });
+
+            $(".numeric-value").each(function(idx) {
+                var val = $(this).html();
+                var vals = val.split("e"); // capture scientific notation
+                if(vals.length > 1) {
+                    $(this).html(_.template($("#observeddatanumericevidence-val-tmpl").html(), {
+                        firstPart: vals[0],
+                        secondPart: vals[1].replace("+", "")
+                    }));
+                }
+            });
+
+            $("#small-show-sub-details").click(function(event) {
+                event.preventDefault();
+                $("#obs-submission-details").slideDown();
+                $("#small-show-sub-details").hide();
+                $("#small-hide-sub-details").show();
+            });
+
+            $("#small-hide-sub-details").click(function(event) {
+                event.preventDefault();
+                $("#obs-submission-details").slideUp();
+                $("#small-hide-sub-details").hide();
+                $("#small-show-sub-details").show();
+            });
+
+            if(result.submission.observationTemplate.submissionDescription == "") {
+                $("#obs-submission-summary").hide();
+            }
+
+            return this;
+        }
+    });
+
+
     var ObservedEvidenceRowView = Backbone.View.extend({
         render: function() {
             var result = this.model;
@@ -1711,7 +1815,7 @@
                 };
 
                 // create observations
-                var createObservations = function(id) {
+                var createObservations = function(id, preview) {
                     var rowId = "#" + "template-sample-data" + id;
 
                     var observation = {
@@ -1732,12 +1836,13 @@
                             return; // this will get rid of non-essential cells
 
                         var displayText = $("#template-display_text").find("td." + className + " input").val();
+                        var displayName = $(rowId).find("td." + className + " input").val();
                         switch(cellType) {
                             case "subject":
                                 var subject = {
                                     'class': $("#template-subject").find("td." + className).text(),
                                     id: mockId++,
-                                    displayName: $(rowId).find("td." + className + " input").val()
+                                    displayName: displayName
                                 };
 
                                 var subjectRole = {
@@ -1772,7 +1877,10 @@
                                 var evidence = {
                                     'class': $("#template-evidence").find("td." + className).text(),
                                     id: mockId++,
-                                    displayName: $(rowId).find("td." + className + " input").val()
+                                    displayName: displayName,
+                                    mimeType: $("#template-evidence").find("td." + className).text(),
+                                    filePath: displayName,
+                                    url: displayName
                                 };
 
                                 var evidenceRole = {
@@ -1805,15 +1913,24 @@
                         }
                     });
 
-                    return {
+                    var returnObject = {
                         observation: observation,
                         observedEvidences: observedEvidences,
                         observedSubjects: observedSubjects
                     };
+
+                    if(preview) {
+                        (new ObservationPreviewView({
+                            model: returnObject,
+                            el: $("#obs" + id + "-preview")
+                        })).render();
+                    }
+
+                    return returnObject;
                 };
 
-                var obs1 = createObservations(1);
-                var obs2 = createObservations(2);
+                var obs1 = createObservations(1, true);
+                var obs2 = createObservations(2, false);
 
                 // Create the submission preview
                 (new SubmissionPreviewView({
