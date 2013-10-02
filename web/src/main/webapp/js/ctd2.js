@@ -1348,6 +1348,7 @@
         template: _.template($("#template-helper-tmpl").html()),
         el: $("#main-container"),
         table: "#template-table",
+        metaTable: "#template-meta-table",
         preview: "#template-preview",
 
         addColumn: function(identifier, displayTextEditable) {
@@ -1360,6 +1361,11 @@
             if(displayTextEditable)
                 $(this.table).find("#template-display_text td." + identifier).append(inputTemplate);
 
+            return this;
+        },
+
+        addMetaColumn: function(identifier, displayText) {
+            $(this.metaTable).find("#meta-" + identifier).text(displayText);
 
             return this;
         },
@@ -1382,7 +1388,13 @@
             var self = this;
             $("#apply-submission-center").click(function() {
                 var centerName = $("#template-submission-centers").val();
-                if(centerName.length == 0) return;
+                if(centerName.length == 0) {
+                    centerName = $("#template-submission-centers-custom").val();
+                }
+
+                if(centerName.length == 0) {
+                    return; // error control
+                }
 
                 $("#step1").fadeOut();
                 $("#step2").slideDown();
@@ -1402,9 +1414,39 @@
                 $(self.table).find("tr.sample-data td.template_name").each(function() {
                     $(this).find("input").val(tmplName);
                 });
+                var dateString = (function(date) {
+                    var d = date.getDate();
+                    var m = date.getMonth() + 1;
+                    var y = date.getFullYear();
+                    return '' + y + '-' + (m<=9 ? '0' + m : m) + '-' + (d <= 9 ? '0' + d : d);
+                })(new Date());
+                self.addMetaColumn("template_name", tmplName);
+                self.addMetaColumn("submission_name", dateString + "-" + tmplName);
+            });
 
+            $("#apply-template-desc").click(function() {
+                var templDesc = $("#template-desc").val();
+                var templSubmissionDesc = $("#template-submission-desc").val();
+
+                if(templDesc.length == 0 || templSubmissionDesc.length == 0) {
+                    return; // error control
+                }
+
+                $("#step3").fadeOut();
+                $("#step4").slideDown();
+                self.addMetaColumn("template_description", templDesc);
+                self.addMetaColumn("submission_description", templSubmissionDesc);
+            });
+
+            $("#apply-template-tier").click(function() {
+                var tmplTier = $("#template-tier").val();
+                self.addMetaColumn("observation_tier", tmplTier);
+
+                $("#step4").fadeOut();
+                $("#step5").slideDown();
                 $(self.preview).slideDown();
             });
+
 
             $("#add-evidence").click(function() {
                 $("#evidence-modal").modal('show');

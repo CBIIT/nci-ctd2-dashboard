@@ -1231,48 +1231,98 @@
                 <a href="#" class="close" data-dismiss="alert">&times;</a>
                 <p>
                     <strong>Welcome to the submission template helper!</strong><br>
-                    This tool will help you create a basic submission template from the scratch.
-                    Once a basic template is prepared, you will be able to download the template for local use and preparation for the submission.
+                    This tool will help you create a basic Dashboard submission template from scratch.
+                    Once a basic template is prepared, you will be able to download the template for your local use and preparation of a Dashboard submission.
                 </p>
             </div>
 
             <div id="step1">
                 <h3>Step 1: Select submission center</h3>
-                <table>
+                <table class="table">
                     <tr>
+                        <th>Select a center</th>
                         <td>
-                            <select id="template-submission-centers">
-                                <option value="">Select a center</option>
+                            <select id="template-submission-centers" class="input-xxlarge">
+                                <option value="">-</option>
                             </select>
                         </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            ... or enter a new one:
+                        </th>
                         <td>
-                            <button id="apply-submission-center" class="btn">Apply</button>
+                            <input id="template-submission-centers-custom" placeholder="e.g. National Cancer Institute" class="input-xxlarge">
+                        </td>
+                        </tr>
+                    <tr>
+                        <td colspan=2 class="next-cell">
+                            <button id="apply-submission-center" class="btn">Next</button>
                         </td>
                     </tr>
                 </table>
             </div>
+
             <div id="step2" class="hide">
                 <h3>Step 2: Enter a template name</h3>
-                <table>
+                <table  class="table">
                     <tr>
                         <td>
                             <input id="template-name" placeholder="e.g. centername_your_description" class="input-xxlarge">
-                        </td>
-                        <td>
-                            <button id="apply-template-name" class="btn">Apply</button>
+                            <button id="apply-template-name" class="btn">Next</button>
                         </td>
                     </tr>
                 </table>
             </div>
 
             <div id="step3" class="hide">
-                <h3>Add subject/evidence</h3>
-                <table>
+                <h3>Step 3: Enter a template/submission description</h3>
+                <table  class="table">
+                    <tr>
+                        <th>
+                            Template Description
+                        </th>
+                        <td>
+                            <input id="template-desc" placeholder="e.g. Analysis of differentially expressed transcripts in some condition" class="input-xxlarge">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Submission Description</th>
+                        <td>
+                            <input id="template-submission-desc" placeholder="e.g. Down-regulated genes in PTEN-null cell lines" class="input-xxlarge">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan=2 class="next-cell">
+                            <button id="apply-template-desc" class="btn">Next</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div id="step4" class="hide">
+                <h3>Step 4: Select a tier</h3>
+                <table  class="table">
+                    <tr>
+                        <td>
+                            <select id="template-tier">
+                                <option selected="selected" value="1">Tier 1</option>
+                                <option value="2">Tier 2</option>
+                                <option value="3">Tier 3</option>
+                                <option value="4">Tier 4</option>
+                            </select>
+                            <button id="apply-template-tier" class="btn">Next</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div id="step5" class="hide">
+                <h3>Step 5: Add subjects/evidence</h3>
+                <table class="table">
                     <tr>
                         <td>
                             <button class="btn" id="add-subject">Subject <i class="icon-plus"></i></button>
-                        </td>
-                        <td>
                             <button class="btn" id="add-evidence">Evidence <i class="icon-plus"></i></button>
                         </td>
                     </tr>
@@ -1287,7 +1337,7 @@
                 <div class="modal-body">
                     <div id="subject-step1">
                         <h4>Step #1: Subject type</h4>
-                        <table>
+                        <table class="table">
                             <tr>
                                 <td>
                                     <select id="subject-type">
@@ -1308,11 +1358,12 @@
 
                     <div id="subject-step2" class="hide">
                         <h4>Step #2: Subject column name</h4>
-                        <table>
+                        <table class="table">
                             <tr>
+                                <th>Select a column name</th>
                                 <td>
                                     <select id="subject-cname">
-                                        <option value="">Select a column name</option>
+                                        <option value="">-</option>
                                         <option value="sample_scolumn1">sample_scolumn1</option>
                                         <option value="sample_scolumn2">sample_scolumn2</option>
                                         <option value="sample_scolumn3">sample_scolumn3</option>
@@ -1320,8 +1371,18 @@
                                         <option value="sample_scolumn5">sample_scolumn5</option>
                                     </select>
                                 </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    or enter a new one:
+                                </th>
                                 <td>
-                                    <button id="apply-subject-cname" class="btn">Apply</button>
+                                    <input id="subject-cname-custom" placeholder="e.g. gene_symbol" class="input-large">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan=2 class="next-cell">
+                                    <button id="apply-subject-cname" class="btn">Next</button>
                                 </td>
                             </tr>
                         </table>
@@ -1329,11 +1390,12 @@
 
                     <div id="subject-step3" class="hide">
                         <h4>Step #3: Select a role</h4>
-                        <table>
+                        <table class="table">
                             <tr>
+                                <th>Select a role </th>
                                 <td>
                                     <select id="subject-role">
-                                        <option value="">Select a role</option>
+                                        <option value="">-</option>
                                         <option value="role1">role1</option>
                                         <option value="role2">role2</option>
                                         <option value="role3">role3</option>
@@ -1341,8 +1403,18 @@
                                         <option value="role5">role5</option>
                                     </select>
                                 </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    or enter a new one:
+                                </th>
                                 <td>
-                                    <button id="apply-subject-role" class="btn">Apply</button>
+                                    <input id="subject-role-custom" placeholder="e.g. perturbagen" class="input-large">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan=2 class="next-cell">
+                                    <button id="apply-subject-role" class="btn">Next</button>
                                 </td>
                             </tr>
                         </table>
@@ -1350,18 +1422,17 @@
 
                     <div id="subject-step4" class="hide">
                         <h4>Step #4: Enter description</h4>
-                        <table>
+                        <table class="table">
                             <tr>
                                 <td>
                                     <input id="subject-desc" placeholder="e.g. mutated gene" class="input-xlarge">
                                 </td>
                                 <td>
-                                    <button id="apply-subject-desc" class="btn">Apply</button>
+                                    <button id="apply-subject-desc" class="btn">Next</button>
                                 </td>
                             </tr>
                         </table>
                     </div>
-
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-primary" data-dismiss="modal">Close</button>
@@ -1376,7 +1447,7 @@
                 <div class="modal-body">
                     <div id="evidence-step1">
                         <h4>Step #1: Evidence type</h4>
-                        <table>
+                        <table class="table">
                             <tr>
                                 <td>
                                     <select id="evidence-type">
@@ -1386,9 +1457,7 @@
                                         <option value="Label">Numeric</option>
                                         <option value="URL">URL</option>
                                     </select>
-                                </td>
-                                <td>
-                                    <button id="apply-evidence-type" class="btn">Apply</button>
+                                    <button id="apply-evidence-type" class="btn">Next</button>
                                 </td>
                             </tr>
                         </table>
@@ -1396,11 +1465,12 @@
 
                     <div id="evidence-step2" class="hide">
                         <h4>Step #2: Subject column name</h4>
-                        <table>
+                        <table class="table">
                             <tr>
+                                <th>Select a column name</th>
                                 <td>
                                     <select id="evidence-cname">
-                                        <option value="">Select a column name</option>
+                                        <option value="">-</option>
                                         <option value="sample_ecolumn1">sample_ecolumn1</option>
                                         <option value="sample_ecolumn2">sample_ecolumn2</option>
                                         <option value="sample_ecolumn3">sample_ecolumn3</option>
@@ -1408,8 +1478,16 @@
                                         <option value="sample_ecolumn5">sample_ecolumn5</option>
                                     </select>
                                 </td>
+                            </tr>
+                            <tr>
+                                <th>... or enter new one</th>
                                 <td>
-                                    <button id="apply-evidence-cname" class="btn">Apply</button>
+                                    <input id="evidence-cname-custom" placeholder="e.g. feature_image_path" class="input-xlarge">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" class="next-cell">
+                                    <button id="apply-evidence-cname" class="btn">Next</button>
                                 </td>
                             </tr>
                         </table>
@@ -1417,11 +1495,12 @@
 
                     <div id="evidence-step3" class="hide">
                         <h4>Step #3: Select a role</h4>
-                        <table>
+                        <table class="table">
                             <tr>
+                                <th>Select a role</th>
                                 <td>
                                     <select id="evidence-role">
-                                        <option value="">Select a role</option>
+                                        <option value="">-</option>
                                         <option value="role1">role1</option>
                                         <option value="role2">role2</option>
                                         <option value="role3">role3</option>
@@ -1429,7 +1508,15 @@
                                         <option value="role5">role5</option>
                                     </select>
                                 </td>
+                            </tr>
+                            <tr>
+                                <th>... or enter new one</th>
                                 <td>
+                                    <input id="evidence-role-custom" placeholder="e.g. enriched feature" class="input-xlarge">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" class="next-cell">
                                     <button id="apply-evidence-role" class="btn">Apply</button>
                                 </td>
                             </tr>
@@ -1438,13 +1525,11 @@
 
                     <div id="evidence-step4" class="hide">
                         <h4>Step #4: Enter description</h4>
-                        <table>
+                        <table class="table">
                             <tr>
                                 <td>
-                                    <input id="evidence-desc" placeholder="e.g. mutated gene" class="input-xlarge">
-                                </td>
-                                <td>
-                                    <button id="apply-evidence-desc" class="btn">Apply</button>
+                                    <input id="evidence-desc" placeholder="e.g. heatmap image" class="input-xlarge">
+                                    <button id="apply-evidence-desc" class="btn">Next</button>
                                 </td>
                             </tr>
                         </table>
@@ -1483,16 +1568,39 @@
                             <th>display_text</th>
                         </tr>
                         <tr id="template-sample-data1" class="sample-data">
-                            <th><!--intentionally left blank--></th>
+                            <td><i>sample data row #1</i></td>
                         </tr>
                         <tr id="template-sample-data2" class="sample-data">
-                            <th><!--intentionally left blank--></th>
+                            <td><i>sample data row #2</i></td>
                         </tr>
                     </table>
                 </div>
 
-                <div class="span4 offset4 template-download">
-                    <button class="btn btn-large btn-warning btn-block disabled">Download template</button>
+                <div class="template-preview-wrapper span12">
+                    <h2>Template Meta-Data Preview</h2>
+                    <table class="table table-bordered table-striped" id="template-meta-table">
+                        <tr>
+                            <th>observation_tier</th>
+                            <th>template_name</th>
+                            <th>observation_summary</th>
+                            <th>template_description</th>
+                            <th>submission_name</th>
+                            <th>submission_description</th>
+                        </tr>
+                        <tr>
+                            <td id="meta-observation_tier"></td>
+                            <td id="meta-template_name"></td>
+                            <td id="meta-observation_summary"></td>
+                            <td id="meta-template_description"></td>
+                            <td id="meta-submission_name"></td>
+                            <td id="meta-submission_description"></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="span8 offset3 template-download">
+                    <button class="btn btn-warning btn-large" id="download-template">Download template</button>
+                    <button class="btn btn-large" id="preview-template">Preview template</button>
                 </div>
             </div>
         </div>
