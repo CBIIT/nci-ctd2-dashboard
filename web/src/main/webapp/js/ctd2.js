@@ -1418,7 +1418,7 @@
                     var d = date.getDate();
                     var m = date.getMonth() + 1;
                     var y = date.getFullYear();
-                    return '' + y + '-' + (m<=9 ? '0' + m : m) + '-' + (d <= 9 ? '0' + d : d);
+                    return '' + y +  (m<=9 ? '0' + m : m) + (d <= 9 ? '0' + d : d);
                 })(new Date());
                 self.addMetaColumn("template_name", tmplName);
                 self.addMetaColumn("submission_name", dateString + "-" + tmplName);
@@ -1600,8 +1600,42 @@
             });
 
             $("#preview-template").click(function() {
-                self.addMetaColumn("observation_summary", $("#template-obs-summary").val())
+                self.addMetaColumn("observation_summary", $("#template-obs-summary").val());
                 return this;
+            });
+
+            $("#download-form").submit(function() {
+                var table2TSV = function(id) {
+                    var text = "";
+
+                    $(id).find("tr").each(function(i, aRow) {
+                        var cells = $(aRow).children();
+                        cells.each(function(j, aCell) {
+                            var input = $(aCell).find("input");
+                            if($(aCell).find("i").length > 0) {
+                                text += "";
+                            } else if(input.length == 0) {
+                                text += $(aCell).text();
+                            } else {
+                                text += $(input).val();
+                            }
+
+                            if((j+1) < cells.length) {
+                                text += "\t";
+                            }
+                        });
+
+                        text += "\n";
+                    });
+
+                    return text;
+                };
+
+                $("#template-input").val(table2TSV("#template-table"));
+                $("#template-meta-input").val(table2TSV("#template-meta-table"));
+                $("#filename-input").val($("#meta-submission_name").text());
+
+                return true;
             });
 
 
