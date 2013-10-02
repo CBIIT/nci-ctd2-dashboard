@@ -505,9 +505,6 @@
                                 };
 
                                 container.cy(cyOptions);
-
-
-
                                 // end load cytoscape
                             }
                         });
@@ -1152,6 +1149,73 @@
         }
     });
 
+    var SubmissionPreviewView =  Backbone.View.extend({
+        el: "#submission-preview",
+        template: _.template($("#submission-tmpl").html()),
+        render: function() {
+            var submission = this.model.submission;
+            $(this.el).html(this.template(submission));
+            $(".submission-observations-loading").remove();
+
+            if(submission.observationTemplate.submissionDescription.length > 0) {
+                var submissionDescriptionView = new SubmissionDescriptionView({ model: submission });
+                submissionDescriptionView.render();
+            }
+            var thatEl = this.el;
+            _.each(this.model.observations, function(observation) {
+                var submissionRowView = new SubmissionRowPreviewView({
+                    el: $(thatEl).find(".observations tbody"),
+                    model: observation
+                });
+                submissionRowView.render();
+            });
+
+            $('#submission-observation-grid').dataTable({
+                "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
+                "sPaginationType": "bootstrap"
+            });
+
+            return this;
+        }
+    });
+
+    var SubmissionRowPreviewView = Backbone.View.extend({
+        template:  _.template($("#submission-tbl-row-tmpl").html()),
+        render: function() {
+            $(this.el).append(this.template(this.model.observation));
+
+            var summary = this.model.observation.submission.observationTemplate.observationSummary;
+
+            var thatModel = this.model.observation;
+            var thatEl = $("#submission-observation-summary-" + this.model.observation.id);
+            _.each(this.model.observedSubjects, function(observedSubject) {
+                if(observedSubject.observedSubjectRole == null || observedSubject.subject == null)
+                    return;
+
+                summary = summary.replace(
+                    new RegExp(leftSep + observedSubject.observedSubjectRole.columnName + rightSep, "g"),
+                    _.template($("#summary-subject-replacement-tmpl").html(), observedSubject.subject)
+                );
+            });
+
+            _.each(this.model.observedEvidences, function(observedEvidence) {
+                if(observedEvidence.observedEvidenceRole == null || observedEvidence.evidence == null)
+                    return;
+
+                summary = summary.replace(
+                    new RegExp(leftSep + observedEvidence.observedEvidenceRole.columnName + rightSep, "g"),
+                    _.template($("#summary-evidence-replacement-tmpl").html(), observedEvidence.evidence)
+                );
+            });
+
+            summary += _.template($("#submission-obs-tbl-row-tmpl").html(), thatModel);
+            $(thatEl).html(summary);
+
+            return this;
+        }
+    });
+
+
     var SynonymView = Backbone.View.extend({
         template: _.template($("#synonym-item-tmpl").html()),
         render: function() {
@@ -1351,9 +1415,9 @@
         metaTable: "#template-meta-table",
         preview: "#template-preview",
 
-        addColumn: function(identifier, displayTextEditable) {
+        addColumn: function(identifier, displayTextEditable, columnType) {
             $(this.table).find("tr")
-                .append(_.template($("#template-header-col-tmpl").html(), {id: identifier}));
+                .append(_.template($("#template-header-col-tmpl").html(), {id: identifier, columnType: columnType}));
             $(this.table).find("#template-header td").last().text(identifier);
             var inputTemplate = _.template($("#template-sample-data-tmpl").html(), {});
             $(this.table).find("tr.sample-data td." + identifier).append(inputTemplate);
@@ -1398,7 +1462,7 @@
 
                 $("#step1").fadeOut();
                 $("#step2").slideDown();
-                self.addColumn("submission_center", false);
+                self.addColumn("submission_center", false, "meta");
                 $(self.table).find("tr.sample-data td.submission_center").each(function() {
                     $(this).find("input").val(centerName);
                 });
@@ -1410,7 +1474,7 @@
 
                 $("#step2").fadeOut();
                 $("#step3").slideDown();
-                self.addColumn("template_name", false);
+                self.addColumn("template_name", false, "meta");
                 $(self.table).find("tr.sample-data td.template_name").each(function() {
                     $(this).find("input").val(tmplName);
                 });
@@ -1521,7 +1585,7 @@
                 var desc = $("#evidence-desc").val();
                 if(desc.length == 0) return;
 
-                self.addColumn(cname, true);
+                self.addColumn(cname, true, "evidence");
 
                 $(self.table).find("#template-evidence td." + cname).text(stype);
                 $(self.table).find("#template-role td." + cname).text(role);
@@ -1581,7 +1645,7 @@
                 var desc = $("#subject-desc").val();
                 if(desc.length == 0) return;
 
-                self.addColumn(cname, true);
+                self.addColumn(cname, true, "subject");
                 $(self.table).find("#template-subject td." + cname).text(stype);
                 $(self.table).find("#template-role td." + cname).text(role);
                 $(self.table).find("#template-display_text td." + cname + " input").val(desc);
@@ -1595,12 +1659,176 @@
             });
 
             $("#download-template").click(function() {
-                self.addMetaColumn("observation_summary", $("#template-obs-summary").val())
+                self.addMetaColumn("observation_summary", $("#template-obs-summary").val());
                 return this;
             });
 
             $("#preview-template").click(function() {
                 self.addMetaColumn("observation_summary", $("#template-obs-summary").val());
+
+                $.fancybox(
+                    _.template($("#preview-tmpl").html()),
+                    {
+                        'autoDimensions' : false,
+                        'width' : '100%',
+                        'height' : '100%',
+                        'transitionIn' : 'none',
+                        'transitionOut' : 'none'
+                    }
+                );
+
+                var mockId = 1;
+
+                // create submission center
+                var submissionCenter = {
+                    'class': "SubmissionCenter",
+                    displayName: $(self.table).find("tr.sample-data td.submission_center input").val(),
+                    id: mockId++
+                };
+
+                // create template
+                var observationTemplate = {
+                    'class': "observationTemplate",
+                    description: $("#meta-template_description").text(),
+                    displayName: $("#meta-submission_name").text(),
+                    id: mockId++,
+                    isSubmissionStory: false,
+                    observationSummary: $("#meta-observation_summary").text(),
+                    submissionDescription: $("#meta-submission_description").text(),
+                    submissionName: $("#meta-submission_name").text(),
+                    submissionStoryRank: 0,
+                    tier: $("#meta-observation_tier").text()
+                };
+
+                // create submission
+                var submission = {
+                    'class': "Submission",
+                    displayName: $("#meta-submission_name").text(),
+                    id: mockId++,
+                    submissionDate: (new Date()).toDateString(),
+                    observationTemplate: observationTemplate,
+                    submissionCenter: submissionCenter
+                };
+
+                // create observations
+                var createObservations = function(id) {
+                    var rowId = "#" + "template-sample-data" + id;
+
+                    var observation = {
+                        'class': "Observation",
+                        id: mockId++,
+                        displayName: "",
+                        submission: submission
+                    };
+
+                    var observedSubjects = [];
+                    var observedEvidences = [];
+
+                    $("#template-header td").each(function(i, aCell) {
+                        var cellType = $(aCell).data("type");
+                        var className = $(aCell).text();
+
+                        if( i < 1 || cellType == "meta" )
+                            return; // this will get rid of non-essential cells
+
+                        var displayText = $("#template-display_text").find("td." + className + " input").val();
+                        switch(cellType) {
+                            case "subject":
+                                var subject = {
+                                    'class': $("#template-subject").find("td." + className).text(),
+                                    id: mockId++,
+                                    displayName: $(rowId).find("td." + className + " input").val()
+                                };
+
+                                var subjectRole = {
+                                    'class': "SubjectRole",
+                                    id: mockId++,
+                                    displayName: $("#template-role").find("td." + className).text()
+                                };
+
+                                var observedSubjectRole = {
+                                    subjectRole: subjectRole,
+                                    observationTemplate: observationTemplate,
+                                    id: mockId++,
+                                    'class': "ObservedSubjectRole",
+                                    columnName: className,
+                                    displayName: displayText,
+                                    displayText: displayText
+                                };
+
+                                var observedSubject = {
+                                    'class': "ObservedSubject",
+                                    displayName: subject.displayName,
+                                    id: mockId++,
+                                    observation: observation,
+                                    observedSubjectRole: observedSubjectRole,
+                                    subject: subject
+                                };
+
+                                observedSubjects.push(observedSubject);
+
+                                break;
+                            case "evidence":
+                                var evidence = {
+                                    'class': $("#template-evidence").find("td." + className).text(),
+                                    id: mockId++,
+                                    displayName: $(rowId).find("td." + className + " input").val()
+                                };
+
+                                var evidenceRole = {
+                                    'class': "EvidenceRole",
+                                    id: mockId++,
+                                    displayName: $("#template-role").find("td." + className).text()
+                                };
+
+                                var observedEvidenceRole = {
+                                    evidenceRole: evidenceRole,
+                                    observationTemplate: observationTemplate,
+                                    id: mockId++,
+                                    'class': "ObservedEvidenceRole",
+                                    columnName: className,
+                                    displayName: displayText,
+                                    displayText: displayText
+                                };
+
+                                var observedEvidence = {
+                                    'class': "ObservedEvidence",
+                                    displayName: evidence.displayName,
+                                    id: mockId++,
+                                    observation: observation,
+                                    observedEvidenceRole: observedEvidenceRole,
+                                    evidence: evidence
+                                };
+
+                                observedEvidences.push(observedEvidence);
+                                break;
+                        }
+                    });
+
+                    return {
+                        observation: observation,
+                        observedEvidences: observedEvidences,
+                        observedSubjects: observedSubjects
+                    };
+                };
+
+                var obs1 = createObservations(1);
+                var obs2 = createObservations(2);
+
+                // Create the submission preview
+                (new SubmissionPreviewView({
+                    model: {
+                        submission: submission,
+                        observations: [obs1, obs2]
+                    }
+                })).render();
+
+                $("#preview-container div.common-container").removeClass("common-container");
+                $('#preview-tabs a').click(function (e) {
+                    e.preventDefault();
+                    $(this).tab('show');
+                });
+
                 return this;
             });
 
