@@ -1736,11 +1736,34 @@
     </script>
 
     <script type="text/template" id="template-header-col-tmpl">
-        <td class="{{id}}"></td>
+        <td class="{{id}}" data-type="{{columnType}}"></td>
     </script>
 
     <script type="text/template" id="template-sample-data-tmpl">
         <input placeholder="enter data" class="sample-data-input">
+    </script>
+
+    <script type="text/template" id="preview-tmpl">
+        <div id="preview-container" class="container">
+            <h1>Template preview</h1>
+            <ul class="nav nav-tabs" id="preview-tabs">
+                <li class="active"><a href="#submission-preview">Submission</a></li>
+                <li><a href="#obs1-preview">Observation #1</a></li>
+                <li><a href="#obs2-preview">Observation #2</a></li>
+            </ul>
+
+            <div class="tab-content">
+                <div class="tab-pane active" id="submission-preview">
+                    <h1>Here will come the submission</h1>
+                </div>
+                <div class="tab-pane" id="obs1-preview">
+                    <h1>Here will come the observation #1</h1>
+                </div>
+                <div class="tab-pane" id="obs2-preview">
+                    <h1>Here will come the observation #2</h1>
+                </div>
+            </div>
+        </div>
     </script>
 
     <!-- end of templates -->
