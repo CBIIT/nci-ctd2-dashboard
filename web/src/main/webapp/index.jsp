@@ -1748,8 +1748,7 @@
             <h1>Template preview</h1>
             <ul class="nav nav-tabs" id="preview-tabs">
                 <li class="active"><a href="#submission-preview">Submission</a></li>
-                <li><a href="#obs1-preview">Observation #1</a></li>
-                <li><a href="#obs2-preview">Observation #2</a></li>
+                <li><a href="#obs1-preview">Observation</a></li>
             </ul>
 
             <div class="tab-content">
@@ -1758,9 +1757,6 @@
                 </div>
                 <div class="tab-pane" id="obs1-preview">
                     <h1>Here will come the observation #1</h1>
-                </div>
-                <div class="tab-pane" id="obs2-preview">
-                    <h1>Here will come the observation #2</h1>
                 </div>
             </div>
         </div>
