@@ -1374,11 +1374,27 @@
                                 <td>
                                     <select id="subject-cname">
                                         <option value="">-</option>
-                                        <option value="sample_scolumn1">sample_scolumn1</option>
-                                        <option value="sample_scolumn2">sample_scolumn2</option>
-                                        <option value="sample_scolumn3">sample_scolumn3</option>
-                                        <option value="sample_scolumn4">sample_scolumn4</option>
-                                        <option value="sample_scolumn5">sample_scolumn5</option>
+                                        <option value='cell_line_1'>cell_line_1</option>
+                                        <option value='cell_line_2'>cell_line_2</option>
+                                        <option value='cell_lineage'>cell_lineage</option>
+                                        <option value='column_name'>column_name</option>
+                                        <option value='compound_name'>compound_name</option>
+                                        <option value='disease_condition'>disease_condition</option>
+                                        <option value='disease_condition_1'>disease_condition_1</option>
+                                        <option value='disease_condition_2'>disease_condition_2</option>
+                                        <option value='drug_candidate'>drug_candidate</option>
+                                        <option value='entrez_gene_id'>entrez_gene_id</option>
+                                        <option value='gene_symbol'>gene_symbol</option>
+                                        <option value='gene_symbol_1'>gene_symbol_1</option>
+                                        <option value='gene_symbol_2'>gene_symbol_2</option>
+                                        <option value='gene_symbol_3'>gene_symbol_3</option>
+                                        <option value='gene_symbol_4'>gene_symbol_4</option>
+                                        <option value='gene_symbol_5'>gene_symbol_5</option>
+                                        <option value='shRNA_id'>shRNA_id</option>
+                                        <option value='target_group'>target_group</option>
+                                        <option value='tissue_sample'>tissue_sample</option>
+                                        <option value='tissue_sample_1'>tissue_sample_1</option>
+                                        <option value='tissue_sample_2'>tissue_sample_2</option>
                                     </select>
                                 </td>
                             </tr>
@@ -1526,6 +1542,55 @@
                                 <td>
                                     <select id="evidence-cname">
                                         <option value="">-</option>
+                                        <option value='additional_evidence'>additional_evidence</option>
+                                        <option value='c_score'>c_score</option>
+                                        <option value='cell_line_exclusion'>cell_line_exclusion</option>
+                                        <option value='cell_line_subset'>cell_line_subset</option>
+                                        <option value='cell_type'>cell_type</option>
+                                        <option value='column_name'>column_name</option>
+                                        <option value='drug_candidate_class'>drug_candidate_class</option>
+                                        <option value='enrichment_direction'>enrichment_direction</option>
+                                        <option value='fdr'>fdr</option>
+                                        <option value='feature_data_set'>feature_data_set</option>
+                                        <option value='feature_image_path'>feature_image_path</option>
+                                        <option value='figure_1'>figure_1</option>
+                                        <option value='figure_2'>figure_2</option>
+                                        <option value='figure_3'>figure_3</option>
+                                        <option value='figure_4'>figure_4</option>
+                                        <option value='figure_5'>figure_5</option>
+                                        <option value='figure_6'>figure_6</option>
+                                        <option value='func_type'>func_type</option>
+                                        <option value='gct_path'>gct_path</option>
+                                        <option value='gene_scoring'>gene_scoring</option>
+                                        <option value='log_fdr'>log_fdr</option>
+                                        <option value='mr_gsea_es'>mr_gsea_es</option>
+                                        <option value='mr_gsea_fdr'>mr_gsea_fdr</option>
+                                        <option value='mr_gsea_p_value'>mr_gsea_p_value</option>
+                                        <option value='mr_regulon_set_size'>mr_regulon_set_size</option>
+                                        <option value='mra_fet_p_value'>mra_fet_p_value</option>
+                                        <option value='mra_overlap_rank'>mra_overlap_rank</option>
+                                        <option value='mra_regulon_signature_overlap'>mra_regulon_signature_overlap</option>
+                                        <option value='nci_portal'>nci_portal</option>
+                                        <option value='network_1'>network_1</option>
+                                        <option value='num_shRNAs'>num_shRNAs</option>
+                                        <option value='number_of_cell_lines'>number_of_cell_lines</option>
+                                        <option value='number_of_cell_lines_in_target_group'>number_of_cell_lines_in_target_group</option>
+                                        <option value='number_of_example_cell_lines'>number_of_example_cell_lines</option>
+                                        <option value='number_of_mutant_cell_lines'>number_of_mutant_cell_lines</option>
+                                        <option value='p_value'>p_value</option>
+                                        <option value='probeset_id'>probeset_id</option>
+                                        <option value='publication_reference'>publication_reference</option>
+                                        <option value='publication_url'>publication_url</option>
+                                        <option value='response_image_path'>response_image_path</option>
+                                        <option value='shrna_diff_rep_fdr_combined'>shrna_diff_rep_fdr_combined</option>
+                                        <option value='shrna_diff_rep_net_direction_combined'>shrna_diff_rep_net_direction_combined</option>
+                                        <option value='shrna_diff_rep_p_value_combined'>shrna_diff_rep_p_value_combined</option>
+                                        <option value='shrna_diff_rep_z_score_combined'>shrna_diff_rep_z_score_combined</option>
+                                        <option value='solution_name'>solution_name</option>
+                                        <option value='story_location'>story_location</option>
+                                        <option value='target_group'>target_group</option>
+                                        <option value='tier1_evidence'>tier1_evidence</option>
+                                        <option value='tissue'>tissue</option>
                                     </select>
                                 </td>
                             </tr>
