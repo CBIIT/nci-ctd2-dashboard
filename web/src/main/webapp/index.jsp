@@ -1716,9 +1716,16 @@
                     </table>
                 </div>
 
-                <div class="span8 offset3 template-download">
-                    <button class="btn btn-warning btn-large" id="download-template">Download template</button>
+                <div class="span8 offset2 template-download">
                     <button class="btn btn-large" id="preview-template">Preview template</button>
+                    <div class="span4">
+                        <form action="download/template" method="POST" id="download-form">
+                            <button class="btn btn-warning btn-large" id="download-template">Download template</button>
+                            <input type="hidden" name="template" id="template-input">
+                            <input type="hidden" name="metatemplate" id="template-meta-input">
+                            <input type="hidden" name="filename" id="filename-input">
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
