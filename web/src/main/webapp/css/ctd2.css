@@ -353,5 +353,13 @@
         margin-top: 20px;
     }
 
+    #template-helper-container td {
+        padding: 7px;
+    }
+
+    td.next-cell {
+        text-align: center;
+    }
+
 
 
