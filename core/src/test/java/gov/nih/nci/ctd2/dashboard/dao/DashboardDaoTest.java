@@ -410,6 +410,10 @@ public class DashboardDaoTest {
         cellSamples = dashboardDao.findCellSampleByAnnoName("lymphoid_neoplasm");
         assertEquals(1, cellSamples.size());
 
+        cellSamples = dashboardDao.findCellSampleByAnnotation(annotation1);
+        assertEquals(1, cellSamples.size());
+        assertEquals(cellSample1, cellSamples.iterator().next());
+
         List<Subject> subjects1 = dashboardDao.findSubjectsByXref(xref1);
         assertEquals(1, subjects1.size());
         assertEquals(cellSample1, subjects1.iterator().next());
