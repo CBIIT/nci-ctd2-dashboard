@@ -2,6 +2,7 @@ package gov.nih.nci.ctd2.dashboard.importer.internal;
 
 import gov.nih.nci.ctd2.dashboard.model.Xref;
 import gov.nih.nci.ctd2.dashboard.model.CellSample;
+import gov.nih.nci.ctd2.dashboard.model.Annotation;
 import gov.nih.nci.ctd2.dashboard.model.Organism;
 import gov.nih.nci.ctd2.dashboard.model.DashboardFactory;
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
@@ -14,17 +15,14 @@ import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.util.List;
 import java.util.HashMap;
+import java.util.HashSet;
 
 @Component("cellLineSampleMapper")
 public class CellLineSampleFieldSetMapper implements FieldSetMapper<CellSample> {
 
-	public static final String BROAD_CELL_LINE_DATABASE = "BROAD_CELL_LINE";
-
 	private static final String CELL_SAMPLE_ID = "cell_sample_id";
-	private static final String GENDER = "gender";
 	private static final String	TAXONOMY_ID = "taxonomy_id";
-	private static final String	HIST_INDEX = "hist_index";
-	private static final String	SITE_INDEX = "site_index";
+	private static final String GENDER = "gender";
 
     @Autowired
     private DashboardDao dashboardDao;
@@ -33,8 +31,8 @@ public class CellLineSampleFieldSetMapper implements FieldSetMapper<CellSample> 
     private DashboardFactory dashboardFactory;
 
     @Autowired
-	@Qualifier("cellLineLineageMap")
-	private HashMap<String,String> cellLineLineageMap;
+	@Qualifier("cellLineAnnotationSampleMap")
+	private HashMap<String,HashSet> cellLineAnnotationSampleMap;
 
     @Autowired
 	@Qualifier("cellSampleMap")
@@ -46,20 +44,14 @@ public class CellLineSampleFieldSetMapper implements FieldSetMapper<CellSample> 
 
 		String cellSampleId = fieldSet.readString(CELL_SAMPLE_ID);
 		String taxonomyId = fieldSet.readString(TAXONOMY_ID);
-		String siteIndex = fieldSet.readString(SITE_INDEX);
+        String gender = fieldSet.readString(GENDER);
 
 		CellSample cellSample = dashboardFactory.create(CellSample.class);
 		// display name will be set in next step
 		Organism organism = getOrganism(taxonomyId);
 		if (organism != null) cellSample.setOrganism(organism);
-		String cellLineage = cellLineLineageMap.get(siteIndex);
-		if (cellLineage != null && cellLineage.length() > 0) {
-			cellSample.setLineage(cellLineage);
-		}
-		Xref xref = dashboardFactory.create(Xref.class);
-		xref.setDatabaseId(cellSampleId);
-		xref.setDatabaseName(BROAD_CELL_LINE_DATABASE);
-		cellSample.getXrefs().add(xref);
+        if (gender != null && gender.length() > 0) cellSample.setGender(gender);
+        cellSample.setAnnotations(cellLineAnnotationSampleMap.get(cellSampleId));
 		// optimization - avoid persisting CellSamples
 		// - place in map and pass to cellLineNameStep
 		cellSampleMap.put(cellSampleId,cellSample);

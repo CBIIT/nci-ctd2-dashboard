@@ -25,7 +25,6 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
     private static final String[] defaultSearchFields = {
             DashboardEntityImpl.FIELD_DISPLAYNAME,
             DashboardEntityImpl.FIELD_DISPLAYNAME_UT,
-            CellSampleImpl.FIELD_LINEAGE,
             ObservationTemplateImpl.FIELD_DESCRIPTION,
             ObservationTemplateImpl.FIELD_SUBMISSIONDESC,
             ObservationTemplateImpl.FIELD_SUBMISSIONNAME,
@@ -33,6 +32,7 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
     };
 
     private static final Class[] searchableClasses = {
+            AnnotationImpl.class,
             SubjectImpl.class,
             SynonymImpl.class,
             SubmissionImpl.class,
@@ -214,12 +214,54 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
     }
 
 	@Override
-    public List<CellSample> findCellSampleByLineage(String lineage) {
+    public List<CellSample> findCellSampleByAnnoType(String type) {
 		List<CellSample> cellSamples = new ArrayList<CellSample>();
 
-        for (Object o : getHibernateTemplate().find("from CellSampleImpl where lineage = ?", lineage)) {
-            assert o instanceof CellSample;
-            cellSamples.add((CellSample) o);
+        // first grab annotations by type
+        for (Object anno : getHibernateTemplate().find("from AnnotationImpl where type = ?", type)) {
+            assert anno instanceof Annotation;
+            for (Object cellSample : getHibernateTemplate().find("from CellSampleImpl as cs where ? member of cs.annotations", (Annotation)anno)) {
+                assert cellSample instanceof CellSample;
+                if (!cellSamples.contains(cellSample)) {
+                    cellSamples.add((CellSample)cellSample);
+                }
+            }
+        }
+
+        return cellSamples;
+	}
+
+	@Override
+    public List<CellSample> findCellSampleByAnnoSource(String source) {
+		List<CellSample> cellSamples = new ArrayList<CellSample>();
+
+        // first grab annotations by source
+        for (Object anno : getHibernateTemplate().find("from AnnotationImpl where source = ?", source)) {
+            assert anno instanceof Annotation;
+            for (Object cellSample : getHibernateTemplate().find("from CellSampleImpl as cs where ? member of cs.annotations", (Annotation)anno)) {
+                assert cellSample instanceof CellSample;
+                if (!cellSamples.contains(cellSample)) {
+                    cellSamples.add((CellSample)cellSample);
+                }
+            }
+        }
+
+        return cellSamples;
+	}
+
+	@Override
+    public List<CellSample> findCellSampleByAnnoName(String name) {
+		List<CellSample> cellSamples = new ArrayList<CellSample>();
+
+        // first grab annotations by source
+        for (Object anno : getHibernateTemplate().find("from AnnotationImpl where displayName = ?", name)) {
+            assert anno instanceof Annotation;
+            for (Object cellSample : getHibernateTemplate().find("from CellSampleImpl as cs where ? member of cs.annotations", (Annotation)anno)) {
+                assert cellSample instanceof CellSample;
+                if (!cellSamples.contains(cellSample)) {
+                    cellSamples.add((CellSample)cellSample);
+                }
+            }
         }
 
         return cellSamples;

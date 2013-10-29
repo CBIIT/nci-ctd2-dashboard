@@ -63,33 +63,24 @@ public class AdminTest {
         // import some cell line data
         jobExecution = executeJob("cellLineDataImporterJob");
         assertEquals("COMPLETED", jobExecution.getExitStatus().getExitCode());
-        assertEquals(11, dashboardDao.countEntities(CellSample.class).intValue());
-        List<CellSample> cellSamples = dashboardDao.findCellSampleByLineage("haematopoietic_and_lymphoid_tissue");
+        assertEquals(3, dashboardDao.countEntities(CellSample.class).intValue());
+        List<CellSample> cellSamples = dashboardDao.findCellSampleByAnnoSource("COSMIC (Sanger)");
+        assertEquals(3, cellSamples.size());
+
+        cellSamples = dashboardDao.findCellSampleByAnnoType("primary_site");
+        assertEquals(3, cellSamples.size());
+
+        cellSamples = dashboardDao.findCellSampleByAnnoName("acute_lymphoblastic_B_cell_leukaemia");
         assertEquals(1, cellSamples.size());
+        CellSample cellSample = (CellSample)cellSamples.iterator().next();
+        assertEquals(8, cellSample.getAnnotations().size());
+        assertEquals(2, cellSample.getSynonyms().size());
+        
 
-        List<Subject> cellSampleSubjects = dashboardDao.findSubjectsByXref("CTD2", "idCell:9");
-        assertEquals(1, cellSampleSubjects.size());
-        CellSample cellSample = (CellSample)cellSampleSubjects.iterator().next();
-        assertEquals("697", cellSample.getDisplayName());
-        assertEquals("haematopoietic_and_lymphoid_tissue", cellSample.getLineage());
-        assertEquals(3, cellSample.getSynonyms().size());
-        assertEquals(8, cellSample.getXrefs().size());
-
-        cellSampleSubjects = dashboardDao.findSubjectsByXref("integrated", "862");
+        List<Subject> cellSampleSubjects = dashboardDao.findSubjectsBySynonym("5637", true);
         assertEquals(1, cellSampleSubjects.size());
         cellSample = (CellSample)cellSampleSubjects.iterator().next();
-        assertEquals("862", cellSample.getDisplayName());
-        assertEquals("meninges", cellSample.getLineage());
-        assertEquals(4, cellSample.getSynonyms().size());
-        assertEquals(5, cellSample.getXrefs().size());
-        cellSampleSubjects = dashboardDao.findSubjectsByXref(CellLineNameFieldSetMapper.CBIO_PORTAL,
-                                                             "5637_URINARY_TRACT");
-        assertEquals(1, cellSampleSubjects.size());
-
-        cellSampleSubjects = dashboardDao.findSubjectsBySynonym("2313287", true);
-        assertEquals(1, cellSampleSubjects.size());
-        cellSample = (CellSample)cellSampleSubjects.iterator().next();
-        assertEquals(null, cellSample.getLineage());
+        assertEquals("M", cellSample.getGender());
 
         // import some compound data
         jobExecution = executeJob("compoundDataImporterJob");

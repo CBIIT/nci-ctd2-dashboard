@@ -11,23 +11,23 @@ import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.util.HashMap;
 
-@Component("cellLineLineageMapper")
-public class CellLineLineageFieldSetMapper implements FieldSetMapper<CellSample> {
+@Component("cellLineAnnotationSourceMapper")
+public class CellLineAnnotationSourceFieldSetMapper implements FieldSetMapper<CellSample> {
 
-	private static final String SITE_INDEX = "site_index";
-	private static final String CELL_SAMPLE_LINEAGE = "cell_sample_lineage";
+	private static final String CELL_ANNO_SOURCE_ID = "cell_anno_source_id";
+	private static final String CELL_ANNO_SOURCE = "cell_anno_source";
 
     @Autowired
     private DashboardFactory dashboardFactory;
 
     @Autowired
-	@Qualifier("cellLineLineageMap")
-	private HashMap<String,String> cellLineLineageMap;
+	@Qualifier("cellLineAnnotationSourceMap")
+	private HashMap<String,String> cellLineAnnotationSourceMap;
 
 	public CellSample mapFieldSet(FieldSet fieldSet) throws BindException {
 
-		cellLineLineageMap.put(fieldSet.readString(SITE_INDEX),
-							   fieldSet.readString(CELL_SAMPLE_LINEAGE));
+		cellLineAnnotationSourceMap.put(fieldSet.readString(CELL_ANNO_SOURCE_ID),
+                                        fieldSet.readString(CELL_ANNO_SOURCE));
 
 		// if we don't return something, spring batch will think EOF has been reached
 		return dashboardFactory.create(CellSample.class);
