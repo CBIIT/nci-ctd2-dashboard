@@ -1,0 +1,4 @@
+cell_sample_id	taxonomy_id	gender
+1	9606	M
+2	9606	
+3	9606	M
