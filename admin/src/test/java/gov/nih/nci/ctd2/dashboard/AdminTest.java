@@ -76,6 +76,10 @@ public class AdminTest {
         assertEquals(8, cellSample.getAnnotations().size());
         assertEquals(2, cellSample.getSynonyms().size());
         
+        Annotation annotation = cellSample.getAnnotations().iterator().next();
+        cellSamples = dashboardDao.findCellSampleByAnnotation(annotation);
+        assertEquals(1, cellSamples.size());
+        assertEquals(cellSample, cellSamples.iterator().next());
 
         List<Subject> cellSampleSubjects = dashboardDao.findSubjectsBySynonym("5637", true);
         assertEquals(1, cellSampleSubjects.size());

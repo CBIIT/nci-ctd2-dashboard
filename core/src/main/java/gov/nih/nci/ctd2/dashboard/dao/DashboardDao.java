@@ -21,6 +21,7 @@ public interface DashboardDao {
     List<CellSample> findCellSampleByAnnoType(String type);
     List<CellSample> findCellSampleByAnnoSource(String source);
     List<CellSample> findCellSampleByAnnoName(String name);
+    List<CellSample> findCellSampleByAnnotation(Annotation annotation);
     List<TissueSample> findTissueSampleByLineage(String lineage);
     List<Compound> findCompoundsByName(String compoundName);
     List<Compound> findCompoundsBySmilesNotation(String smilesNotation);

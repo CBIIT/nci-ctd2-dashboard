@@ -267,6 +267,16 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
         return cellSamples;
 	}
 
+    @Override
+    public List<CellSample> findCellSampleByAnnotation(Annotation annotation) {
+        List<CellSample> list = new ArrayList<CellSample>();
+        for (Object cs : getHibernateTemplate().find("select cs from CellSampleImpl as cs where ? member of cs.annotations", annotation)) {
+            assert cs instanceof CellSample;
+            list.add((CellSample)cs);
+        }
+        return list;
+    }
+
 	@Override
     public List<TissueSample> findTissueSampleByLineage(String lineage) {
 		List<TissueSample> tissueSamples = new ArrayList<TissueSample>();
