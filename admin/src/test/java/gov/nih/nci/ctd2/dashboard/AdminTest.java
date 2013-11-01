@@ -89,7 +89,7 @@ public class AdminTest {
         // import some compound data
         jobExecution = executeJob("compoundDataImporterJob");
         assertEquals("COMPLETED", jobExecution.getExitStatus().getExitCode());
-        assertEquals(9, dashboardDao.countEntities(Compound.class).intValue());
+        assertEquals(10, dashboardDao.countEntities(Compound.class).intValue());
         List<Subject> compoundSubjects =
             dashboardDao.findSubjectsByXref(CompoundsFieldSetMapper.BROAD_COMPOUND_DATABASE, "411739");
         assertEquals(1, compoundSubjects.size());
@@ -163,17 +163,17 @@ public class AdminTest {
         assertEquals(4, observationTemplate.getSubmissionStoryRank().intValue());
 
         // import observation data
-        jobExecution = executeJob("testTierOneObservationDataImporterJob");
+        jobExecution = executeJob("testObservationDataImporterJob");
         assertEquals("COMPLETED", jobExecution.getExitStatus().getExitCode());
-        assertEquals(1, dashboardDao.countEntities(Submission.class).intValue());
+        assertEquals(2, dashboardDao.countEntities(Submission.class).intValue());
         assertEquals(1, dashboardDao.countEntities(SubmissionCenter.class).intValue());
-        assertEquals(9, dashboardDao.countEntities(Observation.class).intValue());
-        assertEquals(18, dashboardDao.countEntities(ObservedSubject.class).intValue());
-        assertEquals(99, dashboardDao.countEntities(ObservedEvidence.class).intValue());
-        assertEquals(36, dashboardDao.countEntities(LabelEvidence.class).intValue());
-        assertEquals(27, dashboardDao.countEntities(DataNumericValue.class).intValue());
-        assertEquals(27, dashboardDao.countEntities(FileEvidence.class).intValue());
-        assertEquals(9, dashboardDao.countEntities(UrlEvidence.class).intValue());
+        assertEquals(11, dashboardDao.countEntities(Observation.class).intValue());
+        assertEquals(22, dashboardDao.countEntities(ObservedSubject.class).intValue());
+        assertEquals(117, dashboardDao.countEntities(ObservedEvidence.class).intValue());
+        assertEquals(40, dashboardDao.countEntities(LabelEvidence.class).intValue());
+        assertEquals(30, dashboardDao.countEntities(DataNumericValue.class).intValue());
+        assertEquals(36, dashboardDao.countEntities(FileEvidence.class).intValue());
+        assertEquals(11, dashboardDao.countEntities(UrlEvidence.class).intValue());
     }
 
 	private JobExecution executeJob(String jobName) throws Exception {

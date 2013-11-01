@@ -465,6 +465,19 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
         return list;
     }
 
+	@Override
+    public Submission findSubmissionByName(String submissionName) {
+        List<Submission> submissions = new ArrayList<Submission>();
+
+        for (Object o : getHibernateTemplate().find("from SubmissionImpl where displayName = ?", submissionName)) {
+            assert o instanceof Submission;
+            submissions.add((Submission)o);
+        }
+
+        assert submissions.size() == 1;
+        return submissions.iterator().next();
+	}
+
     @Override
     public List<Submission> findSubmissionBySubmissionCenter(SubmissionCenter submissionCenter) {
         List<Submission> list = new ArrayList<Submission>();
