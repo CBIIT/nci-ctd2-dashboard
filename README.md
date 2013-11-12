@@ -116,7 +116,7 @@ This JAR file can be run via the following command:
 
 For example:
 
-	java -jar admin/target/admin-VERSION.jar -h
+	java -jar admin/target/dashboard-admin.jar -h
 
 will list all available options to you.  For more information about running the admin tool, please visit the [Dashboard Admin Tool](https://bitbucket.org/cbio_mskcc/ctd2-dashboard/wiki/Dashboard%20Admin%20Tool) wiki page.
 
