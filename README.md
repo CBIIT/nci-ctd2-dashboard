@@ -112,9 +112,8 @@ When `mvn install` is called either on this module or on the parent module,
 a JAR file with all its dependencies included is generated under the default `target/` directory.
 This JAR file can be run via the following command:
 
-	java -jar admin/target/admin-VERSION.jar
+	java -jar admin/target/dashboard-admin.jar
 
-where VERSION corresponds the current version of the branch.
 For example:
 
 	java -jar admin/target/admin-VERSION.jar -h
