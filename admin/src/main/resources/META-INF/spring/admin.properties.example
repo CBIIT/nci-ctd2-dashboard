@@ -1,36 +1,36 @@
 # Here will go admin specific options
 
 # data source locations
-gene.data.location=
-cell.line.name.type.location=
-cell.line.annotation.type.location=
-cell.line.annotation.name.location=
-cell.line.annotation.source.location=
-cell.line.annotation.sample.location=
-cell.line.id.location=
-cell.line.name.location=
-compounds.location=
-compound.synonyms.location=
-protein.data.location=
-trc.shrna.data.location=
-trc.shrna.filter.location=
-tissue.sample.data.location=
-dashboard.cv.per.template.data.location=
-dashboard.cv.per.column.data.location=
-broad.cmp.sens.lineage.enrich.data.location=
-broad.cmp.sens.mutation.enrich.data.location=
-broad.tier3.navitoclax.story.data.location=
-columbia.marina.analysis.data.location=
-columbia.mra.fet.analysis.data.location=
-columbia.joint.mr.shrna.diff.analysis.data.location=
-columbia.tier4.glioma.story.data.location=
-cshl.tier4.fgf19.story.data.location=
-dfci.tier4.beta.catenin.story.data.location=
-dfci.reporter.analysis.data.location=
-dfci.ataris.analysis.data.location=
-dfci.ovarian.analysis.data.location=
-dfci.pax8.tier3.data.location=
-utsw.tier4.discoipyrroles.story.data.location=
+gene.data.location=file:${CTD2_DATA_HOME}/gene_info
+cell.line.name.type.location=file:${CTD2_DATA_HOME}/subject_data/cell_sample_update/cell_name_type.txt
+cell.line.annotation.type.location=file:${CTD2_DATA_HOME}/subject_data/cell_sample_update/cell_anno_type.txt
+cell.line.annotation.name.location=file:${CTD2_DATA_HOME}/subject_data/cell_sample_update/cell_anno_name.txt
+cell.line.annotation.source.location=file:${CTD2_DATA_HOME}/subject_data/cell_sample_update/cell_anno_source.txt
+cell.line.annotation.sample.location=file:${CTD2_DATA_HOME}/subject_data/cell_sample_update/cell_anno.txt
+cell.line.id.location=file:${CTD2_DATA_HOME}/subject_data/cell_sample_update/cell_sample.txt
+cell.line.name.location=file:${CTD2_DATA_HOME}/subject_data/cell_sample_update/cell_sample_name.txt
+compounds.location=file:${CTD2_DATA_HOME}/subject_data/compound/Compounds.txt
+compound.synonyms.location=file:${CTD2_DATA_HOME}/subject_data/compound/CompoundSynonyms.txt
+protein.data.location=file:${CTD2_DATA_HOME}/uniprot_sprot_human.dat
+trc.shrna.data.location=file:${CTD2_DATA_HOME}/subject_data/shrna/trc_public.05Apr11.txt
+trc.shrna.filter.location=file:${CTD2_DATA_HOME}/subject_data/shrna/trc-shrnas-filter.txt
+tissue.sample.data.location=file:${CTD2_DATA_HOME}/subject_data/tissue_sample/tissue_sample_name.txt
+dashboard.cv.per.template.data.location=file:${CTD2_DATA_HOME}/dashboard-CV-per-template.txt
+dashboard.cv.per.column.data.location=file:${CTD2_DATA_HOME}/dashboard-CV-per-column.txt
+broad.cmp.sens.lineage.enrich.data.location=file:${CTD2_DATA_HOME}/submissions/20130328-broad_cpd_sens_lineage_enrich-MST-312/20130328-broad_cpd_sens_lineage_enrich-MST-312.txt
+broad.cmp.sens.mutation.enrich.data.location=file:${CTD2_DATA_HOME}/submissions/20130328-broad_cpd_sens_mutation_enrich-navitoclax/20130328-broad_cpd_sens_mutation_enrich-navitoclax.txt
+broad.tier3.navitoclax.story.data.location=file:${CTD2_DATA_HOME}/submissions/20130402-broad_tier3_navitoclax_story/20130402-broad_tier3_navitoclax_story.txt
+columbia.marina.analysis.data.location=file:${CTD2_DATA_HOME}/submissions/20130402-columbia_marina_analysis-T-ALL/20130402-columbia_marina_analysis-T-ALL.txt
+columbia.mra.fet.analysis.data.location=file:${CTD2_DATA_HOME}/submissions/20130403-columbia_mra_fet_analysis-glioma/20130403-columbia_mra_fet_analysis-glioma.txt
+columbia.joint.mr.shrna.diff.analysis.data.location=file:${CTD2_DATA_HOME}/submissions/20130401-columbia_joint_mr_shrna_diff-T-ALL/20130401-columbia_joint_mr_shrna_diff-T-ALL.txt
+columbia.tier4.glioma.story.data.location=file:${CTD2_DATA_HOME}/submissions/20130401-columbia_tier4_glioma_story/20130401-columbia_tier4_glioma_story.txt
+cshl.tier4.fgf19.story.data.location=file:${CTD2_DATA_HOME}/submissions/20130403-cshl_tier4_fgf19_story/20130403-cshl_tier4_fgf19_story.txt
+dfci.tier4.beta.catenin.story.data.location=file:${CTD2_DATA_HOME}/submissions/20130401-dfci_tier4_beta-catenin_story/20130401-dfci_tier4_beta-catenin_story.txt
+dfci.reporter.analysis.data.location=file:${CTD2_DATA_HOME}/submissions/20130426-dfci_reporter_analysis-bcat/20130426-dfci_reporter_analysis-bcat.txt
+dfci.ataris.analysis.data.location=file:${CTD2_DATA_HOME}/submissions/20130429-dfci_ataris_analysis/20130429-dfci_ataris_analysis.txt
+dfci.ovarian.analysis.data.location=file:${CTD2_DATA_HOME}/submissions/20130426-dfci_ovarian_analysis/20130426-dfci_ovarian_analysis.txt
+dfci.pax8.tier3.data.location=file:${CTD2_DATA_HOME}/submissions/20130429-dfci_pax8_tier3/20130429-dfci_pax8_tier3.txt
+utsw.tier4.discoipyrroles.story.data.location=file:${CTD2_DATA_HOME}/submissions/20130503-utsw_tier4_discoipyrroles_story/20130503-utsw_tier4_discoipyrroles_story.txt
 
 # spring commit interval
 spring.batch.commit.interval=10000
