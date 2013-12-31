@@ -51,7 +51,12 @@ public class CellLineSampleFieldSetMapper implements FieldSetMapper<CellSample> 
 		Organism organism = getOrganism(taxonomyId);
 		if (organism != null) cellSample.setOrganism(organism);
         if (gender != null && gender.length() > 0) cellSample.setGender(gender);
-        cellSample.setAnnotations(cellLineAnnotationSampleMap.get(cellSampleId));
+        if (cellLineAnnotationSampleMap.containsKey(cellSampleId)) {
+            cellSample.setAnnotations(cellLineAnnotationSampleMap.get(cellSampleId));
+        }
+        else {
+            cellSample.setAnnotations(new HashSet<Annotation>());
+        }
 		// optimization - avoid persisting CellSamples
 		// - place in map and pass to cellLineNameStep
 		cellSampleMap.put(cellSampleId,cellSample);
