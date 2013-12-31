@@ -37,7 +37,7 @@
 
   <bean name="tissueSampleDataLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="tissue_sample_name,tissue_sample_lineage"/>
+	<property name="names" value="tissue_sample_name,tissue_sample_lineage,nci_thesaurus_code,parents"/>
   </bean>
 
 </beans>

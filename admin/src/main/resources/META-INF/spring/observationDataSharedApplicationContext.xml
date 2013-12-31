@@ -68,11 +68,18 @@
 		<batch:chunk reader="dfciOvarianAnalysisReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	  </batch:tasklet>
 	</batch:step>
-	<batch:step id="dfciPax8Tier3Step" parent="observationDataStep" next="utswTier4DiscoipyrrolesStoryStep">
+	<batch:step id="dfciPax8Tier3Step" parent="observationDataStep" next="fhcrcCSTTier1Step">
 	  <batch:tasklet>
 		<batch:chunk reader="dfciPax8Tier3Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	  </batch:tasklet>
 	</batch:step>
+
+	<batch:step id="fhcrcCSTTier1Step" parent="observationDataStep" next="utswTier4DiscoipyrrolesStoryStep">
+	  <batch:tasklet>
+		<batch:chunk reader="fhcrcCSTTier1Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+
 	<batch:step id="utswTier4DiscoipyrrolesStoryStep" parent="observationDataStep">
 	  <batch:tasklet>
 		<batch:chunk reader="utswTier4DiscoipyrrolesStoryReader" processor="observationDataProcessor" writer="observationDataWriter"/>
@@ -97,7 +104,7 @@
 
   <bean name="broadCompoundSensitivityLineageEnrichmentLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="dummy,submisson_name,submission_center,submission_date,template_name,cell_line_subset,cell_line_exclusion,feature_data_set,compound_name,cell_lineage,number_of_cell_lines,number_of_example_cell_lines,enrichment_direction,log_fdr,response_image_path,feature_image_path,nci_portal,gct_path"/>
+	<property name="names" value="dummy,submission_name,submission_center,submission_date,template_name,cell_line_subset,cell_line_exclusion,feature_data_set,compound_name,cell_lineage,number_of_cell_lines,number_of_example_cell_lines,enrichment_direction,log_fdr,response_image_path,feature_image_path,nci_portal,gct_path"/>
   </bean>
 
   <!-- broad compound sensitivity mutation enrichment analysis -->
@@ -153,7 +160,7 @@
 
   <bean name="columbiaMRAFetAnalysisLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="dummy,submission_name,submission_center,submission_date,template_name,disease_condition,tissue,gene_symbol,func_type,mra_regulon_signature_overlap,mra_overlap_rank,mra_fet_p_value,figure_1,network_1,publication_url,publication_reference"/>
+	<property name="names" value="dummy,submission_name,submission_center,submission_date,template_name,disease_condition,tissue,gene_symbol,func_type,mra_regulon_signature_overlap,mra_overlap_rank,mra_fet_p_value,figure_1,network_1,network_2,publication_url,publication_reference"/>
   </bean>
 
   <!-- columbia master regulator analysis with shRNA knockdown analysis -->
@@ -268,6 +275,20 @@
 	<property name="names" value="dummy,submission_name,submission_center,submission_date,template_name,target_group,gene_symbol,figure_1,figure_2,figure_3,figure_4,figure_5,tier1_evidence,publication_reference,publication_url"/>
   </bean>
 
+  <!-- fhcrc cst tier 1 -->
+
+  <!-- fhcrcCTSTier1Reader defined in: -->
+  <!-- observationDataApplicationContext.xml testObservationDataApplicationContext.xml -->
+  <bean name="fhcrcCSTTier1LineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+	<property name="fieldSetMapper" ref="observationDataMapper" />
+	<property name="lineTokenizer" ref="fhcrcCSTTier1LineTokenizer" />
+  </bean>
+
+  <bean name="fhcrcCSTTier1LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+	<property name="delimiter" value="\u0009"/>
+	<property name="names" value="dummy,submission_name,submission_center,submission_date,template_name,gene_symbol,splice_junction,disease_condition,number_of_tumor_samples,number_of_tumor_samples_with_junction,average_number_of_supporting_reads,number_of_samples_with_supporting_rpts,junction_type,is_observed_in_ip_tissue,has_suporting_ests,genomic_reference_assembly"/>
+  </bean>
+
   <!-- uts tier 4 discoipyrroles story -->
 
   <!-- utsTier4DiscoipyrrolesStoryReader defined in: -->
@@ -348,6 +369,7 @@
 		<entry key="columbia_mra_fet_analysis:mra_fet_p_value" value="evidence:readDouble:createObservedNumericEvidence" />
 		<entry key="columbia_mra_fet_analysis:figure_1" value="evidence:readString:createObservedFileEvidence" />
 		<entry key="columbia_mra_fet_analysis:network_1" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="columbia_mra_fet_analysis:network_2" value="evidence:readString:createObservedFileEvidence" />
 		<entry key="columbia_mra_fet_analysis:publication_url" value="evidence:readString:createObservedUrlEvidence" />
 		<entry key="columbia_mra_fet_analysis:publication_reference" value="evidence:readString:createObservedLabelEvidence" />
 		<!-- columbia master regulator analysis with shRNA knockdown analysis -->
@@ -439,6 +461,18 @@
 		<entry key="dfci_pax8_tier3:tier1_evidence" value="evidence:readString:createObservedUrlEvidence" />
 		<entry key="dfci_pax8_tier3:publication_reference" value="evidence:readString:createObservedLabelEvidence" />
 		<entry key="dfci_pax8_tier3:publication_url" value="evidence:readString:createObservedUrlEvidence" />
+		<!-- fhcrc CST Tier 1 -->
+		<entry key="fhcrc-m_tier1_cst_profiling:gene_symbol" value="subject:findGenesBySymbol" />
+		<entry key="fhcrc-m_tier1_cst_profiling:splice_junction" value="evidence:readString:createObservedLabelEvidence" /> 
+		<entry key="fhcrc-m_tier1_cst_profiling:disease_condition" value="subject:findTissueSampleByLineage" />
+		<entry key="fhcrc-m_tier1_cst_profiling:number_of_tumor_samples" value="evidence:readInt:createObservedNumericEvidence" />
+		<entry key="fhcrc-m_tier1_cst_profiling:number_of_tumor_samples_with_junction" value="evidence:readInt:createObservedNumericEvidence" />
+		<entry key="fhcrc-m_tier1_cst_profiling:average_number_of_supporting_reads" value="evidence:readInt:createObservedNumericEvidence" />
+		<entry key="fhcrc-m_tier1_cst_profiling:number_of_samples_with_supporting_rpts" value="evidence:readInt:createObservedNumericEvidence" />
+		<entry key="fhcrc-m_tier1_cst_profiling:junction_type" value="evidence:readString:createObservedLabelEvidence" /> 
+		<entry key="fhcrc-m_tier1_cst_profiling:is_observed_in_ip_tissue" value="evidence:readString:createObservedLabelEvidence" /> 
+		<entry key="fhcrc-m_tier1_cst_profiling:has_suporting_ests" value="evidence:readString:createObservedLabelEvidence" /> 
+		<entry key="fhcrc-m_tier1_cst_profiling:genomic_reference_assembly" value="evidence:readString:createObservedLabelEvidence" /> 
 		<!-- utsw tier 4 discoipyrroles story -->
 		<entry key="utsw_tier4_discoipyrroles_story:disease_condition_1" value="subject:findTissueSampleByLineage" />
 		<entry key="utsw_tier4_discoipyrroles_story:tissue_sample_1" value="subject:findTissueSampleByLineage" />
