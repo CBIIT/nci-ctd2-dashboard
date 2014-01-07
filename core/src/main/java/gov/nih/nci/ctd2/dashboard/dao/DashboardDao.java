@@ -18,7 +18,10 @@ public interface DashboardDao {
     List<Gene> findGenesBySymbol(String symbol);
     List<Protein> findProteinsByUniprotId(String uniprotId);
     List<Transcript> findTranscriptsByRefseqId(String refseqId);
-    List<CellSample> findCellSampleByLineage(String lineage);
+    List<CellSample> findCellSampleByAnnoType(String type);
+    List<CellSample> findCellSampleByAnnoSource(String source);
+    List<CellSample> findCellSampleByAnnoName(String name);
+    List<CellSample> findCellSampleByAnnotation(Annotation annotation);
     List<TissueSample> findTissueSampleByLineage(String lineage);
     List<Compound> findCompoundsByName(String compoundName);
     List<Compound> findCompoundsBySmilesNotation(String smilesNotation);
@@ -41,6 +44,7 @@ public interface DashboardDao {
     List<DashboardEntity> search(String keyword);
     List<Submission> findSubmissionByIsStory(boolean isSubmissionStory, boolean sortByPriority);
     List<Submission> findSubmissionByObservationTemplate(ObservationTemplate observationTemplate);
+    Submission findSubmissionByName(String submissionName);
     List<Gene> browseTargets(String startsWith);
     List<Compound> browseCompounds(String startsWith);
 }

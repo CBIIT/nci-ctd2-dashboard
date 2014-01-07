@@ -112,14 +112,13 @@ When `mvn install` is called either on this module or on the parent module,
 a JAR file with all its dependencies included is generated under the default `target/` directory.
 This JAR file can be run via the following command:
 
-	java -jar admin/target/admin-VERSION.jar
+	java -jar admin/target/dashboard-admin.jar
 
-where VERSION corresponds the current version of the branch.
 For example:
 
-	java -jar admin/target/admin-VERSION.jar -h
+	java -jar admin/target/dashboard-admin.jar -h
 
-will list all available options to you.
+will list all available options to you.  For more information about running the admin tool, please visit the [Dashboard Admin Tool](https://bitbucket.org/cbio_mskcc/ctd2-dashboard/wiki/Dashboard%20Admin%20Tool) wiki page.
 
 ## Web: CTD^2 Dashboard UI/Web API
 ### Deploy

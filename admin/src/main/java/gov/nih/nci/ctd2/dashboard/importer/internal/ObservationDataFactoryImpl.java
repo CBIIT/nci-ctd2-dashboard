@@ -9,12 +9,25 @@ import org.apache.commons.logging.LogFactory;
 import java.io.File;
 import java.util.Date;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.lang.reflect.Method;
 
 public class ObservationDataFactoryImpl implements ObservationDataFactory {
 
 	private static final Log log = LogFactory.getLog(ObservationDataFactoryImpl.class);
+
+    private static final String DASHBOARD_OBSERVATION_URL = "/#/observation/";
+    private static final Pattern LINKBACK_URL_EVIDENCE_REGEX = Pattern.compile("tier._evidence");
+    // submission_name:column_name=column_value
+    private static final Pattern LINKBACK_URL_REGEX = Pattern.compile("([\\w|\\-]+):([\\w|\\-|&|=]+)");
+
+    private class LinkbackURL {
+        public String submissionName;
+        public HashMap<String,String> columnValuePairs = new HashMap<String,String>();
+    }
 
     @Autowired
     private DashboardFactory dashboardFactory;
@@ -29,7 +42,7 @@ public class ObservationDataFactoryImpl implements ObservationDataFactory {
     private HashMap<String, ObservedEvidenceRole> observedEvidenceRoleCache = new HashMap<String, ObservedEvidenceRole>();
 
 	@Override
-	public Submission createSubmission(String submissionCenterName, Date submissionDate, String observationTemplateName) {
+	public Submission createSubmission(String submissionName, String submissionCenterName, Date submissionDate, String observationTemplateName) {
 		SubmissionCenter submissionCenter = submissionCenterCache.get(submissionCenterName);
 		if (submissionCenter == null) {
 			submissionCenter = dashboardDao.findSubmissionCenterByName(submissionCenterName);
@@ -40,6 +53,7 @@ public class ObservationDataFactoryImpl implements ObservationDataFactory {
 			submissionCenterCache.put(submissionCenterName, submissionCenter);
 		}
 		Submission submission = dashboardFactory.create(Submission.class);
+        submission.setDisplayName(submissionName);
 		submission.setSubmissionCenter(submissionCenter);
 		submission.setSubmissionDate(submissionDate);
 		ObservationTemplate observationTemplate  = dashboardDao.findObservationTemplateByName(observationTemplateName);
@@ -160,7 +174,7 @@ public class ObservationDataFactoryImpl implements ObservationDataFactory {
 		ObservedEvidenceRole observedEvidenceRole = getObservedEvidenceRole(templateName, columnName);
 		if (observedEvidenceRole != null) observedEvidence.setObservedEvidenceRole(observedEvidenceRole);
 		Evidence evidence = dashboardFactory.create(UrlEvidence.class);
-		((UrlEvidence)evidence).setUrl(evidenceValue);				
+		((UrlEvidence)evidence).setUrl(getEvidenceURL(columnName, evidenceValue));
 		observedEvidence.setEvidence(evidence);
 		return observedEvidence;
 	}
@@ -177,4 +191,67 @@ public class ObservationDataFactoryImpl implements ObservationDataFactory {
 		return observedEvidenceRole;
 	}
 
+    private String getEvidenceURL(String columnName, String evidenceValue) {
+
+        String evidenceURL = null;
+        
+        Matcher linkbackURLEvidenceMatcher = LINKBACK_URL_EVIDENCE_REGEX.matcher(columnName);
+        if (linkbackURLEvidenceMatcher.find()) {
+            Matcher linkbackURLMatcher = LINKBACK_URL_REGEX.matcher(evidenceValue);
+            if (linkbackURLMatcher.find() && linkbackURLMatcher.groupCount() == 2) {
+                LinkbackURL linkbackURL = getLinkbackURL(linkbackURLMatcher);
+                Submission submission = dashboardDao.findSubmissionByName(linkbackURL.submissionName);
+                evidenceURL = getLinkbackURL(linkbackURL.columnValuePairs,
+                                             getObservations(submission));
+            }
+        }
+        
+        return (evidenceURL == null) ? evidenceValue : evidenceURL;
+    }
+
+    private LinkbackURL getLinkbackURL(Matcher linkbackURLMatcher) {
+
+        LinkbackURL linkbackURL = new LinkbackURL();
+        linkbackURL.submissionName = linkbackURLMatcher.group(1);
+
+        // each linkback component is of the form &column_name=column_value, e.g. compound=navitoclax
+        String[] linkbackComponents = linkbackURLMatcher.group(2).contains("&") ?
+            linkbackURLMatcher.group(2).split("&") : new String[]{linkbackURLMatcher.group(2)};
+
+        for (String linkbackComponent : linkbackComponents) {
+            String[] columnValuePair = linkbackComponent.split("=");
+            if (columnValuePair.length == 2) {
+                linkbackURL.columnValuePairs.put(columnValuePair[0], columnValuePair[1]);
+            }
+        }
+
+        return linkbackURL;
+    }
+
+    private List<Observation> getObservations(Submission submission) {
+        return (submission != null) ?
+            dashboardDao.findObservationsBySubmission(submission) : new ArrayList<Observation>();
+    }
+
+    private String getLinkbackURL(HashMap<String,String> columnValuePairs, List<Observation> observations) {
+
+        String url = null;
+        for (Observation observation : observations) {
+            int match = 0;
+            for (ObservedSubject observedSubject : dashboardDao.findObservedSubjectByObservation(observation)) {
+                //Subject subject = observedSubject.getSubject();
+                ObservedSubjectRole observedSubjectRole = observedSubject.getObservedSubjectRole();
+                if (columnValuePairs.containsKey(observedSubjectRole.getColumnName()) &&
+                    columnValuePairs.get(observedSubjectRole.getColumnName()).equals(observedSubject.getDisplayName())) {
+                    match += 1;
+                }
+            }
+            if (match == columnValuePairs.size()) {
+                url = DASHBOARD_OBSERVATION_URL + observation.getId();
+                break;
+            }
+        }
+
+        return url;
+    }
 }

@@ -1,6 +1,0 @@
-site_index	cell_sample_lineage
-71	haematopoietic_and_lymphoid_tissue
-108	meninges
-217	urinary_tract
-124	prostate
-142	skin
