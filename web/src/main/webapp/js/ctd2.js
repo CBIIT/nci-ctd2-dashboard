@@ -2390,9 +2390,8 @@
                      var mraView = new MraView({model: observedEvidence});
                      mraView.render();
                   }        
-        	  
-              });  
-            
+              });
+        },
 
         showTemplateHelper: function() {
             var templateHelperView = new TemplateHelperView();
