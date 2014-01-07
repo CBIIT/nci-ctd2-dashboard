@@ -135,7 +135,7 @@
                                     <li><a href="#story-2" class="story-link">&bull;</a></li>
                                     <li><a href="#story-3" class="story-link">&bull;</a></li>
                                     <li><a href="#story-4" class="story-link">&bull;</a></li>
-                                    <li><a href="#stories">More stories →</a></li>
+                                    <li><a href="#stories">More stories &raquo;</a></li>
                                 </ul>
                             </div>
                         </div>
