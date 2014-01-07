@@ -5,7 +5,7 @@
 <%
     WebApplicationContext context = WebApplicationContextUtils
             .getWebApplicationContext(application);
-    String dataURL = (String) context.getBean("dataURL");
+    String dataURL = (String) context.getBean("dataURL");    
 %>
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/html">
@@ -360,7 +360,7 @@
     </script>
 
     <script type="text/template" id="submission-obs-tbl-row-tmpl">
-        <small>(<a href="#/observation/{{id}}">details &raquo;</a>)</small>
+        (<a class="button-link" href="#/observation/{{id}}">details &raquo;</a>)
     </script>
 
     <script type="text/template" id="submission-tbl-row-tmpl">
@@ -1222,6 +1222,135 @@
             (<small><i><span id="browsed-item-count-{{id}}"></span></i></small>)
         </li>
     </script>
+    
+    <script type="text/template" id="observedmrafileevidence-row-tmpl">
+        <tr>
+            <td>
+                <img src="img/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}">
+            </td>
+            <td>{{observedEvidenceRole.evidenceRole.displayName}}</td>
+            <td>{{observedEvidenceRole.displayText}}</td>
+            <td>
+                <div class="dropdown">
+                    ( <a class="dropdown-toggle" data-toggle="dropdown" href="#">view mra file<b class="caret"></b></a> )
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                        <li>
+                            <a href="#/evidence/{{id}}" title="open in mra view" class="desc-tooltip">
+                                mra view
+                            </a>
+                        </li>
+                        <li>
+                            <a href="<%=dataURL%>{{evidence.filePath}}" class="desc-tooltip" target="_blank" title="type: ({{evidence.mimeType}})">view in browser</a>
+                        </li>
+                    </ul>
+                </div>
+            </td>
+        </tr>
+    </script>  
+    
+    <script type="text/template" id="mra-view-tmpl" mra-data-url="<%=dataURL%>">
+         <div class="container common-container" id="mra-container" > 
+                
+                    <h3>Master Regulator View</h2>
+                   
+                    <table id="master-regulator-grid" class="table table-bordered table-striped ">
+                        <thead>
+                        <tr>
+                            <th width="20">&nbsp;</th>
+                            <th>Master Regulator</th>
+                            <th>Score</th>
+                            <th>Markers in regulon</th>                             
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <!-- here will go the rows -->
+                        </tbody>
+                    </table>                
+                   
+                   <br/>
+                   <br/>
+                   <div>                     
+					  <b>Nodes Limit:</b>	
+                      <select id="cytoscape-node-limit">
+                           <option value="25">25</option>
+                           <option value="50">50</option>                        
+                           <option value="100" selected="selected">100</option>                                             
+                           <option value="200">200</option>
+                           <option value="300">300</option>
+                           <option value="400">400</option>
+                           <option value="500">500</option>                                                     
+                      </select>					
+				      <b>&nbsp;&nbsp;&nbsp;</b>  
+                      <b>Layout:</b>	
+                      <select id="cytoscape-layouts">
+                           <option value="arbor" selected="selected">Arbor</option>                         
+                           <option value="grid">Grid</option>                           
+                           <option value="random">Random</option>
+                           <option value="circle">Circle</option>
+                      </select>
+                      <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b> 					
+                      <a href="#" id="createnetwork" data-description="{{observedEvidenceRole.displayText}}" target="_blank" title="please select master regulator to create network" class="mra-cytoscape-view">Create Network</a>   				 
+                      <br/>	                    
+			          <small><font color="grey">Throttle: </font></small>
+                      <small id="throttle-input"><font color="grey">e.g. 0.01 </font></small>		 
+                  </div>         
+                  <br/>	
+                  <table id="mra-barcode-grid" class="table table-bordered table-striped">
+                     <thead>
+                        <tr>
+                          <th width="450" title="Correlation of regulatory gene with its targets (red +, blue-) ordered by ranked differential expression, lowest at left.">Barcode</th>
+                          <th width="50" title="Differential Activity(e.g. NES from GSEA)">DA</th>
+                          <th width="50" title="Differential Expression">DE</th>
+                          <th title="Rank of regulatory gene in overall DE results.">DE Rank</th>
+                          <th title="E.g.  TF or signalling molecule whose regulon was tested for enrichment in differentially expressed genes.">Regulator</th>
+                       </tr>
+                     </thead>
+                     <tbody>
+                       <!-- here will go the rows -->
+                     </tbody>
+                  </table>
+
+        </div>
+    </script>   
+    
+    <script type="text/template" id="mra-view-row-tmpl">
+        <tr>
+            <td><input type="checkbox" id="checkbox_{{entrezId}}" value="{{entrezId}}"></td>
+            <td>{{geneSymbol}}</td>
+            <td>{{score}}</td>
+            <td>{{dataRowCount}}</td>
+        </tr>
+    </script>
+    
+    <script type="text/template" id="mra-barcode-view-row-tmpl">
+        <tr>             
+			<td><canvas id="draw-{{entrezId}}" width="450" height="36"></canvas></td>				  
+            <td class="da-color-{{entrezId}}"></td>
+            <td class="de-color-{{entrezId}}"></td>
+            <td>{{deRank}}</td>
+            <td>{{geneSymbol}}</td>
+        </tr>
+    </script>   
+    
+    <script type="text/template" id="mra-cytoscape-tmpl">
+        <div id="cytoscape-mra">
+            <img id="mra_progress_indicator" class="centeredImage" src="img/progress_indicator.gif" width="30" height="30" alt="Please wait ......"><br>
+        </div>
+        <div class="well mra-legend">       
+            <svg width="350" height="30"xmlns="http://www.w3.org/2000/svg">
+            <circle cx="20" cy="15" r="10" fill="white" stroke="grey" stroke-width="2"/>
+            <text x="40" y="20" fill="grey">TF</text>
+            <rect x="100" y="5" width="18" height="18" fill="white" stroke="grey" stroke-width="2"/>
+            <text x="130" y="20" fill="grey">K</text>
+            <polygon  points="191,5,180,16,191,27,202,16" fill="white" stroke="grey" stroke-width="2"/>
+            <text x="212" y="20" fill="grey">P</text>
+            <polygon  points="270,7 260,25,280,25" fill="white" stroke="grey" stroke-width="2"/>
+            <text x="290" y="20" fill="grey">none</text>
+            </svg>
+            <br/>
+            {{description}}
+        </div>
+    </script>
 
     <script type="text/template" id="template-helper-tmpl">
         <div class="container common-container" id="template-helper-container">
@@ -1778,7 +1907,7 @@
     <script src="js/jquery.easing-1.3.pack.js"></script>
     <script src="js/jquery.expander.min.js"></script>
     <script src="js/arbor.js"></script>
-    <script src="js/cytoscape.min.js"></script>
+    <script src="js/cytoscape.min.js"></script>  
     <script src="js/flippant.js"></script>
     <script src="js/ctd2.js"></script>
   </body>

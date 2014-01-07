@@ -55,6 +55,7 @@
 			  <goal>shade</goal>
 			</goals>
 			<configuration>
+              <finalName>dashboard-admin</finalName>
 			  <createDependencyReducedPom>false</createDependencyReducedPom>
 			  <transformers>
                   <!-- the following two transformers are need to prevent spring handler clashes -->

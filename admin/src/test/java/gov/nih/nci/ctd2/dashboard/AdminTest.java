@@ -63,38 +63,33 @@ public class AdminTest {
         // import some cell line data
         jobExecution = executeJob("cellLineDataImporterJob");
         assertEquals("COMPLETED", jobExecution.getExitStatus().getExitCode());
-        assertEquals(11, dashboardDao.countEntities(CellSample.class).intValue());
-        List<CellSample> cellSamples = dashboardDao.findCellSampleByLineage("haematopoietic_and_lymphoid_tissue");
+        assertEquals(3, dashboardDao.countEntities(CellSample.class).intValue());
+        List<CellSample> cellSamples = dashboardDao.findCellSampleByAnnoSource("COSMIC (Sanger)");
+        assertEquals(3, cellSamples.size());
+
+        cellSamples = dashboardDao.findCellSampleByAnnoType("primary_site");
+        assertEquals(3, cellSamples.size());
+
+        cellSamples = dashboardDao.findCellSampleByAnnoName("acute_lymphoblastic_B_cell_leukaemia");
         assertEquals(1, cellSamples.size());
+        CellSample cellSample = (CellSample)cellSamples.iterator().next();
+        assertEquals(8, cellSample.getAnnotations().size());
+        assertEquals(2, cellSample.getSynonyms().size());
+        
+        Annotation annotation = cellSample.getAnnotations().iterator().next();
+        cellSamples = dashboardDao.findCellSampleByAnnotation(annotation);
+        assertEquals(1, cellSamples.size());
+        assertEquals(cellSample, cellSamples.iterator().next());
 
-        List<Subject> cellSampleSubjects = dashboardDao.findSubjectsByXref("CTD2", "idCell:9");
-        assertEquals(1, cellSampleSubjects.size());
-        CellSample cellSample = (CellSample)cellSampleSubjects.iterator().next();
-        assertEquals("697", cellSample.getDisplayName());
-        assertEquals("haematopoietic_and_lymphoid_tissue", cellSample.getLineage());
-        assertEquals(3, cellSample.getSynonyms().size());
-        assertEquals(8, cellSample.getXrefs().size());
-
-        cellSampleSubjects = dashboardDao.findSubjectsByXref("integrated", "862");
+        List<Subject> cellSampleSubjects = dashboardDao.findSubjectsBySynonym("5637", true);
         assertEquals(1, cellSampleSubjects.size());
         cellSample = (CellSample)cellSampleSubjects.iterator().next();
-        assertEquals("862", cellSample.getDisplayName());
-        assertEquals("meninges", cellSample.getLineage());
-        assertEquals(4, cellSample.getSynonyms().size());
-        assertEquals(5, cellSample.getXrefs().size());
-        cellSampleSubjects = dashboardDao.findSubjectsByXref(CellLineNameFieldSetMapper.CBIO_PORTAL,
-                                                             "5637_URINARY_TRACT");
-        assertEquals(1, cellSampleSubjects.size());
-
-        cellSampleSubjects = dashboardDao.findSubjectsBySynonym("2313287", true);
-        assertEquals(1, cellSampleSubjects.size());
-        cellSample = (CellSample)cellSampleSubjects.iterator().next();
-        assertEquals(null, cellSample.getLineage());
+        assertEquals("M", cellSample.getGender());
 
         // import some compound data
         jobExecution = executeJob("compoundDataImporterJob");
         assertEquals("COMPLETED", jobExecution.getExitStatus().getExitCode());
-        assertEquals(9, dashboardDao.countEntities(Compound.class).intValue());
+        assertEquals(10, dashboardDao.countEntities(Compound.class).intValue());
         List<Subject> compoundSubjects =
             dashboardDao.findSubjectsByXref(CompoundsFieldSetMapper.BROAD_COMPOUND_DATABASE, "411739");
         assertEquals(1, compoundSubjects.size());
@@ -168,17 +163,17 @@ public class AdminTest {
         assertEquals(4, observationTemplate.getSubmissionStoryRank().intValue());
 
         // import observation data
-        jobExecution = executeJob("testTierOneObservationDataImporterJob");
+        jobExecution = executeJob("testObservationDataImporterJob");
         assertEquals("COMPLETED", jobExecution.getExitStatus().getExitCode());
-        assertEquals(1, dashboardDao.countEntities(Submission.class).intValue());
+        assertEquals(2, dashboardDao.countEntities(Submission.class).intValue());
         assertEquals(1, dashboardDao.countEntities(SubmissionCenter.class).intValue());
-        assertEquals(9, dashboardDao.countEntities(Observation.class).intValue());
-        assertEquals(18, dashboardDao.countEntities(ObservedSubject.class).intValue());
-        assertEquals(99, dashboardDao.countEntities(ObservedEvidence.class).intValue());
-        assertEquals(36, dashboardDao.countEntities(LabelEvidence.class).intValue());
-        assertEquals(27, dashboardDao.countEntities(DataNumericValue.class).intValue());
-        assertEquals(27, dashboardDao.countEntities(FileEvidence.class).intValue());
-        assertEquals(9, dashboardDao.countEntities(UrlEvidence.class).intValue());
+        assertEquals(11, dashboardDao.countEntities(Observation.class).intValue());
+        assertEquals(22, dashboardDao.countEntities(ObservedSubject.class).intValue());
+        assertEquals(117, dashboardDao.countEntities(ObservedEvidence.class).intValue());
+        assertEquals(40, dashboardDao.countEntities(LabelEvidence.class).intValue());
+        assertEquals(30, dashboardDao.countEntities(DataNumericValue.class).intValue());
+        assertEquals(36, dashboardDao.countEntities(FileEvidence.class).intValue());
+        assertEquals(11, dashboardDao.countEntities(UrlEvidence.class).intValue());
     }
 
 	private JobExecution executeJob(String jobName) throws Exception {
