@@ -948,6 +948,20 @@
             result["type"] = result.class;
             $(this.el).html(this.template(result));
 
+            var thatEl = this.el;
+            if(result.xrefs.length == 0) { $(thatEl).find("#tissue-refs").hide(); }
+            _.each(result.xrefs, function(xref) {
+                if(xref.databaseName == "NCI_PARENT_THESAURUS" || xref.databaseName == "NCI_THESAURUS") {
+                    var ids = xref.databaseId.split(";");
+                    _.each(ids, function(xrefid) {
+                        $(thatEl).find("ul.xrefs").append(
+                            _.template($("#ncithesaurus-tmpl").html(), { nciId: xrefid })
+                        );
+                    });
+                }
+            });
+
+            if(result.synonyms.length == 0) { $(thatEl).find("#tissue-synonyms").hide(); }
             var thatEl = $("ul.synonyms");
             _.each(result.synonyms, function(aSynonym) {
                 if(aSynonym.displayName == result.displayName ) return;
