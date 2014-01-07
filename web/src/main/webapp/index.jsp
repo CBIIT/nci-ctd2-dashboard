@@ -804,11 +804,16 @@
                             <th>Lineage</th>
                             <td>{{lineage}}</td>
                         </tr>
-                        <tr>
-
+                        <tr id="tissue-synonyms">
                             <th>Synonyms</th>
                             <td>
                                 <ul class="synonyms"></ul>
+                            </td>
+                        </tr>
+                        <tr id="tissue-refs">
+                            <th>References</th>
+                            <td>
+                                <ul class="xrefs"></ul>
                             </td>
                         </tr>
                     </table>
@@ -1889,6 +1894,14 @@
                 </div>
             </div>
         </div>
+    </script>
+
+    <script type="text/template" id="ncithesaurus-tmpl">
+        <li>
+            <a href="http://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI%20Thesaurus&code={{nciId}}" target="_blank">
+                NCI Thesaurus: {{nciId}}
+            </a>
+        </li>
     </script>
 
     <!-- end of templates -->
