@@ -648,7 +648,7 @@
 
             if(result.observedEvidenceRole == null) {
                 result.observedEvidenceRole = {
-                    displayText: "N/A",
+                    displayText: "-",
                     evidenceRole: { displayName: "unknown" }
                 };
             }
@@ -1417,7 +1417,7 @@
                         _.each(searchResults.models, function(aResult) {
                             aResult = aResult.toJSON();
                             if(aResult.organism == undefined) {
-                                aResult.organism = { displayName: "N/A" };
+                                aResult.organism = { displayName: "-" };
                             }
 
                             if(aResult.class == "Submission") {
