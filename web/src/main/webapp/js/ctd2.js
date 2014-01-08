@@ -178,7 +178,8 @@
         template:_.template($("#stories-tbl-row-tmpl").html()),
 
         render: function() {
-            $(this.el).append(this.template(this.model));
+            var mainContainer = $(this.el);
+            mainContainer.append(this.template(this.model));
 
             var summary = this.model.submission.observationTemplate.observationSummary;
             var thatModel = this.model;
@@ -230,7 +231,7 @@
 
                 var back = flippant.flip(
                     this,
-                    $("#back-of-story-" + thatModel.id).html(),
+                    $("#back-of-story-" + thatModel.id).show()[0],
                     'card'
                 );
 
