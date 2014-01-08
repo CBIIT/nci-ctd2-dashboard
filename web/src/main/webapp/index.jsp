@@ -104,7 +104,7 @@
              <a href="http://ctd2.nci.nih.gov/centers.html" target="_blank">Contact</a>
          </p>
          <p class="pull-right">
-             <a href="http://cancer.gov"><img src="img/logos/footer_logo_nci.jpg"></a><a href="http://www.dhhs.gov/"><img src="img/logos/footer_logo_hhs.jpg"></a><a href="http://www.nih.gov/"><img src="img/logos/footer_logo_nih.jpg"></a><a href="http://www.firstgov.gov/"><img src="img/logos/footer_logo_firstgov.jpg"></a>
+             <a href="http://cancer.gov"><img src="img/logos/footer_logo_nci.jpg" alt="NCI logo" title="NCI logo"></a><a href="http://www.dhhs.gov/"><img src="img/logos/footer_logo_hhs.jpg" title="HHS logo" alt="HHS logo"></a><a href="http://www.nih.gov/"><img src="img/logos/footer_logo_nih.jpg" title="NIH logo" alt="NIH logo"></a><a href="http://www.firstgov.gov/"><img src="img/logos/footer_logo_firstgov.jpg" title="First Gov logo" alt="First Gov logo"></a>
          </p>
        </footer>
     </div>
@@ -117,7 +117,7 @@
         <div id="myCarousel" class="carousel slide">
           <div class="carousel-inner">
             <div class="item active">
-              <img data-src="holder.js/1500x450/#a70001:#a70001" alt="" class="cimg">
+              <img data-src="holder.js/1500x450/#a70001:#a70001" alt="placeholder summary image" title="placeholder summary image" class="cimg">
               <div class="container">
                   <div class="carousel-caption">
                         <h1>Stories</h1>
@@ -175,7 +175,7 @@
           <hr class="featurette-divider">
 
           <div class="featurette">
-              <img class="featurette-image pull-right" data-src="holder.js/250x250">
+              <img class="featurette-image pull-right" data-src="holder.js/250x250" alt="CTD2 general image" title="CTD2 general image">
               <h2 class="featurette-heading">CTD<sup>2</sup> Dashboard<span class="muted"> Overview</span></h2>
               <p class="lead">
                   The interactive dashboard will ensure the timely and efficient dissemination of <b>CTD<sup>2</sup></b> targets and biomarkers, across the final stages of their validation process, in conjunction with the primary data and methodologies used for their discovery and characterization.
@@ -211,7 +211,7 @@
     <script type="text/template" id="stories-tbl-row-tmpl">
         <li class="span6" id="story-observation-link-{{id}}" title="Click for more details">
             <a href="#observation/{{id}}" class="thumbnail">
-                <img class="stories-feature-image img-circle" data-src="holder.js/180x180/text:portrait or logo"><br>
+                <img class="stories-feature-image img-circle" data-src="holder.js/180x180/text:portrait or logo" alt="Story image" title="Story image"><br>
                 <center>
                     {{submission.observationTemplate.description}}<br>
                     <small>({{submission.submissionDate}})</small><br>
@@ -241,7 +241,7 @@
     <script type="text/template" id="centers-tbl-row-tmpl">
         <li class="span4">
             <a href="#center/{{id}}" class="thumbnail">
-                <img src="img/{{displayName}}.png" alt="{{displayName}}" class="img-polaroid" height="50"><br>
+                <img src="img/{{displayName}}.png" alt="{{displayName}}" title="{{displayName}}" class="img-polaroid" height="50"><br>
                 <center>
                     {{displayName}}<br>
                     <span id="submission-count-{{id}}"></span> submissions &raquo;
@@ -257,7 +257,7 @@
                     <h1>{{displayName}} <small>submissions</small></h1>
                 </div>
                 <div class="span3">
-                    <img src="img/{{displayName}}.png" class="img-polaroid" width="200">
+                    <img src="img/{{displayName}}.png" title="{{displayName}}" alt="{{displayName}}" class="img-polaroid" width="200">
                 </div>
             </div>
 
@@ -322,14 +322,13 @@
                 </div>
                 <div class="span2">
                     <a href="#/center/{{submissionCenter.id}}">
-                        <img src="img/{{submissionCenter.displayName}}.png" class="img-polaroid" height=30 alt="{{submissionCenter.displayName}}">
+                        <img src="img/{{submissionCenter.displayName}}.png" class="img-polaroid" height=30 alt="{{submissionCenter.displayName}}" title="{{submissionCenter.displayName}}">
                     </a>
 
                     <br>
                     <br>
 
-
-                    <img src="img/submission.png" class="img-polaroid" width=150 height=150><br>
+                    <img src="img/submission.png" class="img-polaroid" width=150 height=150 alt="Submission" title="Submission"><br>
                 </div>
             </div>
 
@@ -400,7 +399,7 @@
                 <div class="span2">
                     <a href="#/center/{{submission.submissionCenter.id}}"><img src="img/{{submission.submissionCenter.displayName}}.png" class="img-polaroid" height=30 alt="{{submission.submissionCenter.displayName}}"></a>
                     <br><br>
-                    <img src="img/observation.png" class="img-polaroid" width=150 height=150><br>
+                    <img src="img/observation.png" alt="Observation" class="img-polaroid" width=150 height=150><br>
                 </div>
             </div>
 
@@ -474,7 +473,7 @@
     <script type="text/template" id="observedfileevidence-row-tmpl">
         <tr>
             <td>
-                <img src="img/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}">
+                <img src="img/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}" alt="{{observedEvidenceRole.evidenceRole.displayName}}">
             </td>
             <td>{{observedEvidenceRole.evidenceRole.displayName}}</td>
             <td>{{observedEvidenceRole.displayText}}</td>
@@ -489,7 +488,7 @@
     <script type="text/template" id="observedpdffileevidence-row-tmpl">
         <tr>
             <td>
-                <img src="img/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}">
+                <img src="img/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}" alt="{{observedEvidenceRole.evidenceRole.displayName}}">
             </td>
             <td>{{observedEvidenceRole.evidenceRole.displayName}}</td>
             <td>{{observedEvidenceRole.displayText}}</td>
@@ -504,7 +503,7 @@
     <script type="text/template" id="observedgctfileevidence-row-tmpl">
         <tr>
             <td>
-                <img src="img/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}">
+                <img src="img/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}" alt="{{observedEvidenceRole.evidenceRole.displayName}}">
             </td>
             <td>{{observedEvidenceRole.evidenceRole.displayName}}</td>
             <td>{{observedEvidenceRole.displayText}}</td>
@@ -530,7 +529,7 @@
     <script type="text/template" id="observedsiffileevidence-row-tmpl">
         <tr>
             <td>
-                <img src="img/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}">
+                <img src="img/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}" alt="{{observedEvidenceRole.evidenceRole.displayName}}">
             </td>
             <td>{{observedEvidenceRole.evidenceRole.displayName}}</td>
             <td>{{observedEvidenceRole.displayText}}</td>
@@ -555,14 +554,14 @@
     <script type="text/template" id="observedimageevidence-row-tmpl">
         <tr>
             <td>
-                <img src="img/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}">
+                <img src="img/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}" alt="{{observedEvidenceRole.evidenceRole.displayName}}">
             </td>
             <td>{{observedEvidenceRole.evidenceRole.displayName}}</td>
             <td>{{observedEvidenceRole.displayText}}</td>
             <td>
                 <div class="image-evidence-wrapper">
                     <a href="<%=dataURL%>{{evidence.filePath}}" target="_blank" title="{{observedEvidenceRole.displayText}}" rel="evidence-images" class="evidence-images">
-                        <img src="<%=dataURL%>{{evidence.filePath}}" class="img-polaroid img-evidence" height="140">
+                        <img src="<%=dataURL%>{{evidence.filePath}}" class="img-polaroid img-evidence" height="140" title="File" alt="File">
                     </a>
                 </div>
             </td>
@@ -573,7 +572,7 @@
     <script type="text/template" id="observedlabelevidence-row-tmpl">
         <tr>
             <td>
-                <img src="img/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}">
+                <img src="img/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}" alt="{{observedEvidenceRole.evidenceRole.displayName}}">
             </td>
             <td>{{observedEvidenceRole.evidenceRole.displayName}}</td>
             <td>{{observedEvidenceRole.displayText}}</td>
@@ -584,7 +583,7 @@
     <script type="text/template" id="observedurlevidence-row-tmpl">
         <tr>
             <td>
-                <img src="img/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}">
+                <img src="img/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}" alt="{{observedEvidenceRole.evidenceRole.displayName}}">
             </td>
             <td>{{observedEvidenceRole.evidenceRole.displayName}}</td>
             <td>{{observedEvidenceRole.displayText}}</td>
@@ -599,7 +598,7 @@
     <script type="text/template" id="observeddatanumericevidence-row-tmpl">
         <tr>
             <td>
-                <img src="img/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}">
+                <img src="img/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}" alt="{{observedEvidenceRole.evidenceRole.displayName}}">
             </td>
             <td>{{observedEvidenceRole.evidenceRole.displayName}}</td>
             <td>{{observedEvidenceRole.displayText}}</td>
@@ -648,7 +647,7 @@
                  </div>
                  <div class="span3">
                      <h4>Gene</h4>
-                     <img src="img/gene.png" class="img-polaroid" width=175 height=175>
+                     <img src="img/gene.png" class="img-polaroid" width=175 height=175 alt="Gene">
                  </div>
              </div>
 
@@ -708,7 +707,7 @@
                 </div>
                 <div class="span3">
                     <h4>shRNA</h4>
-                    <img src="img/shrna.png" class="img-polaroid" width=175 height=175>
+                    <img src="img/shrna.png" class="img-polaroid" width=175 height=175 alt="shRNA">
                 </div>
             </div>
 
@@ -764,7 +763,7 @@
                 </div>
                 <div class="span3">
                     <h4>Transcript</h4>
-                    <img src="img/transcript.png" class="img-polaroid" width=175 height=175>
+                    <img src="img/transcript.png" class="img-polaroid" width=175 height=175 alt="Transcript">
                 </div>
             </div>
 
@@ -820,7 +819,7 @@
                 </div>
                 <div class="span3">
                     <h4>Tissue Sample</h4>
-                    <img src="img/tissuesample.png" class="img-polaroid" width=175 height=175>
+                    <img src="img/tissuesample.png" class="img-polaroid" width=175 height=175 alt="Tissue sample">
                 </div>
             </div>
 
@@ -883,7 +882,7 @@
                 </div>
                 <div class="span3">
                         <h4>Cell Sample</h4>
-                        <img src="img/cellsample.png" class="img-polaroid" width=175 height=175>
+                        <img src="img/cellsample.png" class="img-polaroid" width=175 height=175 alt="Cell sample">
                 </div>
             </div>
             <h3>Related observations</h3>
@@ -937,7 +936,7 @@
                   <div class="span3">
                       <h4>Compound</h4>
                       <a href="<%=dataURL%>compounds/{{imageFile}}" target="_blank" class="compound-image" title="Compound: {{displayName}}">
-                        <img class="img-polaroid" width=200 src="<%=dataURL%>compounds/{{imageFile}}">
+                        <img class="img-polaroid" width=200 src="<%=dataURL%>compounds/{{imageFile}}" alt="Compound: {{displayName}}">
                       </a>
                   </div>
               </div>
@@ -1037,43 +1036,43 @@
 
     <script type="text/template" id="search-results-gene-image-tmpl">
         <a href="#subject/{{id}}">
-            <img src="img/gene.png" class="img-polaroid search-info" title="Gene" height="50" width="50">
+            <img src="img/gene.png" class="img-polaroid search-info" title="Gene" alt="Gene" height="50" width="50">
         </a>
     </script>
 
     <script type="text/template" id="search-results-shrna-image-tmpl">
         <a href="#subject/{{id}}">
-            <img src="img/shrna.png" class="img-polaroid search-info" title="shRNA" height="50" width="50">
+            <img src="img/shrna.png" class="img-polaroid search-info" title="shRNA" alt="shRNA" height="50" width="50">
         </a>
     </script>
 
     <script type="text/template" id="search-results-transcript-image-tmpl">
         <a href="#subject/{{id}}">
-            <img src="img/transcript.png" class="img-polaroid search-info" title="shRNA" height="50" width="50">
+            <img src="img/transcript.png" class="img-polaroid search-info" title="Transcript" alt="Transcript" height="50" width="50">
         </a>
     </script>
 
     <script type="text/template" id="search-results-compund-image-tmpl">
         <a href="#subject/{{id}}">
-            <img class="img-polaroid search-info" title="Compound" width=50 height=50 src="<%=dataURL%>compounds/{{imageFile}}">
+            <img class="img-polaroid search-info" title="Compound" alt="Compound" width=50 height=50 src="<%=dataURL%>compounds/{{imageFile}}">
         </a>
     </script>
 
     <script type="text/template" id="search-results-cellsample-image-tmpl">
         <a href="#subject/{{id}}">
-            <img src="img/cellsample.png" title="Cell sample" class="img-polaroid search-info" height="50" width="50">
+            <img src="img/cellsample.png" title="Cell sample" alt="Cell sample" class="img-polaroid search-info" height="50" width="50">
         </a>
     </script>
 
     <script type="text/template" id="search-results-tissuesample-image-tmpl">
         <a href="#subject/{{id}}">
-            <img src="img/tissuesample.png" title="Cell sample" class="img-polaroid search-info" height="50" width="50">
+            <img src="img/tissuesample.png" title="Tissue sample" alt="Tissue sample" class="img-polaroid search-info" height="50" width="50">
         </a>
     </script>
 
     <script type="text/template" id="search-results-unknown-image-tmpl">
         <a href="#subject/{{id}}">
-            <img src="img/unknown.png" title="{{type}}" class="img-polaroid search-info" height="50" width="50">
+            <img src="img/unknown.png" title="{{type}}" class="img-polaroid search-info" alt="{{type}}" height="50" width="50">
         </a>
     </script>
 
@@ -1142,10 +1141,10 @@
 
     <script type="text/template" id="search-submission-tbl-row-tmpl">
         <tr>
-            <td><a href="#submission/{{id}}"><img src="img/submission.png" width="50"></a></td>
+            <td><a href="#submission/{{id}}"><img src="img/submission.png" width="50" alt="Submission" title="Submission"></a></td>
             <td><a href="#submission/{{id}}">{{submissionDate}}</a></td>
             <td>{{observationTemplate.description}}</td>
-            <td><a href="#submission/{{id}}"><img src="img/{{submissionCenter.displayName}}.png" height="50"></a></td>
+            <td><a href="#submission/{{id}}"><img src="img/{{submissionCenter.displayName}}.png" title="{{submissionCenter.displayName}}" alt="{{submissionCenter.displayName}}" height="50"></a></td>
             <td><span class="badge tier-badge">Tier {{observationTemplate.tier}}</span></td>
             <td width=150><a href="#submission/{{id}}"><span id="search-observation-count-{{id}}"></span> observation(s)</a></td>
         </tr>
@@ -1180,7 +1179,7 @@
                 </p>
             </div>
             <div class="span4">
-                <img class="img-circle" data-src="holder.js/180x180/text:portrait or logo">
+                <img class="img-circle" data-src="holder.js/180x180/text:portrait or logo" alt="placeholder logo" title="placeholder logo">
             </div>
         </div>
     </script>
@@ -1231,7 +1230,7 @@
     <script type="text/template" id="observedmrafileevidence-row-tmpl">
         <tr>
             <td>
-                <img src="img/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}">
+                <img src="img/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}" alt="{{observedEvidenceRole.evidenceRole.displayName}}">
             </td>
             <td>{{observedEvidenceRole.evidenceRole.displayName}}</td>
             <td>{{observedEvidenceRole.displayText}}</td>
