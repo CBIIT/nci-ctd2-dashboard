@@ -1384,8 +1384,9 @@
             }
             thatEl.append(_.template(imgTemplate.html(), result));
 
+            var updateEl = $("#subject-observation-count-" + result.id);
             $.ajax("count/observation/?filterBy=" + result.id).done(function(count) {
-               $("#subject-observation-count-" + result.id).html(count);
+               updateEl.html(count);
             });
 
             return this;
