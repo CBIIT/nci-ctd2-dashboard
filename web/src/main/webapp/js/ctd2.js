@@ -1384,6 +1384,7 @@
             }
             thatEl.append(_.template(imgTemplate.html(), result));
 
+            // some of the elements will be hidden in the pagination. Use magic-scoping!
             var updateEl = $("#subject-observation-count-" + result.id);
             $.ajax("count/observation/?filterBy=" + result.id).done(function(count) {
                updateEl.html(count);
