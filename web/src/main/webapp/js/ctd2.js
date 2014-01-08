@@ -1380,6 +1380,8 @@
                 imgTemplate = $("#search-results-compund-image-tmpl");
             } else if( result.class == "CellSample" ) {
                 imgTemplate = $("#search-results-cellsample-image-tmpl");
+            } else if( result.class == "TissueSample" ) {
+                imgTemplate = $("#search-results-tissuesample-image-tmpl");
             } else if( result.class == "Gene" ) {
                 imgTemplate = $("#search-results-gene-image-tmpl");
             }
