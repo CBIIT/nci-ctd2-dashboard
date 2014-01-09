@@ -1254,7 +1254,8 @@
     
     <script type="text/template" id="mra-view-tmpl" mra-data-url="<%=dataURL%>">
          <div class="container common-container" id="mra-container" > 
-                
+               <div class="row">
+                 <div class="span10">
                     <h3>Master Regulator View</h2>
                    
                     <table id="master-regulator-grid" class="table table-bordered table-striped ">
@@ -1269,8 +1270,12 @@
                         <tbody>
                         <!-- here will go the rows -->
                         </tbody>
-                    </table>                
-                   
+                     </table>  
+                 </div>
+                 <div class="span1">                                   
+                    <a href="javascript:history.back()">Back</a>
+                 </div>              
+             </div>
                    <br/>
                    <br/>
                    <div>                     
