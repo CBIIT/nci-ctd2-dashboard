@@ -178,7 +178,8 @@
         template:_.template($("#stories-tbl-row-tmpl").html()),
 
         render: function() {
-            $(this.el).append(this.template(this.model));
+            var mainContainer = $(this.el);
+            mainContainer.append(this.template(this.model));
 
             var summary = this.model.submission.observationTemplate.observationSummary;
             var thatModel = this.model;
@@ -230,7 +231,7 @@
 
                 var back = flippant.flip(
                     this,
-                    $("#back-of-story-" + thatModel.id).html(),
+                    $("#back-of-story-" + thatModel.id).show()[0],
                     'card'
                 );
 
@@ -505,9 +506,6 @@
                                 };
 
                                 container.cy(cyOptions);
-
-
-
                                 // end load cytoscape
                             }
                         });
@@ -539,6 +537,110 @@
         }
     });
 
+
+    var ObservationPreviewView = Backbone.View.extend({
+        template: _.template($("#observation-tmpl").html()),
+        render: function() {
+            var result = this.model.observation;
+            $(this.el).html(this.template(result));
+
+            // We will replace the values in this summary
+            var summary = result.submission.observationTemplate.observationSummary;
+
+            // Load Subjects
+            var thatEl = $("#observed-subjects-grid");
+            _.each(this.model.observedSubjects, function(observedSubject) {
+                var observedSubjectRowView
+                    = new ObservedSubjectSummaryRowView({
+                    el: $(thatEl).find("tbody"),
+                    model: observedSubject
+                });
+                observedSubjectRowView.render();
+
+                var subject = observedSubject.subject;
+                var thatEl2 = $("#subject-image-" + observedSubject.id);
+                var imgTemplate = $("#search-results-unknown-image-tmpl");
+                thatEl2.append(_.template(imgTemplate.html(), subject));
+
+                if(observedSubject.observedSubjectRole == null || observedSubject.subject == null)
+                    return;
+
+                summary = summary.replace(
+                    new RegExp(leftSep + observedSubject.observedSubjectRole.columnName + rightSep, "g"),
+                    _.template($("#summary-subject-replacement-tmpl").html(), observedSubject.subject)
+                );
+
+                $("#observation-summary").html(summary);
+            });
+
+            // Load evidences
+            var thatEl2 = $("#observed-evidences-grid");
+            _.each(this.model.observedEvidences, function(observedEvidence) {
+                var observedEvidenceRowView = new ObservedEvidenceRowView({
+                    el: $(thatEl2).find("tbody"),
+                    model: observedEvidence
+                });
+
+                observedEvidenceRowView.render();
+                summary = summary.replace(
+                    new RegExp(leftSep + observedEvidence.observedEvidenceRole.columnName + rightSep, "g"),
+                    _.template($("#summary-evidence-replacement-tmpl").html(), observedEvidence.evidence)
+                );
+
+                $("#observation-summary").html(summary);
+            });
+
+            var tableLength = (this.model.observedEvidences.length > 25 ? 10 : 25);
+            var oTable = $('#observed-evidences-grid').dataTable({
+                "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
+                "sPaginationType": "bootstrap",
+                "iDisplayLength": tableLength
+            });
+
+            oTable.fnSort( [ [1, 'asc'], [2, 'asc'] ] );
+
+            $('.desc-tooltip').tooltip({ placement: "left" });
+            $("div.expandable").expander({
+                slicePoint: 50,
+                expandText:       '[...]',
+                expandPrefix:     ' ',
+                userCollapseText: '[^]'
+            });
+
+            $(".numeric-value").each(function(idx) {
+                var val = $(this).html();
+                var vals = val.split("e"); // capture scientific notation
+                if(vals.length > 1) {
+                    $(this).html(_.template($("#observeddatanumericevidence-val-tmpl").html(), {
+                        firstPart: vals[0],
+                        secondPart: vals[1].replace("+", "")
+                    }));
+                }
+            });
+
+            $("#small-show-sub-details").click(function(event) {
+                event.preventDefault();
+                $("#obs-submission-details").slideDown();
+                $("#small-show-sub-details").hide();
+                $("#small-hide-sub-details").show();
+            });
+
+            $("#small-hide-sub-details").click(function(event) {
+                event.preventDefault();
+                $("#obs-submission-details").slideUp();
+                $("#small-hide-sub-details").hide();
+                $("#small-show-sub-details").show();
+            });
+
+            if(result.submission.observationTemplate.submissionDescription == "") {
+                $("#obs-submission-summary").hide();
+            }
+
+            return this;
+        }
+    });
+
+
     var ObservedEvidenceRowView = Backbone.View.extend({
         render: function() {
             var result = this.model;
@@ -547,7 +649,7 @@
 
             if(result.observedEvidenceRole == null) {
                 result.observedEvidenceRole = {
-                    displayText: "N/A",
+                    displayText: "-",
                     evidenceRole: { displayName: "unknown" }
                 };
             }
@@ -847,6 +949,20 @@
             result["type"] = result.class;
             $(this.el).html(this.template(result));
 
+            var thatEl = this.el;
+            if(result.xrefs.length == 0) { $(thatEl).find("#tissue-refs").hide(); }
+            _.each(result.xrefs, function(xref) {
+                if(xref.databaseName == "NCI_PARENT_THESAURUS" || xref.databaseName == "NCI_THESAURUS") {
+                    var ids = xref.databaseId.split(";");
+                    _.each(ids, function(xrefid) {
+                        $(thatEl).find("ul.xrefs").append(
+                            _.template($("#ncithesaurus-tmpl").html(), { nciId: xrefid })
+                        );
+                    });
+                }
+            });
+
+            if(result.synonyms.length == 0) { $(thatEl).find("#tissue-synonyms").hide(); }
             var thatEl = $("ul.synonyms");
             _.each(result.synonyms, function(aSynonym) {
                 if(aSynonym.displayName == result.displayName ) return;
@@ -1154,6 +1270,73 @@
         }
     });
 
+    var SubmissionPreviewView =  Backbone.View.extend({
+        el: "#submission-preview",
+        template: _.template($("#submission-tmpl").html()),
+        render: function() {
+            var submission = this.model.submission;
+            $(this.el).html(this.template(submission));
+            $(".submission-observations-loading").remove();
+
+            if(submission.observationTemplate.submissionDescription.length > 0) {
+                var submissionDescriptionView = new SubmissionDescriptionView({ model: submission });
+                submissionDescriptionView.render();
+            }
+            var thatEl = this.el;
+            _.each(this.model.observations, function(observation) {
+                var submissionRowView = new SubmissionRowPreviewView({
+                    el: $(thatEl).find(".observations tbody"),
+                    model: observation
+                });
+                submissionRowView.render();
+            });
+
+            $('#submission-observation-grid').dataTable({
+                "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
+                "sPaginationType": "bootstrap"
+            });
+
+            return this;
+        }
+    });
+
+    var SubmissionRowPreviewView = Backbone.View.extend({
+        template:  _.template($("#submission-tbl-row-tmpl").html()),
+        render: function() {
+            $(this.el).append(this.template(this.model.observation));
+
+            var summary = this.model.observation.submission.observationTemplate.observationSummary;
+
+            var thatModel = this.model.observation;
+            var thatEl = $("#submission-observation-summary-" + this.model.observation.id);
+            _.each(this.model.observedSubjects, function(observedSubject) {
+                if(observedSubject.observedSubjectRole == null || observedSubject.subject == null)
+                    return;
+
+                summary = summary.replace(
+                    new RegExp(leftSep + observedSubject.observedSubjectRole.columnName + rightSep, "g"),
+                    _.template($("#summary-subject-replacement-tmpl").html(), observedSubject.subject)
+                );
+            });
+
+            _.each(this.model.observedEvidences, function(observedEvidence) {
+                if(observedEvidence.observedEvidenceRole == null || observedEvidence.evidence == null)
+                    return;
+
+                summary = summary.replace(
+                    new RegExp(leftSep + observedEvidence.observedEvidenceRole.columnName + rightSep, "g"),
+                    _.template($("#summary-evidence-replacement-tmpl").html(), observedEvidence.evidence)
+                );
+            });
+
+            summary += _.template($("#submission-obs-tbl-row-tmpl").html(), thatModel);
+            $(thatEl).html(summary);
+
+            return this;
+        }
+    });
+
+
     var SynonymView = Backbone.View.extend({
         template: _.template($("#synonym-item-tmpl").html()),
         render: function() {
@@ -1197,13 +1380,17 @@
                 imgTemplate = $("#search-results-compund-image-tmpl");
             } else if( result.class == "CellSample" ) {
                 imgTemplate = $("#search-results-cellsample-image-tmpl");
+            } else if( result.class == "TissueSample" ) {
+                imgTemplate = $("#search-results-tissuesample-image-tmpl");
             } else if( result.class == "Gene" ) {
                 imgTemplate = $("#search-results-gene-image-tmpl");
             }
             thatEl.append(_.template(imgTemplate.html(), result));
 
+            // some of the elements will be hidden in the pagination. Use magic-scoping!
+            var updateEl = $("#subject-observation-count-" + result.id);
             $.ajax("count/observation/?filterBy=" + result.id).done(function(count) {
-               $("#subject-observation-count-" + result.id).html(count);
+               updateEl.html(count);
             });
 
             return this;
@@ -1233,7 +1420,7 @@
                         _.each(searchResults.models, function(aResult) {
                             aResult = aResult.toJSON();
                             if(aResult.organism == undefined) {
-                                aResult.organism = { displayName: "N/A" };
+                                aResult.organism = { displayName: "-" };
                             }
 
                             if(aResult.class == "Submission") {
@@ -1624,6 +1811,491 @@
     
     
 
+    var TemplateHelperView = Backbone.View.extend({
+        template: _.template($("#template-helper-tmpl").html()),
+        el: $("#main-container"),
+        table: "#template-table",
+        metaTable: "#template-meta-table",
+        preview: "#template-preview",
+
+        addColumn: function(identifier, displayTextEditable, columnType) {
+            $(this.table).find("tr")
+                .append(_.template($("#template-header-col-tmpl").html(), {id: identifier, columnType: columnType}));
+            $(this.table).find("#template-header td").last().text(identifier);
+            var inputTemplate = _.template($("#template-sample-data-tmpl").html(), {});
+            $(this.table).find("tr.sample-data td." + identifier).append(inputTemplate);
+
+            if(displayTextEditable)
+                $(this.table).find("#template-display_text td." + identifier).append(inputTemplate);
+
+            return this;
+        },
+
+        addMetaColumn: function(identifier, displayText) {
+            $(this.metaTable).find("#meta-" + identifier).text(displayText);
+
+            return this;
+        },
+
+        render: function() {
+            $(this.el).html(this.template(this.model));
+
+            var submissionCenters = new SubmissionCenters();
+            submissionCenters.fetch({
+                success: function() {
+                    _.each(submissionCenters.models, function(aCenter) {
+                        (new TemplateHelperCenterView({
+                            model: aCenter.toJSON(),
+                            el: $("#template-submission-centers")
+                        })).render();
+                    });
+                }
+            });
+
+            var self = this;
+            $("#apply-submission-center").click(function() {
+                var centerName = $("#template-submission-centers").val();
+                if(centerName.length == 0) {
+                    centerName = $("#template-submission-centers-custom").val();
+                }
+
+                if(centerName.length == 0) {
+                    return; // error control
+                }
+
+                $("#step1").fadeOut();
+                $("#step2").slideDown();
+                self.addColumn("submission_center", false, "meta");
+                $(self.table).find("tr.sample-data td.submission_center").each(function() {
+                    $(this).find("input").val(centerName);
+                });
+            });
+
+            $("#apply-template-name").click(function() {
+                var tmplName = $("#template-name").val();
+                if(tmplName.length == 0) return;
+
+                $("#step2").fadeOut();
+                $("#step3").slideDown();
+                self.addColumn("template_name", false, "meta");
+                $(self.table).find("tr.sample-data td.template_name").each(function() {
+                    $(this).find("input").val(tmplName);
+                });
+                var dateString = (function(date) {
+                    var d = date.getDate();
+                    var m = date.getMonth() + 1;
+                    var y = date.getFullYear();
+                    return '' + y +  (m<=9 ? '0' + m : m) + (d <= 9 ? '0' + d : d);
+                })(new Date());
+                self.addMetaColumn("template_name", tmplName);
+                self.addMetaColumn("submission_name", dateString + "-" + tmplName);
+            });
+
+            $("#apply-template-desc").click(function() {
+                var templDesc = $("#template-desc").val();
+                var templSubmissionDesc = $("#template-submission-desc").val();
+
+                if(templDesc.length == 0 || templSubmissionDesc.length == 0) {
+                    return; // error control
+                }
+
+                $("#step3").fadeOut();
+                $("#step4").slideDown();
+                self.addMetaColumn("template_description", templDesc);
+                self.addMetaColumn("submission_description", templSubmissionDesc);
+            });
+
+            $("#apply-template-tier").click(function() {
+                var tmplTier = $("#template-tier").val();
+                self.addMetaColumn("observation_tier", tmplTier);
+
+                $("#step4").fadeOut();
+                $("#step5").slideDown();
+                $(self.preview).slideDown();
+            });
+
+
+            $("#add-evidence").click(function() {
+                $("#evidence-modal").modal('show');
+            });
+
+            // The following variables are shared across evidence/subject add buttons
+            var stype, cname, role, mime, unit;
+
+            $("#apply-evidence-type").click(function() {
+                stype = $("#evidence-type").val();
+                if(stype.length == 0) return;
+
+                $("#evidence-step1").fadeOut();
+                if(stype == "File") {
+                    $("#evidence-step1-mime").slideDown();
+                } else if(stype == "Numeric") {
+                    $("#evidence-step1-unit").slideDown();
+                } else {
+                    $("#evidence-step2").slideDown();
+                }
+            });
+
+            $("#apply-evidence-mime-type").click(function() {
+                mime = $("#evidence-mime-type").val();
+                if(mime.length == 0) {
+                    mime = $("#evidence-mime-type-custom").val();
+                }
+
+                if(mime.length == 0) {
+                    return; // error control
+                }
+
+                $("#evidence-step1-mime").fadeOut();
+                $("#evidence-step2").slideDown();
+            });
+
+            $("#apply-evidence-numeric-unit").click(function() {
+                unit = $("#evidence-numeric-unit").val();
+                $("#evidence-step1-unit").fadeOut();
+                $("#evidence-step2").slideDown();
+            });
+
+            $("#apply-evidence-cname").click(function() {
+                cname = $("#evidence-cname").val();
+                if(cname.length == 0) {
+                    cname = $("#evidence-cname-custom").val();
+                }
+
+                if(cname.length == 0) {
+                    return; // error control
+                }
+
+                $("#evidence-step2").fadeOut();
+                $("#evidence-step3").slideDown();
+            });
+
+            $("#apply-evidence-role").click(function() {
+                role = $("#evidence-role").val();
+                if(role.length == 0) {
+                    role = $("#evidence-role-custom").val();
+                }
+
+                if(role.length == 0) {
+                    return; // error control
+                }
+
+                $("#evidence-step3").fadeOut();
+                $("#evidence-step4").slideDown();
+            });
+
+            $("#apply-evidence-desc").click(function() {
+                var desc = $("#evidence-desc").val();
+                if(desc.length == 0) return;
+
+                self.addColumn(cname, true, "evidence");
+
+                $(self.table).find("#template-evidence td." + cname).text(stype);
+                $(self.table).find("#template-role td." + cname).text(role);
+                $(self.table).find("#template-display_text td." + cname + " input").val(desc);
+                $(self.table).find("tr.sample-data td." + cname + " input").val(stype + " value");
+                $(self.table).find("#template-mime_type td." + cname).text(mime);
+                $(self.table).find("#template-numeric_units td." + cname).text(unit);
+
+                $("#evidence-step4").hide();
+                $("#evidence-step1").show();
+
+                $("#evidence-modal").modal('hide');
+
+            });
+
+            $("#add-subject").click(function() {
+                $("#subject-modal").modal('show');
+            });
+
+            $("#apply-subject-type").click(function() {
+                stype = $("#subject-type").val();
+                if(stype.length == 0) return;
+
+                $("#subject-step1").fadeOut();
+                $("#subject-step2").slideDown();
+            });
+
+            $("#apply-subject-cname").click(function() {
+                cname = $("#subject-cname").val();
+                if(cname.length == 0) {
+                    cname = $("#subject-cname-custom").val();
+                }
+
+                if(cname.length == 0) {
+                    return; // error control
+                }
+
+                $("#subject-step2").fadeOut();
+                $("#subject-step3").slideDown();
+            });
+
+            $("#apply-subject-role").click(function() {
+                role = $("#subject-role").val();
+                if(role.length == 0) {
+                    role = $("#subject-role-custom").val();
+                }
+
+                if(role.length == 0) {
+                    return; // error control
+                }
+
+                $("#subject-step3").fadeOut();
+                $("#subject-step4").slideDown();
+            });
+
+            $("#apply-subject-desc").click(function() {
+                var desc = $("#subject-desc").val();
+                if(desc.length == 0) return;
+
+                self.addColumn(cname, true, "subject");
+                $(self.table).find("#template-subject td." + cname).text(stype);
+                $(self.table).find("#template-role td." + cname).text(role);
+                $(self.table).find("#template-display_text td." + cname + " input").val(desc);
+                $(self.table).find("tr.sample-data td." + cname + " input").val(stype + " ID");
+
+                $("#subject-step4").hide();
+                $("#subject-step1").show();
+
+                $("#subject-modal").modal('hide');
+
+            });
+
+            $("#download-template").click(function() {
+                self.addMetaColumn("observation_summary", $("#template-obs-summary").val());
+                return this;
+            });
+
+            $("#preview-template").click(function() {
+                self.addMetaColumn("observation_summary", $("#template-obs-summary").val());
+
+                $.fancybox(
+                    _.template($("#preview-tmpl").html()),
+                    {
+                        'autoDimensions' : false,
+                        'width' : '100%',
+                        'height' : '100%',
+                        'transitionIn' : 'none',
+                        'transitionOut' : 'none'
+                    }
+                );
+
+                var mockId = 1;
+
+                // create submission center
+                var submissionCenter = {
+                    'class': "SubmissionCenter",
+                    displayName: $(self.table).find("tr.sample-data td.submission_center input").val(),
+                    id: mockId++
+                };
+    
+                // create template
+                var observationTemplate = {
+                    'class': "observationTemplate",
+                    description: $("#meta-template_description").text(),
+                    displayName: $("#meta-submission_name").text(),
+                    id: mockId++,
+                    isSubmissionStory: false,
+                    observationSummary: $("#meta-observation_summary").text(),
+                    submissionDescription: $("#meta-submission_description").text(),
+                    submissionName: $("#meta-submission_name").text(),
+                    submissionStoryRank: 0,
+                    tier: $("#meta-observation_tier").text()
+                };
+
+                // create submission
+                var submission = {
+                    'class': "Submission",
+                    displayName: $("#meta-submission_name").text(),
+                    id: mockId++,
+                    submissionDate: (new Date()).toDateString(),
+                    observationTemplate: observationTemplate,
+                    submissionCenter: submissionCenter
+                };
+
+                // create observations
+                var createObservations = function(id, preview) {
+                    var rowId = "#" + "template-sample-data" + id;
+
+                    var observation = {
+                        'class': "Observation",
+                        id: mockId++,
+                        displayName: "",
+                        submission: submission
+                    };
+
+                    var observedSubjects = [];
+                    var observedEvidences = [];
+
+                    $("#template-header td").each(function(i, aCell) {
+                        var cellType = $(aCell).data("type");
+                        var className = $(aCell).text();
+
+                        if( i < 1 || cellType == "meta" )
+                            return; // this will get rid of non-essential cells
+
+                        var displayText = $("#template-display_text").find("td." + className + " input").val();
+                        var displayName = $(rowId).find("td." + className + " input").val();
+                        switch(cellType) {
+                            case "subject":
+                                var subject = {
+                                    'class': $("#template-subject").find("td." + className).text(),
+                                    id: mockId++,
+                                    displayName: displayName
+                                };
+
+                                var subjectRole = {
+                                    'class': "SubjectRole",
+                                    id: mockId++,
+                                    displayName: $("#template-role").find("td." + className).text()
+                                };
+
+                                var observedSubjectRole = {
+                                    subjectRole: subjectRole,
+                                    observationTemplate: observationTemplate,
+                                    id: mockId++,
+                                    'class': "ObservedSubjectRole",
+                                    columnName: className,
+                                    displayName: displayText,
+                                    displayText: displayText
+                                };
+
+                                var observedSubject = {
+                                    'class': "ObservedSubject",
+                                    displayName: subject.displayName,
+                                    id: mockId++,
+                                    observation: observation,
+                                    observedSubjectRole: observedSubjectRole,
+                                    subject: subject
+                                };
+
+                                observedSubjects.push(observedSubject);
+
+                                break;
+                            case "evidence":
+                                var evidence = {
+                                    'class': $("#template-evidence").find("td." + className).text(),
+                                    id: mockId++,
+                                    displayName: displayName,
+                                    mimeType: $("#template-evidence").find("td." + className).text(),
+                                    filePath: displayName,
+                                    url: displayName
+                                };
+
+                                var evidenceRole = {
+                                    'class': "EvidenceRole",
+                                    id: mockId++,
+                                    displayName: $("#template-role").find("td." + className).text()
+                                };
+
+                                var observedEvidenceRole = {
+                                    evidenceRole: evidenceRole,
+                                    observationTemplate: observationTemplate,
+                                    id: mockId++,
+                                    'class': "ObservedEvidenceRole",
+                                    columnName: className,
+                                    displayName: displayText,
+                                    displayText: displayText
+                                };
+
+                                var observedEvidence = {
+                                    'class': "ObservedEvidence",
+                                    displayName: evidence.displayName,
+                                    id: mockId++,
+                                    observation: observation,
+                                    observedEvidenceRole: observedEvidenceRole,
+                                    evidence: evidence
+                                };
+
+                                observedEvidences.push(observedEvidence);
+                                break;
+                        }
+                    });
+
+                    var returnObject = {
+                        observation: observation,
+                        observedEvidences: observedEvidences,
+                        observedSubjects: observedSubjects
+                    };
+
+                    if(preview) {
+                        (new ObservationPreviewView({
+                            model: returnObject,
+                            el: $("#obs" + id + "-preview")
+                        })).render();
+                    }
+
+                    return returnObject;
+                };
+
+                var obs1 = createObservations(1, true);
+                var obs2 = createObservations(2, false);
+
+                // Create the submission preview
+                (new SubmissionPreviewView({
+                    model: {
+                        submission: submission,
+                        observations: [obs1, obs2]
+                    }
+                })).render();
+
+                $("#preview-container div.common-container").removeClass("common-container");
+                $('#preview-tabs a').click(function (e) {
+                    e.preventDefault();
+                    $(this).tab('show');
+                });
+
+                return this;
+            });
+
+            $("#download-form").submit(function() {
+                var table2TSV = function(id) {
+                    var text = "";
+
+                    $(id).find("tr").each(function(i, aRow) {
+                        var cells = $(aRow).children();
+                        cells.each(function(j, aCell) {
+                            var input = $(aCell).find("input");
+                            if($(aCell).find("i").length > 0) {
+                                text += "";
+                            } else if(input.length == 0) {
+                                text += $(aCell).text();
+                            } else {
+                                text += $(input).val();
+                            }
+
+                            if((j+1) < cells.length) {
+                                text += "\t";
+                            }
+                        });
+
+                        text += "\n";
+                    });
+
+                    return text;
+                };
+
+                $("#template-input").val(table2TSV("#template-table"));
+                $("#template-meta-input").val(table2TSV("#template-meta-table"));
+                $("#filename-input").val($("#meta-submission_name").text());
+
+                return true;
+            });
+
+
+            return this;
+        }
+    });
+
+    var TemplateHelperCenterView = Backbone.View.extend({
+        template: _.template($("#template-helper-center-tmpl").html()),
+
+        render: function() {
+            $(this.el).append(this.template(this.model));
+            return this;
+        }
+    });
+
     /* Routers */
     AppRouter = Backbone.Router.extend({
         routes: {
@@ -1636,6 +2308,7 @@
             "search/:term": "search",
             "subject/:id": "showSubject",
             "evidence/:id": "showMraView",
+            "template-helper": "showTemplateHelper",
             "*actions": "home"
         },
 
@@ -1736,11 +2409,13 @@
                      var mraView = new MraView({model: observedEvidence});
                      mraView.render();
                   }        
-        	  
-              });  
-            
-        }
+              });
+        },
 
+        showTemplateHelper: function() {
+            var templateHelperView = new TemplateHelperView();
+            templateHelperView.render();
+        }
     });
 
     $(function(){

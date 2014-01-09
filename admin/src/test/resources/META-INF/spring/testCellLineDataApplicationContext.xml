@@ -10,16 +10,31 @@
   <context:component-scan base-package="gov.nih.nci.ctd2.dashboard.importer.internal" />
 
   <batch:job id="cellLineDataImporterJob">
-	<batch:step id="cellLineNameTypeStep" parent="cellLineDataSimpleStep" next="cellLineLineageStep">
+	<batch:step id="cellLineNameTypeStep" parent="cellLineDataSimpleStep" next="cellLineAnnotationTypeStep">
 	  <batch:tasklet>
 		<batch:chunk reader="cellLineNameTypeReader" writer="cellLineNameTypeWriter"/>
 	  </batch:tasklet>
 	</batch:step>
-	<batch:step id="cellLineLineageStep" parent="cellLineDataSimpleStep" next="cellLineSampleStep">
+	<batch:step id="cellLineAnnotationTypeStep" parent="cellLineDataSimpleStep" next="cellLineAnnotationNameStep">
 	  <batch:tasklet>
-		<batch:chunk reader="cellLineLineageReader" writer="cellLineLineageWriter"/>
+		<batch:chunk reader="cellLineAnnotationTypeReader" writer="cellLineAnnotationWriter"/>
 	  </batch:tasklet>
 	</batch:step>
+	<batch:step id="cellLineAnnotationNameStep" parent="cellLineDataSimpleStep" next="cellLineAnnotationSourceStep">
+	  <batch:tasklet>
+		<batch:chunk reader="cellLineAnnotationNameReader" writer="cellLineAnnotationWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+	<batch:step id="cellLineAnnotationSourceStep" parent="cellLineDataSimpleStep" next="cellLineAnnotationSampleStep">
+	  <batch:tasklet>
+		<batch:chunk reader="cellLineAnnotationSourceReader" writer="cellLineAnnotationWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+	<batch:step id="cellLineAnnotationSampleStep" parent="cellLineDataSimpleStep" next="cellLineSampleStep">
+	  <batch:tasklet>
+		<batch:chunk reader="cellLineAnnotationSampleReader" writer="cellLineAnnotationWriter"/>
+	  </batch:tasklet>
+	</batch:step> 
 	<batch:step id="cellLineSampleStep" parent="cellLineDataSimpleStep" next="cellLineNameStep">
 	  <batch:tasklet>
 		<batch:chunk reader="cellLineSampleReader" writer="cellLineSampleWriter"/>
@@ -59,21 +74,61 @@
 	<property name="delimiter" value="\u0009"/>
   </bean>
 
-  <!-- cell line lineage beans -->
+  <!-- cell line annotation beans -->
 
-  <bean name="cellLineLineageReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-	<property name="resource" value="classpath:test-cell-line-sample-lineage.txt" />
-    <property name="lineMapper" ref="cellLineLineageLineMapper" />
+  <bean name="cellLineAnnotationTypeReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="resource" value="classpath:test-cell-line-annotation-type.txt" />
+    <property name="lineMapper" ref="cellLineAnnotationTypeLineMapper" />
 	<property name="linesToSkip" value="1" />
   </bean>
-
-  <bean name="cellLineLineageLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
-	<property name="fieldSetMapper" ref="cellLineLineageMapper" />
-	<property name="lineTokenizer" ref="cellLineLineageTokenizer" />
+  <bean name="cellLineAnnotationTypeLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+	<property name="fieldSetMapper" ref="cellLineAnnotationTypeMapper" />
+	<property name="lineTokenizer" ref="cellLineAnnotationTypeTokenizer" />
+  </bean>
+  <bean name="cellLineAnnotationTypeTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+	<property name="names" value="cell_anno_type_id,cell_anno_type"/>
+	<property name="delimiter" value="\u0009"/>
   </bean>
 
-  <bean name="cellLineLineageTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-	<property name="names" value="site_index,cell_sample_lineage"/>
+  <bean name="cellLineAnnotationNameReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="resource" value="classpath:test-cell-line-annotation-name.txt" />
+    <property name="lineMapper" ref="cellLineAnnotationNameLineMapper" />
+	<property name="linesToSkip" value="1" />
+  </bean>
+  <bean name="cellLineAnnotationNameLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+	<property name="fieldSetMapper" ref="cellLineAnnotationNameMapper" />
+	<property name="lineTokenizer" ref="cellLineAnnotationNameTokenizer" />
+  </bean>
+  <bean name="cellLineAnnotationNameTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+	<property name="names" value="cell_anno_name_id,cell_anno_name"/>
+	<property name="delimiter" value="\u0009"/>
+  </bean>
+
+  <bean name="cellLineAnnotationSourceReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="resource" value="classpath:test-cell-line-annotation-source.txt" />
+    <property name="lineMapper" ref="cellLineAnnotationSourceLineMapper" />
+	<property name="linesToSkip" value="1" />
+  </bean>
+  <bean name="cellLineAnnotationSourceLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+	<property name="fieldSetMapper" ref="cellLineAnnotationSourceMapper" />
+	<property name="lineTokenizer" ref="cellLineAnnotationSourceTokenizer" />
+  </bean>
+  <bean name="cellLineAnnotationSourceTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+	<property name="names" value="cell_anno_source_id,cell_anno_source"/>
+	<property name="delimiter" value="\u0009"/>
+  </bean>
+
+  <bean name="cellLineAnnotationSampleReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="resource" value="classpath:test-cell-line-annotation-sample.txt" />
+    <property name="lineMapper" ref="cellLineAnnotationSampleLineMapper" />
+	<property name="linesToSkip" value="1" />
+  </bean>
+  <bean name="cellLineAnnotationSampleLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+	<property name="fieldSetMapper" ref="cellLineAnnotationSampleMapper" />
+	<property name="lineTokenizer" ref="cellLineAnnotationSampleTokenizer" />
+  </bean>
+  <bean name="cellLineAnnotationSampleTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+	<property name="names" value="cell_sample_id,cell_anno_name_id,cell_anno_type_id,cell_anno_source_id"/>
 	<property name="delimiter" value="\u0009"/>
   </bean>
 
@@ -91,7 +146,7 @@
   </bean>
 
   <bean name="cellLineSampleTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-	<property name="names" value="cell_sample_id,gender,taxonomy_id,hist_index,site_index"/>
+	<property name="names" value="cell_sample_id,taxonomy_id,gender"/>
 	<property name="delimiter" value="\u0009"/>
   </bean>
 
@@ -123,9 +178,24 @@
 	  <map key-type="java.lang.String" value-type="java.lang.String"/>
 	</constructor-arg>
   </bean>
-  <bean name="cellLineLineageMap" class="java.util.HashMap">
+  <bean name="cellLineAnnotationTypeMap" class="java.util.HashMap">
 	<constructor-arg index="0" type="java.util.Map">
 	  <map key-type="java.lang.String" value-type="java.lang.String"/>
+	</constructor-arg>
+  </bean>
+  <bean name="cellLineAnnotationNameMap" class="java.util.HashMap">
+	<constructor-arg index="0" type="java.util.Map">
+	  <map key-type="java.lang.String" value-type="java.lang.String"/>
+	</constructor-arg>
+  </bean>
+  <bean name="cellLineAnnotationSourceMap" class="java.util.HashMap">
+	<constructor-arg index="0" type="java.util.Map">
+	  <map key-type="java.lang.String" value-type="java.lang.String"/>
+	</constructor-arg>
+  </bean>
+  <bean name="cellLineAnnotationSampleMap" class="java.util.HashMap">
+	<constructor-arg index="0" type="java.util.Map">
+	  <map key-type="java.lang.String" value-type="java.util.HashSet"/>
 	</constructor-arg>
   </bean>
   <bean name="cellSampleMap" class="java.util.HashMap">

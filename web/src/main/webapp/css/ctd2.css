@@ -339,6 +339,32 @@
         margin-left: 0;
     }
 
+    #template-helper-container input, #template-helper-container select {
+        margin-bottom: 0;
+    }
+
+    .template-preview-wrapper {
+        width: 100%;
+        overflow-x: scroll;
+        border: 1px solid gray;
+    }
+
+    .template-download button {
+        margin-top: 20px;
+    }
+
+    #template-helper-container td {
+        padding: 7px;
+    }
+
+    td.next-cell {
+        text-align: center;
+    }
+
+    .input-xxxlarge {
+        width: 650px;
+    }
+
     #cytoscape-mra {
         width: 93%;
         height: 70%;
@@ -357,18 +383,10 @@
         position: absolute;
         top: 50%;
         left: 50%;
-        margin-left: -(Y/2)px;
-        margin-top: -(Y/2)px;
      }
      
-     .button-link {         
-        width: 100px;
-        height: 15px;
-        background: grey;
-        padding: 1px;
-        text-align: center;
-        border-radius: 5px;
-        color: white;         
+     .button-link {
+         font-weight: bold;
       }
      
      

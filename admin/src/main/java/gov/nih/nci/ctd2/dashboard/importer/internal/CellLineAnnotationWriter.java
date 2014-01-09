@@ -5,8 +5,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.batch.item.ItemWriter;
 import java.util.List;
 
-@Component("cellLineLineageWriter")
-public class CellLineLineageWriter implements ItemWriter<CellSample> {
+@Component("cellLineAnnotationWriter")
+public class CellLineAnnotationWriter implements ItemWriter<CellSample> {
 	// optimization - all writing is done in CellLineDataWriter
 	public void write(List<? extends CellSample> items) throws Exception {}
 }

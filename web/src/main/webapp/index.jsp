@@ -1,4 +1,5 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@page import="org.springframework.web.context.WebApplicationContext"%>
 <%@page import="org.springframework.web.context.support.WebApplicationContextUtils"%>
 <%
@@ -59,6 +60,8 @@
                           <li><a target="_blank" href="http://ctd2.nci.nih.gov/publication.html">Publications</a></li>
                           <li><a target="_blank" href="http://ctd2.nci.nih.gov/DataMatrix/CTD2_DataMatrix.html">Data Matrix</a></li>
                           <li><a target="_blank" href="http://ocg.cancer.gov/resources/fnd.asp">Funding Opportunities</a></li>
+                          <li class="divider"></li>
+                          <li><a href="#template-helper">Submission Template Helper</a></li>
                       </ul>
                   </li>
               </ul>
@@ -101,7 +104,7 @@
              <a href="http://ctd2.nci.nih.gov/centers.html" target="_blank">Contact</a>
          </p>
          <p class="pull-right">
-             <a href="http://cancer.gov"><img src="img/logos/footer_logo_nci.jpg"></a><a href="http://www.dhhs.gov/"><img src="img/logos/footer_logo_hhs.jpg"></a><a href="http://www.nih.gov/"><img src="img/logos/footer_logo_nih.jpg"></a><a href="http://www.firstgov.gov/"><img src="img/logos/footer_logo_firstgov.jpg"></a>
+             <a href="http://cancer.gov"><img src="img/logos/footer_logo_nci.jpg" alt="NCI logo" title="NCI logo"></a><a href="http://www.dhhs.gov/"><img src="img/logos/footer_logo_hhs.jpg" title="HHS logo" alt="HHS logo"></a><a href="http://www.nih.gov/"><img src="img/logos/footer_logo_nih.jpg" title="NIH logo" alt="NIH logo"></a><a href="http://www.firstgov.gov/"><img src="img/logos/footer_logo_firstgov.jpg" title="First Gov logo" alt="First Gov logo"></a>
          </p>
        </footer>
     </div>
@@ -114,7 +117,7 @@
         <div id="myCarousel" class="carousel slide">
           <div class="carousel-inner">
             <div class="item active">
-              <img data-src="holder.js/1500x450/#a70001:#a70001" alt="" class="cimg">
+              <img data-src="holder.js/1500x450/#a70001:#a70001" alt="placeholder summary image" title="placeholder summary image" class="cimg">
               <div class="container">
                   <div class="carousel-caption">
                         <h1>Stories</h1>
@@ -132,7 +135,7 @@
                                     <li><a href="#story-2" class="story-link">&bull;</a></li>
                                     <li><a href="#story-3" class="story-link">&bull;</a></li>
                                     <li><a href="#story-4" class="story-link">&bull;</a></li>
-                                    <li><a href="#stories">More stories →</a></li>
+                                    <li><a href="#stories">More stories &raquo;</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -172,7 +175,7 @@
           <hr class="featurette-divider">
 
           <div class="featurette">
-              <img class="featurette-image pull-right" data-src="holder.js/250x250">
+              <img class="featurette-image pull-right" data-src="holder.js/250x250" alt="CTD2 general image" title="CTD2 general image">
               <h2 class="featurette-heading">CTD<sup>2</sup> Dashboard<span class="muted"> Overview</span></h2>
               <p class="lead">
                   The interactive dashboard will ensure the timely and efficient dissemination of <b>CTD<sup>2</sup></b> targets and biomarkers, across the final stages of their validation process, in conjunction with the primary data and methodologies used for their discovery and characterization.
@@ -208,7 +211,7 @@
     <script type="text/template" id="stories-tbl-row-tmpl">
         <li class="span6" id="story-observation-link-{{id}}" title="Click for more details">
             <a href="#observation/{{id}}" class="thumbnail">
-                <img class="stories-feature-image img-circle" data-src="holder.js/180x180/text:portrait or logo"><br>
+                <img class="stories-feature-image img-circle" data-src="holder.js/180x180/text:portrait or logo" alt="Story image" title="Story image"><br>
                 <center>
                     {{submission.observationTemplate.description}}<br>
                     <small>({{submission.submissionDate}})</small><br>
@@ -238,7 +241,7 @@
     <script type="text/template" id="centers-tbl-row-tmpl">
         <li class="span4">
             <a href="#center/{{id}}" class="thumbnail">
-                <img src="img/{{displayName}}.png" alt="{{displayName}}" class="img-polaroid" height="50"><br>
+                <img src="img/{{displayName}}.png" alt="{{displayName}}" title="{{displayName}}" class="img-polaroid" height="50"><br>
                 <center>
                     {{displayName}}<br>
                     <span id="submission-count-{{id}}"></span> submissions &raquo;
@@ -254,7 +257,7 @@
                     <h1>{{displayName}} <small>submissions</small></h1>
                 </div>
                 <div class="span3">
-                    <img src="img/{{displayName}}.png" class="img-polaroid" width="200">
+                    <img src="img/{{displayName}}.png" title="{{displayName}}" alt="{{displayName}}" class="img-polaroid" width="200">
                 </div>
             </div>
 
@@ -298,7 +301,13 @@
             </div>
             <div class="row">
                 <div class="span10">
-                    <h1>Submission <small>(Tier {{observationTemplate.tier}})</small></h1>
+                    <h1>
+                        Submission
+                        <span class="badge-tier-container">
+                            <span class="badge badge-tier">Tier {{observationTemplate.tier}}</span>
+                        </span>
+                    </h1>
+
 
                     <table id="submission-details-grid" class="table table-bordered table-striped">
                         <tr>
@@ -313,14 +322,13 @@
                 </div>
                 <div class="span2">
                     <a href="#/center/{{submissionCenter.id}}">
-                        <img src="img/{{submissionCenter.displayName}}.png" class="img-polaroid" height=30 alt="{{submissionCenter.displayName}}">
+                        <img src="img/{{submissionCenter.displayName}}.png" class="img-polaroid" height=30 alt="{{submissionCenter.displayName}}" title="{{submissionCenter.displayName}}">
                     </a>
 
                     <br>
                     <br>
 
-
-                    <img src="img/submission.png" class="img-polaroid" width=150 height=150><br>
+                    <img src="img/submission.png" class="img-polaroid" width=150 height=150 alt="Submission" title="Submission"><br>
                 </div>
             </div>
 
@@ -391,7 +399,7 @@
                 <div class="span2">
                     <a href="#/center/{{submission.submissionCenter.id}}"><img src="img/{{submission.submissionCenter.displayName}}.png" class="img-polaroid" height=30 alt="{{submission.submissionCenter.displayName}}"></a>
                     <br><br>
-                    <img src="img/observation.png" class="img-polaroid" width=150 height=150><br>
+                    <img src="img/observation.png" alt="Observation" class="img-polaroid" width=150 height=150><br>
                 </div>
             </div>
 
@@ -465,7 +473,7 @@
     <script type="text/template" id="observedfileevidence-row-tmpl">
         <tr>
             <td>
-                <img src="img/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}">
+                <img src="img/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}" alt="{{observedEvidenceRole.evidenceRole.displayName}}">
             </td>
             <td>{{observedEvidenceRole.evidenceRole.displayName}}</td>
             <td>{{observedEvidenceRole.displayText}}</td>
@@ -480,7 +488,7 @@
     <script type="text/template" id="observedpdffileevidence-row-tmpl">
         <tr>
             <td>
-                <img src="img/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}">
+                <img src="img/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}" alt="{{observedEvidenceRole.evidenceRole.displayName}}">
             </td>
             <td>{{observedEvidenceRole.evidenceRole.displayName}}</td>
             <td>{{observedEvidenceRole.displayText}}</td>
@@ -495,7 +503,7 @@
     <script type="text/template" id="observedgctfileevidence-row-tmpl">
         <tr>
             <td>
-                <img src="img/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}">
+                <img src="img/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}" alt="{{observedEvidenceRole.evidenceRole.displayName}}">
             </td>
             <td>{{observedEvidenceRole.evidenceRole.displayName}}</td>
             <td>{{observedEvidenceRole.displayText}}</td>
@@ -521,7 +529,7 @@
     <script type="text/template" id="observedsiffileevidence-row-tmpl">
         <tr>
             <td>
-                <img src="img/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}">
+                <img src="img/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}" alt="{{observedEvidenceRole.evidenceRole.displayName}}">
             </td>
             <td>{{observedEvidenceRole.evidenceRole.displayName}}</td>
             <td>{{observedEvidenceRole.displayText}}</td>
@@ -546,14 +554,14 @@
     <script type="text/template" id="observedimageevidence-row-tmpl">
         <tr>
             <td>
-                <img src="img/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}">
+                <img src="img/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}" alt="{{observedEvidenceRole.evidenceRole.displayName}}">
             </td>
             <td>{{observedEvidenceRole.evidenceRole.displayName}}</td>
             <td>{{observedEvidenceRole.displayText}}</td>
             <td>
                 <div class="image-evidence-wrapper">
                     <a href="<%=dataURL%>{{evidence.filePath}}" target="_blank" title="{{observedEvidenceRole.displayText}}" rel="evidence-images" class="evidence-images">
-                        <img src="<%=dataURL%>{{evidence.filePath}}" class="img-polaroid img-evidence" height="140">
+                        <img src="<%=dataURL%>{{evidence.filePath}}" class="img-polaroid img-evidence" height="140" title="File" alt="File">
                     </a>
                 </div>
             </td>
@@ -564,7 +572,7 @@
     <script type="text/template" id="observedlabelevidence-row-tmpl">
         <tr>
             <td>
-                <img src="img/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}">
+                <img src="img/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}" alt="{{observedEvidenceRole.evidenceRole.displayName}}">
             </td>
             <td>{{observedEvidenceRole.evidenceRole.displayName}}</td>
             <td>{{observedEvidenceRole.displayText}}</td>
@@ -575,7 +583,7 @@
     <script type="text/template" id="observedurlevidence-row-tmpl">
         <tr>
             <td>
-                <img src="img/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}">
+                <img src="img/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}" alt="{{observedEvidenceRole.evidenceRole.displayName}}">
             </td>
             <td>{{observedEvidenceRole.evidenceRole.displayName}}</td>
             <td>{{observedEvidenceRole.displayText}}</td>
@@ -590,7 +598,7 @@
     <script type="text/template" id="observeddatanumericevidence-row-tmpl">
         <tr>
             <td>
-                <img src="img/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}">
+                <img src="img/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}" alt="{{observedEvidenceRole.evidenceRole.displayName}}">
             </td>
             <td>{{observedEvidenceRole.evidenceRole.displayName}}</td>
             <td>{{observedEvidenceRole.displayText}}</td>
@@ -639,7 +647,7 @@
                  </div>
                  <div class="span3">
                      <h4>Gene</h4>
-                     <img src="img/gene.png" class="img-polaroid" width=175 height=175>
+                     <img src="img/gene.png" class="img-polaroid" width=175 height=175 alt="Gene">
                  </div>
              </div>
 
@@ -699,7 +707,7 @@
                 </div>
                 <div class="span3">
                     <h4>shRNA</h4>
-                    <img src="img/shrna.png" class="img-polaroid" width=175 height=175>
+                    <img src="img/shrna.png" class="img-polaroid" width=175 height=175 alt="shRNA">
                 </div>
             </div>
 
@@ -755,7 +763,7 @@
                 </div>
                 <div class="span3">
                     <h4>Transcript</h4>
-                    <img src="img/transcript.png" class="img-polaroid" width=175 height=175>
+                    <img src="img/transcript.png" class="img-polaroid" width=175 height=175 alt="Transcript">
                 </div>
             </div>
 
@@ -795,18 +803,23 @@
                             <th>Lineage</th>
                             <td>{{lineage}}</td>
                         </tr>
-                        <tr>
-
+                        <tr id="tissue-synonyms">
                             <th>Synonyms</th>
                             <td>
                                 <ul class="synonyms"></ul>
+                            </td>
+                        </tr>
+                        <tr id="tissue-refs">
+                            <th>References</th>
+                            <td>
+                                <ul class="xrefs"></ul>
                             </td>
                         </tr>
                     </table>
                 </div>
                 <div class="span3">
                     <h4>Tissue Sample</h4>
-                    <img src="img/tissuesample.png" class="img-polaroid" width=175 height=175>
+                    <img src="img/tissuesample.png" class="img-polaroid" width=175 height=175 alt="Tissue sample">
                 </div>
             </div>
 
@@ -869,7 +882,7 @@
                 </div>
                 <div class="span3">
                         <h4>Cell Sample</h4>
-                        <img src="img/cellsample.png" class="img-polaroid" width=175 height=175>
+                        <img src="img/cellsample.png" class="img-polaroid" width=175 height=175 alt="Cell sample">
                 </div>
             </div>
             <h3>Related observations</h3>
@@ -923,7 +936,7 @@
                   <div class="span3">
                       <h4>Compound</h4>
                       <a href="<%=dataURL%>compounds/{{imageFile}}" target="_blank" class="compound-image" title="Compound: {{displayName}}">
-                        <img class="img-polaroid" width=200 src="<%=dataURL%>compounds/{{imageFile}}">
+                        <img class="img-polaroid" width=200 src="<%=dataURL%>compounds/{{imageFile}}" alt="Compound: {{displayName}}">
                       </a>
                   </div>
               </div>
@@ -1023,43 +1036,43 @@
 
     <script type="text/template" id="search-results-gene-image-tmpl">
         <a href="#subject/{{id}}">
-            <img src="img/gene.png" class="img-polaroid search-info" title="Gene" height="50" width="50">
+            <img src="img/gene.png" class="img-polaroid search-info" title="Gene" alt="Gene" height="50" width="50">
         </a>
     </script>
 
     <script type="text/template" id="search-results-shrna-image-tmpl">
         <a href="#subject/{{id}}">
-            <img src="img/shrna.png" class="img-polaroid search-info" title="shRNA" height="50" width="50">
+            <img src="img/shrna.png" class="img-polaroid search-info" title="shRNA" alt="shRNA" height="50" width="50">
         </a>
     </script>
 
     <script type="text/template" id="search-results-transcript-image-tmpl">
         <a href="#subject/{{id}}">
-            <img src="img/transcript.png" class="img-polaroid search-info" title="shRNA" height="50" width="50">
+            <img src="img/transcript.png" class="img-polaroid search-info" title="Transcript" alt="Transcript" height="50" width="50">
         </a>
     </script>
 
     <script type="text/template" id="search-results-compund-image-tmpl">
         <a href="#subject/{{id}}">
-            <img class="img-polaroid search-info" title="Compound" width=50 height=50 src="<%=dataURL%>compounds/{{imageFile}}">
+            <img class="img-polaroid search-info" title="Compound" alt="Compound" width=50 height=50 src="<%=dataURL%>compounds/{{imageFile}}">
         </a>
     </script>
 
     <script type="text/template" id="search-results-cellsample-image-tmpl">
         <a href="#subject/{{id}}">
-            <img src="img/cellsample.png" title="Cell sample" class="img-polaroid search-info" height="50" width="50">
+            <img src="img/cellsample.png" title="Cell sample" alt="Cell sample" class="img-polaroid search-info" height="50" width="50">
         </a>
     </script>
 
     <script type="text/template" id="search-results-tissuesample-image-tmpl">
         <a href="#subject/{{id}}">
-            <img src="img/tissuesample.png" title="Cell sample" class="img-polaroid search-info" height="50" width="50">
+            <img src="img/tissuesample.png" title="Tissue sample" alt="Tissue sample" class="img-polaroid search-info" height="50" width="50">
         </a>
     </script>
 
     <script type="text/template" id="search-results-unknown-image-tmpl">
         <a href="#subject/{{id}}">
-            <img src="img/unknown.png" title="{{type}}" class="img-polaroid search-info" height="50" width="50">
+            <img src="img/unknown.png" title="{{type}}" class="img-polaroid search-info" alt="{{type}}" height="50" width="50">
         </a>
     </script>
 
@@ -1128,10 +1141,10 @@
 
     <script type="text/template" id="search-submission-tbl-row-tmpl">
         <tr>
-            <td><a href="#submission/{{id}}"><img src="img/submission.png" width="50"></a></td>
+            <td><a href="#submission/{{id}}"><img src="img/submission.png" width="50" alt="Submission" title="Submission"></a></td>
             <td><a href="#submission/{{id}}">{{submissionDate}}</a></td>
             <td>{{observationTemplate.description}}</td>
-            <td><a href="#submission/{{id}}"><img src="img/{{submissionCenter.displayName}}.png" height="50"></a></td>
+            <td><a href="#submission/{{id}}"><img src="img/{{submissionCenter.displayName}}.png" title="{{submissionCenter.displayName}}" alt="{{submissionCenter.displayName}}" height="50"></a></td>
             <td><span class="badge tier-badge">Tier {{observationTemplate.tier}}</span></td>
             <td width=150><a href="#submission/{{id}}"><span id="search-observation-count-{{id}}"></span> observation(s)</a></td>
         </tr>
@@ -1166,7 +1179,7 @@
                 </p>
             </div>
             <div class="span4">
-                <img class="img-circle" data-src="holder.js/180x180/text:portrait or logo">
+                <img class="img-circle" data-src="holder.js/180x180/text:portrait or logo" alt="placeholder logo" title="placeholder logo">
             </div>
         </div>
     </script>
@@ -1176,7 +1189,7 @@
             <h1>Browse {{type}}s</h1>
 
             <div class="alert alert-block">
-                <a href="#" class="close">&times;</a>
+                <a href="#" class="close" data-dismiss="alert">&times;</a>
                 <p>
                     Below is a list of {{type}}s that have at least one observation associated with it.
                     The number in the parentheses show how many observations there are for the corresponding {{type}}.
@@ -1217,7 +1230,7 @@
     <script type="text/template" id="observedmrafileevidence-row-tmpl">
         <tr>
             <td>
-                <img src="img/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}">
+                <img src="img/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}" alt="{{observedEvidenceRole.evidenceRole.displayName}}">
             </td>
             <td>{{observedEvidenceRole.evidenceRole.displayName}}</td>
             <td>{{observedEvidenceRole.displayText}}</td>
@@ -1341,6 +1354,553 @@
             <br/>
             {{description}}
         </div>
+    </script>
+
+    <script type="text/template" id="template-helper-tmpl">
+        <div class="container common-container" id="template-helper-container">
+            <h1>Submission Template Helper</h1>
+
+            <div class="alert alert-warning alert-block">
+                <a href="#" class="close" data-dismiss="alert">&times;</a>
+                <p>
+                    <strong>Welcome to the submission template helper!</strong><br>
+                    This tool will help you create a basic Dashboard submission template from scratch.
+                    Once a basic template is prepared, you will be able to download the template for your local use and preparation of a Dashboard submission.
+                </p>
+            </div>
+
+            <div id="step1">
+                <h3>Step 1: Select submission center</h3>
+                <table class="table">
+                    <tr>
+                        <th>Select a center</th>
+                        <td>
+                            <select id="template-submission-centers" class="input-xxlarge">
+                                <option value="">-</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            ... or enter a new one:
+                        </th>
+                        <td>
+                            <input id="template-submission-centers-custom" placeholder="e.g. National Cancer Institute" class="input-xxlarge">
+                        </td>
+                        </tr>
+                    <tr>
+                        <td colspan=2 class="next-cell">
+                            <button id="apply-submission-center" class="btn">Next</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div id="step2" class="hide">
+                <h3>Step 2: Enter a template name</h3>
+                <table  class="table">
+                    <tr>
+                        <td>
+                            <input id="template-name" placeholder="e.g. centername_your_description" class="input-xxlarge">
+                            <button id="apply-template-name" class="btn">Next</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div id="step3" class="hide">
+                <h3>Step 3: Enter a template/submission description</h3>
+                <table  class="table">
+                    <tr>
+                        <th>
+                            Template description
+                        </th>
+                        <td>
+                            <input id="template-desc" placeholder="e.g. Analysis of differentially expressed transcripts in some condition" class="input-xxxlarge">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Submission description</th>
+                        <td>
+                            <input id="template-submission-desc" placeholder="e.g. Down-regulated genes in PTEN-null cell lines" class="input-xxxlarge">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan=2 class="next-cell">
+                            <button id="apply-template-desc" class="btn">Next</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div id="step4" class="hide">
+                <h3>Step 4: Select a tier</h3>
+                <table  class="table">
+                    <tr>
+                        <td>
+                            <select id="template-tier">
+                                <option selected="selected" value="1">Tier 1</option>
+                                <option value="2">Tier 2</option>
+                                <option value="3">Tier 3</option>
+                                <option value="4">Tier 4</option>
+                            </select>
+                            <button id="apply-template-tier" class="btn">Next</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div id="step5" class="hide">
+                <h3>Step 5: Add subjects/evidence</h3>
+                <table class="table">
+                    <tr>
+                        <td>
+                            <button class="btn" id="add-subject">Subject <i class="icon-plus"></i></button>
+                            <button class="btn" id="add-evidence">Evidence <i class="icon-plus"></i></button>
+                        </td>
+                    </tr>
+                </table>
+
+                <hr>
+                <h3>Step 6: Create an observation summary</h3>
+                <table class="table">
+                    <tr>
+                        <th>Observation summary</th>
+                        <td>
+                            <input id="template-obs-summary" placeholder="e.g. <gene_column> is down-regulated in <label_evidence> cells" class="input-xxxlarge">
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="modal hide fade" id="subject-modal">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h3>Add a subject</h3>
+                </div>
+                <div class="modal-body">
+                    <div id="subject-step1">
+                        <h4>Step #1: Subject type</h4>
+                        <table class="table">
+                            <tr>
+                                <th>Select a type</th>
+                                <td>
+                                    <select id="subject-type">
+                                        <option value="">-</option>
+                                        <option value="CellSample">Cell Sample</option>
+                                        <option value="Compound">Compound</option>
+                                        <option value="Gene">Gene</option>
+                                        <option value="ShRna">shRNA</option>
+                                        <option value="TissueSample">Tissue Sample</option>
+                                    </select>
+                                    <button id="apply-subject-type" class="btn">Next</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div id="subject-step2" class="hide">
+                        <h4>Step #2: Subject column name</h4>
+                        <table class="table">
+                            <tr>
+                                <th>Select a column name</th>
+                                <td>
+                                    <select id="subject-cname">
+                                        <option value="">-</option>
+                                        <option value='cell_line_1'>cell_line_1</option>
+                                        <option value='cell_line_2'>cell_line_2</option>
+                                        <option value='cell_lineage'>cell_lineage</option>
+                                        <option value='column_name'>column_name</option>
+                                        <option value='compound_name'>compound_name</option>
+                                        <option value='disease_condition'>disease_condition</option>
+                                        <option value='disease_condition_1'>disease_condition_1</option>
+                                        <option value='disease_condition_2'>disease_condition_2</option>
+                                        <option value='drug_candidate'>drug_candidate</option>
+                                        <option value='entrez_gene_id'>entrez_gene_id</option>
+                                        <option value='gene_symbol'>gene_symbol</option>
+                                        <option value='gene_symbol_1'>gene_symbol_1</option>
+                                        <option value='gene_symbol_2'>gene_symbol_2</option>
+                                        <option value='gene_symbol_3'>gene_symbol_3</option>
+                                        <option value='gene_symbol_4'>gene_symbol_4</option>
+                                        <option value='gene_symbol_5'>gene_symbol_5</option>
+                                        <option value='shRNA_id'>shRNA_id</option>
+                                        <option value='target_group'>target_group</option>
+                                        <option value='tissue_sample'>tissue_sample</option>
+                                        <option value='tissue_sample_1'>tissue_sample_1</option>
+                                        <option value='tissue_sample_2'>tissue_sample_2</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    or enter new one:
+                                </th>
+                                <td>
+                                    <input id="subject-cname-custom" placeholder="e.g. gene_symbol" class="input-large">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan=2 class="next-cell">
+                                    <button id="apply-subject-cname" class="btn">Next</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div id="subject-step3" class="hide">
+                        <h4>Step #3: Select a role</h4>
+                        <table class="table">
+                            <tr>
+                                <th>Select a role </th>
+                                <td>
+                                    <select id="subject-role">
+                                        <option value="">-</option>
+                                        <option value='drug candidate'>drug candidate</option>
+                                        <option value='enriched feature'>enriched feature</option>
+                                        <option value='enriched regulon'>enriched regulon</option>
+                                        <option value='histology type'>histology type</option>
+                                        <option value='master regulator'>master regulator</option>
+                                        <option value='modulator'>modulator</option>
+                                        <option value='oncogene'>oncogene</option>
+                                        <option value='perturbagen'>perturbagen</option>
+                                        <option value='primary site'>primary site</option>
+                                        <option value='regulator'>regulator</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    ... or enter new one:
+                                </th>
+                                <td>
+                                    <input id="subject-role-custom" placeholder="e.g. perturbagen" class="input-large">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan=2 class="next-cell">
+                                    <button id="apply-subject-role" class="btn">Next</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div id="subject-step4" class="hide">
+                        <h4>Step #4: Enter description</h4>
+                        <table class="table">
+                            <tr>
+                                <td>
+                                    <input id="subject-desc" placeholder="e.g. mutated gene" class="input-xlarge">
+                                    <button id="apply-subject-desc" class="btn">Next</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+            <div class="modal hide fade" id="evidence-modal">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h3>Add an evidence</h3>
+                </div>
+                <div class="modal-body">
+                    <div id="evidence-step1">
+                        <h4>Step #1: Evidence type</h4>
+                        <table class="table">
+                            <tr>
+                                <td>
+                                    <select id="evidence-type">
+                                        <option value="">Select a type</option>
+                                        <option value="File">File</option>
+                                        <option value="Label">Label</option>
+                                        <option value="Label">Numeric</option>
+                                        <option value="URL">URL</option>
+                                    </select>
+                                    <button id="apply-evidence-type" class="btn">Next</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div id="evidence-step1-mime" class="hide">
+                        <h4>Step #1 cont.: File (MIME) type</h4>
+                        <table class="table">
+                            <tr>
+                                <th>Select a file type</th>
+                                <td>
+                                    <select id="evidence-mime-type">
+                                        <option value="">-</option>
+                                        <option value="application/pdf">PDF (application/pdf)</option>
+                                        <option value="image/png">PNG (image/png)</option>
+                                        <option value="text/gct">GCT (text/gct)</option>
+                                        <option value="text/sif">SIF (text/sif)</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>... or enter new one</th>
+                                <td>
+                                    <input id="evidence-mime-type-custom" placeholder="e.g. image/gif" class="input-large">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan=2 class="next-cell">
+                                    <button id="apply-evidence-mime-type" class="btn">Next</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div id="evidence-step1-unit" class="hide">
+                        <h4>Step #1 cont.: Numeric unit</h4>
+                        <table class="table">
+                            <tr>
+                                <th>Numeric unit (optional)</th>
+                                <td>
+                                    <input id="evidence-numeric-unit" placeholder="e.g. pL" class="input-large">
+                                    <button id="apply-evidence-numeric-unit" class="btn">Next</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div id="evidence-step2" class="hide">
+                        <h4>Step #2: Subject column name</h4>
+                        <table class="table">
+                            <tr>
+                                <th>Select a column name</th>
+                                <td>
+                                    <select id="evidence-cname">
+                                        <option value="">-</option>
+                                        <option value='additional_evidence'>additional_evidence</option>
+                                        <option value='c_score'>c_score</option>
+                                        <option value='cell_line_exclusion'>cell_line_exclusion</option>
+                                        <option value='cell_line_subset'>cell_line_subset</option>
+                                        <option value='cell_type'>cell_type</option>
+                                        <option value='column_name'>column_name</option>
+                                        <option value='drug_candidate_class'>drug_candidate_class</option>
+                                        <option value='enrichment_direction'>enrichment_direction</option>
+                                        <option value='fdr'>fdr</option>
+                                        <option value='feature_data_set'>feature_data_set</option>
+                                        <option value='feature_image_path'>feature_image_path</option>
+                                        <option value='figure_1'>figure_1</option>
+                                        <option value='figure_2'>figure_2</option>
+                                        <option value='figure_3'>figure_3</option>
+                                        <option value='figure_4'>figure_4</option>
+                                        <option value='figure_5'>figure_5</option>
+                                        <option value='figure_6'>figure_6</option>
+                                        <option value='func_type'>func_type</option>
+                                        <option value='gct_path'>gct_path</option>
+                                        <option value='gene_scoring'>gene_scoring</option>
+                                        <option value='log_fdr'>log_fdr</option>
+                                        <option value='mr_gsea_es'>mr_gsea_es</option>
+                                        <option value='mr_gsea_fdr'>mr_gsea_fdr</option>
+                                        <option value='mr_gsea_p_value'>mr_gsea_p_value</option>
+                                        <option value='mr_regulon_set_size'>mr_regulon_set_size</option>
+                                        <option value='mra_fet_p_value'>mra_fet_p_value</option>
+                                        <option value='mra_overlap_rank'>mra_overlap_rank</option>
+                                        <option value='mra_regulon_signature_overlap'>mra_regulon_signature_overlap</option>
+                                        <option value='nci_portal'>nci_portal</option>
+                                        <option value='network_1'>network_1</option>
+                                        <option value='num_shRNAs'>num_shRNAs</option>
+                                        <option value='number_of_cell_lines'>number_of_cell_lines</option>
+                                        <option value='number_of_cell_lines_in_target_group'>number_of_cell_lines_in_target_group</option>
+                                        <option value='number_of_example_cell_lines'>number_of_example_cell_lines</option>
+                                        <option value='number_of_mutant_cell_lines'>number_of_mutant_cell_lines</option>
+                                        <option value='p_value'>p_value</option>
+                                        <option value='probeset_id'>probeset_id</option>
+                                        <option value='publication_reference'>publication_reference</option>
+                                        <option value='publication_url'>publication_url</option>
+                                        <option value='response_image_path'>response_image_path</option>
+                                        <option value='shrna_diff_rep_fdr_combined'>shrna_diff_rep_fdr_combined</option>
+                                        <option value='shrna_diff_rep_net_direction_combined'>shrna_diff_rep_net_direction_combined</option>
+                                        <option value='shrna_diff_rep_p_value_combined'>shrna_diff_rep_p_value_combined</option>
+                                        <option value='shrna_diff_rep_z_score_combined'>shrna_diff_rep_z_score_combined</option>
+                                        <option value='solution_name'>solution_name</option>
+                                        <option value='story_location'>story_location</option>
+                                        <option value='target_group'>target_group</option>
+                                        <option value='tier1_evidence'>tier1_evidence</option>
+                                        <option value='tissue'>tissue</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>... or enter new one</th>
+                                <td>
+                                    <input id="evidence-cname-custom" placeholder="e.g. feature_image_path" class="input-xlarge">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" class="next-cell">
+                                    <button id="apply-evidence-cname" class="btn">Next</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div id="evidence-step3" class="hide">
+                        <h4>Step #3: Select a role</h4>
+                        <table class="table">
+                            <tr>
+                                <th>Select a role</th>
+                                <td>
+                                    <select id="evidence-role">
+                                        <option value="">-</option>
+                                        <option value='computed'>computed</option>
+                                        <option value='context'>context</option>
+                                        <option value='literature'>literature</option>
+                                        <option value='modulator'>modulator</option>
+                                        <option value='oncogene'>oncogene</option>
+                                        <option value='perturbagen'>perturbagen</option>
+                                        <option value='primary site'>primary site</option>
+                                        <option value='regulator'>regulator</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>... or enter new one</th>
+                                <td>
+                                    <input id="evidence-role-custom" placeholder="e.g. enriched feature" class="input-xlarge">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" class="next-cell">
+                                    <button id="apply-evidence-role" class="btn">Next</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div id="evidence-step4" class="hide">
+                        <h4>Step #4: Enter description</h4>
+                        <table class="table">
+                            <tr>
+                                <td>
+                                    <input id="evidence-desc" placeholder="e.g. heatmap image" class="input-xlarge">
+                                    <button id="apply-evidence-desc" class="btn">Next</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+            <div class="row hide" id="template-preview">
+                <hr>
+                <div class="template-preview-wrapper span12">
+                    <h2>Template Preview</h2>
+                    <table class="table table-bordered table-striped" id="template-table">
+                        <tr id="template-header">
+                            <td><!--intentionally left blank--></td>
+                        </tr>
+                        <tr id="template-subject">
+                            <th>subject</th>
+                        </tr>
+                        <tr id="template-evidence">
+                            <th>evidence</th>
+                        </tr>
+                        <tr id="template-role">
+                            <th>role</th>
+                        </tr>
+                        <tr id="template-mime_type">
+                            <th>mime_type</th>
+                        </tr>
+                        <tr id="template-numeric_units">
+                            <th>numeric_units</th>
+                        </tr>
+                        <tr id="template-display_text">
+                            <th>display_text</th>
+                        </tr>
+                        <tr id="template-sample-data1" class="sample-data">
+                            <td><i>sample data row #1</i></td>
+                        </tr>
+                        <tr id="template-sample-data2" class="sample-data">
+                            <td><i>sample data row #2</i></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="template-preview-wrapper span12">
+                    <h2>Template Meta-Data Preview</h2>
+                    <table class="table table-bordered table-striped" id="template-meta-table">
+                        <tr>
+                            <th>observation_tier</th>
+                            <th>template_name</th>
+                            <th>observation_summary</th>
+                            <th>template_description</th>
+                            <th>submission_name</th>
+                            <th>submission_description</th>
+                        </tr>
+                        <tr>
+                            <td id="meta-observation_tier"></td>
+                            <td id="meta-template_name"></td>
+                            <td id="meta-observation_summary"></td>
+                            <td id="meta-template_description"></td>
+                            <td id="meta-submission_name"></td>
+                            <td id="meta-submission_description"></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="span8 offset2 template-download">
+                    <button class="btn btn-large" id="preview-template">Preview template</button>
+                    <div class="span4">
+                        <form action="download/template" method="POST" id="download-form">
+                            <button class="btn btn-warning btn-large" id="download-template">Download template</button>
+                            <input type="hidden" name="template" id="template-input">
+                            <input type="hidden" name="metatemplate" id="template-meta-input">
+                            <input type="hidden" name="filename" id="filename-input">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
+
+    <script type="text/template" id="template-helper-center-tmpl">
+        <option value="{{displayName}}">{{displayName}}</option>
+    </script>
+
+    <script type="text/template" id="template-header-col-tmpl">
+        <td class="{{id}}" data-type="{{columnType}}"></td>
+    </script>
+
+    <script type="text/template" id="template-sample-data-tmpl">
+        <input placeholder="enter data" class="sample-data-input">
+    </script>
+
+    <script type="text/template" id="preview-tmpl">
+        <div id="preview-container" class="container">
+            <h1>Template preview</h1>
+            <ul class="nav nav-tabs" id="preview-tabs">
+                <li class="active"><a href="#submission-preview">Submission</a></li>
+                <li><a href="#obs1-preview">Observation</a></li>
+            </ul>
+
+            <div class="tab-content">
+                <div class="tab-pane active" id="submission-preview">
+                    <h1>Here will come the submission</h1>
+                </div>
+                <div class="tab-pane" id="obs1-preview">
+                    <h1>Here will come the observation #1</h1>
+                </div>
+            </div>
+        </div>
+    </script>
+
+    <script type="text/template" id="ncithesaurus-tmpl">
+        <li>
+            <a href="http://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI%20Thesaurus&code={{nciId}}" target="_blank">
+                NCI Thesaurus: {{nciId}}
+            </a>
+        </li>
     </script>
 
     <!-- end of templates -->

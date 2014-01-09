@@ -11,10 +11,15 @@
   <import resource="classpath*:META-INF/spring/observationDataSharedApplicationContext.xml" />
   <context:component-scan base-package="gov.nih.nci.ctd2.dashboard.importer.internal" />
 
-  <batch:job id="testTierOneObservationDataImporterJob">
-	<batch:step id="tierOneObservationDataStep" parent="observationDataStep">
+  <batch:job id="testObservationDataImporterJob">
+	<batch:step id="tierOneObservationDataStep" parent="observationDataStep" next="tierThreeObservationDataStep">
 	  <batch:tasklet>
 		<batch:chunk reader="tierOneObservationDataReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+	<batch:step id="tierThreeObservationDataStep" parent="observationDataStep">
+	  <batch:tasklet>
+		<batch:chunk reader="tierThreeObservationDataReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	  </batch:tasklet>
 	</batch:step>
   </batch:job>
@@ -32,7 +37,23 @@
 
   <bean name="tierOneObservationDataLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="dummy,submission_center,submission_date,template_name,cell_line_subset,cell_line_exclusion,feature_data_set,compound_name,entrez_gene_id,number_of_cell_lines,number_of_mutant_cell_lines,enrichment_direction,log_fdr,response_image_path,feature_image_path,nci_portal,gct_path"/>
+	<property name="names" value="dummy,submission_name,submission_center,submission_date,template_name,cell_line_subset,cell_line_exclusion,feature_data_set,compound_name,entrez_gene_id,number_of_cell_lines,number_of_mutant_cell_lines,enrichment_direction,log_fdr,response_image_path,feature_image_path,nci_portal,gct_path"/>
+  </bean>
+
+  <bean name="tierThreeObservationDataReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="resource" value="classpath:test-tier-3-observation-data.txt" />
+    <property name="lineMapper" ref="tierThreeObservationDataMapper" />
+	<property name="linesToSkip" value="1" />
+  </bean>
+
+  <bean name="tierThreeObservationDataMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+	<property name="fieldSetMapper" ref="observationDataMapper" />
+	<property name="lineTokenizer" ref="tierThreeObservationDataLineTokenizer" />
+  </bean>
+
+  <bean name="tierThreeObservationDataLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+	<property name="delimiter" value="\u0009"/>
+	<property name="names" value="dummy,submission_name,submission_center,submission_date,template_name,compound_name,gene_symbol,figure_1,figure_2,figure_3,figure_4,figure_5,figure_6,tier1_evidence"/>
   </bean>
 
   <!-- the following beans are not used during testing - only required for proper loading of context files -->

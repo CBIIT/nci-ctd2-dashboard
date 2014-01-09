@@ -380,16 +380,39 @@ public class DashboardDaoTest {
         xref3.setDatabaseId(id3);
         xref3.setDatabaseName(db3);
 
+        Annotation annotation1 = dashboardFactory.create(Annotation.class);
+        annotation1.setDisplayName("lymphoid_neoplasm");
+        annotation1.setType("primary_site");
+        annotation1.setSource("COSMIC (Sanger)");
+
+        Annotation annotation2 = dashboardFactory.create(Annotation.class);
+        annotation2.setDisplayName("haematopoietic_and_lymphoid_tissue");
+        annotation2.setType("site_subtype_1");
+        annotation2.setSource("CCLE (Broad/Novartis)");
+
         CellSample cellSample1 = dashboardFactory.create(CellSample.class);
         cellSample1.setDisplayName("CL1");
         cellSample1.getXrefs().add(xref1);
+        cellSample1.getAnnotations().add(annotation1);
         dashboardDao.save(cellSample1);
 
         CellSample cellSample2 = dashboardFactory.create(CellSample.class);
         cellSample2.setDisplayName("CL2");
         cellSample2.getXrefs().add(xref2);
         cellSample2.getXrefs().add(xref3);
+        cellSample2.getAnnotations().add(annotation2);
         dashboardDao.save(cellSample2);
+
+        List<CellSample> cellSamples = dashboardDao.findCellSampleByAnnoSource("COSMIC (Sanger)");
+        assertEquals(1, cellSamples.size());
+        cellSamples = dashboardDao.findCellSampleByAnnoType("primary_site");
+        assertEquals(1, cellSamples.size());
+        cellSamples = dashboardDao.findCellSampleByAnnoName("lymphoid_neoplasm");
+        assertEquals(1, cellSamples.size());
+
+        cellSamples = dashboardDao.findCellSampleByAnnotation(annotation1);
+        assertEquals(1, cellSamples.size());
+        assertEquals(cellSample1, cellSamples.iterator().next());
 
         List<Subject> subjects1 = dashboardDao.findSubjectsByXref(xref1);
         assertEquals(1, subjects1.size());
@@ -575,8 +598,6 @@ public class DashboardDaoTest {
 
         CellSample cellSample1 = dashboardFactory.create(CellSample.class);
         cellSample1.setDisplayName("CL1");
-        String lineageTest = "LineageTest";
-        cellSample1.setLineage(lineageTest);
         dashboardDao.save(cellSample1);
 
         Compound compound = dashboardFactory.create(Compound.class);
