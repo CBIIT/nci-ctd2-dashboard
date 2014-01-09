@@ -1,0 +1,80 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <parent>
+	<groupId>gov.nih.nci.ctd2.dashboard</groupId>
+	<artifactId>dashboard</artifactId>
+	<version>0.1.0-SNAPSHOT</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>gov.nih.nci.ctd2.dashboard</groupId>
+  <artifactId>admin</artifactId>
+  <packaging>jar</packaging>
+  <version>0.1.0-SNAPSHOT</version>
+  <name>Admin</name>
+  <url>http://maven.apache.org</url>
+
+  <dependencies>
+      <dependency>
+          <groupId>${project.groupId}</groupId>
+          <artifactId>core</artifactId>
+          <version>${project.version}</version>
+      </dependency>
+      <dependency>
+          <groupId>${project.groupId}</groupId>
+          <artifactId>core</artifactId>
+          <classifier>tests</classifier>
+          <version>${project.version}</version>
+          <scope>test</scope>
+      </dependency>
+      <dependency>
+          <groupId>commons-cli</groupId>
+          <artifactId>commons-cli</artifactId>
+          <version>1.2</version>
+      </dependency>
+      <dependency>
+	      <groupId>org.springframework.batch</groupId>
+          <artifactId>spring-batch-core</artifactId>
+	      <version>${spring.batch.version}</version>
+      </dependency>
+      <dependency>
+	      <groupId>org.springframework.batch</groupId>
+	      <artifactId>spring-batch-infrastructure</artifactId>
+	      <version>${spring.batch.version}</version>
+      </dependency>
+  </dependencies>
+
+  <build>
+   <plugins>
+  	<plugin>
+		<groupId>org.apache.maven.plugins</groupId>
+		<artifactId>maven-shade-plugin</artifactId>
+		<version>1.7.1</version>
+		<executions>
+		  <execution>
+			<phase>package</phase>
+			<goals>
+			  <goal>shade</goal>
+			</goals>
+			<configuration>
+              <finalName>dashboard-admin</finalName>
+			  <createDependencyReducedPom>false</createDependencyReducedPom>
+			  <transformers>
+                  <!-- the following two transformers are need to prevent spring handler clashes -->
+                  <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                      <resource>META-INF/spring.handlers</resource>
+                  </transformer>
+                  <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                      <resource>META-INF/spring.schemas</resource>
+                  </transformer>
+                  <!-- end of spring clash prevent -->
+				  <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+				    <mainClass>gov.nih.nci.ctd2.dashboard.DashboardAdminMain</mainClass>
+				  </transformer>
+			  </transformers>
+			</configuration>
+		  </execution>
+		</executions>
+	  </plugin>
+    </plugins>
+   </build>
+
+</project>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:batch="http://www.springframework.org/schema/batch"
+		xmlns:context="http://www.springframework.org/schema/context"
+        xsi:schemaLocation="http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-2.1.xsd
+							http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+							http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+  <import resource="classpath*:META-INF/spring/adminApplicationContext.xml" />
+  <context:component-scan base-package="gov.nih.nci.ctd2.dashboard.importer.internal" />
+
+  <batch:job id="taxonomyDataImporterJob">
+	<batch:step id="taxonomyDataStep" parent="taxonomyDataSimpleStep">
+	  <batch:tasklet>
+		<batch:chunk reader="taxonomyDataReader" writer="taxonomyDataWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+  </batch:job>
+
+  <bean id="taxonomyDataSimpleStep" class="org.springframework.batch.core.step.item.SimpleStepFactoryBean" abstract="true">
+	<property name="transactionManager" ref="transactionManager" />
+	<property name="jobRepository" ref="jobRepository" />
+	<property name="commitInterval" value="${spring.batch.commit.interval}" />
+  </bean>
+
+  <bean name="taxonomyDataReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="resource" value="classpath:simple-taxonomy-list.txt" />
+    <property name="lineMapper" ref="taxonomyDataLineMapper" />
+	<property name="linesToSkip" value="1" />
+  </bean>
+
+  <bean name="taxonomyDataLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+	<property name="fieldSetMapper" ref="taxonomyDataMapper" />
+	<property name="lineTokenizer" ref="taxonomyDataLineTokenizer" />
+  </bean>
+
+  <bean name="taxonomyDataLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+	<property name="names" value="name,taxonomy_id"/>
+	<property name="delimiter" value="\u0009"/>
+  </bean>
+</beans>
