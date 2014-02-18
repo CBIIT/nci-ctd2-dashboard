@@ -22,7 +22,7 @@ public interface DashboardDao {
     List<CellSample> findCellSampleByAnnoSource(String source);
     List<CellSample> findCellSampleByAnnoName(String name);
     List<CellSample> findCellSampleByAnnotation(Annotation annotation);
-    List<TissueSample> findTissueSampleByLineage(String lineage);
+    TissueSample findTissueSampleByName(String name);
     List<Compound> findCompoundsByName(String compoundName);
     List<Compound> findCompoundsBySmilesNotation(String smilesNotation);
     AnimalModel findAnimalModelByName(String animalModelName);
