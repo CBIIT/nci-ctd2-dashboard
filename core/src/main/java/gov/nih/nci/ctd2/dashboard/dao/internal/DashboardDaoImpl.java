@@ -320,7 +320,7 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
             models.add((AnimalModel) o);
         }
         assert models.size() <= 1;
-        return (models().size() == 1) ? models.iterator.next() : null;
+        return (models.size() == 1) ? models.iterator().next() : null;
 	}
 
     @Override
