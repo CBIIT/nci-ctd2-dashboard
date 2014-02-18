@@ -28,6 +28,7 @@ public class AdminTest {
     public void initiateDao() {
         this.appContext = new ClassPathXmlApplicationContext(
                 "classpath*:META-INF/spring/testApplicationContext.xml", // this is coming from the core module
+				"classpath*:META-INF/spring/testAnimalModelApplicationContext.xml", // and this is for cell line data importer beans
 				"classpath*:META-INF/spring/testCellLineDataApplicationContext.xml", // and this is for cell line data importer beans
 				"classpath*:META-INF/spring/testCompoundDataApplicationContext.xml", // and this is for compound data importer beans
 				"classpath*:META-INF/spring/testGeneDataApplicationContext.xml", // and this is for gene data importer beans
@@ -59,6 +60,14 @@ public class AdminTest {
 		List<Organism> organisms = dashboardDao.findOrganismByTaxonomyId("9606");
 		assertEquals(1, organisms.size());
 		assertEquals("Homo sapiens", organisms.iterator().next().getDisplayName());
+
+        // animal model
+        jobExecution = executeJob("animalModelImporterJob");
+		assertEquals("COMPLETED", jobExecution.getExitStatus().getExitCode());
+		assertEquals(1, dashboardDao.countEntities(AnimalModel.class).intValue());
+		AnimalModel model = dashboardDao.findAnimalModelByName("[FVB/N x SPRET/Ei] x FVB/N");
+		assertNotNull(model);
+		assertEquals("10090", model.getOrganism().getTaxonomyId());
 
         // import some cell line data
         jobExecution = executeJob("cellLineDataImporterJob");
@@ -130,7 +139,7 @@ public class AdminTest {
         List<Subject> shRNASubjects = dashboardDao.findSubjectsByXref("BROAD_SHRNA", "TRCN0000000001");
         assertEquals(1, shRNASubjects.size());
         ShRna shRNA = (ShRna)shRNASubjects.get(0);
-        assertEquals("NM_001356.x-2866s1c1", shRNA.getDisplayName());
+        assertEquals("CCCTGCCAAACAAGCTAATAT", shRNA.getDisplayName());
         assertEquals("CCCTGCCAAACAAGCTAATAT", shRNA.getTargetSequence());
 
         // import some tissue sample data
