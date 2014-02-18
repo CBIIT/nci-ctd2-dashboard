@@ -33,12 +33,11 @@ public class AnimalModelFieldSetMapper implements FieldSetMapper<AnimalModel> {
 		AnimalModel animalModel = dashboardFactory.create(AnimalModel.class);
 		animalModel.setDisplayName(name);
 
-        String taxonomyId = fieldSet.readString(0);
-        Organism organism = organismMap.get(taxonomyId);
+        Organism organism = organismMap.get(taxId);
         if (organism == null) {
-			List<Organism> organisms = dashboardDao.findOrganismByTaxonomyId(taxonomyId);
+			List<Organism> organisms = dashboardDao.findOrganismByTaxonomyId(taxId);
 			if (organisms.size() == 1) organism = organisms.get(0);
-            organismMap.put(taxonomyId, organism);
+            organismMap.put(taxId, organism);
         }
 		if (organism != null) animalModel.setOrganism(organism);
 		return animalModel;
