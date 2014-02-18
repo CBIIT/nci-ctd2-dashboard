@@ -1,0 +1,3 @@
+nci_thesaurus_code	display_name	parents
+C3262	neoplasm	
+C4741	neoplasm by morphology	C3262
