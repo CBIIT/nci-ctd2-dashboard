@@ -24,9 +24,13 @@
 	<property name="commitInterval" value="${spring.batch.commit.interval}" />
   </bean>
 
-  <bean name="geneDataReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-	<property name="resource" value="${gene.data.location}" />
-    <property name="lineMapper" ref="geneDataLineMapper" />
+  <bean name="geneDataReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+	<property name="resources" value="${gene.data.location}" />
+    <property name="delegate" ref="geneDataItemReader" />
+  </bean>
+
+  <bean id="geneDataItemReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="lineMapper" ref="geneDataLineMapper" />
   </bean>
 
   <bean name="geneDataLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
