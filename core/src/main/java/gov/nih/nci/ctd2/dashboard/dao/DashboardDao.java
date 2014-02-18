@@ -25,6 +25,7 @@ public interface DashboardDao {
     List<TissueSample> findTissueSampleByLineage(String lineage);
     List<Compound> findCompoundsByName(String compoundName);
     List<Compound> findCompoundsBySmilesNotation(String smilesNotation);
+    AnimalModel findAnimalModelByName(String animalModelName);
     List<Subject> findSubjectsByXref(String databaseName, String databaseId);
     List<Subject> findSubjectsByXref(Xref xref);
     List<Organism> findOrganismByTaxonomyId(String taxonomyId);
