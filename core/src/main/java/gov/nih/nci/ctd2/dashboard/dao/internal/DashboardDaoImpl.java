@@ -311,6 +311,18 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
         return list;
     }
 
+	@Override
+    public AnimalModel findAnimalModelByName(String animalModelName) {
+		List<AnimalModel> models = new ArrayList<AnimalModel>();
+
+        for (Object o : getHibernateTemplate().find("from AnimalModelImpl where displayName = ?", animalModelName)) {
+            assert o instanceof AnimalModel;
+            models.add((AnimalModel) o);
+        }
+        assert models.size() <= 1;
+        return (models().size() == 1) ? models.iterator.next() : null;
+	}
+
     @Override
     public List<Subject> findSubjectsByXref(String databaseName, String databaseId) {
         Set<Subject> subjects = new HashSet<Subject>();
