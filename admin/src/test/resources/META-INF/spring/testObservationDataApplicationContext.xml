@@ -128,9 +128,19 @@
     <property name="lineMapper" ref="fhcrcCSTTier1LineMapper" />
   </bean>
 
+  <!-- utsw tier 2 discoipyrroles story reader -->
+  <bean name="utswTier2DiscoipyrrolesStoryReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="lineMapper" ref="utswTier2DiscoipyrrolesStoryLineMapper" />
+  </bean>
+
   <!-- utsw tier 4 discoipyrroles story reader -->
   <bean name="utswTier4DiscoipyrrolesStoryReader" class="org.springframework.batch.item.file.FlatFileItemReader">
 	<property name="lineMapper" ref="utswTier4DiscoipyrrolesStoryLineMapper" />
+  </bean>
+
+  <!-- ucsf differential expression reader -->
+  <bean name="ucsfDifferentialExpressionReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="lineMapper" ref="ucsfDifferentialExpressionLineMapper" />
   </bean>
 
 </beans>

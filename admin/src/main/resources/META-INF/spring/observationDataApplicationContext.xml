@@ -165,12 +165,34 @@
 	</property>
   </bean>
 
-  <!-- uts tier 4 discoipyrroles story -->
+  <!-- utsw tier 2 discoipyrroles story -->
+  <bean name="utswTier2DiscoipyrrolesStoryReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+	<property name="resources" value="${utsw.tier2.discoipyrroles.story.data.location}" />
+	<property name="delegate">
+	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+		<property name="lineMapper" ref="utswTier2DiscoipyrrolesStoryLineMapper" />
+		<property name="linesToSkip" value="7" />
+	  </bean>
+	</property>
+  </bean>
+
+  <!-- utsw tier 4 discoipyrroles story -->
   <bean name="utswTier4DiscoipyrrolesStoryReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
 	<property name="resources" value="${utsw.tier4.discoipyrroles.story.data.location}" />
 	<property name="delegate">
 	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
 		<property name="lineMapper" ref="utswTier4DiscoipyrrolesStoryLineMapper" />
+		<property name="linesToSkip" value="7" />
+	  </bean>
+	</property>
+  </bean>
+
+  <!-- ucsf differential expression -->
+  <bean name="ucsfDifferentialExpressionReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+	<property name="resources" value="${ucsf.differential-expression.data.location}" />
+	<property name="delegate">
+	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+		<property name="lineMapper" ref="ucsfDifferentialExpressionLineMapper" />
 		<property name="linesToSkip" value="7" />
 	  </bean>
 	</property>
