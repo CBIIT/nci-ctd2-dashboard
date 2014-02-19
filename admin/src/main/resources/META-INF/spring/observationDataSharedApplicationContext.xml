@@ -73,25 +73,21 @@
 		<batch:chunk reader="dfciPax8Tier3Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	  </batch:tasklet>
 	</batch:step>
-
 	<batch:step id="fhcrcCSTTier1Step" parent="observationDataStep" next="utswTier2DiscoipyrrolesStoryStep">
 	  <batch:tasklet>
 		<batch:chunk reader="fhcrcCSTTier1Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	  </batch:tasklet>
 	</batch:step>
-
 	<batch:step id="utswTier2DiscoipyrrolesStoryStep" parent="observationDataStep" next="utswTier4DiscoipyrrolesStoryStep">
 	  <batch:tasklet>
 		<batch:chunk reader="utswTier2DiscoipyrrolesStoryReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	  </batch:tasklet>
 	</batch:step>
-
 	<batch:step id="utswTier4DiscoipyrrolesStoryStep" parent="observationDataStep" next="ucsfDifferentialExpressionStep" >
 	  <batch:tasklet>
 		<batch:chunk reader="utswTier4DiscoipyrrolesStoryReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	  </batch:tasklet>
 	</batch:step>
-
 	<batch:step id="ucsfDifferentialExpressionStep" parent="observationDataStep">
 	  <batch:tasklet>
 		<batch:chunk reader="ucsfDifferentialExpressionReader" processor="observationDataProcessor" writer="observationDataWriter"/>
