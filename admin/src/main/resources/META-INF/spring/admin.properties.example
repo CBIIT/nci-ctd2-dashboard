@@ -33,7 +33,7 @@ dfci.ataris.analysis.data.location=file:${CTD2_DATA_HOME}/submissions/20130429-d
 dfci.ovarian.analysis.data.location=file:${CTD2_DATA_HOME}/submissions/20130426-dfci_ovarian_analysis/20130426-dfci_ovarian_analysis.txt
 dfci.pax8.tier3.data.location=file:${CTD2_DATA_HOME}/submissions/20130429-dfci_pax8_tier3/20130429-dfci_pax8_tier3.txt
 fhcrc.tier1.cst.profiling.data.location=file:${CTD2_DATA_HOME}/submissions/20131117-fhcrc-m_tier1_cst_profiling-SOC/20131117-fhcrc-m_tier1_cst_profiling-SOC.txt
-utsw.tier2.discoipyrroles.story.data.location=file:${CTD2_DATA_HOME}/submissions/20130921-utsw_discoipyrroles_tier2_story/20130921-utsw_discoipyrrole_tier2_story.txt
+utsw.tier2.discoipyrroles.story.data.location=file:${CTD2_DATA_HOME}/submissions/20130921-utsw_discoipyrrole_tier2_story/20130921-utsw_discoipyrrole_tier2_story.txt
 utsw.tier4.discoipyrroles.story.data.location=file:${CTD2_DATA_HOME}/submissions/20130503-utsw_tier4_discoipyrroles_story/20130503-utsw_tier4_discoipyrroles_story.txt
 ucsf.differential-expression.data.location=file:${CTD2_DATA_HOME}/submissions/20140124-ucsf_differential_expression/20140124-ucsf_differential_expression.txt
 
