@@ -496,7 +496,7 @@
 		<entry key="dfci_pax8_tier3:figure_3" value="evidence:readString:createObservedFileEvidence" />
 		<entry key="dfci_pax8_tier3:figure_4" value="evidence:readString:createObservedFileEvidence" />
 		<entry key="dfci_pax8_tier3:figure_5" value="evidence:readString:createObservedFileEvidence" />
-		<entry key="dfci_pax8_tier3:tier1_evidence" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="dfci_pax8_tier3:tier2_evidence" value="evidence:readString:createObservedUrlEvidence" />
 		<entry key="dfci_pax8_tier3:publication_reference" value="evidence:readString:createObservedLabelEvidence" />
 		<entry key="dfci_pax8_tier3:publication_url" value="evidence:readString:createObservedUrlEvidence" />
 		<!-- fhcrc CST Tier 1 -->
