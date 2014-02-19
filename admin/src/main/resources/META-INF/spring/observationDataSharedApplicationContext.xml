@@ -403,7 +403,7 @@
 		<entry key="columbia_marina_analysis:mr_gsea_fdr" value="evidence:readDouble:createObservedNumericEvidence" />
 		<!-- columbia mra fet analysis template -->
 		<entry key="columbia_mra_fet_analysis:disease_condition" value="subject:findTissueSampleByName" />
-		<entry key="columbia_mra_fet_analysis:tissue" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="columbia_mra_fet_analysis:tissue" value="subject:findTissueSampleByName" />
 		<entry key="columbia_mra_fet_analysis:gene_symbol" value="subject:findGenesBySymbol" />
 		<entry key="columbia_mra_fet_analysis:func_type" value="evidence:readString:createObservedLabelEvidence" />
 		<entry key="columbia_mra_fet_analysis:mra_regulon_signature_overlap" value="evidence:readInt:createObservedNumericEvidence" />
