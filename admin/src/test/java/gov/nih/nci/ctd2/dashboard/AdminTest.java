@@ -65,9 +65,9 @@ public class AdminTest {
         jobExecution = executeJob("animalModelImporterJob");
 		assertEquals("COMPLETED", jobExecution.getExitStatus().getExitCode());
 		assertEquals(1, dashboardDao.countEntities(AnimalModel.class).intValue());
-		AnimalModel model = dashboardDao.findAnimalModelByName("[FVB/N x SPRET/Ei] x FVB/N");
-		assertNotNull(model);
-		assertEquals("10090", model.getOrganism().getTaxonomyId());
+		List<AnimalModel> models = dashboardDao.findAnimalModelByName("[FVB/N x SPRET/Ei] x FVB/N");
+		assertEquals(1, models.size());
+		assertEquals("10090", models.iterator().next().getOrganism().getTaxonomyId());
 
         // import some cell line data
         jobExecution = executeJob("cellLineDataImporterJob");
@@ -146,8 +146,9 @@ public class AdminTest {
         jobExecution = executeJob("tissueSampleDataImporterJob");
         assertEquals("COMPLETED", jobExecution.getExitStatus().getExitCode());
         assertEquals(2, dashboardDao.countEntities(TissueSample.class).intValue());
-        TissueSample tissueSample = dashboardDao.findTissueSampleByName("neoplasm by morphology");
-        assertNotNull(tissueSample);
+        List<TissueSample> tissueSamples = dashboardDao.findTissueSampleByName("neoplasm by morphology");
+        assertEquals(1, tissueSamples.size());
+        TissueSample tissueSample = tissueSamples.get(0);
         assertEquals(1, tissueSample.getSynonyms().size());
         assertEquals(2, tissueSample.getXrefs().size());
 
