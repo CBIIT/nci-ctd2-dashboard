@@ -356,7 +356,7 @@
 		<entry key="broad_cpd_sens_lineage_enrich:cell_line_exclusion" value="evidence:readString:createObservedLabelEvidence" />
 		<entry key="broad_cpd_sens_lineage_enrich:feature_data_set" value="evidence:readString:createObservedLabelEvidence" />
 		<entry key="broad_cpd_sens_lineage_enrich:compound_name" value="subject:findCompoundsByName" />
-		<entry key="broad_cpd_sens_lineage_enrich:cell_lineage" value="subject:findTissueSampleByLineage" />
+		<entry key="broad_cpd_sens_lineage_enrich:cell_lineage" value="subject:findTissueSampleByName" />
 		<entry key="broad_cpd_sens_lineage_enrich:number_of_cell_lines" value="evidence:readInt:createObservedNumericEvidence" />
 		<entry key="broad_cpd_sens_lineage_enrich:number_of_example_cell_lines" value="evidence:readInt:createObservedNumericEvidence" />
 		<entry key="broad_cpd_sens_lineage_enrich:enrichment_direction" value="evidence:readString:createObservedLabelEvidence" />
@@ -391,10 +391,10 @@
 		<entry key="broad_tier3_navitoclax_story:tier1_evidence" value="evidence:readString:createObservedUrlEvidence" />
 		<!-- columbia marina analysis template -->
 		<entry key="columbia_marina_analysis:probeset_id" value="evidence:readString:createObservedLabelEvidence" />
-		<entry key="columbia_marina_analysis:disease_condition" value="subject:findTissueSampleByLineage" />
+		<entry key="columbia_marina_analysis:disease_condition" value="subject:findTissueSampleByName" />
 		<entry key="columbia_marina_analysis:tissue" value="evidence:readString:createObservedLabelEvidence" />
 		<entry key="columbia_marina_analysis:cell_type" value="evidence:readString:createObservedLabelEvidence" />
-		<entry key="columbia_marina_analysis:cell_lineage" value="subject:findTissueSampleByLineage" />
+		<entry key="columbia_marina_analysis:cell_lineage" value="subject:findTissueSampleByName" />
 		<entry key="columbia_marina_analysis:gene_symbol" value="subject:findGenesBySymbol" />
 		<entry key="columbia_marina_analysis:func_type" value="evidence:readString:createObservedLabelEvidence" />
 		<entry key="columbia_marina_analysis:mr_regulon_set_size" value="evidence:readInt:createObservedNumericEvidence" />
@@ -402,7 +402,7 @@
 		<entry key="columbia_marina_analysis:mr_gsea_p_value" value="evidence:readDouble:createObservedNumericEvidence" />
 		<entry key="columbia_marina_analysis:mr_gsea_fdr" value="evidence:readDouble:createObservedNumericEvidence" />
 		<!-- columbia mra fet analysis template -->
-		<entry key="columbia_mra_fet_analysis:disease_condition" value="subject:findTissueSampleByLineage" />
+		<entry key="columbia_mra_fet_analysis:disease_condition" value="subject:findTissueSampleByName" />
 		<entry key="columbia_mra_fet_analysis:tissue" value="evidence:readString:createObservedLabelEvidence" />
 		<entry key="columbia_mra_fet_analysis:gene_symbol" value="subject:findGenesBySymbol" />
 		<entry key="columbia_mra_fet_analysis:func_type" value="evidence:readString:createObservedLabelEvidence" />
@@ -416,7 +416,7 @@
 		<entry key="columbia_mra_fet_analysis:publication_reference" value="evidence:readString:createObservedLabelEvidence" />
 		<!-- columbia master regulator analysis with shRNA knockdown analysis -->
 		<entry key="columbia_joint_mr_shrna_diff:probeset_id" value="evidence:readString:createObservedLabelEvidence" />
-		<entry key="columbia_joint_mr_shrna_diff:disease_condition" value="subject:findTissueSampleByLineage" />
+		<entry key="columbia_joint_mr_shrna_diff:disease_condition" value="subject:findTissueSampleByName" />
 		<entry key="columbia_joint_mr_shrna_diff:cell_line_1" value="subject:findSubjectsBySynonym" />
 		<entry key="columbia_joint_mr_shrna_diff:cell_line_2" value="subject:findSubjectsBySynonym" />
 		<entry key="columbia_joint_mr_shrna_diff:gene_symbol" value="subject:findGenesBySymbol" />
@@ -431,8 +431,8 @@
 		<entry key="columbia_joint_mr_shrna_diff:shrna_diff_rep_fdr_combined" value="evidence:readDouble:createObservedNumericEvidence" />
 		<entry key="columbia_joint_mr_shrna_diff:shrna_diff_rep_net_direction_combined" value="evidence:readString:createObservedLabelEvidence" />
 		<!-- columbia tier4 glioma story -->
-		<entry key="columbia_tier4_glioma_story:disease_condition" value="subject:findTissueSampleByLineage" />
-		<entry key="columbia_tier4_glioma_story:tissue_sample" value="subject:findTissueSampleByLineage" />
+		<entry key="columbia_tier4_glioma_story:disease_condition" value="subject:findTissueSampleByName" />
+		<entry key="columbia_tier4_glioma_story:tissue_sample" value="subject:findTissueSampleByName" />
 		<entry key="columbia_tier4_glioma_story:gene_symbol_1" value="subject:findGenesBySymbol" />
 		<entry key="columbia_tier4_glioma_story:gene_symbol_2" value="subject:findGenesBySymbol" />
 		<entry key="columbia_tier4_glioma_story:gene_symbol_3" value="subject:findGenesBySymbol" />
@@ -440,8 +440,8 @@
 		<entry key="columbia_tier4_glioma_story:gene_symbol_5" value="subject:findGenesBySymbol" />
 		<entry key="columbia_tier4_glioma_story:story_location" value="evidence:readString:createObservedFileEvidence" />
 		<!-- cshl tier4 fgf19 story -->
-		<entry key="cshl_tier4_fgf19_story:disease_condition" value="subject:findTissueSampleByLineage" />
-		<entry key="cshl_tier4_fgf19_story:tissue_sample" value="subject:findTissueSampleByLineage" />
+		<entry key="cshl_tier4_fgf19_story:disease_condition" value="subject:findTissueSampleByName" />
+		<entry key="cshl_tier4_fgf19_story:tissue_sample" value="subject:findTissueSampleByName" />
 		<entry key="cshl_tier4_fgf19_story:gene_symbol_1" value="subject:findGenesBySymbol" />
 		<entry key="cshl_tier4_fgf19_story:gene_symbol_2" value="subject:findGenesBySymbol" />
 		<entry key="cshl_tier4_fgf19_story:gene_symbol_3" value="subject:findGenesBySymbol" />
@@ -449,8 +449,8 @@
 		<entry key="cshl_tier4_fgf19_story:drug_candidate" value="subject:findCompoundsByName" />
 		<entry key="cshl_tier4_fgf19_story:story_location" value="evidence:readString:createObservedFileEvidence" />
 		<!-- dfci tier4 beta-catenin story -->
-		<entry key="dfci_tier4_beta-catenin_story:disease_condition" value="subject:findTissueSampleByLineage" />
-		<entry key="dfci_tier4_beta-catenin_story:tissue_sample" value="subject:findTissueSampleByLineage" />
+		<entry key="dfci_tier4_beta-catenin_story:disease_condition" value="subject:findTissueSampleByName" />
+		<entry key="dfci_tier4_beta-catenin_story:tissue_sample" value="subject:findTissueSampleByName" />
 		<entry key="dfci_tier4_beta-catenin_story:gene_symbol_1" value="subject:findGenesBySymbol" />
 		<entry key="dfci_tier4_beta-catenin_story:gene_symbol_2" value="subject:findGenesBySymbol" />
 		<entry key="dfci_tier4_beta-catenin_story:gene_symbol_3" value="subject:findGenesBySymbol" />
@@ -477,12 +477,12 @@
 		<entry key="dfci_ataris_analysis:p_value" value="evidence:readDouble:createObservedNumericEvidence" />
 		<entry key="dfci_ataris_analysis:fdr" value="evidence:readDouble:createObservedNumericEvidence" />
 		<entry key="dfci_ataris_analysis:nci_portal" value="evidence:readString:createObservedUrlEvidence" />
-		<entry key="dfci_ataris_analysis:gct_path_shrna" value="evidence:readString:createObservedFileEvidence" />
-		<entry key="dfci_ataris_analysis:gct_path_ataris" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="dfci_ataris_analysis:shrna_gct_path" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="dfci_ataris_analysis:ataris_gct_path" value="evidence:readString:createObservedFileEvidence" />
 		<entry key="dfci_ataris_analysis:publication_reference" value="evidence:readString:createObservedLabelEvidence" />
 		<entry key="dfci_ataris_analysis:publication_url" value="evidence:readString:createObservedUrlEvidence" />
 		<!-- dfci ovarian analysis -->
-		<entry key="dfci_ovarian_analysis:target_group" value="subject:findTissueSampleByLineage" />
+		<entry key="dfci_ovarian_analysis:target_group" value="subject:findTissueSampleByName" />
 		<entry key="dfci_ovarian_analysis:number_of_cell_lines" value="evidence:readInt:createObservedNumericEvidence" />
 		<entry key="dfci_ovarian_analysis:number_of_cell_lines_in_target_group" value="evidence:readInt:createObservedNumericEvidence" />
 		<entry key="dfci_ovarian_analysis:gene_symbol" value="subject:findGenesBySymbol" />
@@ -493,7 +493,7 @@
 		<entry key="dfci_ovarian_analysis:publication_reference" value="evidence:readString:createObservedLabelEvidence" />
 		<entry key="dfci_ovarian_analysis:publication_url" value="evidence:readString:createObservedUrlEvidence" />
 		<!-- dfci pax8 tier 3 -->
-		<entry key="dfci_pax8_tier3:target_group" value="subject:findTissueSampleByLineage" />
+		<entry key="dfci_pax8_tier3:target_group" value="subject:findTissueSampleByName" />
 		<entry key="dfci_pax8_tier3:gene_symbol" value="subject:findGenesBySymbol" />
 		<entry key="dfci_pax8_tier3:figure_1" value="evidence:readString:createObservedFileEvidence" />
 		<entry key="dfci_pax8_tier3:figure_2" value="evidence:readString:createObservedFileEvidence" />
@@ -506,7 +506,7 @@
 		<!-- fhcrc CST Tier 1 -->
 		<entry key="fhcrc-m_tier1_cst_profiling:gene_symbol" value="subject:findGenesBySymbol" />
 		<entry key="fhcrc-m_tier1_cst_profiling:splice_junction" value="evidence:readString:createObservedLabelEvidence" /> 
-		<entry key="fhcrc-m_tier1_cst_profiling:disease_condition" value="subject:findTissueSampleByLineage" />
+		<entry key="fhcrc-m_tier1_cst_profiling:disease_condition" value="subject:findTissueSampleByName" />
 		<entry key="fhcrc-m_tier1_cst_profiling:number_of_tumor_samples" value="evidence:readInt:createObservedNumericEvidence" />
 		<entry key="fhcrc-m_tier1_cst_profiling:number_of_tumor_samples_with_junction" value="evidence:readInt:createObservedNumericEvidence" />
 		<entry key="fhcrc-m_tier1_cst_profiling:average_number_of_supporting_reads" value="evidence:readInt:createObservedNumericEvidence" />
@@ -518,7 +518,7 @@
 		<!-- utsw tier 2 discoipyrroles story -->
 		<entry key="utsw_discoipyrroles_tier2_story:compound_name" value="subject:findCompoundsByName" />
 		<entry key="utsw_discoipyrroles_tier2_story:gene_symbol" value="subject:findGenesBySymbol" />
-		<entry key="utsw_discoipyrroles_tier2_story:disease_condition" value="subject:findTissueSampleByLineage" />
+		<entry key="utsw_discoipyrroles_tier2_story:disease_condition" value="subject:findTissueSampleByName" />
 		<entry key="utsw_discoipyrroles_tier2_story:target_description" value="evidence:readString:createObservedUrlEvidence" /> 
 		<entry key="utsw_discoipyrroles_tier2_story:figure_2" value="evidence:readString:createObservedFileEvidence" />
 		<entry key="utsw_discoipyrroles_tier2_story:figure_3" value="evidence:readString:createObservedFileEvidence" />
@@ -530,10 +530,10 @@
 		<entry key="utsw_discoipyrroles_tier2_story:publication_reference" value="evidence:readString:createObservedLabelEvidence" />
 
 		<!-- utsw tier 4 discoipyrroles story -->
-		<entry key="utsw_tier4_discoipyrroles_story:disease_condition_1" value="subject:findTissueSampleByLineage" />
-		<entry key="utsw_tier4_discoipyrroles_story:tissue_sample_1" value="subject:findTissueSampleByLineage" />
-		<entry key="utsw_tier4_discoipyrroles_story:disease_condition_2" value="subject:findTissueSampleByLineage" />
-		<entry key="utsw_tier4_discoipyrroles_story:tissue_sample_2" value="subject:findTissueSampleByLineage" />
+		<entry key="utsw_tier4_discoipyrroles_story:disease_condition_1" value="subject:findTissueSampleByName" />
+		<entry key="utsw_tier4_discoipyrroles_story:tissue_sample_1" value="subject:findTissueSampleByName" />
+		<entry key="utsw_tier4_discoipyrroles_story:disease_condition_2" value="subject:findTissueSampleByName" />
+		<entry key="utsw_tier4_discoipyrroles_story:tissue_sample_2" value="subject:findTissueSampleByName" />
 		<entry key="utsw_tier4_discoipyrroles_story:gene_symbol_1" value="subject:findGenesBySymbol" />
 		<entry key="utsw_tier4_discoipyrroles_story:drug_candidate_class" value="evidence:readString:createObservedLabelEvidence" />
 		<entry key="utsw_tier4_discoipyrroles_story:story_location" value="evidence:readString:createObservedFileEvidence" />
