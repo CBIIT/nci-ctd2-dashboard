@@ -88,9 +88,14 @@
 		<batch:chunk reader="utswTier4DiscoipyrrolesStoryReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	  </batch:tasklet>
 	</batch:step>
-	<batch:step id="ucsfDifferentialExpressionStep" parent="observationDataStep">
+	<batch:step id="ucsfDifferentialExpressionStep" parent="observationDataStep" next="emoryPPIRAF1Step">
 	  <batch:tasklet>
 		<batch:chunk reader="ucsfDifferentialExpressionReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+	<batch:step id="emoryPPIRAF1Step" parent="observationDataStep">
+	  <batch:tasklet>
+		<batch:chunk reader="emoryPPIRAF1Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	  </batch:tasklet>
 	</batch:step>
 
@@ -340,6 +345,20 @@
 	<property name="names" value="dummy,submission_name,submission_center,submission_date,template_name,probeset_id,mutated_gene_condition,mutated_gene_id,species,strain_background,tissue,gene_id,sample_group_1,sample_group_2,t_statistic,fold_change,q_value"/>
   </bean>
 
+  <!-- emory PPI RAF1 expression -->
+
+  <!-- emoryPPIRAF1Reader defined in: -->
+  <!-- observationDataApplicationContext.xml testObservationDataApplicationContext.xml -->
+  <bean name="emoryPPIRAF1LineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+	<property name="fieldSetMapper" ref="observationDataMapper" />
+	<property name="lineTokenizer" ref="emoryPPIRAF1LineTokenizer" />
+  </bean>
+
+  <bean name="emoryPPIRAF1LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+	<property name="delimiter" value="\u0009"/>
+	<property name="names" value="dummy,submission_name,submission_center,submission_date,template_name,cell_line,gene_symbol_1,gene_symbol_2,assay_type,number_of_measurements,average_fold_over_control_value,p_value,nci_portal"/>
+  </bean>
+
 
   <!-- shared helper beans -->
   <bean name="observationDataFactory" class="gov.nih.nci.ctd2.dashboard.importer.internal.ObservationDataFactoryImpl"/>
@@ -547,6 +566,16 @@
 		<entry key="ucsf_differential_expression:t_statistic" value="evidence:readDouble:createObservedNumericEvidence" />
 		<entry key="ucsf_differential_expression:fold_change" value="evidence:readDouble:createObservedNumericEvidence" />
 		<entry key="ucsf_differential_expression:q_value" value="evidence:readDouble:createObservedNumericEvidence" />
+
+		<!-- emory PPI RAF1 -->
+		<entry key="emory_PPI_analysis:cell_line" value="subject:findSubjectsBySynonym" />
+		<entry key="emory_PPI_analysis:gene_symbol_1" value="subject:findGenesBySymbol" />
+		<entry key="emory_PPI_analysis:gene_symbol_2" value="subject:findGenesBySymbol" />
+		<entry key="emory_PPI_analysis:assay_type" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="emory_PPI_analysis:number_of_measurements" value="evidence:readInt:createObservedNumericEvidence" />
+		<entry key="emory_PPI_analysis:average_fold_over_control_value" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="emory_PPI_analysis:p_value" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="emory_PPI_analysis:nci_portal" value="evidence:readString:createObservedUrlEvidence" />
 	  </map>
 	</constructor-arg>
   </bean>

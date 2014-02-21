@@ -198,4 +198,15 @@
 	</property>
   </bean>
 
+  <!-- emory PPI RAF1 -->
+  <bean name="emoryPPIRAF1Reader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+	<property name="resources" value="${emory.ppi-raf1.data.location}" />
+	<property name="delegate">
+	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+		<property name="lineMapper" ref="emoryPPIRAF1LineMapper" />
+		<property name="linesToSkip" value="7" />
+	  </bean>
+	</property>
+  </bean>
+
 </beans>

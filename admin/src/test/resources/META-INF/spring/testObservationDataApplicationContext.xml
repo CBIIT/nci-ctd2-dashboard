@@ -143,4 +143,9 @@
 	<property name="lineMapper" ref="ucsfDifferentialExpressionLineMapper" />
   </bean>
 
+  <!-- emmory PPI RAF1 -->
+  <bean name="emoryPPIRAF1Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="lineMapper" ref="emoryPPIRaf1LineMapper" />
+  </bean>
+
 </beans>
