@@ -708,13 +708,20 @@
                 success: function() {
                     _.each(centers.toJSON(), function(aCenter) {
                        var centerListRowView
-                           = new CenterListRowView({ el: $(thatEl).find(".thumbnails"), model: aCenter });
+                           = new CenterListRowView({ el: $(thatEl).find("#centers-tbody"), model: aCenter });
                         centerListRowView.render();
 
                         $.ajax("count/submission/?filterBy=" + aCenter.id).done(function(count) {
                             $("#submission-count-" + aCenter.id).html(count);
                         });
                     });
+
+                    var cTable = $(thatEl).find("table").dataTable({
+                        "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
+                        "sPaginationType": "bootstrap"
+                    });
+
+                    cTable.fnSort( [ [1, 'desc'] ] );
                 }
             });
             return this;
