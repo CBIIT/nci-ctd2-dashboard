@@ -998,6 +998,13 @@
         }
     });
 
+    var AnnotationView = Backbone.View.extend({
+        template: _.template($("#annotation-tmpl").html()),
+        render: function() {
+            $(this.el).append(this.template(this.model));
+        }
+    });
+
     var CellSampleView = Backbone.View.extend({
         el: $("#main-container"),
         template:  _.template($("#cellsample-tmpl").html()),
@@ -1024,6 +1031,13 @@
 
                 var synonymView = new SynonymView({ model: aSynonym, el: thatEl });
                 synonymView.render();
+            });
+
+            var thatEl2 = $("#annotations ul");
+            _.each(result.annotations, function(annotation) {
+                annotation.displayName = annotation.displayName.replace(/_/g, " ");
+                var annotationView = new AnnotationView({ model: annotation, el: thatEl2 });
+                annotationView.render();
             });
 
             var observations = new Observations({ subjectId: result.id });

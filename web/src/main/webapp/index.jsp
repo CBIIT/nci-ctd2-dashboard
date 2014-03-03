@@ -869,8 +869,10 @@
                             <td>{{organism.displayName}}</td>
                         </tr>
                         <tr>
-                            <th>Lineage</th>
-                            <td>{{lineage}}</td>
+                            <th>Annotations</th>
+                            <td id="annotations">
+                                <ul></ul>
+                            </td>
                         </tr>
                         <tr>
                             <th>Genomic alterations</th>
@@ -1906,6 +1908,10 @@
                 NCI Thesaurus: {{nciId}}
             </a>
         </li>
+    </script>
+
+    <script type="text/template" id="annotation-tmpl">
+        <li><small>{{displayName}} ({{source}})</small></li>
     </script>
 
     <!-- end of templates -->
