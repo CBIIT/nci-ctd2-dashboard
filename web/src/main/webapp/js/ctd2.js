@@ -961,7 +961,8 @@
             var thatEl = this.el;
             if(result.xrefs.length == 0) { $(thatEl).find("#tissue-refs").hide(); }
             _.each(result.xrefs, function(xref) {
-                if(xref.databaseName == "NCI_PARENT_THESAURUS" || xref.databaseName == "NCI_THESAURUS") {
+                //if(xref.databaseName == "NCI_PARENT_THESAURUS" || xref.databaseName == "NCI_THESAURUS") {
+                if(xref.databaseName == "NCI_THESAURUS") {
                     var ids = xref.databaseId.split(";");
                     _.each(ids, function(xrefid) {
                         $(thatEl).find("ul.xrefs").append(
