@@ -927,6 +927,58 @@
         </div>
     </script>
 
+    <script type="text/template" id="animalmodel-tmpl">
+        <div class="container common-container" id="animalmodel-container">
+            <h1>{{displayName}}</h1>
+            <div class="row">
+                <div class="span9">
+                    <table id="animalmodel-details-grid" class="table table-bordered table-striped">
+                        <tr>
+                            <th>Name</th>
+                            <td>{{displayName}}</td>
+                        </tr>
+                        <tr>
+                            <th>Synonyms</th>
+                            <td>
+                                <ul class="synonyms"></ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Organism</th>
+                            <td>{{organism.displayName}}</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="span3">
+                    <h4>Animal Model</h4>
+                    <img src="img/animalmodel.png" class="img-polaroid" width=175 height=175 alt="Animal model">
+                </div>
+            </div>
+            <h3>Related observations</h3>
+            <table id="animalmodel-observation-grid" class="table table-bordered table-striped observations">
+                <thead>
+                <tr>
+                    <th>Date</th>
+                    <th width=500>Observation Summary</th>
+                    <th>Tier</th>
+                    <th>Center</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- here will go the rows -->
+                <tr class="subject-observations-loading">
+                    <td colspan="5">
+                        <h3>Loading observations...</h3>
+                        <div class="progress progress-striped active">
+                            <div class="bar" style="width: 100%;"></div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </script>
+
     <script type="text/template" id="compound-tmpl">
           <div class="container common-container" id="compound-container">
               <h1>{{displayName}}</h1>
@@ -1072,6 +1124,12 @@
     <script type="text/template" id="search-results-compund-image-tmpl">
         <a href="#subject/{{id}}">
             <img class="img-polaroid search-info" title="Compound" alt="Compound" width=50 height=50 src="<%=dataURL%>compounds/{{imageFile}}">
+        </a>
+    </script>
+
+    <script type="text/template" id="search-results-animalmodel-image-tmpl">
+        <a href="#subject/{{id}}">
+            <img src="img/animalmodel.png" title="Animal model" alt="Animal model" class="img-polaroid search-info" height="50" width="50">
         </a>
     </script>
 
@@ -1509,6 +1567,7 @@
                                 <td>
                                     <select id="subject-type">
                                         <option value="">-</option>
+                                        <option value="Animal Model">Animal Model</option>
                                         <option value="CellSample">Cell Sample</option>
                                         <option value="Compound">Compound</option>
                                         <option value="Gene">Gene</option>
