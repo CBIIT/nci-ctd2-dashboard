@@ -8,7 +8,6 @@
 							http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 
   <batch:job id="observationDataImporterJob">
-  	<!--
 	<batch:step id="broadCompoundSensitivityLineageEnrichmentStep" parent="observationDataStep" next="broadCompoundSensitivityMutationEnrichmentStep">
 	  <batch:tasklet>
 		<batch:chunk reader="broadCompoundSensitivityLineageEnrichmentReader" processor="observationDataProcessor" writer="observationDataWriter"/>
@@ -109,7 +108,6 @@
 		<batch:chunk reader="mskccFigrosReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	  </batch:tasklet>
 	</batch:step>
--->
 	<batch:step id="stanfordMethylmixTier1Step" parent="observationDataStep">
 	  <batch:tasklet>
 		<batch:chunk reader="stanfordMethylmixTier1Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
