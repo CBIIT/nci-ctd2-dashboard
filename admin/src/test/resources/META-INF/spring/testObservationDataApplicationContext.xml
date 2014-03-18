@@ -143,9 +143,24 @@
 	<property name="lineMapper" ref="ucsfDifferentialExpressionLineMapper" />
   </bean>
 
-  <!-- emmory PPI RAF1 -->
+  <!-- emory PPI RAF1 -->
   <bean name="emoryPPIRAF1Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
-	<property name="lineMapper" ref="emoryPPIRaf1LineMapper" />
+	<property name="lineMapper" ref="emoryPPIRAF1LineMapper" />
+  </bean>
+
+  <!--  mskcc foretinib -->
+  <bean name="mskccForetinibReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+  <property name="lineMapper" ref="mskccForetinibLineMapper" />
+  </bean>
+
+  <!--  mskcc figros -->
+  <bean name="mskccFigrosReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+  <property name="lineMapper" ref="mskccFigrosLineMapper" />
+  </bean>
+
+  <!-- stanford methlymix tier 1 -->
+  <bean name="stanfordMethylmixTier1Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
+  <property name="lineMapper" ref="stanfordMethylmixTier1LineMapper" />
   </bean>
 
 </beans>
