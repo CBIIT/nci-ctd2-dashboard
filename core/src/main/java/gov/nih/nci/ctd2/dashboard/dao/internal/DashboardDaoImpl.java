@@ -278,15 +278,14 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
     }
 
 	@Override
-    public List<TissueSample> findTissueSampleByLineage(String lineage) {
-		List<TissueSample> tissueSamples = new ArrayList<TissueSample>();
+    public List<TissueSample> findTissueSampleByName(String name) {
+		List<TissueSample> samples = new ArrayList<TissueSample>();
 
-        for (Object o : getHibernateTemplate().find("from TissueSampleImpl where lineage = ?", lineage)) {
+        for (Object o : getHibernateTemplate().find("from TissueSampleImpl where displayName = ?", name)) {
             assert o instanceof TissueSample;
-            tissueSamples.add((TissueSample) o);
+            samples.add((TissueSample) o);
         }
-
-        return tissueSamples;
+        return samples;
 	}
 
 	@Override
@@ -310,6 +309,17 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
         }
         return list;
     }
+
+	@Override
+    public List<AnimalModel> findAnimalModelByName(String animalModelName) {
+		List<AnimalModel> models = new ArrayList<AnimalModel>();
+
+        for (Object o : getHibernateTemplate().find("from AnimalModelImpl where displayName = ?", animalModelName)) {
+            assert o instanceof AnimalModel;
+            models.add((AnimalModel) o);
+        }
+        return models;
+	}
 
     @Override
     public List<Subject> findSubjectsByXref(String databaseName, String databaseId) {

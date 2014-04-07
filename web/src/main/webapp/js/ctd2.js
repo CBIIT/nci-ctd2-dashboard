@@ -342,7 +342,9 @@
                                    thatEl2.append(_.template(imgTemplate.html(), compound));
                                }
                             });
-
+                        } else if( subject.class == "AnimalModel" ) {
+                            imgTemplate = $("#search-results-animalmodel-image-tmpl");
+                            thatEl2.append(_.template(imgTemplate.html(), subject));
                         } else if( subject.class == "CellSample" ) {
                             imgTemplate = $("#search-results-cellsample-image-tmpl");
                             thatEl2.append(_.template(imgTemplate.html(), subject));
@@ -708,13 +710,20 @@
                 success: function() {
                     _.each(centers.toJSON(), function(aCenter) {
                        var centerListRowView
-                           = new CenterListRowView({ el: $(thatEl).find(".thumbnails"), model: aCenter });
+                           = new CenterListRowView({ el: $(thatEl).find("#centers-tbody"), model: aCenter });
                         centerListRowView.render();
 
                         $.ajax("count/submission/?filterBy=" + aCenter.id).done(function(count) {
                             $("#submission-count-" + aCenter.id).html(count);
                         });
                     });
+
+                    var cTable = $(thatEl).find("table").dataTable({
+                        "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
+                        "sPaginationType": "bootstrap"
+                    });
+
+                    cTable.fnSort( [ [1, 'asc'] ] );
                 }
             });
             return this;
@@ -952,7 +961,8 @@
             var thatEl = this.el;
             if(result.xrefs.length == 0) { $(thatEl).find("#tissue-refs").hide(); }
             _.each(result.xrefs, function(xref) {
-                if(xref.databaseName == "NCI_PARENT_THESAURUS" || xref.databaseName == "NCI_THESAURUS") {
+                //if(xref.databaseName == "NCI_PARENT_THESAURUS" || xref.databaseName == "NCI_THESAURUS") {
+                if(xref.databaseName == "NCI_THESAURUS") {
                     var ids = xref.databaseId.split(";");
                     _.each(ids, function(xrefid) {
                         $(thatEl).find("ul.xrefs").append(
@@ -998,6 +1008,64 @@
         }
     });
 
+
+    var AnimalModelView = Backbone.View.extend({
+        el: $("#main-container"),
+        template:  _.template($("#animalmodel-tmpl").html()),
+        render: function() {
+            var result = this.model.toJSON();
+            result["type"] = result.class;
+            $(this.el).html(this.template(result));
+
+            var thatEl = $("ul.synonyms");
+            _.each(result.synonyms, function(aSynonym) {
+                if(aSynonym.displayName == result.displayName ) return;
+
+                var synonymView = new SynonymView({ model: aSynonym, el: thatEl });
+                synonymView.render();
+            });
+
+            var thatEl2 = $("#annotations ul");
+            _.each(result.annotations, function(annotation) {
+                annotation.displayName = annotation.displayName.replace(/_/g, " ");
+                var annotationView = new AnnotationView({ model: annotation, el: thatEl2 });
+                annotationView.render();
+            });
+
+            var observations = new Observations({ subjectId: result.id });
+            thatEl = $("#animalmodel-observation-grid");
+            observations.fetch({
+                success: function() {
+                    $(".subject-observations-loading").remove();
+                    _.each(observations.models, function(observation) {
+                        observation = observation.toJSON();
+
+                        var observationRowView
+                            = new ObservationRowView({ el: $(thatEl).find("tbody"), model: observation });
+                        observationRowView.render();
+                    });
+
+                    var oTable = $('#animalmodel-observation-grid').dataTable({
+                        "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
+                        "sPaginationType": "bootstrap"
+                    });
+
+                    oTable.fnSort( [ [2, 'desc'] ] );
+                }
+            });
+
+            return this;
+        }
+    });
+
+
+    var AnnotationView = Backbone.View.extend({
+        template: _.template($("#annotation-tmpl").html()),
+        render: function() {
+            $(this.el).append(this.template(this.model));
+        }
+    });
+
     var CellSampleView = Backbone.View.extend({
         el: $("#main-container"),
         template:  _.template($("#cellsample-tmpl").html()),
@@ -1024,6 +1092,13 @@
 
                 var synonymView = new SynonymView({ model: aSynonym, el: thatEl });
                 synonymView.render();
+            });
+
+            var thatEl2 = $("#annotations ul");
+            _.each(result.annotations, function(annotation) {
+                annotation.displayName = annotation.displayName.replace(/_/g, " ");
+                var annotationView = new AnnotationView({ model: annotation, el: thatEl2 });
+                annotationView.render();
             });
 
             var observations = new Observations({ subjectId: result.id });
@@ -2344,6 +2419,8 @@
                     var subjectView;
                     if(type == "Gene") {
                         subjectView = new GeneView({ model: subject });
+                    } else if(type == "AnimalModel") {
+                        subjectView = new AnimalModelView({ model: subject });
                     } else if(type == "Compound") {
                         subjectView = new CompoundView({ model: subject });
                     } else if(type == "CellSample") {

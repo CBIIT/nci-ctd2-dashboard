@@ -136,6 +136,7 @@ public class ObservationDataFactoryImpl implements ObservationDataFactory {
 		ObservedEvidenceRole observedEvidenceRole = getObservedEvidenceRole(templateName, columnName);
 		if (observedEvidenceRole != null) observedEvidence.setObservedEvidenceRole(observedEvidenceRole);
 		Evidence evidence = dashboardFactory.create(DataNumericValue.class);
+        evidence.setDisplayName(String.valueOf(evidenceValue));
 		((DataNumericValue)evidence).setNumericValue(evidenceValue);
 		if (observedEvidenceRole != null && observedEvidenceRole.getAttribute().length() > 0) {
 			((DataNumericValue)evidence).setUnit(observedEvidenceRole.getAttribute());
@@ -153,6 +154,7 @@ public class ObservationDataFactoryImpl implements ObservationDataFactory {
 		ObservedEvidenceRole observedEvidenceRole = getObservedEvidenceRole(templateName, columnName);
 		if (observedEvidenceRole != null) observedEvidence.setObservedEvidenceRole(observedEvidenceRole);
 		Evidence evidence = dashboardFactory.create(FileEvidence.class);
+        evidence.setDisplayName(String.valueOf(evidenceValue));
 		File file = new File(evidenceValue);
 
 		((FileEvidence)evidence).setFileName(file.getName());
@@ -174,6 +176,7 @@ public class ObservationDataFactoryImpl implements ObservationDataFactory {
 		ObservedEvidenceRole observedEvidenceRole = getObservedEvidenceRole(templateName, columnName);
 		if (observedEvidenceRole != null) observedEvidence.setObservedEvidenceRole(observedEvidenceRole);
 		Evidence evidence = dashboardFactory.create(UrlEvidence.class);
+        evidence.setDisplayName(String.valueOf(evidenceValue));
 		((UrlEvidence)evidence).setUrl(getEvidenceURL(columnName, evidenceValue));
 		observedEvidence.setEvidence(evidence);
 		return observedEvidence;

@@ -123,9 +123,44 @@
 	<property name="lineMapper" ref="dfciPax8Tier3LineMapper" />
   </bean>
 
+  <!-- fhcrcCSTTier1 -->
+  <bean name="fhcrcCSTTier1Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
+    <property name="lineMapper" ref="fhcrcCSTTier1LineMapper" />
+  </bean>
+
+  <!-- utsw tier 2 discoipyrroles story reader -->
+  <bean name="utswTier2DiscoipyrrolesStoryReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="lineMapper" ref="utswTier2DiscoipyrrolesStoryLineMapper" />
+  </bean>
+
   <!-- utsw tier 4 discoipyrroles story reader -->
   <bean name="utswTier4DiscoipyrrolesStoryReader" class="org.springframework.batch.item.file.FlatFileItemReader">
 	<property name="lineMapper" ref="utswTier4DiscoipyrrolesStoryLineMapper" />
+  </bean>
+
+  <!-- ucsf differential expression reader -->
+  <bean name="ucsfDifferentialExpressionReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="lineMapper" ref="ucsfDifferentialExpressionLineMapper" />
+  </bean>
+
+  <!-- emory PPI RAF1 -->
+  <bean name="emoryPPIRAF1Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="lineMapper" ref="emoryPPIRAF1LineMapper" />
+  </bean>
+
+  <!--  mskcc foretinib -->
+  <bean name="mskccForetinibReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+  <property name="lineMapper" ref="mskccForetinibLineMapper" />
+  </bean>
+
+  <!--  mskcc figros -->
+  <bean name="mskccFigrosReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+  <property name="lineMapper" ref="mskccFigrosLineMapper" />
+  </bean>
+
+  <!-- stanford methlymix tier 1 -->
+  <bean name="stanfordMethylmixTier1Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
+  <property name="lineMapper" ref="stanfordMethylmixTier1LineMapper" />
   </bean>
 
 </beans>

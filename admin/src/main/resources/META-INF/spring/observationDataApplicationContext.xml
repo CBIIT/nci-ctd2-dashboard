@@ -165,12 +165,78 @@
 	</property>
   </bean>
 
-  <!-- uts tier 4 discoipyrroles story -->
+  <!-- utsw tier 2 discoipyrroles story -->
+  <bean name="utswTier2DiscoipyrrolesStoryReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+	<property name="resources" value="${utsw.tier2.discoipyrroles.story.data.location}" />
+	<property name="delegate">
+	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+		<property name="lineMapper" ref="utswTier2DiscoipyrrolesStoryLineMapper" />
+		<property name="linesToSkip" value="7" />
+	  </bean>
+	</property>
+  </bean>
+
+  <!-- utsw tier 4 discoipyrroles story -->
   <bean name="utswTier4DiscoipyrrolesStoryReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
 	<property name="resources" value="${utsw.tier4.discoipyrroles.story.data.location}" />
 	<property name="delegate">
 	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
 		<property name="lineMapper" ref="utswTier4DiscoipyrrolesStoryLineMapper" />
+		<property name="linesToSkip" value="7" />
+	  </bean>
+	</property>
+  </bean>
+
+  <!-- ucsf differential expression -->
+  <bean name="ucsfDifferentialExpressionReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+	<property name="resources" value="${ucsf.differential-expression.data.location}" />
+	<property name="delegate">
+	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+		<property name="lineMapper" ref="ucsfDifferentialExpressionLineMapper" />
+		<property name="linesToSkip" value="7" />
+	  </bean>
+	</property>
+  </bean>
+
+  <!-- emory PPI RAF1 -->
+  <bean name="emoryPPIRAF1Reader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+	<property name="resources" value="${emory.ppi-raf1.data.location}" />
+	<property name="delegate">
+	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+		<property name="lineMapper" ref="emoryPPIRAF1LineMapper" />
+		<property name="linesToSkip" value="7" />
+	  </bean>
+	</property>
+  </bean>
+
+  <!-- mskcc foretinib -->
+  <bean name="mskccForetinibReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+	<property name="resources" value="${mskcc.foretinib.data.location}" />
+	<property name="delegate">
+	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+		<property name="lineMapper" ref="mskccForetinibLineMapper" />
+		<property name="linesToSkip" value="7" />
+	  </bean>
+	</property>
+  </bean>
+
+  <!-- mskcc figros -->
+  <bean name="mskccFigrosReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+	<property name="resources" value="${mskcc.figros.data.location}" />
+	<property name="delegate">
+	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+		<property name="lineMapper" ref="mskccFigrosLineMapper" />
+		<property name="linesToSkip" value="7" />
+	  </bean>
+	</property>
+  </bean>
+
+  <!-- stanford methylmix tier 1 -->
+  <bean name="stanfordMethylmixTier1Reader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+	<property name="resources" value="${stanford.methylmix.tier1.data.location}" />
+	<property name="delegate">
+	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+		<property name="lineMapper" ref="stanfordMethylmixTier1LineMapper" />
 		<property name="linesToSkip" value="7" />
 	  </bean>
 	</property>

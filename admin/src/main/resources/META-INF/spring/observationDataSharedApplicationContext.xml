@@ -73,16 +73,44 @@
 		<batch:chunk reader="dfciPax8Tier3Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	  </batch:tasklet>
 	</batch:step>
-
-	<batch:step id="fhcrcCSTTier1Step" parent="observationDataStep" next="utswTier4DiscoipyrrolesStoryStep">
+	<batch:step id="fhcrcCSTTier1Step" parent="observationDataStep" next="utswTier2DiscoipyrrolesStoryStep">
 	  <batch:tasklet>
 		<batch:chunk reader="fhcrcCSTTier1Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	  </batch:tasklet>
 	</batch:step>
-
-	<batch:step id="utswTier4DiscoipyrrolesStoryStep" parent="observationDataStep">
+	<batch:step id="utswTier2DiscoipyrrolesStoryStep" parent="observationDataStep" next="utswTier4DiscoipyrrolesStoryStep">
+	  <batch:tasklet>
+		<batch:chunk reader="utswTier2DiscoipyrrolesStoryReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+	<batch:step id="utswTier4DiscoipyrrolesStoryStep" parent="observationDataStep" next="ucsfDifferentialExpressionStep" >
 	  <batch:tasklet>
 		<batch:chunk reader="utswTier4DiscoipyrrolesStoryReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+	<batch:step id="ucsfDifferentialExpressionStep" parent="observationDataStep" next="emoryPPIRAF1Step">
+	  <batch:tasklet>
+		<batch:chunk reader="ucsfDifferentialExpressionReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+	<batch:step id="emoryPPIRAF1Step" parent="observationDataStep" next="mskccForetinibStep">
+	  <batch:tasklet>
+		<batch:chunk reader="emoryPPIRAF1Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+	<batch:step id="mskccForetinibStep" parent="observationDataStep" next="mskccFigrosStep">
+	  <batch:tasklet>
+		<batch:chunk reader="mskccForetinibReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+	<batch:step id="mskccFigrosStep" parent="observationDataStep" next="stanfordMethylmixTier1Step">
+	  <batch:tasklet>
+		<batch:chunk reader="mskccFigrosReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+	<batch:step id="stanfordMethylmixTier1Step" parent="observationDataStep">
+	  <batch:tasklet>
+		<batch:chunk reader="stanfordMethylmixTier1Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	  </batch:tasklet>
 	</batch:step>
   </batch:job>
@@ -289,9 +317,23 @@
 	<property name="names" value="dummy,submission_name,submission_center,submission_date,template_name,gene_symbol,splice_junction,disease_condition,number_of_tumor_samples,number_of_tumor_samples_with_junction,average_number_of_supporting_reads,number_of_samples_with_supporting_rpts,junction_type,is_observed_in_ip_tissue,has_suporting_ests,genomic_reference_assembly"/>
   </bean>
 
-  <!-- uts tier 4 discoipyrroles story -->
+  <!-- utsw tier 2 discoipyrroles story -->
 
-  <!-- utsTier4DiscoipyrrolesStoryReader defined in: -->
+  <!-- utswTier2DiscoipyrrolesStoryReader defined in: -->
+  <!-- observationDataApplicationContext.xml testObservationDataApplicationContext.xml -->
+  <bean name="utswTier2DiscoipyrrolesStoryLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+	<property name="fieldSetMapper" ref="observationDataMapper" />
+	<property name="lineTokenizer" ref="utswTier2DiscoipyrrolesStoryLineTokenizer" />
+  </bean>
+
+  <bean name="utswTier2DiscoipyrrolesStoryLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+	<property name="delimiter" value="\u0009"/>
+	<property name="names" value="dummy,submission_name,submission_center,submission_date,template_name,compound_name,gene_symbol,disease_condition,target_description,figure_2,figure_3,figure_4,figure_5,figure_6,figure_7,publication_url,publication_reference"/>
+  </bean>
+
+  <!-- utsw tier 4 discoipyrroles story -->
+
+  <!-- utswTier4DiscoipyrrolesStoryReader defined in: -->
   <!-- observationDataApplicationContext.xml testObservationDataApplicationContext.xml -->
   <bean name="utswTier4DiscoipyrrolesStoryLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
 	<property name="fieldSetMapper" ref="observationDataMapper" />
@@ -301,6 +343,76 @@
   <bean name="utswTier4DiscoipyrrolesStoryLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
 	<property name="names" value="dummy,submission_name,submission_center,submission_date,template_name,disease_condition_1,tissue_sample_1,disease_condition_2,tissue_sample_2,gene_symbol_1,drug_candidate_class,story_location"/>
+  </bean>
+
+  <!-- ucsf differential expression -->
+
+  <!-- ucsfDifferentialExpressionReader defined in: -->
+  <!-- observationDataApplicationContext.xml testObservationDataApplicationContext.xml -->
+  <bean name="ucsfDifferentialExpressionLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+	<property name="fieldSetMapper" ref="observationDataMapper" />
+	<property name="lineTokenizer" ref="ucsfDifferentialExpressionLineTokenizer" />
+  </bean>
+
+  <bean name="ucsfDifferentialExpressionLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+	<property name="delimiter" value="\u0009"/>
+	<property name="names" value="dummy,submission_name,submission_center,submission_date,template_name,probeset_id,mutated_gene_condition,mutated_gene_id,species,strain_background,tissue,gene_id,sample_group_1,sample_group_2,t_statistic,fold_change,q_value"/>
+  </bean>
+
+  <!-- emory PPI RAF1 expression -->
+
+  <!-- emoryPPIRAF1Reader defined in: -->
+  <!-- observationDataApplicationContext.xml testObservationDataApplicationContext.xml -->
+  <bean name="emoryPPIRAF1LineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+	<property name="fieldSetMapper" ref="observationDataMapper" />
+	<property name="lineTokenizer" ref="emoryPPIRAF1LineTokenizer" />
+  </bean>
+
+  <bean name="emoryPPIRAF1LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+	<property name="delimiter" value="\u0009"/>
+	<property name="names" value="dummy,submission_name,submission_center,submission_date,template_name,cell_line,gene_symbol_1,gene_symbol_2,assay_type,number_of_measurements,average_fold_over_control_value,p_value,nci_portal"/>
+  </bean>
+
+  <!-- mskcc foretinib -->
+
+  <!-- mskccForetinibReader defined in: -->
+  <!-- observationDataApplicationContext.xml testObservationDataApplicationContext.xml -->
+  <bean name="mskccForetinibLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+	<property name="fieldSetMapper" ref="observationDataMapper" />
+	<property name="lineTokenizer" ref="mskccForetinibLineTokenizer" />
+  </bean>
+
+  <bean name="mskccForetinibLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+	<property name="delimiter" value="\u0009"/>
+	<property name="names" value="dummy,submission_name,submission_center,submission_date,template_name,species,tissue,disease_condition,gene_symbol,compound,control_compound,figure_4a,figure_4b,figure_5a,publication_reference1,publication_url1,publication_reference2,publication_url2"/>
+  </bean>
+
+  <!-- mskcc figros -->
+
+  <!-- mskccFigrosReader defined in: -->
+  <!-- observationDataApplicationContext.xml testObservationDataApplicationContext.xml -->
+  <bean name="mskccFigrosLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+	<property name="fieldSetMapper" ref="observationDataMapper" />
+	<property name="lineTokenizer" ref="mskccFigrosLineTokenizer" />
+  </bean>
+
+  <bean name="mskccFigrosLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+	<property name="delimiter" value="\u0009"/>
+	<property name="names" value="dummy,submission_name,submission_center,submission_date,template_name,species,tissue,disease_condition,strain,gene_symbol1,gene_symbol2,figure_1B,figure_2A,figure_2B,figure_3A,figure_3B,publication_reference,publication_url"/>
+  </bean>
+
+  <!-- stanford methylmix tier 1 -->
+
+  <!-- stanfordMethylmixTier1Reader defined in: -->
+  <!-- observationDataApplicationContext.xml testObservationDataApplicationContext.xml -->
+  <bean name="stanfordMethylmixTier1LineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+	<property name="fieldSetMapper" ref="observationDataMapper" />
+	<property name="lineTokenizer" ref="stanfordMethylmixTier1LineTokenizer" />
+  </bean>
+
+  <bean name="stanfordMethylmixTier1LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+	<property name="delimiter" value="\u0009"/>
+	<property name="names" value="dummy,submission_name,submission_center,submission_date,template_name,disease_condition,tissue,cell_type,gene_symbol,differential_methylation_status,prevalence,differential_methylation_pvalue,proportion_variance_explained,rna_fold_change"/>
   </bean>
 
   <!-- shared helper beans -->
@@ -314,7 +426,7 @@
 		<entry key="broad_cpd_sens_lineage_enrich:cell_line_exclusion" value="evidence:readString:createObservedLabelEvidence" />
 		<entry key="broad_cpd_sens_lineage_enrich:feature_data_set" value="evidence:readString:createObservedLabelEvidence" />
 		<entry key="broad_cpd_sens_lineage_enrich:compound_name" value="subject:findCompoundsByName" />
-		<entry key="broad_cpd_sens_lineage_enrich:cell_lineage" value="subject:findTissueSampleByLineage" />
+		<entry key="broad_cpd_sens_lineage_enrich:cell_lineage" value="subject:findSubjectsBySynonym" />
 		<entry key="broad_cpd_sens_lineage_enrich:number_of_cell_lines" value="evidence:readInt:createObservedNumericEvidence" />
 		<entry key="broad_cpd_sens_lineage_enrich:number_of_example_cell_lines" value="evidence:readInt:createObservedNumericEvidence" />
 		<entry key="broad_cpd_sens_lineage_enrich:enrichment_direction" value="evidence:readString:createObservedLabelEvidence" />
@@ -349,10 +461,10 @@
 		<entry key="broad_tier3_navitoclax_story:tier1_evidence" value="evidence:readString:createObservedUrlEvidence" />
 		<!-- columbia marina analysis template -->
 		<entry key="columbia_marina_analysis:probeset_id" value="evidence:readString:createObservedLabelEvidence" />
-		<entry key="columbia_marina_analysis:disease_condition" value="subject:findTissueSampleByLineage" />
+		<entry key="columbia_marina_analysis:disease_condition" value="subject:findSubjectsBySynonym" />
 		<entry key="columbia_marina_analysis:tissue" value="evidence:readString:createObservedLabelEvidence" />
 		<entry key="columbia_marina_analysis:cell_type" value="evidence:readString:createObservedLabelEvidence" />
-		<entry key="columbia_marina_analysis:cell_lineage" value="subject:findTissueSampleByLineage" />
+		<entry key="columbia_marina_analysis:cell_lineage" value="subject:findSubjectsBySynonym" />
 		<entry key="columbia_marina_analysis:gene_symbol" value="subject:findGenesBySymbol" />
 		<entry key="columbia_marina_analysis:func_type" value="evidence:readString:createObservedLabelEvidence" />
 		<entry key="columbia_marina_analysis:mr_regulon_set_size" value="evidence:readInt:createObservedNumericEvidence" />
@@ -360,8 +472,8 @@
 		<entry key="columbia_marina_analysis:mr_gsea_p_value" value="evidence:readDouble:createObservedNumericEvidence" />
 		<entry key="columbia_marina_analysis:mr_gsea_fdr" value="evidence:readDouble:createObservedNumericEvidence" />
 		<!-- columbia mra fet analysis template -->
-		<entry key="columbia_mra_fet_analysis:disease_condition" value="subject:findTissueSampleByLineage" />
-		<entry key="columbia_mra_fet_analysis:tissue" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="columbia_mra_fet_analysis:disease_condition" value="subject:findSubjectsBySynonym" />
+		<entry key="columbia_mra_fet_analysis:tissue" value="subject:findSubjectsBySynonym" />
 		<entry key="columbia_mra_fet_analysis:gene_symbol" value="subject:findGenesBySymbol" />
 		<entry key="columbia_mra_fet_analysis:func_type" value="evidence:readString:createObservedLabelEvidence" />
 		<entry key="columbia_mra_fet_analysis:mra_regulon_signature_overlap" value="evidence:readInt:createObservedNumericEvidence" />
@@ -374,7 +486,7 @@
 		<entry key="columbia_mra_fet_analysis:publication_reference" value="evidence:readString:createObservedLabelEvidence" />
 		<!-- columbia master regulator analysis with shRNA knockdown analysis -->
 		<entry key="columbia_joint_mr_shrna_diff:probeset_id" value="evidence:readString:createObservedLabelEvidence" />
-		<entry key="columbia_joint_mr_shrna_diff:disease_condition" value="subject:findTissueSampleByLineage" />
+		<entry key="columbia_joint_mr_shrna_diff:disease_condition" value="subject:findSubjectsBySynonym" />
 		<entry key="columbia_joint_mr_shrna_diff:cell_line_1" value="subject:findSubjectsBySynonym" />
 		<entry key="columbia_joint_mr_shrna_diff:cell_line_2" value="subject:findSubjectsBySynonym" />
 		<entry key="columbia_joint_mr_shrna_diff:gene_symbol" value="subject:findGenesBySymbol" />
@@ -389,8 +501,8 @@
 		<entry key="columbia_joint_mr_shrna_diff:shrna_diff_rep_fdr_combined" value="evidence:readDouble:createObservedNumericEvidence" />
 		<entry key="columbia_joint_mr_shrna_diff:shrna_diff_rep_net_direction_combined" value="evidence:readString:createObservedLabelEvidence" />
 		<!-- columbia tier4 glioma story -->
-		<entry key="columbia_tier4_glioma_story:disease_condition" value="subject:findTissueSampleByLineage" />
-		<entry key="columbia_tier4_glioma_story:tissue_sample" value="subject:findTissueSampleByLineage" />
+		<entry key="columbia_tier4_glioma_story:disease_condition" value="subject:findSubjectsBySynonym" />
+		<entry key="columbia_tier4_glioma_story:tissue_sample" value="subject:findSubjectsBySynonym" />
 		<entry key="columbia_tier4_glioma_story:gene_symbol_1" value="subject:findGenesBySymbol" />
 		<entry key="columbia_tier4_glioma_story:gene_symbol_2" value="subject:findGenesBySymbol" />
 		<entry key="columbia_tier4_glioma_story:gene_symbol_3" value="subject:findGenesBySymbol" />
@@ -398,8 +510,8 @@
 		<entry key="columbia_tier4_glioma_story:gene_symbol_5" value="subject:findGenesBySymbol" />
 		<entry key="columbia_tier4_glioma_story:story_location" value="evidence:readString:createObservedFileEvidence" />
 		<!-- cshl tier4 fgf19 story -->
-		<entry key="cshl_tier4_fgf19_story:disease_condition" value="subject:findTissueSampleByLineage" />
-		<entry key="cshl_tier4_fgf19_story:tissue_sample" value="subject:findTissueSampleByLineage" />
+		<entry key="cshl_tier4_fgf19_story:disease_condition" value="subject:findSubjectsBySynonym" />
+		<entry key="cshl_tier4_fgf19_story:tissue_sample" value="subject:findSubjectsBySynonym" />
 		<entry key="cshl_tier4_fgf19_story:gene_symbol_1" value="subject:findGenesBySymbol" />
 		<entry key="cshl_tier4_fgf19_story:gene_symbol_2" value="subject:findGenesBySymbol" />
 		<entry key="cshl_tier4_fgf19_story:gene_symbol_3" value="subject:findGenesBySymbol" />
@@ -407,8 +519,8 @@
 		<entry key="cshl_tier4_fgf19_story:drug_candidate" value="subject:findCompoundsByName" />
 		<entry key="cshl_tier4_fgf19_story:story_location" value="evidence:readString:createObservedFileEvidence" />
 		<!-- dfci tier4 beta-catenin story -->
-		<entry key="dfci_tier4_beta-catenin_story:disease_condition" value="subject:findTissueSampleByLineage" />
-		<entry key="dfci_tier4_beta-catenin_story:tissue_sample" value="subject:findTissueSampleByLineage" />
+		<entry key="dfci_tier4_beta-catenin_story:disease_condition" value="subject:findSubjectsBySynonym" />
+		<entry key="dfci_tier4_beta-catenin_story:tissue_sample" value="subject:findSubjectsBySynonym" />
 		<entry key="dfci_tier4_beta-catenin_story:gene_symbol_1" value="subject:findGenesBySymbol" />
 		<entry key="dfci_tier4_beta-catenin_story:gene_symbol_2" value="subject:findGenesBySymbol" />
 		<entry key="dfci_tier4_beta-catenin_story:gene_symbol_3" value="subject:findGenesBySymbol" />
@@ -435,12 +547,12 @@
 		<entry key="dfci_ataris_analysis:p_value" value="evidence:readDouble:createObservedNumericEvidence" />
 		<entry key="dfci_ataris_analysis:fdr" value="evidence:readDouble:createObservedNumericEvidence" />
 		<entry key="dfci_ataris_analysis:nci_portal" value="evidence:readString:createObservedUrlEvidence" />
-		<entry key="dfci_ataris_analysis:gct_path_shrna" value="evidence:readString:createObservedFileEvidence" />
-		<entry key="dfci_ataris_analysis:gct_path_ataris" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="dfci_ataris_analysis:shrna_gct_path" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="dfci_ataris_analysis:ataris_gct_path" value="evidence:readString:createObservedFileEvidence" />
 		<entry key="dfci_ataris_analysis:publication_reference" value="evidence:readString:createObservedLabelEvidence" />
 		<entry key="dfci_ataris_analysis:publication_url" value="evidence:readString:createObservedUrlEvidence" />
 		<!-- dfci ovarian analysis -->
-		<entry key="dfci_ovarian_analysis:target_group" value="subject:findTissueSampleByLineage" />
+		<entry key="dfci_ovarian_analysis:target_group" value="subject:findSubjectsBySynonym" />
 		<entry key="dfci_ovarian_analysis:number_of_cell_lines" value="evidence:readInt:createObservedNumericEvidence" />
 		<entry key="dfci_ovarian_analysis:number_of_cell_lines_in_target_group" value="evidence:readInt:createObservedNumericEvidence" />
 		<entry key="dfci_ovarian_analysis:gene_symbol" value="subject:findGenesBySymbol" />
@@ -451,20 +563,20 @@
 		<entry key="dfci_ovarian_analysis:publication_reference" value="evidence:readString:createObservedLabelEvidence" />
 		<entry key="dfci_ovarian_analysis:publication_url" value="evidence:readString:createObservedUrlEvidence" />
 		<!-- dfci pax8 tier 3 -->
-		<entry key="dfci_pax8_tier3:target_group" value="subject:findTissueSampleByLineage" />
+		<entry key="dfci_pax8_tier3:target_group" value="subject:findSubjectsBySynonym" />
 		<entry key="dfci_pax8_tier3:gene_symbol" value="subject:findGenesBySymbol" />
 		<entry key="dfci_pax8_tier3:figure_1" value="evidence:readString:createObservedFileEvidence" />
 		<entry key="dfci_pax8_tier3:figure_2" value="evidence:readString:createObservedFileEvidence" />
 		<entry key="dfci_pax8_tier3:figure_3" value="evidence:readString:createObservedFileEvidence" />
 		<entry key="dfci_pax8_tier3:figure_4" value="evidence:readString:createObservedFileEvidence" />
 		<entry key="dfci_pax8_tier3:figure_5" value="evidence:readString:createObservedFileEvidence" />
-		<entry key="dfci_pax8_tier3:tier1_evidence" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="dfci_pax8_tier3:tier2_evidence" value="evidence:readString:createObservedUrlEvidence" />
 		<entry key="dfci_pax8_tier3:publication_reference" value="evidence:readString:createObservedLabelEvidence" />
 		<entry key="dfci_pax8_tier3:publication_url" value="evidence:readString:createObservedUrlEvidence" />
 		<!-- fhcrc CST Tier 1 -->
 		<entry key="fhcrc-m_tier1_cst_profiling:gene_symbol" value="subject:findGenesBySymbol" />
 		<entry key="fhcrc-m_tier1_cst_profiling:splice_junction" value="evidence:readString:createObservedLabelEvidence" /> 
-		<entry key="fhcrc-m_tier1_cst_profiling:disease_condition" value="subject:findTissueSampleByLineage" />
+		<entry key="fhcrc-m_tier1_cst_profiling:disease_condition" value="subject:findSubjectsBySynonym" />
 		<entry key="fhcrc-m_tier1_cst_profiling:number_of_tumor_samples" value="evidence:readInt:createObservedNumericEvidence" />
 		<entry key="fhcrc-m_tier1_cst_profiling:number_of_tumor_samples_with_junction" value="evidence:readInt:createObservedNumericEvidence" />
 		<entry key="fhcrc-m_tier1_cst_profiling:average_number_of_supporting_reads" value="evidence:readInt:createObservedNumericEvidence" />
@@ -473,14 +585,87 @@
 		<entry key="fhcrc-m_tier1_cst_profiling:is_observed_in_ip_tissue" value="evidence:readString:createObservedLabelEvidence" /> 
 		<entry key="fhcrc-m_tier1_cst_profiling:has_suporting_ests" value="evidence:readString:createObservedLabelEvidence" /> 
 		<entry key="fhcrc-m_tier1_cst_profiling:genomic_reference_assembly" value="evidence:readString:createObservedLabelEvidence" /> 
+		<!-- utsw tier 2 discoipyrroles story -->
+		<entry key="utsw_discoipyrrole_tier2_story:compound_name" value="subject:findCompoundsByName" />
+		<entry key="utsw_discoipyrrole_tier2_story:gene_symbol" value="subject:findGenesBySymbol" />
+		<entry key="utsw_discoipyrrole_tier2_story:disease_condition" value="subject:findSubjectsBySynonym" />
+		<entry key="utsw_discoipyrrole_tier2_story:target_description" value="evidence:readString:createObservedUrlEvidence" /> 
+		<entry key="utsw_discoipyrrole_tier2_story:figure_2" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="utsw_discoipyrrole_tier2_story:figure_3" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="utsw_discoipyrrole_tier2_story:figure_4" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="utsw_discoipyrrole_tier2_story:figure_5" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="utsw_discoipyrrole_tier2_story:figure_6" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="utsw_discoipyrrole_tier2_story:figure_7" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="utsw_discoipyrrole_tier2_story:publication_url" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="utsw_discoipyrrole_tier2_story:publication_reference" value="evidence:readString:createObservedLabelEvidence" />
 		<!-- utsw tier 4 discoipyrroles story -->
-		<entry key="utsw_tier4_discoipyrroles_story:disease_condition_1" value="subject:findTissueSampleByLineage" />
-		<entry key="utsw_tier4_discoipyrroles_story:tissue_sample_1" value="subject:findTissueSampleByLineage" />
-		<entry key="utsw_tier4_discoipyrroles_story:disease_condition_2" value="subject:findTissueSampleByLineage" />
-		<entry key="utsw_tier4_discoipyrroles_story:tissue_sample_2" value="subject:findTissueSampleByLineage" />
+		<entry key="utsw_tier4_discoipyrroles_story:disease_condition_1" value="subject:findSubjectsBySynonym" />
+		<entry key="utsw_tier4_discoipyrroles_story:tissue_sample_1" value="subject:findSubjectsBySynonym" />
+		<entry key="utsw_tier4_discoipyrroles_story:disease_condition_2" value="subject:findSubjectsBySynonym" />
+		<entry key="utsw_tier4_discoipyrroles_story:tissue_sample_2" value="subject:findSubjectsBySynonym" />
 		<entry key="utsw_tier4_discoipyrroles_story:gene_symbol_1" value="subject:findGenesBySymbol" />
 		<entry key="utsw_tier4_discoipyrroles_story:drug_candidate_class" value="evidence:readString:createObservedLabelEvidence" />
 		<entry key="utsw_tier4_discoipyrroles_story:story_location" value="evidence:readString:createObservedFileEvidence" />
+		<!-- ucsf differential expression -->
+		<entry key="ucsf_differential_expression:probeset_id" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="ucsf_differential_expression:mutated_gene_condition" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="ucsf_differential_expression:mutated_gene_id" value="subject:findGenesByEntrezId" />
+		<entry key="ucsf_differential_expression:species" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="ucsf_differential_expression:strain_background" value="subject:findAnimalModelByName" />
+		<entry key="ucsf_differential_expression:tissue" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="ucsf_differential_expression:gene_id" value="subject:findGenesByEntrezId" />
+		<entry key="ucsf_differential_expression:sample_group_1" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="ucsf_differential_expression:sample_group_2" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="ucsf_differential_expression:t_statistic" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="ucsf_differential_expression:fold_change" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="ucsf_differential_expression:q_value" value="evidence:readDouble:createObservedNumericEvidence" />
+		<!-- emory PPI RAF1 -->
+		<entry key="emory_PPI_analysis:cell_line" value="subject:findSubjectsBySynonym" />
+		<entry key="emory_PPI_analysis:gene_symbol_1" value="subject:findGenesBySymbol" />
+		<entry key="emory_PPI_analysis:gene_symbol_2" value="subject:findGenesBySymbol" />
+		<entry key="emory_PPI_analysis:assay_type" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="emory_PPI_analysis:number_of_measurements" value="evidence:readInt:createObservedNumericEvidence" />
+		<entry key="emory_PPI_analysis:average_fold_over_control_value" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="emory_PPI_analysis:p_value" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="emory_PPI_analysis:nci_portal" value="evidence:readString:createObservedUrlEvidence" />
+		<!-- mskcc foretinib -->
+		<entry key="mskcc_foretinib:species" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="mskcc_foretinib:tissue" value="subject:findSubjectsBySynonym" />
+		<entry key="mskcc_foretinib:disease_condition" value="subject:findSubjectsBySynonym" />
+		<entry key="mskcc_foretinib:gene_symbol" value="subject:findGenesBySymbol" />
+		<entry key="mskcc_foretinib:compound" value="subject:findCompoundsByName" />
+		<entry key="mskcc_foretinib:control_compound" value="subject:findCompoundsByName" />
+		<entry key="mskcc_foretinib:figure_4a" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="mskcc_foretinib:figure_4b" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="mskcc_foretinib:figure_5a" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="mskcc_foretinib:publication_reference1" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="mskcc_foretinib:publication_url1" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="mskcc_foretinib:publication_reference2" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="mskcc_foretinib:publication_url2" value="evidence:readString:createObservedUrlEvidence" />
+		<!-- mskcc figros -->
+		<entry key="mskcc_figros:species" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="mskcc_figros:tissue" value="subject:findSubjectsBySynonym" />
+		<entry key="mskcc_figros:disease_condition" value="subject:findSubjectsBySynonym" />
+		<entry key="mskcc_figros:strain" value="subject:findAnimalModelByName" />
+		<entry key="mskcc_figros:gene_symbol1" value="subject:findGenesBySymbol" />
+		<entry key="mskcc_figros:gene_symbol2" value="subject:findGenesBySymbol" />
+		<entry key="mskcc_figros:figure_1B" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="mskcc_figros:figure_2A" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="mskcc_figros:figure_2B" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="mskcc_figros:figure_3A" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="mskcc_figros:figure_3B" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="mskcc_figros:publication_reference" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="mskcc_figros:publication_url" value="evidence:readString:createObservedUrlEvidence" />
+		<!-- stanford methylmix tier 1 -->
+		<entry key="stanford_methylmix:disease_condition" value="subject:findSubjectsBySynonym" />
+		<entry key="stanford_methylmix:tissue" value="subject:findSubjectsBySynonym" />
+		<entry key="stanford_methylmix:cell_type" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="stanford_methylmix:gene_symbol" value="subject:findGenesBySymbol" />
+		<entry key="stanford_methylmix:differential_methylation_status" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="stanford_methylmix:prevalence" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="stanford_methylmix:differential_methylation_pvalue" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="stanford_methylmix:proportion_variance_explained" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="stanford_methylmix:rna_fold_change" value="evidence:readDouble:createObservedNumericEvidence" />
 	  </map>
 	</constructor-arg>
   </bean>

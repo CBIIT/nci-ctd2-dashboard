@@ -28,6 +28,7 @@ public class AdminTest {
     public void initiateDao() {
         this.appContext = new ClassPathXmlApplicationContext(
                 "classpath*:META-INF/spring/testApplicationContext.xml", // this is coming from the core module
+				"classpath*:META-INF/spring/testAnimalModelApplicationContext.xml", // and this is for cell line data importer beans
 				"classpath*:META-INF/spring/testCellLineDataApplicationContext.xml", // and this is for cell line data importer beans
 				"classpath*:META-INF/spring/testCompoundDataApplicationContext.xml", // and this is for compound data importer beans
 				"classpath*:META-INF/spring/testGeneDataApplicationContext.xml", // and this is for gene data importer beans
@@ -59,6 +60,14 @@ public class AdminTest {
 		List<Organism> organisms = dashboardDao.findOrganismByTaxonomyId("9606");
 		assertEquals(1, organisms.size());
 		assertEquals("Homo sapiens", organisms.iterator().next().getDisplayName());
+
+        // animal model
+        jobExecution = executeJob("animalModelImporterJob");
+		assertEquals("COMPLETED", jobExecution.getExitStatus().getExitCode());
+		assertEquals(1, dashboardDao.countEntities(AnimalModel.class).intValue());
+		List<AnimalModel> models = dashboardDao.findAnimalModelByName("[FVB/N x SPRET/Ei] x FVB/N");
+		assertEquals(1, models.size());
+		assertEquals("10090", models.iterator().next().getOrganism().getTaxonomyId());
 
         // import some cell line data
         jobExecution = executeJob("cellLineDataImporterJob");
@@ -130,29 +139,32 @@ public class AdminTest {
         List<Subject> shRNASubjects = dashboardDao.findSubjectsByXref("BROAD_SHRNA", "TRCN0000000001");
         assertEquals(1, shRNASubjects.size());
         ShRna shRNA = (ShRna)shRNASubjects.get(0);
-        assertEquals("NM_001356.x-2866s1c1", shRNA.getDisplayName());
+        assertEquals("CCCTGCCAAACAAGCTAATAT", shRNA.getDisplayName());
         assertEquals("CCCTGCCAAACAAGCTAATAT", shRNA.getTargetSequence());
 
         // import some tissue sample data
         jobExecution = executeJob("tissueSampleDataImporterJob");
         assertEquals("COMPLETED", jobExecution.getExitStatus().getExitCode());
-        assertEquals(10, dashboardDao.countEntities(TissueSample.class).intValue());
-        List<TissueSample> tissueSamples = dashboardDao.findTissueSampleByLineage("autonomic_ganglia, mediastinum");
+        assertEquals(2, dashboardDao.countEntities(TissueSample.class).intValue());
+        List<TissueSample> tissueSamples = dashboardDao.findTissueSampleByName("neoplasm by morphology");
         assertEquals(1, tissueSamples.size());
+        TissueSample tissueSample = tissueSamples.get(0);
+        assertEquals(1, tissueSample.getSynonyms().size());
+        assertEquals(2, tissueSample.getXrefs().size());
 
         // import controlled vocabulary
         jobExecution = executeJob("controlledVocabularyImporterJob");
         assertEquals("COMPLETED", jobExecution.getExitStatus().getExitCode());
         // we get some subject/observed subject roles
-        assertEquals(11, dashboardDao.countEntities(SubjectRole.class).intValue());
-        assertEquals(48, dashboardDao.countEntities(ObservedSubjectRole.class).intValue());
+        assertEquals(16, dashboardDao.countEntities(SubjectRole.class).intValue());
+        assertEquals(73, dashboardDao.countEntities(ObservedSubjectRole.class).intValue());
         assertTrue(dashboardDao.findObservedSubjectRole("broad_cpd_sens_lineage_enrich", "compound_name") != null);
         // we get some evidence/observed evidence roles
-        assertEquals(6, dashboardDao.countEntities(EvidenceRole.class).intValue());
-        assertEquals(98, dashboardDao.countEntities(ObservedEvidenceRole.class).intValue());
+        assertEquals(8, dashboardDao.countEntities(EvidenceRole.class).intValue());
+        assertEquals(152, dashboardDao.countEntities(ObservedEvidenceRole.class).intValue());
         assertTrue(dashboardDao.findObservedEvidenceRole("broad_cpd_sens_lineage_enrich", "cell_line_subset") != null);
         // we get observation template data
-        assertEquals(14, dashboardDao.countEntities(ObservationTemplate.class).intValue());
+        assertEquals(21, dashboardDao.countEntities(ObservationTemplate.class).intValue());
         ObservationTemplate observationTemplate = dashboardDao.findObservationTemplateByName("broad_cpd_sens_lineage_enrich");
         assertNotNull(observationTemplate);
         assertFalse(observationTemplate.getIsSubmissionStory());
@@ -160,7 +172,7 @@ public class AdminTest {
         observationTemplate = dashboardDao.findObservationTemplateByName("broad_tier3_navitoclax_story");
         assertNotNull(observationTemplate);
         assertTrue(observationTemplate.getIsSubmissionStory());
-        assertEquals(4, observationTemplate.getSubmissionStoryRank().intValue());
+        assertEquals(3, observationTemplate.getSubmissionStoryRank().intValue());
 
         // import observation data
         jobExecution = executeJob("testObservationDataImporterJob");
