@@ -1703,8 +1703,7 @@
                             	 name: layoutName,
                             	 fit: true,                                                  	 
                             	 liveUpdate: false,                       
-                            	 maxSimulationTime: 8000, // max length in ms to run the layout
-                            	 ready: undefined, // callback on layoutready
+                            	 maxSimulationTime: 8000, // max length in ms to run the layout                        
                             	 stop: function(){
                             		 $("#mra_progress_indicator").hide();
                             	 } // callback on layoutstop 
@@ -1719,8 +1718,8 @@
                                     "border-width": 2,
                                     "labelValign": "middle",
                                     "font-size": 10,                                                                  
-                                    "width": "20px",
-                                    "height": "20px",                                   
+                                    "width": "25px",
+                                    "height": "25px",                                   
                                     "background-color": "data(color)",
                                     "border-color": "#555"
                                 })
