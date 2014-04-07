@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+    <context:property-placeholder location="classpath*:META-INF/spring/*.properties"/>
+    <context:spring-configured/>
+    <context:component-scan base-package="gov.nih.nci.ctd2.dashboard"/>
+
+    <bean class="gov.nih.nci.ctd2.dashboard.impl.DashboardFactoryImpl" id="dashboardFactory"/>
+
+    <bean class="org.springframework.jdbc.datasource.DriverManagerDataSource" id="dataSource">
+        <property name="driverClassName" value="${database.driverClassName}"/>
+        <property name="url" value="${database.test.url}"/>
+        <property name="username" value="${database.username}"/>
+        <property name="password" value="${database.password}"/>
+    </bean>
+
+    <bean class="gov.nih.nci.ctd2.dashboard.dao.internal.DashboardDaoImpl" id="dashboardDao">
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="dashboardFactory" ref="dashboardFactory"/>
+    </bean>
+
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">${hibernate.dialect}</prop>
+                <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto.test}</prop>
+                <prop key="hibernate.ejb.naming_strategy">${hibernate.ejb.naming_strategy}</prop>
+                <prop key="hibernate.connection.charSet">${hibernate.connection.charSet}</prop>
+                <prop key="hibernate.search.default.indexBase">${search.test.indexDir}</prop>
+            </props>
+        </property>
+
+        <property name="packagesToScan" value="gov.nih.nci.ctd2.dashboard.impl"/>
+    </bean>
+</beans>
