@@ -89,8 +89,8 @@
   </bean>
 
   <!-- columbia tier4 glioma story -->
-  <bean name="columbiaTier4GliomaStoryReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-	<property name="lineMapper" ref="columbiaTier4GliomaStoryLineMapper" />
+  <bean name="columbiaGbmMrsStoryReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="lineMapper" ref="columbiaGbmMrsStoryLineMapper" />
   </bean>
 
   <!-- cshl tier4 fgf19 story -->

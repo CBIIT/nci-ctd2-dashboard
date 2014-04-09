@@ -33,14 +33,14 @@
 		<batch:chunk reader="columbiaMRAFetAnalysisReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	  </batch:tasklet>
 	</batch:step>
-	<batch:step id="columbiaJointMRSHRNADiffAnalysisStep" parent="observationDataStep" next="columbiaTier4GliomaStoryStep">
+	<batch:step id="columbiaJointMRSHRNADiffAnalysisStep" parent="observationDataStep" next="columbiaGbmMrsStoryStep">
 	  <batch:tasklet>
 		<batch:chunk reader="columbiaJointMRSHRNADiffAnalysisReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	  </batch:tasklet>
 	</batch:step>
-	<batch:step id="columbiaTier4GliomaStoryStep" parent="observationDataStep" next="cshlTier4FGF19StoryStep">
+	<batch:step id="columbiaGbmMrsStoryStep" parent="observationDataStep" next="cshlTier4FGF19StoryStep">
 	  <batch:tasklet>
-		<batch:chunk reader="columbiaTier4GliomaStoryReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+		<batch:chunk reader="columbiaGbmMrsStoryReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	  </batch:tasklet>
 	</batch:step>
 	<batch:step id="cshlTier4FGF19StoryStep" parent="observationDataStep" next="dfciTier4BetaCateninStoryStep">
@@ -220,18 +220,18 @@
 	<property name="names" value="dummy,submission_name,submission_center,submission_date,template_name,probeset_id,disease_condition,cell_line_1,cell_line_2,gene_symbol,func_type,mr_regulon_set_size,mr_gsea_es,mr_gsea_p_value,mr_gsea_fdr,num_shRNAs,shrna_diff_rep_z_score_combined,shrna_diff_rep_p_value_combined,shrna_diff_rep_fdr_combined,shrna_diff_rep_net_direction_combined,nci_portal"/>
   </bean>
 
-  <!-- columbia tier4 glioma story -->
+  <!-- columbia gbm mrs -->
 
-  <!-- columbiaTier4GliomaStoryReader defined in: -->
+  <!-- columbiaGbmMrsStoryReader defined in: -->
   <!-- observationDataApplicationContext.xml testObservationDataApplicationContext.xml -->
-  <bean name="columbiaTier4GliomaStoryLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+  <bean name="columbiaGbmMrsStoryLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
 	<property name="fieldSetMapper" ref="observationDataMapper" />
-	<property name="lineTokenizer" ref="columbiaTier4GliomaStoryLineTokenizer" />
+	<property name="lineTokenizer" ref="columbiaGbmMrsStoryLineTokenizer" />
   </bean>
 
-  <bean name="columbiaTier4GliomaStoryLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+  <bean name="columbiaGbmMrsStoryLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="dummy,submission_name,submission_center,submission_date,template_name,disease_condition,tissue_sample,gene_symbol_1,gene_symbol_2,gene_symbol_3,gene_symbol_4,gene_symbol_5,story_location"/>
+	<property name="names" value="dummy,submission_name,submission_center,submission_date,template_name,disease_condition,gene_symbol_1,gene_symbol_2,gene_symbol_3,publication_reference,tier1_evidence,story_location"/>
   </bean>
 
   <!-- cshl tier4 fgf19 story -->
@@ -558,14 +558,13 @@
 		<entry key="columbia_joint_mr_shrna_diff:shrna_diff_rep_fdr_combined" value="evidence:readDouble:createObservedNumericEvidence" />
 		<entry key="columbia_joint_mr_shrna_diff:shrna_diff_rep_net_direction_combined" value="evidence:readString:createObservedLabelEvidence" />
 		<!-- columbia tier4 glioma story -->
-		<entry key="columbia_tier4_glioma_story:disease_condition" value="subject:findSubjectsBySynonym" />
-		<entry key="columbia_tier4_glioma_story:tissue_sample" value="subject:findSubjectsBySynonym" />
-		<entry key="columbia_tier4_glioma_story:gene_symbol_1" value="subject:findGenesBySymbol" />
-		<entry key="columbia_tier4_glioma_story:gene_symbol_2" value="subject:findGenesBySymbol" />
-		<entry key="columbia_tier4_glioma_story:gene_symbol_3" value="subject:findGenesBySymbol" />
-		<entry key="columbia_tier4_glioma_story:gene_symbol_4" value="subject:findGenesBySymbol" />
-		<entry key="columbia_tier4_glioma_story:gene_symbol_5" value="subject:findGenesBySymbol" />
-		<entry key="columbia_tier4_glioma_story:story_location" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="columbia_gbm_mrs_story:disease_condition" value="subject:findSubjectsBySynonym" />
+		<entry key="columbia_gbm_mrs_story:gene_symbol_1" value="subject:findGenesBySymbol" />
+		<entry key="columbia_gbm_mrs_story:gene_symbol_2" value="subject:findGenesBySymbol" />
+		<entry key="columbia_gbm_mrs_story:gene_symbol_3" value="subject:findGenesBySymbol" />
+		<entry key="columbia_gbm_mrs_story:publication_reference" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="columbia_gbm_mrs_story:tier1_evidence" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="columbia_gbm_mrs_story:story_location" value="evidence:readString:createObservedFileEvidence" />
 		<!-- cshl tier4 fgf19 story -->
 		<entry key="cshl_tier4_fgf19_story:disease_condition" value="subject:findSubjectsBySynonym" />
 		<entry key="cshl_tier4_fgf19_story:tissue_sample" value="subject:findSubjectsBySynonym" />
