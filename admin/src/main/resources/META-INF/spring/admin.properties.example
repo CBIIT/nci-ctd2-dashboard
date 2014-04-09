@@ -2,13 +2,13 @@
 
 # data source locations
 animal.model.location=file:${CTD2_DATA_HOME}/subject_data/animal_model/animal_model.txt
-cell.line.name.type.location=file:${CTD2_DATA_HOME}/subject_data/cell_sample_update/cell_name_type.txt
-cell.line.annotation.type.location=file:${CTD2_DATA_HOME}/subject_data/cell_sample_update/cell_anno_type.txt
-cell.line.annotation.name.location=file:${CTD2_DATA_HOME}/subject_data/cell_sample_update/cell_anno_name.txt
-cell.line.annotation.source.location=file:${CTD2_DATA_HOME}/subject_data/cell_sample_update/cell_anno_source.txt
-cell.line.annotation.sample.location=file:${CTD2_DATA_HOME}/subject_data/cell_sample_update/cell_anno.txt
-cell.line.id.location=file:${CTD2_DATA_HOME}/subject_data/cell_sample_update/cell_sample.txt
-cell.line.name.location=file:${CTD2_DATA_HOME}/subject_data/cell_sample_update/cell_sample_name.txt
+cell.line.name.type.location=file:${CTD2_DATA_HOME}/subject_data/cell_sample/cell_name_type.txt
+cell.line.annotation.type.location=file:${CTD2_DATA_HOME}/subject_data/cell_sample/cell_anno_type.txt
+cell.line.annotation.name.location=file:${CTD2_DATA_HOME}/subject_data/cell_sample/cell_anno_name.txt
+cell.line.annotation.source.location=file:${CTD2_DATA_HOME}/subject_data/cell_sample/cell_anno_source.txt
+cell.line.annotation.sample.location=file:${CTD2_DATA_HOME}/subject_data/cell_sample/cell_anno.txt
+cell.line.id.location=file:${CTD2_DATA_HOME}/subject_data/cell_sample/cell_sample.txt
+cell.line.name.location=file:${CTD2_DATA_HOME}/subject_data/cell_sample/cell_sample_name.txt
 compounds.location=file:${CTD2_DATA_HOME}/subject_data/compound/Compounds.txt
 compound.synonyms.location=file:${CTD2_DATA_HOME}/subject_data/compound/CompoundSynonyms.txt
 gene.data.location=file:${CTD2_DATA_HOME}/subject_data/gene/*.gene_info
@@ -37,9 +37,12 @@ utsw.tier2.discoipyrroles.story.data.location=file:${CTD2_DATA_HOME}/submissions
 utsw.tier4.discoipyrroles.story.data.location=file:${CTD2_DATA_HOME}/submissions/20130503-utsw_tier4_discoipyrroles_story/20130503-utsw_tier4_discoipyrroles_story.txt
 ucsf.differential-expression.data.location=file:${CTD2_DATA_HOME}/submissions/20140124-ucsf_differential_expression/20140124-ucsf_differential_expression.txt
 emory.ppi-raf1.data.location=file:${CTD2_DATA_HOME}/submissions/20131220-emory_PPI_analysis-RAF1/20131220-emory_PPI_analysis-RAF1.txt
-mskcc.foretinib.data.location=file:${CTD2_DATA_HOME}/submissions/20140304_mskcc_foretinib/20140304_mskcc_foretinib.txt
-mskcc.figros.data.location=file:${CTD2_DATA_HOME}/submissions/20140304_mskcc_figros/20140304_mskcc_figros.txt
+mskcc.foretinib.data.location=file:${CTD2_DATA_HOME}/submissions/20140304-mskcc_foretinib/20140304_mskcc_foretinib.txt
+mskcc.figros.data.location=file:${CTD2_DATA_HOME}/submissions/20140304-mskcc_figros/20140304_mskcc_figros.txt
 stanford.methylmix.tier1.data.location=file:${CTD2_DATA_HOME}/submissions/20130901_stanford_methylmix_tier1/20130901_stanford_methylmix_tier1.txt
+mda.endo.mutation.baf3.data.location=file:${CTD2_DATA_HOME}/submissions/20140304-mda_endo_mutation_BaF3/20140304-mda_endo_mutation_BaF3.txt
+mskcc.brd4aml.brd4.data.location=file:${CTD2_DATA_HOME}/submissions/20140324-mskcc_brd4aml_brd4/20140324-mskcc_brd4aml_brd4.txt
+mskcc.brd4aml.jq1.data.location=file:${CTD2_DATA_HOME}/submissions/20140324-mskcc_brd4aml_jq1/20140324-mskcc_brd4aml_jq1.txt
 
 # spring commit interval
 spring.batch.commit.interval=10000

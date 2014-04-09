@@ -108,9 +108,24 @@
 		<batch:chunk reader="mskccFigrosReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	  </batch:tasklet>
 	</batch:step>
-	<batch:step id="stanfordMethylmixTier1Step" parent="observationDataStep">
+	<batch:step id="stanfordMethylmixTier1Step" parent="observationDataStep" next="mdaEndoMutationBaf3Step">
 	  <batch:tasklet>
 		<batch:chunk reader="stanfordMethylmixTier1Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+	<batch:step id="mdaEndoMutationBaf3Step" parent="observationDataStep" next="mskccBrd4amlBrd4Step">
+	  <batch:tasklet>
+		<batch:chunk reader="mdaEndoMutationBaf3Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+	<batch:step id="mskccBrd4amlBrd4Step" parent="observationDataStep" next="mskccBrd4amlJq1Step">
+	  <batch:tasklet>
+		<batch:chunk reader="mskccBrd4amlBrd4Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+	<batch:step id="mskccBrd4amlJq1Step" parent="observationDataStep">
+	  <batch:tasklet>
+		<batch:chunk reader="mskccBrd4amlJq1Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	  </batch:tasklet>
 	</batch:step>
   </batch:job>
@@ -415,6 +430,48 @@
 	<property name="names" value="dummy,submission_name,submission_center,submission_date,template_name,disease_condition,tissue,cell_type,gene_symbol,differential_methylation_status,prevalence,differential_methylation_pvalue,proportion_variance_explained,rna_fold_change"/>
   </bean>
 
+  <!-- mda endo mutation baf3 -->
+
+  <!-- mdaEndoMutationBaf3Reader defined in: -->
+  <!-- observationDataApplicationContext.xml testObservationDataApplicationContext.xml -->
+  <bean name="mdaEndoMutationBaf3LineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+	<property name="fieldSetMapper" ref="observationDataMapper" />
+	<property name="lineTokenizer" ref="mdaEndoMutationBaf3LineTokenizer" />
+  </bean>
+
+  <bean name="mdaEndoMutationBaf3LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+	<property name="delimiter" value="\u0009"/>
+	<property name="names" value="dummy,submission_name,submission_center,submission_date,template_name,number_of_mutations,gene_symbol,cell_line,aberration,disease_condition,cell_growth_avr,cell_growth_sd,fold_change_avr,fold_change_sd,nci_portal"/>
+  </bean>
+
+  <!-- mskcc brd4aml brd4 -->
+
+  <!-- mskccBrd4amlBrd4Reader defined in: -->
+  <!-- observationDataApplicationContext.xml testObservationDataApplicationContext.xml -->
+  <bean name="mskccBrd4amlBrd4LineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+	<property name="fieldSetMapper" ref="observationDataMapper" />
+	<property name="lineTokenizer" ref="mskccBrd4amlBrd4LineTokenizer" />
+  </bean>
+
+  <bean name="mskccBrd4amlBrd4LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+	<property name="delimiter" value="\u0009"/>
+	<property name="names" value="dummy,submission_name,submission_center,submission_date,template_name,cell_line,disease_condition,gene_symbol,figure_1a,figure_1b,publication_reference,publication_url"/>
+  </bean>
+
+  <!-- mskcc brd4aml jq1 -->
+
+  <!-- mskccBrd4amlJq1Reader defined in: -->
+  <!-- observationDataApplicationContext.xml testObservationDataApplicationContext.xml -->
+  <bean name="mskccBrd4amlJq1LineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+	<property name="fieldSetMapper" ref="observationDataMapper" />
+	<property name="lineTokenizer" ref="mskccBrd4amlJq1LineTokenizer" />
+  </bean>
+
+  <bean name="mskccBrd4amlJq1LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+	<property name="delimiter" value="\u0009"/>
+	<property name="names" value="dummy,submission_name,submission_center,submission_date,template_name,species,cell_line,disease_condition,compound,gene_symbol,gene_pathway,figure_2a,figure_2b,figure_3a,figure_3b,figure_4a,figure_4b,figure_5a,figure_5b,publication_reference,publication_url"/>
+  </bean>
+
   <!-- shared helper beans -->
   <bean name="observationDataFactory" class="gov.nih.nci.ctd2.dashboard.importer.internal.ObservationDataFactoryImpl"/>
 
@@ -666,8 +723,43 @@
 		<entry key="stanford_methylmix:differential_methylation_pvalue" value="evidence:readDouble:createObservedNumericEvidence" />
 		<entry key="stanford_methylmix:proportion_variance_explained" value="evidence:readDouble:createObservedNumericEvidence" />
 		<entry key="stanford_methylmix:rna_fold_change" value="evidence:readDouble:createObservedNumericEvidence" />
+		<!-- mda endo mutation BaF3 -->
+		<entry key="mda_endo_mutation_BaF3:number_of_mutations" value="evidence:readInt:createObservedNumericEvidence" />
+		<entry key="mda_endo_mutation_BaF3:gene_symbol" value="subject:findGenesBySymbol" />
+		<entry key="mda_endo_mutation_BaF3:cell_line" value="subject:findSubjectsBySynonym" />
+		<entry key="mda_endo_mutation_BaF3:aberration" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="mda_endo_mutation_BaF3:disease_condition" value="subject:findSubjectsBySynonym" />
+		<entry key="mda_endo_mutation_BaF3:cell_growth_avr" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="mda_endo_mutation_BaF3:cell_growth_sd" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="mda_endo_mutation_BaF3:fold_change_avr" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="mda_endo_mutation_BaF3:fold_change_sd" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="mda_endo_mutation_BaF3:nci_portal" value="evidence:readString:createObservedUrlEvidence" />
+		<!-- mskcc brda4aml brd4 -->
+		<entry key="mskcc_brd4aml_brd4:cell_line" value="subject:findSubjectsBySynonym" />
+		<entry key="mskcc_brd4aml_brd4:disease_condition" value="subject:findSubjectsBySynonym" />
+		<entry key="mskcc_brd4aml_brd4:gene_symbol" value="subject:findGenesBySymbol" />
+		<entry key="mskcc_brd4aml_brd4:figure_1a" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="mskcc_brd4aml_brd4:figure_1b" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="mskcc_brd4aml_brd4:publication_reference" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="mskcc_brd4aml_brd4:publication_url" value="evidence:readString:createObservedUrlEvidence" />
+		<!-- mskcc brda4aml jq1 -->
+		<entry key="mskcc_brd4aml_jq1:species" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="mskcc_brd4aml_jq1:cell_line" value="subject:findSubjectsBySynonym" />
+		<entry key="mskcc_brd4aml_jq1:disease_condition" value="subject:findSubjectsBySynonym" />
+		<entry key="mskcc_brd4aml_jq1:compound" value="subject:findCompoundsByName" />
+		<entry key="mskcc_brd4aml_jq1:gene_symbol" value="subject:findGenesBySymbol" />
+		<entry key="mskcc_brd4aml_jq1:gene_pathway" value="subject:findGenesBySymbol" />
+		<entry key="mskcc_brd4aml_jq1:figure_2a" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="mskcc_brd4aml_jq1:figure_2b" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="mskcc_brd4aml_jq1:figure_3a" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="mskcc_brd4aml_jq1:figure_3b" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="mskcc_brd4aml_jq1:figure_4a" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="mskcc_brd4aml_jq1:figure_4b" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="mskcc_brd4aml_jq1:figure_5a" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="mskcc_brd4aml_jq1:figure_5b" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="mskcc_brd4aml_jq1:publication_reference" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="mskcc_brd4aml_jq1:publication_url" value="evidence:readString:createObservedUrlEvidence" />
 	  </map>
 	</constructor-arg>
   </bean>
-
 </beans>

@@ -163,4 +163,19 @@
   <property name="lineMapper" ref="stanfordMethylmixTier1LineMapper" />
   </bean>
 
+  <!-- mda endo mutation baf3 -->
+  <bean name="mdaEndoMutationBaf3Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
+  <property name="lineMapper" ref="mdaEndoMutationBaf3LineMapper" />
+  </bean>
+
+  <!-- mskcc brd4aml brd4 -->
+  <bean name="mskccBrd4amlBrd4Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
+  <property name="lineMapper" ref="mskccBrd4amlBrd4LineMapper" />
+  </bean>
+
+  <!-- mskcc brd4aml jq1 -->
+  <bean name="mskccBrd4amlJq1Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
+  <property name="lineMapper" ref="mskccBrd4amlJq1LineMapper" />
+  </bean>
+
 </beans>
