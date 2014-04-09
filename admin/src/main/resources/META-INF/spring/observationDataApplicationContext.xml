@@ -77,13 +77,13 @@
 	</property>
   </bean>
 
-  <!-- columbia tier4 glioma story -->
-  <bean name="columbiaTier4GliomaStoryReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
-	<property name="resources" value="${columbia.tier4.glioma.story.data.location}" />
+  <!-- columbia gbm mrs story -->
+  <bean name="columbiaGbmMrsStoryReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+	<property name="resources" value="${columbia.gbm.mrs.data.location}" />
 	<property name="delegate">
 	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
-		<property name="lineMapper" ref="columbiaTier4GliomaStoryLineMapper" />
-		<property name="linesToSkip" value="7" />
+		<property name="lineMapper" ref="columbiaGbmMrsStoryLineMapper" />
+		<property name="linesToSkip"
 	  </bean>
 	</property>
   </bean>
