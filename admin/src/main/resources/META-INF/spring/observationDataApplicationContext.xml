@@ -83,7 +83,7 @@
 	<property name="delegate">
 	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
 		<property name="lineMapper" ref="columbiaGbmMrsStoryLineMapper" />
-		<property name="linesToSkip"
+		<property name="linesToSkip" value="7" />
 	  </bean>
 	</property>
   </bean>
