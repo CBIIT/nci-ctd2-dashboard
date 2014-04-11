@@ -19,6 +19,7 @@ public class ObservationDataFactoryImpl implements ObservationDataFactory {
 
 	private static final Log log = LogFactory.getLog(ObservationDataFactoryImpl.class);
 
+	private static final String DASHBOARD_SUBMISSION_URL = "/#/submission/";	
     private static final String DASHBOARD_OBSERVATION_URL = "/#/observation/";
     private static final Pattern LINKBACK_URL_EVIDENCE_REGEX = Pattern.compile("tier._evidence");
     // submission_name:column_name=column_value
@@ -199,14 +200,21 @@ public class ObservationDataFactoryImpl implements ObservationDataFactory {
         String evidenceURL = null;
         
         Matcher linkbackURLEvidenceMatcher = LINKBACK_URL_EVIDENCE_REGEX.matcher(columnName);
+        // is this a linkback
         if (linkbackURLEvidenceMatcher.find()) {
             Matcher linkbackURLMatcher = LINKBACK_URL_REGEX.matcher(evidenceValue);
-            if (linkbackURLMatcher.find() && linkbackURLMatcher.groupCount() == 2) {
+	        // is this a linkback to an observation
+            if (linkbackToObservation(linkbackURLMatcher)) {
                 LinkbackURL linkbackURL = getLinkbackURL(linkbackURLMatcher);
                 Submission submission = dashboardDao.findSubmissionByName(linkbackURL.submissionName);
                 evidenceURL = getLinkbackURL(linkbackURL.columnValuePairs,
                                              getObservations(submission));
             }
+	        // is this a linkback to submission
+    	    else if (linkbackToSubmission(evidenceValue)) {
+	    		Submission submission = dashboardDao.findSubmissionByName(evidenceValue);
+	        	evidenceURL = DASHBOARD_SUBMISSION_URL + submission.getId();
+	        }
         }
         
         return (evidenceURL == null) ? evidenceValue : evidenceURL;
@@ -229,6 +237,17 @@ public class ObservationDataFactoryImpl implements ObservationDataFactory {
         }
 
         return linkbackURL;
+    }
+
+    private boolean linkbackToObservation(Matcher linkbackURLMatcher)
+    {
+		return (linkbackURLMatcher.find() && linkbackURLMatcher.groupCount() == 2);
+    }
+
+    private boolean linkbackToSubmission(String evidenceValue)
+    {
+    	Submission submission = dashboardDao.findSubmissionByName(evidenceValue);
+    	return (submission != null);
     }
 
     private List<Observation> getObservations(Submission submission) {

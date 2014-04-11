@@ -157,11 +157,11 @@ public class AdminTest {
         assertEquals("COMPLETED", jobExecution.getExitStatus().getExitCode());
         // we get some subject/observed subject roles
         assertEquals(17, dashboardDao.countEntities(SubjectRole.class).intValue());
-        assertEquals(82, dashboardDao.countEntities(ObservedSubjectRole.class).intValue());
+        assertEquals(81, dashboardDao.countEntities(ObservedSubjectRole.class).intValue());
         assertTrue(dashboardDao.findObservedSubjectRole("broad_cpd_sens_lineage_enrich", "compound_name") != null);
         // we get some evidence/observed evidence roles
         assertEquals(8, dashboardDao.countEntities(EvidenceRole.class).intValue());
-        assertEquals(175, dashboardDao.countEntities(ObservedEvidenceRole.class).intValue());
+        assertEquals(176, dashboardDao.countEntities(ObservedEvidenceRole.class).intValue());
         assertTrue(dashboardDao.findObservedEvidenceRole("broad_cpd_sens_lineage_enrich", "cell_line_subset") != null);
         // we get observation template data
         assertEquals(24, dashboardDao.countEntities(ObservationTemplate.class).intValue());
