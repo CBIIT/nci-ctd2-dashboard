@@ -558,13 +558,13 @@
 		<entry key="columbia_joint_mr_shrna_diff:shrna_diff_rep_fdr_combined" value="evidence:readDouble:createObservedNumericEvidence" />
 		<entry key="columbia_joint_mr_shrna_diff:shrna_diff_rep_net_direction_combined" value="evidence:readString:createObservedLabelEvidence" />
 		<!-- columbia tier4 glioma story -->
-		<entry key="columbia_gbm_mrs_story:disease_condition" value="subject:findSubjectsBySynonym" />
-		<entry key="columbia_gbm_mrs_story:gene_symbol_1" value="subject:findGenesBySymbol" />
-		<entry key="columbia_gbm_mrs_story:gene_symbol_2" value="subject:findGenesBySymbol" />
-		<entry key="columbia_gbm_mrs_story:gene_symbol_3" value="subject:findGenesBySymbol" />
-		<entry key="columbia_gbm_mrs_story:publication_reference" value="evidence:readString:createObservedLabelEvidence" />
-		<entry key="columbia_gbm_mrs_story:tier1_evidence" value="evidence:readString:createObservedUrlEvidence" />
-		<entry key="columbia_gbm_mrs_story:story_location" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="columbia_gbm_mrs:disease_condition" value="subject:findSubjectsBySynonym" />
+		<entry key="columbia_gbm_mrs:gene_symbol_1" value="subject:findGenesBySymbol" />
+		<entry key="columbia_gbm_mrs:gene_symbol_2" value="subject:findGenesBySymbol" />
+		<entry key="columbia_gbm_mrs:gene_symbol_3" value="subject:findGenesBySymbol" />
+		<entry key="columbia_gbm_mrs:publication_reference" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="columbia_gbm_mrs:tier1_evidence" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="columbia_gbm_mrs:story_location" value="evidence:readString:createObservedFileEvidence" />
 		<!-- cshl tier4 fgf19 story -->
 		<entry key="cshl_tier4_fgf19_story:disease_condition" value="subject:findSubjectsBySynonym" />
 		<entry key="cshl_tier4_fgf19_story:tissue_sample" value="subject:findSubjectsBySynonym" />

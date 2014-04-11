@@ -484,8 +484,8 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
             submissions.add((Submission)o);
         }
 
-        assert submissions.size() == 1;
-        return submissions.iterator().next();
+        assert submissions.size() <= 1;
+        return (submissions.size() == 1) ? submissions.iterator().next() : null;
 	}
 
     @Override
