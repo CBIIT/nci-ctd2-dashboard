@@ -1,0 +1,5 @@
+cell_anno_source_id	cell_anno_source
+1	COSMIC (Sanger)
+2	CCLE (Broad/Novartis)
+3	UTSW-CTD^2
+4	Broad-CTD^2
