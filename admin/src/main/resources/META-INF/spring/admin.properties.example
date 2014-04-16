@@ -43,6 +43,17 @@ stanford.methylmix.tier1.data.location=file:${CTD2_DATA_HOME}/submissions/201309
 mda.endo.mutation.baf3.data.location=file:${CTD2_DATA_HOME}/submissions/20140304-mda_endo_mutation_BaF3/20140304-mda_endo_mutation_BaF3.txt
 mskcc.brd4aml.brd4.data.location=file:${CTD2_DATA_HOME}/submissions/20140324-mskcc_brd4aml_brd4/20140324-mskcc_brd4aml_brd4.txt
 mskcc.brd4aml.jq1.data.location=file:${CTD2_DATA_HOME}/submissions/20140324-mskcc_brd4aml_jq1/20140324-mskcc_brd4aml_jq1.txt
+mskcc.pdg.frb.data.location=file:${CTD2_DATA_HOME}/submissions/20140328-mskcc_pdgfrb/20140328-mskcc_pdgfrb.txt
+mskcc.pdg.frb.imatinib.data.location=file:${CTD2_DATA_HOME}/submissions/20140328-mskcc_pdgfrb_imatinib/20140328-mskcc_pdgfrb_imatinib.txt
+mskcc.pdg.frb.human.data.location=file:${CTD2_DATA_HOME}/submissions/20140328-mskcc_pdgfrb_human/20140328-mskcc_pdgfrb_human.txt
+cshl.avg.measure.data.location=file:${CTD2_DATA_HOME}/submissions/20140324-cshl_avgmeasure/20140324-cshl_avgmeasure.txt
+cshl.mouse.livers.data.location=file:${CTD2_DATA_HOME}/submissions/20140324-cshl_mouselivers/20140324-cshl_mouselivers.txt
+cshl.coexp.data.location=file:${CTD2_DATA_HOME}/submissions/20140324-cshl_coexpr/20140324-cshl_coexpr.txt
+dfci.arid1a.mut.analysis.data.location=file:${CTD2_DATA_HOME}/submissions/20140401-dfci_arid1a_mut_analysis/20140401-dfci_arid1a_mut_analysis.txt
+dfci.arid1b.dependency.data.location=file:${CTD2_DATA_HOME}/submissions/20140401-dfci_arid1b_dependency/20140401-dfci_arid1b_dependency.txt
+dfci.smarca4.mut.analysis.data.location=file:${CTD2_DATA_HOME}/submissions/20140401-dfci_smarca4_mut_analysis/20140401-dfci_smarca4_mut_analysis.txt
+dfci.smarca2.dependency.data.location=file:${CTD2_DATA_HOME}/submissions/20140401-dfci_smarca2_dependency/20140401-dfci_smarca2_dependency.txt
+
 
 # spring commit interval
 spring.batch.commit.interval=10000

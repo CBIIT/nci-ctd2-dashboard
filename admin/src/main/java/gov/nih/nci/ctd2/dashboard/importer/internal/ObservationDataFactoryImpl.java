@@ -95,9 +95,20 @@ public class ObservationDataFactoryImpl implements ObservationDataFactory {
 					method = dashboardDao.getClass().getMethod("findGenesByEntrezId", String.class);
 					dashboardEntities = (List<Subject>)method.invoke(dashboardDao, subjectValue);
 				}
+				// if we've searched for tissue sample by name and come up empty, try by synonym
+				if (dashboardEntities.isEmpty() && daoFindQueryName.equals("findTissueSampleByName")) {
+					method = dashboardDao.getClass().getMethod("findSubjectsBySynonym", String.class, Boolean.TYPE);
+					dashboardEntities = (List<Subject>)method.invoke(dashboardDao, subjectValue, true);
+				}
 			}
 			if (dashboardEntities.size() > 0) {
-				subject = dashboardEntities.iterator().next();
+				for (Subject returnedSubject : dashboardEntities) {
+					if (returnedSubject.getDisplayName().equals(subjectValue)) {
+						subject = returnedSubject;
+						break;
+					}
+				}
+				subject = (subject == null) ? dashboardEntities.iterator().next() : subject;
 				subjectCache.put(subjectValue, subject);
 			}
 		}
