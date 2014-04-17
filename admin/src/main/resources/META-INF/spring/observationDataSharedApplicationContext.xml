@@ -951,7 +951,7 @@
 		<entry key="mskcc_pdgfrb_imatinib:metastasis" value="subject:findTissueSampleByName" />
 		<entry key="mskcc_pdgfrb_imatinib:gene_symbol1" value="subject:findGenesBySymbol" />
 		<entry key="mskcc_pdgfrb_imatinib:gene_symbol2" value="subject:findGenesBySymbol" />
-		<entry key="mskcc_pdgfrb_imatinib:compound" value="subject:findCompoundsByNames" />
+		<entry key="mskcc_pdgfrb_imatinib:compound" value="subject:findCompoundsByName" />
 		<entry key="mskcc_pdgfrb_imatinib:figure_4a" value="evidence:readString:createObservedFileEvidence" />
 		<entry key="mskcc_pdgfrb_imatinib:figure_4b" value="evidence:readString:createObservedFileEvidence" />
 		<entry key="mskcc_pdgfrb_imatinib:figure_4c" value="evidence:readString:createObservedFileEvidence" />
