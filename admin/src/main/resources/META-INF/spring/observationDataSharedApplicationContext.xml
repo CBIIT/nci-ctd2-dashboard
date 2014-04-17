@@ -986,11 +986,11 @@
 		<entry key="cshl_mouselivers:figure1" value="evidence:readString:createObservedFileEvidence" />
 		<entry key="cshl_mouselivers:figure2" value="evidence:readString:createObservedFileEvidence" />
 		<!-- cshl coexp -->
-		<entry key="cshl_coexp:tumor_type" value="subject:findTissueSampleByName" />
-		<entry key="cshl_coexp:gene_symbol1" value="subject:findGenesBySymbol" />
-		<entry key="cshl_coexp:gene_symbol2" value="subject:findGenesBySymbol" />
-		<entry key="cshl_coexp:figure1" value="evidence:readString:createObservedFileEvidence" />
-		<entry key="cshl_coexp:figure2" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="cshl_coexpr:tumor_type" value="subject:findTissueSampleByName" />
+		<entry key="cshl_coexpr:gene_symbol1" value="subject:findGenesBySymbol" />
+		<entry key="cshl_coexpr:gene_symbol2" value="subject:findGenesBySymbol" />
+		<entry key="cshl_coexpr:figure1" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="cshl_coexpr:figure2" value="evidence:readString:createObservedFileEvidence" />
 		<!-- dfci arid1a mut analysis -->
 		<entry key="dfci_arid1a_mut_analysis:gene_symbol" value="subject:findGenesBySymbol" />
 		<entry key="dfci_arid1a_mut_analysis:gene_summarization_method" value="evidence:readString:createObservedLabelEvidence" />
