@@ -6,7 +6,6 @@
         xsi:schemaLocation="http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-2.1.xsd
 							http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
 							http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
-
   <batch:job id="observationDataImporterJob">
 	<batch:step id="dfciAtarisAnalysisStep" parent="observationDataStep" next="broadCompoundSensitivityLineageEnrichmentStep">
 	  <batch:tasklet>
@@ -178,7 +177,6 @@
 		<batch:chunk reader="dfciSmarca2DependencyReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	  </batch:tasklet>
 	</batch:step>
-
   </batch:job>
 
   <bean id="observationDataStep" class="org.springframework.batch.core.step.item.SimpleStepFactoryBean" abstract="true">
@@ -324,7 +322,7 @@
 
   <bean name="dfciReporterAnalysisLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="dummy,submission_name,submission_center,submission_date,template_name,target_group,number_of_cell_lines,number_of_cell_lines_in_target_group,gene_symbol,p_value,fdr,nci_portal,gct_path,publication_reference,publication_url"/>
+	<property name="names" value="dummy,submission_name,submission_center,submission_date,template_name,target_group,target_group_gene,target_group_alteration,number_of_cell_lines,number_of_cell_lines_in_target_group,gene_symbol,p_value,fdr,nci_portal,gct_path,publication_reference,publication_url"/>
   </bean>
 
   <!-- dfci ataris analysis -->
@@ -756,6 +754,8 @@
 		<entry key="dfci_tier4_beta-catenin_story:story_location" value="evidence:readString:createObservedFileEvidence" />
 		<!-- dfci reporter analysis -->
 		<entry key="dfci_reporter_analysis:target_group" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="dfci_reporter_analysis:target_group_gene" value="subject:findGenesBySymbol" />
+		<entry key="dfci_reporter_analysis:target_group_alteration" value="evidence:readString:createObservedLabelEvidence" />
 		<entry key="dfci_reporter_analysis:number_of_cell_lines" value="evidence:readInt:createObservedNumericEvidence" />
 		<entry key="dfci_reporter_analysis:number_of_cell_lines_in_target_group" value="evidence:readInt:createObservedNumericEvidence" />
 		<entry key="dfci_reporter_analysis:gene_symbol" value="subject:findGenesBySymbol" />
