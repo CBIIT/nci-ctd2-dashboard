@@ -53,6 +53,7 @@ dfci.arid1a.mut.analysis.data.location=file:${CTD2_DATA_HOME}/submissions/201404
 dfci.arid1b.dependency.data.location=file:${CTD2_DATA_HOME}/submissions/20140401-dfci_arid1b_dependency/20140401-dfci_arid1b_dependency.txt
 dfci.smarca4.mut.analysis.data.location=file:${CTD2_DATA_HOME}/submissions/20140401-dfci_smarca4_mut_analysis/20140401-dfci_smarca4_mut_analysis.txt
 dfci.smarca2.dependency.data.location=file:${CTD2_DATA_HOME}/submissions/20140401-dfci_smarca2_dependency/20140401-dfci_smarca2_dependency.txt
+broad.bcat.nav.story.data.location=file:${CTD2_DATA_HOME}/submissions/20140417-broad_bcat_nav_story/20140417-broad_bcat_nav_story.txt
 
 
 # spring commit interval
