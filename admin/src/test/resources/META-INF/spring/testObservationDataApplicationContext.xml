@@ -218,4 +218,8 @@
   <property name="lineMapper" ref="dfciSmarca2DependencyLineMapper" />
   </bean>
 
+  <bean name="broadBcatNavStoryReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+  <property name="lineMapper" ref="broadBcatNavStoryLineMapper" />
+  </bean>
+
 </beans>
