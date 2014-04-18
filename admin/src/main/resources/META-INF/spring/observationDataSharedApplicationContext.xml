@@ -1067,7 +1067,7 @@
 		<entry key="broad_bcat_nav_story:resource_url_1" value="evidence:readString:createObservedUrlEvidence" />
 		<entry key="broad_bcat_nav_story:resource_url_2" value="evidence:readString:createObservedUrlEvidence" />
 		<entry key="broad_bcat_nav_story:resource_url_3" value="evidence:readString:createObservedUrlEvidence" />
-		<entry key="broad_bcat_nav_story:publication_reference" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="broad_bcat_nav_story:publication_reference" value="evidence:readString:createObservedUrlEvidence" />
 		<entry key="broad_bcat_nav_story:story_location" value="evidence:readString:createObservedFileEvidence" />	
 	  </map>
 	</constructor-arg>
