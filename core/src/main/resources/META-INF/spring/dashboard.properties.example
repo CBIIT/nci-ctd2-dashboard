@@ -1,0 +1,26 @@
+#Updated at Mon Mar 26 21:58:21 EDT 2012
+#Mon Mar 26 21:58:21 EDT 2012
+database.driverClassName=com.mysql.jdbc.Driver
+database.url=jdbc\:mysql\://localhost\:3306/ctd2_dashboard
+database.test.url=jdbc\:mysql\://localhost\:3306/ctd2_test
+database.username=USER
+database.password=PASSWORD
+
+# hibernate
+hibernate.dialect=org.hibernate.dialect.MySQL5InnoDBDialect
+hibernate.hbm2ddl.auto=update
+# clean the database before every test
+hibernate.hbm2ddl.auto.test=create
+hibernate.ejb.naming_strategy=org.hibernate.cfg.ImprovedNamingStrategy
+hibernate.connection.charSet=UTF-8
+
+# lucene
+search.indexDir=/tmp/dashboard-index
+search.test.indexDir=/tmp/dashboard-index-test
+search.max.number.results=20
+
+# when proxying files through dashboard, these hosts will be allowed to serve resource
+allowed.hosts=http://cbio.mskcc.org,http://localhost
+
+# this is the URL of where the downloadable data files are located
+web.data.url=http://cbio.mskcc.org/cancergenomics/ctd2-dashboard/
