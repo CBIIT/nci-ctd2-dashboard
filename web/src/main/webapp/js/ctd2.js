@@ -726,7 +726,9 @@
 
                     var cTable = $(thatEl).find("table").dataTable({
                         "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
-                        "sPaginationType": "bootstrap"
+                        "sPaginationType": "bootstrap",
+                        // might want to increase this number if we have incredible number of centers
+                        "iDisplayLength": 25
                     });
 
                     cTable.fnSort( [ [1, 'asc'] ] );
