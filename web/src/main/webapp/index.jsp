@@ -603,7 +603,7 @@
             <td>{{observedEvidenceRole.evidenceRole.displayName}}</td>
             <td>{{observedEvidenceRole.displayText}}</td>
             <td>
-                (<a href="{{evidence.url}}" target="_blank" class="desc-tooltip" title="Open link in a new window">
+                (<a href="{{evidence.url.replace(/^\//, '')}}" target="_blank" class="desc-tooltip" title="Open link in a new window">
                     open link
                 </a>)
             </td>
