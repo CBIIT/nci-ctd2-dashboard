@@ -208,11 +208,14 @@
                                 if(observedEvidence.observedEvidenceRole == null || observedEvidence.evidence == null)
                                     return;
 
-                                // If this is a summary, then it should be a pdf file evidence
-                                $("#file-link2-" + thatModel.id).attr(
-                                    "href",
-                                    $("#file-link2-" + thatModel.id).attr("href") + observedEvidence.evidence.filePath
-                                );
+                                // If there are more than one file evidences, then we might have a problem here
+                                if(observedEvidence.evidence.class == "FileEvidence") {
+                                    // If this is a summary, then it should be a pdf/html file evidence
+                                    $("#file-link2-" + thatModel.id).attr(
+                                        "href",
+                                        $("#file-link2-" + thatModel.id).attr("href") + observedEvidence.evidence.filePath
+                                    );
+                                }
 
                                 summary = summary.replace(
                                     new RegExp(leftSep + observedEvidence.observedEvidenceRole.columnName + rightSep, "g"),
@@ -276,11 +279,14 @@
                                 if(observedEvidence.observedEvidenceRole == null || observedEvidence.evidence == null)
                                     return;
 
-                                // If this is a summary, then it should be a pdf file evidence
-                                $("#file-link-" + thatModel.id).attr(
-                                    "href",
-                                    $("#file-link-" + thatModel.id).attr("href") + observedEvidence.evidence.filePath
-                                );
+                                // If there are more than one file evidences, then we might have a problem here
+                                if(observedEvidence.evidence.class == "FileEvidence") {
+                                    // If this is a summary, then it should be a pdf/html file evidence
+                                    $("#file-link-" + thatModel.id).attr(
+                                        "href",
+                                        $("#file-link-" + thatModel.id).attr("href") + observedEvidence.evidence.filePath
+                                    );
+                                }
 
                                 summary = summary.replace(
                                     new RegExp(leftSep + observedEvidence.observedEvidenceRole.columnName + rightSep, "g"),
