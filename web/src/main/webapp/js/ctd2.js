@@ -174,6 +174,49 @@
         }
     });
 
+    var HtmlStoryView = Backbone.View.extend({
+        render: function() {
+            var url = this.model.url;
+            var observation = this.model.observation;
+
+            $.post("html", {url: url}).done(function(summary) {
+                summary = summary.replace(
+                    new RegExp("#submission_center", "g"),
+                    "#center/" + observation.submission.submissionCenter.id
+                );
+
+                var observedSubjects = new ObservedSubjects({ observationId: observation.id });
+                observedSubjects.fetch({
+                    success: function() {
+                        _.each(observedSubjects.models, function(observedSubject) {
+                            observedSubject = observedSubject.toJSON();
+
+                            if(observedSubject.observedSubjectRole == null || observedSubject.subject == null)
+                                return;
+
+                            summary = summary.replace(
+                                new RegExp("#" + observedSubject.observedSubjectRole.columnName, "g"),
+                                "#subject/" + observedSubject.subject.id
+                            );
+                        });
+
+                        $.fancybox(
+                            summary,
+                            {
+                                'autoDimensions' : true,
+                                'transitionIn' : 'none',
+                                'transitionOut' : 'none'
+                            }
+                        );
+                    }
+                });
+            });
+
+            return this;
+
+        }
+    });
+
     var StoryListItemView = Backbone.View.extend({
         template:_.template($("#stories-tbl-row-tmpl").html()),
 
@@ -209,12 +252,19 @@
                                     return;
 
                                 // If there are more than one file evidences, then we might have a problem here
-                                if(observedEvidence.evidence.class == "FileEvidence") {
+                                if(observedEvidence.evidence.class == "FileEvidence"
+                                    && (observedEvidence.evidence.mimeType.toLowerCase().search("html") > -1 || observedEvidence.evidence.mimeType.toLowerCase().search("pdf") > -1)) {
                                     // If this is a summary, then it should be a pdf/html file evidence
-                                    $("#file-link2-" + thatModel.id).attr(
-                                        "href",
-                                        $("#file-link2-" + thatModel.id).attr("href") + observedEvidence.evidence.filePath
-                                    );
+                                    var elId = "#file-link2-" + thatModel.id;
+                                    var url = $(elId).attr("href") + observedEvidence.evidence.filePath;
+                                    $(elId).attr("href", url);
+
+                                    if(observedEvidence.evidence.mimeType.toLowerCase().search("html") > -1) {
+                                        $(elId).on("click", function(e) {
+                                            e.preventDefault();
+                                            (new HtmlStoryView({ model: {observation: thatModel, url: url }})).render();
+                                        });
+                                    }
                                 }
 
                                 summary = summary.replace(
@@ -280,12 +330,19 @@
                                     return;
 
                                 // If there are more than one file evidences, then we might have a problem here
-                                if(observedEvidence.evidence.class == "FileEvidence") {
+                                if(observedEvidence.evidence.class == "FileEvidence"
+                                    && (observedEvidence.evidence.mimeType.toLowerCase().search("html") > -1 || observedEvidence.evidence.mimeType.toLowerCase().search("pdf") > -1)) {
                                     // If this is a summary, then it should be a pdf/html file evidence
-                                    $("#file-link-" + thatModel.id).attr(
-                                        "href",
-                                        $("#file-link-" + thatModel.id).attr("href") + observedEvidence.evidence.filePath
-                                    );
+                                    var elId = "#file-link-" + thatModel.id;
+                                    var url = $(elId).attr("href") + observedEvidence.evidence.filePath;
+                                    $(elId).attr("href", url);
+
+                                    if(observedEvidence.evidence.mimeType.toLowerCase().search("html") > -1) {
+                                        $(elId).on("click", function(e) {
+                                            e.preventDefault();
+                                            (new HtmlStoryView({ model: {observation: thatModel, url: url }})).render();
+                                        });
+                                    }
                                 }
 
                                 summary = summary.replace(
@@ -663,9 +720,9 @@
             }
 
             var templateId = "#observedevidence-row-tmpl";
+            var isHtmlStory = false;
             if(type == "FileEvidence") {
                 result.evidence.filePath = result.evidence.filePath.replace(/\\/g, "/");
-
                 if(result.evidence.mimeType.toLowerCase().search("image") > -1) {
                     templateId = "#observedimageevidence-row-tmpl";
                 } else if(result.evidence.mimeType.toLowerCase().search("gct") > -1) {
@@ -676,6 +733,9 @@
                     templateId = "#observedsiffileevidence-row-tmpl";
                 } else if(result.evidence.mimeType.toLowerCase().search("mra") > -1) {
                     templateId = "#observedmrafileevidence-row-tmpl";
+                } else if(result.evidence.mimeType.toLowerCase().search("html") > -1) {
+                    templateId = "#observedhtmlfileevidence-row-tmpl";
+                    isHtmlStory = true;
                 } else {
                     templateId = "#observedfileevidence-row-tmpl";
                 }
@@ -688,7 +748,16 @@
             }
 
             this.template = _.template($(templateId).html());
+            var thatEl = $(this.el);
             $(this.el).append(this.template(result));
+
+            if(isHtmlStory) {
+                thatEl.find(".html-story-link").on("click", function(e) {
+                    e.preventDefault();
+                    var url = $(this).attr("href");
+                    (new HtmlStoryView({ model: {observation: result.observation, url: url }})).render();
+                });
+            }
 
             $(".img-rounded").tooltip({ placement: "left" });
             return this;
