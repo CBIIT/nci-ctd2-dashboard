@@ -200,14 +200,35 @@
                             );
                         });
 
-                        $.fancybox(
-                            summary,
-                            {
-                                'autoDimensions' : true,
-                                'transitionIn' : 'none',
-                                'transitionOut' : 'none'
+                        var observedEvidences = new ObservedEvidences({ observationId: observation.id });
+                        observedEvidences.fetch({
+                            success: function() {
+                                _.each(observedEvidences.models, function(observedEvidence) {
+                                    observedEvidence = observedEvidence.toJSON();
+
+                                    if(observedEvidence.observedEvidenceRole == null
+                                        || observedEvidence.evidence == null
+                                        || observedEvidence.evidence.class != "UrlEvidence")
+                                    {
+                                        return;
+                                    }
+
+                                    summary = summary.replace(
+                                        new RegExp("#" + observedEvidence.observedEvidenceRole.columnName, "g"),
+                                        observedEvidence.evidence.url.replace(/^\//, '')
+                                    );
+                                });
+
+                                $.fancybox(
+                                    summary,
+                                    {
+                                        'autoDimensions' : true,
+                                        'transitionIn' : 'none',
+                                        'transitionOut' : 'none'
+                                    }
+                                );
                             }
-                        );
+                        });
                     }
                 });
             });
