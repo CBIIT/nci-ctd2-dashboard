@@ -500,6 +500,22 @@
         </tr>
     </script>
 
+    <script type="text/template" id="observedhtmlfileevidence-row-tmpl">
+        <tr>
+            <td>
+                <img src="img/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}" alt="{{observedEvidenceRole.evidenceRole.displayName}}">
+            </td>
+            <td>{{observedEvidenceRole.evidenceRole.displayName}}</td>
+            <td>{{observedEvidenceRole.displayText}}</td>
+            <td>(
+                <a href="<%=dataURL%>{{evidence.filePath}}" title="View file ({{evidence.mimeType}})" class="desc-tooltip html-story-link" title="Download File">
+                    view
+                </a>
+                )</td>
+        </tr>
+    </script>
+
+
     <script type="text/template" id="observedpdffileevidence-row-tmpl">
         <tr>
             <td>
