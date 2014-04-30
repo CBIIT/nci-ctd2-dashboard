@@ -56,6 +56,7 @@ public class StoryProxyController {
                     if(line.isEmpty()) continue;
 
                     proxiedHtml.append(line);
+		    proxiedHtml.append("\n");
                 }
                 inputStream.close();
 
