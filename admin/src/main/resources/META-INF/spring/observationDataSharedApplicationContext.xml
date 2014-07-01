@@ -182,6 +182,11 @@
 		<batch:chunk reader="broadBcatNavStoryReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	  </batch:tasklet>
 	</batch:step>
+	<batch:step id="mskccPi3kStep" parent="observationDataStep">
+	  <batch:tasklet>
+		<batch:chunk reader="mskccPi3kReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	  </batch:tasklet>
+	</batch:step>
   </batch:job>
 
   <bean id="observationDataStep" class="org.springframework.batch.core.step.item.SimpleStepFactoryBean" abstract="true">
@@ -658,6 +663,18 @@
 	<property name="names" value="dummy,submission_name,submission_center,submission_date,template_name,gene_symbol_1,gene_symbol_2,gene_symbol_3,compound_name_1,compound_name_2,resource_url_1,resource_url_2,resource_url_3,publication_reference,story_location"/>
   </bean>
 
+ <!-- mskccPi3kStoryReader defined in: -->
+  <!-- observationDataApplicationContext.xml testObservationDataApplicationContext.xml -->
+  <bean name="mskccPi3kLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+	<property name="fieldSetMapper" ref="observationDataMapper" />
+	<property name="lineTokenizer" ref="mskccPi3kLineTokenizer" />
+  </bean>
+
+  <bean name="mskccPi3kLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+	<property name="delimiter" value="\u0009"/>
+	<property name="names" value="dummy,submission_name,submission_center,submission_date,template_name,species,animal_model,strain,disease_condition,gene_symbol1,mutation,gene_symbol2,gene_symbol3,figure_2AM,figure_3BCD,publication_reference,publication_url"/>
+  </bean> 
+
   <!-- shared helper beans -->
   <bean name="observationDataFactory" class="gov.nih.nci.ctd2.dashboard.importer.internal.ObservationDataFactoryImpl"/>
 
@@ -1069,6 +1086,19 @@
 		<entry key="broad_bcat_nav_story:resource_url_3" value="evidence:readString:createObservedUrlEvidence" />
 		<entry key="broad_bcat_nav_story:publication_reference" value="evidence:readString:createObservedUrlEvidence" />
 		<entry key="broad_bcat_nav_story:story_location" value="evidence:readString:createObservedFileEvidence" />	
+		<!-- mskcc pi3k -->
+		<entry key="mskcc_pi3k:species" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="mskcc_pi3k:animal_model" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="mskcc_pi3k:strain" value="subject:findAnimalModelByName" />
+		<entry key="mskcc_pi3k:disease_condition" value="subject:findTissueSampleByName" />
+		<entry key="mskcc_pi3k:gene_symbol1" value="subject:findGenesBySymbol" />
+		<entry key="mskcc_pi3k:mutation" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="mskcc_pi3k:gene_symbol2" value="subject:findGenesBySymbol" />
+		<entry key="mskcc_pi3k:gene_symbol3" value="subject:findGenesBySymbol" />
+		<entry key="mskcc_pi3k:figure_2AM" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="mskcc_pi3k:figure_3BCD" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="mskcc_pi3k:publication_reference" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="mskcc_pi3k:publication_url" value="evidence:readString:createObservedUrlEvidence" />
 	  </map>
 	</constructor-arg>
   </bean>

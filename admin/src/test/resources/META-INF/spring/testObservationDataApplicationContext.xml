@@ -222,4 +222,8 @@
   <property name="lineMapper" ref="broadBcatNavStoryLineMapper" />
   </bean>
 
+  <bean name="mskccPi3kReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+  <property name="lineMapper" ref="mskccPi3kLineMapper" />
+  </bean>
+
 </beans>
