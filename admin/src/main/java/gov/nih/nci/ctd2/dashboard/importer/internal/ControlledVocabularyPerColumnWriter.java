@@ -1,9 +1,7 @@
 package gov.nih.nci.ctd2.dashboard.importer.internal;
 
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
-import gov.nih.nci.ctd2.dashboard.model.DashboardEntity;
-import gov.nih.nci.ctd2.dashboard.model.ObservedSubjectRole;
-import gov.nih.nci.ctd2.dashboard.model.ObservedEvidenceRole;
+import gov.nih.nci.ctd2.dashboard.model.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -49,6 +47,16 @@ public class ControlledVocabularyPerColumnWriter implements ItemWriter<Controlle
             if(!entityCache.contains(controlledVocabulary.role)) {
                 entityCache.add(controlledVocabulary.role);
                 entities.add(controlledVocabulary.role);
+            }
+
+            ObservationTemplate ot = (ObservationTemplate)controlledVocabulary.observationTemplate;
+            if (!entityCache.contains(ot.getSubmissionCenter())) {
+                SubmissionCenter submissionCenter =
+                    dashboardDao.findSubmissionCenterByName(ot.getSubmissionCenter().getDisplayName());
+                if (submissionCenter == null) {
+                    entities.add(ot.getSubmissionCenter());
+                }
+                entityCache.add(ot.getSubmissionCenter());
             }
 
             if(!entityCache.contains(controlledVocabulary.observationTemplate)) {

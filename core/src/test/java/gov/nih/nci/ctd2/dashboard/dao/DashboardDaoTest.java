@@ -532,6 +532,7 @@ public class DashboardDaoTest {
 
 		ObservationTemplate observationTemplate = dashboardFactory.create(ObservationTemplate.class);
 		observationTemplate.setDisplayName("template_name");
+        observationTemplate.setPrincipalInvestigator("PI");
         dashboardDao.save(observationTemplate);
 
         EvidenceRole evidenceRole = dashboardFactory.create(EvidenceRole.class);
@@ -612,6 +613,7 @@ public class DashboardDaoTest {
         observationTemplate.setSubmissionDescription(submsDesc);
         String submsName = "SUBMNAME";
         observationTemplate.setSubmissionName(submsName);
+        observationTemplate.setPrincipalInvestigator("PI");
         dashboardDao.save(observationTemplate);
 
         dashboardDao.createIndex(10);
@@ -632,7 +634,6 @@ public class DashboardDaoTest {
         assertTrue(dashboardDao.search(submsName).isEmpty());
         Submission submission = dashboardFactory.create(Submission.class);
         submission.setObservationTemplate(observationTemplate);
-        submission.setPrincipalInvestigator("PI");
         dashboardDao.save(submission);
 
         assertFalse(dashboardDao.search("OBS").isEmpty());

@@ -178,7 +178,7 @@ public class AdminTest {
         jobExecution = executeJob("testObservationDataImporterJob");
         assertEquals("COMPLETED", jobExecution.getExitStatus().getExitCode());
         assertEquals(2, dashboardDao.countEntities(Submission.class).intValue());
-        assertEquals(1, dashboardDao.countEntities(SubmissionCenter.class).intValue());
+        assertEquals(11, dashboardDao.countEntities(SubmissionCenter.class).intValue());
         assertEquals(11, dashboardDao.countEntities(Observation.class).intValue());
         assertEquals(22, dashboardDao.countEntities(ObservedSubject.class).intValue());
         assertEquals(87, dashboardDao.countEntities(ObservedEvidence.class).intValue());
