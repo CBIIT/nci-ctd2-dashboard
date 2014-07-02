@@ -22,6 +22,8 @@ public class ControlledVocabularyPerTemplateFieldSetMapper implements FieldSetMa
 	private static final String SUBMISSION_DESCRIPTION = "submission_description";
 	private static final String SUBMISSION_STORY = "submission_story";
 	private static final String SUBMISSION_STORY_RANK = "submission_story_rank";
+	private static final String PRINCIPAL_INVESTIGATOR = "principal_investigator";
+	private static final String SUBMISSION_CENTER = "submission_center";
 
     @Autowired
     private DashboardFactory dashboardFactory;
@@ -29,6 +31,14 @@ public class ControlledVocabularyPerTemplateFieldSetMapper implements FieldSetMa
     @Autowired
 	@Qualifier("observationTemplateMap")
 	private HashMap<String,ObservationTemplate> observationTemplateMap;
+
+    @Autowired
+	@Qualifier("principalInvestigatorMap")
+	private HashMap<String,String> principalInvestigatorMap;
+
+    @Autowired
+	@Qualifier("submissionCenterMap")
+	private HashMap<String,String> submissionCenterMap;
 
 	public ObservationTemplate mapFieldSet(FieldSet fieldSet) throws BindException {
 
@@ -43,6 +53,10 @@ public class ControlledVocabularyPerTemplateFieldSetMapper implements FieldSetMa
 		observationTemplate.setSubmissionStoryRank(fieldSet.readInt(SUBMISSION_STORY_RANK));
 
 		observationTemplateMap.put(fieldSet.readString(TEMPLATE_NAME), observationTemplate);
+		principalInvestigatorMap.put(fieldSet.readString(SUBMISSION_NAME),
+		                             fieldSet.readString(PRINCIPAL_INVESTIGATOR));
+		submissionCenterMap.put(fieldSet.readString(SUBMISSION_NAME),
+		                        fieldSet.readString(SUBMISSION_CENTER));
 
 		return observationTemplate;
 	}

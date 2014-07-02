@@ -9,4 +9,6 @@ public interface Submission extends DashboardEntity {
     public void setSubmissionCenter(SubmissionCenter submissionCenter);
     public Date getSubmissionDate();
     public void setSubmissionDate(Date submissionDate);
+    public void setPrincipalInvestigator(String principalInvestigator);
+    public String getPrincipalInvestigator();
 }
