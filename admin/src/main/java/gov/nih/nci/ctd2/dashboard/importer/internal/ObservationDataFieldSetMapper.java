@@ -44,19 +44,11 @@ public class ObservationDataFieldSetMapper implements FieldSetMapper<Observation
 	@Qualifier("observationTemplateMap")
 	private	HashMap<String, String> observationTemplateMap;
 
-	@Autowired
-	@Qualifier("principalInvestigatorMap")
-	private	HashMap<String, String> principalInvestigatorMap;
-
-	@Autowired
-	@Qualifier("submissionCenterMap")
-	private HashMap<String,String> submissionCenterMap;
-
 	private HashMap<String, Submission> submissionCache = new HashMap<String, Submission>();
 
 	/* Used by ObservationDataWriter */
 	public static String getSubmissionCacheKey(Submission submission) {
-		return submission.getDisplayName() + submission.getSubmissionCenter().getDisplayName() +
+		return submission.getDisplayName() + 
 			ObservationDataFieldSetMapper.TEMPLATE_DATE_FORMAT.format(submission.getSubmissionDate()) +
 			submission.getObservationTemplate().getDisplayName();
 	}
@@ -66,16 +58,12 @@ public class ObservationDataFieldSetMapper implements FieldSetMapper<Observation
 		String templateName = fieldSet.readString(TEMPLATE_NAME);
 		Date submissionDate = fieldSet.readDate(SUBMISSION_DATE, "yyyy.MM.dd");
 		String submissionName = fieldSet.readString(SUBMISSION_NAME);
-		String submissionCenter = submissionCenterMap.get(submissionName);
-		String principalInvestigator = principalInvestigatorMap.get(submissionName);
 
 		// create submission - if cache key changes, update getSubmissionCacheKey() defined above
-		String submissionCacheKey = submissionName + submissionCenter + TEMPLATE_DATE_FORMAT.format(submissionDate) + templateName;
+		String submissionCacheKey = submissionName + TEMPLATE_DATE_FORMAT.format(submissionDate) + templateName;
 		Submission submission = submissionCache.get(submissionCacheKey);
 		if (submission == null) {
 			submission = observationDataFactory.createSubmission(submissionName,
-                                                                 submissionCenter,
-                                                                 principalInvestigator,
 																 submissionDate,
 																 templateName);
 			submissionCache.put(submissionCacheKey, submission);

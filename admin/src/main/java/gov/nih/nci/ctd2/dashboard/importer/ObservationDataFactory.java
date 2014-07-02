@@ -6,7 +6,7 @@ import java.util.Date;
 
 public interface ObservationDataFactory {
 
-	Submission createSubmission(String submissionName, String submissionCenterName, String principalInvestigator, Date submissionDate, String observationTemplateName);
+	Submission createSubmission(String submissionName, Date submissionDate, String observationTemplateName);
 	ObservedSubject createObservedSubject(String subjectValue, String columnName, String templateName, Observation observation, String daoFindQueryName) throws Exception;
 	ObservedEvidence createObservedLabelEvidence(String evidenceValue, String columnHeader, String templateName, Observation observation);
 	ObservedEvidence createObservedNumericEvidence(Number evidenceValue, String columnHeader, String templateName, Observation observation);

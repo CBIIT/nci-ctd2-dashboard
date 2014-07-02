@@ -5,10 +5,6 @@ import java.util.Date;
 public interface Submission extends DashboardEntity {
     public ObservationTemplate getObservationTemplate();
     public void setObservationTemplate(ObservationTemplate observationTemplate);
-    public SubmissionCenter getSubmissionCenter();
-    public void setSubmissionCenter(SubmissionCenter submissionCenter);
     public Date getSubmissionDate();
     public void setSubmissionDate(Date submissionDate);
-    public void setPrincipalInvestigator(String principalInvestigator);
-    public String getPrincipalInvestigator();
 }
