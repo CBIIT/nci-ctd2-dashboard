@@ -18,6 +18,7 @@ public class SubmissionImpl extends DashboardEntityImpl implements Submission {
     private ObservationTemplate observationTemplate;
     private SubmissionCenter submissionCenter;
     private Date submissionDate;
+    private String principalInvestigator;
 
     @ManyToOne(targetEntity = ObservationTemplateImpl.class)
     public ObservationTemplate getObservationTemplate() {
@@ -45,5 +46,14 @@ public class SubmissionImpl extends DashboardEntityImpl implements Submission {
 
     public void setSubmissionDate(Date submissionDate) {
         this.submissionDate = submissionDate;
+    }
+
+    @Column(length=64, nullable=false)
+    public String getPrincipalInvestigator() {
+        return principalInvestigator;
+    }
+
+    public void setPrincipalInvestigator(String principalInvestigator) {
+        this.principalInvestigator = principalInvestigator;
     }
 }

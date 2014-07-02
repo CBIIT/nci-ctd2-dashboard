@@ -632,6 +632,7 @@ public class DashboardDaoTest {
         assertTrue(dashboardDao.search(submsName).isEmpty());
         Submission submission = dashboardFactory.create(Submission.class);
         submission.setObservationTemplate(observationTemplate);
+        submission.setPrincipalInvestigator("PI");
         dashboardDao.save(submission);
 
         assertFalse(dashboardDao.search("OBS").isEmpty());

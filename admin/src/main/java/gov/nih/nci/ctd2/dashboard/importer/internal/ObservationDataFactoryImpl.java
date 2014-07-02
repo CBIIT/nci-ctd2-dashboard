@@ -43,7 +43,7 @@ public class ObservationDataFactoryImpl implements ObservationDataFactory {
     private HashMap<String, ObservedEvidenceRole> observedEvidenceRoleCache = new HashMap<String, ObservedEvidenceRole>();
 
 	@Override
-	public Submission createSubmission(String submissionName, String submissionCenterName, Date submissionDate, String observationTemplateName) {
+	public Submission createSubmission(String submissionName, String submissionCenterName, String principalInvestigator, Date submissionDate, String observationTemplateName) {
 		SubmissionCenter submissionCenter = submissionCenterCache.get(submissionCenterName);
 		if (submissionCenter == null) {
 			submissionCenter = dashboardDao.findSubmissionCenterByName(submissionCenterName);
@@ -56,6 +56,7 @@ public class ObservationDataFactoryImpl implements ObservationDataFactory {
 		Submission submission = dashboardFactory.create(Submission.class);
         submission.setDisplayName(submissionName);
 		submission.setSubmissionCenter(submissionCenter);
+		submission.setPrincipalInvestigator(principalInvestigator);
 		submission.setSubmissionDate(submissionDate);
 		ObservationTemplate observationTemplate  = dashboardDao.findObservationTemplateByName(observationTemplateName);
 		if (observationTemplate != null) {
