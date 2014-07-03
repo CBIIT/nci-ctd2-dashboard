@@ -48,14 +48,14 @@
 		<batch:chunk reader="columbiaGbmMrsStoryReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	  </batch:tasklet>
 	</batch:step>
-	<batch:step id="cshlTier4FGF19StoryStep" parent="observationDataStep" next="dfciTier4BetaCateninStoryStep">
+	<batch:step id="cshlTier4FGF19StoryStep" parent="observationDataStep" next="dfciYapYesStoryStep">
 	  <batch:tasklet>
 		<batch:chunk reader="cshlTier4FGF19StoryReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	  </batch:tasklet>
 	</batch:step>
-	<batch:step id="dfciTier4BetaCateninStoryStep" parent="observationDataStep" next="dfciReporterAnalysisStep">
+	<batch:step id="dfciYapYesStoryStep" parent="observationDataStep" next="dfciReporterAnalysisStep">
 	  <batch:tasklet>
-		<batch:chunk reader="dfciTier4BetaCateninStoryReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+		<batch:chunk reader="dfciYapYesStoryReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	  </batch:tasklet>
 	</batch:step>
 	<batch:step id="dfciReporterAnalysisStep" parent="observationDataStep" next="dfciOvarianAnalysisStep">
@@ -308,18 +308,18 @@
 	<property name="names" value="dummy,submission_name,submission_date,template_name,disease_condition,tissue_sample,gene_symbol_1,gene_symbol_2,gene_symbol_3,gene_symbol_4,drug_candidate,story_location"/>
   </bean>
 
-  <!-- dfci tier4 beta-catenin story -->
+  <!-- dfci yap yes story -->
 
-  <!-- dfciTier4BetaCateninStoryReader defined in: -->
+  <!-- dfciYapYesStoryReader defined in: -->
   <!-- observationDataApplicationContext.xml testObservationDataApplicationContext.xml -->
-  <bean name="dfciTier4BetaCateninStoryLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+  <bean name="dfciYapYesStoryLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
 	<property name="fieldSetMapper" ref="observationDataMapper" />
-	<property name="lineTokenizer" ref="dfciTier4BetaCateninStoryLineTokenizer" />
+	<property name="lineTokenizer" ref="dfciYapYesStoryLineTokenizer" />
   </bean>
 
-  <bean name="dfciTier4BetaCateninStoryLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+  <bean name="dfciYapYesStoryLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="dummy,submission_name,submission_date,template_name,disease_condition,tissue_sample,gene_symbol_1,gene_symbol_2,gene_symbol_3,gene_symbol_4,drug_candidate,story_location"/>
+	<property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,gene_symbol_3,gene_symbol_4,gene_symbol_5,gene_symbol_6,compound_name_1,resource_url_1,publication_reference_1,publication_reference_2,story_location"/>
   </bean>
 
   <!-- dfci reporter analysis -->
@@ -779,14 +779,17 @@
 		<entry key="cshl_tier4_fgf19_story:drug_candidate" value="subject:findCompoundsByName" />
 		<entry key="cshl_tier4_fgf19_story:story_location" value="evidence:readString:createObservedFileEvidence" />
 		<!-- dfci tier4 beta-catenin story -->
-		<entry key="dfci_tier4_beta-catenin_story:disease_condition" value="subject:findTissueSampleByName" />
-		<entry key="dfci_tier4_beta-catenin_story:tissue_sample" value="subject:findTissueSampleByName" />
-		<entry key="dfci_tier4_beta-catenin_story:gene_symbol_1" value="subject:findGenesBySymbol" />
-		<entry key="dfci_tier4_beta-catenin_story:gene_symbol_2" value="subject:findGenesBySymbol" />
-		<entry key="dfci_tier4_beta-catenin_story:gene_symbol_3" value="subject:findGenesBySymbol" />
-		<entry key="dfci_tier4_beta-catenin_story:gene_symbol_4" value="subject:findGenesBySymbol" />
-		<entry key="dfci_tier4_beta-catenin_story:drug_candidate" value="subject:findCompoundsByName" />
-		<entry key="dfci_tier4_beta-catenin_story:story_location" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="dfci_yapyes:gene_symbol_1" value="subject:findGenesBySymbol" />
+		<entry key="dfci_yapyes:gene_symbol_2" value="subject:findGenesBySymbol" />
+		<entry key="dfci_yapyes:gene_symbol_3" value="subject:findGenesBySymbol" />
+		<entry key="dfci_yapyes:gene_symbol_4" value="subject:findGenesBySymbol" />
+		<entry key="dfci_yapyes:gene_symbol_5" value="subject:findGenesBySymbol" />
+		<entry key="dfci_yapyes:gene_symbol_6" value="subject:findGenesBySymbol" />
+		<entry key="dfci_yapyes:compound_name_1" value="subject:findCompoundsByName" />
+		<entry key="dfci_yapyes:resource_url_1" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="dfci_yapyes:publication_reference_1" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="dfci_yapyes:publication_reference_2" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="dfci_yapyes:story_location" value="evidence:readString:createObservedFileEvidence" />
 		<!-- dfci reporter analysis -->
 		<entry key="dfci_reporter_analysis:target_group" value="evidence:readString:createObservedLabelEvidence" />
 		<entry key="dfci_reporter_analysis:target_group_gene" value="subject:findGenesBySymbol" />
