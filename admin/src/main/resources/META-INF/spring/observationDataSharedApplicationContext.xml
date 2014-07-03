@@ -6,6 +6,7 @@
         xsi:schemaLocation="http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-2.1.xsd
 							http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
 							http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
   <batch:job id="observationDataImporterJob">
 	<batch:step id="dfciAtarisAnalysisStep" parent="observationDataStep" next="broadCompoundSensitivityLineageEnrichmentStep">
 	  <batch:tasklet>
@@ -47,14 +48,14 @@
 		<batch:chunk reader="columbiaGbmMrsStoryReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	  </batch:tasklet>
 	</batch:step>
-	<batch:step id="cshlTier4FGF19StoryStep" parent="observationDataStep" next="dfciTier4BetaCateninStoryStep">
+	<batch:step id="cshlTier4FGF19StoryStep" parent="observationDataStep" next="dfciYapYesStoryStep">
 	  <batch:tasklet>
 		<batch:chunk reader="cshlTier4FGF19StoryReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	  </batch:tasklet>
 	</batch:step>
-	<batch:step id="dfciTier4BetaCateninStoryStep" parent="observationDataStep" next="dfciReporterAnalysisStep">
+	<batch:step id="dfciYapYesStoryStep" parent="observationDataStep" next="dfciReporterAnalysisStep">
 	  <batch:tasklet>
-		<batch:chunk reader="dfciTier4BetaCateninStoryReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+		<batch:chunk reader="dfciYapYesStoryReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	  </batch:tasklet>
 	</batch:step>
 	<batch:step id="dfciReporterAnalysisStep" parent="observationDataStep" next="dfciOvarianAnalysisStep">
@@ -177,9 +178,14 @@
 		<batch:chunk reader="dfciSmarca2DependencyReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	  </batch:tasklet>
 	</batch:step>
-	<batch:step id="broadBcatNavStoryStep" parent="observationDataStep">
+	<batch:step id="broadBcatNavStoryStep" parent="observationDataStep" next="mskccPi3kStep">
 	  <batch:tasklet>
 		<batch:chunk reader="broadBcatNavStoryReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+	<batch:step id="mskccPi3kStep" parent="observationDataStep">
+	  <batch:tasklet>
+		<batch:chunk reader="mskccPi3kReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	  </batch:tasklet>
 	</batch:step>
   </batch:job>
@@ -201,7 +207,7 @@
 
   <bean name="broadCompoundSensitivityLineageEnrichmentLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="dummy,submission_name,submission_center,submission_date,template_name,cell_line_subset,cell_line_exclusion,feature_data_set,compound_name,cell_lineage,number_of_cell_lines,number_of_example_cell_lines,enrichment_direction,fdr_q_value,image_path,nci_portal,gct_path,ctrp_portal"/>
+	<property name="names" value="dummy,submission_name,submission_date,template_name,cell_line_subset,cell_line_exclusion,feature_data_set,compound_name,cell_lineage,number_of_cell_lines,number_of_example_cell_lines,enrichment_direction,fdr_q_value,image_path,nci_portal,gct_path,ctrp_portal"/>
   </bean>
 
   <!-- broad compound sensitivity mutation enrichment analysis -->
@@ -215,7 +221,7 @@
 
   <bean name="broadCompoundSensitivityMutationEnrichmentLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="dummy,submission_name,submission_center,submission_date,template_name,cell_line_subset,cell_line_exclusion,feature_data_set,compound_name,entrez_gene_id,number_of_cell_lines,number_of_mutant_cell_lines,enrichment_direction,fdr_q_value,image_path,nci_portal,gct_path,ctrp_portal"/>
+	<property name="names" value="dummy,submission_name,submission_date,template_name,cell_line_subset,cell_line_exclusion,feature_data_set,compound_name,entrez_gene_id,number_of_cell_lines,number_of_mutant_cell_lines,enrichment_direction,fdr_q_value,image_path,nci_portal,gct_path,ctrp_portal"/>
   </bean>
 
   <!-- broad tier3 navitoclax story analysis -->
@@ -229,7 +235,7 @@
 
   <bean name="broadTier3NavitoclaxStoryLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="dummy,submission_name,submission_center,submission_date,template_name,compound_name,gene_symbol,figure_1,figure_2,figure_3,figure_4,figure_5,figure_6,tier1_evidence"/>
+	<property name="names" value="dummy,submission_name,submission_date,template_name,compound_name,gene_symbol,figure_1,figure_2,figure_3,figure_4,figure_5,figure_6,tier1_evidence"/>
   </bean>
 
   <!-- columbia marina analysis -->
@@ -243,7 +249,7 @@
 
   <bean name="columbiaMarinaAnalysisLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="dummy,submission_name,submission_center,submission_date,template_name,probeset_id,disease_condition,tissue,cell_type,cell_lineage,gene_symbol,func_type,mr_regulon_set_size,mr_gsea_es,mr_gsea_p_value,mr_gsea_fdr"/>
+	<property name="names" value="dummy,submission_name,submission_date,template_name,probeset_id,disease_condition,tissue,cell_type,cell_lineage,gene_symbol,func_type,mr_regulon_set_size,mr_gsea_es,mr_gsea_p_value,mr_gsea_fdr"/>
   </bean>
 
   <!-- columbia mra fet analysis -->
@@ -257,7 +263,7 @@
 
   <bean name="columbiaMRAFetAnalysisLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="dummy,submission_name,submission_center,submission_date,template_name,disease_condition,tissue,gene_symbol,func_type,mra_regulon_signature_overlap,mra_overlap_rank,mra_fet_p_value,figure_1,network_1,network_2,publication_url,publication_reference"/>
+	<property name="names" value="dummy,submission_name,submission_date,template_name,disease_condition,tissue,gene_symbol,func_type,mra_regulon_signature_overlap,mra_overlap_rank,mra_fet_p_value,figure_1,network_1,network_2,publication_url,publication_reference"/>
   </bean>
 
   <!-- columbia master regulator analysis with shRNA knockdown analysis -->
@@ -271,7 +277,7 @@
 
   <bean name="columbiaJointMRSHRNADiffAnalysisLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="dummy,submission_name,submission_center,submission_date,template_name,probeset_id,disease_condition,cell_line_1,cell_line_2,gene_symbol,func_type,mr_regulon_set_size,mr_gsea_es,mr_gsea_p_value,mr_gsea_fdr,num_shRNAs,shrna_diff_rep_z_score_combined,shrna_diff_rep_p_value_combined,shrna_diff_rep_fdr_combined,shrna_diff_rep_net_direction_combined,nci_portal"/>
+	<property name="names" value="dummy,submission_name,submission_date,template_name,probeset_id,disease_condition,cell_line_1,cell_line_2,gene_symbol,func_type,mr_regulon_set_size,mr_gsea_es,mr_gsea_p_value,mr_gsea_fdr,num_shRNAs,shrna_diff_rep_z_score_combined,shrna_diff_rep_p_value_combined,shrna_diff_rep_fdr_combined,shrna_diff_rep_net_direction_combined,nci_portal"/>
   </bean>
 
   <!-- columbia gbm mrs -->
@@ -285,7 +291,7 @@
 
   <bean name="columbiaGbmMrsStoryLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="dummy,submission_name,submission_center,submission_date,template_name,disease_condition,gene_symbol_1,gene_symbol_2,gene_symbol_3,publication_reference,tier1_evidence,story_location"/>
+	<property name="names" value="dummy,submission_name,submission_date,template_name,disease_condition,gene_symbol_1,gene_symbol_2,gene_symbol_3,publication_reference,tier1_evidence,story_location"/>
   </bean>
 
   <!-- cshl tier4 fgf19 story -->
@@ -299,21 +305,21 @@
 
   <bean name="cshlTier4FGF19StoryLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="dummy,submission_name,submission_center,submission_date,template_name,disease_condition,tissue_sample,gene_symbol_1,gene_symbol_2,gene_symbol_3,gene_symbol_4,drug_candidate,story_location"/>
+	<property name="names" value="dummy,submission_name,submission_date,template_name,disease_condition,tissue_sample,gene_symbol_1,gene_symbol_2,gene_symbol_3,gene_symbol_4,drug_candidate,story_location"/>
   </bean>
 
-  <!-- dfci tier4 beta-catenin story -->
+  <!-- dfci yap yes story -->
 
-  <!-- dfciTier4BetaCateninStoryReader defined in: -->
+  <!-- dfciYapYesStoryReader defined in: -->
   <!-- observationDataApplicationContext.xml testObservationDataApplicationContext.xml -->
-  <bean name="dfciTier4BetaCateninStoryLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+  <bean name="dfciYapYesStoryLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
 	<property name="fieldSetMapper" ref="observationDataMapper" />
-	<property name="lineTokenizer" ref="dfciTier4BetaCateninStoryLineTokenizer" />
+	<property name="lineTokenizer" ref="dfciYapYesStoryLineTokenizer" />
   </bean>
 
-  <bean name="dfciTier4BetaCateninStoryLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+  <bean name="dfciYapYesStoryLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="dummy,submission_name,submission_center,submission_date,template_name,disease_condition,tissue_sample,gene_symbol_1,gene_symbol_2,gene_symbol_3,gene_symbol_4,drug_candidate,story_location"/>
+	<property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,gene_symbol_3,gene_symbol_4,gene_symbol_5,gene_symbol_6,compound_name_1,resource_url_1,publication_reference_1,publication_reference_2,story_location"/>
   </bean>
 
   <!-- dfci reporter analysis -->
@@ -327,7 +333,7 @@
 
   <bean name="dfciReporterAnalysisLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="dummy,submission_name,submission_center,submission_date,template_name,target_group,target_group_gene,target_group_alteration,number_of_cell_lines,number_of_cell_lines_in_target_group,gene_symbol,p_value,fdr,nci_portal,gct_path,publication_reference,publication_url"/>
+	<property name="names" value="dummy,submission_name,submission_date,template_name,target_group,target_group_gene,target_group_alteration,number_of_cell_lines,number_of_cell_lines_in_target_group,gene_symbol,p_value,fdr,nci_portal,gct_path,publication_reference,publication_url"/>
   </bean>
 
   <!-- dfci ataris analysis -->
@@ -341,7 +347,7 @@
 
   <bean name="dfciAtarisAnalysisLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="dummy,submission_name,submission_center,submission_date,template_name,number_of_cell_lines,shRNA_id,gene_symbol,solution_name,c_score,p_value,fdr,nci_portal,gct_path_shrna,gct_path_ataris,publication_reference,publication_url"/>
+	<property name="names" value="dummy,submission_name,submission_date,template_name,number_of_cell_lines,shRNA_id,gene_symbol,solution_name,c_score,p_value,fdr,nci_portal,gct_path_shrna,gct_path_ataris,publication_reference,publication_url"/>
   </bean>
 
   <!-- dfci ovarian analysis -->
@@ -355,7 +361,7 @@
 
   <bean name="dfciOvarianAnalysisLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="dummy,submission_name,submission_center,submission_date,template_name,target_group,number_of_cell_lines,number_of_cell_lines_in_target_group,gene_symbol,gene_scoring,additional_evidence,nci_portal,gct_path,publication_reference,publication_url"/>
+	<property name="names" value="dummy,submission_name,submission_date,template_name,target_group,number_of_cell_lines,number_of_cell_lines_in_target_group,gene_symbol,gene_scoring,additional_evidence,nci_portal,gct_path,publication_reference,publication_url"/>
   </bean>
 
   <!-- dfci pax8 tier 3 -->
@@ -369,7 +375,7 @@
 
   <bean name="dfciPax8Tier3LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="dummy,submission_name,submission_center,submission_date,template_name,target_group,gene_symbol,figure_1,figure_2,figure_3,figure_4,figure_5,tier1_evidence,publication_reference,publication_url"/>
+	<property name="names" value="dummy,submission_name,submission_date,template_name,target_group,gene_symbol,figure_1,figure_2,figure_3,figure_4,figure_5,tier1_evidence,publication_reference,publication_url"/>
   </bean>
 
   <!-- fhcrc cst tier 1 -->
@@ -383,7 +389,7 @@
 
   <bean name="fhcrcCSTTier1LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="dummy,submission_name,submission_center,submission_date,template_name,gene_symbol,splice_junction,disease_condition,number_of_tumor_samples,number_of_tumor_samples_with_junction,average_number_of_supporting_reads,number_of_samples_with_supporting_rpts,junction_type,is_observed_in_ip_tissue,has_suporting_ests,genomic_reference_assembly"/>
+	<property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol,splice_junction,disease_condition,number_of_tumor_samples,number_of_tumor_samples_with_junction,average_number_of_supporting_reads,number_of_samples_with_supporting_rpts,junction_type,is_observed_in_ip_tissue,has_suporting_ests,genomic_reference_assembly"/>
   </bean>
 
   <!-- utsw tier 2 discoipyrroles story -->
@@ -397,7 +403,7 @@
 
   <bean name="utswTier2DiscoipyrrolesStoryLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="dummy,submission_name,submission_center,submission_date,template_name,compound_name,gene_symbol,disease_condition,target_description,figure_2,figure_3,figure_4,figure_5,figure_6,figure_7,publication_url,publication_reference"/>
+	<property name="names" value="dummy,submission_name,submission_date,template_name,compound_name,gene_symbol,disease_condition,target_description,figure_2,figure_3,figure_4,figure_5,figure_6,figure_7,publication_url,publication_reference"/>
   </bean>
 
   <!-- utsw tier 4 discoipyrroles story -->
@@ -411,7 +417,7 @@
 
   <bean name="utswTier4DiscoipyrrolesStoryLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="dummy,submission_name,submission_center,submission_date,template_name,disease_condition_1,tissue_sample_1,disease_condition_2,tissue_sample_2,gene_symbol_1,drug_candidate_class,story_location"/>
+	<property name="names" value="dummy,submission_name,submission_date,template_name,disease_condition_1,tissue_sample_1,disease_condition_2,tissue_sample_2,gene_symbol_1,drug_candidate_class,story_location"/>
   </bean>
 
   <!-- ucsf differential expression -->
@@ -425,7 +431,7 @@
 
   <bean name="ucsfDifferentialExpressionLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="dummy,submission_name,submission_center,submission_date,template_name,probeset_id,mutated_gene_condition,mutated_gene_id,species,strain_background,tissue,gene_id,sample_group_1,sample_group_2,t_statistic,fold_change,q_value"/>
+	<property name="names" value="dummy,submission_name,submission_date,template_name,probeset_id,mutated_gene_condition,mutated_gene_id,species,strain_background,tissue,gene_id,sample_group_1,sample_group_2,t_statistic,fold_change,q_value"/>
   </bean>
 
   <!-- emory PPI RAF1 expression -->
@@ -439,7 +445,7 @@
 
   <bean name="emoryPPIRAF1LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="dummy,submission_name,submission_center,submission_date,template_name,cell_line,gene_symbol_1,gene_symbol_2,assay_type,number_of_measurements,average_fold_over_control_value,p_value,nci_portal"/>
+	<property name="names" value="dummy,submission_name,submission_date,template_name,cell_line,gene_symbol_1,gene_symbol_2,assay_type,number_of_measurements,average_fold_over_control_value,p_value,nci_portal"/>
   </bean>
 
   <!-- mskcc foretinib -->
@@ -453,7 +459,7 @@
 
   <bean name="mskccForetinibLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="dummy,submission_name,submission_center,submission_date,template_name,species,tissue,disease_condition,gene_symbol,compound,control_compound,figure_4a,figure_4b,figure_5a,publication_reference1,publication_url1,publication_reference2,publication_url2"/>
+	<property name="names" value="dummy,submission_name,submission_date,template_name,species,tissue,disease_condition,gene_symbol,compound,control_compound,figure_4a,figure_4b,figure_5a,publication_reference1,publication_url1,publication_reference2,publication_url2"/>
   </bean>
 
   <!-- mskcc figros -->
@@ -467,7 +473,7 @@
 
   <bean name="mskccFigrosLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="dummy,submission_name,submission_center,submission_date,template_name,species,tissue,disease_condition,strain,gene_symbol1,gene_symbol2,figure_1B,figure_2A,figure_2B,figure_3A,figure_3B,publication_reference,publication_url"/>
+	<property name="names" value="dummy,submission_name,submission_date,template_name,species,tissue,disease_condition,strain,gene_symbol1,gene_symbol2,figure_1B,figure_2A,figure_2B,figure_3A,figure_3B,publication_reference,publication_url"/>
   </bean>
 
   <!-- stanford methylmix tier 1 -->
@@ -481,7 +487,7 @@
 
   <bean name="stanfordMethylmixTier1LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="dummy,submission_name,submission_center,submission_date,template_name,disease_condition,tissue,cell_type,gene_symbol,differential_methylation_status,prevalence,differential_methylation_pvalue,proportion_variance_explained,rna_fold_change"/>
+	<property name="names" value="dummy,submission_name,submission_date,template_name,disease_condition,tissue,cell_type,gene_symbol,differential_methylation_status,prevalence,differential_methylation_pvalue,proportion_variance_explained,rna_fold_change"/>
   </bean>
 
   <!-- mda endo mutation baf3 -->
@@ -495,7 +501,7 @@
 
   <bean name="mdaEndoMutationBaf3LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="dummy,submission_name,submission_center,submission_date,template_name,number_of_mutations,gene_symbol,cell_line,aberration,disease_condition,cell_growth_avr,cell_growth_sd,fold_change_avr,fold_change_sd,nci_portal"/>
+	<property name="names" value="dummy,submission_name,submission_date,template_name,number_of_mutations,gene_symbol,cell_line,aberration,disease_condition,cell_growth_avr,cell_growth_sd,fold_change_avr,fold_change_sd,nci_portal"/>
   </bean>
 
   <!-- mskcc brd4aml brd4 -->
@@ -509,7 +515,7 @@
 
   <bean name="mskccBrd4amlBrd4LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="dummy,submission_name,submission_center,submission_date,template_name,cell_line,disease_condition,gene_symbol,figure_1a,figure_1b,publication_reference,publication_url"/>
+	<property name="names" value="dummy,submission_name,submission_date,template_name,cell_line,disease_condition,gene_symbol,figure_1a,figure_1b,publication_reference,publication_url"/>
   </bean>
 
   <!-- mskcc brd4aml jq1 -->
@@ -523,7 +529,7 @@
 
   <bean name="mskccBrd4amlJq1LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="dummy,submission_name,submission_center,submission_date,template_name,species,cell_line,disease_condition,compound,gene_symbol,gene_pathway,figure_2a,figure_2b,figure_3a,figure_3b,figure_4a,figure_4b,figure_5a,figure_5b,publication_reference,publication_url"/>
+	<property name="names" value="dummy,submission_name,submission_date,template_name,species,cell_line,disease_condition,compound,gene_symbol,gene_pathway,figure_2a,figure_2b,figure_3a,figure_3b,figure_4a,figure_4b,figure_5a,figure_5b,publication_reference,publication_url"/>
   </bean>
 
   <!-- mskccPdgFrbReader defined in: -->
@@ -535,7 +541,7 @@
 
   <bean name="mskccPdgFrbLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="dummy,submission_name,submission_center,submission_date,template_name,species,animal_model,metastasis,disease_condition,strain,gene_symbol1,gene_symbol2,figure_1A,figure_1B,figure_2,figure_3,reference_url,publication_reference,publication_url"/>
+	<property name="names" value="dummy,submission_name,submission_date,template_name,species,animal_model,metastasis,disease_condition,strain,gene_symbol1,gene_symbol2,figure_1A,figure_1B,figure_2,figure_3,reference_url,publication_reference,publication_url"/>
   </bean>
 
   <!-- mskccPdgFrbImatinibReader defined in: -->
@@ -547,7 +553,7 @@
 
   <bean name="mskccPdgFrbImatinibLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="dummy,submission_name,submission_center,submission_date,template_name,animal_model,species,disease_condition,metastasis,gene_symbol1,gene_symbol2,compound,figure_4a,figure_4b,figure_4c,publication_reference1,publication_url"/>
+	<property name="names" value="dummy,submission_name,submission_date,template_name,animal_model,species,disease_condition,metastasis,gene_symbol1,gene_symbol2,compound,figure_4a,figure_4b,figure_4c,publication_reference1,publication_url"/>
   </bean>
 
   <!-- mskccPdgFrbHumanReader defined in: -->
@@ -559,7 +565,7 @@
 
   <bean name="mskccPdgFrbHumanLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="dummy,submission_name,submission_center,submission_date,template_name,species,disease_condition,tissue,gene_symbol,figure_5a,figure_5b,sample_url,publication_reference1,publication_url1"/>
+	<property name="names" value="dummy,submission_name,submission_date,template_name,species,disease_condition,tissue,gene_symbol,figure_5a,figure_5b,sample_url,publication_reference1,publication_url1"/>
   </bean>
 
   <!-- cshlAvgMeasureReader defined in: -->
@@ -571,7 +577,7 @@
 
   <bean name="cshlAvgMeasureLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="dummy,submission_name,submission_center,submission_date,template_name,gene_symbol,tumor_type,gene_type,avg_tumor_volume_day_0,avg_tumor_volume_day_7,avg_tumor_volume_day_14,avg_tumor_volume_day_21,avg_tumor_volume_day_28,avg_tumor_volume_day_35,avg_tumor_volume_day_42,injections,tumor_count"/>
+	<property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol,tumor_type,gene_type,avg_tumor_volume_day_0,avg_tumor_volume_day_7,avg_tumor_volume_day_14,avg_tumor_volume_day_21,avg_tumor_volume_day_28,avg_tumor_volume_day_35,avg_tumor_volume_day_42,injections,tumor_count"/>
   </bean>
 
   <!-- cshlMouseLiversReader defined in: -->
@@ -583,7 +589,7 @@
 
   <bean name="cshlMouseLiversLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="dummy,submission_name,submission_center,submission_date,template_name,tumor_type,gene_symbol,figure1,figure2"/>
+	<property name="names" value="dummy,submission_name,submission_date,template_name,tumor_type,gene_symbol,figure1,figure2"/>
   </bean>
 
   <!-- cshlCoExpReader defined in: -->
@@ -595,7 +601,7 @@
 
   <bean name="cshlCoExpLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="dummy,submission_name,submission_center,submission_date,template_name,tumor_type,gene_symbol1,gene_symbol2,figure1,figure2"/>
+	<property name="names" value="dummy,submission_name,submission_date,template_name,tumor_type,gene_symbol1,gene_symbol2,figure1,figure2"/>
   </bean>
 
   <!-- dfciArid1aMutAnalysisReader defined in: -->
@@ -607,7 +613,7 @@
 
   <bean name="dfciArid1aMutAnalysisLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="dummy,submission_name,submission_center,submission_date,template_name,gene_symbol,gene_summarization_method,target_group,target_group_gene,target_group_alteration,number_of_cell_lines,number_of_cell_lines_in_target_group,RNMI_score,p_value,fdr,publication_reference,publication_url,nci_portal"/>
+	<property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol,gene_summarization_method,target_group,target_group_gene,target_group_alteration,number_of_cell_lines,number_of_cell_lines_in_target_group,RNMI_score,p_value,fdr,publication_reference,publication_url,nci_portal"/>
   </bean>
 
   <!-- dfciArid1bDependencyReader defined in: -->
@@ -619,7 +625,7 @@
 
   <bean name="dfciArid1bDependencyLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="dummy,submission_name,submission_center,submission_date,template_name,target_group,gene_symbol,figure_1,figure_2,figure_3,figure_4,figure_5,tier2_evidence,publication_reference,publication_url"/>
+	<property name="names" value="dummy,submission_name,submission_date,template_name,target_group,gene_symbol,figure_1,figure_2,figure_3,figure_4,figure_5,tier2_evidence,publication_reference,publication_url"/>
   </bean>
 
   <!-- dfciSmarca4MutAnalysisReader defined in: -->
@@ -631,7 +637,7 @@
 
   <bean name="dfciSmarca4MutAnalysisLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="dummy,submission_name,submission_center,submission_date,template_name,gene_symbol,gene_summarization_method,target_group,target_group_gene,target_group_alteration,number_of_cell_lines,number_of_cell_lines_in_target_group,RNMI_score,p_value,fdr,publication_reference,publication_url,nci_portal"/>
+	<property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol,gene_summarization_method,target_group,target_group_gene,target_group_alteration,number_of_cell_lines,number_of_cell_lines_in_target_group,RNMI_score,p_value,fdr,publication_reference,publication_url,nci_portal"/>
   </bean>
 
   <!-- dfciSmarca2DependencyReader defined in: -->
@@ -643,7 +649,7 @@
 
   <bean name="dfciSmarca2DependencyLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="dummy,submission_name,submission_center,submission_date,template_name,target_group,gene_symbol,figure_1,figure_2,figure_3,figure_4,tier2_evidence,publication_reference,publication_url"/>
+	<property name="names" value="dummy,submission_name,submission_date,template_name,target_group,gene_symbol,figure_1,figure_2,figure_3,figure_4,tier2_evidence,publication_reference,publication_url"/>
   </bean>
 
   <!-- broadBcatNavStoryReader defined in: -->
@@ -655,8 +661,20 @@
 
   <bean name="broadBcatNavStoryLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="dummy,submission_name,submission_center,submission_date,template_name,gene_symbol_1,gene_symbol_2,gene_symbol_3,compound_name_1,compound_name_2,resource_url_1,resource_url_2,resource_url_3,publication_reference,story_location"/>
+	<property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,gene_symbol_3,compound_name_1,compound_name_2,resource_url_1,resource_url_2,resource_url_3,publication_reference,story_location"/>
   </bean>
+
+ <!-- mskccPi3kStoryReader defined in: -->
+  <!-- observationDataApplicationContext.xml testObservationDataApplicationContext.xml -->
+  <bean name="mskccPi3kLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+	<property name="fieldSetMapper" ref="observationDataMapper" />
+	<property name="lineTokenizer" ref="mskccPi3kLineTokenizer" />
+  </bean>
+
+  <bean name="mskccPi3kLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+	<property name="delimiter" value="\u0009"/>
+	<property name="names" value="dummy,submission_name,submission_date,template_name,species,animal_model,strain,disease_condition,gene_symbol1,mutation,gene_symbol2,gene_symbol3,figure_2AM,figure_3BCD,publication_reference,publication_url"/>
+  </bean> 
 
   <!-- shared helper beans -->
   <bean name="observationDataFactory" class="gov.nih.nci.ctd2.dashboard.importer.internal.ObservationDataFactoryImpl"/>
@@ -761,14 +779,17 @@
 		<entry key="cshl_tier4_fgf19_story:drug_candidate" value="subject:findCompoundsByName" />
 		<entry key="cshl_tier4_fgf19_story:story_location" value="evidence:readString:createObservedFileEvidence" />
 		<!-- dfci tier4 beta-catenin story -->
-		<entry key="dfci_tier4_beta-catenin_story:disease_condition" value="subject:findTissueSampleByName" />
-		<entry key="dfci_tier4_beta-catenin_story:tissue_sample" value="subject:findTissueSampleByName" />
-		<entry key="dfci_tier4_beta-catenin_story:gene_symbol_1" value="subject:findGenesBySymbol" />
-		<entry key="dfci_tier4_beta-catenin_story:gene_symbol_2" value="subject:findGenesBySymbol" />
-		<entry key="dfci_tier4_beta-catenin_story:gene_symbol_3" value="subject:findGenesBySymbol" />
-		<entry key="dfci_tier4_beta-catenin_story:gene_symbol_4" value="subject:findGenesBySymbol" />
-		<entry key="dfci_tier4_beta-catenin_story:drug_candidate" value="subject:findCompoundsByName" />
-		<entry key="dfci_tier4_beta-catenin_story:story_location" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="dfci_yapyes:gene_symbol_1" value="subject:findGenesBySymbol" />
+		<entry key="dfci_yapyes:gene_symbol_2" value="subject:findGenesBySymbol" />
+		<entry key="dfci_yapyes:gene_symbol_3" value="subject:findGenesBySymbol" />
+		<entry key="dfci_yapyes:gene_symbol_4" value="subject:findGenesBySymbol" />
+		<entry key="dfci_yapyes:gene_symbol_5" value="subject:findGenesBySymbol" />
+		<entry key="dfci_yapyes:gene_symbol_6" value="subject:findGenesBySymbol" />
+		<entry key="dfci_yapyes:compound_name_1" value="subject:findCompoundsByName" />
+		<entry key="dfci_yapyes:resource_url_1" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="dfci_yapyes:publication_reference_1" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="dfci_yapyes:publication_reference_2" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="dfci_yapyes:story_location" value="evidence:readString:createObservedFileEvidence" />
 		<!-- dfci reporter analysis -->
 		<entry key="dfci_reporter_analysis:target_group" value="evidence:readString:createObservedLabelEvidence" />
 		<entry key="dfci_reporter_analysis:target_group_gene" value="subject:findGenesBySymbol" />
@@ -1069,6 +1090,19 @@
 		<entry key="broad_bcat_nav_story:resource_url_3" value="evidence:readString:createObservedUrlEvidence" />
 		<entry key="broad_bcat_nav_story:publication_reference" value="evidence:readString:createObservedUrlEvidence" />
 		<entry key="broad_bcat_nav_story:story_location" value="evidence:readString:createObservedFileEvidence" />	
+		<!-- mskcc pi3k -->
+		<entry key="mskcc_pi3k:species" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="mskcc_pi3k:animal_model" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="mskcc_pi3k:strain" value="subject:findAnimalModelByName" />
+		<entry key="mskcc_pi3k:disease_condition" value="subject:findTissueSampleByName" />
+		<entry key="mskcc_pi3k:gene_symbol1" value="subject:findGenesBySymbol" />
+		<entry key="mskcc_pi3k:mutation" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="mskcc_pi3k:gene_symbol2" value="subject:findGenesBySymbol" />
+		<entry key="mskcc_pi3k:gene_symbol3" value="subject:findGenesBySymbol" />
+		<entry key="mskcc_pi3k:figure_2AM" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="mskcc_pi3k:figure_3BCD" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="mskcc_pi3k:publication_reference" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="mskcc_pi3k:publication_url" value="evidence:readString:createObservedUrlEvidence" />
 	  </map>
 	</constructor-arg>
   </bean>

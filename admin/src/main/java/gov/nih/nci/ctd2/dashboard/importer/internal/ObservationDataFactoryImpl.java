@@ -37,25 +37,14 @@ public class ObservationDataFactoryImpl implements ObservationDataFactory {
 	private DashboardDao dashboardDao;
 
 	// cache for fast lookup and prevention of duplicate role records
-	private HashMap<String, SubmissionCenter> submissionCenterCache = new HashMap<String, SubmissionCenter>();
     private HashMap<String, Subject> subjectCache = new HashMap<String, Subject>();
     private HashMap<String, ObservedSubjectRole> observedSubjectRoleCache = new HashMap<String, ObservedSubjectRole>();
     private HashMap<String, ObservedEvidenceRole> observedEvidenceRoleCache = new HashMap<String, ObservedEvidenceRole>();
 
 	@Override
-	public Submission createSubmission(String submissionName, String submissionCenterName, Date submissionDate, String observationTemplateName) {
-		SubmissionCenter submissionCenter = submissionCenterCache.get(submissionCenterName);
-		if (submissionCenter == null) {
-			submissionCenter = dashboardDao.findSubmissionCenterByName(submissionCenterName);
-			if (submissionCenter == null) {
-				submissionCenter = dashboardFactory.create(SubmissionCenter.class);
-				submissionCenter.setDisplayName(submissionCenterName);
-			}
-			submissionCenterCache.put(submissionCenterName, submissionCenter);
-		}
+	public Submission createSubmission(String submissionName, Date submissionDate, String observationTemplateName) {
 		Submission submission = dashboardFactory.create(Submission.class);
         submission.setDisplayName(submissionName);
-		submission.setSubmissionCenter(submissionCenter);
 		submission.setSubmissionDate(submissionDate);
 		ObservationTemplate observationTemplate  = dashboardDao.findObservationTemplateByName(observationTemplateName);
 		if (observationTemplate != null) {

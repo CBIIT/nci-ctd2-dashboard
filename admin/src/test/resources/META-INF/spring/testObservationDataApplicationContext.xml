@@ -37,7 +37,7 @@
 
   <bean name="tierOneObservationDataLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="dummy,submission_name,submission_center,submission_date,template_name,cell_line_subset,cell_line_exclusion,feature_data_set,compound_name,entrez_gene_id,number_of_cell_lines,number_of_mutant_cell_lines,enrichment_direction,log_fdr,response_image_path,feature_image_path,nci_portal,gct_path"/>
+	<property name="names" value="dummy,submission_name,submission_date,template_name,cell_line_subset,cell_line_exclusion,feature_data_set,compound_name,entrez_gene_id,number_of_cell_lines,number_of_mutant_cell_lines,enrichment_direction,log_fdr,response_image_path,feature_image_path,nci_portal,gct_path"/>
   </bean>
 
   <bean name="tierThreeObservationDataReader" class="org.springframework.batch.item.file.FlatFileItemReader">
@@ -53,7 +53,7 @@
 
   <bean name="tierThreeObservationDataLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="dummy,submission_name,submission_center,submission_date,template_name,compound_name,gene_symbol,figure_1,figure_2,figure_3,figure_4,figure_5,figure_6,tier1_evidence"/>
+	<property name="names" value="dummy,submission_name,submission_date,template_name,compound_name,gene_symbol,figure_1,figure_2,figure_3,figure_4,figure_5,figure_6,tier1_evidence"/>
   </bean>
 
   <!-- the following beans are not used during testing - only required for proper loading of context files -->
@@ -98,9 +98,9 @@
 	<property name="lineMapper" ref="cshlTier4FGF19StoryLineMapper" />
   </bean>
 
-  <!-- dfci tier4 beta-catenin story -->
-  <bean name="dfciTier4BetaCateninStoryReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-	<property name="lineMapper" ref="dfciTier4BetaCateninStoryLineMapper" />
+  <!-- dfci yap yes story -->
+  <bean name="dfciYapYesStoryReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="lineMapper" ref="dfciYapYesStoryLineMapper" />
   </bean>
 
   <!-- dfci reporter analysis reader -->
@@ -220,6 +220,10 @@
 
   <bean name="broadBcatNavStoryReader" class="org.springframework.batch.item.file.FlatFileItemReader">
   <property name="lineMapper" ref="broadBcatNavStoryLineMapper" />
+  </bean>
+
+  <bean name="mskccPi3kReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+  <property name="lineMapper" ref="mskccPi3kLineMapper" />
   </bean>
 
 </beans>

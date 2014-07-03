@@ -44,7 +44,7 @@
 
   <bean name="controlledVocabularyPerTemplateLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="observation_tier,template_name,observation_summary,template_description,submission_name,submission_description,submission_story,submission_story_rank"/>
+	<property name="names" value="observation_tier,template_name,observation_summary,template_description,submission_name,submission_description,submission_story,submission_story_rank,submission_center,principal_investigator"/>
   </bean>
 
   <!-- cv per column beans -->
@@ -65,11 +65,10 @@
 	<property name="names" value="id,template_name,column_name,subject,evidence,role,mime_type,numeric_units,display_text"/>
   </bean>
 
-  <!-- the following beans are shared between all the steps of the cell line importer job -->
+  <!-- the following beans are shared between all the steps of the observation data importer job -->
   <bean name="observationTemplateMap" class="java.util.HashMap">
 	<constructor-arg index="0" type="java.util.Map">
 	  <map key-type="java.lang.String" value-type="gov.nih.nci.ctd2.dashboard.model.ObservationTemplate"/>
 	</constructor-arg>
   </bean>
-
 </beans>

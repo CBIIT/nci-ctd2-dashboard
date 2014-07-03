@@ -1,7 +1,7 @@
 package gov.nih.nci.ctd2.dashboard.importer.internal;
 
-import gov.nih.nci.ctd2.dashboard.model.ObservationTemplate;
-import gov.nih.nci.ctd2.dashboard.model.DashboardFactory;
+import gov.nih.nci.ctd2.dashboard.model.*;
+import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindException;
 import org.springframework.batch.item.file.transform.FieldSet;
@@ -22,6 +22,11 @@ public class ControlledVocabularyPerTemplateFieldSetMapper implements FieldSetMa
 	private static final String SUBMISSION_DESCRIPTION = "submission_description";
 	private static final String SUBMISSION_STORY = "submission_story";
 	private static final String SUBMISSION_STORY_RANK = "submission_story_rank";
+	private static final String PRINCIPAL_INVESTIGATOR = "principal_investigator";
+	private static final String SUBMISSION_CENTER = "submission_center";
+
+	@Autowired
+	private DashboardDao dashboardDao;
 
     @Autowired
     private DashboardFactory dashboardFactory;
@@ -29,6 +34,8 @@ public class ControlledVocabularyPerTemplateFieldSetMapper implements FieldSetMa
     @Autowired
 	@Qualifier("observationTemplateMap")
 	private HashMap<String,ObservationTemplate> observationTemplateMap;
+
+	private HashMap<String, SubmissionCenter> submissionCenterCache = new HashMap<String, SubmissionCenter>();
 
 	public ObservationTemplate mapFieldSet(FieldSet fieldSet) throws BindException {
 
@@ -41,6 +48,19 @@ public class ControlledVocabularyPerTemplateFieldSetMapper implements FieldSetMa
 		observationTemplate.setSubmissionDescription(fieldSet.readString(SUBMISSION_DESCRIPTION));
 		observationTemplate.setIsSubmissionStory(fieldSet.readBoolean(SUBMISSION_STORY, "TRUE"));
 		observationTemplate.setSubmissionStoryRank(fieldSet.readInt(SUBMISSION_STORY_RANK));
+		observationTemplate.setPrincipalInvestigator(fieldSet.readString(PRINCIPAL_INVESTIGATOR));
+
+		String submissionCenterName = fieldSet.readString(SUBMISSION_CENTER);
+		SubmissionCenter submissionCenter = submissionCenterCache.get(submissionCenterName);
+		if (submissionCenter == null) {
+			submissionCenter = dashboardDao.findSubmissionCenterByName(submissionCenterName);
+			if (submissionCenter == null) {
+				submissionCenter = dashboardFactory.create(SubmissionCenter.class);
+				submissionCenter.setDisplayName(submissionCenterName);
+			}
+			submissionCenterCache.put(submissionCenterName, submissionCenter);
+		}
+		observationTemplate.setSubmissionCenter(submissionCenter);
 
 		observationTemplateMap.put(fieldSet.readString(TEMPLATE_NAME), observationTemplate);
 
