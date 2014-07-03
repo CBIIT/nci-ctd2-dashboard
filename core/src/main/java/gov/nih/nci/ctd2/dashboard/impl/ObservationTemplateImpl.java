@@ -1,15 +1,13 @@
 package gov.nih.nci.ctd2.dashboard.impl;
 
-import gov.nih.nci.ctd2.dashboard.model.ObservationTemplate;
+import gov.nih.nci.ctd2.dashboard.model.*;
 import org.hibernate.annotations.Proxy;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.Store;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Proxy(proxyClass= ObservationTemplate.class)
@@ -27,6 +25,8 @@ public class ObservationTemplateImpl extends DashboardEntityImpl implements Obse
 	private String submissionDescription;
 	private Boolean isSubmissionStory;
 	private Integer submissionStoryRank = 0;
+    private SubmissionCenter submissionCenter;
+    private String principalInvestigator;
 
     @Field(name=FIELD_DESCRIPTION, index = Index.TOKENIZED)
     @Column(length = 1024)
@@ -89,5 +89,23 @@ public class ObservationTemplateImpl extends DashboardEntityImpl implements Obse
 
     public void setSubmissionStoryRank(Integer submissionStoryRank) {
         this.submissionStoryRank = submissionStoryRank;
+    }
+
+    @ManyToOne(targetEntity = SubmissionCenterImpl.class)
+    public SubmissionCenter getSubmissionCenter() {
+        return submissionCenter;
+    }
+
+    public void setSubmissionCenter(SubmissionCenter submissionCenter) {
+        this.submissionCenter = submissionCenter;
+    }
+
+    @Column(length=64, nullable=false)
+    public String getPrincipalInvestigator() {
+        return principalInvestigator;
+    }
+
+    public void setPrincipalInvestigator(String principalInvestigator) {
+        this.principalInvestigator = principalInvestigator;
     }
 }

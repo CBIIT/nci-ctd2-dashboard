@@ -27,7 +27,7 @@ columbia.mra.fet.analysis.data.location=file:${CTD2_DATA_HOME}/submissions/20130
 columbia.joint.mr.shrna.diff.analysis.data.location=file:${CTD2_DATA_HOME}/submissions/20130401-columbia_joint_mr_shrna_diff-T-ALL/20130401-columbia_joint_mr_shrna_diff-T-ALL.txt
 columbia.gbm.mrs.data.location=file:${CTD2_DATA_HOME}/submissions/20140402-columbia_gbm_mrs/20140402-columbia_gbm_mrs.txt
 cshl.tier4.fgf19.story.data.location=file:${CTD2_DATA_HOME}/submissions/20130403-cshl_tier4_fgf19_story/20130403-cshl_tier4_fgf19_story.txt
-dfci.tier4.beta.catenin.story.data.location=file:${CTD2_DATA_HOME}/submissions/20130401-dfci_tier4_beta-catenin_story/20130401-dfci_tier4_beta-catenin_story.txt
+dfci.yap.yes.story.data.location=file:${CTD2_DATA_HOME}/submissions/20140617-dfci_yapyes/20140617-dfci_yapyes.txt
 dfci.reporter.analysis.data.location=file:${CTD2_DATA_HOME}/submissions/20130426-dfci_reporter_analysis-bcat/20130426-dfci_reporter_analysis-bcat.txt
 dfci.ataris.analysis.data.location=file:${CTD2_DATA_HOME}/submissions/20130429-dfci_ataris_analysis/20130429-dfci_ataris_analysis.txt
 dfci.ovarian.analysis.data.location=file:${CTD2_DATA_HOME}/submissions/20130426-dfci_ovarian_analysis/20130426-dfci_ovarian_analysis.txt
@@ -54,7 +54,7 @@ dfci.arid1b.dependency.data.location=file:${CTD2_DATA_HOME}/submissions/20140401
 dfci.smarca4.mut.analysis.data.location=file:${CTD2_DATA_HOME}/submissions/20140401-dfci_smarca4_mut_analysis/20140401-dfci_smarca4_mut_analysis.txt
 dfci.smarca2.dependency.data.location=file:${CTD2_DATA_HOME}/submissions/20140401-dfci_smarca2_dependency/20140401-dfci_smarca2_dependency.txt
 broad.bcat.nav.story.data.location=file:${CTD2_DATA_HOME}/submissions/20140417-broad_bcat_nav_story/20140417-broad_bcat_nav_story.txt
-
+mskcc.pi3k.data.location=file:${CTD2_DATA_HOME}/submissions/20140505-mskcc_pi3k/20140505-mskcc_pi3k.txt
 
 # spring commit interval
 spring.batch.commit.interval=10000

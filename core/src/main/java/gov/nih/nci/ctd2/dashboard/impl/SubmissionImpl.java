@@ -2,7 +2,6 @@ package gov.nih.nci.ctd2.dashboard.impl;
 
 import gov.nih.nci.ctd2.dashboard.model.ObservationTemplate;
 import gov.nih.nci.ctd2.dashboard.model.Submission;
-import gov.nih.nci.ctd2.dashboard.model.SubmissionCenter;
 import org.hibernate.annotations.Proxy;
 import org.hibernate.search.annotations.Indexed;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -16,7 +15,6 @@ import java.util.Date;
 @Indexed
 public class SubmissionImpl extends DashboardEntityImpl implements Submission {
     private ObservationTemplate observationTemplate;
-    private SubmissionCenter submissionCenter;
     private Date submissionDate;
 
     @ManyToOne(targetEntity = ObservationTemplateImpl.class)
@@ -26,15 +24,6 @@ public class SubmissionImpl extends DashboardEntityImpl implements Submission {
 
     public void setObservationTemplate(ObservationTemplate observationTemplate) {
         this.observationTemplate = observationTemplate;
-    }
-
-    @ManyToOne(targetEntity = SubmissionCenterImpl.class)
-    public SubmissionCenter getSubmissionCenter() {
-        return submissionCenter;
-    }
-
-    public void setSubmissionCenter(SubmissionCenter submissionCenter) {
-        this.submissionCenter = submissionCenter;
     }
 
     @Temporal(TemporalType.TIMESTAMP)

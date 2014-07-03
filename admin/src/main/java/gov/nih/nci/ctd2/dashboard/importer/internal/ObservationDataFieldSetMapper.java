@@ -28,7 +28,6 @@ public class ObservationDataFieldSetMapper implements FieldSetMapper<Observation
 	private static final int OBSERVATION_DATA_FACTORY_METHOD_INDEX = 2;
 
 	private static final String SUBMISSION_NAME = "submission_name";
-	private static final String SUBMISSION_CENTER = "submission_center";
 	private static final String	SUBMISSION_DATE = "submission_date";
 	private static final String TEMPLATE_NAME = "template_name";
 
@@ -49,7 +48,7 @@ public class ObservationDataFieldSetMapper implements FieldSetMapper<Observation
 
 	/* Used by ObservationDataWriter */
 	public static String getSubmissionCacheKey(Submission submission) {
-		return submission.getDisplayName() + submission.getSubmissionCenter().getDisplayName() +
+		return submission.getDisplayName() + 
 			ObservationDataFieldSetMapper.TEMPLATE_DATE_FORMAT.format(submission.getSubmissionDate()) +
 			submission.getObservationTemplate().getDisplayName();
 	}
@@ -57,16 +56,14 @@ public class ObservationDataFieldSetMapper implements FieldSetMapper<Observation
 	public ObservationData mapFieldSet(FieldSet fieldSet) throws BindException {
 
 		String templateName = fieldSet.readString(TEMPLATE_NAME);
-		String submissionName = fieldSet.readString(SUBMISSION_NAME);
-		String submissionCenter = fieldSet.readString(SUBMISSION_CENTER);
 		Date submissionDate = fieldSet.readDate(SUBMISSION_DATE, "yyyy.MM.dd");
+		String submissionName = fieldSet.readString(SUBMISSION_NAME);
 
 		// create submission - if cache key changes, update getSubmissionCacheKey() defined above
-		String submissionCacheKey = submissionName + submissionCenter + TEMPLATE_DATE_FORMAT.format(submissionDate) + templateName;
+		String submissionCacheKey = submissionName + TEMPLATE_DATE_FORMAT.format(submissionDate) + templateName;
 		Submission submission = submissionCache.get(submissionCacheKey);
 		if (submission == null) {
 			submission = observationDataFactory.createSubmission(submissionName,
-                                                                 submissionCenter,
 																 submissionDate,
 																 templateName);
 			submissionCache.put(submissionCacheKey, submission);
@@ -80,8 +77,7 @@ public class ObservationDataFieldSetMapper implements FieldSetMapper<Observation
 		LinkedHashSet<DashboardEntity> observedEntitiesSet = new LinkedHashSet<DashboardEntity>();
 
 		for (String columnName : fieldSet.getNames()) {
-			if (columnName.equals(SUBMISSION_CENTER) ||
-				columnName.equals(SUBMISSION_DATE) ||
+			if (columnName.equals(SUBMISSION_DATE) ||
 				columnName.equals(TEMPLATE_NAME)) continue;
 			try {
 				String mapKey = templateName + MAP_DELIMITER + columnName;

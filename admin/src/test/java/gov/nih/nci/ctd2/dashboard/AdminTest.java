@@ -156,29 +156,29 @@ public class AdminTest {
         jobExecution = executeJob("controlledVocabularyImporterJob");
         assertEquals("COMPLETED", jobExecution.getExitStatus().getExitCode());
         // we get some subject/observed subject roles
-        assertEquals(19, dashboardDao.countEntities(SubjectRole.class).intValue());
-        assertEquals(113, dashboardDao.countEntities(ObservedSubjectRole.class).intValue());
+        assertEquals(20, dashboardDao.countEntities(SubjectRole.class).intValue());
+        assertEquals(118, dashboardDao.countEntities(ObservedSubjectRole.class).intValue());
         assertTrue(dashboardDao.findObservedSubjectRole("broad_cpd_sens_lineage_enrich", "compound_name") != null);
         // we get some evidence/observed evidence roles
-        assertEquals(9, dashboardDao.countEntities(EvidenceRole.class).intValue());
-        assertEquals(247, dashboardDao.countEntities(ObservedEvidenceRole.class).intValue());
+        assertEquals(10, dashboardDao.countEntities(EvidenceRole.class).intValue());
+        assertEquals(267, dashboardDao.countEntities(ObservedEvidenceRole.class).intValue());
         assertTrue(dashboardDao.findObservedEvidenceRole("broad_cpd_sens_lineage_enrich", "cell_line_subset") != null);
         // we get observation template data
-        assertEquals(34, dashboardDao.countEntities(ObservationTemplate.class).intValue());
+        assertEquals(36, dashboardDao.countEntities(ObservationTemplate.class).intValue());
         ObservationTemplate observationTemplate = dashboardDao.findObservationTemplateByName("broad_cpd_sens_lineage_enrich");
         assertNotNull(observationTemplate);
         assertFalse(observationTemplate.getIsSubmissionStory());
         assertEquals(0, observationTemplate.getSubmissionStoryRank().intValue());
         observationTemplate = dashboardDao.findObservationTemplateByName("broad_beta-catenin_navitoclax");
         assertNotNull(observationTemplate);
-        assertTrue(observationTemplate.getIsSubmissionStory());
-        assertEquals(3, observationTemplate.getSubmissionStoryRank().intValue());
+        assertFalse(observationTemplate.getIsSubmissionStory());
+        assertEquals(0, observationTemplate.getSubmissionStoryRank().intValue());
 
         // import observation data
         jobExecution = executeJob("testObservationDataImporterJob");
         assertEquals("COMPLETED", jobExecution.getExitStatus().getExitCode());
         assertEquals(2, dashboardDao.countEntities(Submission.class).intValue());
-        assertEquals(1, dashboardDao.countEntities(SubmissionCenter.class).intValue());
+        assertEquals(11, dashboardDao.countEntities(SubmissionCenter.class).intValue());
         assertEquals(11, dashboardDao.countEntities(Observation.class).intValue());
         assertEquals(22, dashboardDao.countEntities(ObservedSubject.class).intValue());
         assertEquals(87, dashboardDao.countEntities(ObservedEvidence.class).intValue());
