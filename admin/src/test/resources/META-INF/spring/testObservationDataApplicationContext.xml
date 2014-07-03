@@ -98,9 +98,9 @@
 	<property name="lineMapper" ref="cshlTier4FGF19StoryLineMapper" />
   </bean>
 
-  <!-- dfci tier4 beta-catenin story -->
-  <bean name="dfciTier4BetaCateninStoryReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-	<property name="lineMapper" ref="dfciTier4BetaCateninStoryLineMapper" />
+  <!-- dfci yap yes story -->
+  <bean name="dfciYapYesStoryReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="lineMapper" ref="dfciYapYesStoryLineMapper" />
   </bean>
 
   <!-- dfci reporter analysis reader -->
