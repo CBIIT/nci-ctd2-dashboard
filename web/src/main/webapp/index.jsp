@@ -197,7 +197,8 @@
                     <tr>
                         <th class="center-image-column"></th>
                         <th>Center name</th>
-                        <th>Submissions</th>
+                        <th>Principal Investigator</th>
+                        <th class="submission-count">Submissions</th>
                     </tr>
                 </thead>
                 <tbody id="centers-tbody">
@@ -257,6 +258,9 @@
                 <a href="#center/{{id}}">
                     {{displayName}}
                 </a>
+            </td>
+            <td class="center-pi">
+                <span id="center-pi-{{id}}">...</span>
             </td>
             <td>
                 <a href="#center/{{id}}">

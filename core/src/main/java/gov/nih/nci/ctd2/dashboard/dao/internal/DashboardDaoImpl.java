@@ -161,6 +161,17 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
     }
 
     @Override
+    public List<ObservationTemplate> findObservationTemplateBySubmissionCenter(SubmissionCenter submissionCenter) {
+        List<ObservationTemplate> list = new ArrayList<ObservationTemplate>();
+        for (Object o : getHibernateTemplate().find("from ObservationTemplateImpl where submissionCenter = ?", submissionCenter)) {
+            assert o instanceof ObservationTemplate;
+            list.add((ObservationTemplate) o);
+        }
+
+        return list;
+    }
+
+    @Override
     @Cacheable(value = "browseTargetCache")
     public List<Gene> browseTargets(String startsWith) {
         List<Gene> list = new ArrayList<Gene>();
@@ -491,9 +502,8 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
     @Override
     public List<Submission> findSubmissionBySubmissionCenter(SubmissionCenter submissionCenter) {
         List<Submission> list = new ArrayList<Submission>();
-        for (Object o : getHibernateTemplate().find("from ObservationTemplateImpl where submissionCenter = ?", submissionCenter)) {
-            assert o instanceof ObservationTemplate;
-            list.addAll(findSubmissionByObservationTemplate((ObservationTemplate) o));
+        for (ObservationTemplate o : findObservationTemplateBySubmissionCenter(submissionCenter)) {
+            list.addAll(findSubmissionByObservationTemplate(o));
         }
 
         return list;

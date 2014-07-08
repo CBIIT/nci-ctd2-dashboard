@@ -79,6 +79,11 @@ public class ListController {
             if(observation != null) {
                 entities = dashboardDao.findObservedEvidenceByObservation(observation);
             }
+        } else if(type.equals("observationtemplate") && filterBy != null) {
+            SubmissionCenter submissionCenter = dashboardDao.getEntityById(SubmissionCenter.class, filterBy);
+            if(submissionCenter != null) {
+                entities = dashboardDao.findObservationTemplateBySubmissionCenter(submissionCenter);
+            }
         }
 
         // TODO: Remove this and add a pagination option

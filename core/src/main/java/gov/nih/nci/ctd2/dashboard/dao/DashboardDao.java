@@ -48,5 +48,6 @@ public interface DashboardDao {
     Submission findSubmissionByName(String submissionName);
     List<Gene> browseTargets(String startsWith);
     List<Compound> browseCompounds(String startsWith);
+    List<ObservationTemplate> findObservationTemplateBySubmissionCenter(SubmissionCenter submissionCenter);
 }
 

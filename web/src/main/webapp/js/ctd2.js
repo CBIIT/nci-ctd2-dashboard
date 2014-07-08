@@ -812,6 +812,15 @@
                         $.ajax("count/submission/?filterBy=" + aCenter.id).done(function(count) {
                             $("#submission-count-" + aCenter.id).html(count);
                         });
+
+                        $.ajax("list/observationtemplate/?filterBy=" + aCenter.id).done(function(templates) {
+                            var pis = [];
+                            _.each(templates, function(template) {
+                                pis.push(template.principalInvestigator);
+                            });
+                            $("#center-pi-" + aCenter.id).html(_.uniq(pis).join(", "));
+                        });
+
                     });
 
                     var cTable = $(thatEl).find("table").dataTable({
