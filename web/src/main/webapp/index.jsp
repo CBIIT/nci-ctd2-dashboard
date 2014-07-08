@@ -337,8 +337,8 @@
                     </table>
                 </div>
                 <div class="span2">
-                    <a href="#/center/{{submissionCenter.id}}">
-                        <img src="img/{{submissionCenter.displayName}}.png" class="img-polaroid" height=30 alt="{{submissionCenter.displayName}}" title="{{submissionCenter.displayName}}">
+                    <a href="#/center/{{observationTemplate.submissionCenter.id}}">
+                        <img src="img/{{observationTemplate.submissionCenter.displayName}}.png" class="img-polaroid" height=30 alt="{{observationTemplate.submissionCenter.displayName}}" title="{{observationTemplate.submissionCenter.displayName}}">
                     </a>
 
                     <br>
@@ -413,7 +413,7 @@
 
                 </div>
                 <div class="span2">
-                    <a href="#/center/{{submission.submissionCenter.id}}"><img src="img/{{submission.submissionCenter.displayName}}.png" class="img-polaroid" height=30 alt="{{submission.submissionCenter.displayName}}"></a>
+                    <a href="#/center/{{submission.observationTemplate.submissionCenter.id}}"><img src="img/{{submission.observationTemplate.submissionCenter.displayName}}.png" class="img-polaroid" height=30 alt="{{submission.observationTemplate.submissionCenter.displayName}}"></a>
                     <br><br>
                     <img src="img/observation.png" alt="Observation" class="img-polaroid" width=150 height=150><br>
                 </div>
@@ -1079,8 +1079,8 @@
             </td>
             <td><span class="badge tier-badge">Tier {{observation.submission.observationTemplate.tier}}</span></td>
             <td>
-                <a href="#/center/{{observation.submission.submissionCenter.id}}">
-                    <img alt="{{observation.submission.submissionCenter.displayName}}" title="{{submission.submissionCenter.displayName}}" width="150" src="img/{{observation.submission.submissionCenter.displayName}}.png">
+                <a href="#/center/{{observation.submission.observationTemplate.submissionCenter.id}}">
+                    <img alt="{{observation.submission.observationTemplate.submissionCenter.displayName}}" title="{{submission.observationTemplate.submissionCenter.displayName}}" width="150" src="img/{{observation.submission.submissionCenter.displayName}}.png">
                 </a>
             </td>
         </tr>
@@ -1098,8 +1098,8 @@
             </td>
             <td><span class="badge tier-badge">Tier {{submission.observationTemplate.tier}}</span></td>
             <td>
-                <a href="#/center/{{submission.submissionCenter.id}}">
-                    <img alt="{{submission.submissionCenter.displayName}}" title="{{submission.submissionCenter.displayName}}" width="150" src="img/{{submission.submissionCenter.displayName}}.png">
+                <a href="#/center/{{submission.observationTemplate.submissionCenter.id}}">
+                    <img alt="{{submission.observationTemplate.submissionCenter.displayName}}" title="{{submission.observationTemplate.submissionCenter.displayName}}" width="150" src="img/{{submission.observationTemplate.submissionCenter.displayName}}.png">
                 </a>
             </td>
         </tr>
@@ -1236,7 +1236,7 @@
             <td><a href="#submission/{{id}}"><img src="img/submission.png" width="50" alt="Submission" title="Submission"></a></td>
             <td><a href="#submission/{{id}}">{{submissionDate}}</a></td>
             <td>{{observationTemplate.description}}</td>
-            <td><a href="#submission/{{id}}"><img src="img/{{submissionCenter.displayName}}.png" title="{{submissionCenter.displayName}}" alt="{{submissionCenter.displayName}}" height="50"></a></td>
+            <td><a href="#submission/{{id}}"><img src="img/{{observationTemplate.submissionCenter.displayName}}.png" title="{{observationTemplate.submissionCenter.displayName}}" alt="{{observationTemplate.submissionCenter.displayName}}" height="50"></a></td>
             <td><span class="badge tier-badge">Tier {{observationTemplate.tier}}</span></td>
             <td width=150><a href="#submission/{{id}}"><span id="search-observation-count-{{id}}"></span> observation(s)</a></td>
         </tr>
