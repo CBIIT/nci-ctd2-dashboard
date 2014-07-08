@@ -399,6 +399,14 @@ td.next-cell {
 }
 
 .center-name {
-    font-size: 22px;
+    font-weight: bold;
+}
+
+td.center-pi span {
+    /*font-weight: bold;*/
+}
+
+th.submission-count {
+    min-width: 150px;
 }
 
