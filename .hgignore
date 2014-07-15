@@ -3,3 +3,4 @@ database.properties
 dashboard.properties
 log4j.properties
 admin.properties
+.DS_Store
