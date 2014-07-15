@@ -182,7 +182,7 @@
             $.post("html", {url: url}).done(function(summary) {
                 summary = summary.replace(
                     new RegExp("#submission_center", "g"),
-                    "#center/" + observation.submission.submissionCenter.id
+                    "#center/" + observation.submission.observationTemplate.submissionCenter.id
                 );
 
                 var observedSubjects = new ObservedSubjects({ observationId: observation.id });
