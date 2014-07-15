@@ -712,6 +712,66 @@
          </div>
     </script>
 
+    <script type="text/template" id="protein-tmpl">
+        <div class="container common-container" id="protein-container">
+            <h1>{{displayName}}</h1>
+
+            <div class="row">
+                <div class="span9">
+                    <table id="protein-details-grid" class="table table-bordered table-striped">
+                        <tr>
+                            <th>Gene symbol</th>
+                            <td>{{displayName}}</td>
+                        </tr>
+                        <tr>
+                            <th>Synonyms</th>
+                            <td>
+                                <ul class="synonyms"></ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Organism</th>
+                            <td>{{organism.displayName}}</td>
+                        </tr>
+                        <tr>
+                            <th>References</th>
+                            <td>
+                                Uniprot ID: <a href="http://uniprot.com/{{uniprotId}}" target="_blank">{{uniprotId}} <i class="icon-share"></i></a> <br>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="span3">
+                    <h4>Protein</h4>
+                    <img src="img/protein.png" class="img-polaroid" width=175 height=175 alt="Protein">
+                </div>
+            </div>
+
+            <h3>Related observations</h3>
+            <table id="protein-observation-grid" class="table table-bordered table-striped observations">
+                <thead>
+                <tr>
+                    <th>Date</th>
+                    <th width=500>Observation Summary</th>
+                    <th>Tier</th>
+                    <th>Center</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- here will go the rows -->
+                <tr class="subject-observations-loading">
+                    <td colspan="5">
+                        <h3>Loading observations...</h3>
+                        <div class="progress progress-striped active">
+                            <div class="bar" style="width: 100%;"></div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </script>
+
     <script type="text/template" id="shrna-tmpl">
         <div class="container common-container" id="shrna-container">
             <h1>{{displayName}}</h1>
@@ -1129,6 +1189,13 @@
             <img src="img/gene.png" class="img-polaroid search-info" title="Gene" alt="Gene" height="50" width="50">
         </a>
     </script>
+
+    <script type="text/template" id="search-results-protein-image-tmpl">
+        <a href="#subject/{{id}}">
+            <img src="img/protein.png" class="img-polaroid search-info" title="Protein" alt="Protein" height="50" width="50">
+        </a>
+    </script>
+
 
     <script type="text/template" id="search-results-shrna-image-tmpl">
         <a href="#subject/{{id}}">
