@@ -124,7 +124,7 @@
         model: SearchResult,
 
         initialize: function(attributes) {
-            this.url += attributes.term;
+            this.url += encodeURIComponent(attributes.term)
         }
     });
 
@@ -1586,7 +1586,7 @@
             $(this.el).html(this.template(this.model));
 
             // update the search box accordingly
-            $("#omni-input").val(this.model.term);
+            $("#omni-input").val(decodeURIComponent(this.model.term));
 
             var thatEl = this.el;
             var thatModel = this.model;
@@ -2501,7 +2501,9 @@
         search: function(term) {
             var searchView = new SearchView({
                 model: {
-                    term: term.replace(new RegExp("<", "g"), "").replace(new RegExp(">", "g"), "")
+                    term: decodeURI(term)
+                        .replace(new RegExp("<", "g"), "")
+                        .replace(new RegExp(">", "g"), "")
                 }
             });
             searchView.render();
@@ -2607,7 +2609,7 @@
 
         $("#omnisearch").submit(function() {
             var searchTerm = $("#omni-input").val();
-            window.location.hash = "search/" + searchTerm;
+            window.location.hash = "search/" + encodeURI(encodeURIComponent(searchTerm));
             return false;
         });
 

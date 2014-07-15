@@ -1117,7 +1117,7 @@
                     <h3>Sorry, no results found</h3>
                     <p>
                         Would you like to extend your search with a wildcard?
-                        (<i>e.g.</i> <a href="#/search/{{term}}">{{term}}*</a>)
+                        (<i>e.g.</i> <a href="#/search/{{encodeURIComponent(term)}}*">{{decodeURIComponent(term)}}*</a>)
                     </p>
                 </div>
             </td>

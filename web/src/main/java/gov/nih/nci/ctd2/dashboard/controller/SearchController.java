@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.List;
 
@@ -36,6 +39,12 @@ public class SearchController {
         // This is to prevent unnecessary server loads
         if(keyword.length() < 2)
             return new ResponseEntity<String>(headers, HttpStatus.BAD_REQUEST);
+        try {
+            keyword = URLDecoder.decode(keyword, Charset.defaultCharset().displayName());
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
         List<DashboardEntity> results = dashboardDao.search(keyword);
 
         JSONSerializer jsonSerializer = new JSONSerializer()
