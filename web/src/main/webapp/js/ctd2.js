@@ -1764,11 +1764,17 @@
             var observedSubjects = new ObservedSubjects({ subjectId: this.model.id });
             var thatId = this.model.id;
 
-            observedSubjects.fetch({
+            var actions = {
                 success: function() {
                     $("#browsed-item-count-" + thatId).text(observedSubjects.models.length);
+                },
+
+                error: function() {
+                    observedSubjects.fetch(actions);
                 }
-            });
+            };
+
+            observedSubjects.fetch(actions);
         }
     });
     

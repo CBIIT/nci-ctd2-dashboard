@@ -44,5 +44,17 @@
            maxElementsInMemory="1000"
             />
 
+    <cache name="entityCache"
+           eternal="false"
+           timeToIdleSeconds="604800"
+           timeToLiveSeconds="604800"
+           overflowToDisk="true"
+           diskPersistent="false"
+           diskExpiryThreadIntervalSeconds="604800"
+           memoryStoreEvictionPolicy="LRU"
+           maxElementsInMemory="10000"
+            />
+
+
 
 </ehcache>
