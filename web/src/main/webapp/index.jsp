@@ -222,7 +222,7 @@
     <script type="text/template" id="stories-tbl-row-tmpl">
         <li class="span6" id="story-observation-link-{{id}}" title="Click for more details">
             <a href="#observation/{{id}}" class="thumbnail">
-                <img class="stories-feature-image img-circle" data-src="holder.js/180x180/text:portrait or logo" alt="Story image" title="Story image"><br>
+                <img class="img-circle" src="img/slogos/{{submission.observationTemplate.submissionCenter.displayName}}.png" alt="{{submission.observationTemplate.submissionCenter.displayName}}" title="{{submission.observationTemplate.submissionCenter.displayName}}">
                 <center>
                     {{submission.observationTemplate.description}}<br>
                     <small>({{submission.submissionDate}})</small><br>
@@ -1184,6 +1184,13 @@
         </tr>
     </script>
 
+    <script type="text/template" id="html-story-container-tmpl">
+        <div class="fancy-story-container">
+            <img src="img/{{centerName}}.png" alt="{{centerName}}" title="{{centerName}}" height="50" class="fancy-story-img img-polaroid">
+            {{story}}
+        </div>
+    </script>
+
     <script type="text/template" id="search-results-gene-image-tmpl">
         <a href="#subject/{{id}}">
             <img src="img/gene.png" class="img-polaroid search-info" title="Gene" alt="Gene" height="50" width="50">
@@ -1342,7 +1349,7 @@
                 </p>
             </div>
             <div class="span4">
-                <img class="img-circle" data-src="holder.js/180x180/text:portrait or logo" alt="placeholder logo" title="placeholder logo">
+                <img class="img-circle" src="img/slogos/{{submission.observationTemplate.submissionCenter.displayName}}.png" alt="{{submission.observationTemplate.submissionCenter.displayName}}" title="{{submission.observationTemplate.submissionCenter.displayName}}">
             </div>
         </div>
     </script>

@@ -220,9 +220,18 @@
                                 });
 
                                 $.fancybox(
-                                    summary,
+                                    _.template(
+                                        $("#html-story-container-tmpl").html(),
+                                        {
+                                            story: summary,
+                                            centerName: observation.submission.observationTemplate.submissionCenter.displayName
+                                        }
+                                    ),
                                     {
-                                        'autoDimensions' : true,
+                                        'autoDimensions' : false,
+                                        'width': '95%',
+                                        'height': '95%',
+                                        'centerOnScroll': true,
                                         'transitionIn' : 'none',
                                         'transitionOut' : 'none'
                                     }

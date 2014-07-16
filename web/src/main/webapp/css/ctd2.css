@@ -22,7 +22,7 @@ body {
   top: 0;
   left: 0;
   right: 0;
-  z-index: 9999;
+  z-index: 1000;
   margin-top: 10px;
   margin-bottom: -90px; /* Negative margin to pull up carousel. 90px is roughly margins and height of navbar. */
 }
@@ -408,5 +408,14 @@ td.center-pi span {
 
 th.submission-count {
     min-width: 150px;
+}
+
+.fancy-story-container {
+    padding: 30px;
+}
+
+img.fancy-story-img {
+    float: right;
+    margin: 20px;
 }
 
