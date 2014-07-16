@@ -172,7 +172,7 @@
           <hr class="featurette-divider">
 
           <div class="featurette">
-              <img class="img-polaroid pull-right" src="img/logos/ctd2_overall.png" alt="CTD2 general image" title="CTD2 general image">
+              <img class="img-polaroid pull-right" src="img/logos/ctd2_overall.png" alt="CTD2 general image" title="CTD2 general image" width="200">
               <h2 class="featurette-heading">CTD<sup>2</sup> Dashboard<span class="muted"> Overview</span></h2>
               <p class="lead">
                   The interactive dashboard will ensure the timely and efficient dissemination of <b>CTD<sup>2</sup></b> targets and biomarkers, across the final stages of their validation process, in conjunction with the primary data and methodologies used for their discovery and characterization.
