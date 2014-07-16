@@ -21,4 +21,5 @@
         <property name="cacheManager" ref="ehcache"/>
     </bean>
 
+    <bean id="webServiceUtil" class="gov.nih.nci.ctd2.dashboard.util.WebServiceUtil"/>
 </beans>
