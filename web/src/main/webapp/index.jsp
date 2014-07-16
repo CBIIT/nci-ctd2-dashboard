@@ -1389,7 +1389,7 @@
     <script type="text/template" id="browsed-item-tmpl">
         <li class="browsed-item span3">
             <a href="#subject/{{id}}">{{displayName}}</a>
-            (<small><i><span id="browsed-item-count-{{id}}"></span></i></small>)
+            (<small><i><span id="browsed-item-count-{{id}}">loading...</span></i></small>)
         </li>
     </script>
     
