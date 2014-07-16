@@ -32,15 +32,18 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
     };
 
     private static final Class[] searchableClasses = {
-            AnnotationImpl.class,
-            SubjectImpl.class,
+            SubjectWithOrganismImpl.class,
+            TissueSampleImpl.class,
+            CompoundImpl.class,
             SynonymImpl.class,
             SubmissionImpl.class,
             ObservationTemplateImpl.class
     };
 
     private static final Class[] fuzzySearchableClasses = {
-            SubjectImpl.class,
+            SubjectWithOrganismImpl.class,
+            TissueSampleImpl.class,
+            CompoundImpl.class,
             SubmissionImpl.class,
             ObservationTemplateImpl.class
     };
@@ -56,7 +59,7 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
         this.dashboardFactory = dashboardFactory;
     }
 
-    private Integer maxNumberOfSearchResults = 50;
+    private Integer maxNumberOfSearchResults = 100;
 
     public Integer getMaxNumberOfSearchResults() {
         return maxNumberOfSearchResults;
