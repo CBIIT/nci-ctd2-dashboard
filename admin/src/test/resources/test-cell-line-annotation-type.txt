@@ -1,0 +1,7 @@
+cell_anno_type_id	cell_anno_type
+10	primary_site
+11	site_subtype_1
+12	site_subtype_2
+13	primary_hist
+14	hist_subtype_1
+15	hist_subtype_2
