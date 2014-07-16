@@ -149,25 +149,21 @@
 
         <div class="container marketing ctd2-boxes">
           <div class="row">
-            <div class="span3 stories" data-order="0">
+            <div class="span4 stories" data-order="0">
               <h3>Stories</h3>
               <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.</p>
               <a class="btn btn-danger btn-block" href="#stories">Browse &raquo;</a>
-            </div><!-- /.span3 -->
-            <div class="span3 target" data-order="1">
+            </div><!-- /.span4 -->
+            <div class="span4 target" data-order="1">
               <h3>Targets</h3>
-                <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+                <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut.</p>
                 <a class="btn btn-success btn-block" href="#browse/target/A">Browse &raquo;</a>
-            </div><!-- /.span3 -->
-            <div class="span3 drug" data-order="2">
+            </div><!-- /.span4 -->
+            <div class="span4 drug" data-order="2">
               <h3>Compounds</h3>
                 <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.</p>
                 <a class="btn btn-warning btn-block" href="#browse/compound/A">Browse &raquo;</a>
-            </div><!-- /.span3 -->
-            <div class="span3 genomics" data-order="3">
-              <h3>Context</h3>
-              <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-            </div><!-- /.span3 -->
+            </div><!-- /.span4 -->
           </div><!-- /.row -->
 
 
