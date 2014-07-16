@@ -62,7 +62,7 @@ function set_styles(back, front, position) {
   back.style.left = front.offsetLeft + "px"
   back.style['min-height'] = front.offsetHeight + "px"
   back.style.width = front.offsetWidth + "px"
-  back.style["z-index"] = 9999
+  back.style["z-index"] = 999
 }
 
 function null_styles(back) {
