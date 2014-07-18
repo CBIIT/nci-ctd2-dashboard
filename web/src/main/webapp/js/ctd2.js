@@ -814,6 +814,7 @@
 
             var centers = new SubmissionCenters();
             var thatEl = this.el;
+            var cTable = null;
             centers.fetch({
                 success: function() {
                     _.each(centers.toJSON(), function(aCenter) {
@@ -822,7 +823,11 @@
                         centerListRowView.render();
 
                         $.ajax("count/submission/?filterBy=" + aCenter.id).done(function(count) {
-                            $("#submission-count-" + aCenter.id).html(count);
+                            var cntContent = _.template(
+                                $("#count-submission-tmpl").html(),
+                                { count: count }
+                            );
+                            $("#submission-count-" + aCenter.id).html(cntContent);
                         });
 
                         $.ajax("list/observationtemplate/?filterBy=" + aCenter.id).done(function(templates) {
@@ -832,10 +837,9 @@
                             });
                             $("#center-pi-" + aCenter.id).html(_.uniq(pis).join(", "));
                         });
-
                     });
 
-                    var cTable = $(thatEl).find("table").dataTable({
+                    cTable = $(thatEl).find("table").dataTable({
                         "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
                         "sPaginationType": "bootstrap",
                         // might want to increase this number if we have incredible number of centers
@@ -1614,7 +1618,6 @@
                         result["imageFile"] = xref.databaseId;
                     }
                 });
-
                 imgTemplate = $("#search-results-compund-image-tmpl");
             } else if( result.class == "CellSample" ) {
                 imgTemplate = $("#search-results-cellsample-image-tmpl");
@@ -1630,7 +1633,11 @@
             // some of the elements will be hidden in the pagination. Use magic-scoping!
             var updateEl = $("#subject-observation-count-" + result.id);
             $.ajax("count/observation/?filterBy=" + result.id).done(function(count) {
-               updateEl.html(count);
+                var cntContent = _.template(
+                    $("#count-observations-tmpl").html(),
+                    { count: count }
+                );
+                updateEl.html(cntContent);
             });
 
             return this;
@@ -1692,7 +1699,11 @@
                                 searchSubmissionRowView.render();
 
                                 $.ajax("count/observation/?filterBy=" + submission.id).done(function(count) {
-                                    $("#search-observation-count-" + submission.id).html(count);
+                                    var cntContent = _.template(
+                                        $("#count-observations-tmpl").html(),
+                                        { count: count }
+                                    );
+                                    $("#search-observation-count-" + submission.id).html(cntContent);
                                 });
                             });
 

@@ -256,11 +256,11 @@
                 </a>
             </td>
             <td class="center-pi">
-                <span id="center-pi-{{id}}">...</span>
+                <span id="center-pi-{{id}}">loading...</span>
             </td>
             <td>
-                <a href="#center/{{id}}">
-                    <span id="submission-count-{{id}}"></span> submissions &raquo;
+                <a href="#center/{{id}}" id="submission-count-{{id}}">
+                    loading...
                 </a>
             </td>
         </tr>
@@ -302,7 +302,9 @@
                 {{(observationTemplate.submissionDescription != "") ? observationTemplate.submissionDescription : observationTemplate.description}}
             </td>
             <td><span class="badge tier-badge">Tier {{observationTemplate.tier}}</span></td>
-            <td width=150><a href="#submission/{{id}}"><span id="observation-count-{{id}}"></span> observation(s)</a></td>
+            <td width=150>
+                <a href="#submission/{{id}}" id="observation-count-{{id}}">loading...</a>
+            </td>
         </tr>
     </script>
 
@@ -1253,7 +1255,7 @@
             </td>
             <td>{{type}}</td>
             <td>{{organism.displayName}}</td>
-            <td><a href="#subject/{{id}}"><span id="subject-observation-count-{{id}}"></span> observation(s)</a></td>
+            <td><a href="#subject/{{id}}" id="subject-observation-count-{{id}}">loading...</a></td>
         </tr>
     </script>
 
@@ -1319,6 +1321,15 @@
     <script type="text/template" id="synonym-item-tmpl">
         <li class="synonym"><small>{{displayName}}</small></li>
     </script>
+
+    <script type="text/template" id="count-observations-tmpl">
+        {{count}} observation{{count > 1? "s" : ""}}
+    </script>
+
+    <script type="text/template" id="count-submission-tmpl">
+        {{count}} submission{{count > 1? "s" : ""}}
+    </script>
+
 
     <script type="text/template" id="cytoscape-tmpl">
         <div id="cytoscape-sif"></div>
