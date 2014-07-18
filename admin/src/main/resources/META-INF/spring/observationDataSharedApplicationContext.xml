@@ -305,7 +305,7 @@
 
   <bean name="cshlTier4FGF19StoryLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="dummy,submission_name,submission_date,template_name,disease_condition,tissue_sample,gene_symbol_1,gene_symbol_2,gene_symbol_3,gene_symbol_4,drug_candidate,story_location"/>
+	<property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,gene_symbol_3,compound_name,tissue_sample,publication_reference_1,publication_reference_2,story_location"/>
   </bean>
 
   <!-- dfci yap yes story -->
@@ -417,7 +417,7 @@
 
   <bean name="utswTier4DiscoipyrrolesStoryLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="dummy,submission_name,submission_date,template_name,disease_condition_1,tissue_sample_1,disease_condition_2,tissue_sample_2,gene_symbol_1,drug_candidate_class,story_location"/>
+	<property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol,compound_name_1,compound_name_2,compound_name_3,compound_name_4,compound_name_5,cell_line,tissue_sample,resource_url,publication_reference_1,publication_reference_2,story_location"/>
   </bean>
 
   <!-- ucsf differential expression -->
@@ -770,14 +770,14 @@
 		<entry key="columbia_gbm_mrs:tier1_evidence" value="evidence:readString:createObservedUrlEvidence" />
 		<entry key="columbia_gbm_mrs:story_location" value="evidence:readString:createObservedFileEvidence" />
 		<!-- cshl tier4 fgf19 story -->
-		<entry key="cshl_tier4_fgf19_story:disease_condition" value="subject:findTissueSampleByName" />
-		<entry key="cshl_tier4_fgf19_story:tissue_sample" value="subject:findTissueSampleByName" />
-		<entry key="cshl_tier4_fgf19_story:gene_symbol_1" value="subject:findGenesBySymbol" />
-		<entry key="cshl_tier4_fgf19_story:gene_symbol_2" value="subject:findGenesBySymbol" />
-		<entry key="cshl_tier4_fgf19_story:gene_symbol_3" value="subject:findGenesBySymbol" />
-		<entry key="cshl_tier4_fgf19_story:gene_symbol_4" value="subject:findGenesBySymbol" />
-		<entry key="cshl_tier4_fgf19_story:drug_candidate" value="subject:findCompoundsByName" />
-		<entry key="cshl_tier4_fgf19_story:story_location" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="cshl_fgf19:gene_symbol_1" value="subject:findGenesBySymbol" />
+		<entry key="cshl_fgf19:gene_symbol_2" value="subject:findGenesBySymbol" />
+		<entry key="cshl_fgf19:gene_symbol_3" value="subject:findGenesBySymbol" />
+		<entry key="cshl_fgf19:compound_name" value="subject:findCompoundsByName" />
+		<entry key="cshl_fgf19:tissue_sample" value="subject:findTissueSampleByName" />
+		<entry key="cshl_fgf19:publication_reference_1" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="cshl_fgf19:publication_reference_2" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="cshl_fgf19:story_location" value="evidence:readString:createObservedFileEvidence" />
 		<!-- dfci tier4 beta-catenin story -->
 		<entry key="dfci_yapyes:gene_symbol_1" value="subject:findGenesBySymbol" />
 		<entry key="dfci_yapyes:gene_symbol_2" value="subject:findGenesBySymbol" />
@@ -864,13 +864,18 @@
 		<entry key="utsw_discoipyrrole_tier2_story:publication_url" value="evidence:readString:createObservedUrlEvidence" />
 		<entry key="utsw_discoipyrrole_tier2_story:publication_reference" value="evidence:readString:createObservedLabelEvidence" />
 		<!-- utsw tier 4 discoipyrroles story -->
-		<entry key="utsw_tier4_discoipyrroles_story:disease_condition_1" value="subject:findTissueSampleByName" />
-		<entry key="utsw_tier4_discoipyrroles_story:tissue_sample_1" value="subject:findTissueSampleByName" />
-		<entry key="utsw_tier4_discoipyrroles_story:disease_condition_2" value="subject:findTissueSampleByName" />
-		<entry key="utsw_tier4_discoipyrroles_story:tissue_sample_2" value="subject:findTissueSampleByName" />
-		<entry key="utsw_tier4_discoipyrroles_story:gene_symbol_1" value="subject:findGenesBySymbol" />
-		<entry key="utsw_tier4_discoipyrroles_story:drug_candidate_class" value="evidence:readString:createObservedLabelEvidence" />
-		<entry key="utsw_tier4_discoipyrroles_story:story_location" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="utsw_discoi:gene_symbol" value="subject:findGenesBySymbol" />
+		<entry key="utsw_discoi:compound_name_1" value="subject:findCompoundsByName" />
+		<entry key="utsw_discoi:compound_name_2" value="subject:findCompoundsByName" />
+		<entry key="utsw_discoi:compound_name_3" value="subject:findCompoundsByName" />
+		<entry key="utsw_discoi:compound_name_4" value="subject:findCompoundsByName" />
+		<entry key="utsw_discoi:compound_name_5" value="subject:findCompoundsByName" />
+		<entry key="utsw_discoi:cell_line" value="subject:findSubjectsBySynonym" />
+		<entry key="utsw_discoi:tissue_sample" value="subject:findTissueSampleByName" />
+		<entry key="utsw_discoi:resource_url" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="utsw_discoi:publication_reference_1" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="utsw_discoi:publication_reference_2" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="utsw_discoi:story_location" value="evidence:readString:createObservedFileEvidence" />
 		<!-- ucsf differential expression -->
 		<entry key="ucsf_differential_expression:probeset_id" value="evidence:readString:createObservedLabelEvidence" />
 		<entry key="ucsf_differential_expression:mutated_gene_condition" value="evidence:readString:createObservedLabelEvidence" />
