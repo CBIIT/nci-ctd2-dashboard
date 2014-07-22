@@ -5,7 +5,8 @@
 <%
     WebApplicationContext context = WebApplicationContextUtils
             .getWebApplicationContext(application);
-    String dataURL = (String) context.getBean("dataURL");    
+    String dataURL = (String) context.getBean("dataURL");
+    Integer maxNumOfObservations = (Integer) context.getBean("maxNumberOfEntities");
 %>
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/html">
@@ -32,8 +33,6 @@
   </head>
 
   <body>
-
-
 
     <!-- NAVBAR
     ================================================== -->
@@ -355,6 +354,7 @@
             </div>
 
             <h3>Observations within this submission</h3>
+
             <table id="submission-observation-grid" class="table table-bordered table-striped observations">
                 <thead>
                 <tr>
@@ -364,7 +364,7 @@
                 <tbody>
                 <!-- here will go the rows -->
                 <tr class="submission-observations-loading">
-                    <td colspan="5">
+                    <td>
                         <h3>Loading observations...</h3>
                         <div class="progress progress-striped active">
                             <div class="bar" style="width: 100%;"></div>
@@ -373,6 +373,9 @@
                 </tr>
                 </tbody>
             </table>
+
+            <div id="more-observations-message"></div>
+
         </div>
     </script>
 
@@ -2078,6 +2081,19 @@
         </div>
     </script>
 
+    <script type="text/template" id="more-observations-tmpl">
+        <div class="alert alert-warning">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <p>
+                This submission contains <b>{{numOfAllObservations-numOfObservations}}
+                more observations</b> which are not shown here. To load all observations
+                contained within this submission
+                please <a href="#" class="load-more-observations">click here</a>
+                (<i>this might take a while</i>).
+            </p>
+        </div>
+    </script>
+
     <script type="text/template" id="ncithesaurus-tmpl">
         <li>
             <a href="http://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI%20Thesaurus&code={{nciId}}" target="_blank">
@@ -2088,6 +2104,10 @@
 
     <script type="text/template" id="annotation-tmpl">
         <li><small>{{displayName}} ({{source}})</small></li>
+    </script>
+
+    <script type="text/template" id="maxNumberOfEntites">
+        <%=maxNumOfObservations%>
     </script>
 
     <!-- end of templates -->

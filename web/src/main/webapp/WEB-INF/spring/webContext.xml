@@ -22,4 +22,8 @@
     </bean>
 
     <bean id="webServiceUtil" class="gov.nih.nci.ctd2.dashboard.util.WebServiceUtil"/>
+
+    <bean id="maxNumberOfEntities" class="java.lang.Integer">
+        <constructor-arg type="int" value="${list.max.observations}"/>
+    </bean>
 </beans>
