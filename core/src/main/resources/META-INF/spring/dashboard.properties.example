@@ -17,10 +17,14 @@ hibernate.connection.charSet=UTF-8
 # lucene
 search.indexDir=/tmp/dashboard-index
 search.test.indexDir=/tmp/dashboard-index-test
-search.max.number.results=20
+search.max.number.results=50
 
 # when proxying files through dashboard, these hosts will be allowed to serve resource
 allowed.hosts=http://cbio.mskcc.org,http://localhost
 
 # this is the URL of where the downloadable data files are located
 web.data.url=http://cbio.mskcc.org/cancergenomics/ctd2-dashboard/
+
+# this is to cap the number obs/results we want to show on a subject/submission page
+# If you make this too high and the client will suffer a lot to load details for each observation
+list.max.observations=100
