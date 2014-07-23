@@ -23,6 +23,17 @@
         "sWrapper": "dataTables_wrapper form-inline"
     });
 
+    // Let datatables know about our date format
+    $.extend($.fn.dataTable.ext.order, {
+        "dashboard-date": function(settings, col) {
+            return this.api().column( col, {order:'index'} ).nodes().map(
+                function(td, i) {
+                    return (new Date($('a', td).html())).getTime();
+                }
+            );
+        }
+    });
+
     /* Models */
     var SubmissionCenter = Backbone.Model.extend({
         urlRoot: CORE_API_URL + "get/center"
@@ -1384,6 +1395,7 @@
             var centerSubmissions = new CenterSubmissions({ centerId: this.model.get("id") });
             centerSubmissions.fetch({
                 success: function() {
+                    var tableElId = '#center-submission-grid';
                     _.each(centerSubmissions.toJSON(), function(submission) {
                         var centerSubmissionRowView
                             = new CenterSubmissionRowView({ el: $(thatEl).find("tbody"), model: submission });
@@ -1395,17 +1407,31 @@
                                 { count: count }
                             );
 
-                            $("#observation-count-" + submission.id).html(cntContent);
+                            var countCellId = "#observation-count-" + submission.id;
+                            $(countCellId).html(cntContent);
+                            var dataTable = $(tableElId).DataTable();
+                            dataTable.cells(countCellId).invalidate();
+                            dataTable.order(
+                                [
+                                    [2, 'desc'],
+                                    [0, 'desc'],
+                                    [3, 'asc']
+                                ]
+                            ).draw();
                         });
                     });
 
                     $(".template-description").tooltip();
-                    var oTable = $('#center-submission-grid').dataTable({
-                           "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
-                           "sPaginationType": "bootstrap"
-                    });
-                    oTable.fnSort( [ [2, 'desc'] ] );
-
+                    $(tableElId).dataTable({
+                       "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
+                       "sPaginationType": "bootstrap",
+                       "columns": [
+                           { "orderDataType": "dashboard-date" },
+                           null,
+                           null,
+                           null
+                       ]
+                    }).fnSort( [[2, 'desc']] );
                 }
             });
 
