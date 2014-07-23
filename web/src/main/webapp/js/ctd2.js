@@ -823,6 +823,8 @@
             var cTable = null;
             centers.fetch({
                 success: function() {
+                    var tableEl = $(thatEl).find("table");
+
                     _.each(centers.toJSON(), function(aCenter) {
                        var centerListRowView
                            = new CenterListRowView({ el: $(thatEl).find("#centers-tbody"), model: aCenter });
@@ -833,7 +835,10 @@
                                 $("#count-submission-tmpl").html(),
                                 { count: count }
                             );
-                            $("#submission-count-" + aCenter.id).html(cntContent);
+
+                            var countCellId = "#submission-count-" + aCenter.id;
+                            $(countCellId).html(cntContent);
+                            tableEl.DataTable().cells(countCellId).invalidate();
                         });
 
                         $.ajax("list/observationtemplate/?filterBy=" + aCenter.id).done(function(templates) {
@@ -841,11 +846,13 @@
                             _.each(templates, function(template) {
                                 pis.push(template.principalInvestigator);
                             });
-                            $("#center-pi-" + aCenter.id).html(_.uniq(pis).join(", "));
+                            var piCellId = "#center-pi-" + aCenter.id;
+                            $(piCellId).html(_.uniq(pis).join(", "));
+                            tableEl.DataTable().cells(piCellId).invalidate();
                         });
                     });
 
-                    cTable = $(thatEl).find("table").dataTable({
+                    cTable = tableEl.dataTable({
                         "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
                         "sPaginationType": "bootstrap",
                         // might want to increase this number if we have incredible number of centers
