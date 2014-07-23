@@ -35,19 +35,9 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
             SubjectWithOrganismImpl.class,
             TissueSampleImpl.class,
             CompoundImpl.class,
-            SynonymImpl.class,
             SubmissionImpl.class,
             ObservationTemplateImpl.class
     };
-
-    private static final Class[] fuzzySearchableClasses = {
-            SubjectWithOrganismImpl.class,
-            TissueSampleImpl.class,
-            CompoundImpl.class,
-            SubmissionImpl.class,
-            ObservationTemplateImpl.class
-    };
-
 
     private DashboardFactory dashboardFactory;
 
@@ -604,14 +594,20 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
                 e.printStackTrace();
             }
 
-            Class[] classes = keyword.endsWith("*") ? fuzzySearchableClasses : searchableClasses;
+            Class[] classes = searchableClasses;
             FullTextQuery fullTextQuery = fullTextSession.createFullTextQuery(luceneQuery, classes);
             fullTextQuery.setReadOnly(true);
-            fullTextQuery.setMaxResults(getMaxNumberOfSearchResults());
 
-            for (Object o : fullTextQuery.list()) {
+            Integer numberOfSearchResults = getMaxNumberOfSearchResults();
+            if(numberOfSearchResults > 0) { // if lte 0, don't set this.
+                fullTextQuery.setMaxResults(numberOfSearchResults);
+            }
+
+            List list = fullTextQuery.list();
+            for (Object o : list) {
                 assert o instanceof DashboardEntity;
 
+                /* Skip it // we don't expect this anymore (see searchableClasses)
                 if(o instanceof Synonym) {
                     // Second: find subjects with the synonym
                     List subjectList = getHibernateTemplate()
@@ -620,8 +616,9 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
                         assert o2 instanceof Subject;
                         if(!entitiesUnique.contains(o2)) entities.add((Subject) o2);
                     }
+                */
 
-                } else if(o instanceof ObservationTemplate) {
+                if(o instanceof ObservationTemplate) {
                     // Second: find subjects with the synonym
                     List submissionList = getHibernateTemplate()
                             .find("select o from SubmissionImpl as o where o.observationTemplate = ?", (ObservationTemplate) o);
