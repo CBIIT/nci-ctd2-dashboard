@@ -125,7 +125,7 @@
                                     In doing this, the <b>CTD<sup>2</sup> Network</b> strives to increase the understanding of the underlying molecular causes of distinct cancer types and accelerate the development of clinically useful markers and targeted therapies for precision medicine.
                                 </p>
                                 <p class="lead">
-                                    For more information about the <b>CTD<sup>2</sup> Network</b>, visit <a href="http://ocg.cancer.gov/programs/ctd2">http://ocg.cancer.gov/programs/ctd2</a>.
+                                    For more information about the <b>CTD<sup>2</sup> Network</b>, visit <a href="http://ocg.cancer.gov/programs/ctd2" title="CTD2 Center website" class="overview-link">http://ocg.cancer.gov/programs/ctd2</a>.
                                 </p>
                             </div>
 
