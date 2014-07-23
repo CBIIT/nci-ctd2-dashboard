@@ -54,7 +54,6 @@
                           <li><a target="_blank" href="http://ocg.cancer.gov/programs/ctd2">CTD<sup>2</sup> Home page</a></li>
                           <li><a target="_blank" href="http://ocg.cancer.gov/programs/ctd2/publications">Publications</a></li>
                           <li><a target="_blank" href="http://ctd2.nci.nih.gov/DataMatrix/CTD2_DataMatrix.html">Data Matrix</a></li>
-                          <li><a target="_blank" href="http://ocg.cancer.gov/resources/fnd.asp">Funding Opportunities</a></li>
                           <li><a target="_blank" href="http://ocg.cancer.gov/about-ocg/rss-feeds">RSS feed</a></li>
                           <li class="divider"></li>
                           <li><a href="#template-helper">Submission Template Helper</a></li>
