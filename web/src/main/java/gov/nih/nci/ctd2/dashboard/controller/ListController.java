@@ -63,7 +63,7 @@ public class ListController {
 
         List<? extends DashboardEntity> entities = webServiceUtil.getDashboardEntities(type, filterBy);
         if(!getAll && entities.size() > getMaxNumberOfEntities()) {
-            entities = entities.subList(0, getMaxNumberOfEntities());
+            entities = entities.subList(0, getMaxNumberOfEntities()-1);
         }
 
         JSONSerializer jsonSerializer = new JSONSerializer()

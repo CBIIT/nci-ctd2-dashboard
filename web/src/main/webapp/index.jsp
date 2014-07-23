@@ -2135,10 +2135,8 @@
         <div class="alert alert-warning">
             <button type="button" class="close" data-dismiss="alert">&times;</button>
             <p>
-                This submission contains <b>{{numOfAllObservations-numOfObservations}}
-                more observations</b> which are not shown here. To load all observations
-                contained within this submission
-                please <a href="#" class="load-more-observations">click here</a>
+                Only {{numOfObservations}} of {{numOfAllObservations}} observations are listed in the table above.
+                To load all observations please <a href="#" class="load-more-observations">click here</a>
                 (<i>this might take a while</i>).
             </p>
         </div>
