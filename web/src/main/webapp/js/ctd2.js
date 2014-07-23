@@ -187,6 +187,20 @@
                 return false;
             });
 
+            $("a.show-more").click(function(e) {
+                e.preventDefault();
+                $("#overview-hidden-part").slideDown();
+                $(this).hide();
+                $("a.show-less").show();
+            });
+            $("a.show-less").click(function(e) {
+                e.preventDefault();
+                $("#overview-hidden-part").slideUp();
+                $(this).hide();
+                $("a.show-more").show();
+            });
+
+
             return this;
         }
     });
@@ -2650,10 +2664,7 @@
         about: function() {
             var homeView = new HomeView();
             homeView.render();
-            var whereTo = $("#overview-text").offset().top - 50;
-            $('html, body').animate({
-                scrollTop: whereTo
-            }, 500);
+            $("a.show-more").trigger('click');
         },
 
         search: function(term) {

@@ -80,7 +80,7 @@ body {
 }
 
 .carousel .item {
-  height: 450px;
+  height: 395px;
 }
 
 .carousel img.cimg {
@@ -95,16 +95,15 @@ body {
   background-color: #f6f6f6;
   background-image: url('../img/ctd2_bg.png');
   background-repeat: no-repeat;
-  background-position: right 60px;
+  background-position: right 5px;
   position: static;
   padding: 0 20px;
   height: 370px;
-  padding-top: 80px;
+  padding-top: 25px;
 
 }
 .carousel-caption h1,
 .carousel-caption .lead {
-  margin: 0;
   line-height: 1.25;
 }
 
@@ -121,10 +120,6 @@ body {
 
 .featurette {
   overflow: hidden; /* Vertically center images part 2: clear their floats. */
-}
-.featurette-image {
-  margin-top: 100px; /* Vertically center images part 3: negative margin up the image the same amount of the padding to center it. */
-  margin-bottom: 20px;
 }
 
 /* Give some space on the sides of the floated elements so text doesn't run right into it. */
@@ -428,8 +423,7 @@ img.fancy-story-img {
 }
 
 .featurette img {
-    margin: 20px;
-    margin-left: 30px;
+    margin: 40px 20px 10px 30px;
 }
 
 .featurette p.lead {
@@ -495,3 +489,26 @@ footer {
     overflow-y: auto;
 }
 
+.overview-box {
+    padding-top: 65px;
+    background-color: white;
+    border-radius: 10px;
+}
+
+.homepage-stories-title {
+    margin-bottom: 10px;
+    margin-top: 0px;
+}
+
+#show-hide-overview {
+    font-weight: bold;
+    margin-top: -25px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+div.dark-separator {
+    height: 5px;
+    width: 100%;
+    background-color: #555555;
+}
