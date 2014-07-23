@@ -234,7 +234,7 @@
 
 
     <script type="text/template" id="stories-tbl-row-tmpl">
-        <li class="span6" id="story-observation-link-{{id}}" title="Click for more details">
+        <li class="span6 story-cards" id="story-observation-link-{{id}}" title="Click for more details">
             <a href="#observation/{{id}}" class="thumbnail">
                 <img class="img-circle" src="img/slogos/{{submission.observationTemplate.submissionCenter.displayName}}.png" alt="{{submission.observationTemplate.submissionCenter.displayName}}" title="{{submission.observationTemplate.submissionCenter.displayName}}">
                 <center>
