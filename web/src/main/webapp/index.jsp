@@ -760,6 +760,12 @@
                             </td>
                         </tr>
                         <tr>
+                            <th>Transcripts</th>
+                            <td>
+                                <ul class="transcripts"></ul>
+                            </td>
+                        </tr>
+                        <tr>
                             <th>Organism</th>
                             <td>{{organism.displayName}}</td>
                         </tr>
@@ -1374,6 +1380,11 @@
     <script type="text/template" id="synonym-item-tmpl">
         <li class="synonym"><small>{{displayName}}</small></li>
     </script>
+
+    <script type="text/template" id="transcript-item-tmpl">
+        <li class="synonym"><a href="#subject/{{id}}">{{refseqId}}</a></li>
+    </script>
+
 
     <script type="text/template" id="count-observations-tmpl">
         {{count}} observation{{count > 1? "s" : ""}}

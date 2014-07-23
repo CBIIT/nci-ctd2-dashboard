@@ -3,6 +3,8 @@ package gov.nih.nci.ctd2.dashboard.impl;
 import gov.nih.nci.ctd2.dashboard.model.Protein;
 import gov.nih.nci.ctd2.dashboard.model.Transcript;
 import org.hibernate.annotations.CollectionId;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.Proxy;
 import org.hibernate.search.annotations.Indexed;
 
@@ -28,6 +30,7 @@ public class ProteinImpl extends SubjectWithOrganismImpl implements Protein {
         this.uniprotId = uniprotId;
     }
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToMany(targetEntity = TranscriptImpl.class)
     @JoinTable(name = "protein_transcript_map")
     public Set<Transcript> getTranscripts() {

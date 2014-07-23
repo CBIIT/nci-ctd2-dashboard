@@ -141,7 +141,7 @@
         model: SearchResult,
 
         initialize: function(attributes) {
-            this.url += encodeURIComponent(attributes.term)
+            this.url += encodeURIComponent(attributes.term.toLowerCase())
         }
     });
 
@@ -1064,6 +1064,13 @@
                 synonymView.render();
             });
 
+            thatEl = $("ul.transcripts");
+            _.each(result.transcripts, function(aTranscript) {
+                var transcriptItemView = new TranscriptItemView({ model: aTranscript, el: thatEl });
+                transcriptItemView.render();
+            });
+
+
             var subjectObservationView = new SubjectObservationsView({
                 model: result.id,
                 el: "#protein-observation-grid"
@@ -1623,6 +1630,14 @@
             summary += _.template($("#submission-obs-tbl-row-tmpl").html(), thatModel);
             $(thatEl).html(summary);
 
+            return this;
+        }
+    });
+
+    var TranscriptItemView = Backbone.View.extend({
+        template: _.template($("#transcript-item-tmpl").html()),
+        render: function() {
+            $(this.el).append(this.template(this.model));
             return this;
         }
     });
