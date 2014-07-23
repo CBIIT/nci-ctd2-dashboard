@@ -957,32 +957,70 @@
                  synonymView.render();
              });
 
-             var observations = new Observations({ subjectId: result.id });
-             thatEl = $("#compound-observation-grid");
-             observations.fetch({
-                 success: function() {
-                     $(".subject-observations-loading").remove();
-                     _.each(observations.models, function(observation) {
-                         observation = observation.toJSON();
-
-                         var observationRowView
-                             = new ObservationRowView({ el: $(thatEl).find("tbody"), model: observation });
-                         observationRowView.render();
-                     });
-
-                     var oTable = $('#compound-observation-grid').dataTable({
-                         "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
-                         "sPaginationType": "bootstrap"
-                     });
-
-                     oTable.fnSort( [ [2, 'desc'] ] );
-                 }
+             var subjectObservationView = new SubjectObservationsView({
+                 model: result.id,
+                 el: "#compound-observation-grid"
              });
+             subjectObservationView.render();
 
              $("a.compound-image").fancybox({titlePosition: 'inside'});
              return this;
          }
      });
+
+    var SubjectObservationsView = Backbone.View.extend({
+        render: function() {
+            var thatEl = $(this.el);
+            var subjectId = this.model;
+
+            $.ajax("count/observation/?filterBy=" + subjectId).done(function(count) {
+                var observations = new Observations({ subjectId: subjectId });
+                observations.fetch({
+                    success: function () {
+                        $(".subject-observations-loading", thatEl).remove();
+                        _.each(observations.models, function (observation) {
+                            observation = observation.toJSON();
+
+                            var observationRowView
+                                = new ObservationRowView({ el: $(thatEl).find("tbody"), model: observation });
+                            observationRowView.render();
+                        });
+
+                        var oTable = $(thatEl).dataTable({
+                            "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
+                            "sPaginationType": "bootstrap"
+                        });
+
+                        oTable.fnSort([
+                            [2, 'desc']
+                        ]);
+
+                    }
+                });
+
+                if(count > maxNumberOfEntities) {
+                    var moreObservationView = new MoreObservationView({
+                        model: {
+                            numOfObservations: maxNumberOfEntities,
+                            numOfAllObservations: count,
+                            subjectId: subjectId,
+                            tableEl: thatEl,
+                            rowView: ObservationRowView,
+                            columns: [
+                                { "orderDataType": "dashboard-date" },
+                                null,
+                                null,
+                                null
+                            ]
+                        }
+                    });
+                    moreObservationView.render();
+                }
+            });
+
+            return this;
+        }
+    });
 
     var GeneView = Backbone.View.extend({
         el: $("#main-container"),
@@ -1000,28 +1038,11 @@
                 synonymView.render();
             });
 
-            var observations = new Observations({ subjectId: result.id });
-            thatEl = $("#gene-observation-grid");
-            observations.fetch({
-                success: function() {
-                    $(".subject-observations-loading").remove();
-                    _.each(observations.models, function(observation) {
-                        observation = observation.toJSON();
-
-                        var observationRowView
-                            = new ObservationRowView({ el: $(thatEl).find("tbody"), model: observation });
-                        observationRowView.render();
-                    });
-
-                    var oTable = $('#gene-observation-grid').dataTable({
-                           "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
-                           "sPaginationType": "bootstrap"
-                    });
-
-                    oTable.fnSort( [ [2, 'desc'] ] );
-
-                }
+            var subjectObservationView = new SubjectObservationsView({
+                model: result.id,
+                el: "#gene-observation-grid"
             });
+            subjectObservationView.render();
 
             return this;
         }
@@ -1043,28 +1064,11 @@
                 synonymView.render();
             });
 
-            var observations = new Observations({ subjectId: result.id });
-            thatEl = $("#protein-observation-grid");
-            observations.fetch({
-                success: function() {
-                    $(".subject-observations-loading").remove();
-                    _.each(observations.models, function(observation) {
-                        observation = observation.toJSON();
-
-                        var observationRowView
-                            = new ObservationRowView({ el: $(thatEl).find("tbody"), model: observation });
-                        observationRowView.render();
-                    });
-
-                    var oTable = $('#protein-observation-grid').dataTable({
-                        "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
-                        "sPaginationType": "bootstrap"
-                    });
-
-                    oTable.fnSort( [ [2, 'desc'] ] );
-
-                }
+            var subjectObservationView = new SubjectObservationsView({
+                model: result.id,
+                el: "#protein-observation-grid"
             });
+            subjectObservationView.render();
 
             return this;
         }
@@ -1078,28 +1082,11 @@
             result["type"] = result.class;
             $(this.el).html(this.template(result));
 
-            var observations = new Observations({ subjectId: result.id });
-            thatEl = $("#shrna-observation-grid");
-            observations.fetch({
-                success: function() {
-                    $(".subject-observations-loading").remove();
-                    _.each(observations.models, function(observation) {
-                        observation = observation.toJSON();
-
-                        var observationRowView
-                            = new ObservationRowView({ el: $(thatEl).find("tbody"), model: observation });
-                        observationRowView.render();
-                    });
-
-                    var oTable = $('#shrna-observation-grid').dataTable({
-                        "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
-                        "sPaginationType": "bootstrap"
-                    });
-
-                    oTable.fnSort( [ [2, 'desc'] ] );
-
-                }
+            var subjectObservationView = new SubjectObservationsView({
+                model: result.id,
+                el: "#shrna-observation-grid"
             });
+            subjectObservationView.render();
 
             return this;
         }
@@ -1113,28 +1100,11 @@
             result["type"] = result.class;
             $(this.el).html(this.template(result));
 
-            var observations = new Observations({ subjectId: result.id });
-            thatEl = $("#transcript-observation-grid");
-            observations.fetch({
-                success: function() {
-                    $(".subject-observations-loading").remove();
-                    _.each(observations.models, function(observation) {
-                        observation = observation.toJSON();
-
-                        var observationRowView
-                            = new ObservationRowView({ el: $(thatEl).find("tbody"), model: observation });
-                        observationRowView.render();
-                    });
-
-                    var oTable = $('#transcript-observation-grid').dataTable({
-                        "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
-                        "sPaginationType": "bootstrap"
-                    });
-
-                    oTable.fnSort( [ [2, 'desc'] ] );
-
-                }
+            var subjectObservationView = new SubjectObservationsView({
+                model: result.id,
+                el: "#transcript-observation-grid"
             });
+            subjectObservationView.render();
 
             return this;
         }
@@ -1171,28 +1141,11 @@
                 synonymView.render();
             });
 
-            var observations = new Observations({ subjectId: result.id });
-            thatEl = $("#tissuesample-observation-grid");
-            observations.fetch({
-                success: function() {
-                    $(".subject-observations-loading").remove();
-                    _.each(observations.models, function(observation) {
-                        observation = observation.toJSON();
-
-                        var observationRowView
-                            = new ObservationRowView({ el: $(thatEl).find("tbody"), model: observation });
-                        observationRowView.render();
-                    });
-
-                    var oTable = $('#tissuesample-observation-grid').dataTable({
-                        "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
-                        "sPaginationType": "bootstrap"
-                    });
-
-                    oTable.fnSort( [ [2, 'desc'] ] );
-
-                }
+            var subjectObservationView = new SubjectObservationsView({
+                model: result.id,
+                el: "#tissuesample-observation-grid"
             });
+            subjectObservationView.render();
 
             return this;
         }
@@ -1222,27 +1175,11 @@
                 annotationView.render();
             });
 
-            var observations = new Observations({ subjectId: result.id });
-            thatEl = $("#animalmodel-observation-grid");
-            observations.fetch({
-                success: function() {
-                    $(".subject-observations-loading").remove();
-                    _.each(observations.models, function(observation) {
-                        observation = observation.toJSON();
-
-                        var observationRowView
-                            = new ObservationRowView({ el: $(thatEl).find("tbody"), model: observation });
-                        observationRowView.render();
-                    });
-
-                    var oTable = $('#animalmodel-observation-grid').dataTable({
-                        "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
-                        "sPaginationType": "bootstrap"
-                    });
-
-                    oTable.fnSort( [ [2, 'desc'] ] );
-                }
+            var subjectObservationView = new SubjectObservationsView({
+                model: result.id,
+                el: "#animalmodel-observation-grid"
             });
+            subjectObservationView.render();
 
             return this;
         }
@@ -1291,27 +1228,11 @@
                 annotationView.render();
             });
 
-            var observations = new Observations({ subjectId: result.id });
-            thatEl = $("#cellsample-observation-grid");
-            observations.fetch({
-                success: function() {
-                    $(".subject-observations-loading").remove();
-                    _.each(observations.models, function(observation) {
-                        observation = observation.toJSON();
-
-                        var observationRowView
-                            = new ObservationRowView({ el: $(thatEl).find("tbody"), model: observation });
-                        observationRowView.render();
-                    });
-
-                    var oTable = $('#cellsample-observation-grid').dataTable({
-                        "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
-                        "sPaginationType": "bootstrap"
-                    });
-
-                    oTable.fnSort( [ [2, 'desc'] ] );
-                }
+            var subjectObservationView = new SubjectObservationsView({
+                model: result.id,
+                el: "#cellsample-observation-grid"
             });
+            subjectObservationView.render();
 
             return this;
         }
@@ -1320,11 +1241,13 @@
     var ObservationRowView = Backbone.View.extend({
         template: _.template($("#observation-row-tmpl").html()),
         render: function() {
-            $(this.el).append(this.template(this.model));
+            var tableEl = this.el;
+            $(tableEl).append(this.template(this.model));
             var summary = this.model.submission.observationTemplate.observationSummary;
 
             var thatModel = this.model;
-            var thatEl = $("#observation-summary-" + this.model.id);
+            var cellId = "#observation-summary-" + this.model.id;
+            var thatEl = $(cellId);
             var observedSubjects = new ObservedSubjects({ observationId: this.model.id });
             observedSubjects.fetch({
                 success: function() {
@@ -1357,6 +1280,13 @@
 
                             summary += _.template($("#submission-obs-tbl-row-tmpl").html(), thatModel);
                             $(thatEl).html(summary);
+                            var dataTable = $(tableEl).parent().DataTable();
+                            dataTable.cells(cellId).invalidate();
+                            dataTable.order([
+                                [2, 'desc'],
+                                [0, 'desc'],
+                                [1, 'asc']
+                            ]).draw();
                         }
                     })
                 }
@@ -1443,7 +1373,7 @@
         template:  _.template($("#submission-tbl-row-tmpl").html()),
         render: function() {
             $(this.el).append(this.template(this.model));
-            var sTable = this.attributes.table;
+            var sTable = $(this.el).parent();
 
             var summary = this.model.submission.observationTemplate.observationSummary;
 
@@ -1509,6 +1439,7 @@
 
             var thatEl = this.el;
             var submissionId = this.model.get("id");
+            var sTable = '#submission-observation-grid';
 
             $.ajax("count/observation/?filterBy=" + submissionId).done(function(count) {
                 var observations = new Observations({ submissionId: submissionId });
@@ -1543,7 +1474,6 @@
                             countBackFunc();
                         }
 
-                        var sTable = '#submission-observation-grid';
 
                         _.each(observations.models, function(observation) {
                             observation = observation.toJSON();
@@ -1570,7 +1500,9 @@
                             numOfObservations: maxNumberOfEntities,
                             numOfAllObservations: count,
                             submissionId: submissionId,
-                            tableEl: thatEl
+                            tableEl: sTable,
+                            rowView: SubmissionRowView,
+                            columns: [ null ]
                         }
                     });
                     moreObservationView.render();
@@ -1582,7 +1514,7 @@
     });
 
     var MoreObservationView = Backbone.View.extend({
-        el: "#more-observations-message",
+        el: ".more-observations-message",
         template: _.template($("#more-observations-tmpl").html()),
         render: function() {
             var model = this.model;
@@ -1593,27 +1525,34 @@
                 $(thatEl).slideUp();
 
                 $(".submission-observations-loading").show();
-                var sTableId = '#submission-observation-grid';
+                var sTableId = model.tableEl;
 
-                var observations = new Observations({ submissionId: model.submissionId, getAll: true });
+                var observations;
+                if(model.submissionId != undefined) {
+                    observations = new Observations({ submissionId: model.submissionId, getAll: true });
+                } else if(model.subjectId != undefined) {
+                    observations = new Observations({ subjectId: model.subjectId, getAll: true });
+                } else {
+                    console.log("something is wrong here!");
+                }
                 observations.fetch({
                     success: function() {
-                        var submissionTable = $(sTableId).DataTable().rows().remove().draw().destroy();
+                        $(sTableId).DataTable().rows().remove().draw().destroy();
 
                         _.each(observations.models, function(observation, i) {
                             observation = observation.toJSON();
 
-                            var submissionRowView = new SubmissionRowView({
-                                el: $(model.tableEl).find(".observations tbody"),
-                                model: observation,
-                                attributes: { table: sTableId }
+                            var submissionRowView = new model.rowView({
+                                el: $(model.tableEl).find("tbody"),
+                                model: observation
                             });
                             submissionRowView.render();
                         });
 
-                        $('#submission-observation-grid').dataTable({
+                        $(sTableId).dataTable({
                             "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
-                            "sPaginationType": "bootstrap"
+                            "sPaginationType": "bootstrap",
+                            "columns": model.columns
                         });
 
                     }

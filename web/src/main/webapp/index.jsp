@@ -374,7 +374,7 @@
                 </tbody>
             </table>
 
-            <div id="more-observations-message"></div>
+            <div class="more-observations-message"></div>
 
         </div>
     </script>
@@ -710,6 +710,9 @@
                  </tr>
                  </tbody>
              </table>
+
+             <div class="more-observations-message"></div>
+
          </div>
     </script>
 
@@ -770,6 +773,9 @@
                 </tr>
                 </tbody>
             </table>
+
+            <div class="more-observations-message"></div>
+
         </div>
     </script>
 
@@ -830,6 +836,9 @@
                 </tr>
                 </tbody>
             </table>
+
+            <div class="more-observations-message"></div>
+
         </div>
     </script>
 
@@ -886,6 +895,9 @@
                 </tr>
                 </tbody>
             </table>
+
+            <div class="more-observations-message"></div>
+
         </div>
     </script>
 
@@ -942,6 +954,9 @@
                 </tr>
                 </tbody>
             </table>
+
+            <div class="more-observations-message"></div>
+
         </div>
     </script>
 
@@ -1006,6 +1021,9 @@
                 </tr>
                 </tbody>
             </table>
+
+            <div class="more-observations-message"></div>
+
         </div>
     </script>
 
@@ -1058,6 +1076,9 @@
                 </tr>
                 </tbody>
             </table>
+
+            <div class="more-observations-message"></div>
+
         </div>
     </script>
 
@@ -1114,6 +1135,9 @@
                   </tr>
                   </tbody>
               </table>
+
+              <div class="more-observations-message"></div>
+
           </div>
      </script>
 
