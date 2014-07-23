@@ -148,21 +148,36 @@
 
         <div class="container marketing ctd2-boxes">
           <div class="row">
-            <div class="span4 stories" data-order="0">
-              <h3>Stories</h3>
-              <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.</p>
+            <div class="span3 stories" data-order="0">
+              <h4>Stories</h4>
+              <p>
+                  In each <i>story</i>, Dashboard users can find research highlights from CTD<sup>2</sup> Network projects, a link to the list of observations related to the results, and other resources relevant to the data.
+              </p>
               <a class="btn btn-danger btn-block" href="#stories">Browse &raquo;</a>
-            </div><!-- /.span4 -->
-            <div class="span4 target" data-order="1">
-              <h3>Targets</h3>
-                <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut.</p>
+            </div><!-- /.span3 -->
+            <div class="span3 target" data-order="1">
+              <h4>Targets</h4>
+                <p>
+                    <i>Targets</i> are molecules, such as genes or proteins, which have been experimentally identified as tumor markers or drivers.
+                </p>
                 <a class="btn btn-success btn-block" href="#browse/target/A">Browse &raquo;</a>
-            </div><!-- /.span4 -->
-            <div class="span4 drug" data-order="2">
-              <h3>Compounds</h3>
-                <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.</p>
+            </div><!-- /.span3 -->
+            <div class="span3 drug" data-order="2">
+              <h4>Compounds</h4>
+                <p>
+                    In Dashboard, <i>compounds</i> are modulators of specific targets in cancer cell lines or tumor model systems. Some examples include small molecules, FDA approved drugs, natural products, and small regulatory RNAs.
+                </p>
                 <a class="btn btn-warning btn-block" href="#browse/compound/A">Browse &raquo;</a>
-            </div><!-- /.span4 -->
+            </div><!-- /.span3 -->
+              <div class="span3 context" data-order="3">
+                  <h4>Context</h4>
+                  <p>
+                      Dashboard entries provide a list of observations and evidence, and each is associated with a description.
+                      In some instances, the description is labeled as <i>context</i>.
+                      This refers to the genomic context, or set of circumstances or conditions which a target, compound, or biomarker may be relevant.
+                  </p>
+              </div><!-- /.span3 -->
+
           </div><!-- /.row -->
 
 
@@ -174,7 +189,18 @@
               <img class="img-polaroid pull-right" src="img/logos/ctd2_overall.png" alt="CTD2 general image" title="CTD2 general image" width="200">
               <h2 class="featurette-heading">CTD<sup>2</sup> Dashboard<span class="muted"> Overview</span></h2>
               <p class="lead">
-                  The interactive dashboard will ensure the timely and efficient dissemination of <b>CTD<sup>2</sup></b> targets and biomarkers, across the final stages of their validation process, in conjunction with the primary data and methodologies used for their discovery and characterization.
+                  <b>The Dashboard</b> hosts data generated and analyzed by the <b>CTD<sup>2</sup> Network</b> and provides an intuitive mechanism for the research community to search across <i>Centers</i>’ data.
+                  <i>Observation</i>s, or Center-determined conclusions, are submitted as connections between two related types of components:
+                  <b>subjects</b> (<i>e.g.</i>, gene, transcript, protein, small molecules, animal model) and <b>evidence</b> (<i>e.g.</i>, numeric value, text label, figure legend).
+                  Users can retrieve evidence and observations pertinent to their queries by searching across subjects using standardized terms and vocabulary.
+                  Results are available as bulk datasets, data-related figures, or polished stories, and are formatted to enable easy navigation and comprehension for most researchers, even those with little bioinformatics expertise.
+              </p>
+              <p class="lead">
+                  The Dashboard aims to provide the research community with access to sets of positive results from one Center or from multiple Centers that can be retrieved using a single keyword.
+                  In doing this, the <b>CTD<sup>2</sup> Network</b> strives to increase the understanding of the underlying molecular causes of distinct cancer types and accelerate the development of clinically useful markers and targeted therapies for precision medicine.
+              </p>
+              <p class="lead">
+                  For more information about the <b>CTD<sup>2</sup> Network</b>, visit <a href="http://ocg.cancer.gov/programs/ctd2">http://ocg.cancer.gov/programs/ctd2</a>.
               </p>
           </div>
 
@@ -1383,7 +1409,7 @@
                 </p>
             </div>
             <div class="span4">
-                <img class="img-circle" src="img/slogos/{{submission.observationTemplate.submissionCenter.displayName}}.png" alt="{{submission.observationTemplate.submissionCenter.displayName}}" title="{{submission.observationTemplate.submissionCenter.displayName}}">
+                <img class="img-circle" src="img/slogos/{{submission.observationTemplate.submissionCenter.displayName}}.png" alt="{{submission.observationTemplate.submissionCenter.displayName}}" title="{{submission.observationTemplate.submissionCenter.displayName}}" height=150>
             </div>
         </div>
     </script>
@@ -2136,8 +2162,6 @@
 
     <!-- end of templates -->
 
-    <script src="js/targets.js"></script>
-    <script src="js/drugs.js"></script>
     <script src="js/jquery.min.js"></script>
     <script src="js/jquery.dataTables.min.js"></script>
     <script src="js/paging.js"></script>
