@@ -1341,7 +1341,7 @@
             <td>{{observationTemplate.description}}</td>
             <td><a href="#submission/{{id}}"><img src="img/{{observationTemplate.submissionCenter.displayName}}.png" title="{{observationTemplate.submissionCenter.displayName}}" alt="{{observationTemplate.submissionCenter.displayName}}" height="50"></a></td>
             <td><span class="badge tier-badge">Tier {{observationTemplate.tier}}</span></td>
-            <td width=150><a href="#submission/{{id}}"><span id="search-observation-count-{{id}}"></span> observation(s)</a></td>
+            <td width=150><a href="#submission/{{id}}" id="search-observation-count-{{id}}"></a></td>
         </tr>
     </script>
 
