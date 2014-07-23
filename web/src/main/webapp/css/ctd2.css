@@ -490,3 +490,8 @@ footer {
     border-right: 5px solid #f6f6f6;
 }
 
+.story-cards {
+    height: 300px;
+    overflow-y: auto;
+}
+
