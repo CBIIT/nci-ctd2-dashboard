@@ -1,14 +1,9 @@
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@page import="org.springframework.web.context.WebApplicationContext"%>
-<%@page import="org.springframework.web.context.support.WebApplicationContextUtils"%>
-<%
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %><%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %><%@page import="org.springframework.web.context.WebApplicationContext"%><%@page import="org.springframework.web.context.support.WebApplicationContextUtils"%><%
     WebApplicationContext context = WebApplicationContextUtils
             .getWebApplicationContext(application);
     String dataURL = (String) context.getBean("dataURL");
     Integer maxNumOfObservations = (Integer) context.getBean("maxNumberOfEntities");
-%>
-<!DOCTYPE html>
+%><!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/html">
   <head>
     <meta charset="utf-8">
@@ -188,7 +183,7 @@
               <img class="img-polaroid pull-right" src="img/logos/ctd2_overall.png" alt="CTD2 general image" title="CTD2 general image" width="200">
               <h2 class="featurette-heading">CTD<sup>2</sup> Dashboard<span class="muted"> Overview</span></h2>
               <p class="lead">
-                  <b>The Dashboard</b> hosts data generated and analyzed by the <b>CTD<sup>2</sup> Network</b> and provides an intuitive mechanism for the research community to search across <i>Centers</i>’ data.
+                  <b>The Dashboard</b> hosts data generated and analyzed by the <b>CTD<sup>2</sup> Network</b> and provides an intuitive mechanism for the research community to search across <i>Centers</i>' data.
                   <i>Observation</i>s, or Center-determined conclusions, are submitted as connections between two related types of components:
                   <b>subjects</b> (<i>e.g.</i>, gene, transcript, protein, small molecules, animal model) and <b>evidence</b> (<i>e.g.</i>, numeric value, text label, figure legend).
                   Users can retrieve evidence and observations pertinent to their queries by searching across subjects using standardized terms and vocabulary.
