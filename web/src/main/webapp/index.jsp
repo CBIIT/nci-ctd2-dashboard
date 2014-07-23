@@ -51,6 +51,7 @@
             <div class="nav-collapse collapse">
               <ul class="nav topmenu">
                 <li class="active"><a href="#">CTD<sup>2</sup> Dashboard</a></li>
+                <li><a href="#about">About</a></li>
                 <li><a href="#centers">Centers</a></li>
                 <li class="dropdown">
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown">Resources <b class="caret"></b></a>
@@ -94,16 +95,14 @@
     <!-- all the backbone magic will happen here, right in this div -->
     <div id="main-container"></div>
 
-    <div class="container">
-        <hr class="featurette-divider">
-
+    <div class="container footer-container">
         <!-- FOOTER -->
        <footer>
      	<p>
              CTD<sup>2</sup> Dashboard &middot;
              <a href="http://ctd2.nci.nih.gov/centers.html" target="_blank">Contact</a>
          </p>
-         <p class="pull-right">
+         <p>
              <a href="http://cancer.gov"><img src="img/logos/footer_logo_nci.jpg" alt="NCI logo" title="NCI logo"></a><a href="http://www.dhhs.gov/"><img src="img/logos/footer_logo_hhs.jpg" title="HHS logo" alt="HHS logo"></a><a href="http://www.nih.gov/"><img src="img/logos/footer_logo_nih.jpg" title="NIH logo" alt="NIH logo"></a><a href="http://www.firstgov.gov/"><img src="img/logos/footer_logo_firstgov.jpg" title="First Gov logo" alt="First Gov logo"></a>
          </p>
        </footer>
@@ -117,7 +116,7 @@
         <div id="myCarousel" class="carousel slide">
           <div class="carousel-inner">
             <div class="item active">
-              <img data-src="holder.js/1500x450/#a70001:#a70001" alt="placeholder summary image" title="placeholder summary image" class="cimg">
+              <img src="img/bg-red.png" alt="Red background image" title="red background image" class="cimg">
               <div class="container">
                   <div class="carousel-caption">
                         <h1>Stories</h1>
@@ -185,7 +184,7 @@
 
           <hr class="featurette-divider">
 
-          <div class="featurette">
+          <div class="featurette" id="overview-text">
               <img class="img-polaroid pull-right" src="img/logos/ctd2_overall.png" alt="CTD2 general image" title="CTD2 general image" width="200">
               <h2 class="featurette-heading">CTD<sup>2</sup> Dashboard<span class="muted"> Overview</span></h2>
               <p class="lead">

@@ -2638,12 +2638,22 @@
             "subject/:id": "showSubject",
             "evidence/:id": "showMraView",
             "template-helper": "showTemplateHelper",
+            "about": "about",
             "*actions": "home"
         },
 
         home: function(actions) {
             var homeView = new HomeView();
             homeView.render();
+        },
+
+        about: function() {
+            var homeView = new HomeView();
+            homeView.render();
+            var whereTo = $("#overview-text").offset().top - 50;
+            $('html, body').animate({
+                scrollTop: whereTo
+            }, 500);
         },
 
         search: function(term) {
