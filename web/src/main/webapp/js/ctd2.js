@@ -1712,7 +1712,8 @@
             var result = this.model;
             result["type"] = result.class;
 
-            $(this.el).append(this.template(result));
+            var tableElId = this.el;
+            $(tableElId).append(this.template(result));
 
             var thatEl = $("#synonyms-" + result.id);
             _.each(result.synonyms, function(aSynonym) {
@@ -1741,13 +1742,17 @@
             thatEl.append(_.template(imgTemplate.html(), result));
 
             // some of the elements will be hidden in the pagination. Use magic-scoping!
-            var updateEl = $("#subject-observation-count-" + result.id);
+            var updateElId = "#subject-observation-count-" + result.id;
+            var updateEl = $(updateElId);
             $.ajax("count/observation/?filterBy=" + result.id).done(function(count) {
                 var cntContent = _.template(
                     $("#count-observations-tmpl").html(),
                     { count: count }
                 );
                 updateEl.html(cntContent);
+                var dataTable = $(tableElId).parent().DataTable();
+                dataTable.cells(updateElId).invalidate();
+                dataTable.order([[5, 'desc'], [1, 'asc'], [4, 'asc']]).draw();
             });
 
             return this;
