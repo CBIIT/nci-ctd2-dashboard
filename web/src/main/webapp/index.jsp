@@ -1307,22 +1307,22 @@
 
     <script type="text/template" id="search-result-row-tmpl">
         <tr>
-            <td id="search-image-{{id}}"></td>
-            <td><a href="#subject/{{id}}">{{displayName}}</a></td>
+            <td id="search-image-{{dashboardEntity.id}}"></td>
+            <td><a href="#subject/{{dashboardEntity.id}}">{{dashboardEntity.displayName}}</a></td>
             <td>
-                <ul id="synonyms-{{id}}">
+                <ul id="synonyms-{{dashboardEntity.id}}">
                     <!-- here will go the synonyms -->
                 </ul>
             </td>
-            <td>{{type}}</td>
-            <td>{{organism.displayName}}</td>
-            <td><a href="#subject/{{id}}" id="subject-observation-count-{{id}}">loading...</a></td>
+            <td>{{dashboardEntity.type}}</td>
+            <td>{{dashboardEntity.organism.displayName}}</td>
+            <td><a href="#subject/{{dashboardEntity.id}}" id="subject-observation-count-{{dashboardEntity.id}}">{{observationCount}}</a></td>
         </tr>
     </script>
 
     <script type="text/template" id="search-tmpl">
         <div class="container common-container" id="search-results-container">
-            <h1>Search <small>for "{{term}}"</small></h1>
+            <h1>Search <small>for <i>{{decodeURIComponent(term)}}</i></small></h1>
 
             <table id="search-results-grid" class="table table-bordered table-striped">
                 <thead>
@@ -1370,12 +1370,12 @@
 
     <script type="text/template" id="search-submission-tbl-row-tmpl">
         <tr>
-            <td><a href="#submission/{{id}}"><img src="img/submission.png" width="50" alt="Submission" title="Submission"></a></td>
-            <td><a href="#submission/{{id}}">{{submissionDate}}</a></td>
-            <td>{{observationTemplate.description}}</td>
-            <td><a href="#submission/{{id}}"><img src="img/{{observationTemplate.submissionCenter.displayName}}.png" title="{{observationTemplate.submissionCenter.displayName}}" alt="{{observationTemplate.submissionCenter.displayName}}" height="50"></a></td>
-            <td><span class="badge tier-badge">Tier {{observationTemplate.tier}}</span></td>
-            <td width=150><a href="#submission/{{id}}" id="search-observation-count-{{id}}"></a></td>
+            <td><a href="#submission/{{dashboardEntity.id}}"><img src="img/submission.png" width="50" alt="Submission" title="Submission"></a></td>
+            <td><a href="#submission/{{dashboardEntity.id}}">{{dashboardEntity.submissionDate}}</a></td>
+            <td>{{dashboardEntity.observationTemplate.description}}</td>
+            <td><a href="#submission/{{dashboardEntity.id}}"><img src="img/{{dashboardEntity.observationTemplate.submissionCenter.displayName}}.png" title="{{dashboardEntity.observationTemplate.submissionCenter.displayName}}" alt="{{dashboardEntity.observationTemplate.submissionCenter.displayName}}" height="50"></a></td>
+            <td><span class="badge tier-badge">Tier {{dashboardEntity.observationTemplate.tier}}</span></td>
+            <td width=150><a href="#submission/{{dashboardEntity.id}}" id="search-observation-count-{{dashboardEntity.id}}">{{observationCount}}</a></td>
         </tr>
     </script>
 

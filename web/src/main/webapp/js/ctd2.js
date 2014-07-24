@@ -1677,11 +1677,12 @@
     var SearchResultsRowView = Backbone.View.extend({
         template: _.template($("#search-result-row-tmpl").html()),
         render: function() {
-            var result = this.model;
+            var model = this.model;
+            var result = model.dashboardEntity;
             result["type"] = result.class;
 
             var tableElId = this.el;
-            $(tableElId).append(this.template(result));
+            $(tableElId).append(this.template(model));
 
             var thatEl = $("#synonyms-" + result.id);
             _.each(result.synonyms, function(aSynonym) {
@@ -1712,16 +1713,11 @@
             // some of the elements will be hidden in the pagination. Use magic-scoping!
             var updateElId = "#subject-observation-count-" + result.id;
             var updateEl = $(updateElId);
-            $.ajax("count/observation/?filterBy=" + result.id).done(function(count) {
-                var cntContent = _.template(
-                    $("#count-observations-tmpl").html(),
-                    { count: count }
-                );
-                updateEl.html(cntContent);
-                var dataTable = $(tableElId).parent().DataTable();
-                dataTable.cells(updateElId).invalidate();
-                dataTable.order([[5, 'desc'], [1, 'asc'], [4, 'asc']]).draw();
-            });
+            var cntContent = _.template(
+                $("#count-observations-tmpl").html(),
+                { count: model.observationCount }
+            );
+            updateEl.html(cntContent);
 
             return this;
         }
@@ -1749,11 +1745,11 @@
                         var submissions = [];
                         _.each(searchResults.models, function(aResult) {
                             aResult = aResult.toJSON();
-                            if(aResult.organism == undefined) {
-                                aResult.organism = { displayName: "-" };
+                            if(aResult.dashboardEntity.organism == undefined) {
+                                aResult.dashboardEntity.organism = { displayName: "-" };
                             }
 
-                            if(aResult.class == "Submission") {
+                            if(aResult.dashboardEntity.class == "Submission") {
                                 submissions.push(aResult);
                                 return;
                             }
@@ -1771,7 +1767,7 @@
                             "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
                             "sPaginationType": "bootstrap"
                         });
-                        oTable.fnSort( [ [1, 'desc'] ] );
+                        oTable.fnSort( [[5, 'desc'], [1, 'asc'], [4, 'asc']] );
 
                         // OK done with the subjects; let's build the submissions table
                         if(submissions.length > 0) {
@@ -1781,13 +1777,11 @@
                                 var searchSubmissionRowView = new SearchSubmissionRowView({ model: submission });
                                 searchSubmissionRowView.render();
 
-                                $.ajax("count/observation/?filterBy=" + submission.id).done(function(count) {
-                                    var cntContent = _.template(
-                                        $("#count-observations-tmpl").html(),
-                                        { count: count }
-                                    );
-                                    $("#search-observation-count-" + submission.id).html(cntContent);
-                                });
+                                var cntContent = _.template(
+                                    $("#count-observations-tmpl").html(),
+                                    { count: submission.observationCount }
+                                );
+                                $("#search-observation-count-" + submission.dashboardEntity.id).html(cntContent);
                             });
 
                             var sTable = $("#searched-submissions").dataTable({

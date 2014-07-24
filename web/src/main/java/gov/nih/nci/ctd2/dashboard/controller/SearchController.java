@@ -5,6 +5,7 @@ import flexjson.transformer.AbstractTransformer;
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
 import gov.nih.nci.ctd2.dashboard.model.DashboardEntity;
 import gov.nih.nci.ctd2.dashboard.model.Subject;
+import gov.nih.nci.ctd2.dashboard.util.DashboardEntityWithCounts;
 import gov.nih.nci.ctd2.dashboard.util.DateTransformer;
 import gov.nih.nci.ctd2.dashboard.util.ImplTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,8 +46,7 @@ public class SearchController {
             e.printStackTrace();
         }
 
-        List<DashboardEntity> results = dashboardDao.search(keyword);
-
+        List<DashboardEntityWithCounts> results = dashboardDao.search(keyword);
         JSONSerializer jsonSerializer = new JSONSerializer()
                 .transform(new ImplTransformer(), Class.class)
                 .transform(new DateTransformer(), Date.class);
