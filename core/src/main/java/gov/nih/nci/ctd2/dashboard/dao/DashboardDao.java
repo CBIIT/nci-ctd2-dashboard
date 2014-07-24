@@ -42,7 +42,7 @@ public interface DashboardDao {
     List<ObservedEvidence> findObservedEvidenceByObservation(Observation observation);
     void batchSave(Collection<? extends DashboardEntity> entities, int batchSize);
     void createIndex(int batchSize);
-    List<DashboardEntity> search(String keyword);
+    java.util.ArrayList<gov.nih.nci.ctd2.dashboard.util.DashboardEntityWithCounts> search(String keyword);
     List<Submission> findSubmissionByIsStory(boolean isSubmissionStory, boolean sortByPriority);
     List<Submission> findSubmissionByObservationTemplate(ObservationTemplate observationTemplate);
     Submission findSubmissionByName(String submissionName);

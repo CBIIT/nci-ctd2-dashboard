@@ -3,9 +3,9 @@ package gov.nih.nci.ctd2.dashboard.dao.internal;
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
 import gov.nih.nci.ctd2.dashboard.impl.*;
 import gov.nih.nci.ctd2.dashboard.model.*;
+import gov.nih.nci.ctd2.dashboard.util.DashboardEntityWithCounts;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.WhitespaceAnalyzer;
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.queryParser.MultiFieldQueryParser;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.search.Query;
@@ -13,6 +13,7 @@ import org.apache.lucene.util.Version;
 import org.hibernate.*;
 import org.hibernate.classic.Session;
 import org.hibernate.criterion.Projections;
+import org.hibernate.proxy.HibernateProxy;
 import org.hibernate.search.FullTextQuery;
 import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
@@ -575,12 +576,15 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
 
     @Override
     @Cacheable(value = "searchCache")
-    public List<DashboardEntity> search(String keyword) {
+    public ArrayList<DashboardEntityWithCounts> search(String keyword) {
         ArrayList<DashboardEntity> entities = new ArrayList<DashboardEntity>();
         HashSet<DashboardEntity> entitiesUnique = new HashSet<DashboardEntity>();
 
         FullTextSession fullTextSession = Search.getFullTextSession(getSession());
-        Analyzer[] analyzers = {new StandardAnalyzer(Version.LUCENE_31), new WhitespaceAnalyzer(Version.LUCENE_31)};
+        Analyzer[] analyzers = {
+        //        new StandardAnalyzer(Version.LUCENE_31), // Ignore this one for now, it probably doesn't help
+                new WhitespaceAnalyzer(Version.LUCENE_31)
+        };
         for (Analyzer analyzer : analyzers) {
             MultiFieldQueryParser multiFieldQueryParser = new MultiFieldQueryParser(
                     Version.LUCENE_31,
@@ -628,7 +632,14 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
                     }
 
                 } else {
-                    if(!entitiesUnique.contains(o)) entities.add((DashboardEntity) o);
+                    // Some objects came in as proxies, get the actual implementations for them when necessary
+                    if(o instanceof HibernateProxy) {
+                        o = ((HibernateProxy) o).getHibernateLazyInitializer().getImplementation();
+                    }
+
+                    if(!entitiesUnique.contains(o)) {
+                        entities.add((DashboardEntity) o);
+                    }
                 }
 
                 entitiesUnique.addAll(entities);
@@ -636,6 +647,23 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
 
         }
 
-        return entities;
+        ArrayList<DashboardEntityWithCounts> entitiesWithCounts = new ArrayList<DashboardEntityWithCounts>();
+        for (DashboardEntity entity : entities) {
+            DashboardEntityWithCounts entityWithCounts = new DashboardEntityWithCounts();
+            entityWithCounts.setDashboardEntity(entity);
+            if(entity instanceof Subject) {
+                ArrayList<Observation> observations = new ArrayList<Observation>();
+                for (ObservedSubject observedSubject : findObservedSubjectBySubject((Subject) entity)) {
+                    observations.add(observedSubject.getObservation());
+                }
+                entityWithCounts.setObservationCount(observations.size());
+            } else if(entity instanceof Submission) {
+                entityWithCounts.setObservationCount(findObservationsBySubmission((Submission) entity).size());
+            }
+
+            entitiesWithCounts.add(entityWithCounts);
+        }
+
+        return entitiesWithCounts;
     }
 }
