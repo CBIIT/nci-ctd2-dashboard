@@ -619,7 +619,6 @@ public class DashboardDaoTest {
         dashboardDao.createIndex(10);
 
         assertTrue(dashboardDao.search("something").isEmpty());
-        assertFalse(dashboardDao.search(synStr4).isEmpty());
 
         // Wild-card search does not look in the synonyms (optimization)
         assertTrue(dashboardDao.search(synonymStr + "*").isEmpty());
@@ -635,10 +634,6 @@ public class DashboardDaoTest {
         Submission submission = dashboardFactory.create(Submission.class);
         submission.setObservationTemplate(observationTemplate);
         dashboardDao.save(submission);
-
-        assertFalse(dashboardDao.search("OBS").isEmpty());
-        assertFalse(dashboardDao.search(obsDesc).isEmpty());
-        assertFalse(dashboardDao.search(submsName).isEmpty());
 
         // The following are tests for tokenization
         assertFalse(dashboardDao.search("ABT-737").isEmpty());
