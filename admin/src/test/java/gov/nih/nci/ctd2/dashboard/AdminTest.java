@@ -27,6 +27,7 @@ public class AdminTest {
     @Before
     public void initiateDao() {
         this.appContext = new ClassPathXmlApplicationContext(
+                "classpath*:META-INF/spring/adminApplicationContext.xml", // use this instead of testObservationDataApplicationContext - gets observationDataFactory bean
                 "classpath*:META-INF/spring/testApplicationContext.xml", // this is coming from the core module
 				"classpath*:META-INF/spring/testAnimalModelApplicationContext.xml", // and this is for cell line data importer beans
 				"classpath*:META-INF/spring/testCellLineDataApplicationContext.xml", // and this is for cell line data importer beans
@@ -36,7 +37,6 @@ public class AdminTest {
 				"classpath*:META-INF/spring/testTRCshRNADataApplicationContext.xml", // and this is for trc-shRNA data importer beans
 				"classpath*:META-INF/spring/testTissueSampleDataApplicationContext.xml", // and this is for tissue sample data importer beans
 				"classpath*:META-INF/spring/controlledVocabularyApplicationContext.xml", // and this is for controlled vocabulary importer beans
-				"classpath*:META-INF/spring/testObservationDataApplicationContext.xml", // and this is for observation data importer beans
 				"classpath*:META-INF/spring/taxonomyDataApplicationContext.xml" // and this is for taxonomy data importer beans
         );
 
@@ -173,19 +173,6 @@ public class AdminTest {
         assertNotNull(observationTemplate);
         assertFalse(observationTemplate.getIsSubmissionStory());
         assertEquals(0, observationTemplate.getSubmissionStoryRank().intValue());
-
-        // import observation data
-        jobExecution = executeJob("testObservationDataImporterJob");
-        assertEquals("COMPLETED", jobExecution.getExitStatus().getExitCode());
-        assertEquals(2, dashboardDao.countEntities(Submission.class).intValue());
-        assertEquals(11, dashboardDao.countEntities(SubmissionCenter.class).intValue());
-        assertEquals(11, dashboardDao.countEntities(Observation.class).intValue());
-        assertEquals(22, dashboardDao.countEntities(ObservedSubject.class).intValue());
-        assertEquals(87, dashboardDao.countEntities(ObservedEvidence.class).intValue());
-        assertEquals(40, dashboardDao.countEntities(LabelEvidence.class).intValue());
-        assertEquals(20, dashboardDao.countEntities(DataNumericValue.class).intValue());
-        assertEquals(16, dashboardDao.countEntities(FileEvidence.class).intValue());
-        assertEquals(11, dashboardDao.countEntities(UrlEvidence.class).intValue());
     }
 
 	private JobExecution executeJob(String jobName) throws Exception {
