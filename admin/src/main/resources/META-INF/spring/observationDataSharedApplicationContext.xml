@@ -677,8 +677,6 @@
   </bean> 
 
   <!-- shared helper beans -->
-  <bean name="observationDataFactory" class="gov.nih.nci.ctd2.dashboard.importer.internal.ObservationDataFactoryImpl"/>
-
   <bean name="observationTemplateMap" class="java.util.HashMap">
 	<constructor-arg index="0" type="java.util.Map">
 	  <map key-type="java.lang.String" value-type="java.lang.String">

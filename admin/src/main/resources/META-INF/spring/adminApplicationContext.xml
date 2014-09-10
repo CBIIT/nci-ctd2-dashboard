@@ -19,6 +19,7 @@
 	</bean>
 
     <bean class="gov.nih.nci.ctd2.dashboard.importer.internal.SampleImporter" id="sampleImporter"/>
+	<bean name="observationDataFactory" class="gov.nih.nci.ctd2.dashboard.importer.internal.ObservationDataFactoryImpl"/>
 
     <bean id="indexBatchSize" class="java.lang.Integer">
         <constructor-arg index="0" value="${batch.size.index}"/>
