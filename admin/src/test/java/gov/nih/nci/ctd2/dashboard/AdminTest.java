@@ -36,7 +36,7 @@ public class AdminTest {
 				"classpath*:META-INF/spring/testProteinDataApplicationContext.xml", // and this is for protein data importer beans
 				"classpath*:META-INF/spring/testTRCshRNADataApplicationContext.xml", // and this is for trc-shRNA data importer beans
 				"classpath*:META-INF/spring/testTissueSampleDataApplicationContext.xml", // and this is for tissue sample data importer beans
-				"classpath*:META-INF/spring/controlledVocabularyApplicationContext.xml", // and this is for controlled vocabulary importer beans
+				"classpath*:META-INF/spring/testControlledVocabularyApplicationContext.xml", // and this is for controlled vocabulary importer beans
 				"classpath*:META-INF/spring/taxonomyDataApplicationContext.xml" // and this is for taxonomy data importer beans
         );
 
