@@ -23,6 +23,7 @@ public interface DashboardDao {
     List<CellSample> findCellSampleByAnnoName(String name);
     List<CellSample> findCellSampleByAnnotation(Annotation annotation);
     List<TissueSample> findTissueSampleByName(String name);
+    List<ShRna> findSiRNAByReagentName(String reagent);
     List<Compound> findCompoundsByName(String compoundName);
     List<Compound> findCompoundsBySmilesNotation(String smilesNotation);
     List<AnimalModel> findAnimalModelByName(String animalModelName);
