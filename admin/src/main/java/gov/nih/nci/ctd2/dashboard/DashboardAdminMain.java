@@ -26,6 +26,7 @@ public class DashboardAdminMain {
         "classpath*:META-INF/spring/geneDataApplicationContext.xml", // This is for gene data importer beans
         "classpath*:META-INF/spring/proteinDataApplicationContext.xml", // This is for compound data importer beans
 		"classpath*:META-INF/spring/TRCshRNADataApplicationContext.xml", // and this is for trc-shRNA data importer beans
+        "classpath*:META-INF/spring/siRNADataApplicationContext.xml", // and this is for siRNA reagents data importer beans
         "classpath*:META-INF/spring/tissueSampleDataApplicationContext.xml", // This is for cell line data importer beans
         "classpath*:META-INF/spring/controlledVocabularyApplicationContext.xml", // This is for controlled vocabulary importer beans
         "classpath*:META-INF/spring/observationDataApplicationContext.xml", // This is for observation data importer beans
@@ -50,6 +51,7 @@ public class DashboardAdminMain {
 			    .addOption("g", "gene-data", false, "imports gene data.")
                 .addOption("p", "protein-data", false, "imports protein data.")
                 .addOption("sh", "shrna-data", false, "imports shrna data.")
+                .addOption("si", "sirna-data", false, "imports sirna data.")
 			    .addOption("ts", "tissue-sample-data", false, "imports tissue sample data.")
                 .addOption("cv", "controlled-vocabulary", false, "imports the dashboard controlled vocabulary.")
                 .addOption("o", "observation-data", false, "imports dashboard observation data.")
@@ -94,6 +96,10 @@ public class DashboardAdminMain {
 			if( commandLine.hasOption("sh") ) {
                 launchJob("TRCshRNADataImporterJob");
 			}
+
+            if( commandLine.hasOption("si") ) {
+                launchJob("siRNADataImporterJob");
+            }
 
 			if( commandLine.hasOption("ts") ) {
                 launchJob("tissueSampleDataImporterJob");
