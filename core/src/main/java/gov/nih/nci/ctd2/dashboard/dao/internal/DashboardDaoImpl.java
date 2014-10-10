@@ -210,8 +210,9 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
 
     @Override
     public List<Transcript> findTranscriptsByRefseqId(String refseqId) {
+        String[] parts = refseqId.split("\\.");
         List<Transcript> list = new ArrayList<Transcript>();
-        for (Object o : getHibernateTemplate().find("from TranscriptImpl where refseqId = ?", refseqId)) {
+        for (Object o : getHibernateTemplate().find("from TranscriptImpl where refseqId like ?", parts[0] + "%")) {
             assert o instanceof Transcript;
             list.add((Transcript) o);
         }

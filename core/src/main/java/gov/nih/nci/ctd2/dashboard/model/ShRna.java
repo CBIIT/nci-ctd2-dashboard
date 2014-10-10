@@ -5,4 +5,6 @@ public interface ShRna extends SubjectWithOrganism {
     public void setTargetSequence(String targetSequence);
     public Transcript getTranscript();
     public void setTranscript(Transcript transcript);
+    public String getType();
+    public void setType(String type);
 }

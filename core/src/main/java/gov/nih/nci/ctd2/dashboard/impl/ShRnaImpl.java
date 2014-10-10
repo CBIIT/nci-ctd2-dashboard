@@ -17,6 +17,7 @@ import javax.persistence.Table;
 public class ShRnaImpl extends SubjectWithOrganismImpl implements ShRna {
     private String targetSequence;
     private Transcript transcript;
+    private String type;
 
     @Column(length = 2048, nullable = false)
     public String getTargetSequence() {
@@ -34,5 +35,14 @@ public class ShRnaImpl extends SubjectWithOrganismImpl implements ShRna {
 
     public void setTranscript(Transcript transcript) {
         this.transcript = transcript;
+    }
+
+    @Column(length = 5, nullable = false)
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }
