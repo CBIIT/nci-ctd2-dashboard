@@ -173,19 +173,24 @@
 		<batch:chunk reader="dfciSmarca4MutAnalysisReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	  </batch:tasklet>
 	</batch:step>
-	<batch:step id="dfciSmarca2DependencyStep" parent="observationDataStep" next="broadBcatNavStoryStep">
+	<batch:step id="dfciSmarca2DependencyStep" parent="observationDataStep" next="mskccPi3kStep">
 	  <batch:tasklet>
 		<batch:chunk reader="dfciSmarca2DependencyReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	  </batch:tasklet>
 	</batch:step>
-	<batch:step id="broadBcatNavStoryStep" parent="observationDataStep" next="mskccPi3kStep">
-	  <batch:tasklet>
-		<batch:chunk reader="broadBcatNavStoryReader" processor="observationDataProcessor" writer="observationDataWriter"/>
-	  </batch:tasklet>
-	</batch:step>
-	<batch:step id="mskccPi3kStep" parent="observationDataStep">
+	<batch:step id="mskccPi3kStep" parent="observationDataStep" next="stanfordElasticNetStep">
 	  <batch:tasklet>
 		<batch:chunk reader="mskccPi3kReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+	<batch:step id="stanfordElasticNetStep" parent="observationDataStep" next="fhcrcKKinomeSiRNAStep">
+	  <batch:tasklet>
+		<batch:chunk reader="stanfordElasticNetReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+	<batch:step id="fhcrcKKinomeSiRNAStep" parent="observationDataStep">
+	  <batch:tasklet>
+		<batch:chunk reader="fhcrcKKinomeSiRNAReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	  </batch:tasklet>
 	</batch:step>
   </batch:job>
@@ -652,18 +657,6 @@
 	<property name="names" value="dummy,submission_name,submission_date,template_name,target_group,gene_symbol,figure_1,figure_2,figure_3,figure_4,tier2_evidence,publication_reference,publication_url"/>
   </bean>
 
-  <!-- broadBcatNavStoryReader defined in: -->
-  <!-- observationDataApplicationContext.xml testObservationDataApplicationContext.xml -->
-  <bean name="broadBcatNavStoryLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
-	<property name="fieldSetMapper" ref="observationDataMapper" />
-	<property name="lineTokenizer" ref="broadBcatNavStoryLineTokenizer" />
-  </bean>
-
-  <bean name="broadBcatNavStoryLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,gene_symbol_3,compound_name_1,compound_name_2,resource_url_1,resource_url_2,resource_url_3,publication_reference,story_location"/>
-  </bean>
-
  <!-- mskccPi3kStoryReader defined in: -->
   <!-- observationDataApplicationContext.xml testObservationDataApplicationContext.xml -->
   <bean name="mskccPi3kLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
@@ -675,6 +668,30 @@
 	<property name="delimiter" value="\u0009"/>
 	<property name="names" value="dummy,submission_name,submission_date,template_name,species,animal_model,strain,disease_condition,gene_symbol1,mutation,gene_symbol2,gene_symbol3,figure_2AM,figure_3BCD,publication_reference,publication_url"/>
   </bean> 
+
+  <!-- stanfordElasticNetReader defined in: -->
+  <!-- observationDataApplicationContext.xml testObservationDataApplicationContext.xml -->
+  <bean name="stanfordElasticNetLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+	<property name="fieldSetMapper" ref="observationDataMapper" />
+	<property name="lineTokenizer" ref="stanfordElasticNetLineTokenizer" />
+  </bean>
+
+  <bean name="stanfordElasticNetLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+	<property name="delimiter" value="\u0009"/>
+	<property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol,disease,analysis_type,supporting_genomics,elastic_net_rank,differential_status,sample_count,mse,bootstrapping,data,publication"/>
+  </bean> 
+
+  <!-- fhcrcKKinomeSiRNAReader defined in: -->
+  <!-- observationDataApplicationContext.xml testObservationDataApplicationContext.xml -->
+  <bean name="fhcrcKKinomeSiRNALineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+	<property name="fieldSetMapper" ref="observationDataMapper" />
+	<property name="lineTokenizer" ref="fhcrcKKinomeSiRNALineTokenizer" />
+  </bean>
+
+  <bean name="fhcrcKKinomeSiRNALineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+	<property name="delimiter" value="\u0009"/>
+	<property name="names" value="dummy,submission_name,submission_date,template_name,sirna_group,sirna_id,gene_symbol,cell_line,disease,tumor_suppressor,tp53_mutation,frequency,activity,significance,publication"/>
+  </bean>
 
   <!-- shared helper beans -->
   <bean name="observationTemplateMap" class="java.util.HashMap">
@@ -1082,17 +1099,6 @@
 		<entry key="dfci_smarca2_dependency:tier2_evidence" value="evidence:readString:createObservedUrlEvidence" />
 		<entry key="dfci_smarca2_dependency:publication_reference" value="evidence:readString:createObservedLabelEvidence" />
 		<entry key="dfci_smarca2_dependency:publication_url" value="evidence:readString:createObservedUrlEvidence" />
-		<!-- broad bcat nav story -->
-		<entry key="broad_bcat_nav_story:gene_symbol_1" value="subject:findGenesBySymbol" />
-		<entry key="broad_bcat_nav_story:gene_symbol_2" value="subject:findGenesBySymbol" />
-		<entry key="broad_bcat_nav_story:gene_symbol_3" value="subject:findGenesBySymbol" />
-		<entry key="broad_bcat_nav_story:compound_name_1" value="subject:findCompoundsByName" />
-		<entry key="broad_bcat_nav_story:compound_name_2" value="subject:findCompoundsByName" />
-		<entry key="broad_bcat_nav_story:resource_url_1" value="evidence:readString:createObservedUrlEvidence" />
-		<entry key="broad_bcat_nav_story:resource_url_2" value="evidence:readString:createObservedUrlEvidence" />
-		<entry key="broad_bcat_nav_story:resource_url_3" value="evidence:readString:createObservedUrlEvidence" />
-		<entry key="broad_bcat_nav_story:publication_reference" value="evidence:readString:createObservedUrlEvidence" />
-		<entry key="broad_bcat_nav_story:story_location" value="evidence:readString:createObservedFileEvidence" />	
 		<!-- mskcc pi3k -->
 		<entry key="mskcc_pi3k:species" value="evidence:readString:createObservedLabelEvidence" />
 		<entry key="mskcc_pi3k:animal_model" value="evidence:readString:createObservedLabelEvidence" />
@@ -1106,6 +1112,30 @@
 		<entry key="mskcc_pi3k:figure_3BCD" value="evidence:readString:createObservedFileEvidence" />
 		<entry key="mskcc_pi3k:publication_reference" value="evidence:readString:createObservedLabelEvidence" />
 		<entry key="mskcc_pi3k:publication_url" value="evidence:readString:createObservedUrlEvidence" />
+		<!-- stanford elastic-net -->
+		<entry key="stanford_elastic_net:gene_symbol" value="subject:findGenesBySymbol" />
+		<entry key="stanford_elastic_net:disease" value="subject:findTissueSampleByName" />
+		<entry key="stanford_elastic_net:analysis_type" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="stanford_elastic_net:supporting_genomics" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="stanford_elastic_net:elastic_net_rank" value="evidence:readInt:createObservedNumericEvidence" />
+		<entry key="stanford_elastic_net:differential_status" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="stanford_elastic_net:sample_count" value="evidence:readInt:createObservedNumericEvidence" />
+		<entry key="stanford_elastic_net:mse" value="evidence:readInt:createObservedNumericEvidence" />
+		<entry key="stanford_elastic_net:bootstrapping" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="stanford_elastic_net:data" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="stanford_elastic_net:publication" value="evidence:readString:createObservedUrlEvidence" />
+		<!-- fhcrc k-kinome siRNA -->
+		<entry key="fhcrc-k_kinome_sirna:sirna_group" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="fhcrc-k_kinome_sirna:sirna_id" value="subject:findSiRNAByReagentName" />
+		<entry key="fhcrc-k_kinome_sirna:gene_symbol" value="subject:findGenesBySymbol" />
+		<entry key="fhcrc-k_kinome_sirna:cell_line" value="subject:findSubjectsBySynonym" />
+		<entry key="fhcrc-k_kinome_sirna:disease" value="subject:findTissueSampleByName" />
+		<entry key="fhcrc-k_kinome_sirna:tumor_suppressor" value="subject:findGenesBySymbol" />
+		<entry key="fhcrc-k_kinome_sirna:tp53_mutation" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="fhcrc-k_kinome_sirna:frequency" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="fhcrc-k_kinome_sirna:activity" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="fhcrc-k_kinome_sirna:significance" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="fhcrc-k_kinome_sirna:publication" value="evidence:readString:createObservedUrlEvidence" />
 	  </map>
 	</constructor-arg>
   </bean>
