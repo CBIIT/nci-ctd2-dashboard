@@ -35,4 +35,12 @@
 
         <property name="packagesToScan" value="gov.nih.nci.ctd2.dashboard.impl"/>
     </bean>
+
+    <bean class="org.springframework.cache.ehcache.EhCacheCacheManager">
+        <property name="cacheManager">
+            <bean class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+                <property name="configLocation" value="ehcache.xml"/>
+            </bean>
+        </property>
+    </bean>
 </beans>

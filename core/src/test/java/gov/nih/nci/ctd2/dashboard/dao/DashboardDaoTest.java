@@ -1,6 +1,7 @@
 package gov.nih.nci.ctd2.dashboard.dao;
 
 import gov.nih.nci.ctd2.dashboard.model.*;
+import gov.nih.nci.ctd2.dashboard.util.CacheTestUtil;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
@@ -640,6 +641,14 @@ public class DashboardDaoTest {
         assertTrue(dashboardDao.search("ABT").isEmpty());
         assertTrue(dashboardDao.search("737").isEmpty());
         assertFalse(dashboardDao.search("ABT*").isEmpty());
+    }
+
+    @Test
+    public void testCache() {
+        CacheTestUtil cacheTestUtil = new CacheTestUtil();
+        for(int i=0; i < 10; i++) {
+            cacheTestUtil.cacheableMethod();
+        }
     }
 }
 
