@@ -111,6 +111,12 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
     }
 
     @Override
+    public void merge(DashboardEntity entity) {
+        getHibernateTemplate().merge(entity);
+    }
+
+
+    @Override
     public void delete(DashboardEntity entity) {
         getHibernateTemplate().delete(entity);
     }
@@ -676,5 +682,15 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
         }
 
         return entitiesWithCounts;
+    }
+
+    @Override
+    public List<ObservedSubject> findObservedSubjectByRole(String role) {
+        List<ObservedSubject> list = new ArrayList<ObservedSubject>();
+        for (Object o : getHibernateTemplate().find("from ObservedSubjectImpl where observedSubjectRole.subjectRole.displayName = ?", role)) {
+            assert o instanceof ObservedSubject;
+            list.add((ObservedSubject) o);
+        }
+        return list;
     }
 }

@@ -136,6 +136,19 @@ public class DashboardDaoTest {
     }
 
     @Test
+    public void saveAndUpdateTest() {
+        // Save with id
+        Gene gene = dashboardFactory.create(Gene.class);
+        gene.setDisplayName("G1");
+        gene.setEntrezGeneId("E1");
+        dashboardDao.save(gene);
+
+        gene.setDisplayName("G1U");
+        gene.setScore(10);
+        dashboardDao.merge(gene);
+    }
+
+    @Test
     public void issue24Test() {
         // See https://bitbucket.org/cbio_mskcc/ctd2-dashboard/issue/24/savestateless-issue
         Collection<DashboardEntity> xrefEntities = new ArrayList<DashboardEntity>();
