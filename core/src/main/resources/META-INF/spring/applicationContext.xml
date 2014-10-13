@@ -45,5 +45,11 @@
         <constructor-arg index="0" value="${web.data.url}"/>
     </bean>
 
-
+    <bean class="org.springframework.cache.ehcache.EhCacheCacheManager">
+        <property name="cacheManager">
+            <bean class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+                <property name="configLocation" value="ehcache.xml"/>
+            </bean>
+        </property>
+    </bean>
 </beans>

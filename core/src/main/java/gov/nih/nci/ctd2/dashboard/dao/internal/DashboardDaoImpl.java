@@ -453,6 +453,7 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
 	}
 
     @Override
+    @Cacheable(value = "storyCache")
     public List<Submission> findSubmissionByIsStory(boolean isSubmissionStory, boolean sortByPriority) {
         List<Submission> list = new ArrayList<Submission>();
         List tmpList = sortByPriority
@@ -556,6 +557,7 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
         }
         fullTextSession.flushToIndexes();
         fullTextSession.clear();
+        fullTextSession.close();
     }
 
     private void createIndexForClass(FullTextSession fullTextSession, Class<DashboardEntity> clazz, int batchSize) {

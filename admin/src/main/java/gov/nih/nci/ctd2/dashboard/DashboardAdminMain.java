@@ -3,6 +3,8 @@ package gov.nih.nci.ctd2.dashboard;
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
 import gov.nih.nci.ctd2.dashboard.importer.internal.SampleImporter;
 import gov.nih.nci.ctd2.dashboard.model.DashboardFactory;
+import gov.nih.nci.ctd2.dashboard.util.CachePopulator;
+import net.sf.ehcache.CacheManager;
 import org.apache.commons.cli.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -12,6 +14,8 @@ import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 public class DashboardAdminMain {
     private static final Log log = LogFactory.getLog(DashboardAdminMain.class);
@@ -25,7 +29,7 @@ public class DashboardAdminMain {
         "classpath*:META-INF/spring/compoundDataApplicationContext.xml", // This is for compound data importer beans
         "classpath*:META-INF/spring/geneDataApplicationContext.xml", // This is for gene data importer beans
         "classpath*:META-INF/spring/proteinDataApplicationContext.xml", // This is for compound data importer beans
-		"classpath*:META-INF/spring/TRCshRNADataApplicationContext.xml", // and this is for trc-shRNA data importer beans
+	"classpath*:META-INF/spring/TRCshRNADataApplicationContext.xml", // and this is for trc-shRNA data importer beans
         "classpath*:META-INF/spring/tissueSampleDataApplicationContext.xml", // This is for cell line data importer beans
         "classpath*:META-INF/spring/controlledVocabularyApplicationContext.xml", // This is for controlled vocabulary importer beans
         "classpath*:META-INF/spring/observationDataApplicationContext.xml", // This is for observation data importer beans
@@ -46,6 +50,7 @@ public class DashboardAdminMain {
                 .addOption("h", "help", false, "shows this help document and quits.")
 			    .addOption("am", "animal-model-data", false, "imports animal model data.")
 			    .addOption("cl", "cell-line-data", false, "imports cell line data.")
+                .addOption("ch", "cache", false, "populates caches for faster functionality.")
 			    .addOption("cp", "compound-data", false, "imports compound data.")
 			    .addOption("g", "gene-data", false, "imports gene data.")
                 .addOption("p", "protein-data", false, "imports protein data.")
@@ -117,6 +122,16 @@ public class DashboardAdminMain {
 			if( commandLine.hasOption("t") ) {
                 launchJob("taxonomyDataImporterJob");
 			}
+
+            if( commandLine.hasOption("ch") ) {
+                List<CachePopulator> cachePopulatorList = (List<CachePopulator>) appContext.getBean("populatorList");
+                for (CachePopulator cachePopulator : cachePopulatorList) {
+                    log.info("Running cachePopulator: " + cachePopulator.getClass().getSimpleName());
+                    cachePopulator.populate();
+                }
+                log.info("All cache populators were run.");
+                CacheManager.getInstance().shutdown();
+            }
 
             if( commandLine.hasOption("i") ) {
                 DashboardDao dashboardDao = (DashboardDao) appContext.getBean("dashboardDao");
