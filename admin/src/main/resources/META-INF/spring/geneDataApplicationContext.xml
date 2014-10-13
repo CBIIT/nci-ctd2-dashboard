@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:batch="http://www.springframework.org/schema/batch"
+		xmlns:context="http://www.springframework.org/schema/context"
+        xsi:schemaLocation="http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-2.1.xsd
+							http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+							http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+  <import resource="classpath*:META-INF/spring/adminApplicationContext.xml" />
+  <context:component-scan base-package="gov.nih.nci.ctd2.dashboard.importer.internal" />
+
+  <batch:job id="geneDataImporterJob">
+	<batch:step id="geneDataStep" parent="geneDataSimpleStep">
+	  <batch:tasklet>
+		<batch:chunk reader="geneDataReader" processor="geneDataProcessor" writer="geneDataWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+  </batch:job>
+
+  <bean id="geneDataSimpleStep" class="org.springframework.batch.core.step.item.SimpleStepFactoryBean" abstract="true">
+	<property name="transactionManager" ref="transactionManager" />
+	<property name="jobRepository" ref="jobRepository" />
+	<property name="commitInterval" value="${spring.batch.commit.interval}" />
+  </bean>
+
+  <bean name="geneDataReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+	<property name="resources" value="${gene.data.location}" />
+    <property name="delegate" ref="geneDataItemReader" />
+  </bean>
+
+  <bean id="geneDataItemReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="lineMapper" ref="geneDataLineMapper" />
+  </bean>
+
+  <bean name="geneDataLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+	<property name="fieldSetMapper" ref="geneDataMapper" />
+	<property name="lineTokenizer" ref="geneLineTokenizer" />
+  </bean>
+
+  <bean name="geneLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+	<property name="delimiter" value="\u0009"/>
+  </bean>
+
+</beans>

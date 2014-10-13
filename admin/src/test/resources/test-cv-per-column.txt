@@ -1,0 +1,391 @@
+id	template_name	column_name	subject	evidence	role	mime_type	numeric_units	display_text
+1	broad_beta-catenin_navitoclax	compound_name	compound		perturbagen			compound
+2	broad_beta-catenin_navitoclax	gene_symbol	gene		enriched feature			gene that correlates to sensitivity
+3	broad_beta-catenin_navitoclax	figure_1		file	literature	image/png		"Previous studies have shown interplay between the ROS pathway, WNT pathway, and apoptosis, which may explain the common enriched feature among three compounds, including navitoclax."
+4	broad_beta-catenin_navitoclax	figure_2		file	measured	image/png		The effect of navitoclax on a subset of CCLs was retested in three independent experiments with the seven most sensitive CTNNB1 mutant CCLs (gray bars) and four control lines lacking mutations in CTNNB1 (white bars).
+5	broad_beta-catenin_navitoclax	figure_3		file	measured	image/png		"The effect of navitoclax on caspase 3/7 activation, a marker for induction of apoptosis, was tested on the seven most sensitive CTNNB1 mutant CCLs (gray bars) and four control lines lacking mutations in CTNNB1 (white bars)."
+6	broad_beta-catenin_navitoclax	figure_4		file	measured	image/png		"The response of previously untested CTNNB1 mutant CCLs (red bars) to navitoclax was measured in viability assays, to test the hypothesis that activating mutations in CTNNB1 confer sensitivity to navitoclax."
+7	broad_beta-catenin_navitoclax	figure_5		file	measured	image/png		Treatment of four representative cell lines with the GSK3beta inhibitor CHIR-99021 resulted in (A) significant increase in endogenous CTNNB1 in  RKO and HT29 (non-mutant) cells and (B) relatively little change in HEC59 (non-mutant) and SW48 (S33Y CTNNB1 mutant) cells. 
+8	broad_beta-catenin_navitoclax	figure_6		file	measured	image/png		"Sensitivity to navitoclax was assessed after pre-treatment with CHIR-99021 (red) and compared to DMSO-pretreated controls (black). (A) RKO and (B) HT29 cells, which had increased levels of CTNNB1, showed a 4-fold increase in sensitivity to navitoclax."
+9	broad_beta-catenin_navitoclax	tier1_evidence		url	context			Tier 1 evidence
+10	columbia_marina_analysis	probeset_id		label	context			Affymetrix probeset id
+11	columbia_marina_analysis	disease_condition	tissue_sample		histology type			condition or disease investigated
+12	columbia_marina_analysis	tissue		label	context			tissue from which sample obtained
+13	columbia_marina_analysis	cell_type		label	context			cell type
+14	columbia_marina_analysis	cell_lineage	tissue_sample		histology type			cell lineage
+15	columbia_marina_analysis	gene_symbol	gene		enriched regulon			candidate master regulator
+16	columbia_marina_analysis	func_type		label	context			functional type of gene product (transcription factor or signaling molecule)
+17	columbia_marina_analysis	mr_regulon_set_size		numeric	computed			regulon size for each master regulator of phenotype or disease signature
+18	columbia_marina_analysis	mr_gsea_es		numeric	computed			master regulator GSEA enrichment score for gene's regulatory targets in phenotype or disease signature
+19	columbia_marina_analysis	mr_gsea_p_value		numeric	computed			master regulator GSEA p-value for gene's regulatory targets in phenotype or disease signature
+20	columbia_marina_analysis	mr_gsea_fdr		numeric	computed			master regulator GSEA false-discovery rate for enrichment of gene's regulatory targets in phenotype or disease signature
+21	columbia_mra_fet_analysis	disease_condition	tissue_sample		histology type			condition or disease investigated
+22	columbia_mra_fet_analysis	tissue	tissue_sample		context			tissue from which sample obtained
+23	columbia_mra_fet_analysis	gene_symbol	gene		enriched regulon			candidate master regulator
+24	columbia_mra_fet_analysis	func_type		label	context			functional type of gene product (transcription factor or signaling molecule)
+25	columbia_mra_fet_analysis	mra_regulon_signature_overlap		numeric	computed			number of genes in overlap of regulatory gene regulon with differentially expressed gene signature
+26	columbia_mra_fet_analysis	mra_overlap_rank		numeric	computed			rank of overlap by size among top enriched genes
+27	columbia_mra_fet_analysis	mra_fet_p_value		numeric	computed			FET p-value for enrichment of signature genes in regulon
+28	columbia_mra_fet_analysis	figure_1		file	computed	image/png		"Transcription factors (TFs) involved in regulation of mesenchymal signature targets, along with their top targets, derived from a TCGA dataset using ARACNe, including TFs involved in activation and repression."
+29	columbia_mra_fet_analysis	network_1		file	computed	text/sif		"Transcription factors (TFs) involved in regulation of mesenchymal signature targets, along with their top targets, derived from a TCGA dataset using ARACNe, including TFs involved in activation and repression."
+30	columbia_mra_fet_analysis	network_2		file	computed	text/mra		"Top mesenchymal master regulators with their interactomes, differential expression, and Spearman's correlation"
+31	columbia_mra_fet_analysis	publication_url		url	reference			publication URL
+32	columbia_mra_fet_analysis	publication_reference		label	reference			publication reference
+33	columbia_joint_mr_shrna_diff	probeset_id		label	context			Affymetrix probeset id
+34	columbia_joint_mr_shrna_diff	disease_condition	tissue_sample		histology type			condition or disease investigated
+35	columbia_joint_mr_shrna_diff	cell_line_1	cell_sample		context			first cell line in which shRNA knockdown tested
+36	columbia_joint_mr_shrna_diff	cell_line_2	cell_sample		context			second cell line in which shRNA knockdown tested
+37	columbia_joint_mr_shrna_diff	gene_symbol	gene		enriched feature			candidate master regulator
+38	columbia_joint_mr_shrna_diff	func_type		label	context			functional type of gene product (transcription factor or signaling molecule)
+39	columbia_joint_mr_shrna_diff	mr_regulon_set_size		numeric	computed			regulon size for each master regulator of phenotype or disease signature
+40	columbia_joint_mr_shrna_diff	mr_gsea_es		numeric	computed			master regulator GSEA enrichment score for gene's regulatory targets in phenotype or disease signature
+41	columbia_joint_mr_shrna_diff	mr_gsea_p_value		numeric	computed			master regulator GSEA p-value for gene's regulatory targets in phenotype or disease signature
+42	columbia_joint_mr_shrna_diff	mr_gsea_fdr		numeric	computed			master regulator GSEA false-discovery rate for enrichment of gene's regulatory targets in phenotype or disease signature
+43	columbia_joint_mr_shrna_diff	num_shRNAs		numeric	context			number of shRNA hairpins for gene in the tested library
+44	columbia_joint_mr_shrna_diff	shrna_diff_rep_z_score_combined		numeric	computed			combined z-statistic  for shRNA knockdown differential representation in both cell lines
+45	columbia_joint_mr_shrna_diff	shrna_diff_rep_p_value_combined		numeric	computed			combined p-value for shRNA knockdown differential representation in both cell lines
+46	columbia_joint_mr_shrna_diff	shrna_diff_rep_fdr_combined		numeric	computed			Benjamini-Hochberg false-discovery rate for shRNA knockdown differential representation in both cell lines
+47	columbia_joint_mr_shrna_diff	shrna_diff_rep_net_direction_combined		label	context			direction of net significant shRNA knockdown differential representation in both cell lines
+48	columbia_joint_mr_shrna_diff	nci_portal		url	measured			link to source data
+49	columbia_gbm_mrs	disease_condition	tissue_sample		histology type			Grade III and IV Glioma
+50	columbia_gbm_mrs	gene_symbol_1	gene		master regulator			Encodes C/EBP-beta
+51	columbia_gbm_mrs	gene_symbol_2	gene		master regulator			Encodes C/EBP-delta
+52	columbia_gbm_mrs	gene_symbol_3	gene		master regulator			Encodes STAT3 transcription factor
+53	columbia_gbm_mrs	publication_reference		url	reference			Journal Article from Columbia about Master Regulator Analysis of GBM
+54	columbia_gbm_mrs	tier1_evidence		url	context			Tier 1 data identifying top master regulators in GBM
+55	columbia_gbm_mrs	story_location		file	written	text/html		Story about Master Regulators from Columbia
+56	cshl_fgf19	gene_symbol_1	gene		oncogene			Oncogene on 11q13 that encodes cyclin D1
+57	cshl_fgf19	gene_symbol_2	gene		oncogene			Additional oncogene on 11q13
+58	cshl_fgf19	gene_symbol_3	gene		oncogene			"Gene for beta-catenin, which is involved in the regulatory activity of FGF19 "
+59	cshl_fgf19	compound_name	compound		drug candidate			Small-molecule inhibitor of FGF19
+60	cshl_fgf19	tissue_sample	tissue_sample		cancer type			condition or disease investigated
+61	cshl_fgf19	publication_reference_1		url	reference			"Journal Article describing  the FGF19-based therapeutic strategy (Sawey et al., 2011)"
+62	cshl_fgf19	publication_reference_2		url	reference			"Novartis Article describing FGFR inhibitor (Guagnano et al., 2012)"
+63	cshl_fgf19	story_location		file	written	text/html		Story about FGF19
+64	dfci_yapyes	gene_symbol_1	gene		context			Encodes beta-catenin
+65	dfci_yapyes	gene_symbol_2	gene		complex component			Parter for beta-catenin and TBX 5 in transcriptional regulatory complex
+66	dfci_yapyes	gene_symbol_3	gene		upstream kinase			Kinase need for YAP1 complex activity
+67	dfci_yapyes	gene_symbol_4	gene		complex component			Partner for beta-catenin and YAP1 in transciptional regulatory complex
+68	dfci_yapyes	gene_symbol_5	gene		transcriptionally regulated gene			Apoptosis-related gene regulated by the complex
+69	dfci_yapyes	gene_symbol_6	gene		transcriptionally regulated gene			Apoptosis-related gene regulated by the complex
+70	dfci_yapyes	compound_name_1	compound		kinase inhibitor			Tyrosine kinase inhibitor
+71	dfci_yapyes	resource_url_1		url	resource			Project Achilles
+72	dfci_yapyes	publication_reference_1		url	reference			Journal Article describing Project Achilles
+73	dfci_yapyes	publication_reference_2		url	reference			Journal Article describing YAP1 results
+74	dfci_yapyes	story_location		file	written	text/html		Story about YAP1 and YES1
+75	utsw_discoi	gene_symbol	gene		oncogene			Encodes receptor tyrosine kinase
+76	utsw_discoi	compound_name_1	compound		drug candidate			Natural product that inhibits DDR2
+77	utsw_discoi	compound_name_2	compound		drug candidate			Natural product that inhibits DDR2
+78	utsw_discoi	compound_name_3	compound		drug candidate			Natural product that inhibits DDR2
+79	utsw_discoi	compound_name_4	compound		drug candidate			Natural product that inhibits DDR2
+80	utsw_discoi	compound_name_5	compound		kinase inhibitor			Tyrosine kinase inhibitor
+81	utsw_discoi	cell_line	cell_sample		cell line			Squamous-cell lung cancer cell line carrying DDR2 mutation 
+82	utsw_discoi	tissue_sample	tissue_sample		cancer type			condition or disease investigated
+83	utsw_discoi	resource_url		url	resource			Project FuSiOn
+84	utsw_discoi	publication_reference_1		url	reference			Journal Article describing  FuSiOn (Potts et al.)
+85	utsw_discoi	publication_reference_2		url	reference			Journal Article describing Disoipyrroles A-D (Hu et al.)
+86	utsw_discoi	story_location		file	written	text/html		Story about Discoipyrroles
+82	dfci_reporter_analysis	target_group		label	context			target group of cell lines
+83	dfci_reporter_analysis	target_group_gene	gene		context			gene that defines target group of cell lines
+84	dfci_reporter_analysis	target_group_alteration		label	context			gene alteration that defines target group of cell lines
+85	dfci_reporter_analysis	number_of_cell_lines		numeric	observed			total number of cell lines used for analysis
+86	dfci_reporter_analysis	number_of_cell_lines_in_target_group		numeric	observed			number of cell lines in target group used for analysis 
+87	dfci_reporter_analysis	gene_symbol	gene		perturbagen			gene targeted by shRNA
+88	dfci_reporter_analysis	p_value		numeric	computed			p-value for differential essentiality
+89	dfci_reporter_analysis	fdr		numeric	computed			Benjamini-Hochberg false-discovery rate for differential essentiality
+90	dfci_reporter_analysis	nci_portal		url	measured			link to source data
+91	dfci_reporter_analysis	gct_path		file	measured	text/gct		ATARiS gene solution data used for analysis (GCT format)
+92	dfci_reporter_analysis	publication_reference		label	reference			publication reference
+93	dfci_reporter_analysis	publication_url		url	reference			publication URL
+94	dfci_ataris_analysis	number_of_cell_lines		numeric	computed			total number of cell lines used for analysis
+95	dfci_ataris_analysis	shRNA_id	shrna		perturbagen			shRNA ID
+96	dfci_ataris_analysis	gene_symbol	gene		perturbagen			gene targeted by shRNA
+97	dfci_ataris_analysis	solution_name		label	context			"ATARiS solution name, including binary indicator of which shRNA is used"
+98	dfci_ataris_analysis	c_score		numeric	computed			consistency score
+99	dfci_ataris_analysis	p_value		numeric	computed			p-value
+100	dfci_ataris_analysis	fdr		numeric	computed			Benjamini-Hochberg false-discovery rate
+101	dfci_ataris_analysis	nci_portal		url	measured			link to source data
+102	dfci_ataris_analysis	shrna_gct_path		file	measured	text/gct		shRNA level data used for analysis (GCT format)
+103	dfci_ataris_analysis	ataris_gct_path		file	computed	text/gct		ATARiS computed gene solution data (GCT format)
+104	dfci_ataris_analysis	publication_reference		label	reference			publication reference
+105	dfci_ataris_analysis	publication_url		url	reference			publication URL
+106	dfci_ovarian_analysis	target_group	tissue_sample		context			target group of cell lines
+107	dfci_ovarian_analysis	number_of_cell_lines		numeric	computed			total number of cell lines used for analysis
+108	dfci_ovarian_analysis	number_of_cell_lines_in_target_group		numeric	computed			number of cell lines in target group used for analysis 
+109	dfci_ovarian_analysis	gene_symbol	gene		perturbagen			gene targeted by shRNA
+110	dfci_ovarian_analysis	gene_scoring		numeric	computed			number of gene summarization methods in which the gene scores
+111	dfci_ovarian_analysis	additional_evidence		label	context			additional genomic evidence to support gene
+112	dfci_ovarian_analysis	nci_portal		url	measured			link to source data
+113	dfci_ovarian_analysis	gct_path		file	measured	text/gct		shRNA level data used for analysis (GCT format)
+114	dfci_ovarian_analysis	publication_reference		label	reference			publication reference
+115	dfci_ovarian_analysis	publication_url		url	reference			publication URL
+116	dfci_pax8_tier3	target_group	tissue_sample		context			target group of cell lines
+117	dfci_pax8_tier3	gene_symbol	gene		perturbagen			paired box 8  gene
+118	dfci_pax8_tier3	figure_1		file	measured	image/png		PAX8 is the top ranked differentially expressed gene between ovarian and non- ovarian cell lines.
+119	dfci_pax8_tier3	figure_2		file	measured	image/png		"PAX8 is genomically amplified in primary high grade serous ovarian cancers (amplifcation is red, deletion is blue)."
+120	dfci_pax8_tier3	figure_3		file	measured	image/png		There is significant difference in the degree of PAX8 depletion by a PAX8 shRNA reagent in high PAX8 expressing cancer cell lines and low PAX8 expressing cell lines.
+121	dfci_pax8_tier3	figure_4		file	measured	image/png		PAX8 suppression by an shRNA reagent leads to a reduction in viability of ovarian cell lines with either high PAX8 mRNA levels or high PAX8 copy number (red labels are amplified lines).
+122	dfci_pax8_tier3	figure_5		file	measured	image/png		PAX8 suppression by an shRNA reagent leads to apoptosis in ovarian cancer lines with high PAX8 copy number (immunoblot of poly(ADP-ribose) ploymerase).
+123	dfci_pax8_tier3	tier2_evidence		url	context			Tier 2 evidence
+124	dfci_pax8_tier3	publication_reference		label	reference			publication reference
+125	dfci_pax8_tier3	publication_url		url	reference			publication URL
+126	fhcrc-m_tier1_cst_profiling	gene_symbol	gene		enriched feature			gene with potentially cancer-selective isoform
+127	fhcrc-m_tier1_cst_profiling	splice_junction		label	context			potentially cancer-selective splicing event
+128	fhcrc-m_tier1_cst_profiling	disease_condition	tissue_sample		histology type			condition or disease investigated
+129	fhcrc-m_tier1_cst_profiling	number_of_tumor_samples		numeric	computed			number of tumor samples considered
+130	fhcrc-m_tier1_cst_profiling	number_of_tumor_samples_with_junction		numeric	computed			number of tumor samples in which junction was observed
+131	fhcrc-m_tier1_cst_profiling	average_number_of_supporting_reads		numeric	computed			average number of supporting junction-spanning reads
+132	fhcrc-m_tier1_cst_profiling	number_of_samples_with_supporting_rpts		numeric	computed			number of tumor samples with supporting ribosome protected tags
+133	fhcrc-m_tier1_cst_profiling	junction_type		label	computed			junction type
+134	fhcrc-m_tier1_cst_profiling	is_observed_in_ip_tissue		label	observed			observed in additional immune privileged tissues
+135	fhcrc-m_tier1_cst_profiling	has_suporting_ests		label	computed			junction has supporting ESTs
+136	fhcrc-m_tier1_cst_profiling	genomic_reference_assembly		label	context			genomic reference assembly
+137	utsw_discoipyrrole_tier2_story	compound_name	compound		perturbagen			compound
+138	utsw_discoipyrrole_tier2_story	gene_symbol	gene		enriched feature			gene that correlates to sensitivity
+139	utsw_discoipyrrole_tier2_story	disease_condition	tissue_sample		histology type			condition or disease investigated
+140	utsw_discoipyrrole_tier2_story	target_description		url	context			Discoidin Domain Receptor 2 (DDR2) is a receptor tyrosine kinase implicated in cancer cell proliferation and migration. Sequencing efforts revealed 4% of squamous cell lung carcinomas have mutations in DDR2. DDR2 also has been shown to influence breast cancer  metastases through interaction with SNAIL.
+141	utsw_discoipyrrole_tier2_story	figure_2		file	measured	image/jpg		"Using the FUnctional SIgnature of ONtology (FUSION) assay developed at UTSW that that links bioactive compounds to their mechanism of action, we identified a natural product fraction from  the bacteria Bacillus Huananensis (SNA-048) that was predicted to inhibit the DDR2 signaling pathway."
+142	utsw_discoipyrrole_tier2_story	figure_3		file	context	image/jpg		"Chemical structures of discoipyrroles A-D, a novel family of natural products that are inhibitors of cell migration through inhibition of the DDR2 signaling pathway."
+143	utsw_discoipyrrole_tier2_story	figure_4		file	measured	image/jpg		"A 2D matrigel cell migration assay with BR5 fibroblasts shows significant inhibition of migration with discoipyrrole A, B and D at 1 µM, while discoipyrrole C is less active."
+144	utsw_discoipyrrole_tier2_story	figure_5		file	measured	image/jpg		Quantification of 2D matrigel cell migration assay for discoipyrroles A-D. 
+145	utsw_discoipyrrole_tier2_story	figure_6		file	measured	image/jpg		IC50 curves of discoipyrrole A against three lung cancer cell lines. HCC366 and H2286 are DDR2 mutant cell lines (HCC366: L293R; H2286: I638F). IC50 values measured using CellTiter Glo assay
+146	utsw_discoipyrrole_tier2_story	figure_7		file	measured	image/jpg		"Table of IC50 values for discoipyrroles A-D against HCC366, H2286 and A549"
+147	utsw_discoipyrrole_tier2_story	publication_url		url	reference			publication URL
+148	utsw_discoipyrrole_tier2_story	publication_reference		label	reference			publication reference
+149	ucsf_differential_expression	probeset_id		label	context			Affymetrix probeset id
+150	ucsf_differential_expression	mutated_gene_condition		label	context			gene alteration
+151	ucsf_differential_expression	mutated_gene_id	gene		oncogene			gene altered in mouse strain
+152	ucsf_differential_expression	species		label	context			species
+153	ucsf_differential_expression	strain_background	animal_model		context			mouse strain
+154	ucsf_differential_expression	tissue		label	context			tissue from which sample obtained
+155	ucsf_differential_expression	gene_id	gene		enriched feature			differentially expressed gene
+156	ucsf_differential_expression	sample_group_1		label	context			differential expression group 1
+157	ucsf_differential_expression	sample_group_2		label	context			differential expression group 2
+158	ucsf_differential_expression	t_statistic		numeric	computed			adjusted t statistic from Significance Analysis of Microarrays
+159	ucsf_differential_expression	fold_change		numeric	computed			fold change
+160	ucsf_differential_expression	q_value		numeric	computed			q value (zero indicates q < 0.001)
+161	emory_PPI_analysis	cell_line	cell_sample		cell line			cell line used for HT PPI assay
+162	emory_PPI_analysis	gene_symbol_1	gene		interactor			gene1 of pairwise transfection
+163	emory_PPI_analysis	gene_symbol_2	gene		interactor			gene2 of pairwise transfection
+164	emory_PPI_analysis	assay_type		label	context			assay used for detection of protein-protein interactions
+165	emory_PPI_analysis	number_of_measurements		numeric	computed			total number of measurements used for analysis
+166	emory_PPI_analysis	average_fold_over_control_value		numeric	computed			average fold-over control value
+167	emory_PPI_analysis	p_value		numeric	computed			ANOVA p-value
+168	emory_PPI_analysis	nci_portal		url	measured			link to source data
+169	mskcc_foretinib	species		label	context			species in which experiments were performed
+170	mskcc_foretinib	tissue	tissue_sample		context			subcutaneously transplanted tumor burden
+171	mskcc_foretinib	disease_condition	tissue_sample		histology type			condition or disease investigated
+172	mskcc_foretinib	gene_symbol	gene		oncogene			oncogene whose fusions support liver cancer development
+173	mskcc_foretinib	compound	compound		inhibitor			"kinase inhibitor predicted to target cmet, vegfr2 and ros1"
+174	mskcc_foretinib	control_compound	compound		control			"control compound, inhibitor of ALK/ROS inhibitor"
+175	mskcc_foretinib	figure_4a		file	observed	image/png		"Mice injected with cells lines generated from AKP cells expressing FIG-ROS or a short hairpin RNA against Pten (shPten) as a control were treated with Foretinib, Crizotinib (the current first-line therapy in ROS-rearranged malignancies) or vehicle for nine consecutive days."
+176	mskcc_foretinib	figure_4b		file	measured	image/png		"Foretinib expressing tumors responded dramatically, while crizotinib achieved only modest effects in FIG-ROS bearing tumors."
+177	mskcc_foretinib	figure_5a		file	measured	image/png		Foretinib retains inhibitory efficacy in cells engineered to express a point mutation that conferred crizotinib resistance in a lung cancer patient harboring a ROS fusion and is a promising first- or second line therapy in the treatment of ROS-rearranged malignancies. 
+178	mskcc_foretinib	publication_reference1		label	reference			publication reference
+179	mskcc_foretinib	publication_url1		url	reference			publication URL
+180	mskcc_foretinib	publication_reference2		label	reference			publication reference
+181	mskcc_foretinib	publication_url2		url	reference			publication URL
+182	mskcc_figros	species		label	context			species in which in vivo experiments were performed
+183	mskcc_figros	tissue	tissue_sample		context			subcapsular transplanted tumor burden
+184	mskcc_figros	disease_condition	tissue_sample		histology type			condition or disease investigated
+185	mskcc_figros	strain	animal_model		context			strain
+186	mskcc_figros	gene_symbol1	gene		oncogene			fused-in-glioblastoma-c-ros-oncogene1 
+187	mskcc_figros	gene_symbol2	gene		oncogene			fused-in-glioblastoma-c-ros-oncogene1 
+188	mskcc_figros	figure_1B		file	measured	image/png		"AlbCre;p53lslR172H/flox  cells (termed AP cells) overexpressing KrasG12D lead to formation of CK19 positive cholangiocarcinoma displaying hallmark features like ductal structures and stromal desmoplasia, while introduction of c-myc into the same fetal liver cell isolate leads to development of hepatocellular carcinoma."
+189	mskcc_figros	figure_2A		file	measured	image/png		Expression of the FIG-ROS fusion in AlbCre;p53lslR172H/flox ;KraslslG12D/wt  (AKP cells) dramatically accelerates tumor growth.
+190	mskcc_figros	figure_2B		file	measured	image/png		Expression of the FIG-ROS fusion in AlbCre;p53lslR172H/flox ;KraslslG12D/wt  (AKP cells) reduces survival.
+191	mskcc_figros	figure_3A		file	measured	image/png		Reversible expression of FIG-ROS fusion using TET-on systems demonstrates the role of the fusion oncogene in cancer maintenance. Mice injected with AKP cells transduced with doxycycline-inducible FIG-ROS expression systems exhibit rapid tumor growth while tumor growth is abrogated in mice in which FIG-ROS expression is stalled as shown in histological sections.
+192	mskcc_figros	figure_3B		file	measured	image/png		Reversible expression of FIG-ROS fusion using TET-on systems demonstrates the role of the fusion oncogene in cancer maintenance. Mice injected with AKP cells transduced with doxycycline-inducible FIG-ROS expression systems exhibit rapid tumor growth while tumor growth is abrogated in mice in which FIG-ROS expression is stalled as measured by tumor volume.
+193	mskcc_figros	publication_reference		label	reference			publication reference
+194	mskcc_figros	publication_url		url	reference			publication URL
+195	stanford_methylmix	disease_condition	tissue_sample		context			condition or disease investigated
+196	stanford_methylmix	tissue	tissue_sample		primary site			tissue from which sample obtained
+197	stanford_methylmix	cell_type		label	cell type			cell type
+198	stanford_methylmix	gene_symbol	gene		driver			MethylMix driver
+199	stanford_methylmix	differential_methylation_status		label	computed			differential methylation status
+200	stanford_methylmix	prevalence		numeric	computed			prevalence of event in studied population in %
+201	stanford_methylmix	differential_methylation_pvalue		numeric	computed			p-value difference from normal methylation
+202	stanford_methylmix	proportion_variance_explained		numeric	computed			proportion expression variation explained by methylation in %
+203	stanford_methylmix	rna_fold_change		numeric	computed			RNA fold change
+204	mda_endo_mutation_BaF3	number_of_mutations		numeric	context			total number of abberration performed
+205	mda_endo_mutation_BaF3	gene_symbol	gene		driver			gene identified as having a driving mutation in endometrial cancer
+206	mda_endo_mutation_BaF3	cell_line	cell_sample		cell line			cell line used to identify driver mutations in endometrial cancer
+207	mda_endo_mutation_BaF3	aberration		label	context			aberration of driver gene
+208	mda_endo_mutation_BaF3	disease_condition	tissue_sample		context			condition or disease investigated
+209	mda_endo_mutation_BaF3	cell_growth_avr		numeric	measured			fluoresence reading of cell numbers measured by cell presto blue average of triplicates
+210	mda_endo_mutation_BaF3	cell_growth_sd		numeric	measured			"fluoresence reading of cell numbers, standard deviation of triplicates"
+211	mda_endo_mutation_BaF3	fold_change_avr		numeric	measured			"number of Ba/F3 cell growth reading, measured by cell presto blue, fold change of average of triplicates"
+212	mda_endo_mutation_BaF3	fold_change_sd		numeric	measured			"number of Ba/F3 cell growth reading, standard deviation of triplicates"
+213	mda_endo_mutation_BaF3	nci_portal		url	measured			link to source data
+214	mskcc_brd4aml_brd4	cell_line	cell_sample		context			cell line in which shRNA knockdown tested
+215	mskcc_brd4aml_brd4	disease_condition	tissue_sample		histology type			condition or disease investigated
+216	mskcc_brd4aml_brd4	gene_symbol	gene		tumor maintenance gene 			bromodomain containing 4 
+217	mskcc_brd4aml_brd4	figure_1a		file	measured	image/png		Depletion representation of shRNAs from custom pool after 14 days in culture of  MLL-AF9/NrasG12D leukemia depicts Brd4 as highly depleted
+218	mskcc_brd4aml_brd4	figure_1b		file	measured	image/png		GFP-positive MLL-AF9/NrasG12D leukemia cells after transduction with LMN constructs expressing Brd4 or control shRenilla shows Brd4 depletion after doxycycline induction as well as knockdown in whole lysate western blots
+219	mskcc_brd4aml_brd4	publication_reference		label	reference			publication reference
+220	mskcc_brd4aml_brd4	publication_url		url	reference			publication URL
+221	mskcc_brd4aml_jq1	species		label	context			species in which experiments were performed
+222	mskcc_brd4aml_jq1	cell_line	cell_sample		context			cell line in which shRNA knockdown tested
+223	mskcc_brd4aml_jq1	disease_condition	tissue_sample		histology type			condition or disease investigated
+224	mskcc_brd4aml_jq1	compound	compound		inhibitor			a small-molecule inhibitor of BET bromodomains
+225	mskcc_brd4aml_jq1	gene_symbol	gene		tumor maintenance gene 			bromodomain containing 4 
+226	mskcc_brd4aml_jq1	gene_pathway	gene		oncogene			AML driving gene
+227	mskcc_brd4aml_jq1	figure_2a		file	measured	image/png		"JQ1, a small-molecule inhibitor of BET bromodomains, inhibits proliferation of mouse MLL-fusion leukemia cells."
+228	mskcc_brd4aml_jq1	figure_2b		file	measured	image/png		Growth-inhibitory effects of JQ1 in a series of established human leukemia cell lines representing diverse disease subtypes indicate a suppressive activity of JQ1. 
+229	mskcc_brd4aml_jq1	figure_3a		file	observed	image/png		MLL-AF9/NrasG12D leukemia recipient mice treated with JQ1 show a delay in disease progression based on bioluminescence imaging.
+230	mskcc_brd4aml_jq1	figure_3b		file	observed	image/png		Kaplan–Meier survival curves of control and JQ1-treated MLL-AF9/NrasG12D leuk emia recipient mice show extended in survival in treated mice. 
+231	mskcc_brd4aml_jq1	figure_4a		file	observed	image/png		MLL-AF9/NrasG12D leukemia cells after 2?days of doxycycline-induced shRNA expression in leukemia cells from myelomonocytic blasts to cells with a macrophage-like appearance .
+232	mskcc_brd4aml_jq1	figure_4b		file	observed	image/png		MLL-AF9/NrasG12D leukemia cells after or 2?days of JQ1 treatment (100?nM) expression in leukemia cells from myelomonocytic blasts to cells with a macrophage-like appearance.
+233	mskcc_brd4aml_jq1	figure_5a		file	measured	image/png		"Brd4 inhibition with shRNAs or JQ1 led to a marked reduction of mRNA and protein levels of Myc in MLL-AF9/NrasG12D leukemia, whereas these effects were minimal in MEF and G1E cells."
+234	mskcc_brd4aml_jq1	figure_5b		file	observed	image/png		Western blotting of whole-cell lysates prepared from MLL-AF9/NrasG12D leukemia cells treated with DMSO or 250?nM JQ1 show Myc depletion in treated cells.
+235	mskcc_brd4aml_jq1	publication_reference		label	reference			publication reference
+236	mskcc_brd4aml_jq1	publication_url		url	reference			publication URL
+237	mskcc_pdgfrb	species		label	context			species in which in vivo experiments were performed
+238	mskcc_pdgfrb	animal_model		label	genotype			tumor derived cell line used in vitro and in vivo for tail vein  or orthotopic injection 
+239	mskcc_pdgfrb	metastasis	tissue_sample		histology type			condition or disease investigated
+240	mskcc_pdgfrb	disease_condition	tissue_sample		histology type			condition or disease investigated
+241	mskcc_pdgfrb	strain	animal_model		context			strain
+242	mskcc_pdgfrb	gene_symbol1	gene		oncogene			platelet-derived growth factor receptor beta 
+243	mskcc_pdgfrb	gene_symbol2	gene		oncogene			p53 tumor suppressor
+244	mskcc_pdgfrb	figure_1A		file	measured	image/png		KPC+sh.p53 and +sh.Ctrl as well as KPflC cells expressing the GFP control and mutant p53 (175H and 273H) vector were allowed to invade into Collagen for 72 h before quantification
+245	mskcc_pdgfrb	figure_1B		file	measured	image/png		"KPC+sh.p53 or +sh.Ctrl were orthotopically injected into the pancreata of athymic mice. When symptomatic, mice were euthanized and metastatic spread in lung and liver was quantified by counting GFP-positive macroscopic nodules."
+246	mskcc_pdgfrb	figure_2		file	measured	image/png		One-by-one invasion assay screen used to quantify KPC cell invasion cells infected with individual shRNA-pools (~3.6 shRNAs/gene) targeting the top 40 upregulated genes identified by RNAseq.  
+247	mskcc_pdgfrb	figure_3		file	measured	image/png		"Lung colonization assays after tail vein injection of KPC cells +sh.PDGFRa, +sh.PDGFRb (1 or 2), +sh.p53, or +sh.Ctrl. Total number of lung metastatic nodules in individual mice (n>6) was counted on serial histological sections Representative merged brightfield/GFP images of whole lung from indicated mice"
+248	mskcc_pdgfrb	reference_url		url	reference			Screen identifying PDGFRb as a Downstream Mediator of Mutant p53 in Regulating Cell Invasion
+249	mskcc_pdgfrb	publication_reference		label	reference			publication reference
+250	mskcc_pdgfrb	publication_url		url	reference			publication URL
+251	mskcc_pdgfrb_imatinib	animal_model		label	genotype			tumor derived cell line used in vitro and in vivo for tail vein  or orthotopic injection 
+252	mskcc_pdgfrb_imatinib	species		label	context			species in which experiments were performed
+253	mskcc_pdgfrb_imatinib	disease_condition	tissue_sample		histology type			condition or disease investigated
+254	mskcc_pdgfrb_imatinib	metastasis	tissue_sample		histology type			condition or disease investigated
+255	mskcc_pdgfrb_imatinib	gene_symbol1	gene		oncogene			platelet-derived growth factor receptor beta acting as a downstream mediator of mutant p53 in regulating cell invasion and metastasis
+256	mskcc_pdgfrb_imatinib	gene_symbol2	gene		oncogene			gain of function p53 mutant 
+257	mskcc_pdgfrb_imatinib	compound	compound		inhibitor			"potent inhibitor of PDGFRb, c-KIT, and BCR-ABL activity"
+258	mskcc_pdgfrb_imatinib	figure_4a		file	observed	image/png		Weight of pancreatic tumors of KPC mice treated with vehicle or imatinib at time of death. 
+259	mskcc_pdgfrb_imatinib	figure_4b		file	measured	image/png		Quantification of the number of mice with metastatic disease at the time of death. Values are percentages of the total number of mice in each cohort. Colored columns represent mice with metastases (METS) and white columns represent disease-free (DF) animals. 
+260	mskcc_pdgfrb_imatinib	figure_4c		file	measured	image/png		"Quantification of the number of mice with lung, peritoneal (Peri.) or liver metastatic disease at the time of death. Values are percentages of the total number of mice in each cohort."
+261	mskcc_pdgfrb_imatinib	publication_reference1		label	reference			publication reference
+262	mskcc_pdgfrb_imatinib	publication_url		url	reference			publication URL
+263	mskcc_pdgfrb_human	species		label	context			species in which tissue samples were derived
+264	mskcc_pdgfrb_human	disease_condition	tissue_sample		histology type			condition or disease investigated
+265	mskcc_pdgfrb_human	tissue	tissue_sample		context			tissue from which sample obtained
+266	mskcc_pdgfrb_human	gene_symbol	gene		oncogene			platelet-derived growth factor receptor beta acting as a downstream mediator of mutant p53 in regulating  metastasis
+267	mskcc_pdgfrb_human	figure_5a		file	measured	image/png		Kaplan-Meier survival curves of 103 pancreatic cancer patients (clinical variable = DFS) as a function of PDGFRb-high versus PDGFRb-low expressing tumors.
+268	mskcc_pdgfrb_human	figure_5b		file	measured	image/png		Stratification of human PDAC samples (n = 961) based on high and low pPDGFRb and p53 expression levels. Chi-Square test was performed (p = 0.009). p53 and pPDGFRb levels were assessed by IHC and scored using a relative scale from 0 to 3.
+269	mskcc_pdgfrb_human	sample_url		url	reference			"PDAC human tissue samples from International Cancer Genome Consortium (ICGC) pancreatic cancer project including gene expression data from 103 primary tumor samples, 89 of which contain disease-free survival and clinicopathological annotations, and used in the survival analysis"
+270	mskcc_pdgfrb_human	publication_reference1		label	reference			publication reference
+271	mskcc_pdgfrb_human	publication_url1		url	reference			publication URL
+272	cshl_avgmeasure	gene_symbol	gene		cadidate oncogene			candidate amplified oncogenes
+273	cshl_avgmeasure	tumor_type	tissue_sample		histology type			condition or disease investigated
+274	cshl_avgmeasure	gene_type		label	context			candidate gene type
+275	cshl_avgmeasure	avg_tumor_volume_day_0		numeric	measured			average tumor volume measured at day 0
+276	cshl_avgmeasure	avg_tumor_volume_day_7		numeric	measured			average tumor volume measured at day 7
+277	cshl_avgmeasure	avg_tumor_volume_day_14		numeric	measured			average tumor volume measured at day 14
+278	cshl_avgmeasure	avg_tumor_volume_day_21		numeric	measured			average tumor volume measured at day 21
+279	cshl_avgmeasure	avg_tumor_volume_day_28		numeric	measured			average tumor volume measured at day 28
+280	cshl_avgmeasure	avg_tumor_volume_day_35		numeric	measured			average tumor volume measured at day 35
+281	cshl_avgmeasure	avg_tumor_volume_day_42		numeric	measured			average tumor volume measured at day 42
+282	cshl_avgmeasure	injections		numeric	observed			number of mouses injected
+283	cshl_avgmeasure	tumor_count		numeric	observed			number of tumors which sizes are greater than 0.1
+284	cshl_mouselivers	tumor_type	tissue_sample		histology type			condition or disease investigated
+285	cshl_mouselivers	gene_symbol	gene		cadidate oncogene			amplified gene
+286	cshl_mouselivers	figure1		file	observed	image/jpeg		"Images of mouse livers and liver sections taken eight weeks following transplantation of p53-/-;Myc hepatoblasts expressing amplified gene. The five panel columns are, from left to right, intact livers; fluorescent imaging of intact liver for GFP-positive transplanted cells; hematoxylin and eosin staining of liver tissue sections showing the border between normal liver and carcinoma(arrows); immunohistochemical detection of GFP; and immunohistochemical detection of PCNA. The last three are from the same tissue block. Size bar = 100?m."
+287	cshl_mouselivers	figure2		file	observed	image/jpeg		"Images of mouse livers and liver sections taken eight weeks following transplantation of p53-/-;Myc hepatoblasts expressing either empty vector. The five panel columns are, from left to right, intact livers; fluorescent imaging of intact liver for GFP-positive transplanted cells; hematoxylin and eosin staining of liver tissue sections showing the border between normal liver and carcinoma(arrows); immunohistochemical detection of GFP; and immunohistochemical detection of PCNA. The last three are from the same tissue block. Size bar = 100?m."
+288	cshl_coexpr	tumor_type	tissue_sample		histology type			condition or disease investigated
+289	cshl_coexpr	gene_symbol1	gene		cadidate oncogene			gene required for tumorigenic phenotypes in 11q13.3 amplified cell lines 
+290	cshl_coexpr	gene_symbol2	gene		cadidate oncogene			gene required for tumorigenic phenotypes in 11q13.3 amplified cell lines 
+291	cshl_coexpr	figure1		file	observed	image/jpeg		"Quantification of clonogenicity in six cell lines (three with 11q13.3 amplification and three without) infected with shRNAs against FGF19 (19K4 and 19K5) and CCND1 (D1K2 and D1K4) relative to a shRNA against luciferase (control). For each of the six cell lines, the results are displayed in this order (from left to right): cells infected with control shRNA (blue column), 19K4 and 19K5 shRNAs (green columns), and D1K2 and D1K4 shRNAs (yellow columns) (n=3, *p<0.001)."
+292	cshl_coexpr	figure2		file	observed	image/jpeg		"Subcutaneous tumor growth in nude mice of 11q13.3 amplified Huh-7 cells (left panel) and JHH-7 cells (right panel) infected with indicated shRNAs (n=12 injections, *p<0.005, for  Huh-7; n=10 injections, *p<0.01, **p<0.0001, for JHH-7)."
+293	dfci_arid1a_mut_analysis	gene_symbol	gene		perturbagen			gene targeted by shRNA
+294	dfci_arid1a_mut_analysis	gene_summarization_method		label	computed			method for summarizing shRNA scores into gene scores
+295	dfci_arid1a_mut_analysis	target_group		label	context			target group of cell lines
+296	dfci_arid1a_mut_analysis	target_group_gene	gene		context			gene that defines target group of cell lines
+297	dfci_arid1a_mut_analysis	target_group_alteration		label	context			gene alteration that defines target group of cell lines
+298	dfci_arid1a_mut_analysis	number_of_cell_lines		numeric	observed			total number of cell lines used for analysis
+299	dfci_arid1a_mut_analysis	number_of_cell_lines_in_target_group		numeric	observed			total number of cell lines in target group used for analysis
+300	dfci_arid1a_mut_analysis	RNMI_score		numeric	computed			RNMI (rank normalized mutual information) score
+301	dfci_arid1a_mut_analysis	p_value		numeric	computed			"p-value (global, by permutation)"
+302	dfci_arid1a_mut_analysis	fdr		numeric	computed			Benjamini-Hochberg false-discovery rate
+303	dfci_arid1a_mut_analysis	publication_reference		label	reference			publication reference
+304	dfci_arid1a_mut_analysis	publication_url		url	reference			publication URL
+305	dfci_arid1a_mut_analysis	nci_portal		url	measured			link to source data
+306	dfci_arid1b_dependency	target_group		label	context			target group of cell lines
+307	dfci_arid1b_dependency	gene_symbol	gene		perturbagen			AT rich interactive domain 1B (SWI1-like)
+308	dfci_arid1b_dependency	figure_1		file	measured	image/png		ARID1B is the top scoring candidate preferentially required for the survival of inactivating ARID1A-mutant cancer cell lines compared to non-inactivating mutant or wildtype lines. 
+309	dfci_arid1b_dependency	figure_2		file	measured	image/png		Cell lines with inactivating mutations in ARID1A exhibit more pronounced vulnerability to reduced levels of ARID1B. Red lines are cell lines containing all ARID1A mutations (top panel) and inactivating ARID1A mutations (bottom panel).
+310	dfci_arid1b_dependency	figure_3		file	measured	image/png		"ARID1B is depleted by shRNA reagents targeting ARID1B in both cell lines containing ARID1A inactivating mutations and ARID1A-wild-type cell lines, shown by immunoblot."
+311	dfci_arid1b_dependency	figure_4		file	measured	image/png		"Reduced levels of ARID1B do not effect the proliferation of ARID1A wildtype cells (top plots), but does impair proliferation of ARID1A-mutant cell lines (bottom plots)."
+312	dfci_arid1b_dependency	figure_5		file	measured	image/png		"ARID1B knockdown results in reduced colony formation of ARID1A-mutant cell lines, while colony formation is not affected upon ARID1B knockdown in ARID1A-wild-type cell lines."
+313	dfci_arid1b_dependency	tier2_evidence		url	context			Tier 2 evidence
+314	dfci_arid1b_dependency	publication_reference		label	reference			publication reference
+315	dfci_arid1b_dependency	publication_url		url	reference			publication URL
+316	dfci_smarca4_mut_analysis	gene_symbol	gene		perturbagen			gene targeted by shRNA
+317	dfci_smarca4_mut_analysis	gene_summarization_method		label	computed			method for summarizing shRNA scores into gene scores
+318	dfci_smarca4_mut_analysis	target_group		label	context			target group of cell lines
+319	dfci_smarca4_mut_analysis	target_group_gene	gene		context			gene that defines target group of cell lines
+320	dfci_smarca4_mut_analysis	target_group_alteration		label	context			gene alteration that defines target group of cell lines
+321	dfci_smarca4_mut_analysis	number_of_cell_lines		numeric	observed			total number of cell lines used for analysis
+322	dfci_smarca4_mut_analysis	number_of_cell_lines_in_target_group		numeric	observed			total number of cell lines in target group used for analysis
+323	dfci_smarca4_mut_analysis	RNMI_score		numeric	computed			RNMI (rank normalized mutual information) score
+324	dfci_smarca4_mut_analysis	p_value		numeric	computed			"p-value (global, by permutation)"
+325	dfci_smarca4_mut_analysis	fdr		numeric	computed			Benjamini-Hochberg false-discovery rate
+326	dfci_smarca4_mut_analysis	publication_reference		label	reference			publication reference
+327	dfci_smarca4_mut_analysis	publication_url		url	reference			publication URL
+328	dfci_smarca4_mut_analysis	nci_portal		url	measured			link to source data
+329	dfci_smarca2_dependency	target_group		label	context			target group of cell lines
+330	dfci_smarca2_dependency	gene_symbol	gene		perturbagen			"SWI/SNF related, matrix associated, actin dependent regulator of chromatin, subfamily a, member 2"
+331	dfci_smarca2_dependency	figure_1		file	measured	image/png		SMARCA2 is the top scoring cancdidate preferentially required for the survival of inactivating SMARCA4 mutant cancer lines compared to non-inactivating mutant or wildtype lines
+332	dfci_smarca2_dependency	figure_2		file	measured	image/png		Cell lines with inactivating mutations in SMARCA4 are most sensitive to reduced levels of SMARCA2. Red lines are cell lines containing all SMARCA4 mutations (left panel) and inactivating SMARCA4 mutations (right panel).
+333	dfci_smarca2_dependency	figure_3		file	measured	image/png		"Reduced levels of SMARCA2 do not effect the growth of SMARCA4 wildtype cells.  Knockdown of SMARCA2 shown on left immunoblot, colony formation assays shown on right."
+334	dfci_smarca2_dependency	figure_4		file	measured	image/png		"Reduced levels of SMARCA2 do effect the growth of SMARCA4 mutant cells.  Knockdown of SMARCA2 shown on left immunoblot, colony formation assays shown on right."
+335	dfci_smarca2_dependency	tier2_evidence		url	context			Tier 2 evidence
+336	dfci_smarca2_dependency	publication_reference		label	reference			publication reference
+337	dfci_smarca2_dependency	publication_url		url	reference			publication URL
+338	broad_cpd_sens_lineage_enrich	cell_line_subset		label	context			subset of cell lines used in calculated enrichment
+339	broad_cpd_sens_lineage_enrich	cell_line_exclusion		label	context			subset of cell lines excluded from calculated enrichment
+340	broad_cpd_sens_lineage_enrich	feature_data_set		label	context			dataset from which lineage (cancer type) calls were made
+341	broad_cpd_sens_lineage_enrich	compound_name	compound		perturbagen			compound used in cancer cell-line sensitivity profiling
+342	broad_cpd_sens_lineage_enrich	cell_lineage	tissue_sample		enriched feature			lineage that correlates with sensitivity or resistance
+343	broad_cpd_sens_lineage_enrich	number_of_cell_lines		numeric	computed			total number of cell lines used in calculated enrichment
+344	broad_cpd_sens_lineage_enrich	number_of_example_cell_lines		numeric	computed			number of cell lines of lineage used in calculated enrichment
+345	broad_cpd_sens_lineage_enrich	enrichment_direction		label	computed			calculated enrichment direction (sensitive or resistant)
+346	broad_cpd_sens_lineage_enrich	fdr_q_value		numeric	computed			Benjamini-Hochberg false-discovery rate
+347	broad_cpd_sens_lineage_enrich	image_path		file	computed	image/png		compound response and lineage feature heatmap
+348	broad_cpd_sens_lineage_enrich	nci_portal		url	measured			link to source data
+349	broad_cpd_sens_lineage_enrich	gct_path		file	measured	text/gct		data used for analysis (GCT format)
+350	broad_cpd_sens_lineage_enrich	ctrp_portal		url	context			link to Cancer Therapeutics Response Portal
+351	broad_cpd_sens_mutation_enrich	cell_line_subset		label	context			subset of cell lines used in calculated enrichment
+352	broad_cpd_sens_mutation_enrich	cell_line_exclusion		label	context			subset of cell lines excluded from calculated enrichment
+353	broad_cpd_sens_mutation_enrich	feature_data_set		label	context			dataset from which mutant calls were made
+354	broad_cpd_sens_mutation_enrich	compound_name	compound		perturbagen			compound used in cancer cell-line sensitivity profiling
+355	broad_cpd_sens_mutation_enrich	entrez_gene_id	gene		enriched feature			mutated gene that correlates with sensitivity or resistance
+356	broad_cpd_sens_mutation_enrich	number_of_cell_lines		numeric	computed			total number of cell lines used in calculated enrichment
+357	broad_cpd_sens_mutation_enrich	number_of_mutant_cell_lines		numeric	computed			number of mutant cell lines used in calculated enrichment
+358	broad_cpd_sens_mutation_enrich	enrichment_direction		label	computed			calculated enrichment direction (sensitive or resistant)
+359	broad_cpd_sens_mutation_enrich	fdr_q_value		numeric	computed			Benjamini-Hochberg false-discovery rate
+360	broad_cpd_sens_mutation_enrich	image_path		file	computed	image/png		compound response and lineage feature heatmap
+361	broad_cpd_sens_mutation_enrich	nci_portal		url	measured			link to source data
+362	broad_cpd_sens_mutation_enrich	gct_path		file	measured	text/gct		data used for analysis (GCT format)
+363	broad_cpd_sens_mutation_enrich	ctrp_portal		url	context			link to Cancer Therapeutics Response Portal
+364	broad_bcat_nav_story	gene_symbol_1	gene		master regulator			Encodes beta-catenin
+365	broad_bcat_nav_story	gene_symbol_2	gene		complex component			Component of destruction complex for beta catenin
+366	broad_bcat_nav_story	gene_symbol_3	gene		complex component			Component of destruction complex for beta catenin
+367	broad_bcat_nav_story	compound_name_1	compound		drug candidate			Bcl-2 family inhibitor
+368	broad_bcat_nav_story	compound_name_2	compound		drug candidate			inhibits beta-catenin degradation
+369	broad_bcat_nav_story	resource_url_1		url	resource			Cancer Therapeutics Response Portal
+370	broad_bcat_nav_story	resource_url_2		url	resource			Cancer Cell Line Encyclopedia
+371	broad_bcat_nav_story	resource_url_3		url	resource			The Cancer Genome Atlas
+372	broad_bcat_nav_story	publication_reference		url	reference			Journal Article from the Broad about the screening resource as well as the association of beta-catenin with navitoclax sensitivity
+373	broad_bcat_nav_story	story_location		file	written	text/html		Story from the Broad about how mutations affecting beta-catenin stability indicate sensitivity to apoptsis drugs
+374	mskcc_pi3k	species		label	context			species in which in vivo experiments were performed
+375	mskcc_pi3k	animal_model		label	genotype			Pdx1 GEMM-ESCs targeted with a potent shRNA directed against Pten.  Pdx-1-Cre directs pancreas progenitor specific Cre-dependent recombination. LSL-KRAS permits conditional expression of mutant KRAS G12D in cells expressiong Cre.  CHC is a homing coassette for tet-dependent expression of shRNAs. CAGs-LSL-rtTA3-IRES-mKate2 (CAGs-LSL-RIK) expresses a tet-transactivator in a Cre-dependent fashion
+376	mskcc_pi3k	strain	animal_model		context			strain
+377	mskcc_pi3k	disease_condition	tissue_sample		histology type			condition or disease investigated
+378	mskcc_pi3k	gene_symbol1	gene		oncogene			"Oncogene homolog from the mammalian ras gene family, of the small GTPase superfamily."
+379	mskcc_pi3k	mutation		label	context			"KRAS G12D nutation is implicated in various malignancies, including lung adenocarcinoma, mucinous adenoma, ductal carcinoma of the pancreas and colorectal carcinoma."
+380	mskcc_pi3k	gene_symbol2	gene		oncogene			"Lipid phosphatase that acts to dephosphorylate phosphatidylinositol (3,4,5)-triphosphate (PIP3) and thus serves as a negative regulator of the phosphatidylinositide 3-kinase (PI3K) pathway"
+381	mskcc_pi3k	gene_symbol3	gene		context			"The phosphatidylinositide 3-kinase (PI3K)pathway is negatively regulated by tumor suppressor, PTEN, and is commonly altered in a wide range of human tumors. Dysregulation of the PI3K pathway is a key step in tumorigenesis and can be therapeutically targeted."
+382	mskcc_pi3k	figure_2AM		file	observed	image/png		"Chimeric mice generated with the PDAC GEMM-ESCs display KrasG12D-induced neoplasia.(A-D) H&E shows PanIN lesions in chimeric mice generated by the Pdx1 GEMM-ESCs. PanINs are mKate2-positive, as opposed to the abundant stroma, and stain-positive for mucins (Alcian blue). Cytokeratin 19 confirmed ductal differentiation. (E-L) PDAC that developed in a 9-mo-old Pdx1 GEMM-ESC mouse. (E-G) Well-differentiated area from K showing mKate2-expressing invasive glandular lesions. Ductal differentiation was confirmed by CK19 immunohistochemistry in G. (H-J) Poorly differentiated area from K in which cells are mKate2-expressing but mostly stain-negative for cytokeratin 19. (L) Liver metastasis found in the same animal and displaying well-differentiated malignant lesions and abundant stromal desmoplasia. (M) PanINs from a mouse with pancreatic KrasG12D expression, generated by traditional breeding for comparison. Bars, 50 µm if not otherwise specified."
+383	mskcc_pi3k	figure_3BCD		file	measured	image/png		"Rapid tumor regression upon restoration of Pten expression in mice taken off dox food as assessed by three-dimensional ultrasound imaging (each line represents one individual mouse). KM survival curve of shPten mice randomized into on-dox (n = 4) and off-dox (n = 4) treatment arms after detection of an 800- to 1100-mm3 pancreatic tumor.  Four weeks to 6 wk after dox deprivation, pancreata still harbor mKate2-positive neoplastic lesions."
+384	mskcc_pi3k	publication_reference		label	reference			publication reference
+385	mskcc_pi3k	publication_url		url	reference			publication URL
