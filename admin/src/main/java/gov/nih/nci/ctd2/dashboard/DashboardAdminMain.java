@@ -3,6 +3,7 @@ package gov.nih.nci.ctd2.dashboard;
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
 import gov.nih.nci.ctd2.dashboard.importer.internal.SampleImporter;
 import gov.nih.nci.ctd2.dashboard.model.DashboardFactory;
+import gov.nih.nci.ctd2.dashboard.util.SubjectScorer;
 import org.apache.commons.cli.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -50,6 +51,7 @@ public class DashboardAdminMain {
 			    .addOption("cp", "compound-data", false, "imports compound data.")
 			    .addOption("g", "gene-data", false, "imports gene data.")
                 .addOption("p", "protein-data", false, "imports protein data.")
+                .addOption("r", "rank-subjects", false, "prioritize and rank the subjects according to the observation data.")
                 .addOption("sh", "shrna-data", false, "imports shrna data.")
                 .addOption("si", "sirna-data", false, "imports sirna data.")
 			    .addOption("ts", "tissue-sample-data", false, "imports tissue sample data.")
@@ -123,6 +125,11 @@ public class DashboardAdminMain {
 			if( commandLine.hasOption("t") ) {
                 launchJob("taxonomyDataImporterJob");
 			}
+
+            if(commandLine.hasOption("r")) {
+                SubjectScorer subjectScorer = (SubjectScorer) appContext.getBean("subjectScorer");
+                subjectScorer.score();
+            }
 
             if( commandLine.hasOption("i") ) {
                 DashboardDao dashboardDao = (DashboardDao) appContext.getBean("dashboardDao");

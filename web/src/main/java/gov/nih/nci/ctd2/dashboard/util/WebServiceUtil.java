@@ -6,8 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class WebServiceUtil {
     @Autowired
@@ -70,5 +69,46 @@ public class WebServiceUtil {
         return entities;
     }
 
+    @Transactional
+    @Cacheable(value = "exploreCache")
+    public List<SubjectWithSummaries> exploreSubjects(String keyword) {
+        HashSet<Subject> subjects = new HashSet<Subject>();
+        for (ObservedSubject observedSubject : dashboardDao.findObservedSubjectByRole(keyword)) {
+            subjects.add(observedSubject.getSubject());
+        }
 
+        List<SubjectWithSummaries> subjectWithSummariesList = new ArrayList<SubjectWithSummaries>();
+        for (Subject subject : subjects) {
+            SubjectWithSummaries subjectWithSummaries = new SubjectWithSummaries();
+            subjectWithSummaries.setSubject(subject);
+
+            List<ObservedSubject> observedSubjectBySubject = dashboardDao.findObservedSubjectBySubject(subject);
+            subjectWithSummaries.setNumberOfObservations(observedSubjectBySubject.size());
+
+            HashSet<Submission> submissions = new HashSet<Submission>();
+            HashSet<SubmissionCenter>  submissionCenters = new HashSet<SubmissionCenter>();
+            Integer maxTier = 0;
+            for (ObservedSubject observedSubject : observedSubjectBySubject) {
+                Submission submission = observedSubject.getObservation().getSubmission();
+                submissions.add(submission);
+                ObservationTemplate observationTemplate = submission.getObservationTemplate();
+                submissionCenters.add(observationTemplate.getSubmissionCenter());
+                maxTier = Math.max(maxTier, observationTemplate.getTier());
+            }
+
+            subjectWithSummaries.setMaxTier(maxTier);
+            subjectWithSummaries.setNumberOfSubmissions(submissions.size());
+            subjectWithSummaries.setNumberOfSubmissionCenters(submissionCenters.size());
+            subjectWithSummariesList.add(subjectWithSummaries);
+        }
+
+        Collections.sort(subjectWithSummariesList, new Comparator<SubjectWithSummaries>() {
+            @Override
+            public int compare(SubjectWithSummaries o1, SubjectWithSummaries o2) {
+                return o2.getSubject().getScore() - o1.getSubject().getScore();
+            }
+        });
+
+        return subjectWithSummariesList;
+    }
 }
