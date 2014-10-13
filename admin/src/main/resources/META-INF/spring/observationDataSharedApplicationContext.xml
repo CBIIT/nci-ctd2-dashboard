@@ -1120,7 +1120,7 @@
 		<entry key="stanford_elastic_net:elastic_net_rank" value="evidence:readInt:createObservedNumericEvidence" />
 		<entry key="stanford_elastic_net:differential_status" value="evidence:readString:createObservedLabelEvidence" />
 		<entry key="stanford_elastic_net:sample_count" value="evidence:readInt:createObservedNumericEvidence" />
-		<entry key="stanford_elastic_net:mse" value="evidence:readInt:createObservedNumericEvidence" />
+		<entry key="stanford_elastic_net:mse" value="evidence:readDouble:createObservedNumericEvidence" />
 		<entry key="stanford_elastic_net:bootstrapping" value="evidence:readString:createObservedLabelEvidence" />
 		<entry key="stanford_elastic_net:data" value="evidence:readString:createObservedUrlEvidence" />
 		<entry key="stanford_elastic_net:publication" value="evidence:readString:createObservedUrlEvidence" />
