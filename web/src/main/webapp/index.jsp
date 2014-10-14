@@ -46,8 +46,8 @@
             <div class="nav-collapse collapse">
               <ul class="nav topmenu">
                 <li class="active"><a href="#">CTD<sup>2</sup> Dashboard</a></li>
-                <li><a href="#about">About</a></li>
                 <li><a href="#centers">Centers</a></li>
+                <li><a href="#explore">Explore</a></li>
                 <li class="dropdown">
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown">Resources <b class="caret"></b></a>
                       <ul class="dropdown-menu">
@@ -132,7 +132,7 @@
                             </div>
 
                             <div id="show-hide-overview">
-                                <a href="#" class="show-more">(learn more)</a>
+                                <a href="#about" class="show-more">(learn more)</a>
                                 <a href="#" class="show-less hide">(show less)</a>
                             </div>
                         </div>
