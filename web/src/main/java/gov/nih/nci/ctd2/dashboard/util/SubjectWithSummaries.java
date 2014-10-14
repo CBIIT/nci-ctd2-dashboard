@@ -10,6 +10,7 @@ public class SubjectWithSummaries implements Serializable {
     private Integer numberOfSubmissionCenters;
     private Integer numberOfObservations;
     private Integer maxTier;
+    private String role;
 
     public Subject getSubject() {
         return subject;
@@ -49,5 +50,13 @@ public class SubjectWithSummaries implements Serializable {
 
     public void setMaxTier(Integer maxTier) {
         this.maxTier = maxTier;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }
