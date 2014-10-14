@@ -2739,6 +2739,7 @@
             "centers": "listCenters",
             "stories": "listStories",
             "browse/:type/:character": "browse",
+            "explore": "scrollToExplore",
             "explore/:type/:roles": "explore",
             "center/:id": "showCenter",
             "submission/:id": "showSubmission",
@@ -2760,6 +2761,16 @@
             var homeView = new HomeView();
             homeView.render();
             $("a.show-more").trigger('click');
+        },
+
+        scrollToExplore: function() {
+            var homeView = new HomeView();
+            homeView.render();
+
+            var whereTo = $(".ctd2-boxes").offset().top - 5;
+            $('html, body').animate({
+                scrollTop: whereTo
+            }, 500);
         },
 
         search: function(term) {
