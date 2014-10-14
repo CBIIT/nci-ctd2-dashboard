@@ -1,13 +1,16 @@
 package gov.nih.nci.ctd2.dashboard.dao;
 
 import gov.nih.nci.ctd2.dashboard.model.*;
+import gov.nih.nci.ctd2.dashboard.util.DashboardEntityWithCounts;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 public interface DashboardDao {
     void save(DashboardEntity entity);
     void update(DashboardEntity entity);
+    void merge(DashboardEntity entity);
     void delete(DashboardEntity entity);
     <T extends DashboardEntity> T getEntityById(Class<T> entityClass, Integer id);
     Long countEntities(Class<? extends DashboardEntity> entityClass);
@@ -43,12 +46,13 @@ public interface DashboardDao {
     List<ObservedEvidence> findObservedEvidenceByObservation(Observation observation);
     void batchSave(Collection<? extends DashboardEntity> entities, int batchSize);
     void createIndex(int batchSize);
-    java.util.ArrayList<gov.nih.nci.ctd2.dashboard.util.DashboardEntityWithCounts> search(String keyword);
+    ArrayList<DashboardEntityWithCounts> search(String keyword);
     List<Submission> findSubmissionByIsStory(boolean isSubmissionStory, boolean sortByPriority);
     List<Submission> findSubmissionByObservationTemplate(ObservationTemplate observationTemplate);
     Submission findSubmissionByName(String submissionName);
     List<Gene> browseTargets(String startsWith);
     List<Compound> browseCompounds(String startsWith);
     List<ObservationTemplate> findObservationTemplateBySubmissionCenter(SubmissionCenter submissionCenter);
+    List<ObservedSubject> findObservedSubjectByRole(String role);
 }
 

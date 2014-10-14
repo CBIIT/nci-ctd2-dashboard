@@ -512,3 +512,46 @@ div.dark-separator {
     width: 100%;
     background-color: #555555;
 }
+
+.explore-thumbnail h3 {
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+#explore-container .span3 {
+    min-height: 500px;
+}
+
+#explore-container .span4 {
+    min-height: 500px;
+}
+
+.explore-thumbnail img {
+    background-color: white;
+}
+
+h1.target {
+    color: #1ea84d;
+    border-top: 0px;
+}
+
+h1.compound {
+    color: #f99a14;
+    border-top: 0px;
+}
+
+h1.context {
+    color: #006cbb;
+    border-top: 0px;
+}
+
+.numbered-image {
+    background-color: white;
+    background-size: cover;
+    background-position-x: 30px;
+    min-height: 200px;
+}
+
+.nonewline {
+    white-space: nowrap;
+}

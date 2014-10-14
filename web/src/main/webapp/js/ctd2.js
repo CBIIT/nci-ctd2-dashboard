@@ -34,6 +34,18 @@
         }
     });
 
+    // Let datatables know about our date format
+    $.extend($.fn.dataTable.ext.order, {
+        "dashboard-rank": function(settings, col) {
+            return this.api().column( col, {order:'index'} ).nodes().map(
+                function(td, i) {
+                    return $('ul', td).attr("data-score");
+                }
+            );
+        }
+    });
+
+
     /* Models */
     var SubmissionCenter = Backbone.Model.extend({
         urlRoot: CORE_API_URL + "get/center"
@@ -147,6 +159,19 @@
 
     var Subject = Backbone.Model.extend({
         urlRoot: CORE_API_URL + "get/subject"
+    });
+
+    var SubjectWithSummary = Backbone.Model.extend({
+        urlRoot: CORE_API_URL + "get/subject"
+    });
+
+    var SubjectWithSummaryCollection = Backbone.Collection.extend({
+        url: CORE_API_URL + "explore/",
+        model: SubjectWithSummary,
+
+        initialize: function(attributes) {
+            this.url += attributes.roles;
+        }
     });
 
     /* Views */
@@ -1665,6 +1690,14 @@
         }
     });
 
+    var RoleView = Backbone.View.extend({
+        template: _.template($("#role-item-tmpl").html()),
+        render: function() {
+            $(this.el).append(this.template(this.model));
+            return this;
+        }
+    });
+
     var EmptyResultsView = Backbone.View.extend({
         template: _.template($("#search-empty-tmpl").html()),
         render: function() {
@@ -1688,6 +1721,12 @@
             _.each(result.synonyms, function(aSynonym) {
                 var synonymView = new SynonymView({model: aSynonym, el: thatEl});
                 synonymView.render();
+            });
+
+            var thatEl = $("#roles-" + result.id);
+            _.each(model.roles, function(aRole) {
+                var roleView = new RoleView({model: {role: aRole}, el: thatEl});
+                roleView.render();
             });
 
             thatEl = $("#search-image-" + result.id);
@@ -1762,12 +1801,22 @@
                         });
 
                         $(".search-info").tooltip({ placement: "left" });
+                        $(".obs-tooltip").tooltip();
 
                         var oTable = $("#search-results-grid").dataTable({
                             "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
-                            "sPaginationType": "bootstrap"
+                            "sPaginationType": "bootstrap",
+                            "columns": [
+                                null,
+                                null,
+                                null,
+                                null,
+                                { "orderDataType": "dashboard-rank" },
+                                null
+                            ]
+
                         });
-                        oTable.fnSort( [[5, 'desc'], [1, 'asc'], [4, 'asc']] );
+                        oTable.fnSort( [[4, 'desc'], [5, 'desc'], [1, 'asc']] );
 
                         // OK done with the subjects; let's build the submissions table
                         if(submissions.length > 0) {
@@ -2633,12 +2682,64 @@
         }
     });
 
+    var ExploreView = Backbone.View.extend({
+        el: $("#main-container"),
+        template: _.template($("#explore-tmpl").html()),
+
+        render: function() {
+            var thatModel = this.model;
+            $(this.el).html(this.template(thatModel));
+            var subjectWithSummaryCollection = new SubjectWithSummaryCollection(thatModel);
+            subjectWithSummaryCollection.fetch({
+                success: function() {
+                    $("#explore-items").html("");
+
+                    var numberOfEls = subjectWithSummaryCollection.models.length;
+                    var spanSize = numberOfEls < 4 ? "4" : "3";
+                    var order = 1;
+                    _.each(subjectWithSummaryCollection.models, function(subjectWithSummary) {
+                        var sModel = subjectWithSummary.toJSON();
+                        sModel["spanSize"] = spanSize;
+                        sModel["type"] = thatModel.type;
+                        sModel["order"] = order;
+                        if(sModel.subject.class == "Compound") {
+                            _.each(sModel.subject.xrefs, function(xref) {
+                                if(xref.databaseName == "IMAGE") {
+                                    sModel.subject["imageFile"] = xref.databaseId;
+                                }
+                            });
+                        }
+                        var exploreItemView = new ExploreItemView({ model: sModel });
+                        exploreItemView.render();
+                        order++;
+                    });
+
+                    $(".explore-thumbnail h3").tooltip();
+                }
+            });
+
+
+            return this;
+        }
+    });
+
+    var ExploreItemView = Backbone.View.extend({
+        el: "#explore-items",
+        template: _.template($("#explore-item-tmpl").html()),
+
+        render: function() {
+            $(this.el).append(this.template(this.model));
+            return this;
+        }
+    });
+
     /* Routers */
     AppRouter = Backbone.Router.extend({
         routes: {
             "centers": "listCenters",
             "stories": "listStories",
             "browse/:type/:character": "browse",
+            "explore/:type/:roles": "explore",
             "center/:id": "showCenter",
             "submission/:id": "showSubmission",
             "observation/:id": "showObservation",
@@ -2680,6 +2781,16 @@
                 }
             });
             browseView.render();
+        },
+
+        explore: function(type, roles) {
+            var exploreView = new ExploreView({
+                model: {
+                    roles: roles,
+                    type: type
+                }
+            });
+            exploreView.render();
         },
 
         showSubject: function(id) {

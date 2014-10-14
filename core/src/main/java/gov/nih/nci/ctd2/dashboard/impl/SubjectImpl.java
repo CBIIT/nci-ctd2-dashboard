@@ -19,6 +19,7 @@ import java.util.Set;
 public class SubjectImpl extends DashboardEntityImpl implements Subject {
     private Set<Synonym> synonyms = new LinkedHashSet<Synonym>();
     private Set<Xref> xrefs = new LinkedHashSet<Xref>();
+    private Integer score = 0;
 
     @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(targetEntity = SynonymImpl.class, cascade = CascadeType.ALL)
@@ -40,5 +41,13 @@ public class SubjectImpl extends DashboardEntityImpl implements Subject {
 
     public void setXrefs(Set<Xref> xrefs) {
         this.xrefs = xrefs;
+    }
+
+    public Integer getScore() {
+        return score;
+    }
+
+    public void setScore(Integer score) {
+        this.score = score;
     }
 }

@@ -177,6 +177,7 @@
 
         <div class="container marketing ctd2-boxes">
           <div class="row">
+              <!--
             <div class="span3 stories" data-order="0">
               <h4>Stories</h4>
               <p>
@@ -184,27 +185,28 @@
               </p>
               <a class="btn btn-danger btn-block" href="#stories">Browse &raquo;</a>
             </div><!-- /.span3 -->
-            <div class="span3 target" data-order="1">
-              <h4>Targets</h4>
+            <div class="span4 target" data-order="1">
+              <h4>Biomarkers &amp; Targets</h4>
                 <p>
                     <i>Targets</i> are molecules, such as genes or proteins, which have been experimentally identified as tumor markers or drivers.
                 </p>
-                <a class="btn btn-success btn-block" href="#browse/target/A">Browse &raquo;</a>
+                <a class="btn btn-success btn-block" href="#explore/target/Biomarker, Target">Browse &raquo;</a>
             </div><!-- /.span3 -->
-            <div class="span3 drug" data-order="2">
-              <h4>Compounds</h4>
+            <div class="span4 drug" data-order="2">
+              <h4>Compounds &amp; Perturbagens</h4>
                 <p>
                     In Dashboard, <i>compounds</i> are modulators of specific targets in cancer cell lines or tumor model systems. Some examples include small molecules, FDA approved drugs, natural products, and small regulatory RNAs.
                 </p>
-                <a class="btn btn-warning btn-block" href="#browse/compound/A">Browse &raquo;</a>
+                <a class="btn btn-warning btn-block" href="#explore/compound/Perturbagen">Browse &raquo;</a>
             </div><!-- /.span3 -->
-              <div class="span3 context" data-order="3">
-                  <h4>Context</h4>
+              <div class="span4 context" data-order="3">
+                  <h4>Disease Context</h4>
                   <p>
                       Dashboard entries provide a list of observations and evidence, and each is associated with a description.
                       In some instances, the description is labeled as <i>context</i>.
                       This refers to the genomic context, or set of circumstances or conditions which a target, compound, or biomarker may be relevant.
                   </p>
+                  <a class="btn btn-info btn-block" href="#explore/context/Disease">Browse &raquo;</a>
               </div><!-- /.span3 -->
 
           </div><!-- /.row -->
@@ -1308,15 +1310,25 @@
     <script type="text/template" id="search-result-row-tmpl">
         <tr>
             <td id="search-image-{{dashboardEntity.id}}"></td>
-            <td><a href="#subject/{{dashboardEntity.id}}">{{dashboardEntity.displayName}}</a></td>
+            <td>
+                <a href="#subject/{{dashboardEntity.id}}">{{dashboardEntity.displayName}}</a><br>
+                <i>{{dashboardEntity.organism.displayName != '-' ? "(" + dashboardEntity.organism.displayName + ")" : ""}}</i>
+            </td>
             <td>
                 <ul id="synonyms-{{dashboardEntity.id}}">
                     <!-- here will go the synonyms -->
                 </ul>
             </td>
             <td>{{dashboardEntity.type}}</td>
-            <td>{{dashboardEntity.organism.displayName}}</td>
-            <td><a href="#subject/{{dashboardEntity.id}}" id="subject-observation-count-{{dashboardEntity.id}}">{{observationCount}}</a></td>
+            <td>
+                <ul id="roles-{{dashboardEntity.id}}" data-score="{{dashboardEntity.score}}">
+                    <!-- here will go the roles -->
+                </ul>
+            </td>
+            <td class="nonewline">
+                <a href="#subject/{{dashboardEntity.id}}" id="subject-observation-count-{{dashboardEntity.id}}">{{observationCount}}</a>
+                <i class="icon-question-sign obs-tooltip {{observationCount < 1 ? 'hide' : ''}}" title="{{observationCount}} observations from {{centerCount}} centers: Tier {{maxTier}}"></i>
+            </td>
         </tr>
     </script>
 
@@ -1331,7 +1343,7 @@
                     <th>Name</th>
                     <th>Synonyms</th>
                     <th>Type</th>
-                    <th>Organism</th>
+                    <th>Roles</th>
                     <th>Observations</th>
                 </tr>
                 </thead>
@@ -1375,12 +1387,18 @@
             <td>{{dashboardEntity.observationTemplate.description}}</td>
             <td><a href="#submission/{{dashboardEntity.id}}"><img src="img/{{dashboardEntity.observationTemplate.submissionCenter.displayName}}.png" title="{{dashboardEntity.observationTemplate.submissionCenter.displayName}}" alt="{{dashboardEntity.observationTemplate.submissionCenter.displayName}}" height="50"></a></td>
             <td><span class="badge tier-badge">Tier {{dashboardEntity.observationTemplate.tier}}</span></td>
-            <td width=150><a href="#submission/{{dashboardEntity.id}}" id="search-observation-count-{{dashboardEntity.id}}">{{observationCount}}</a></td>
+            <td width=150>
+                <a href="#submission/{{dashboardEntity.id}}" id="search-observation-count-{{dashboardEntity.id}}">{{observationCount}}</a>
+            </td>
         </tr>
     </script>
 
     <script type="text/template" id="synonym-item-tmpl">
         <li class="synonym"><small>{{displayName}}</small></li>
+    </script>
+
+    <script type="text/template" id="role-item-tmpl">
+        <li class="synonym"><small>{{role}}</small></li>
     </script>
 
     <script type="text/template" id="transcript-item-tmpl">
@@ -1389,11 +1407,11 @@
 
 
     <script type="text/template" id="count-observations-tmpl">
-        {{count}} observation{{count > 1? "s" : ""}}
+        {{count}} observation{{count == 1 ? "" : "s"}}
     </script>
 
     <script type="text/template" id="count-submission-tmpl">
-        {{count}} submission{{count > 1? "s" : ""}}
+        {{count}} submission{{count == 1 ? "" : "s"}}
     </script>
 
 
@@ -1425,6 +1443,52 @@
                 <img class="img-circle" src="img/slogos/{{submission.observationTemplate.submissionCenter.displayName}}.png" alt="{{submission.observationTemplate.submissionCenter.displayName}}" title="{{submission.observationTemplate.submissionCenter.displayName}}" height=150>
             </div>
         </div>
+    </script>
+
+    <script type="text/template" id="explore-tmpl">
+        <div class="container common-container" id="explore-container">
+            <h1>Explore Roles: <i>{{roles}}</i></h1>
+
+            <ul class="thumbnails" id="explore-items">
+                <li class="span12">
+                    <div class="thumbnail">
+                        <h3>Loading...</h3>
+                        <div class="progress progress-striped active">
+                            <div class="bar" style="width: 100%;"></div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+
+            <div class="alert alert-block">
+                <a href="#" class="close" data-dismiss="alert">&times;</a>
+                <p>
+                    Above is a list of {{type}}s that have at least one observation associated with it in the context of {{roles}}.
+                    If you would like to see all {{type}}s instead, you can <a href="#browse/{{type}}/A">click here</a> to see the whole list.
+                </p>
+            </div>
+
+        </div>
+    </script>
+
+    <script type="text/template" id="explore-item-tmpl">
+        <li class="span{{spanSize}}">
+            <div class="thumbnail explore-thumbnail">
+                <div class="numbered-image" style="background-image: url({{subject.class == 'Compound' ? '<%=dataURL%>compounds/' + subject.imageFile : 'img/' + subject.class.toLowerCase() + '.png' }});">
+                    <h1 class="{{type}}">#{{order}}</h1>
+                </div>
+                <!--<img src="" alt="{{subject.class}} {{subject.displayName}}">-->
+                <div class="caption">
+                    <h3 data-toggle="tooltip" title="{{subject.displayName}}">{{subject.displayName}} <small>(Tier {{maxTier}})</small></h3>
+                    <p>
+                        There are {{numberOfObservations}} observation{{numberOfObservations == 1 ? "" : "s"}} from {{numberOfSubmissionCenters}} center{{numberOfSubmissionCenters == 1 ? "" : "s"}} on this <b>{{role}}</b>.
+                    </p>
+                    <p align="center">
+                        <a href="#subject/{{subject.id}}" class="btn btn-block {{type == 'target' ? 'btn-success' : (type == 'compound' ? 'btn-warning' : 'btn-info')}}">See details</a>
+                    </p>
+                </div>
+            </div>
+        </li>
     </script>
 
     <script type="text/template" id="browse-tmpl">
