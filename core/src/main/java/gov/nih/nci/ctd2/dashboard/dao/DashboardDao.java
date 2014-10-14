@@ -1,7 +1,9 @@
 package gov.nih.nci.ctd2.dashboard.dao;
 
 import gov.nih.nci.ctd2.dashboard.model.*;
+import gov.nih.nci.ctd2.dashboard.util.DashboardEntityWithCounts;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -44,7 +46,7 @@ public interface DashboardDao {
     List<ObservedEvidence> findObservedEvidenceByObservation(Observation observation);
     void batchSave(Collection<? extends DashboardEntity> entities, int batchSize);
     void createIndex(int batchSize);
-    java.util.ArrayList<gov.nih.nci.ctd2.dashboard.util.DashboardEntityWithCounts> search(String keyword);
+    ArrayList<DashboardEntityWithCounts> search(String keyword);
     List<Submission> findSubmissionByIsStory(boolean isSubmissionStory, boolean sortByPriority);
     List<Submission> findSubmissionByObservationTemplate(ObservationTemplate observationTemplate);
     Submission findSubmissionByName(String submissionName);

@@ -1310,15 +1310,25 @@
     <script type="text/template" id="search-result-row-tmpl">
         <tr>
             <td id="search-image-{{dashboardEntity.id}}"></td>
-            <td><a href="#subject/{{dashboardEntity.id}}">{{dashboardEntity.displayName}}</a></td>
+            <td>
+                <a href="#subject/{{dashboardEntity.id}}">{{dashboardEntity.displayName}}</a><br>
+                <i>{{dashboardEntity.organism.displayName != '-' ? "(" + dashboardEntity.organism.displayName + ")" : ""}}</i>
+            </td>
             <td>
                 <ul id="synonyms-{{dashboardEntity.id}}">
                     <!-- here will go the synonyms -->
                 </ul>
             </td>
             <td>{{dashboardEntity.type}}</td>
-            <td>{{dashboardEntity.organism.displayName}}</td>
-            <td><a href="#subject/{{dashboardEntity.id}}" id="subject-observation-count-{{dashboardEntity.id}}">{{observationCount}}</a></td>
+            <td>
+                <ul id="roles-{{dashboardEntity.id}}" data-score="{{dashboardEntity.score}}">
+                    <!-- here will go the roles -->
+                </ul>
+            </td>
+            <td class="nonewline">
+                <a href="#subject/{{dashboardEntity.id}}" id="subject-observation-count-{{dashboardEntity.id}}">{{observationCount}}</a>
+                <i class="icon-question-sign obs-tooltip {{observationCount < 1 ? 'hide' : ''}}" title="{{observationCount}} observations from {{centerCount}} centers: Tier {{maxTier}}"></i>
+            </td>
         </tr>
     </script>
 
@@ -1333,7 +1343,7 @@
                     <th>Name</th>
                     <th>Synonyms</th>
                     <th>Type</th>
-                    <th>Organism</th>
+                    <th>Roles</th>
                     <th>Observations</th>
                 </tr>
                 </thead>
@@ -1377,12 +1387,18 @@
             <td>{{dashboardEntity.observationTemplate.description}}</td>
             <td><a href="#submission/{{dashboardEntity.id}}"><img src="img/{{dashboardEntity.observationTemplate.submissionCenter.displayName}}.png" title="{{dashboardEntity.observationTemplate.submissionCenter.displayName}}" alt="{{dashboardEntity.observationTemplate.submissionCenter.displayName}}" height="50"></a></td>
             <td><span class="badge tier-badge">Tier {{dashboardEntity.observationTemplate.tier}}</span></td>
-            <td width=150><a href="#submission/{{dashboardEntity.id}}" id="search-observation-count-{{dashboardEntity.id}}">{{observationCount}}</a></td>
+            <td width=150>
+                <a href="#submission/{{dashboardEntity.id}}" id="search-observation-count-{{dashboardEntity.id}}">{{observationCount}}</a>
+            </td>
         </tr>
     </script>
 
     <script type="text/template" id="synonym-item-tmpl">
         <li class="synonym"><small>{{displayName}}</small></li>
+    </script>
+
+    <script type="text/template" id="role-item-tmpl">
+        <li class="synonym"><small>{{role}}</small></li>
     </script>
 
     <script type="text/template" id="transcript-item-tmpl">
@@ -1391,11 +1407,11 @@
 
 
     <script type="text/template" id="count-observations-tmpl">
-        {{count}} observation{{count > 1? "s" : ""}}
+        {{count}} observation{{count == 1 ? "" : "s"}}
     </script>
 
     <script type="text/template" id="count-submission-tmpl">
-        {{count}} submission{{count > 1? "s" : ""}}
+        {{count}} submission{{count == 1 ? "" : "s"}}
     </script>
 
 
@@ -1465,7 +1481,7 @@
                 <div class="caption">
                     <h3 data-toggle="tooltip" title="{{subject.displayName}}">{{subject.displayName}} <small>(Tier {{maxTier}})</small></h3>
                     <p>
-                        There are {{numberOfObservations}} observation{{numberOfObservations > 1 ? "s" : ""}} from {{numberOfSubmissionCenters}} center{{numberOfSubmissionCenters > 1 ? "s" : ""}} on this <b>{{role}}</b>.
+                        There are {{numberOfObservations}} observation{{numberOfObservations == 1 ? "" : "s"}} from {{numberOfSubmissionCenters}} center{{numberOfSubmissionCenters == 1 ? "" : "s"}} on this <b>{{role}}</b>.
                     </p>
                     <p align="center">
                         <a href="#subject/{{subject.id}}" class="btn btn-block {{type == 'target' ? 'btn-success' : (type == 'compound' ? 'btn-warning' : 'btn-info')}}">See details</a>

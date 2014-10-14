@@ -670,12 +670,24 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
             entityWithCounts.setDashboardEntity(entity);
             if(entity instanceof Subject) {
                 ArrayList<Observation> observations = new ArrayList<Observation>();
+                int maxTier = 0;
+                HashSet<SubmissionCenter> submissionCenters = new HashSet<SubmissionCenter>();
+                HashSet<String> roles = new HashSet<String>();
                 for (ObservedSubject observedSubject : findObservedSubjectBySubject((Subject) entity)) {
                     observations.add(observedSubject.getObservation());
+                    ObservationTemplate observationTemplate = observedSubject.getObservation().getSubmission().getObservationTemplate();
+                    maxTier = Math.max(maxTier, observationTemplate.getTier());
+                    submissionCenters.add(observationTemplate.getSubmissionCenter());
+                    roles.add(observedSubject.getObservedSubjectRole().getSubjectRole().getDisplayName());
                 }
                 entityWithCounts.setObservationCount(observations.size());
+                entityWithCounts.setMaxTier(maxTier);
+                entityWithCounts.setRoles(roles);
+                entityWithCounts.setCenterCount(submissionCenters.size());
             } else if(entity instanceof Submission) {
                 entityWithCounts.setObservationCount(findObservationsBySubmission((Submission) entity).size());
+                entityWithCounts.setMaxTier(((Submission) entity).getObservationTemplate().getTier());
+                entityWithCounts.setCenterCount(1);
             }
 
             entitiesWithCounts.add(entityWithCounts);

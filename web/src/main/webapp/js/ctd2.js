@@ -34,6 +34,18 @@
         }
     });
 
+    // Let datatables know about our date format
+    $.extend($.fn.dataTable.ext.order, {
+        "dashboard-rank": function(settings, col) {
+            return this.api().column( col, {order:'index'} ).nodes().map(
+                function(td, i) {
+                    return $('ul', td).attr("data-score");
+                }
+            );
+        }
+    });
+
+
     /* Models */
     var SubmissionCenter = Backbone.Model.extend({
         urlRoot: CORE_API_URL + "get/center"
@@ -1678,6 +1690,14 @@
         }
     });
 
+    var RoleView = Backbone.View.extend({
+        template: _.template($("#role-item-tmpl").html()),
+        render: function() {
+            $(this.el).append(this.template(this.model));
+            return this;
+        }
+    });
+
     var EmptyResultsView = Backbone.View.extend({
         template: _.template($("#search-empty-tmpl").html()),
         render: function() {
@@ -1701,6 +1721,12 @@
             _.each(result.synonyms, function(aSynonym) {
                 var synonymView = new SynonymView({model: aSynonym, el: thatEl});
                 synonymView.render();
+            });
+
+            var thatEl = $("#roles-" + result.id);
+            _.each(model.roles, function(aRole) {
+                var roleView = new RoleView({model: {role: aRole}, el: thatEl});
+                roleView.render();
             });
 
             thatEl = $("#search-image-" + result.id);
@@ -1775,12 +1801,22 @@
                         });
 
                         $(".search-info").tooltip({ placement: "left" });
+                        $(".obs-tooltip").tooltip();
 
                         var oTable = $("#search-results-grid").dataTable({
                             "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
-                            "sPaginationType": "bootstrap"
+                            "sPaginationType": "bootstrap",
+                            "columns": [
+                                null,
+                                null,
+                                null,
+                                null,
+                                { "orderDataType": "dashboard-rank" },
+                                null
+                            ]
+
                         });
-                        oTable.fnSort( [[5, 'desc'], [1, 'asc'], [4, 'asc']] );
+                        oTable.fnSort( [[4, 'desc'], [5, 'desc'], [1, 'asc']] );
 
                         // OK done with the subjects; let's build the submissions table
                         if(submissions.length > 0) {
