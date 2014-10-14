@@ -2659,19 +2659,13 @@
                     $("#explore-items").html("");
 
                     var numberOfEls = subjectWithSummaryCollection.models.length;
-                    var spanSize = "3";
-                    if(numberOfEls < 3) {
-                        spanSize = "6";
-                    } else if(numberOfEls < 4) {
-                        spanSize = "4"
-                    } else {
-                        spanSize = "3";
-                    }
-
+                    var spanSize = numberOfEls < 4 ? "4" : "3";
+                    var order = 1;
                     _.each(subjectWithSummaryCollection.models, function(subjectWithSummary) {
                         var sModel = subjectWithSummary.toJSON();
                         sModel["spanSize"] = spanSize;
                         sModel["type"] = thatModel.type;
+                        sModel["order"] = order;
                         if(sModel.subject.class == "Compound") {
                             _.each(sModel.subject.xrefs, function(xref) {
                                 if(xref.databaseName == "IMAGE") {
@@ -2681,6 +2675,7 @@
                         }
                         var exploreItemView = new ExploreItemView({ model: sModel });
                         exploreItemView.render();
+                        order++;
                     });
 
                     $(".explore-thumbnail h3").tooltip();
