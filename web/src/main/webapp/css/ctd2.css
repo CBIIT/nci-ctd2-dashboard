@@ -120,6 +120,8 @@ body {
 
 .featurette {
   overflow: hidden; /* Vertically center images part 2: clear their floats. */
+  padding-left: 40px;
+  padding-right: 40px;
 }
 
 /* Give some space on the sides of the floated elements so text doesn't run right into it. */
@@ -423,7 +425,7 @@ img.fancy-story-img {
 }
 
 .featurette img {
-    margin: 40px 20px 10px 30px;
+    margin: 30px 25px 10px 0px;
 }
 
 .featurette p.lead {
@@ -504,7 +506,7 @@ footer {
     font-weight: bold;
     margin-top: -25px;
     margin-bottom: 15px;
-    text-align: center;
+    text-align: right;
 }
 
 div.dark-separator {
