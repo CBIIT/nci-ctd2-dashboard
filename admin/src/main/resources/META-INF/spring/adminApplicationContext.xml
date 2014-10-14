@@ -24,4 +24,6 @@
     <bean id="indexBatchSize" class="java.lang.Integer">
         <constructor-arg index="0" value="${batch.size.index}"/>
     </bean>
+
+    <bean class="gov.nih.nci.ctd2.dashboard.util.SubjectScorer" id="subjectScorer"/>
 </beans>
