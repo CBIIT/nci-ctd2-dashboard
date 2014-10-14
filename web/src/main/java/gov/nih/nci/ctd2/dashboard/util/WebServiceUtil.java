@@ -100,14 +100,9 @@ public class WebServiceUtil {
             subjectWithSummaries.setNumberOfSubmissions(submissions.size());
             subjectWithSummaries.setNumberOfSubmissionCenters(submissionCenters.size());
             subjectWithSummariesList.add(subjectWithSummaries);
-        }
 
-        Collections.sort(subjectWithSummariesList, new Comparator<SubjectWithSummaries>() {
-            @Override
-            public int compare(SubjectWithSummaries o1, SubjectWithSummaries o2) {
-                return o2.getSubject().getScore() - o1.getSubject().getScore();
-            }
-        });
+            subjectWithSummaries.setRole(keyword);
+        }
 
         return subjectWithSummariesList;
     }

@@ -149,6 +149,19 @@
         urlRoot: CORE_API_URL + "get/subject"
     });
 
+    var SubjectWithSummary = Backbone.Model.extend({
+        urlRoot: CORE_API_URL + "get/subject"
+    });
+
+    var SubjectWithSummaryCollection = Backbone.Collection.extend({
+        url: CORE_API_URL + "explore/",
+        model: SubjectWithSummary,
+
+        initialize: function(attributes) {
+            this.url += attributes.roles;
+        }
+    });
+
     /* Views */
     var HomeView = Backbone.View.extend({
         el: $("#main-container"),
@@ -2633,12 +2646,69 @@
         }
     });
 
+    var ExploreView = Backbone.View.extend({
+        el: $("#main-container"),
+        template: _.template($("#explore-tmpl").html()),
+
+        render: function() {
+            var thatModel = this.model;
+            $(this.el).html(this.template(thatModel));
+            var subjectWithSummaryCollection = new SubjectWithSummaryCollection(thatModel);
+            subjectWithSummaryCollection.fetch({
+                success: function() {
+                    $("#explore-items").html("");
+
+                    var numberOfEls = subjectWithSummaryCollection.models.length;
+                    var spanSize = "3";
+                    if(numberOfEls < 3) {
+                        spanSize = "6";
+                    } else if(numberOfEls < 4) {
+                        spanSize = "4"
+                    } else {
+                        spanSize = "3";
+                    }
+
+                    _.each(subjectWithSummaryCollection.models, function(subjectWithSummary) {
+                        var sModel = subjectWithSummary.toJSON();
+                        sModel["spanSize"] = spanSize;
+                        sModel["type"] = thatModel.type;
+                        if(sModel.subject.class == "Compound") {
+                            _.each(sModel.subject.xrefs, function(xref) {
+                                if(xref.databaseName == "IMAGE") {
+                                    sModel.subject["imageFile"] = xref.databaseId;
+                                }
+                            });
+                        }
+                        var exploreItemView = new ExploreItemView({ model: sModel });
+                        exploreItemView.render();
+                    });
+
+                    $(".explore-thumbnail h3").tooltip();
+                }
+            });
+
+
+            return this;
+        }
+    });
+
+    var ExploreItemView = Backbone.View.extend({
+        el: "#explore-items",
+        template: _.template($("#explore-item-tmpl").html()),
+
+        render: function() {
+            $(this.el).append(this.template(this.model));
+            return this;
+        }
+    });
+
     /* Routers */
     AppRouter = Backbone.Router.extend({
         routes: {
             "centers": "listCenters",
             "stories": "listStories",
             "browse/:type/:character": "browse",
+            "explore/:type/:roles": "explore",
             "center/:id": "showCenter",
             "submission/:id": "showSubmission",
             "observation/:id": "showObservation",
@@ -2680,6 +2750,16 @@
                 }
             });
             browseView.render();
+        },
+
+        explore: function(type, roles) {
+            var exploreView = new ExploreView({
+                model: {
+                    roles: roles,
+                    type: type
+                }
+            });
+            exploreView.render();
         },
 
         showSubject: function(id) {
