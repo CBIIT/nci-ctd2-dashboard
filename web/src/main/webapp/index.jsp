@@ -107,19 +107,21 @@
         <div class="overview-container">
             <div class="container overview-box">
                 <div class="row">
-                    <div class="span10 offset1">
+                    <div class="span12">
                         <div class="featurette" id="overview-text">
-                            <img class="img-polaroid pull-right" src="img/logos/ctd2_overall.png" alt="CTD2 general image" title="CTD2 general image" width="200">
-                            <h2 class="featurette-heading">CTD<sup>2</sup> Dashboard</h2>
+                            <img class="img-polaroid pull-left" src="img/logos/ctd2_overall.png" alt="CTD2 general image" title="CTD2 general image" width="200">
+                            <h2 class="featurette-heading">Overview</h2>
                             <p class="lead">
                                 <b>The Dashboard</b> hosts data generated and analyzed by the <b>CTD<sup>2</sup> Network</b> and provides an intuitive mechanism for the research community to search across <i>Centers</i>' data.
                                 <i>Observation</i>s, or Center-determined conclusions, are submitted as connections between two related types of components:
                                 <b>subjects</b> (<i>e.g.</i>, gene, transcript, protein, small molecules, animal model) and <b>evidence</b> (<i>e.g.</i>, numeric value, text label, figure legend).
-                                Users can retrieve evidence and observations pertinent to their queries by searching across subjects using standardized terms and vocabulary.
-                                Results are available as bulk datasets, data-related figures, or polished stories, and are formatted to enable easy navigation and comprehension for most researchers, even those with little bioinformatics expertise.
                             </p>
 
                             <div id="overview-hidden-part" class="hide">
+                                <p class="lead">
+                                    Users can retrieve evidence and observations pertinent to their queries by searching across subjects using standardized terms and vocabulary.
+                                    Results are available as bulk datasets, data-related figures, or polished stories, and are formatted to enable easy navigation and comprehension for most researchers, even those with little bioinformatics expertise.
+                                </p>
                                 <p class="lead">
                                     The Dashboard aims to provide the research community with access to sets of positive results from one Center or from multiple Centers that can be retrieved using a single keyword.
                                     In doing this, the <b>CTD<sup>2</sup> Network</b> strives to increase the understanding of the underlying molecular causes of distinct cancer types and accelerate the development of clinically useful markers and targeted therapies for precision medicine.
