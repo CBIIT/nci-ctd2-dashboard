@@ -74,8 +74,8 @@ public class ExploreController {
             }
         });
 
-        if(entities.size() > getMaxNumberOfBrowsedItems()) {
-            entities = entities.subList(0, getMaxNumberOfBrowsedItems()-1);
+        if(getMaxNumberOfBrowsedItems() > 0 && entities.size() > getMaxNumberOfBrowsedItems()) {
+            entities = entities.subList(0, getMaxNumberOfBrowsedItems());
         }
 
         JSONSerializer jsonSerializer = new JSONSerializer()
