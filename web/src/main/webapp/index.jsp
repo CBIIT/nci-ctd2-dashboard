@@ -1452,7 +1452,7 @@
             <ul class="thumbnails" id="explore-items">
                 <li class="span12">
                     <div class="thumbnail">
-                        <h3>Searching...</h3>
+                        <h3>Loading...</h3>
                         <div class="progress progress-striped active">
                             <div class="bar" style="width: 100%;"></div>
                         </div>
