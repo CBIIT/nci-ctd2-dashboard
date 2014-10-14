@@ -53,7 +53,7 @@
                       <ul class="dropdown-menu">
                           <li><a target="_blank" href="http://ocg.cancer.gov/programs/ctd2">CTD<sup>2</sup> Home page</a></li>
                           <li><a target="_blank" href="http://ocg.cancer.gov/programs/ctd2/publications">Publications</a></li>
-                          <li><a target="_blank" href="https://ctd2.nci.nih.gov/">Data Portal</a></li>
+                          <li><a target="_blank" href="https://ctd2.nci.nih.gov/">Data Portal - Downloads</a></li>
                           <li><a target="_blank" href="http://ocg.cancer.gov/about-ocg/rss-feeds">RSS feed</a></li>
                           <li class="divider"></li>
                           <li><a href="#template-helper">Submission Template Helper</a></li>
@@ -94,7 +94,7 @@
        <footer>
      	<p>
              CTD<sup>2</sup> Dashboard &middot;
-             <a href="http://ctd2.nci.nih.gov/centers.html" target="_blank">Contact</a>
+             <a href="https://ocg.cancer.gov/about-ocg/contact" target="_blank">Contact</a>
          </p>
          <p>
              <a href="http://cancer.gov"><img src="img/logos/footer_logo_nci.jpg" alt="NCI logo" title="NCI logo"></a><a href="http://www.dhhs.gov/"><img src="img/logos/footer_logo_hhs.jpg" title="HHS logo" alt="HHS logo"></a><a href="http://www.nih.gov/"><img src="img/logos/footer_logo_nih.jpg" title="NIH logo" alt="NIH logo"></a><a href="http://www.firstgov.gov/"><img src="img/logos/footer_logo_firstgov.jpg" title="First Gov logo" alt="First Gov logo"></a>
@@ -151,7 +151,7 @@
               <img src="img/bg-red.png" alt="Red background image" title="red background image" class="cimg">
               <div class="container">
                   <div class="carousel-caption">
-                        <h1 class="homepage-stories-title">Stories</h1>
+                        <h1 class="homepage-stories-title">Recent Stories</h1>
                         <div class="well carousel-well">
                             <div class="tab-content stories-tabs">
                                 <div class="container tab-pane active fade in" id="story-1"></div>
