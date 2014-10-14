@@ -1458,7 +1458,10 @@
     <script type="text/template" id="explore-item-tmpl">
         <li class="span{{spanSize}}">
             <div class="thumbnail explore-thumbnail">
-                <img src="{{subject.class == 'Compound' ? '<%=dataURL%>compounds/' + subject.imageFile : 'img/' + subject.class.toLowerCase() + '.png' }}" alt="{{subject.class}} {{subject.displayName}}">
+                <div class="numbered-image" style="background-image: url({{subject.class == 'Compound' ? '<%=dataURL%>compounds/' + subject.imageFile : 'img/' + subject.class.toLowerCase() + '.png' }});">
+                    <h1 class="{{type}}">#{{order}}</h1>
+                </div>
+                <!--<img src="" alt="{{subject.class}} {{subject.displayName}}">-->
                 <div class="caption">
                     <h3 data-toggle="tooltip" title="{{subject.displayName}}">{{subject.displayName}} <small>(Tier {{maxTier}})</small></h3>
                     <p>
