@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:batch="http://www.springframework.org/schema/batch"
+		xmlns:context="http://www.springframework.org/schema/context"
+        xsi:schemaLocation="http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-2.1.xsd
+							http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+							http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+  <context:component-scan base-package="gov.nih.nci.ctd2.dashboard.importer.internal" />
+
+  <batch:job id="TRCshRNADataImporterJob">
+	<batch:step id="TRCshRNAFilterStep" parent="TRCshRNADataSimpleStep" next="TRCshRNADataStep">
+	  <batch:tasklet>
+		<batch:chunk reader="TRCshRNAFilterReader" writer="TRCshRNAFilterWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+	<batch:step id="TRCshRNADataStep" parent="TRCshRNADataSimpleStep">
+	  <batch:tasklet>
+		<batch:chunk reader="TRCshRNADataReader" processor="TRCshRNADataProcessor" writer="TRCshRNADataWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+  </batch:job>
+
+  <bean id="TRCshRNADataSimpleStep" class="org.springframework.batch.core.step.item.SimpleStepFactoryBean" abstract="true">
+	<property name="transactionManager" ref="transactionManager" />
+	<property name="jobRepository" ref="jobRepository" />
+	<property name="commitInterval" value="${spring.batch.commit.interval}" />
+  </bean>
+
+  <!-- trc-shrna filter beans -->
+
+  <bean name="TRCshRNAFilterReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="resource" value="classpath:test-trc-shrna-filter.txt" />
+    <property name="lineMapper" ref="TRCshRNAFilterLineMapper" />
+	<property name="linesToSkip" value="1" />
+  </bean>
+
+  <bean name="TRCshRNAFilterLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+	<property name="fieldSetMapper" ref="TRCshRNAFilterMapper" />
+	<property name="lineTokenizer" ref="TRCshRNAFilterTokenizer" />
+  </bean>
+
+  <bean name="TRCshRNAFilterTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+	<property name="delimiter" value="\u0009"/>
+  </bean>
+
+  <!-- trc-shrna beans -->
+
+  <bean name="TRCshRNADataReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="resource" value="classpath:test-trc-shrna-data.txt" />
+    <property name="lineMapper" ref="TRCshRNADataLineMapper" />
+  </bean>
+
+  <bean name="TRCshRNADataLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+	<property name="fieldSetMapper" ref="TRCshRNADataMapper" />
+	<property name="lineTokenizer" ref="TRCshRNALineTokenizer" />
+  </bean>
+
+  <bean name="TRCshRNALineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+	<property name="delimiter" value="\u0009"/>
+  </bean>
+
+  <!-- the following beans are shared between both steps -->
+  <bean name="TRCshRNAFilterMap" class="java.util.HashMap">
+	<constructor-arg index="0" type="java.util.Map">
+	  <map key-type="java.lang.String" value-type="java.lang.String"/>
+	</constructor-arg>
+  </bean>
+
+</beans>

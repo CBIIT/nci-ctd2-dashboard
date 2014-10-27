@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:batch="http://www.springframework.org/schema/batch"
+		xmlns:context="http://www.springframework.org/schema/context"
+        xsi:schemaLocation="http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-2.1.xsd
+							http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+							http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+  <context:component-scan base-package="gov.nih.nci.ctd2.dashboard.importer.internal" />
+
+  <batch:job id="proteinDataImporterJob">
+	<batch:step id="proteinDataStep" parent="proteinDataSimpleStep">
+	  <batch:tasklet>
+		<batch:chunk reader="proteinDataReader" processor="proteinDataProcessor" writer="proteinDataWriter">
+		  <batch:streams>
+			<batch:stream ref="uniprotFileItemReader"/>
+		  </batch:streams>
+		</batch:chunk>
+	  </batch:tasklet>
+	</batch:step>
+  </batch:job>
+
+  <bean id="proteinDataSimpleStep" class="org.springframework.batch.core.step.item.SimpleStepFactoryBean" abstract="true">
+	<property name="transactionManager" ref="transactionManager" />
+	<property name="jobRepository" ref="jobRepository" />
+	<property name="commitInterval" value="${spring.batch.commit.interval}" />
+  </bean>
+
+  <bean id="proteinDataReader" class="gov.nih.nci.ctd2.dashboard.importer.internal.UniProtDataReader">
+	<property name="fieldSetReader" ref="uniprotFileItemReader" />
+  </bean>
+
+  <bean id="uniprotFileItemReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+	<property name="resources" value="classpath:test-sprot.txt" />
+	<property name="delegate">
+	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+		<property name="lineMapper">
+		  <bean class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+			<property name="lineTokenizer" ref="uniprotFileTokenizer" />
+			<property name="fieldSetMapper">
+			  <bean class="org.springframework.batch.item.file.mapping.PassThroughFieldSetMapper" />
+			</property>
+		  </bean>
+		</property>
+	  </bean>
+	</property>
+  </bean>
+
+  <bean id="uniprotFileTokenizer" class="org.springframework.batch.item.file.transform.PatternMatchingCompositeLineTokenizer">
+	<property name="tokenizers">
+	  <map>
+		<entry key="ID*" value-ref="identificationLineTokenizer" />
+		<entry key="DE*" value-ref="descriptionLineTokenizer" />
+		<entry key="AC*" value-ref="accessionLineTokenizer" />
+		<entry key="OX*" value-ref="organismLineTokenizer" />
+		<entry key="DR*" value-ref="databaseXrefLineTokenizer" />
+		<entry key="//" value-ref="terminatorLineTokenizer" />
+		<entry key="*" value-ref="defaultLineTokenizer" />
+	  </map>
+	</property>
+  </bean>
+
+  <bean id="identificationLineTokenizer" class="org.springframework.batch.item.file.transform.RegexLineTokenizer">
+	<property name="regex" value="(ID)\s\s\s(\w*)\s.*"/>
+  </bean>
+
+  <bean id="descriptionLineTokenizer" class="org.springframework.batch.item.file.transform.RegexLineTokenizer">
+	<property name="regex" value="(DE)\s\s\s(.*)"/>
+  </bean>
+
+  <bean id="accessionLineTokenizer" class="org.springframework.batch.item.file.transform.RegexLineTokenizer">
+	<property name="regex" value="(AC)\s\s\s(.*;.*)+"/>
+  </bean>
+
+  <bean id="organismLineTokenizer" class="org.springframework.batch.item.file.transform.RegexLineTokenizer">
+	<property name="regex" value="(OX)\s\s\s(.*)"/>
+  </bean>
+
+  <bean id="databaseXrefLineTokenizer" class="org.springframework.batch.item.file.transform.RegexLineTokenizer">
+	<property name="regex" value="(DR)\s\s\s(.*;.*)+"/>
+  </bean>
+
+  <bean id="terminatorLineTokenizer" class="org.springframework.batch.item.file.transform.RegexLineTokenizer">
+	<property name="regex" value="(\/\/)"/>
+  </bean>
+
+  <bean id="defaultLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" />
+
+</beans>
