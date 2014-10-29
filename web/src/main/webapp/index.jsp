@@ -186,7 +186,7 @@
               <a class="btn btn-danger btn-block" href="#stories">Browse &raquo;</a>
             </div><!-- /.span3 -->
             <div class="span4 target" data-order="1">
-              <h4>Biomarkers, Targets, Genes &amp; Proteins</h4>
+              <h4>Biomarkers, Targets, <br>Genes &amp; Proteins</h4>
                 <p>
                     <i>Targets</i> are molecules, such as genes or proteins, which have been experimentally identified as tumor markers or drivers.
                 </p>
