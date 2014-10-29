@@ -159,7 +159,6 @@
                                 <div class="container tab-pane fade" id="story-3"></div>
                                 <div class="container tab-pane fade" id="story-4"></div>
                             </div>
-                            <br/>
                             <div class="pagination pagination-centered stories-pagination">
                                 <ul class="nav">
                                     <li class="active"><a href="#story-1" class="story-link">&bull;</a></li>
@@ -188,7 +187,7 @@
               <a class="btn btn-danger btn-block" href="#stories">Browse &raquo;</a>
             </div><!-- /.span3 -->
             <div class="span4 target" data-order="1">
-              <h4>Biomarkers &amp; Targets</h4>
+              <h4>Biomarkers, Targets, Genes &amp; Proteins</h4>
                 <p>
                     <i>Targets</i> are molecules, such as genes or proteins, which have been experimentally identified as tumor markers or drivers.
                 </p>
@@ -217,7 +216,7 @@
 
     <script type="text/template" id="centers-tmpl">
         <div class="container common-container" id="centers-container">
-            <h1>Centers</h1>
+            <h2>Centers</h2>
             <br>
             <table class="table table-bordered table-striped table-compact" id="centers-list-table">
                 <thead>
@@ -237,7 +236,7 @@
 
     <script type="text/template" id="stories-tmpl">
         <div class="container common-container" id="stories-container">
-            <h1>Stories</h1>
+            <h2>Stories</h2>
             <br>
             <ul class="thumbnails stories-list">
                 <!-- here will come the stories... -->
@@ -301,7 +300,7 @@
         <div class="container common-container" id="center-submission-container">
             <div class="row">
                 <div class="span9">
-                    <h1>{{displayName}} <small>submissions</small></h1>
+                    <h2>{{displayName}} <small>submissions</small></h2>
                 </div>
                 <div class="span3">
                     <img src="img/{{displayName}}.png" title="{{displayName}}" alt="{{displayName}}" class="img-polaroid" width="200">
@@ -334,7 +333,7 @@
             </td>
             <td><span class="badge tier-badge">Tier {{observationTemplate.tier}}</span></td>
             <td width=150>
-                <a href="#submission/{{id}}" id="observation-count-{{id}}">loading...</a>
+                <a href="#submission/{{id}}" class="obs-count" id="observation-count-{{id}}">loading...</a>
             </td>
         </tr>
     </script>
@@ -350,12 +349,12 @@
             </div>
             <div class="row">
                 <div class="span10">
-                    <h1>
+                    <h2>
                         Submission
                         <span class="badge-tier-container">
                             <span class="badge badge-tier">Tier {{observationTemplate.tier}}</span>
                         </span>
-                    </h1>
+                    </h2>
 
 
                     <table id="submission-details-grid" class="table table-bordered table-striped">
@@ -428,7 +427,7 @@
 
             <div class="row">
                 <div class="span10">
-                    <h1>Observation <small>(Tier {{submission.observationTemplate.tier}})</small></h1>
+                    <h2>Observation <small>(Tier {{submission.observationTemplate.tier}})</small></h2>
                     <blockquote>
                         <p id="observation-summary"></p>
                     </blockquote>
@@ -681,7 +680,7 @@
 
     <script type="text/template" id="gene-tmpl">
          <div class="container common-container" id="gene-container">
-             <h1>{{displayName}}</h1>
+             <h2>{{displayName}}</h2>
 
              <div class="row">
                  <div class="span9">
@@ -750,7 +749,7 @@
 
     <script type="text/template" id="protein-tmpl">
         <div class="container common-container" id="protein-container">
-            <h1>{{displayName}}</h1>
+            <h2>{{displayName}}</h2>
 
             <div class="row">
                 <div class="span9">
@@ -819,7 +818,7 @@
 
     <script type="text/template" id="shrna-tmpl">
         <div class="container common-container" id="shrna-container">
-            <h1>{{displayName}}</h1>
+            <h2>{{displayName}}</h2>
 
             <div class="row">
                 <div class="span9">
@@ -882,7 +881,7 @@
 
     <script type="text/template" id="transcript-tmpl">
         <div class="container common-container" id="transcript-container">
-            <h1>{{refseqId}}</h1>
+            <h2>{{refseqId}}</h2>
 
             <div class="row">
                 <div class="span9">
@@ -941,7 +940,7 @@
 
     <script type="text/template" id="tissuesample-tmpl">
         <div class="container common-container" id="tissuesample-container">
-            <h1>{{displayName}}</h1>
+            <h2>{{displayName}}</h2>
 
             <div class="row">
                 <div class="span9">
@@ -1000,7 +999,7 @@
 
     <script type="text/template" id="cellsample-tmpl">
         <div class="container common-container" id="cellsample-container">
-            <h1>{{displayName}}</h1>
+            <h2>{{displayName}}</h2>
             <div class="row">
                 <div class="span9">
                     <table id="cellsample-details-grid" class="table table-bordered table-striped">
@@ -1067,7 +1066,7 @@
 
     <script type="text/template" id="animalmodel-tmpl">
         <div class="container common-container" id="animalmodel-container">
-            <h1>{{displayName}}</h1>
+            <h2>{{displayName}}</h2>
             <div class="row">
                 <div class="span9">
                     <table id="animalmodel-details-grid" class="table table-bordered table-striped">
@@ -1122,7 +1121,7 @@
 
     <script type="text/template" id="compound-tmpl">
           <div class="container common-container" id="compound-container">
-              <h1>{{displayName}}</h1>
+              <h2>{{displayName}}</h2>
 
               <div class="row">
                   <div class="span9">
@@ -1336,7 +1335,7 @@
 
     <script type="text/template" id="search-tmpl">
         <div class="container common-container" id="search-results-container">
-            <h1>Search <small>for <i>{{decodeURIComponent(term)}}</i></small></h1>
+            <h2>Search <small>for <i>{{decodeURIComponent(term)}}</i></small></h2>
 
             <table id="search-results-grid" class="table table-bordered table-striped">
                 <thead>
@@ -1448,7 +1447,7 @@
 
     <script type="text/template" id="explore-tmpl">
         <div class="container common-container" id="explore-container">
-            <h1>Explore Roles: <i>{{roles}}</i></h1>
+            <h2>Explore Roles: <i>{{roles}}</i></h2>
 
             <ul class="thumbnails" id="explore-items">
                 <li class="span12">
@@ -1476,7 +1475,7 @@
         <li class="span{{spanSize}}">
             <div class="thumbnail explore-thumbnail">
                 <div class="numbered-image" style="background-image: url({{subject.class == 'Compound' ? '<%=dataURL%>compounds/' + subject.imageFile : 'img/' + subject.class.toLowerCase() + '.png' }});">
-                    <h1 class="{{type}}">#{{order}}</h1>
+                    <h2 class="{{type}}">#{{order}}</h2>
                 </div>
                 <!--<img src="" alt="{{subject.class}} {{subject.displayName}}">-->
                 <div class="caption">
@@ -1494,7 +1493,7 @@
 
     <script type="text/template" id="browse-tmpl">
         <div class="container common-container" id="browse-container">
-            <h1>Browse {{type}}s</h1>
+            <h2>Browse {{type}}s</h2>
 
             <div class="alert alert-block">
                 <a href="#" class="close" data-dismiss="alert">&times;</a>
@@ -1564,7 +1563,7 @@
          <div class="container common-container" id="mra-container" > 
                <div class="row">
                  <div class="span10">
-                    <h3>Master Regulator View</h2>
+                    <h2>Master Regulator View</h2>
                    
                     <table id="master-regulator-grid" class="table table-bordered table-striped ">
                         <thead>
@@ -1671,7 +1670,7 @@
 
     <script type="text/template" id="template-helper-tmpl">
         <div class="container common-container" id="template-helper-container">
-            <h1>Submission Template Helper</h1>
+            <h2>Submission Template Helper</h2>
 
             <div class="alert alert-warning alert-block">
                 <a href="#" class="close" data-dismiss="alert">&times;</a>
@@ -2192,7 +2191,7 @@
 
     <script type="text/template" id="preview-tmpl">
         <div id="preview-container" class="container">
-            <h1>Template preview</h1>
+            <h2>Template preview</h2>
             <ul class="nav nav-tabs" id="preview-tabs">
                 <li class="active"><a href="#submission-preview">Submission</a></li>
                 <li><a href="#obs1-preview">Observation</a></li>
@@ -2200,10 +2199,10 @@
 
             <div class="tab-content">
                 <div class="tab-pane active" id="submission-preview">
-                    <h1>Here will come the submission</h1>
+                    <h2>Here will come the submission</h2>
                 </div>
                 <div class="tab-pane" id="obs1-preview">
-                    <h1>Here will come the observation #1</h1>
+                    <h2>Here will come the observation #1</h2>
                 </div>
             </div>
         </div>
