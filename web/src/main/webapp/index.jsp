@@ -56,11 +56,16 @@
                           <li><a target="_blank" href="https://ctd2.nci.nih.gov/">Data Portal - Downloads</a></li>
                           <li><a target="_blank" href="http://ocg.cancer.gov/about-ocg/rss-feeds">RSS feed</a></li>
                           <li class="divider"></li>
-                          <li><a href="#template-helper">Submission Template Helper</a></li>
-                          <li><a href="#" id="sif-upload">Load SIF File</a></li>
+                          <li><a href="#template-helper">Submission Template Helper</a></li>                          
+                      </ul>
+                  </li>                 
+                   <li class="dropdown">
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown">Gene Cart <b class="caret"></b></a>
+                      <ul class="dropdown-menu">
+                          <li><a href="#genes">Go To Cart</a></li> 
+                          <li><a href="#gene-cart-help">Help</a></li>                          
                       </ul>
                   </li>
-                  <li><a href="#genes">Gene Cart</a></li> 
               </ul>
               <ul class="nav pull-right">
                   <form class="form-search" id="omnisearch">
@@ -1569,7 +1574,7 @@
                     ( <a class="dropdown-toggle" data-toggle="dropdown" href="#">view mra file<b class="caret"></b></a> )
                     <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                         <li>
-                            <a href="#/evidence/{{id}}" title="open in mra view" class="desc-tooltip">
+                            <a href="#/evidence/{{id}}" title="Open Master Regulator View" class="desc-tooltip">
                                 mra view
                             </a>
                         </li>
@@ -2260,28 +2265,25 @@
         <%=maxNumOfObservations%>
     </script>
     
-      <script type="text/template" id="genelist-view-tmpl" >
+    <script type="text/template" id="genelist-view-tmpl" >
          <div class="container common-container" id="genelist-container" > 
              
                  <div class="span10" align="center">                   
                     <h4>  Gene List</h4>                    
                     <select id="geneNames" name="geneNames"
-								style="width: 300px" size="8" 
+								style="width: 300px" size="6" 
 								multiple></select>
                     </br>
                     </br>
-                    <a href="#" id="addGene">Add Gene</a>                   
-                    <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b> 		   
-                    <a href="#" id="deleteGene">Delete Gene</a>
-                    </br>  
-                    </br>
                     <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
-                    <a href="#" id="clearList">Clear List</a>
+                    <a href="#" id="deleteGene">Delete Gene</a>
                     <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
-                    <a href="#" id="loadGenes">Load Genes from File</a>                    
-                    </br><input id="geneFileInput" type="file" style="visibility:hidden" /> 
+                    
+                    <a href="#" id="clearList">Clear List</a>
+                    <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
                     </br>
-                    <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;</b> 		   
+                    </br>
+                    <b>&nbsp;&nbsp;&nbsp;</b> 		   
                     <a href="#cnkb-query" id="cnkb-query">Find Gene Interactions in  Networks (CNKB)</a>
                  </div>
 
@@ -2297,7 +2299,8 @@
                     <div class="span10">                       
                        <h3>Cellular Network Knowledge Base</h3>
 
-                       <medium>Select Interactome:</medium>  
+                       <medium>Select Interactome:</medium>                  
+                       <small id="queryDescription" style="color:grey; font:8"></small> 
                        </br>                  
                        <select id="interactomeList" name="interactomes"
 						    style="width: 350px" size="4"></select>
@@ -2406,8 +2409,25 @@
             <br/>
             {{description}}  
         </div>
-    </script>
-       
+      </script>
+     
+    <script type="text/template" id="gene-cart-help-tmpl" >
+         <div class="container common-container" id="cnkbhelp-container" > 
+               <div class="span10">                       
+                    <h3>Gene Cart Help</h3>
+                    <p>The Gene Cart allows a list of genes to be built up while browsing through Observations in the CTD2 Dashboard.  This list can then be submitted as a query to the Cellular Network Knowledge Base (CNKB), a database maintained at Columbia University.</p>
+                    <p>In the Observations for a particular Dashboard submission, those entries that are genes will have a green "+" sign to right of the gene symbol.  Clicking this "+" sign will add the gene to the Gene Cart.  The Gene Cart is limited to 25 genes.</p>
+                    <p>The CNKB is a repository of molecular interactions, including ones both computationally and experimentally derived. Sources for interactions include reverse-engineered cellular context-specific regulatory interactomes developed in the lab of Dr. Andrea Califano at Columbia University, and also some public-domain datasets. </p>
+                    <p>In the Gene Cart, clicking on "Find Interactions in Networks (CNKB)" will bring the user to the Cellular Networks Knowledge Base page where a particular interactome and version can be chosen.  Descriptive text for each is available by selecting any particular interactome or version.  Clicking "Submit" will initiate a query of the CNKB using the genes in the cart.</p>
+                    <p>The query result is displayed in a table showing the number and type of interactions found for each query gene.  A check box to the left of each gene allows individual results to be selected.  The interactions for selected genes can then be downloaded in the form of a Cytoscape "SIF"-format file, or displayed directly in Cytoscape.js in the browser.  The number of interactions to display is controlled using the "Interactions Limit" pulldown.  Interactions to display are then chosen based on their confidence values, e.g. the top 100 interactions based on confidence value.</p>                  
+                    <p>Several layout options are available for Cytoscape and can be selected using the "Layout" pulldown.</p>
+                    <p>In Cytoscape.js, several common interaction types have been assigned specific colors used for the lines representing them, and these will be shown on the legend of the graph.</p>
+                </div>
+                <div class="span1">                                   
+                   <a href="javascript:history.back()">Back</a>
+                </div>              
+         </div>
+     </script>
 
     <!-- end of templates -->
 
