@@ -2757,34 +2757,31 @@
     	el: $("#main-container"),
         template: _.template($("#genelist-view-tmpl").html()),      
         render: function() { 
-        	 
+        	
         	var geneList = JSON.parse(localStorage.getItem("genelist")); 
         	 if (geneList == null)                       
         		 geneList = [];
-                      
+        	 else if (geneList.length > 25)
+        	 {
+        		 var len = geneList.length
+        		 geneList.slice(25, len-1);
+        		 localStorage["genelist"] = JSON.stringify(geneList);
+        	 }
+                 
         	var html = "";
         	$(this.el).html(this.template({}));   
         	$.each(geneList, function () {
-        		var value = this.toString();        		 
+        		var value = Encoder.htmlEncode(this.toString());        		 
                 html += '<option value="' + value + '">' + value  + '</option>';                    
             });        	
-        	$("#geneNames").append(html);
-        	
-            $("#addGene").click(function(e) {        		 
-        		 e.preventDefault();        		 
-        		 var inputGenes = prompt("Please enter gene(s):", "");        	  
-        		 if ( inputGenes==null || $.trim(inputGenes) == '')
-        			 return;        		 
-        		 var genes = Encoder.htmlEncode(inputGenes).split(/[\s,]+/);         	 
-        		 addGenes(genes);
-             });  
-        	
+        	$("#geneNames").append(html);        	
+     
             $("#deleteGene").click(function(e) {        		 
        		    e.preventDefault(); 
        		    var selectedGenes = [];       		    
-       		   $('#geneNames :selected').each(function(i, selected) {
+       		    $('#geneNames :selected').each(function(i, selected) {
        			     selectedGenes[i] = $(selected).text();
-       		   });
+       		    });
        		 
        		    if (selectedGenes == null || selectedGenes.length == 0)
        		    {
@@ -2795,12 +2792,13 @@
        		  
        		    $.each(selectedGenes, function () {    
        		    	 
-      		       var gene = Encoder.htmlEncode($.trim(this.toString())).toUpperCase();      		 
+      		       var gene = $.trim(this.toString()).toUpperCase();      		 
       		       var index = $.inArray(gene, geneList);      		  
       		       if (index>=0) geneList.splice(index, 1);     
       		        
                 });   
        		    localStorage["genelist"] = JSON.stringify(geneList);
+       		    sessionStorage["selectedGenes"] = JSON.stringify(geneList);
        		    $("#geneNames option:selected").remove();  
        		  
        		
@@ -2811,80 +2809,31 @@
        		    e.preventDefault();        		    
        		    $('#geneNames').html('');       		     
        		    localStorage.removeItem("genelist");
+       		    sessionStorage.removeItem("selectedGenes");
+       		    
        		    geneList = [];
-             });  
-            
-            
-             $("#loadGenes").click(function(e) {        		 
-       		    e.preventDefault();        		    
-       		    $('#geneFileInput').click();       		  
-       		   
-             });
-            
-            if (window.FileReader) {
-                 $('#geneFileInput').on('change', function (e) {                	 
-                     var file = e.target.files[0];
-                     var reader = new FileReader();                   
-                     reader.onload = function (e) {
-                         var genes = reader.result.split(/[\s,]+/);                        
-                         addGenes(genes);
-                     }
-                     reader.readAsText(file);
-                 });
-            } else {
-                alert("Load Genes from file is not supported.");
-            }
+       		    
+       		    
+            });         
             
             $("#cnkb-query").click(function(e) {        		 
        		   
-       		    var selectedGenes = [];       		    
+       		   var selectedGenes = [];       		    
        		   $('#geneNames :selected').each(function(i, selected) {
        			     selectedGenes[i] = $(selected).text();
        		   });
        		 
        		    if (selectedGenes == null || selectedGenes.length == 0)
        		    {
-       		    	sessionStorage["selectedGenes"] = JSON.stringify(geneList);
+       		    	sessionStorage["selectedGenes"] = JSON.stringify(geneList); 
+       		     
        		    }      		 
        		    else
-       		    {
-       		    	sessionStorage["selectedGenes"] = JSON.stringify(selectedGenes);
+       		    {       		       
+       		    	sessionStorage["selectedGenes"] = JSON.stringify(selectedGenes);       		     
        		    } 
-       		 
-       		
-             }); 
-            
-            
-            var addGenes = function(genes)
-            {
-                  var alreadyHave = [];
-                  var newGenes = [];  
-            	  $.each(genes, function () {
-                 	 var eachGene = Encoder.htmlEncode($.trim(this.toString())).toUpperCase();
-                 	 if (geneList.indexOf(eachGene) > -1)
-                 		 alreadyHave.push(eachGene);
-                 	 else if (newGenes.indexOf(eachGene.toUpperCase()) == -1 && eachGene != "") 
-                 	 {                       		
-                 		 newGenes.push(eachGene);  
-                 		 geneList.push(eachGene);
-                 	 }
-                  });
-                  
-                  if (alreadyHave.length == 1)
-         			 alert(alreadyHave + " is already in the Gene Cart.")
-         		  else if (alreadyHave.length > 1)
-         		     alert(alreadyHave + " are already in the Gene Cart.")
-         		  if (newGenes.length > 0)
- 		          {        			 
- 			           localStorage["genelist"] = JSON.stringify(geneList);        		             
- 		               $.each(newGenes, function () {
-     		                 var value = this.toString();        		 
-     		                 $('#geneNames').append('<option value="' + value + '">' + value + '</option>');                    
-                        });        	
-     	                
- 		           }
-            }
-            
+       		    
+             });         
             
         	return this;
         }
@@ -2897,9 +2846,20 @@
     var CnkbQueryView = Backbone.View.extend({
     	el: $("#main-container"),
         template: _.template($("#cnkb-query-tmpl").html()),      
-        render: function() {          
-        	var selectedgenes = JSON.parse(localStorage.getItem("selectedGenes"));        	 
+        render: function() {        	 
+        	var selectedGenes = JSON.parse(sessionStorage.getItem("selectedGenes"));    
+        	var count = 0;
+        	if (selectedGenes != null)
+        		count = selectedGenes.length;        	
+        	var description;
+        	if (count == 0 || count == 1)
+        		description = "Query with " + count + " gene from cart";        	
+        	else
+        		description = "Query with " + count + " genes from cart";  
+        	
         	$(this.el).html(this.template({}));   
+        	$('#queryDescription').html("");                     
+            $('#queryDescription').html(description);
         	$.ajax({
                    url: "cnkb/query",
                    data: {dataType : "interactome-context", 
@@ -2995,11 +2955,18 @@
     	el: $("#main-container"),
         template: _.template($("#cnkb-result-tmpl").html()),      
         render: function() { 
-        	var selectedgenes = JSON.parse(sessionStorage.getItem("selectedGenes")); 
+        	var selectedgenes = JSON.parse(sessionStorage.getItem("selectedGenes"));        
         	var selectedInteractome = JSON.parse(sessionStorage.getItem("selectedInteractome")); 
-        	var selectedVersion = JSON.parse(sessionStorage.getItem("selectedVersion"));          	
-        	$(this.el).html(this.template({}));
-        	 
+        	var selectedVersion = JSON.parse(sessionStorage.getItem("selectedVersion"));  
+        	
+        	if (selectedgenes.length > 25)
+       	    {
+       		    var len = selectedgenes.length
+       		    selectedgenes.slice(25, len-1);
+       		    sessionStorage["selectedGenes"] = JSON.stringify(selectedgenes);
+       	    }
+        	
+        	$(this.el).html(this.template({}));        	
         	$.ajax({       		 
         		   url: "cnkb/query",
                    data: {dataType : "interaction-result", 
@@ -3023,7 +2990,7 @@
                 	   _.each(cnkbElementList, function(aData){                		  
                 		   var cnkbResultRowView = new CnkbResultRowView({
                                 el: $(thatEl).find("tbody"),
-                                model: aData
+                                model: aData                               
                             });
                 		   cnkbResultRowView.render();                		    
                           
@@ -3125,11 +3092,7 @@
                       var interactionLimit = $("#cytoscape-node-limit").val();
                     
                       var n = $( "input:checked" ).length;
-                     /* if ( n > 100)
-                      {
-                    	  alert("You select too many gene to create the network. The limit is 100.")
-                      }*/
-                      
+                   
                       var filters = "";              
                       $('input[type="checkbox"]:checked').each(function() {                 
                       	    filters = filters + ($(this).val() + ',');  
@@ -3159,7 +3122,7 @@
                           		 return;
                               }                          	  
                           	  var cnkbDescription = selectedInteractome + " (v" + selectedVersion + ")";
-                              drawCNKBCytoscape(data, cnkbDescription);
+                              drawCNKBCytoscape(data, Encoder.htmlEncode(cnkbDescription));
                         
                           }//end success
                       });  //end ajax              
@@ -3181,16 +3144,27 @@
 
             this.template = _.template($(templateId).html());
             $(this.el).append(this.template(result));            
-            var geneName = result.geneName;
+            var geneName = Encoder.htmlEncode(result.geneName);
  	      
 		    var numList = result.interactionNumlist
 		       _.each(numList, function(aData){ 
 		    	   $("#tr_" + geneName).append('<td>' + aData + '</td>');
 		    });
+		  
 		       
             return this;
         }
      });    
+     
+     var GeneCartHelpView = Backbone.View.extend({
+    	 el: $("#main-container"),
+         template: _.template($("#gene-cart-help-tmpl").html()),      
+         render: function() {        	 
+             $(this.el).html(this.template({}));               
+             return this;
+         }
+      });    
+     
      
      var updateGeneList = function(addedGene)
      {
@@ -3198,6 +3172,12 @@
            if (geneNames == null)                       
         	   geneNames = [];
                     
+           if (geneNames.length >= 25)
+           {
+        	   alert("Gene Cart can only contains 25 genes.")
+        	   return;
+           }
+           
            if (geneNames.indexOf(addedGene) > -1) {            	  
         	   alert(addedGene + " is already in the Gene Cart.")
         	} else {
@@ -3206,35 +3186,7 @@
         		localStorage["genelist"] = JSON.stringify(geneNames);
         		alert(addedGene + " added to the Gene Cart.")
         	}
-     }
-
-   	 var getSIFCyNetwork = function(lines) {		 
- 	        $.ajax({
- 	           type: 'POST',
- 	     	   url: 'cnkb/upload',
- 	           data: {sifData : lines},		           
- 	           success: function(data) { 	         
- 	        	   if (data == null)
-                    {
-                		 alert("The network is empty.");
-                		 return;
-                    }  
- 	         
- 	        	   if (jQuery.type(data) === "string" && data.indexOf("limited") > -1)
-                    {
-                		 alert(data);
-                		 return;
-                    }              
-                   
- 	        	    drawCNKBCytoscape(data, "");
-                     
- 	           }, //end success
- 	           error: function (xhr, ajaxOptions, thrownError) {
- 	               alert(xhr.status);
- 	               alert(thrownError);   }
- 	       }); //end ajax
- 	   	
- 	   };  //end function getCyNetwork    
+       }   
      
        var drawCNKBCytoscape = function(data, description)
        {    	     
@@ -3326,11 +3278,7 @@
             };                    
             container.cy(cyOptions);     
   		 
-     }
-    
-    
-    
-    
+     }   
     
 
     /* Routers */
@@ -3352,6 +3300,7 @@
             "genes": "showGenes",
             "cnkb-query": "showCnkbQuery",
             "cnkb-result": "showCnkbResult", 
+            "gene-cart-help": "showGeneCartHelp", 
             "*actions": "home"
         },
 
@@ -3501,6 +3450,11 @@
         showCnkbResult: function() {
         	var cnkbResultView = new CnkbResultView();
         	cnkbResultView.render();
+        },        
+       
+        showGeneCartHelp: function() {
+        	var geneCartHelpView = new GeneCartHelpView();
+        	geneCartHelpView.render();
         },
 
         showTemplateHelper: function() {
@@ -3531,32 +3485,7 @@
            },
            delay: {hide: 2000}
         });
-        
-        $("#sif-upload").click(function(e) {        		 
-  		    e.preventDefault();        		    
-  		    $('#sifFileInput').click();       		  
-  		   
-        });
-        
-       
-        if (window.FileReader) {
-             $('#sifFileInput').on('change', function (e) {                	 
-                 var file = e.target.files[0];                
-                 if (file.size > 50000)
-                 {   
-                	 alert("The number of nodes to be displayed is limited to 500.");
-                     return;
-                 }
-                 var reader = new FileReader();               
-                 reader.onload = function (e) {                 
-                     var data = reader.result;         
-                     getSIFCyNetwork(data) ;                          
-                 }
-                 reader.readAsText(file);
-             });
-         } else  
-             alert("Load Genes from file is not supported.");
-         
+     
 
     });
 
