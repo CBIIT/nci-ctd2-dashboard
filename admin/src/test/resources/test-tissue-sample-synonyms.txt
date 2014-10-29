@@ -1,0 +1,10 @@
+nci_thesaurus_code	synonym
+C3262	Neoplasm
+C3262	NEOPLASM, UNDETERMINED
+C3262	Neoplasia
+C3262	Neoplastic Disease
+C3262	Neoplastic Growth
+C3262	neoplasia
+C3262	neoplasm
+C3262	tumor
+C4741	Neoplasm by Morphology

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:batch="http://www.springframework.org/schema/batch"
+		xmlns:context="http://www.springframework.org/schema/context"
+        xsi:schemaLocation="http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-2.1.xsd
+							http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+							http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+  <import resource="classpath*:META-INF/spring/adminApplicationContext.xml" />
+  <context:component-scan base-package="gov.nih.nci.ctd2.dashboard.importer.internal" />
+
+  <batch:job id="tissueSampleDataImporterJob">
+	<batch:step id="tissueSampleTermsDataStep" parent="tissueSampleDataSimpleStep" next="tissueSampleSynonymsDataStep">
+	  <batch:tasklet>
+		<batch:chunk reader="tissueSampleTermsDataReader" writer="tissueSampleTermsDataWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+	<batch:step id="tissueSampleSynonymsDataStep" parent="tissueSampleDataSimpleStep" next="tissueSampleWriterStep">
+	  <batch:tasklet>
+		<batch:chunk reader="tissueSampleSynonymsDataReader" writer="tissueSampleSynonymsDataWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+	<batch:step id="tissueSampleWriterStep" parent="tissueSampleDataSimpleStep">
+	  <batch:tasklet ref="tissueSampleWriter"/>
+	</batch:step>
+  </batch:job>
+
+  <bean id="tissueSampleDataSimpleStep" class="org.springframework.batch.core.step.item.SimpleStepFactoryBean" abstract="true">
+	<property name="transactionManager" ref="transactionManager" />
+	<property name="jobRepository" ref="jobRepository" />
+	<property name="commitInterval" value="${spring.batch.commit.interval}" />
+  </bean>
+
+  <bean name="tissueSampleTermsDataReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="resource" value="${tissue.sample.terms.location}" />
+    <property name="lineMapper" ref="tissueSampleTermsDataLineMapper" />
+	<property name="linesToSkip" value="1" />
+  </bean>
+
+  <bean name="tissueSampleTermsDataLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+	<property name="fieldSetMapper" ref="tissueSampleTermsDataMapper" />
+	<property name="lineTokenizer" ref="tissueSampleTermsDataLineTokenizer" />
+  </bean>
+
+  <bean name="tissueSampleTermsDataLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+	<property name="delimiter" value="\u0009"/>
+	<property name="names" value="nci_thesaurus_code,display_name,parents"/>
+  </bean>
+
+  <bean name="tissueSampleSynonymsDataReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="resource" value="${tissue.sample.synonyms.location}" />
+    <property name="lineMapper" ref="tissueSampleSynonymsDataLineMapper" />
+	<property name="linesToSkip" value="1" />
+  </bean>
+
+  <bean name="tissueSampleSynonymsDataLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+	<property name="fieldSetMapper" ref="tissueSampleSynonymsDataMapper" />
+	<property name="lineTokenizer" ref="tissueSampleSynonymsDataLineTokenizer" />
+  </bean>
+
+  <bean name="tissueSampleSynonymsDataLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+	<property name="delimiter" value="\u0009"/>
+	<property name="names" value="nci_thesaurus_code,synonym"/>
+  </bean>
+
+  <bean name="tissueSampleWriter" class="gov.nih.nci.ctd2.dashboard.importer.internal.TissueSampleDataWriter"/>
+
+  <!-- the following beans are shared between all the steps of the cell line importer job -->
+  <bean name="tissueSampleMap" class="java.util.HashMap">
+	<constructor-arg index="0" type="java.util.Map">
+	  <map key-type="java.lang.String" value-type="gov.nih.nci.ctd2.dashboard.model.TissueSample"/>
+	</constructor-arg>
+  </bean>
+
+</beans>
