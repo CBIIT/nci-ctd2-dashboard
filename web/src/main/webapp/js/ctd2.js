@@ -2696,6 +2696,7 @@
 
                     var numberOfEls = subjectWithSummaryCollection.models.length;
                     var spanSize = numberOfEls < 4 ? "4" : "3";
+                    spanSize = 2;
                     var order = 1;
                     _.each(subjectWithSummaryCollection.models, function(subjectWithSummary) {
                         var sModel = subjectWithSummary.toJSON();
@@ -2714,7 +2715,7 @@
                         order++;
                     });
 
-                    $(".explore-thumbnail h3").tooltip();
+                    $(".explore-thumbnail h4").tooltip();
                 }
             });
 

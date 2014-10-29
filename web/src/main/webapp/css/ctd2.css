@@ -153,19 +153,19 @@ body {
 }
 
 .drug {
-    border-top: 15px solid #f99910;
-}
-
-.drug-link {
-    color: #f99910;
-}
-
-.context {
     border-top: 15px solid #006bb9;
 }
 
-.context-link {
+.drug-link {
     color: #006bb9;
+}
+
+.context {
+    border-top: 15px solid #f99910;
+}
+
+.context-link {
+    color: #f99910;
 }
 
 .active-box {
@@ -511,7 +511,7 @@ div.dark-separator {
     background-color: #555555;
 }
 
-.explore-thumbnail h3 {
+.explore-thumbnail h4 {
     white-space: nowrap;
     overflow: hidden;
 }
@@ -524,30 +524,51 @@ div.dark-separator {
     min-height: 500px;
 }
 
+#explore-container .span2 {
+    min-height: 360px;
+}
+
 .explore-thumbnail img {
     background-color: white;
 }
 
-h1.target {
+h2.target, h3.target, h4.target, h5.target {
     color: #1ea84d;
     border-top: 0px;
 }
 
-h1.compound {
-    color: #f99a14;
+h2.compound, h3.compound, h4.compound, h5.compound {
+    color: #006cbb;
     border-top: 0px;
 }
 
-h1.context {
-    color: #006cbb;
+h2.context, h3.context, h4.context, h5.context {
+    color: #f99a14;
     border-top: 0px;
 }
 
 .numbered-image {
     background-color: white;
     background-size: cover;
-    background-position-x: 30px;
-    min-height: 200px;
+    background-position-x: 10px;
+    min-height: 120px;
+}
+
+.numbered-image h3 {
+    margin: 2px 2px;
+}
+
+.explore-thumbnail .caption {
+    padding: 5px;
+}
+
+.explore-thumbnail .caption h4 {
+    margin: 5px 0px;
+}
+
+.explore-thumbnail .caption p {
+    font-size: 16px;
+    line-height: 20px;
 }
 
 .nonewline {
@@ -590,4 +611,8 @@ h1 small, h2 small, h3 small, h4 small, h5 small, h6 small {
 blockquote p {
     line-height: 30px;
     font-weight: normal;
+}
+
+.alert, .alert h4 {
+    color: #81632f;
 }

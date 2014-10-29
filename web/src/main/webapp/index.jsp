@@ -47,7 +47,6 @@
               <ul class="nav topmenu">
                 <li class="active"><a href="#">CTD<sup>2</sup> Dashboard</a></li>
                 <li><a href="#centers">Centers</a></li>
-                <li><a href="#explore">Explore</a></li>
                 <li class="dropdown">
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown">Resources <b class="caret"></b></a>
                       <ul class="dropdown-menu">
@@ -198,7 +197,7 @@
                 <p>
                     In Dashboard, <i>compounds</i> are modulators of specific targets in cancer cell lines or tumor model systems. Some examples include small molecules, FDA approved drugs, natural products, and small regulatory RNAs.
                 </p>
-                <a class="btn btn-warning btn-block" href="#explore/compound/Perturbagen">Browse &raquo;</a>
+                <a class="btn btn-info btn-block" href="#explore/compound/Perturbagen">Browse &raquo;</a>
             </div><!-- /.span3 -->
               <div class="span4 context" data-order="3">
                   <h4>Disease Context</h4>
@@ -207,7 +206,7 @@
                       In some instances, the description is labeled as <i>context</i>.
                       This refers to the genomic context, or set of circumstances or conditions which a target, compound, or biomarker may be relevant.
                   </p>
-                  <a class="btn btn-info btn-block" href="#explore/context/Disease">Browse &raquo;</a>
+                  <a class="btn btn-warning btn-block" href="#explore/context/Disease">Browse &raquo;</a>
               </div><!-- /.span3 -->
 
           </div><!-- /.row -->
@@ -217,7 +216,6 @@
     <script type="text/template" id="centers-tmpl">
         <div class="container common-container" id="centers-container">
             <h2>Centers</h2>
-            <br>
             <table class="table table-bordered table-striped table-compact" id="centers-list-table">
                 <thead>
                     <tr>
@@ -237,7 +235,6 @@
     <script type="text/template" id="stories-tmpl">
         <div class="container common-container" id="stories-container">
             <h2>Stories</h2>
-            <br>
             <ul class="thumbnails stories-list">
                 <!-- here will come the stories... -->
             </ul>
@@ -306,8 +303,6 @@
                     <img src="img/{{displayName}}.png" title="{{displayName}}" alt="{{displayName}}" class="img-polaroid" width="200">
                 </div>
             </div>
-
-            </br>
 
             <table id="center-submission-grid" class="table table-bordered table-striped">
                 <thead>
@@ -449,9 +444,9 @@
 
                 </div>
                 <div class="span2">
-                    <a href="#/center/{{submission.observationTemplate.submissionCenter.id}}"><img src="img/{{submission.observationTemplate.submissionCenter.displayName}}.png" class="img-polaroid" height=30 alt="{{submission.observationTemplate.submissionCenter.displayName}}"></a>
+                    <a href="#/center/{{submission.observationTemplate.submissionCenter.id}}"><img src="img/{{submission.observationTemplate.submissionCenter.displayName}}.png" class="img-polaroid" width="120" alt="{{submission.observationTemplate.submissionCenter.displayName}}"></a>
                     <br><br>
-                    <img src="img/observation.png" alt="Observation" class="img-polaroid" width=150 height=150><br>
+                    <img src="img/observation.png" alt="Observation" class="img-polaroid" width=120 height=120><br>
                 </div>
             </div>
 
@@ -1447,7 +1442,7 @@
 
     <script type="text/template" id="explore-tmpl">
         <div class="container common-container" id="explore-container">
-            <h2>Explore Roles: <i>{{roles}}</i></h2>
+            <h2>Explore: <i>{{roles}}</i></h2>
 
             <ul class="thumbnails" id="explore-items">
                 <li class="span12">
@@ -1475,16 +1470,19 @@
         <li class="span{{spanSize}}">
             <div class="thumbnail explore-thumbnail">
                 <div class="numbered-image" style="background-image: url({{subject.class == 'Compound' ? '<%=dataURL%>compounds/' + subject.imageFile : 'img/' + subject.class.toLowerCase() + '.png' }});">
-                    <h2 class="{{type}}">#{{order}}</h2>
+                    <h3>#{{order}}</h3>
                 </div>
                 <!--<img src="" alt="{{subject.class}} {{subject.displayName}}">-->
                 <div class="caption">
-                    <h3 data-toggle="tooltip" title="{{subject.displayName}}">{{subject.displayName}} <small>(Tier {{maxTier}})</small></h3>
+                    <h4 data-toggle="tooltip" class="{{type}} nonewline" title="{{subject.displayName}}">{{subject.displayName}}</h4>
                     <p>
-                        There are {{numberOfObservations}} observation{{numberOfObservations == 1 ? "" : "s"}} from {{numberOfSubmissionCenters}} center{{numberOfSubmissionCenters == 1 ? "" : "s"}} on this <b>{{role}}</b>.
+                        There are {{numberOfObservations}} observation{{numberOfObservations == 1 ? "" : "s"}} from {{numberOfSubmissionCenters}} center{{numberOfSubmissionCenters == 1 ? "" : "s"}} on this <b>{{role}}</b>
+                        <small class="nonewline">(<b>Tier {{maxTier}}</b>)</small>.
                     </p>
                     <p align="center">
-                        <a href="#subject/{{subject.id}}" class="btn btn-block {{type == 'target' ? 'btn-success' : (type == 'compound' ? 'btn-warning' : 'btn-info')}}">See details</a>
+                    </p>
+                    <p align="center">
+                        <a href="#subject/{{subject.id}}" class="btn btn-small btn-block {{type == 'target' ? 'btn-success' : (type == 'compound' ? 'btn-info' : 'btn-warning')}}">See details</a>
                     </p>
                 </div>
             </div>
@@ -1676,8 +1674,8 @@
                 <a href="#" class="close" data-dismiss="alert">&times;</a>
                 <p>
                     <strong>Welcome to the submission template helper!</strong><br>
-                    This tool will help you create a basic Dashboard submission template from scratch.
-                    Once a basic template is prepared, you will be able to download the template for your local use and preparation of a Dashboard submission.
+                    This tool will help create a basic Dashboard submission template from scratch.
+                    Once a basic template is prepared, the template can be downloaded for local use and preparation of a Dashboard submission.
                 </p>
             </div>
 
