@@ -109,7 +109,7 @@
                 <div class="row">
                     <div class="span12">
                         <div class="featurette" id="overview-text">
-                            <img class="img-polaroid pull-left" src="img/logos/ctd2_overall.png" alt="CTD2 general image" title="CTD2 general image" width="125">
+                            <img class="img-polaroid pull-left" src="img/logos/ctd2_overall.png" alt="CTD2 general image" title="CTD2 general image" width="150">
                             <p class="lead"></p>
                             <p class="lead">
                                 <b>The Dashboard</b> hosts data generated and analyzed by the <b>CTD<sup>2</sup> Network</b> and provides an intuitive mechanism for the research community to search across <i>Centers</i>' data.
@@ -132,8 +132,8 @@
                             </div>
 
                             <div id="show-hide-overview">
-                                <a href="#about" class="show-more">(learn more)</a>
-                                <a href="#" class="show-less hide">(show less)</a>
+                                <small><a href="#about" class="show-more">(learn more)</a>
+                                <a href="#" class="show-less hide">(show less)</a></small>
                             </div>
                         </div>
                     </div>
@@ -1433,12 +1433,11 @@
                     <!-- leaving this blank, we have to construct the summary from the scratch. -->
                 </p>
                 <p class="pull-right">
-                    (<small>
+                    (
                         <a target="_blank" href="<%=dataURL%>" id="file-link-{{id}}">
                             view full story</a>
-                    </small>
                     |
-                    <small><a href="#observation/{{id}}">see observation</a></small>)
+                    <a href="#observation/{{id}}">see observation</a>)
                 </p>
             </div>
             <div class="span4">

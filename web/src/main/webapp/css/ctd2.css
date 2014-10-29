@@ -104,7 +104,6 @@ body {
 }
 .carousel-caption h1,
 .carousel-caption .lead {
-  line-height: 1.25;
 }
 
 .marketing .span4 {
@@ -136,7 +135,6 @@ body {
 .featurette-heading {
   font-size: 50px;
   font-weight: 300;
-  line-height: 1;
   letter-spacing: -1px;
 }
 
@@ -189,7 +187,8 @@ body {
 }
 
 .lead {
-    font-size: 17px;
+    font-size: 18px;
+    font-weight: normal;
 }
 
 .stories-lead {
@@ -290,7 +289,6 @@ blockquote p {
 }
 
 .topmenu li {
-    line-height: 28px;
 }
 
 .popover-content {
@@ -430,7 +428,7 @@ img.fancy-story-img {
 
 .featurette p.lead {
     text-align: justify;
-    line-height: 22px;
+    line-height: 24px;
 }
 
 .ctd2-boxes .span3 p {
