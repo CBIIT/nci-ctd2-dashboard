@@ -425,12 +425,12 @@ img.fancy-story-img {
 }
 
 .featurette img {
-    margin: 30px 25px 10px 0px;
+    margin: 15px 25px 10px 0px;
 }
 
 .featurette p.lead {
     text-align: justify;
-    line-height: 30px;
+    line-height: 22px;
 }
 
 .ctd2-boxes .span3 p {
@@ -556,4 +556,10 @@ h1.context {
 
 .nonewline {
     white-space: nowrap;
+}
+
+/* General font over-rides */
+body {
+    font-family: Helvetica, Arial;
+    line-height: normal;
 }

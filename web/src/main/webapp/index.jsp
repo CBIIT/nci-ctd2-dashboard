@@ -109,8 +109,8 @@
                 <div class="row">
                     <div class="span12">
                         <div class="featurette" id="overview-text">
-                            <img class="img-polaroid pull-left" src="img/logos/ctd2_overall.png" alt="CTD2 general image" title="CTD2 general image" width="200">
-                            <h2 class="featurette-heading">Overview</h2>
+                            <img class="img-polaroid pull-left" src="img/logos/ctd2_overall.png" alt="CTD2 general image" title="CTD2 general image" width="125">
+                            <p class="lead"></p>
                             <p class="lead">
                                 <b>The Dashboard</b> hosts data generated and analyzed by the <b>CTD<sup>2</sup> Network</b> and provides an intuitive mechanism for the research community to search across <i>Centers</i>' data.
                                 <i>Observation</i>s, or Center-determined conclusions, are submitted as connections between two related types of components:
@@ -151,7 +151,7 @@
               <img src="img/bg-red.png" alt="Red background image" title="red background image" class="cimg">
               <div class="container">
                   <div class="carousel-caption">
-                        <h1 class="homepage-stories-title">Recent Stories</h1>
+                        <h3 class="homepage-stories-title">Recent Stories</h3>
                         <div class="well carousel-well">
                             <div class="tab-content stories-tabs">
                                 <div class="container tab-pane active fade in" id="story-1"></div>
