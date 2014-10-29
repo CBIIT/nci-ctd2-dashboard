@@ -557,3 +557,7 @@ h1.context {
 .nonewline {
     white-space: nowrap;
 }
+
+#queryDescription {
+    margin-left: 300px;
+}
