@@ -389,14 +389,6 @@
                 </thead>
                 <tbody>
                 <!-- here will go the rows -->
-                <tr class="submission-observations-loading">
-                    <td>
-                        <h3>Loading observations...</h3>
-                        <div class="progress progress-striped active">
-                            <div class="bar" style="width: 100%;"></div>
-                        </div>
-                    </td>
-                </tr>
                 </tbody>
             </table>
 
