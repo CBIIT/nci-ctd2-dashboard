@@ -2792,6 +2792,10 @@
                     }
 
                     $(".explore-thumbnail h4").tooltip();
+                    var blurb = $("#text-blurb-" + thatModel.roles.toLowerCase().replace(/,/g, "-"));
+                    if(blurb.length > 0) {
+                        $("#explore-blurb").append(_.template(blurb.html(), {}));
+                    }
                 }
             });
 
