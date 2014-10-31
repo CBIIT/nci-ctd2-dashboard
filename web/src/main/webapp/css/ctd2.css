@@ -422,6 +422,8 @@ img.fancy-story-img {
 
 .featurette img {
     margin: 15px 25px 10px 0px;
+    width: 150px;
+    height: 150px;
 }
 
 .featurette p.lead {
