@@ -866,6 +866,70 @@
         </div>
     </script>
 
+    <script type="text/template" id="sirna-tmpl">
+        <div class="container common-container" id="sirna-container">
+            <h2>{{displayName}}</h2>
+
+            <div class="row">
+                <div class="span9">
+                    <table id="shrna-details-grid" class="table table-bordered table-striped">
+                        <tr>
+                            <th>Target Sequence</th>
+                            <td>{{targetSequence}}</td>
+                        </tr>
+                        <tr>
+                            <th>Target Transcript</th>
+                            <td>
+                                <a href="#subject/{{transcript.id}}">{{transcript.refseqId}}</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Target Gene</th>
+                            <td>
+                                <a href="#subject/{{transcript.gene.id}}">{{transcript.gene.displayName}}</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Organism</th>
+                            <td>{{organism.displayName}}</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="span3">
+                    <h4>siRNA</h4>
+                    <img src="img/sirna.png" class="img-polaroid" width=175 height=175 alt="siRNA">
+                </div>
+            </div>
+
+            <h3>Related observations</h3>
+
+            <div class="more-observations-message"></div>
+
+            <table id="sirna-observation-grid" class="table table-bordered table-striped observations">
+                <thead>
+                <tr>
+                    <th>Date</th>
+                    <th width=500>Observation Summary</th>
+                    <th>Tier</th>
+                    <th>Center</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- here will go the rows -->
+                <tr class="subject-observations-loading">
+                    <td colspan="5">
+                        <h3>Loading observations...</h3>
+                        <div class="progress progress-striped active">
+                            <div class="bar" style="width: 100%;"></div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </script>
+
+
     <script type="text/template" id="transcript-tmpl">
         <div class="container common-container" id="transcript-container">
             <h2>{{refseqId}}</h2>
@@ -1262,6 +1326,12 @@
     <script type="text/template" id="search-results-shrna-image-tmpl">
         <a href="#subject/{{id}}">
             <img src="img/shrna.png" class="img-polaroid search-info" title="shRNA" alt="shRNA" height="50" width="50">
+        </a>
+    </script>
+
+    <script type="text/template" id="search-results-sirna-image-tmpl">
+        <a href="#subject/{{id}}">
+            <img src="img/sirna.png" class="img-polaroid search-info" title="siRNA" alt="siRNA" height="50" width="50">
         </a>
     </script>
 

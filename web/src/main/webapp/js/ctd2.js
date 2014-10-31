@@ -515,6 +515,10 @@
                         } else if( subject.class == "Gene" ) {
                             imgTemplate = $("#search-results-gene-image-tmpl");
                             thatEl2.append(_.template(imgTemplate.html(), subject));
+                        } else if( subject.class == "ShRna" && subject.type.toLowerCase() == "sirna") {
+                            subject.class == "SiRNA";
+                            imgTemplate = $("#search-results-sirna-image-tmpl");
+                            thatEl2.append(_.template(imgTemplate.html(), subject));
                         } else if( subject.class == "ShRna" ) {
                             imgTemplate = $("#search-results-shrna-image-tmpl");
                             thatEl2.append(_.template(imgTemplate.html(), subject));
@@ -1143,6 +1147,24 @@
         }
     });
 
+    var SirnaView = Backbone.View.extend({
+        el: $("#main-container"),
+        template:  _.template($("#sirna-tmpl").html()),
+        render: function() {
+            var result = this.model.toJSON();
+            result["type"] = "sirna";
+            $(this.el).html(this.template(result));
+
+            var subjectObservationView = new SubjectObservationsView({
+                model: result.id,
+                el: "#sirna-observation-grid"
+            });
+            subjectObservationView.render();
+
+            return this;
+        }
+    });
+
     var TranscriptView = Backbone.View.extend({
         el: $("#main-container"),
         template:  _.template($("#transcript-tmpl").html()),
@@ -1360,7 +1382,9 @@
         render: function() {
             var result = this.model;
             if(result.subject == null) return;
-            result.subject["type"] = result.subject.class;
+            if(result.subject.type == undefined) {
+                result.subject["type"] = result.subject.class;
+            }
             $(this.el).append(this.template(result));
             return this;
         }
@@ -1739,6 +1763,10 @@
                 imgTemplate = $("#search-results-tissuesample-image-tmpl");
             } else if( result.class == "Gene" ) {
                 imgTemplate = $("#search-results-gene-image-tmpl");
+            } else if( result.class == "ShRNA" && result.type.toLowerCase() == "sirna" ) {
+                imgTemplate = $("#search-results-sirna-image-tmpl");
+            } else if( result.class == "ShRNA" ) {
+                imgTemplate = $("#search-results-shrna-image-tmpl");
             } else if( result.class == "Protein" ) {
                 imgTemplate = $("#search-results-protein-image-tmpl");
             }
@@ -2810,7 +2838,12 @@
                     } else if(type == "TissueSample") {
                         subjectView = new TissueSampleView({ model: subject });
                     } else if(type == "ShRna") {
-                        subjectView = new ShrnaView({ model: subject });
+                        // shRna covers both siRNA and shRNA
+                        if(subject.get("type").toLowerCase() == "sirna") {
+                            subjectView = new SirnaView({ model: subject });
+                        } else {
+                            subjectView = new ShrnaView({ model: subject });
+                        }
                     } else if(type == "Transcript") {
                         subjectView = new TranscriptView({ model: subject });
                     } else if(type == "Protein") {
