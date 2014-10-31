@@ -44,7 +44,7 @@ body {
 
 /* Navbar links: increase padding for taller navbar */
 .navbar .nav > li > a {
-  padding: 10px 20px;
+  padding: 10px 11px;
 }
 
 /* Offset the responsive button for proper vertical alignment */
@@ -366,14 +366,14 @@ td.next-cell {
     width: 650px;
 }
 
-#cytoscape-mra {
+#cytoscape {
     width: 93%;
     height: 70%;
     border: 1px solid #dddddd;
     border-radius: 3px;
     margin: 15px;
 }
-.mra-legend {
+.cytoscape-legend {
     width: 90%;
     text-align: center;
     font-size: 75%;
@@ -576,6 +576,11 @@ h2.context, h3.context, h4.context, h5.context {
 .nonewline {
     white-space: nowrap;
 }
+
+#queryDescription {
+    margin-left: 300px;
+}
+
 
 /* General font over-rides */
 body {
