@@ -2740,7 +2740,7 @@
                     var numberOfEls = subjectWithSummaryCollection.models.length;
                     var spanSize = 2;
                     for(order=1; order <= numberOfEls; order++) {
-                        var subjectWithSummary = subjectWithSummaryCollection.models[order];
+                        var subjectWithSummary = subjectWithSummaryCollection.models[order-1];
                         if(order < exploreLimit) {
                             var sModel = subjectWithSummary.toJSON();
                             sModel["spanSize"] = spanSize;
@@ -2769,8 +2769,8 @@
                                 e.preventDefault();
                                 $(this).fadeOut();
 
-                                for(var j=order; j <  numberOfEls; j++) {
-                                    var subjectWithSummary = subjectWithSummaryCollection.models[j];
+                                for(var j=order; j <=  numberOfEls; j++) {
+                                    var subjectWithSummary = subjectWithSummaryCollection.models[j-1];
                                     var sModel = subjectWithSummary.toJSON();
                                     sModel["spanSize"] = spanSize;
                                     sModel["type"] = thatModel.type;
