@@ -27,7 +27,4 @@
         <constructor-arg type="int" value="${list.max.observations}"/>
     </bean>
 
-    <bean id="maxNumberOfBrowsedItems" class="java.lang.Integer">
-        <constructor-arg type="int" value="${list.max.featured.browse.items}"/>
-    </bean>
 </beans>

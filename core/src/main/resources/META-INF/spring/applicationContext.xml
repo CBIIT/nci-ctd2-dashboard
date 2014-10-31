@@ -34,7 +34,12 @@
             </props>
         </property>
 
-        <property name="packagesToScan" value="gov.nih.nci.ctd2.dashboard.impl"/>
+        <property name="packagesToScan">
+            <list>
+                <value>gov.nih.nci.ctd2.dashboard.impl</value>
+                <value>gov.nih.nci.ctd2.dashboard.util</value>
+            </list>
+        </property>
     </bean>
 
     <bean id="allowedProxyHosts" class="java.lang.String">

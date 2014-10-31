@@ -44,18 +44,6 @@ public class ExploreController {
         this.webServiceUtil = webServiceUtil;
     }
 
-    @Autowired
-    @Qualifier("maxNumberOfBrowsedItems")
-    private Integer maxNumberOfBrowsedItems = 50;
-
-    public Integer getMaxNumberOfBrowsedItems() {
-        return maxNumberOfBrowsedItems;
-    }
-
-    public void setMaxNumberOfBrowsedItems(Integer maxNumberOfBrowsedItems) {
-        this.maxNumberOfBrowsedItems = maxNumberOfBrowsedItems;
-    }
-
     @Transactional
     @RequestMapping(value = "{roles}", method = {RequestMethod.GET, RequestMethod.POST}, headers = "Accept=application/json")
     public ResponseEntity<String> browseByKeyword(@PathVariable String roles) {
@@ -70,13 +58,14 @@ public class ExploreController {
         Collections.sort(entities, new Comparator<SubjectWithSummaries>() {
             @Override
             public int compare(SubjectWithSummaries o1, SubjectWithSummaries o2) {
-                return o2.getSubject().getScore() - o1.getSubject().getScore();
+                int i = o2.getScore() - o1.getScore();
+                if(i == 0) {
+                    return o2.getNumberOfObservations() - o1.getNumberOfObservations();
+                } else {
+                    return i;
+                }
             }
         });
-
-        if(getMaxNumberOfBrowsedItems() > 0 && entities.size() > getMaxNumberOfBrowsedItems()) {
-            entities = entities.subList(0, getMaxNumberOfBrowsedItems());
-        }
 
         JSONSerializer jsonSerializer = new JSONSerializer()
                 .transform(new ImplTransformer(), Class.class)

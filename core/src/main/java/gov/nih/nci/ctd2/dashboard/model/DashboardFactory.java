@@ -17,6 +17,8 @@ public abstract class DashboardFactory {
             } catch (ClassNotFoundException e) {
                 log.error("Could not get class with name: " + name);
             }
+        } else {
+            implClass = aClass;
         }
 
         return implClass;

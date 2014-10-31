@@ -2,7 +2,6 @@ package gov.nih.nci.ctd2.dashboard;
 
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
 import gov.nih.nci.ctd2.dashboard.importer.internal.SampleImporter;
-import gov.nih.nci.ctd2.dashboard.model.DashboardFactory;
 import gov.nih.nci.ctd2.dashboard.util.SubjectScorer;
 import org.apache.commons.cli.*;
 import org.apache.commons.logging.Log;
@@ -128,6 +127,7 @@ public class DashboardAdminMain {
 
             if(commandLine.hasOption("r")) {
                 SubjectScorer subjectScorer = (SubjectScorer) appContext.getBean("subjectScorer");
+                subjectScorer.scoreAllRoles();
                 subjectScorer.score();
             }
 

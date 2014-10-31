@@ -4,6 +4,7 @@ import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
 import gov.nih.nci.ctd2.dashboard.impl.*;
 import gov.nih.nci.ctd2.dashboard.model.*;
 import gov.nih.nci.ctd2.dashboard.util.DashboardEntityWithCounts;
+import gov.nih.nci.ctd2.dashboard.util.SubjectWithSummaries;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.WhitespaceAnalyzer;
 import org.apache.lucene.queryParser.MultiFieldQueryParser;
@@ -704,5 +705,15 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
             list.add((ObservedSubject) o);
         }
         return list;
+    }
+
+    @Override
+    public List<SubjectWithSummaries> findSubjectWithSummariesByRole(String role, Integer minScore) {
+        List<SubjectWithSummaries> subjects = new ArrayList<SubjectWithSummaries>();
+        for (Object o : getHibernateTemplate().find("from SubjectWithSummaries where role = ? and score > ?", role, minScore)) {
+            assert o instanceof SubjectWithSummaries;
+            subjects.add((SubjectWithSummaries) o);
+        }
+        return subjects;
     }
 }
