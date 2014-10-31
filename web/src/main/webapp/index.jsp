@@ -1440,7 +1440,7 @@
 
     <script type="text/template" id="explore-tmpl">
         <div class="container common-container" id="explore-container">
-            <h2>Explore: <i>{{roles}}</i></h2>
+            <h2>Explore: <i>{{roles.split(",").join(", ")}}</i></h2>
 
             <ul class="thumbnails" id="explore-items">
                 <li class="span12">
