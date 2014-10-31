@@ -137,6 +137,7 @@ public class DashboardAdminMain {
             }
 
             log.info("All done.");
+            System.exit(0);
         } catch (ParseException e) {
             System.err.println(e.getMessage());
             printHelpAndExit(gnuOptions, -1);
