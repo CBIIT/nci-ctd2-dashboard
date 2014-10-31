@@ -73,7 +73,17 @@ public class WebServiceUtil {
             if(submissionCenter != null) {
                 entities = dashboardDao.findObservationTemplateBySubmissionCenter(submissionCenter);
             }
+        } else if(type.equals("role")) {
+            List<SubjectRole> sRoles = dashboardDao.findEntities(SubjectRole.class);
+            Collections.sort(sRoles, new Comparator<SubjectRole>() {
+                @Override
+                public int compare(SubjectRole o1, SubjectRole o2) {
+                    return o1.getDisplayName().compareTo(o2.getDisplayName());
+                }
+            });
+            entities = sRoles;
         }
+
         return entities;
     }
 

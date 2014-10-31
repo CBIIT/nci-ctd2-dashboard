@@ -115,6 +115,12 @@
         }
     });
 
+    var SubjectRole = Backbone.Model.extend({});
+    var SubjectRoles = Backbone.Collection.extend({
+        url: CORE_API_URL + "list/role?filterBy=",
+        model: SubjectRole
+    });
+
     var BrowsedItems = Backbone.Collection.extend({
         url: CORE_API_URL + "browse/",
         defaults: {
@@ -2770,10 +2776,56 @@
                 }
             });
 
+            $("#customize-roles").click(function(e) {
+                e.preventDefault();
+
+                var subjectRoles = new SubjectRoles();
+                subjectRoles.fetch({
+                    success: function() {
+                        _.each(subjectRoles.models, function(role) {
+                            role = role.toJSON();
+                            var checked = thatModel.roles.toLowerCase().search(role.displayName.toLowerCase()) > -1;
+                            role["checked"] = checked;
+                            var roleName = role.displayName;
+                            role.displayName = roleName.charAt(0).toUpperCase() + roleName.slice(1);
+                            var customRoleItemView = new CustomRoleItemView({ model: role });
+                            customRoleItemView.render();
+                        });
+
+                        $("#role-modal").modal('show');
+
+                        $("#select-roles-button").click(function(e) {
+                            var newRoles = [];
+                            $("#role-modal input").each(function() {
+                                var aRole = $(this).attr("data-role");
+                                if($(this).attr("checked")) {
+                                    newRoles.push(aRole);
+                                }
+
+                            });
+
+                            $("#role-modal").modal('hide');
+                            window.location.hash = "/explore/" + thatModel.type + "/" + newRoles.join(",");
+                        });
+                    }
+                });
+            });
 
             return this;
         }
     });
+
+    //customize-roles-item-tmpl
+    var CustomRoleItemView = Backbone.View.extend({
+        el: "#customized-roles-tbl tbody",
+        template: _.template($("#customize-roles-item-tmpl").html()),
+
+        render: function() {
+            $(this.el).append(this.template(this.model));
+            return this;
+        }
+    });
+
 
     var ExploreItemView = Backbone.View.extend({
         el: "#explore-items",
