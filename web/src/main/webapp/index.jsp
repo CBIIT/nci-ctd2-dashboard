@@ -1510,7 +1510,7 @@
 
     <script type="text/template" id="explore-tmpl">
         <div class="container common-container" id="explore-container">
-            <h2>Explore: <i>{{roles.split(",").join(", ")}}</i></h2>
+            <h2>Browse: <i>{{roles.split(",").join(", ")}}</i></h2>
 
             <ul class="thumbnails" id="explore-items">
                 <li class="span12">
@@ -1523,14 +1523,6 @@
                 </li>
             </ul>
 
-            <div class="alert alert-block">
-                <a href="#" class="close" data-dismiss="alert">&times;</a>
-                <p>
-                    Above is a list of {{type}}s that have at least one observation associated with it in the context of {{roles}}.
-                    If you would like to see all {{type}}s instead, you can <a href="#browse/{{type}}/A">click here</a> to see the whole list.
-                </p>
-            </div>
-
         </div>
     </script>
 
@@ -1540,7 +1532,6 @@
                 <div class="numbered-image" style="background-image: url({{subject.class == 'Compound' ? '<%=dataURL%>compounds/' + subject.imageFile : 'img/' + subject.class.toLowerCase() + '.png' }});">
                     <h3>#{{order}}</h3>
                 </div>
-                <!--<img src="" alt="{{subject.class}} {{subject.displayName}}">-->
                 <div class="caption">
                     <h4 data-toggle="tooltip" class="{{type}} nonewline" title="{{subject.displayName}}">{{subject.displayName}}</h4>
                     <p>
@@ -1556,6 +1547,28 @@
             </div>
         </li>
     </script>
+
+    <script type="text/template" id="explore-more-item-tmpl">
+        <li class="span2" id="show-more-{{type}}">
+            <div class="thumbnail explore-thumbnail">
+                <div class="numbered-image">
+                    <br>
+                    <p align="center">
+                        <center><h1>&gt;&gt;</h1></center>
+                    </p>
+                </div>
+                <div class="caption">
+                    <p>
+                        Only {{shown}} of {{known}} subjects are shown here.
+                    </p>
+                    <p align="center">
+                        <a class="btn btn-small btn-block {{type == 'target' ? 'btn-success' : (type == 'compound' ? 'btn-info' : 'btn-warning')}}">Load more</a>
+                    </p>
+                </div>
+            </div>
+        </li>
+    </script>
+
 
     <script type="text/template" id="browse-tmpl">
         <div class="container common-container" id="browse-container">

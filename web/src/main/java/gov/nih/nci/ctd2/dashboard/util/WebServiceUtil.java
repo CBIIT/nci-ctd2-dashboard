@@ -80,38 +80,6 @@ public class WebServiceUtil {
     @Transactional
     @Cacheable(value = "exploreCache")
     public List<SubjectWithSummaries> exploreSubjects(String keyword) {
-        HashSet<Subject> subjects = new HashSet<Subject>();
-        for (ObservedSubject observedSubject : dashboardDao.findObservedSubjectByRole(keyword)) {
-            subjects.add(observedSubject.getSubject());
-        }
-
-        List<SubjectWithSummaries> subjectWithSummariesList = new ArrayList<SubjectWithSummaries>();
-        for (Subject subject : subjects) {
-            SubjectWithSummaries subjectWithSummaries = new SubjectWithSummaries();
-            subjectWithSummaries.setSubject(subject);
-
-            List<ObservedSubject> observedSubjectBySubject = dashboardDao.findObservedSubjectBySubject(subject);
-            subjectWithSummaries.setNumberOfObservations(observedSubjectBySubject.size());
-
-            HashSet<Submission> submissions = new HashSet<Submission>();
-            HashSet<SubmissionCenter>  submissionCenters = new HashSet<SubmissionCenter>();
-            Integer maxTier = 0;
-            for (ObservedSubject observedSubject : observedSubjectBySubject) {
-                Submission submission = observedSubject.getObservation().getSubmission();
-                submissions.add(submission);
-                ObservationTemplate observationTemplate = submission.getObservationTemplate();
-                submissionCenters.add(observationTemplate.getSubmissionCenter());
-                maxTier = Math.max(maxTier, observationTemplate.getTier());
-            }
-
-            subjectWithSummaries.setMaxTier(maxTier);
-            subjectWithSummaries.setNumberOfSubmissions(submissions.size());
-            subjectWithSummaries.setNumberOfSubmissionCenters(submissionCenters.size());
-            subjectWithSummariesList.add(subjectWithSummaries);
-
-            subjectWithSummaries.setRole(keyword);
-        }
-
-        return subjectWithSummariesList;
+        return dashboardDao.findSubjectWithSummariesByRole(keyword, 1);
     }
 }

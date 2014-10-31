@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
@@ -77,11 +78,69 @@ public class SubjectScorer {
             submissionCenters.add(submission.getObservationTemplate().getSubmissionCenter());
         }
 
-        int tierScore = 0;
+        int maxTier = 0;
         for (Submission submission : submissions) {
-            tierScore += submission.getObservationTemplate().getTier();
+            maxTier = Math.max(maxTier, submission.getObservationTemplate().getTier());
         }
 
-        return tierScore * submissionCenters.size();
+        return maxTier * submissionCenters.size();
+    }
+
+    @Transactional
+    public void scoreAllRoles() {
+        log.info("Removing all role-based scores...");
+        List<SubjectWithSummaries> oldEntities = dashboardDao.findEntities(SubjectWithSummaries.class);
+        for (SubjectWithSummaries subjectWithSummaries : oldEntities) {
+            dashboardDao.delete(subjectWithSummaries);
+        }
+        log.info("Removed " + oldEntities.size() + " old scores.");
+
+        log.info("Re-scoring all roles...");
+        List<SubjectRole> entities = dashboardDao.findEntities(SubjectRole.class);
+        for (SubjectRole subjectRole : entities) {
+            String keyword = subjectRole.getDisplayName();
+            log.info("Scoring subject with role: " + keyword);
+
+            HashMap<Subject, SubjectWithSummaries> subjectToSummaries = new HashMap<Subject, SubjectWithSummaries>();
+            HashMap<Subject, HashSet<SubmissionCenter>> subjectToCenters = new HashMap<Subject, HashSet<SubmissionCenter>>();
+            for (ObservedSubject observedSubject : dashboardDao.findObservedSubjectByRole(keyword)) {
+                Subject subject = observedSubject.getSubject();
+                SubjectWithSummaries withSummaries = subjectToSummaries.get(subject);
+
+                ObservationTemplate observationTemplate = observedSubject.getObservation().getSubmission().getObservationTemplate();
+                SubmissionCenter submissionCenter = observationTemplate.getSubmissionCenter();
+                Integer tier = observationTemplate.getTier();
+                if(withSummaries == null) {
+                    withSummaries = new SubjectWithSummaries();
+                    withSummaries.setRole(keyword);
+                    withSummaries.setSubject(subject);
+                    withSummaries.setMaxTier(tier);
+                    withSummaries.setNumberOfObservations(1);
+                    HashSet<SubmissionCenter> centers = new HashSet<SubmissionCenter>();
+                    centers.add(submissionCenter);
+                    withSummaries.setNumberOfSubmissionCenters(1);
+                    subjectToCenters.put(subject, centers);
+                    subjectToSummaries.put(subject, withSummaries);
+                } else {
+                    withSummaries.setMaxTier(Math.max(withSummaries.getMaxTier(), tier));
+                    withSummaries.setNumberOfObservations(withSummaries.getNumberOfObservations()+1);
+
+                    HashSet<SubmissionCenter> submissionCenters = subjectToCenters.get(subject);
+                    submissionCenters.add(submissionCenter);
+                    withSummaries.setNumberOfSubmissionCenters(submissionCenters.size());
+                }
+            }
+
+            List<SubjectWithSummaries> subjectWithSummariesList = new ArrayList<SubjectWithSummaries>();
+            subjectWithSummariesList.addAll(subjectToSummaries.values());
+            for (SubjectWithSummaries subjectWithSummaries : subjectWithSummariesList) {
+                subjectWithSummaries.setScore(subjectWithSummaries.calculateScore());
+                dashboardDao.save(subjectWithSummaries);
+            }
+
+            log.info("Done scoring role: " + keyword);
+        }
+
+        log.info("Done scoring all roles...");
     }
 }

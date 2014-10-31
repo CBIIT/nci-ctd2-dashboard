@@ -2,6 +2,7 @@ package gov.nih.nci.ctd2.dashboard.dao;
 
 import gov.nih.nci.ctd2.dashboard.model.*;
 import gov.nih.nci.ctd2.dashboard.util.DashboardEntityWithCounts;
+import gov.nih.nci.ctd2.dashboard.util.SubjectWithSummaries;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -54,5 +55,6 @@ public interface DashboardDao {
     List<Compound> browseCompounds(String startsWith);
     List<ObservationTemplate> findObservationTemplateBySubmissionCenter(SubmissionCenter submissionCenter);
     List<ObservedSubject> findObservedSubjectByRole(String role);
+    List<SubjectWithSummaries> findSubjectWithSummariesByRole(String role, Integer minScore);
 }
 

@@ -2703,6 +2703,8 @@
         template: _.template($("#explore-tmpl").html()),
 
         render: function() {
+            var exploreLimit = 36;
+
             var thatModel = this.model;
             $(this.el).html(this.template(thatModel));
             var subjectWithSummaryCollection = new SubjectWithSummaryCollection(thatModel);
@@ -2711,25 +2713,58 @@
                     $("#explore-items").html("");
 
                     var numberOfEls = subjectWithSummaryCollection.models.length;
-                    var spanSize = numberOfEls < 4 ? "4" : "3";
-                    spanSize = 2;
-                    var order = 1;
-                    _.each(subjectWithSummaryCollection.models, function(subjectWithSummary) {
-                        var sModel = subjectWithSummary.toJSON();
-                        sModel["spanSize"] = spanSize;
-                        sModel["type"] = thatModel.type;
-                        sModel["order"] = order;
-                        if(sModel.subject.class == "Compound") {
-                            _.each(sModel.subject.xrefs, function(xref) {
-                                if(xref.databaseName == "IMAGE") {
-                                    sModel.subject["imageFile"] = xref.databaseId;
+                    var spanSize = 2;
+                    for(order=1; order <= numberOfEls; order++) {
+                        var subjectWithSummary = subjectWithSummaryCollection.models[order];
+                        if(order < exploreLimit) {
+                            var sModel = subjectWithSummary.toJSON();
+                            sModel["spanSize"] = spanSize;
+                            sModel["type"] = thatModel.type;
+                            sModel["order"] = order;
+                            if(sModel.subject.class == "Compound") {
+                                _.each(sModel.subject.xrefs, function(xref) {
+                                    if(xref.databaseName == "IMAGE") {
+                                        sModel.subject["imageFile"] = xref.databaseId;
+                                    }
+                                });
+                            }
+                            var exploreItemView = new ExploreItemView({ model: sModel });
+                            exploreItemView.render();
+                        } else {
+                            var exploreMoreItemView = new ExploreMoreItemView({
+                                model: {
+                                    shown: order-1,
+                                    known: numberOfEls,
+                                    type: thatModel.type
                                 }
                             });
+                            exploreMoreItemView.render();
+
+                            $("#show-more-" + thatModel.type).click(function(e) {
+                                e.preventDefault();
+                                $(this).fadeOut();
+
+                                for(var j=order; j <  numberOfEls; j++) {
+                                    var subjectWithSummary = subjectWithSummaryCollection.models[j];
+                                    var sModel = subjectWithSummary.toJSON();
+                                    sModel["spanSize"] = spanSize;
+                                    sModel["type"] = thatModel.type;
+                                    sModel["order"] = j;
+                                    if(sModel.subject.class == "Compound") {
+                                        _.each(sModel.subject.xrefs, function(xref) {
+                                            if(xref.databaseName == "IMAGE") {
+                                                sModel.subject["imageFile"] = xref.databaseId;
+                                            }
+                                        });
+                                    }
+                                    var exploreItemView = new ExploreItemView({ model: sModel });
+                                    exploreItemView.render();
+                                }
+                            });
+
+                            break;
                         }
-                        var exploreItemView = new ExploreItemView({ model: sModel });
-                        exploreItemView.render();
-                        order++;
-                    });
+                    }
 
                     $(".explore-thumbnail h4").tooltip();
                 }
@@ -2749,6 +2784,17 @@
             return this;
         }
     });
+
+    var ExploreMoreItemView = Backbone.View.extend({
+        el: "#explore-items",
+        template: _.template($("#explore-more-item-tmpl").html()),
+
+        render: function() {
+            $(this.el).append(this.template(this.model));
+            return this;
+        }
+    });
+
 
     /* Routers */
     AppRouter = Backbone.Router.extend({
