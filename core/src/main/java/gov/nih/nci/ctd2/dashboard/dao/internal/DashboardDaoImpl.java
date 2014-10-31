@@ -574,6 +574,7 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
         }
         fullTextSession.flushToIndexes();
         fullTextSession.clear();
+        fullTextSession.close();
     }
 
     private void createIndexForClass(FullTextSession fullTextSession, Class<DashboardEntity> clazz, int batchSize) {

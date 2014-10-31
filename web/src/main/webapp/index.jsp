@@ -108,7 +108,7 @@
                 <div class="row">
                     <div class="span12">
                         <div class="featurette" id="overview-text">
-                            <img class="img-polaroid pull-left" src="img/logos/ctd2_overall.png" alt="CTD2 general image" title="CTD2 general image" width="150">
+                            <img class="img-polaroid pull-left" src="img/logos/ctd2_overall.png" alt="CTD2 general image" title="CTD2 general image">
                             <p class="lead"></p>
                             <p class="lead">
                                 <b>The Dashboard</b> hosts data generated and analyzed by the <b>CTD<sup>2</sup> Network</b> and provides an intuitive mechanism for the research community to search across <i>Centers</i>' data.
