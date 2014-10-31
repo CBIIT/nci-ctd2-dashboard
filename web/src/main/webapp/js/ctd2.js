@@ -303,8 +303,8 @@
                                     ),
                                     {
                                         'autoDimensions' : false,
-                                        'width': '95%',
-                                        'height': '95%',
+                                        'width': '99%',
+                                        'height': '99%',
                                         'centerOnScroll': true,
                                         'transitionIn' : 'none',
                                         'transitionOut' : 'none'
