@@ -707,6 +707,9 @@
              </div>
 
              <h3>Related observations</h3>
+
+             <div class="more-observations-message"></div>
+
              <table id="gene-observation-grid" class="table table-bordered table-striped observations">
                  <thead>
                  <tr>
@@ -728,9 +731,6 @@
                  </tr>
                  </tbody>
              </table>
-
-             <div class="more-observations-message"></div>
-
          </div>
     </script>
 
@@ -776,6 +776,9 @@
             </div>
 
             <h3>Related observations</h3>
+
+            <div class="more-observations-message"></div>
+
             <table id="protein-observation-grid" class="table table-bordered table-striped observations">
                 <thead>
                 <tr>
@@ -797,9 +800,6 @@
                 </tr>
                 </tbody>
             </table>
-
-            <div class="more-observations-message"></div>
-
         </div>
     </script>
 
@@ -839,6 +839,9 @@
             </div>
 
             <h3>Related observations</h3>
+
+            <div class="more-observations-message"></div>
+
             <table id="shrna-observation-grid" class="table table-bordered table-striped observations">
                 <thead>
                 <tr>
@@ -860,9 +863,6 @@
                 </tr>
                 </tbody>
             </table>
-
-            <div class="more-observations-message"></div>
-
         </div>
     </script>
 
@@ -898,6 +898,9 @@
             </div>
 
             <h3>Related observations</h3>
+
+            <div class="more-observations-message"></div>
+
             <table id="transcript-observation-grid" class="table table-bordered table-striped observations">
                 <thead>
                 <tr>
@@ -919,9 +922,6 @@
                 </tr>
                 </tbody>
             </table>
-
-            <div class="more-observations-message"></div>
-
         </div>
     </script>
 
@@ -957,6 +957,9 @@
             </div>
 
             <h3>Related observations</h3>
+
+            <div class="more-observations-message"></div>
+
             <table id="tissuesample-observation-grid" class="table table-bordered table-striped observations">
                 <thead>
                 <tr>
@@ -978,8 +981,6 @@
                 </tr>
                 </tbody>
             </table>
-
-            <div class="more-observations-message"></div>
 
         </div>
     </script>
@@ -1024,6 +1025,9 @@
                 </div>
             </div>
             <h3>Related observations</h3>
+
+            <div class="more-observations-message"></div>
+
             <table id="cellsample-observation-grid" class="table table-bordered table-striped observations">
                 <thead>
                 <tr>
@@ -1045,8 +1049,6 @@
                 </tr>
                 </tbody>
             </table>
-
-            <div class="more-observations-message"></div>
 
         </div>
     </script>
@@ -1079,6 +1081,9 @@
                 </div>
             </div>
             <h3>Related observations</h3>
+
+            <div class="more-observations-message"></div>
+
             <table id="animalmodel-observation-grid" class="table table-bordered table-striped observations">
                 <thead>
                 <tr>
@@ -1100,8 +1105,6 @@
                 </tr>
                 </tbody>
             </table>
-
-            <div class="more-observations-message"></div>
 
         </div>
     </script>
@@ -1138,6 +1141,9 @@
               </div>
 
               <h3>Related observations</h3>
+
+              <div class="more-observations-message"></div>
+
               <table id="compound-observation-grid" class="table table-bordered table-striped observations">
                   <thead>
                   <tr>
@@ -1159,8 +1165,6 @@
                   </tr>
                   </tbody>
               </table>
-
-              <div class="more-observations-message"></div>
 
           </div>
      </script>

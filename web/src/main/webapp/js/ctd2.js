@@ -29,7 +29,9 @@
         },
         "search": { // simple searching
             "smart": false
-        }
+        },
+        "sDom": "<'row'<'span6'i><'span6'f>r>t<'row'<'span6'l><'span6'p>>",
+        "sPaginationType": "bootstrap"
     });
 
     // Let datatables know about our date format
@@ -559,8 +561,6 @@
 
                     var tableLength = (observedEvidences.models.length > 25 ? 10 : 25);
                     var oTable = $('#observed-evidences-grid').dataTable({
-                        "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
-                        "sPaginationType": "bootstrap",
                         "iDisplayLength": tableLength
                     });
 
@@ -755,8 +755,6 @@
 
             var tableLength = (this.model.observedEvidences.length > 25 ? 10 : 25);
             var oTable = $('#observed-evidences-grid').dataTable({
-                "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
-                "sPaginationType": "bootstrap",
                 "iDisplayLength": tableLength
             });
 
@@ -912,8 +910,6 @@
                     });
 
                     cTable = tableEl.dataTable({
-                        "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
-                        "sPaginationType": "bootstrap",
                         // might want to increase this number if we have incredible number of centers
                         "iDisplayLength": 25
                     });
@@ -1035,7 +1031,6 @@
                         });
 
                         var oTable = $(thatEl).dataTable({
-                            "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
                             "sPaginationType": "bootstrap"
                         });
 
@@ -1408,8 +1403,6 @@
 
                     $(".template-description").tooltip();
                     $(tableElId).dataTable({
-                       "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
-                       "sPaginationType": "bootstrap",
                        "columns": [
                            { "orderDataType": "dashboard-date" },
                            null,
@@ -1541,10 +1534,7 @@
                             submissionRowView.render();
                         });
 
-                        $(sTable).dataTable({
-                            "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
-                            "sPaginationType": "bootstrap"
-                        });
+                        $(sTable).dataTable();
 
                     }
                 });
@@ -1605,8 +1595,6 @@
                         });
 
                         $(sTableId).dataTable({
-                            "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
-                            "sPaginationType": "bootstrap",
                             "columns": model.columns
                         });
 
@@ -1637,10 +1625,7 @@
                 submissionRowView.render();
             });
 
-            $('#submission-observation-grid').dataTable({
-                "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
-                "sPaginationType": "bootstrap"
-            });
+            $('#submission-observation-grid').dataTable();
 
             return this;
         }
@@ -1813,8 +1798,6 @@
                         $(".obs-tooltip").tooltip();
 
                         var oTable = $("#search-results-grid").dataTable({
-                            "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
-                            "sPaginationType": "bootstrap",
                             "columns": [
                                 null,
                                 null,
@@ -1843,8 +1826,6 @@
                             });
 
                             var sTable = $("#searched-submissions").dataTable({
-                                "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
-                                "sPaginationType": "bootstrap",
                                 "columns": [
                                     null,
                                     { "orderDataType": "dashboard-date" },
@@ -1971,10 +1952,7 @@
              	   });
                  
                  
-                   var oTable2 = $('#mra-barcode-grid').dataTable({
-                     "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
-                     "sPaginationType": "bootstrap"
-                   });
+                   var oTable2 = $('#mra-barcode-grid').dataTable();
               }
            });  //ajax 
        
