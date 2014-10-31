@@ -99,6 +99,12 @@
          <p>
              <a href="http://cancer.gov"><img src="img/logos/footer_logo_nci.jpg" alt="NCI logo" title="NCI logo"></a><a href="http://www.dhhs.gov/"><img src="img/logos/footer_logo_hhs.jpg" title="HHS logo" alt="HHS logo"></a><a href="http://www.nih.gov/"><img src="img/logos/footer_logo_nih.jpg" title="NIH logo" alt="NIH logo"></a><a href="http://www.firstgov.gov/"><img src="img/logos/footer_logo_firstgov.jpg" title="First Gov logo" alt="First Gov logo"></a>
          </p>
+           <p>
+               <a href="http://www.cancer.gov/global/web/policies" target="_blank">Policies</a>&middot;
+               <a href="http://www.cancer.gov/global/web/policies/accessibility" target="_blank">Accesibility</a>&middot;
+               <a href="http://www.cancer.gov/global/web/policies/foia" target="_blank">FOIA</a>
+           </p>
+
        </footer>
     </div>
 
