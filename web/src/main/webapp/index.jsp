@@ -190,7 +190,7 @@
                 <p>
                     <i>Targets</i> are molecules, such as genes or proteins, which have been experimentally identified as tumor markers or drivers.
                 </p>
-                <a class="btn btn-success btn-block" href="#explore/target/Biomarker, Target">Browse &raquo;</a>
+                <a class="btn btn-success btn-block" href="#explore/target/Biomarker,Target">Browse &raquo;</a>
             </div><!-- /.span3 -->
             <div class="span4 drug" data-order="2">
               <h4>Compounds &amp; Perturbagens</h4>
@@ -1510,7 +1510,7 @@
 
     <script type="text/template" id="explore-tmpl">
         <div class="container common-container" id="explore-container">
-            <h2>Browse: <i>{{roles.split(",").join(", ")}}</i></h2>
+            <h2>Browse: <i>{{roles.split(",").join(", ")}}</i> <small><a href="#" id="customize-roles">(customize)</a></small></h2>
 
             <ul class="thumbnails" id="explore-items">
                 <li class="span12">
@@ -1524,6 +1524,37 @@
             </ul>
 
         </div>
+
+        <div class="modal hide fade" id="role-modal">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h3>Customize roles</h3>
+            </div>
+            <div class="modal-body">
+                <p>Please select roles of interest from the list below.</p>
+
+                <table class="table table-bordered table-compact table-striped" id="customized-roles-tbl">
+                    <thead>
+                        <tr>
+                            <th>Role</th>
+                            <th>Show</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="btn btn-block btn-info" id="select-roles-button">Select</button>
+            </div>
+        </div>
+    </script>
+
+    <script type="text/template" id="customize-roles-item-tmpl">
+        <tr>
+            <td>{{displayName}}</td>
+            <td><input {{checked ? "checked " : ""}} type="checkbox" data-role="{{displayName}}"></td>
+        </tr>
     </script>
 
     <script type="text/template" id="explore-item-tmpl">
