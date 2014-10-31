@@ -1214,6 +1214,8 @@
                 <a href="#/center/{{submission.observationTemplate.submissionCenter.id}}">
                     <img alt="{{submission.observationTemplate.submissionCenter.displayName}}" title="{{submission.observationTemplate.submissionCenter.displayName}}" width="150" src="img/{{submission.observationTemplate.submissionCenter.displayName}}.png">
                 </a>
+                <span class="hide-text">{{submission.observationTemplate.submissionCenter.displayName}}</span>
+
             </td>
         </tr>
     </script>

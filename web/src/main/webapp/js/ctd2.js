@@ -23,6 +23,15 @@
         "sWrapper": "dataTables_wrapper form-inline"
     });
 
+    $.extend( true, $.fn.dataTable.defaults, {
+        "oLanguage": { // "search" -> "filter"
+            "sSearch": "Filter Table:"
+        },
+        "search": { // simple searching
+            "smart": false
+        }
+    });
+
     // Let datatables know about our date format
     $.extend($.fn.dataTable.ext.order, {
         "dashboard-date": function(settings, col) {
