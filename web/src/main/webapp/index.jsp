@@ -55,7 +55,14 @@
                           <li><a target="_blank" href="https://ctd2.nci.nih.gov/">Data Portal - Downloads</a></li>
                           <li><a target="_blank" href="http://ocg.cancer.gov/about-ocg/rss-feeds">RSS feed</a></li>
                           <li class="divider"></li>
-                          <li><a href="#template-helper">Submission Template Helper</a></li>
+                          <li><a href="#template-helper">Submission Template Helper</a></li>                          
+                      </ul>
+                  </li>                 
+                   <li class="dropdown">
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown">Gene Cart <b class="caret"></b></a>
+                      <ul class="dropdown-menu">
+                          <li><a href="#genes">Go To Cart</a></li> 
+                          <li><a href="#gene-cart-help">Help</a></li>                          
                       </ul>
                   </li>
               </ul>
@@ -85,6 +92,7 @@
       </div> <!-- /.container -->
     </div><!-- /.navbar-wrapper -->
 
+
     <!-- all the backbone magic will happen here, right in this div -->
     <div id="main-container"></div>
 
@@ -106,6 +114,8 @@
 
        </footer>
     </div>
+
+    <input id="sifFileInput" type="file" style="visibility:hidden" /> <!-- a hidden field for SIF file loading -->
 
     <!-- these are the templates -->
     <script type="text/template" id="home-tmpl">
@@ -680,7 +690,9 @@
                      <table id="gene-details-grid" class="table table-bordered table-striped">
                          <tr>
                              <th>Gene symbol</th>
-                             <td>{{displayName}}</td>
+                             <td>{{displayName}}&nbsp;&nbsp;
+                                  <a href="#" class="addGene-{{displayName}}" title="Add gene to cart" style="color: green">+</a>  
+                             </td>
                          </tr>
                          <tr>
                              <th>Synonyms</th>
@@ -1252,6 +1264,21 @@
             <td>{{observedSubjectRole.displayText}}</td>
         </tr>
     </script>
+    
+    <script type="text/template" id="observedsubject-gene-summary-row-tmpl">
+        <tr>
+            <td id="subject-image-{{id}}"></td>
+            <td id="subject.displayName-{{id}}">
+                <a href="#/subject/{{subject.id}}">
+                    {{subject.displayName}}
+                </a>  &nbsp;
+                <a href="#" class="addGene-{{subject.displayName}}" title="Add gene to cart" style="color: green">+</a>			  				 
+            </td>
+            <td>{{subject.type}}</td>
+            <td>{{observedSubjectRole.subjectRole.displayName}}</td>
+            <td>{{observedSubjectRole.displayText}}</td>
+        </tr>
+    </script>
 
     <script type="text/template" id="observedsubject-row-tmpl">
         <tr>
@@ -1662,7 +1689,7 @@
                     ( <a class="dropdown-toggle" data-toggle="dropdown" href="#">view mra file<b class="caret"></b></a> )
                     <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                         <li>
-                            <a href="#/evidence/{{id}}" title="open in mra view" class="desc-tooltip">
+                            <a href="#/evidence/{{id}}" title="Open Master Regulator View" class="desc-tooltip">
                                 mra view
                             </a>
                         </li>
@@ -1765,10 +1792,12 @@
     </script>   
     
     <script type="text/template" id="mra-cytoscape-tmpl">
-        <div id="cytoscape-mra">
-            <img id="mra_progress_indicator" class="centeredImage" src="img/progress_indicator.gif" width="30" height="30" alt="Please wait ......"><br>
+        <div id="mra_progress">
+            <img id="mra_progress_indicator" class="centeredImage" src="img/progress_indicator.gif" width="30" height="30" alt="Please wait ......">
         </div>
-        <div class="well mra-legend">       
+        <div id="cytoscape">            
+        </div>
+        <div class="well cytoscape-legend">       
             <svg width="350" height="30"xmlns="http://www.w3.org/2000/svg">
             <circle cx="20" cy="15" r="10" fill="white" stroke="grey" stroke-width="2"/>
             <text x="40" y="20" fill="grey">TF</text>
@@ -2350,6 +2379,170 @@
     <script type="text/template" id="maxNumberOfEntites">
         <%=maxNumOfObservations%>
     </script>
+    
+    <script type="text/template" id="genelist-view-tmpl" >
+         <div class="container common-container" id="genelist-container" > 
+             
+                 <div class="span10" align="center">                   
+                    <h4>  Gene List</h4>                    
+                    <select id="geneNames" name="geneNames"
+								style="width: 300px" size="6" 
+								multiple></select>
+                    </br>
+                    </br>
+                    <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
+                    <a href="#" id="deleteGene">Delete Gene</a>
+                    <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
+                    
+                    <a href="#" id="clearList">Clear List</a>
+                    <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
+                    </br>
+                    </br>
+                    <b>&nbsp;&nbsp;&nbsp;</b> 		   
+                    <a href="#cnkb-query" id="cnkb-query">Find Gene Interactions in  Networks (CNKB)</a>
+                 </div>
+
+                 <div class="span1">                                   
+                    <a href="javascript:history.back()">Back</a>
+                 </div>              
+             </div>
+      </script>
+      
+      <script type="text/template" id="cnkb-query-tmpl" >
+         <div class="container common-container" id="cnkbquery-container" > 
+                    
+                    <div class="span10">                       
+                       <h3>Cellular Network Knowledge Base</h3>
+
+                       <medium>Select Interactome:</medium>                  
+                       <small id="queryDescription" style="color:grey; font:8"></small> 
+                       </br>                  
+                       <select id="interactomeList" name="interactomes"
+						    style="width: 350px" size="4"></select>
+                       </br>
+                       <small id="interactomeDescription" style="color:grey; font:8">
+                        &nbsp;&nbsp;
+                       </small>             
+                     </br>
+                      
+                    <medium style="color:#ccc" id="selectVersion"> Select Version: </medium>
+                    </br>                
+                    <select id="interactomeVersionList" name="interactomeVersions"
+						 style="width: 350px" size="4"></select>
+                     </br>
+                    <small id="versionDescription" style="color:grey; font:8">
+                        &nbsp;&nbsp;
+                    </small>             
+                     </br>
+		             </br>
+                     <a href="#cnkb-result" id="cnkb-result">Submit</a>
+                 </div>
+
+                 <div class="span1">                                   
+                    <a href="javascript:history.back()">Back</a>
+                 </div>              
+             </div>
+      </script>
+      
+      <script type="text/template" id="cnkb-result-tmpl" >
+         <div class="container common-container" id="cnkbresult-container" > 
+               <div class="row">
+                  <div class="span10">
+                     <h3>Cellular Network Knowledge Base</h2>                                  			                    
+                     <a href="#" id="cnkbExport"  target="_blank" title="Export all selected interaction to a SIF file."> Export </a>                    
+                     <br/>	         
+                     <table id="cnkb-result-grid" class="table table-bordered table-striped ">
+                        <thead> 
+                            <tr>                       
+                            <th><input type="checkbox" id="checkbox_selectall" title="select or deselect all checkboxs"></th>
+                            <th>GENE</th>
+                            </tr>
+                         </thead>
+                         <tbody>                            
+                         </tbody>
+                      </table>  
+                   </div>
+                   <div class="span1">                                   
+                      <a href="javascript:history.back()">Back</a>
+                   </div>              
+                </div>                  
+                <br/>
+
+                <div id="cnkb_data_progress" align="center">data is loading ......
+                    <img id="cnkb_data_progress_indicator" src="img/progress_indicator.gif" width="20" height="20" alt="Please wait ......"><br>
+                    <br/><br/><br/>
+                </div>
+                <div>         
+					<b>Interactions Limit:</b>	
+                    <select id="cytoscape-node-limit">
+                           <option value="25">25</option>
+                           <option value="50">50</option>                        
+                           <option value="100" selected="selected">100</option>                                             
+                           <option value="200">200</option>
+                           <option value="300">300</option>
+                           <option value="400">400</option>                                                                        
+                     </select>					
+				  
+                     <b>Layout:</b>	
+                     <select id="cytoscape-layouts">
+                           <option value="arbor" selected="selected">Arbor</option>                         
+                           <option value="grid">Grid</option>                           
+                           <option value="random">Random</option>
+                           <option value="circle">Circle</option>
+                     </select>
+                     
+                     <a href="#" id="createnetwork"  target="_blank" title="please select cnkb interactions to create network">Create Network</a>   				 
+                     <br/>	                    
+			         <small><font color="grey">Throttle: </font></small>
+                     <small id="throttle-input"><font color="grey">e.g. 0.01 </font></small>	
+				   	 <div id="createnw_progress_indicator" align="center" style="display: none;">data is loading ......
+                         <img id="cnkb_data_progress_indicator" src="img/progress_indicator.gif" width="20" height="20" alt="Please wait ......"><br>
+                     </div>
+                  </div>         
+                  <br/>	
+             </div>
+      </script>
+    
+      <script type="text/template" id="cnkb-result-row-tmpl">
+        <tr id="tr_{{geneName}}">
+            <td><input type="checkbox" id="checkbox_{{geneName}}" value="{{geneName}}" class="cnkb_checkbox"></td> 
+		    <td>{{geneName}}</td>; 
+        </tr>
+      </script>
+      
+      <script type="text/template" id="cnkb-cytoscape-tmpl">
+        
+        <div id="cnkb_cytoscape_progress">
+            <img id="cnkb_cytoscape_progress_indicator" class="centeredImage" src="img/progress_indicator.gif" width="30" height="30" alt="Please wait ......">
+        </div>
+        <div id="cytoscape">            
+        </div>
+        <div id="cnkb-cytoscape-legend" class="well cytoscape-legend">       
+            <svg  width="500" height="30"xmlns="http://www.w3.org/2000/svg">            
+               {{svgHtml}}
+            </svg>
+            <br/>
+            {{description}}  
+        </div>
+      </script>
+     
+    <script type="text/template" id="gene-cart-help-tmpl" >
+         <div class="container common-container" id="cnkbhelp-container" > 
+               <div class="span10">                       
+                    <h3>Gene Cart Help</h3>
+                    <p>The Gene Cart allows a list of genes to be built up while browsing through Observations in the CTD2 Dashboard.  This list can then be submitted as a query to the Cellular Network Knowledge Base (CNKB), a database maintained at Columbia University.</p>
+                    <p>In the Observations for a particular Dashboard submission, those entries that are genes will have a green "+" sign to right of the gene symbol.  Clicking this "+" sign will add the gene to the Gene Cart.  The Gene Cart is limited to 25 genes.</p>
+                    <p>The CNKB is a repository of molecular interactions, including ones both computationally and experimentally derived. Sources for interactions include reverse-engineered cellular context-specific regulatory interactomes developed in the lab of Dr. Andrea Califano at Columbia University, and also some public-domain datasets. </p>
+                    <p>In the Gene Cart, clicking on "Find Interactions in Networks (CNKB)" will bring the user to the Cellular Networks Knowledge Base page where a particular interactome and version can be chosen.  Descriptive text for each is available by selecting any particular interactome or version.  Clicking "Submit" will initiate a query of the CNKB using the genes in the cart.</p>
+                    <p>The query result is displayed in a table showing the number and type of interactions found for each query gene.  A check box to the left of each gene allows individual results to be selected.  The interactions for selected genes can then be downloaded in the form of a Cytoscape "SIF"-format file, or displayed directly in Cytoscape.js in the browser.  The number of interactions to display is controlled using the "Interactions Limit" pulldown.  Interactions to display are then chosen based on their confidence values, e.g. the top 100 interactions based on confidence value.</p>                  
+                    <p>Several layout options are available for Cytoscape and can be selected using the "Layout" pulldown.</p>
+                    <p>In Cytoscape.js, several common interaction types have been assigned specific colors used for the lines representing them, and these will be shown on the legend of the graph.</p>
+                </div>
+                <div class="span1">                                   
+                   <a href="javascript:history.back()">Back</a>
+                </div>              
+         </div>
+     </script>
 
     <!-- end of templates -->
 
@@ -2367,6 +2560,7 @@
     <script src="js/arbor.js"></script>
     <script src="js/cytoscape.min.js"></script>  
     <script src="js/flippant.js"></script>
+    <script src="js/encoder.js"></script>
     <script src="js/ctd2.js"></script>
   </body>
 </html>
