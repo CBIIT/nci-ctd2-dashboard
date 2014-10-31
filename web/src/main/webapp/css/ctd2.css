@@ -618,3 +618,7 @@ blockquote p {
 .alert, .alert h4 {
     color: #81632f;
 }
+
+#myCarousel {
+    min-width: 950px;
+}
