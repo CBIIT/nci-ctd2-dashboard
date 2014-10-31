@@ -37,6 +37,14 @@ public class WebServiceUtil {
                         for (ObservedSubject observedSubject : dashboardDao.findObservedSubjectBySubject(subject)) {
                             observations.add(observedSubject.getObservation());
                         }
+                        Collections.sort(observations, new Comparator<Observation>() {
+                            @Override
+                            public int compare(Observation o1, Observation o2) {
+                                Integer tier2 = o2.getSubmission().getObservationTemplate().getTier();
+                                Integer tier1 = o1.getSubmission().getObservationTemplate().getTier();
+                                return tier2 - tier1;
+                            }
+                        });
                         entities = observations;
                     }
                 }
