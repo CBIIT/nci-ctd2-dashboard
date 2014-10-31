@@ -30,6 +30,7 @@
         "search": { // simple searching
             "smart": false
         },
+        // These are for bootstrap-styled datatables
         "sDom": "<'row'<'span6'i><'span6'f>r>t<'row'<'span6'l><'span6'p>>",
         "sPaginationType": "bootstrap"
     });
