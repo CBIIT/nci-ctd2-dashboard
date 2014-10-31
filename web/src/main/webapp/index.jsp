@@ -125,21 +125,20 @@
                     <div class="span12">
                         <div class="featurette" id="overview-text">
                             <img class="img-polaroid pull-left" src="img/logos/ctd2_overall.png" alt="CTD2 general image" title="CTD2 general image">
-                            <p class="lead"></p>
-                            <p class="lead">
-                                <b>The Dashboard</b> hosts data generated and analyzed by the <b>CTD<sup>2</sup> Network</b> and provides an intuitive mechanism for the research community to search across <i>Centers</i>' data.
-                                <i>Observation</i>s, or Center-determined conclusions, are submitted as connections between two related types of components:
-                                <b>subjects</b> (<i>e.g.</i>, gene, transcript, protein, small molecules, animal model) and <b>evidence</b> (<i>e.g.</i>, numeric value, text label, figure legend).
+                            <p class="lead firstlead">
+                                <b>The Dashboard</b> hosts data generated and analyzed by the <b>CTD<sup>2</sup> Network</b> and provides an intuitive mechanism for the research community to search across <i>Centers</i>' observations.
+                                <i>Observations</i>, or Center-determined conclusions, are submitted as connections between two related types of components: <b>subjects</b> (<i>e.g.</i>, genes, proteins, small molecules, cell lines, animal models) and <b>evidence</b> (<i>e.g.</i>, numeric values, text labels, data figures).
+                                Based on a particular experimental or computational context, a <i>Center</i> assigns a <b>role</b> to <i>genes</i>, <i>proteins</i> or <i>compounds</i>.
+                                Roles are terms such as <i>biomarkers</i>, <i>master regulators</i>, <i>oncogenes</i>, <i>perturbagens</i>, or <i>targets</i>, and are determined by the associated observations.
+                                Assigning roles from a restricted list of terms helps organize subjects for <i>browse and search</i> in the Dashboard.
+                                The <b>Tier</b> ranking system and the number of different Centers providing observations are used to prioritize the order of subjects.
                             </p>
 
                             <div id="overview-hidden-part" class="hide">
                                 <p class="lead">
-                                    Users can retrieve evidence and observations pertinent to their queries by searching across subjects using standardized terms and vocabulary.
+                                    The Dashboard aims to increase understanding of the underlying molecular causes of distinct cancer types and accelerate the development of clinically useful biomarkers and targeted therapies for precision medicine.
                                     Results are available as bulk datasets, data-related figures, or polished stories, and are formatted to enable easy navigation and comprehension for most researchers, even those with little bioinformatics expertise.
-                                </p>
-                                <p class="lead">
-                                    The Dashboard aims to provide the research community with access to sets of positive results from one Center or from multiple Centers that can be retrieved using a single keyword.
-                                    In doing this, the <b>CTD<sup>2</sup> Network</b> strives to increase the understanding of the underlying molecular causes of distinct cancer types and accelerate the development of clinically useful markers and targeted therapies for precision medicine.
+                                    By making this information available through the Dashboard, the <b>CTD<sup>2</sup> Network</b> gives the research community an easy method to interrogate the observations across the Centers.
                                 </p>
                                 <p class="lead">
                                     For more information about the <b>CTD<sup>2</sup> Network</b>, visit <a href="http://ocg.cancer.gov/programs/ctd2" title="CTD2 Center website" class="overview-link">http://ocg.cancer.gov/programs/ctd2</a>.
@@ -204,23 +203,21 @@
             <div class="span4 target" data-order="1">
               <h4>Biomarkers, Targets, <br>Genes &amp; Proteins</h4>
                 <p>
-                    <i>Targets</i> are molecules, such as genes or proteins, which have been experimentally identified as tumor markers or drivers.
+                    Users can browse a list of genes and proteins that Centers have identified using analyses that generate results with low frequencies of false positives. In some cases, genes and proteins have been assigned roles as biomarkers or targets based on observations.
                 </p>
                 <a class="btn btn-success btn-block" href="#explore/target/Biomarker,Target">Browse &raquo;</a>
             </div><!-- /.span3 -->
             <div class="span4 drug" data-order="2">
               <h4>Compounds &amp; Perturbagens</h4>
                 <p>
-                    In Dashboard, <i>compounds</i> are modulators of specific targets in cancer cell lines or tumor model systems. Some examples include small molecules, FDA approved drugs, natural products, and small regulatory RNAs.
+                    Users can browse compounds and perturbagens, which are modulators of cellular phenotype, genes, or proteins in cancer cell lines or tumor model systems. Some examples include small molecules, FDA approved drugs, natural products, and small regulatory RNAs.
                 </p>
                 <a class="btn btn-info btn-block" href="#explore/compound/Perturbagen">Browse &raquo;</a>
             </div><!-- /.span3 -->
               <div class="span4 context" data-order="3">
-                  <h4>Disease Context</h4>
+                  <h4 class="homepage-context">Disease <br>Context</h4>
                   <p>
-                      Dashboard entries provide a list of observations and evidence, and each is associated with a description.
-                      In some instances, the description is labeled as <i>context</i>.
-                      This refers to the genomic context, or set of circumstances or conditions which a target, compound, or biomarker may be relevant.
+                      Users can browse disease context, which groups subjects by observations pertinent to a particular disease or tumor type.
                   </p>
                   <a class="btn btn-warning btn-block" href="#explore/context/Disease">Browse &raquo;</a>
               </div><!-- /.span3 -->
@@ -1541,9 +1538,38 @@
         </div>
     </script>
 
+    <script type="text/template" id="text-blurb-biomarker-target">
+        <div class="alert alert-warning">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <p>
+                Each gene and protein in the following list has at least one associated observation that assigns it the role of biomarker or target.
+            </p>
+        </div>
+    </script>
+
+    <script type="text/template" id="text-blurb-perturbagen">
+        <div class="alert alert-warning">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <p>
+                Each compound in the following list has at least one associated observation that defines its role as a perturbagen.
+            </p>
+        </div>
+    </script>
+
+    <script type="text/template" id="text-blurb-disease">
+        <div class="alert alert-warning">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <p>
+                Each disease context in the following list has at least one associated observation relevant to that disease.
+            </p>
+        </div>
+    </script>
+
     <script type="text/template" id="explore-tmpl">
         <div class="container common-container" id="explore-container">
-            <h2>Browse: <i>{{roles.split(",").join(", ")}}</i> <small><a href="#" id="customize-roles">(customize)</a></small></h2>
+            <h2>Explore: <i>{{_.map(roles.split(","), function(o) { return o + "s"; }, []).join(", ")}}</i> <small><a href="#" id="customize-roles" class="customize-{{type}}">(customize)</a></small></h2>
+
+            <div id="explore-blurb"></div>
 
             <ul class="thumbnails" id="explore-items">
                 <li class="span12">
@@ -2384,7 +2410,14 @@
          <div class="container common-container" id="genelist-container" > 
              
                  <div class="span10" align="center">                   
-                    <h4>  Gene List</h4>                    
+                    <h4>  Gene List</h4>
+
+                     <div class="alert alert-warning">
+                         <button type="button" class="close" data-dismiss="alert">&times;</button>
+                         <p>
+                             Gene Cart allows a user to select a list of genes and pathways of interest for submission to external analysis tools that investigate gene network interactions and gene ontology.                         </p>
+                     </div>
+
                     <select id="geneNames" name="geneNames"
 								style="width: 300px" size="6" 
 								multiple></select>

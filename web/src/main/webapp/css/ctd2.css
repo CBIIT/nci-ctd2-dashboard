@@ -549,6 +549,18 @@ h2.context, h3.context, h4.context, h5.context {
     border-top: 0px;
 }
 
+.customize-target, .customize-target:hover {
+    color: #1ea84d;
+}
+
+.customize-compound, .customize-compound:hover {
+    color: #006cbb;
+}
+
+.customize-context, .customize-context:hover {
+    color: #f99a14;
+}
+
 .numbered-image {
     background-color: white;
     background-size: cover;
@@ -626,4 +638,8 @@ blockquote p {
 
 #myCarousel {
     min-width: 950px;
+}
+
+.firstlead {
+    padding-top: 10px;
 }
