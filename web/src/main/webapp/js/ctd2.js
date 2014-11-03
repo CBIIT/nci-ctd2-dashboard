@@ -2001,6 +2001,7 @@
                    });            
                  
                    var oTable1 = $('#master-regulator-grid').dataTable({
+                	 "sDom": "<'row'<'span5'i><'span5'f>r>t<'row'<'span5'l><'span5'p>>",
                 	 "sScrollY": "200px",
                      "bPaginate": false           		 
              	   });
