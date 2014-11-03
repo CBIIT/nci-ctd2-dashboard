@@ -2415,7 +2415,9 @@
                      <div class="alert alert-warning">
                          <button type="button" class="close" data-dismiss="alert">&times;</button>
                          <p>
-                             Gene Cart allows a user to select a list of genes and pathways of interest for submission to external analysis tools that investigate gene network interactions and gene ontology.                         </p>
+                             The Gene Cart allows users to build a list of genes and then use it to
+                             query databases of molecular interactions.
+                         </p>
                      </div>
 
                     <select id="geneNames" name="geneNames"
