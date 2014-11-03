@@ -1776,7 +1776,7 @@
                       <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b> 					
                       <a href="#" id="createnetwork" data-description="{{observedEvidenceRole.displayText}}" target="_blank" title="please select master regulator to create network" class="mra-cytoscape-view">Create Network</a>   				 
                       <br/>	                    
-			          <small><font color="grey">Throttle: </font></small>
+			          <small><font color="grey">Threshold:</font></small>
                       <small id="throttle-input"><font color="grey">e.g. 0.01 </font></small>		 
                   </div>         
                   <br/>	
