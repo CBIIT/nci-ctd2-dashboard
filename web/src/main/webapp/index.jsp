@@ -1776,7 +1776,7 @@
                       <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b> 					
                       <a href="#" id="createnetwork" data-description="{{observedEvidenceRole.displayText}}" target="_blank" title="please select master regulator to create network" class="mra-cytoscape-view">Create Network</a>   				 
                       <br/>	                    
-			          <small><font color="grey">Throttle: </font></small>
+			          <small><font color="grey">Threshold: </font></small>
                       <small id="throttle-input"><font color="grey">e.g. 0.01 </font></small>		 
                   </div>         
                   <br/>	
@@ -2528,7 +2528,7 @@
                      
                      <a href="#" id="createnetwork"  target="_blank" title="please select cnkb interactions to create network">Create Network</a>   				 
                      <br/>	                    
-			         <small><font color="grey">Throttle: </font></small>
+			         <small><font color="grey">Confidence threshold: </font></small>
                      <small id="throttle-input"><font color="grey">e.g. 0.01 </font></small>	
 				   	 <div id="createnw_progress_indicator" align="center" style="display: none;">data is loading ......
                          <img id="cnkb_data_progress_indicator" src="img/progress_indicator.gif" width="20" height="20" alt="Please wait ......"><br>
