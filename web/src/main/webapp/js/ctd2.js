@@ -3468,8 +3468,8 @@
         explore: function(type, roles) {
             var exploreView = new ExploreView({
                 model: {
-                    roles: roles,
-                    type: type
+                    roles: roles.replace(new RegExp("<", "g"), "").replace(new RegExp(">", "g"), ""),
+                    type: type.replace(new RegExp("<", "g"), "").replace(new RegExp(">", "g"), "")
                 }
             });
             exploreView.render();
