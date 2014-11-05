@@ -1401,8 +1401,10 @@
 
             if (result.subject.class != "Gene") {
                 this.template = _.template($("#observedsubject-summary-row-tmpl").html());
+                $(this.el).append(this.template(result));
             } else {
                 this.template = _.template($("#observedsubject-gene-summary-row-tmpl").html());
+                $(this.el).append(this.template(result));
                 var currentGene = result.subject["displayName"];
 
                 $(".addGene-" + currentGene).click(function(e) {
@@ -1411,9 +1413,7 @@
                     return this;
                 });  //end addGene
             }
-
-            $(this.el).append(this.template(result));
-
+            
             return this;
         }
     });
