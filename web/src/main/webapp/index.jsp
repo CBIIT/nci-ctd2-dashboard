@@ -394,6 +394,8 @@
 
             <h3>Observations within this submission</h3>
 
+            <div class="more-observations-message"></div>
+
             <table id="submission-observation-grid" class="table table-bordered table-striped observations">
                 <thead>
                 <tr>
@@ -404,9 +406,6 @@
                 <!-- here will go the rows -->
                 </tbody>
             </table>
-
-            <div class="more-observations-message"></div>
-
         </div>
     </script>
 
