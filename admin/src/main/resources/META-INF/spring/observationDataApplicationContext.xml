@@ -164,6 +164,17 @@
 	</property>
   </bean>
 
+    <!-- fhcrcCSTTier1 - 1 -->
+    <bean name="fhcrcCSTTier1-1Reader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+  	<property name="resources" value="${fhcrc.tier1.cst.profiling1.data.location}" />
+  	<property name="delegate">
+  	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+  		<property name="lineMapper" ref="fhcrcCSTTier1-1LineMapper" />
+  		<property name="linesToSkip" value="7" />
+  	  </bean>
+  	</property>
+    </bean>
+
   <!-- utsw tier 2 discoipyrroles story -->
   <bean name="utswTier2DiscoipyrrolesStoryReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
 	<property name="resources" value="${utsw.tier2.discoipyrroles.story.data.location}" />
@@ -394,14 +405,95 @@
 	</property>
   </bean>
 
-  <bean name="fhcrcKKinomeSiRNAReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
-	<property name="resources" value="${fhcrc.k-kinome.sirna.data.location}" />
+  <bean name="fhcrcKKinomeSiRNA2Reader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+	<property name="resources" value="${fhcrc.k-kinome.sirna.2.data.location}" />
 	<property name="delegate">
 	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
-		<property name="lineMapper" ref="fhcrcKKinomeSiRNALineMapper" />
+		<property name="lineMapper" ref="fhcrcKKinomeSiRNA2LineMapper" />
 		<property name="linesToSkip" value="7" />
 	  </bean>
 	</property>
   </bean>
+
+  <bean name="fhcrcKKinomeSiRNA3Reader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+  	<property name="resources" value="${fhcrc.k-kinome.sirna.3.data.location}" />
+  	<property name="delegate">
+  	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+  		<property name="lineMapper" ref="fhcrcKKinomeSiRNA3LineMapper" />
+  		<property name="linesToSkip" value="7" />
+  	  </bean>
+  	</property>
+  </bean>
+
+  <bean name="mdaPik3r1ApoptosisEndoCellsReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+  	<property name="resources" value="${mda.pik3r1.apoptosis.endo.cells.data.location}" />
+  	<property name="delegate">
+  	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+  		<property name="lineMapper" ref="mdaPik3r1ApoptosisEndoCellsLineMapper" />
+  		<property name="linesToSkip" value="7" />
+  	  </bean>
+  	</property>
+  </bean>
+
+  <bean name="mdaPik3r1Baf3SurvivalReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+  	<property name="resources" value="${mda.pik3r1.baf3.survival.data.location}" />
+  	<property name="delegate">
+  	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+  		<property name="lineMapper" ref="mdaPik3r1Baf3SurvivalLineMapper" />
+  		<property name="linesToSkip" value="7" />
+  	  </bean>
+  	</property>
+  </bean>
+
+  <bean name="mdaPik3r1BrduEndoCellsReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+  	<property name="resources" value="${mda.pik3r1.brdu.endo.cells}" />
+  	<property name="delegate">
+  	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+  		<property name="lineMapper" ref="mdaPik3r1BrduEndoCellsLineMapper" />
+  		<property name="linesToSkip" value="7" />
+  	  </bean>
+  	</property>
+  </bean>
+
+  <bean name="mdaPik3r1DrugCellLinesReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+  	<property name="resources" value="${mda.pik3r1.drug.cell.lines}" />
+  	<property name="delegate">
+  	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+  		<property name="lineMapper" ref="mdaPik3r1DrugCellLinesLineMapper" />
+  		<property name="linesToSkip" value="7" />
+  	  </bean>
+  	</property>
+  </bean>
+
+  <bean name="mdaPik3r1DrugScreenBaf3Reader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+  	<property name="resources" value="${mda.pik3r1.drug.screen.baf3}" />
+  	<property name="delegate">
+  	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+  		<property name="lineMapper" ref="mdaPik3r1DrugScreenBaf3LineMapper" />
+  		<property name="linesToSkip" value="7" />
+  	  </bean>
+  	</property>
+  </bean>
+
+  <bean name="mdaPik3r1DrugZenograftsReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+  	<property name="resources" value="${mda.pik3r1.drug.xenografts}" />
+  	<property name="delegate">
+  	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+  		<property name="lineMapper" ref="mdaPik3r1DrugZenograftsLineMapper" />
+  		<property name="linesToSkip" value="7" />
+  	  </bean>
+  	</property>
+  </bean>
+
+  <bean name="mdaPik3r1RppaBaf3Reader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+  	<property name="resources" value="${mda.pik3r1.rppa.baf3}" />
+  	<property name="delegate">
+  	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+  		<property name="lineMapper" ref="mdaPik3r1RppaBaf3LineMapper" />
+  		<property name="linesToSkip" value="7" />
+  	  </bean>
+  	</property>
+  </bean>
+
 
 </beans>
