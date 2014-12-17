@@ -33,7 +33,8 @@ dfci.reporter.analysis.data.location=file:${CTD2_DATA_HOME}/submissions/20130426
 dfci.ataris.analysis.data.location=file:${CTD2_DATA_HOME}/submissions/20130429-dfci_ataris_analysis/20130429-dfci_ataris_analysis.txt
 dfci.ovarian.analysis.data.location=file:${CTD2_DATA_HOME}/submissions/20130426-dfci_ovarian_analysis/20130426-dfci_ovarian_analysis.txt
 dfci.pax8.tier3.data.location=file:${CTD2_DATA_HOME}/submissions/20130429-dfci_pax8_tier3/20130429-dfci_pax8_tier3.txt
-fhcrc.tier1.cst.profiling.data.location=file:${CTD2_DATA_HOME}/submissions/20131117-fhcrc-m_tier1_cst_profiling-SOC/20131117-fhcrc-m_tier1_cst_profiling-SOC.txt
+fhcrc.tier1.cst.profiling.data.location=file:${CTD2_DATA_HOME}/submissions/20141105-fhcrc-m_tier1_cst_profiling-SOC/20141105-fhcrc-m_tier1_cst_profiling-SOC.txt
+fhcrc.tier1.cst.profiling1.data.location=file:${CTD2_DATA_HOME}/submissions/20141105-fhcrc-m_tier1_cst_profiling1-SOC/20141105-fhcrc-m_tier1_cst_profiling1-SOC.txt
 utsw.tier2.discoipyrroles.story.data.location=file:${CTD2_DATA_HOME}/submissions/20130921-utsw_discoipyrrole_tier2_story/20130921-utsw_discoipyrrole_tier2_story.txt
 utsw.tier4.discoipyrroles.story.data.location=file:${CTD2_DATA_HOME}/submissions/20140708-utsw_discoi/20140708-utsw_discoi.txt
 ucsf.differential-expression.data.location=file:${CTD2_DATA_HOME}/submissions/20140124-ucsf_differential_expression/20140124-ucsf_differential_expression.txt
@@ -56,7 +57,15 @@ dfci.smarca4.mut.analysis.data.location=file:${CTD2_DATA_HOME}/submissions/20140
 dfci.smarca2.dependency.data.location=file:${CTD2_DATA_HOME}/submissions/20140401-dfci_smarca2_dependency/20140401-dfci_smarca2_dependency.txt
 mskcc.pi3k.data.location=file:${CTD2_DATA_HOME}/submissions/20140505-mskcc_pi3k/20140505-mskcc_pi3k.txt
 stanford.elastic-net.data.location=file:${CTD2_DATA_HOME}/submissions/20140917-stanford_elastic_net/20140917-stanford_elastic_net.txt
-fhcrc.k-kinome.sirna.data.location=file:${CTD2_DATA_HOME}/submissions/20140925-fhcrc-k_kinome_sirna/20140925-fhcrc-k_kinome_sirna.txt
+fhcrc.k-kinome.sirna.2.data.location=file:${CTD2_DATA_HOME}/submissions/20140925-fhcrc-k_kinome_sirna_2/20140925-fhcrc-k_kinome_sirna_2.txt
+fhcrc.k-kinome.sirna.3.data.location=file:${CTD2_DATA_HOME}/submissions/20140925-fhcrc-k_kinome_sirna_3/20140925-fhcrc-k_kinome_sirna_3.txt
+mda.pik3r1.apoptosis.endo.cells.data.location=file:${CTD2_DATA_HOME}/submissions/20141118-mda_pik3r1_apoptosis_endo_cells/20141118-mda_pik3r1_apoptosis_endo_cells.txt
+mda.pik3r1.baf3.survival.data.location=file:${CTD2_DATA_HOME}/submissions/20141118-mda_pik3r1_baf3_survival/20141118-mda_pik3r1_baf3_survival.txt
+mda.pik3r1.brdu.endo.cells=file:${CTD2_DATA_HOME}/submissions/20141118-mda_pik3r1_brdu_endo_cells/20141118-mda_pik3r1_brdu_endo_cells.txt
+mda.pik3r1.drug.cell.lines=file:${CTD2_DATA_HOME}/submissions/20141118-mda_pik3r1_drug_cell_lines/20141118-mda_pik3r1_drug_cell_lines.txt
+mda.pik3r1.drug.screen.baf3=file:${CTD2_DATA_HOME}/submissions/20141118-mda_pik3r1_drug_screen_baf3/20141118-mda_pik3r1_drug_screen_baf3.txt
+mda.pik3r1.drug.xenografts=file:${CTD2_DATA_HOME}/submissions/20141118-mda_pik3r1_drug_xenografts/20141118-mda_pik3r1_drug_xenografts.txt
+mda.pik3r1.rppa.baf3=file:${CTD2_DATA_HOME}/submissions/20141118-mda_pik3r1_rppa_baf3/20141118-mda_pik3r1_rppa_baf3.txt
 
 # spring commit interval
 spring.batch.commit.interval=10000
