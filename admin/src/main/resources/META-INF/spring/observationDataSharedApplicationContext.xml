@@ -439,7 +439,7 @@
 
   <bean name="fhcrcCSTTier1LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol,splice_junction,disease_condition,number_of_tumor_samples,number_of_tumor_samples_with_junction,average_number_of_supporting_reads,number_of_samples_with_supporting_rpts,junction_type,is_observed_in_ip_tissue,has_suporting_ests,genomic_reference_assembly"/>
+	<property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol,splice_junction,disease_condition,number_of_tumor_samples,number_of_tumor_samples_with_junction,average_number_of_supporting_reads,number_of_samples_with_supporting_rpts,junction_type,is_observed_in_ip_tissue,has_supporting_ests,genomic_reference_assembly"/>
   </bean>
 
     <!-- fhcrcCTSTier1-1Reader defined in: -->
@@ -451,7 +451,7 @@
 
     <bean name="fhcrcCSTTier1-1LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
   	<property name="delimiter" value="\u0009"/>
-  	<property name="names" value="dummy,submission_name,submission_date,template_name,splice_junction,disease_condition,number_of_tumor_samples,number_of_tumor_samples_with_junction,average_number_of_supporting_reads,number_of_samples_with_supporting_rpts,junction_type,is_observed_in_ip_tissue,has_suporting_ests,genomic_reference_assembly"/>
+  	<property name="names" value="dummy,submission_name,submission_date,template_name,splice_junction,disease_condition,number_of_tumor_samples,number_of_tumor_samples_with_junction,average_number_of_supporting_reads,number_of_samples_with_supporting_rpts,junction_type,is_observed_in_ip_tissue,has_supporting_ests,genomic_reference_assembly"/>
     </bean>
 
   <!-- utsw tier 2 discoipyrroles story -->
@@ -1015,7 +1015,7 @@
 		<entry key="fhcrc-m_tier1_cst_profiling:number_of_samples_with_supporting_rpts" value="evidence:readInt:createObservedNumericEvidence" />
 		<entry key="fhcrc-m_tier1_cst_profiling:junction_type" value="evidence:readString:createObservedLabelEvidence" /> 
 		<entry key="fhcrc-m_tier1_cst_profiling:is_observed_in_ip_tissue" value="evidence:readString:createObservedLabelEvidence" /> 
-		<entry key="fhcrc-m_tier1_cst_profiling:has_suporting_ests" value="evidence:readString:createObservedLabelEvidence" /> 
+		<entry key="fhcrc-m_tier1_cst_profiling:has_supporting_ests" value="evidence:readString:createObservedLabelEvidence" /> 
 		<entry key="fhcrc-m_tier1_cst_profiling:genomic_reference_assembly" value="evidence:readString:createObservedLabelEvidence" /> 
 		<!-- fhcrc CST Tier 1-1-->
 		<entry key="fhcrc-m_tier1_cst_profiling1:splice_junction" value="evidence:readString:createObservedLabelEvidence" /> 
@@ -1026,7 +1026,7 @@
 		<entry key="fhcrc-m_tier1_cst_profiling1:number_of_samples_with_supporting_rpts" value="evidence:readInt:createObservedNumericEvidence" />
 		<entry key="fhcrc-m_tier1_cst_profiling1:junction_type" value="evidence:readString:createObservedLabelEvidence" /> 
 		<entry key="fhcrc-m_tier1_cst_profiling1:is_observed_in_ip_tissue" value="evidence:readString:createObservedLabelEvidence" /> 
-		<entry key="fhcrc-m_tier1_cst_profiling1:has_suporting_ests" value="evidence:readString:createObservedLabelEvidence" /> 
+		<entry key="fhcrc-m_tier1_cst_profiling1:has_supporting_ests" value="evidence:readString:createObservedLabelEvidence" /> 
 		<entry key="fhcrc-m_tier1_cst_profiling1:genomic_reference_assembly" value="evidence:readString:createObservedLabelEvidence" />
 		<!-- utsw tier 2 discoipyrroles story -->
 		<entry key="utsw_discoipyrrole_tier2_story:compound_name" value="subject:findCompoundsByName" />
