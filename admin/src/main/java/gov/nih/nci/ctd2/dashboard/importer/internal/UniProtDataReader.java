@@ -34,7 +34,7 @@ public class UniProtDataReader implements ItemReader<ProteinData> {
 	private static final String ACCESSION_DELIMITER = ";";
 	private static final Pattern UNIPROT_ID_REGEX = Pattern.compile("(\\w+)_\\w+");
 	private static final Pattern UNIPROT_NAME_REGEX = Pattern.compile("RecName: Full=(.*);");
-	private static final Pattern NCBI_TAXONOMY_ID_REGEX = Pattern.compile("NCBI_TaxID=(\\w+);");
+	private static final Pattern NCBI_TAXONOMY_ID_REGEX = Pattern.compile("NCBI_TaxID=(\\w+)[;| ].*");
 	private static final Pattern ENTREZ_REGEX = Pattern.compile("GeneID; (\\w+); -\\.");
 	private static final Pattern REFSEQ_REGEX = Pattern.compile("RefSeq; NP_.*; (NM_.*)\\.");
 
