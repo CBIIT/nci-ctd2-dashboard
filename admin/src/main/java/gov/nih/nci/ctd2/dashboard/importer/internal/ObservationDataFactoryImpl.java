@@ -89,6 +89,11 @@ public class ObservationDataFactoryImpl implements ObservationDataFactory {
 					method = dashboardDao.getClass().getMethod("findSubjectsBySynonym", String.class, Boolean.TYPE);
 					dashboardEntities = (List<Subject>)method.invoke(dashboardDao, subjectValue, true);
 				}
+				// if we've searched for drug/compound by name and come up empty, try by synonym
+				if (dashboardEntities.isEmpty() && daoFindQueryName.equals("findCompoundsByName")) {
+					method = dashboardDao.getClass().getMethod("findSubjectsBySynonym", String.class, Boolean.TYPE);
+					dashboardEntities = (List<Subject>)method.invoke(dashboardDao, subjectValue, true);
+				}
 			}
 			if (dashboardEntities.size() > 0) {
 				for (Subject returnedSubject : dashboardEntities) {
