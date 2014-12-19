@@ -80,7 +80,7 @@
 	</batch:step>
 	<batch:step id="fhcrcCSTTier1-1Step" parent="observationDataStep" next="utswTier2DiscoipyrrolesStoryStep">
 	  <batch:tasklet>
-		<batch:chunk reader="fhcrcCSTTier1Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
+		<batch:chunk reader="fhcrcCSTTier1-1Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	  </batch:tasklet>
 	</batch:step>
 	<batch:step id="utswTier2DiscoipyrrolesStoryStep" parent="observationDataStep" next="utswTier4DiscoipyrrolesStoryStep">
