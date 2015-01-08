@@ -24,7 +24,7 @@ public class ResultSetlUtil {
 	public static final String NULL_STR = "null";
 	public static final BigDecimal NULL_BIGDECIMAL = new BigDecimal(0);
 
-	private static String INTERACTIONS_SERVLET_URL = "http://cagridnode.c2b2.columbia.edu:8080/cknb/InteractionsServlet_new/InteractionsServlet";
+	private static String INTERACTIONS_SERVLET_URL = null;
 	 
 	private static int urlConnectionTimeout = 3000;
 
