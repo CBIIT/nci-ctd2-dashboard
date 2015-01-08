@@ -3,9 +3,10 @@ package gov.nih.nci.ctd2.dashboard.controller;
 import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
  
+import org.springframework.beans.factory.annotation.Autowired; 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +30,8 @@ import java.util.HashMap;
 
 import javax.servlet.http.HttpServletResponse;
 
+import gov.nih.nci.ctd2.dashboard.dao.DashboardDao; 
+import gov.nih.nci.ctd2.dashboard.model.Gene;
 import gov.nih.nci.ctd2.dashboard.util.cnkb.CNKB;
 import gov.nih.nci.ctd2.dashboard.util.cnkb.CellularNetWorkElementInformation;
 import gov.nih.nci.ctd2.dashboard.util.cnkb.CnkbObject;
@@ -48,6 +51,22 @@ import gov.nih.nci.ctd2.dashboard.util.cytoscape.CyNode;
 @RequestMapping("/cnkb")
 public class CnkbController {
   
+    @Autowired
+	private DashboardDao dashboardDao;
+    
+    @Autowired
+    @Qualifier("cnkbDataURL")
+    private String cnkbDataURL = "";
+
+    public String getCnkbDataURL() {
+        return cnkbDataURL;
+    }
+
+    public void setCnkbDataURL(String cnkbDataURL) {
+        this.cnkbDataURL = cnkbDataURL;
+    }
+
+    
 	private static Map<String, String> colorMap = new HashMap<String, String>();
 	static {
 		colorMap.put("protein-dna", "cyan");
@@ -84,10 +103,10 @@ public class CnkbController {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
 
-		final CNKB interactionsConnection = CNKB.getInstance();
+		final CNKB interactionsConnection = CNKB.getInstance(getCnkbDataURL());
 		CnkbObject cnkbObject = null;
 		try {
-
+ 
 			if (dataType.equals("interactome-context")) {
 				cnkbObject = new InteractomeInfo();
 				((InteractomeInfo) cnkbObject)
@@ -212,7 +231,7 @@ public class CnkbController {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
 
-		CNKB interactionsConnection = CNKB.getInstance();
+		CNKB interactionsConnection = CNKB.getInstance(getCnkbDataURL());
 		CyNetwork cyNetwork = null;
 		try {
 
@@ -276,7 +295,7 @@ public class CnkbController {
 			@RequestParam("throttle") String throttle,
 			HttpServletResponse response) {
 
-		CNKB interactionsConnection = CNKB.getInstance();
+		CNKB interactionsConnection = CNKB.getInstance(getCnkbDataURL());
 		CnkbObject cnkbObject = null;
 		String filename = "cnkbResult";
 
@@ -425,7 +444,30 @@ public class CnkbController {
 		return new ResponseEntity<String>(
 				jsonSerializer.deepSerialize(cyNetwork), headers, HttpStatus.OK);
 
-	}	  
+	}	 
+	
+	
+	@Transactional
+	@RequestMapping(value = "validation", method = { RequestMethod.POST,
+			RequestMethod.GET }, headers = "Accept=application/json")
+	public ResponseEntity<String> getInvalidGeneSymbols(
+			@RequestParam("geneSymbols") String geneSymbols) {
+
+	 
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "application/json; charset=utf-8");
+
+		List<String> invalidGenes = getInvalidNames(geneSymbols);
+	 
+		JSONSerializer jsonSerializer = new JSONSerializer().exclude("*.class");
+
+		return new ResponseEntity<String>(
+				jsonSerializer.deepSerialize(invalidGenes), headers, HttpStatus.OK);
+
+	}
+	
+	
+	
 
 	private float getDivisorValue(float maxValue, float minValue) {
 		float divisor = (float) (maxValue - minValue) / 100;
@@ -436,7 +478,7 @@ public class CnkbController {
 	private HashMap<String, String> getInteractionTypeMap() {
 		HashMap<String, String> map = null;
 		try {
-			map = CNKB.getInstance().getInteractionTypeMap();
+			map = CNKB.getInstance(getCnkbDataURL()).getInteractionTypeMap();
 		} catch (ConnectException e) {			 
 			e.printStackTrace();
 		} catch (SocketTimeoutException e) {			 
@@ -608,14 +650,44 @@ public class CnkbController {
 		return cyNetwork;
 
 	}
+	
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private List<String> getInvalidNames(String geneSymbols)
+	{
+		List<String> invalidGenes = new ArrayList<String>();
+		List<String> geneSymbolList = null;
+		if (geneSymbols != null && geneSymbols.trim().length() > 0) {
+			geneSymbolList = (List<String>) new JSONDeserializer()
+					.deserialize(geneSymbols);
+		}
+		for(String gene : geneSymbolList)
+		{
+			if (gene != null && gene.trim().length() > 0)
+			{
+				List<Gene> genes = dashboardDao.findGenesBySymbol(gene);
+				if (genes == null || genes.size() == 0)
+				{
+					invalidGenes.add(gene);
+				}
+			}
+		}
+		 
+		 
+		return invalidGenes;
+	}
 
 	// test
 	public static void main(String[] args) {
 
 		CnkbController cnknController = new CnkbController();
 		cnknController.getCnkbCyNetwork("BCi", "1.0", "NFIX, FOSL2", 100, "");
-		// cnknController.convertCNKBtoJSON("interaction-result", "BCi", "1.0",
+		//cnknController.convertCNKBtoJSON("interaction-result", "BCi", "1.0",
 		// "NFIX, NCOA1", 100, "");
+		
+		 
+		
+		
 
 	}
 }
