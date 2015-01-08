@@ -32,11 +32,15 @@ public class CNKB {
 	static private CNKB instance = null;
 
 	private CNKB() {
+		
 	};
 
-	public static CNKB getInstance() {
+	public static CNKB getInstance(String interactionsServletUrl) {
 		if (instance == null)
+		{
 			instance = new CNKB();
+			ResultSetlUtil.setUrl(interactionsServletUrl);
+		}
 		return instance;
 	}
 
