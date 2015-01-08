@@ -114,9 +114,17 @@
 
        </footer>
     </div>
-
-    <input id="sifFileInput" type="file" style="visibility:hidden" /> <!-- a hidden field for SIF file loading -->
-
+     
+    <div class="modal hide fade" id="alert-message-modal">  <!-- a hidden div for showing alert message -->          
+                <div class="modal-body" >                        
+                    <br>                    
+                    <medium id="alertMessage"></medium>
+                </div>
+                <div class="modal-footer">                     
+                    <button class="btn btn-primary" data-dismiss="modal">Close</button>
+                </div>
+    </div>
+    
     <!-- these are the templates -->
     <script type="text/template" id="home-tmpl">
         <div class="overview-container">
@@ -687,7 +695,7 @@
                          <tr>
                              <th>Gene symbol</th>
                              <td>{{displayName}}&nbsp;&nbsp;
-                                  <a href="#" class="addGene-{{displayName}}" title="Add gene to cart" style="color: green">+</a>  
+                                  <a href="#" class="addGene-{{displayName}} greenColor" title="Add gene to cart">+</a>  
                              </td>
                          </tr>
                          <tr>
@@ -745,7 +753,7 @@
                  </tr>
                  </tbody>
              </table>
-         </div>
+         </div>        
     </script>
 
     <script type="text/template" id="protein-tmpl">
@@ -1268,7 +1276,7 @@
                 <a href="#/subject/{{subject.id}}">
                     {{subject.displayName}}
                 </a>  &nbsp;
-                <a href="#" class="addGene-{{subject.displayName}}" title="Add gene to cart" style="color: green">+</a>			  				 
+                <a href="#" class="addGene-{{subject.displayName}} greenColor" title="Add gene to cart" >+</a>			  				 
             </td>
             <td>{{subject.type}}</td>
             <td>{{observedSubjectRole.subjectRole.displayName}}</td>
@@ -2419,28 +2427,37 @@
                          </p>
                      </div>
 
-                    <select id="geneNames" name="geneNames"
-								style="width: 300px" size="6" 
+                    <select id="geneNames" class="geneSelectList" size="6" 
 								multiple></select>
-                    </br>
-                    </br>
-                    <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
-                    <a href="#" id="deleteGene">Delete Gene</a>
-                    <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
-                    
-                    <a href="#" id="clearList">Clear List</a>
-                    <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
-                    </br>
-                    </br>
-                    <b>&nbsp;&nbsp;&nbsp;</b> 		   
-                    <a href="#cnkb-query" id="cnkb-query">Find Gene Interactions in  Networks (CNKB)</a>
+                    </br></br>
+                    <a href="#" id="addGene">Add Gene</a>                         
+                    <a href="#" id="deleteGene">Delete Gene</a>                   
+                    </br></br>               
+                    <a href="#" id="clearList">Clear List</a>                    
+                    <a href="#" id="loadGenes">Load Genes from File</a>                                
+                    </br><input id="geneFileInput" type="file" style="visibility:hidden" /> 
+                    </br>                  	   	   
+                    <a href="#cnkb-query" id="cnkb-query">Find Gene Interactions in  Networks (CNKB)</a>                      
                  </div>
 
                  <div class="span1">                                   
                     <a href="javascript:history.back()">Back</a>
                  </div>              
              </div>
-      </script>
+
+            <div class="modal hide fade" id="addgene-modal">             
+                <div class="modal-body">                        
+                    <br>
+                    Add gene symbols                         
+                    <input id="gene-symbols" placeholder="e.g. CTNNB1" class="input-xlarge">                              
+                    <button id="add-gene-symbols" class="btn">Submit</button><br><br>                    
+                </div>
+                <div class="modal-footer">
+                     
+                    <button class="btn btn-primary" data-dismiss="modal">Close</button>
+                </div>
+            </div>           
+      </script>     
       
       <script type="text/template" id="cnkb-query-tmpl" >
          <div class="container common-container" id="cnkbquery-container" > 
@@ -2449,22 +2466,22 @@
                        <h3>Cellular Network Knowledge Base</h3>
 
                        <medium>Select Interactome:</medium>                  
-                       <small id="queryDescription" style="color:grey; font:8"></small> 
+                       <small id="queryDescription" class="cnkbDescription"></small> 
                        </br>                  
                        <select id="interactomeList" name="interactomes"
-						    style="width: 350px" size="4"></select>
+						    class="cnkbSelectList" size="4"></select>
                        </br>
-                       <small id="interactomeDescription" style="color:grey; font:8">
+                       <small id="interactomeDescription" class="cnkbDescription">
                         &nbsp;&nbsp;
                        </small>             
-                     </br>
+                     </br></br>
                       
-                    <medium style="color:#ccc" id="selectVersion"> Select Version: </medium>
+                    <medium class="labelDisable" id="selectVersion"> Select Version: </medium>
                     </br>                
                     <select id="interactomeVersionList" name="interactomeVersions"
-						 style="width: 350px" size="4"></select>
+						 class="cnkbSelectList" size="4"></select>
                      </br>
-                    <small id="versionDescription" style="color:grey; font:8">
+                    <small id="versionDescription" class="cnkbDescription">
                         &nbsp;&nbsp;
                     </small>             
                      </br>
@@ -2483,8 +2500,15 @@
                <div class="row">
                   <div class="span10">
                      <h3>Cellular Network Knowledge Base</h2>                                  			                    
-                     <a href="#" id="cnkbExport"  target="_blank" title="Export all selected interaction to a SIF file."> Export </a>                    
-                     <br/>	         
+                     <a href="#" id="cnkbExport"  target="_blank" title="Export all selected interaction to a SIF file."> Export </a>
+                     <br>
+                     <form method="POST" action="cnkb/download" id="cnkbExport-form" style="display: none;">                           
+                             <input type="hidden" name="interactome" id="interactome">
+                             <input type="hidden" name="version" id="version">
+                             <input type="hidden" name="selectedGenes" id="selectedGenes">  
+                             <input type="hidden" name="interactionLimit" id="interactionLimit">
+                             <input type="hidden" name="throttle" id="throttle">                             
+                     </form>                    
                      <table id="cnkb-result-grid" class="table table-bordered table-striped ">
                         <thead> 
                             <tr>                       
@@ -2576,6 +2600,10 @@
                    <a href="javascript:history.back()">Back</a>
                 </div>              
          </div>
+     </script>
+     
+     <script type="text/template" id="gene-cart-option-tmpl">
+        <option value="{{displayItem}}">{{displayItem}}</option>
      </script>
 
     <!-- end of templates -->

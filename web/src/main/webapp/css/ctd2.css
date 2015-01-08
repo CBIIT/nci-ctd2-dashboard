@@ -589,11 +589,15 @@ h2.context, h3.context, h4.context, h5.context {
     white-space: nowrap;
 }
 
-#queryDescription {
-    margin-left: 300px;
+.cnkbDescription {  
+    color:grey; 
+    font:8
 }
 
-
+#queryDescription
+{
+	margin-left: 300px
+}
 /* General font over-rides */
 body {
     font-family: Helvetica, Arial;
@@ -642,4 +646,40 @@ blockquote p {
 
 .firstlead {
     padding-top: 10px;
+}
+ 
+.greenColor
+{
+	color: green
+}
+
+.labelDisable
+{
+	color:#ccc
+}
+
+.cnkbSelectList
+{
+	width: 350px
+}
+
+.geneSelectList
+{
+	width: 300px
+}
+
+#deleteGene {
+    margin-left: 100px
+}
+
+#clearList {
+    margin-left: 35px
+}
+ 
+#loadGenes {
+    margin-left: 70px
+}
+
+#cnkb-query {
+    margin-left: 40px
 }
