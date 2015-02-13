@@ -20,6 +20,7 @@ public class ControlledVocabularyPerTemplateFieldSetMapper implements FieldSetMa
 	private static final String TEMPLATE_DESCRIPTION = "template_description";
 	private static final String SUBMISSION_NAME = "submission_name";
 	private static final String SUBMISSION_DESCRIPTION = "submission_description";
+    private static final String PROJECT = "project";
 	private static final String SUBMISSION_STORY = "submission_story";
 	private static final String SUBMISSION_STORY_RANK = "submission_story_rank";
 	private static final String PRINCIPAL_INVESTIGATOR = "principal_investigator";
@@ -46,6 +47,7 @@ public class ControlledVocabularyPerTemplateFieldSetMapper implements FieldSetMa
 		observationTemplate.setDescription(fieldSet.readString(TEMPLATE_DESCRIPTION));
 		observationTemplate.setSubmissionName(fieldSet.readString(SUBMISSION_NAME));
 		observationTemplate.setSubmissionDescription(fieldSet.readString(SUBMISSION_DESCRIPTION));
+        observationTemplate.setProject(fieldSet.readString(PROJECT));
 		observationTemplate.setIsSubmissionStory(fieldSet.readBoolean(SUBMISSION_STORY, "TRUE"));
 		observationTemplate.setSubmissionStoryRank(fieldSet.readInt(SUBMISSION_STORY_RANK));
 		observationTemplate.setPrincipalInvestigator(fieldSet.readString(PRINCIPAL_INVESTIGATOR));
