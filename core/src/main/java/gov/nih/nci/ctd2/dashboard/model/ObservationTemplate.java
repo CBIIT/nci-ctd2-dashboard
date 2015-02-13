@@ -11,6 +11,8 @@ public interface ObservationTemplate extends DashboardEntity {
     public void setSubmissionName(String submissionName);
     public String getSubmissionDescription();
     public void setSubmissionDescription(String submissionDescription);
+    public String getProject();
+    public void setProject(String project);
 	public Boolean getIsSubmissionStory();
 	public void setIsSubmissionStory(Boolean isSubmissionStory);
     public Integer getSubmissionStoryRank();

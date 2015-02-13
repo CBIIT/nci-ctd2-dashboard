@@ -44,7 +44,7 @@
 
   <bean name="controlledVocabularyPerTemplateLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="observation_tier,template_name,observation_summary,template_description,submission_name,submission_description,submission_story,submission_story_rank,submission_center,principal_investigator"/>
+	<property name="names" value="observation_tier,template_name,observation_summary,template_description,submission_name,submission_description,project,submission_story,submission_story_rank,submission_center,principal_investigator"/>
   </bean>
 
   <!-- cv per column beans -->

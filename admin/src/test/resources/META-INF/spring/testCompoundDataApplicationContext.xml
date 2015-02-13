@@ -44,7 +44,7 @@
   </bean>
 
   <bean name="compoundsLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-	<property name="names" value="CPD_ID,CPD_PRIMARY_NAME,SMILES,STRUCTURE_FILE"/>
+	<property name="names" value="CPD_ID,CPD_PRIMARY_NAME,SMILES,STRUCTURE_FILE,PUBCHEM_CID,CAS_NUMBER"/>
 	<property name="delimiter" value="\u0009"/>
   </bean>
 
