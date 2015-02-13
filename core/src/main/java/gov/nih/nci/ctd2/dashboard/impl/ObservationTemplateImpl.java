@@ -16,6 +16,7 @@ import javax.persistence.*;
 public class ObservationTemplateImpl extends DashboardEntityImpl implements ObservationTemplate {
     public final static String FIELD_DESCRIPTION = "description";
     public final static String FIELD_SUBMISSIONDESC = "submissionDesc";
+    public final static String FIELD_PROJECT = "project";
     public final static String FIELD_SUBMISSIONNAME = "submissionName";
 
     private String description;
@@ -23,6 +24,7 @@ public class ObservationTemplateImpl extends DashboardEntityImpl implements Obse
     private Integer tier = 0;
 	private String submissionName;
 	private String submissionDescription;
+    private String project;
 	private Boolean isSubmissionStory;
 	private Integer submissionStoryRank = 0;
     private SubmissionCenter submissionCenter;
@@ -73,6 +75,16 @@ public class ObservationTemplateImpl extends DashboardEntityImpl implements Obse
 
     public void setSubmissionDescription(String submissionDescription) {
         this.submissionDescription = submissionDescription;
+    }
+    
+    @Field(name=FIELD_PROJECT, index = Index.TOKENIZED)
+    @Column(length = 1024)
+    public String getProject() {
+        return project;
+    }
+
+    public void setProject(String project) {
+        this.project = project;
     }
 
 	public Boolean getIsSubmissionStory() {
