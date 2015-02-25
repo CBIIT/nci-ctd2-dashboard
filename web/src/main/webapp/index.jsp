@@ -1206,7 +1206,7 @@
                               <th>References</th>
                               <td>
                                   <ul class="compound-xrefs">
-                                      {{pubchem ? "<li>PubChem: <a target='_blank' href='https://pubchem.ncbi.nlm.nih.gov/compound/" + pubchem + "'>" + pubchem + "</a></li>" : ""}}
+                                      {{pubchem ? "<li>PubChem: <a target='_blank' href='https://pubchem.ncbi.nlm.nih.gov/compound/" + pubchem + "'>" + pubchem + "</a> <i class='icon-share'></i></li>" : ""}}
                                       {{cas ? "<li>CAS: " + cas + "</li>" : ""}}
 
                                   </ul>
