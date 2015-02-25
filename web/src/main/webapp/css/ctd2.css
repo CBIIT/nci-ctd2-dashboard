@@ -568,8 +568,10 @@ h2.context, h3.context, h4.context, h5.context {
     min-height: 120px;
 }
 
-.numbered-image h3 {
-    margin: 2px 2px;
+.numbered-image b {
+    padding: 5px;
+    background-color: white;
+    color: dimgrey;
 }
 
 .explore-thumbnail .caption {

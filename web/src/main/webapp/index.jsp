@@ -1636,7 +1636,7 @@
         <li class="span{{spanSize}}">
             <div class="thumbnail explore-thumbnail">
                 <div class="numbered-image" style="background-image: url({{subject.class == 'Compound' ? '<%=dataURL%>compounds/' + subject.imageFile : 'img/' + subject.class.toLowerCase() + '.png' }});">
-                    <h3>#{{order}}</h3>
+                    <b>#{{order}}</b>
                 </div>
                 <div class="caption">
                     <h4 data-toggle="tooltip" class="{{type}} nonewline" title="{{subject.displayName}}">{{subject.displayName}}</h4>
