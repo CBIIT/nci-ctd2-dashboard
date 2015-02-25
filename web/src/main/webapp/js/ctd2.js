@@ -1008,9 +1008,15 @@
          render: function() {
              var result = this.model.toJSON();
 
+             result["pubchem"] = result["cas"] = false;
+
              _.each(result.xrefs, function(xref) {
-                 if(xref.databaseName == "IMAGE") {
+                 if (xref.databaseName == "IMAGE") {
                      result["imageFile"] = xref.databaseId;
+                 } else if(xref.databaseName == "PUBCHEM") {
+                     result["pubchem"] = xref.databaseId;
+                 } else if(xref.databaseName == "CAS") {
+                     result["cas"] = xref.databaseId;
                  }
 
              });

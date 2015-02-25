@@ -1200,7 +1200,17 @@
                           </tr>
                           <tr>
                               <th>SMILES</th>
-                              <td>{{smilesNotation}}</td>
+                              <td><small>{{smilesNotation}}</small></td>
+                          </tr>
+                          <tr>
+                              <th>References</th>
+                              <td>
+                                  <ul class="compound-xrefs">
+                                      {{pubchem ? "<li>PubChem: <a target='_blank' href='https://pubchem.ncbi.nlm.nih.gov/compound/" + pubchem + "'>" + pubchem + "</a></li>" : ""}}
+                                      {{cas ? "<li>CAS: " + cas + "</li>" : ""}}
+
+                                  </ul>
+                              </td>
                           </tr>
                       </table>
                   </div>
