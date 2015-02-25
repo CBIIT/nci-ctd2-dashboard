@@ -422,8 +422,8 @@ img.fancy-story-img {
 
 .featurette img {
     margin: 15px 25px 10px 0px;
-    width: 150px;
-    height: 150px;
+    width: 125px;
+    height: 125px;
 }
 
 .featurette p.lead {
@@ -682,4 +682,9 @@ blockquote p {
 
 #cnkb-query {
     margin-left: 40px
+}
+
+.help-navigate-text-container {
+    padding-left: 20px;
+    padding-right: 20px;
 }

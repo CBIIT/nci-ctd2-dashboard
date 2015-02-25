@@ -231,19 +231,32 @@
                 return false;
             });
 
-            $("a.show-more").click(function(e) {
+            $("#homepage-help-navigate").click(function(e) {
                 e.preventDefault();
-                $("#overview-hidden-part").slideDown();
-                $(this).hide();
-                $("a.show-less").show();
-            });
-            $("a.show-less").click(function(e) {
-                e.preventDefault();
-                $("#overview-hidden-part").slideUp();
-                $(this).hide();
-                $("a.show-more").show();
+                (new HelpNavigateView()).render();
             });
 
+            return this;
+        }
+    });
+
+    var HelpNavigateView = Backbone.View.extend({
+        template: _.template($("#help-navigate-tmpl").html()),
+
+        render: function() {
+            var content = this.template({});
+
+            $.fancybox(
+                content,
+                {
+                    'autoDimensions' : false,
+                    'width': '75%',
+                    'height': '99%',
+                    'centerOnScroll': true,
+                    'transitionIn' : 'none',
+                    'transitionOut' : 'none'
+                }
+            );
 
             return this;
         }
@@ -2800,6 +2813,10 @@
                     var blurb = $("#text-blurb-" + thatModel.roles.toLowerCase().replace(/,/g, "-"));
                     if(blurb.length > 0) {
                         $("#explore-blurb").append(_.template(blurb.html(), {}));
+                        $("#explore-blurb .blurb-help").click(function(e) {
+                            e.preventDefault();
+                            (new HelpNavigateView()).render();
+                        });
                     }
                 }
             });
@@ -2853,7 +2870,6 @@
             return this;
         }
     });
-
 
     var ExploreItemView = Backbone.View.extend({
         el: "#explore-items",
@@ -3557,11 +3573,12 @@
             "subject/:id": "showSubject",
             "evidence/:id": "showMraView",
             "template-helper": "showTemplateHelper",
-            "about": "about",
+            "about": "helpNavigate",
             "genes": "showGenes",
             "cnkb-query": "showCnkbQuery",
             "cnkb-result": "showCnkbResult", 
-            "gene-cart-help": "showGeneCartHelp", 
+            "gene-cart-help": "showGeneCartHelp",
+            "help-navigate": "helpNavigate",
             "*actions": "home"
         },
 
@@ -3570,10 +3587,11 @@
             homeView.render();
         },
 
-        about: function() {
+        helpNavigate: function() {
             var homeView = new HomeView();
             homeView.render();
-            $("a.show-more").trigger('click');
+            var helpNavigateView = new HelpNavigateView();
+            helpNavigateView.render();
         },
 
         scrollToExplore: function() {
@@ -3751,8 +3769,11 @@
            },
            delay: {hide: 2000}
         });
-     
 
+        $("a.help-navigate").click(function(e) {
+            e.preventDefault();
+            (new HelpNavigateView()).render();
+        });
     });
 
 }(window.jQuery);
