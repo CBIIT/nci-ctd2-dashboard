@@ -1512,6 +1512,9 @@
         <li class="synonym"><a href="#subject/{{id}}">{{refseqId}}</a></li>
     </script>
 
+    <script type="text/template" id="count-story-tmpl">
+        Read story
+    </script>
 
     <script type="text/template" id="count-observations-tmpl">
         {{count}} observation{{count == 1 ? "" : "s"}}

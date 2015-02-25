@@ -1464,8 +1464,11 @@
                         centerSubmissionRowView.render();
 
                         $.ajax("count/observation/?filterBy=" + submission.id).done(function(count) {
+                            var tmplName = submission.observationTemplate.isSubmissionStory
+                                ? "#count-story-tmpl"
+                                : "#count-observations-tmpl";
                             var cntContent = _.template(
-                                $("#count-observations-tmpl").html(),
+                                $(tmplName).html(),
                                 { count: count }
                             );
 
@@ -1904,8 +1907,11 @@
                                 var searchSubmissionRowView = new SearchSubmissionRowView({ model: submission });
                                 searchSubmissionRowView.render();
 
+                                var tmplName = submission.observationTemplate.isSubmissionStory
+                                    ? "#count-story-tmpl"
+                                    : "#count-observations-tmpl";
                                 var cntContent = _.template(
-                                    $("#count-observations-tmpl").html(),
+                                    $(tmplName).html(),
                                     { count: submission.observationCount }
                                 );
                                 $("#search-observation-count-" + submission.dashboardEntity.id).html(cntContent);
