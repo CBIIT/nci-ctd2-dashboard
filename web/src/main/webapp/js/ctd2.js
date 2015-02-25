@@ -1101,6 +1101,8 @@
         template:  _.template($("#gene-tmpl").html()),
         render: function() {
             var result = this.model.toJSON();
+            // Find out the UniProt ID
+
             result["type"] = result.class;
             $(this.el).html(this.template(result));
 
@@ -1110,6 +1112,13 @@
 
                 var synonymView = new SynonymView({ model: aSynonym, el: thatEl });
                 synonymView.render();
+            });
+
+            thatEl = $("ul.refs");
+            $.getJSON("findProteinFromGene/" + result.id, function(proteins) {
+                _.each(proteins, function(protein) {
+                    thatEl.append(_.template($("#gene-uniprot-tmpl").html(), {uniprotId: protein.uniprotId}));
+                });
             });
 
             var subjectObservationView = new SubjectObservationsView({

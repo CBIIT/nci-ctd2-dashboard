@@ -671,6 +671,12 @@
         {{firstPart}} &times; 10<sup>{{secondPart}}</sup>
     </script>
 
+    <script type="text/template" id="gene-uniprot-tmpl">
+        <li id="gene-uniprot-link">
+            UniProt: <a href="http://www.uniprot.org/uniprot/{{uniprotId}}" target="_blank">{{uniprotId}} <i class="icon-share"></i></a>
+        </li>
+    </script>
+
     <script type="text/template" id="gene-tmpl">
          <div class="container common-container" id="gene-container">
              <h2>{{displayName}}</h2>
@@ -697,7 +703,11 @@
                          <tr>
                              <th>References</th>
                              <td>
-                                 Entrez: <a href="http://www.ncbi.nlm.nih.gov/gene/{{entrezGeneId}}" target="_blank">{{entrezGeneId}} <i class="icon-share"></i></a> <br>
+                                 <ul class="refs">
+                                     <li>
+                                         Entrez: <a href="http://www.ncbi.nlm.nih.gov/gene/{{entrezGeneId}}" target="_blank">{{entrezGeneId}} <i class="icon-share"></i></a>
+                                     </li>
+                                 </ul>
                              </td>
                          </tr>
                          <tr>

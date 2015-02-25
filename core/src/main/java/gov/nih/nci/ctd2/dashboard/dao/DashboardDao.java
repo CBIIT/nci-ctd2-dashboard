@@ -56,5 +56,6 @@ public interface DashboardDao {
     List<ObservationTemplate> findObservationTemplateBySubmissionCenter(SubmissionCenter submissionCenter);
     List<ObservedSubject> findObservedSubjectByRole(String role);
     List<SubjectWithSummaries> findSubjectWithSummariesByRole(String role, Integer minScore);
+    List<Protein> findProteinByGene(Gene gene);
 }
 

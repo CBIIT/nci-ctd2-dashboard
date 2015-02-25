@@ -719,4 +719,20 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
         }
         return subjects;
     }
+
+    @Cacheable(value = "uniprotCache")
+    @Override
+    public List<Protein> findProteinByGene(Gene gene) {
+        Set<Protein> proteins = new HashSet<Protein>();
+        for(Object t: getHibernateTemplate().find("from TranscriptImpl where gene = ?", gene)) {
+            assert t instanceof Transcript;
+
+            for(Object p: getHibernateTemplate().find("from ProteinImpl as p where ? member of p.transcripts", (Transcript) t)) {
+                assert p instanceof Protein;
+                proteins.add((Protein) p);
+            }
+        }
+
+        return (new ArrayList<Protein>(proteins));
+    }
 }
