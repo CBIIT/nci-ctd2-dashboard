@@ -633,9 +633,9 @@ public class DashboardDaoTest {
 
         assertTrue(dashboardDao.search("something").isEmpty());
 
-        // Wild-card search does not look in the synonyms (optimization)
-        assertTrue(dashboardDao.search(synonymStr + "*").isEmpty());
-        assertTrue(dashboardDao.search(synonymStr + "1*").isEmpty());
+        // Wild-card search with synonyms
+        assertEquals(2, dashboardDao.search(synonymStr + "*").size());
+        assertEquals(1, dashboardDao.search(synonymStr + "1*").size());
         // But these should work since they are part of the displayName
         assertEquals(2, dashboardDao.search("Gene*").size());
         assertEquals(1, dashboardDao.search("Gene1*").size());

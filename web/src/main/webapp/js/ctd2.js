@@ -231,19 +231,32 @@
                 return false;
             });
 
-            $("a.show-more").click(function(e) {
+            $("#homepage-help-navigate").click(function(e) {
                 e.preventDefault();
-                $("#overview-hidden-part").slideDown();
-                $(this).hide();
-                $("a.show-less").show();
-            });
-            $("a.show-less").click(function(e) {
-                e.preventDefault();
-                $("#overview-hidden-part").slideUp();
-                $(this).hide();
-                $("a.show-more").show();
+                (new HelpNavigateView()).render();
             });
 
+            return this;
+        }
+    });
+
+    var HelpNavigateView = Backbone.View.extend({
+        template: _.template($("#help-navigate-tmpl").html()),
+
+        render: function() {
+            var content = this.template({});
+
+            $.fancybox(
+                content,
+                {
+                    'autoDimensions' : false,
+                    'width': '75%',
+                    'height': '99%',
+                    'centerOnScroll': true,
+                    'transitionIn' : 'none',
+                    'transitionOut' : 'none'
+                }
+            );
 
             return this;
         }
@@ -995,9 +1008,15 @@
          render: function() {
              var result = this.model.toJSON();
 
+             result["pubchem"] = result["cas"] = false;
+
              _.each(result.xrefs, function(xref) {
-                 if(xref.databaseName == "IMAGE") {
+                 if (xref.databaseName == "IMAGE") {
                      result["imageFile"] = xref.databaseId;
+                 } else if(xref.databaseName == "PUBCHEM") {
+                     result["pubchem"] = xref.databaseId;
+                 } else if(xref.databaseName == "CAS") {
+                     result["cas"] = xref.databaseId;
                  }
 
              });
@@ -1082,6 +1101,8 @@
         template:  _.template($("#gene-tmpl").html()),
         render: function() {
             var result = this.model.toJSON();
+            // Find out the UniProt ID
+
             result["type"] = result.class;
             $(this.el).html(this.template(result));
 
@@ -1091,6 +1112,13 @@
 
                 var synonymView = new SynonymView({ model: aSynonym, el: thatEl });
                 synonymView.render();
+            });
+
+            thatEl = $("ul.refs");
+            $.getJSON("findProteinFromGene/" + result.id, function(proteins) {
+                _.each(proteins, function(protein) {
+                    thatEl.append(_.template($("#gene-uniprot-tmpl").html(), {uniprotId: protein.uniprotId}));
+                });
             });
 
             var subjectObservationView = new SubjectObservationsView({
@@ -1436,8 +1464,11 @@
                         centerSubmissionRowView.render();
 
                         $.ajax("count/observation/?filterBy=" + submission.id).done(function(count) {
+                            var tmplName = submission.observationTemplate.isSubmissionStory
+                                ? "#count-story-tmpl"
+                                : "#count-observations-tmpl";
                             var cntContent = _.template(
-                                $("#count-observations-tmpl").html(),
+                                $(tmplName).html(),
                                 { count: count }
                             );
 
@@ -1876,8 +1907,11 @@
                                 var searchSubmissionRowView = new SearchSubmissionRowView({ model: submission });
                                 searchSubmissionRowView.render();
 
+                                var tmplName = submission.observationTemplate.isSubmissionStory
+                                    ? "#count-story-tmpl"
+                                    : "#count-observations-tmpl";
                                 var cntContent = _.template(
-                                    $("#count-observations-tmpl").html(),
+                                    $(tmplName).html(),
                                     { count: submission.observationCount }
                                 );
                                 $("#search-observation-count-" + submission.dashboardEntity.id).html(cntContent);
@@ -2800,6 +2834,10 @@
                     var blurb = $("#text-blurb-" + thatModel.roles.toLowerCase().replace(/,/g, "-"));
                     if(blurb.length > 0) {
                         $("#explore-blurb").append(_.template(blurb.html(), {}));
+                        $("#explore-blurb .blurb-help").click(function(e) {
+                            e.preventDefault();
+                            (new HelpNavigateView()).render();
+                        });
                     }
                 }
             });
@@ -2853,7 +2891,6 @@
             return this;
         }
     });
-
 
     var ExploreItemView = Backbone.View.extend({
         el: "#explore-items",
@@ -3557,11 +3594,12 @@
             "subject/:id": "showSubject",
             "evidence/:id": "showMraView",
             "template-helper": "showTemplateHelper",
-            "about": "about",
+            "about": "helpNavigate",
             "genes": "showGenes",
             "cnkb-query": "showCnkbQuery",
             "cnkb-result": "showCnkbResult", 
-            "gene-cart-help": "showGeneCartHelp", 
+            "gene-cart-help": "showGeneCartHelp",
+            "help-navigate": "helpNavigate",
             "*actions": "home"
         },
 
@@ -3570,10 +3608,11 @@
             homeView.render();
         },
 
-        about: function() {
+        helpNavigate: function() {
             var homeView = new HomeView();
             homeView.render();
-            $("a.show-more").trigger('click');
+            var helpNavigateView = new HelpNavigateView();
+            helpNavigateView.render();
         },
 
         scrollToExplore: function() {
@@ -3751,8 +3790,11 @@
            },
            delay: {hide: 2000}
         });
-     
 
+        $("a.help-navigate").click(function(e) {
+            e.preventDefault();
+            (new HelpNavigateView()).render();
+        });
     });
 
 }(window.jQuery);
