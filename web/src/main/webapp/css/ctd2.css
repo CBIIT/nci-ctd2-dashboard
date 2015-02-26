@@ -1,0 +1,685 @@
+/* GLOBAL STYLES
+-------------------------------------------------- */
+/* Padding below the footer and lighter body text */
+
+body {
+  padding-bottom: 10px;
+  color: #5a5a5a;
+  background-image: url("../img/bg-gray.png");
+}
+
+
+/* CUSTOMIZE THE NAVBAR
+-------------------------------------------------- */
+
+/* Special class on .container surrounding .navbar, used for positioning it into place. */
+.navbar-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  margin-top: 10px;
+  margin-bottom: -90px; /* Negative margin to pull up carousel. 90px is roughly margins and height of navbar. */
+}
+.navbar-wrapper .navbar {
+
+}
+
+/* Remove border and change up box shadow for more contrast */
+.navbar .navbar-inner {
+  border: 0;
+  -webkit-box-shadow: 0 2px 10px rgba(0,0,0,.25);
+     -moz-box-shadow: 0 2px 10px rgba(0,0,0,.25);
+          box-shadow: 0 2px 10px rgba(0,0,0,.25);
+}
+
+/* Downsize the brand/project name a bit */
+.navbar .brand {
+  padding: 10px 20px 10px; /* Increase vertical padding to match navbar links */
+  font-size: 16px;
+  font-weight: bold;
+  text-shadow: 0 -1px 0 rgba(0,0,0,.5);
+}
+
+/* Navbar links: increase padding for taller navbar */
+.navbar .nav > li > a {
+  padding: 10px 11px;
+}
+
+/* Offset the responsive button for proper vertical alignment */
+.navbar .btn-navbar {
+  margin-top: 10px;
+}
+
+.navbar-inner {
+    min-height: 0px;
+}
+
+
+
+/* CUSTOMIZE THE NAVBAR
+-------------------------------------------------- */
+
+/* Carousel base class */
+.carousel {
+  margin-bottom: 0px;
+}
+
+.carousel .container {
+  position: relative;
+  z-index: 10;
+}
+
+.carousel-control {
+  height: 80px;
+  margin-top: 0;
+  font-size: 120px;
+  background-color: transparent;
+  border: 0;
+}
+
+.carousel .item {
+}
+
+.carousel img.cimg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  min-width: 100%;
+  height: 450px;
+}
+
+.carousel-caption {
+  background-color: #f6f6f6;
+  background-image: url('../img/ctd2_bg.png');
+  background-repeat: no-repeat;
+  background-position: right 5px;
+  position: static;
+  padding: 0 20px;
+  padding-top: 25px;
+
+}
+.carousel-caption h1,
+.carousel-caption .lead {
+}
+
+.marketing .span4 {
+  text-align: center;
+}
+.marketing h2 {
+  font-weight: normal;
+}
+.marketing .span4 p {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.featurette {
+  overflow: hidden; /* Vertically center images part 2: clear their floats. */
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+/* Give some space on the sides of the floated elements so text doesn't run right into it. */
+.featurette-image.pull-left {
+  margin-right: 40px;
+}
+.featurette-image.pull-right {
+  margin-left: 40px;
+}
+
+/* Thin out the marketing headings */
+.featurette-heading {
+  font-size: 50px;
+  font-weight: 300;
+  letter-spacing: -1px;
+}
+
+.stories {
+    border-top: 15px solid #a70001;
+}
+
+.story-link {
+    color: #a70001;
+}
+
+.target {
+    border-top: 15px solid #1ea44b;
+}
+
+.target-link {
+    color: #1ea44b;
+}
+
+.drug {
+    border-top: 15px solid #006bb9;
+}
+
+.drug-link {
+    color: #006bb9;
+}
+
+.context {
+    border-top: 15px solid #f99910;
+}
+
+.context-link {
+    color: #f99910;
+}
+
+.active-box {
+    border-top-width: 30px;
+}
+
+.active-box h2 {
+    font-weight: bold;
+}
+
+.carousel-well p {
+    color: #5A5A5A;
+}
+
+.carousel-caption h1 {
+    color: #5A5A5A;
+}
+
+.lead {
+    font-size: 18px;
+    font-weight: normal;
+}
+
+.stories-lead {
+    font-weight: bold;
+    padding-bottom: 10px;
+}
+
+.stories-text {
+    font-size: 18px;
+}
+
+.stories-pagination {
+    margin-bottom: 5px;
+    margin-top: 10px;
+}
+
+.browse-by {
+    font-size: 16px;
+    padding-left: 10px;
+    font-weight: bold;
+}
+
+.common-container {
+    margin-top: 66px;
+    padding-bottom: 30px;
+
+    background-color: #f6f6f6;
+    background-image: url('../img/ctd2_bg.png');
+    background-repeat: no-repeat;
+    background-position: right 0px;
+
+    border-left: 5px solid #f6f6f6;
+    border-right: 5px solid #f6f6f6;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+
+
+/* for data tables integration */
+table.table thead .sorting,
+table.table thead .sorting_asc,
+table.table thead .sorting_desc,
+table.table thead .sorting_asc_disabled,
+table.table thead .sorting_desc_disabled {
+    cursor: pointer;
+    *cursor: hand;
+}
+
+table.table thead .sorting { background: url('../images/sort_both.png') no-repeat center right; }
+table.table thead .sorting_asc { background: url('../images/sort_asc.png') no-repeat center right; }
+table.table thead .sorting_desc { background: url('../images/sort_desc.png') no-repeat center right; }
+
+table.table thead .sorting_asc_disabled { background: url('../images/sort_asc_disabled.png') no-repeat center right; }
+table.table thead .sorting_desc_disabled { background: url('../images/sort_desc_disabled.png') no-repeat center right; }
+
+div.dataTables_info {
+    padding-top: 8px;
+}
+
+div.dataTables_paginate {
+    float: right;
+    margin: 0;
+}
+
+table {
+    margin-bottom: 6px !important;
+    clear: both;
+}
+
+.sorting_1, .sorting_2, .sorting_3 {
+    background-color: transparent;
+}
+
+.navbar-inner {
+    padding-left: 1px;
+}
+
+ul.synonyms {
+    margin-bottom: 0px;
+}
+
+blockquote {
+    border-left: 5px solid #a70001;
+}
+
+blockquote p {
+    font-size: 22px;
+    font-style: italic;
+}
+
+.img-evidence {
+    width: auto;
+    max-height: 140px;
+}
+
+#omnisearch {
+    margin: 5px 0 0 0;
+}
+
+.topmenu li {
+}
+
+.popover-content {
+    font-size: 14px;
+}
+
+.fancybox-title-inside {
+    font-size: 110%;
+    background-color: #f6f6f6;
+}
+
+.image-evidence-wrapper {
+    max-height: 150px;
+    max-width: 150px;
+    overflow: hidden;
+}
+
+#cytoscape-sif {
+    width: 93%;
+    height: 70%;
+    border: 1px solid #dddddd;
+    border-radius: 3px;
+    margin: 15px;
+}
+
+.sif-legend {
+    width: 90%;
+    text-align: center;
+    font-size: 75%;
+    margin-left: 15px;
+    margin-right: 15px;
+}
+
+.stories-tabs {
+    overflow: hidden;
+}
+
+.one-story h4 {
+    color: #5A5A5A;
+}
+
+#redirect-message {
+    font-size: 95%;
+}
+
+#browse-pagination a {
+    padding: 4px 11px;
+}
+
+li.browsed-item {
+    margin-left: 0;
+}
+
+#template-helper-container input, #template-helper-container select {
+    margin-bottom: 0;
+}
+
+.template-preview-wrapper {
+    width: 100%;
+    overflow-x: scroll;
+    border: 1px solid gray;
+}
+
+.template-download button {
+    margin-top: 20px;
+}
+
+#template-helper-container td {
+    padding: 7px;
+}
+
+td.next-cell {
+    text-align: center;
+}
+
+.input-xxxlarge {
+    width: 650px;
+}
+
+#cytoscape {
+    width: 93%;
+    height: 70%;
+    border: 1px solid #dddddd;
+    border-radius: 3px;
+    margin: 15px;
+}
+.cytoscape-legend {
+    width: 90%;
+    text-align: center;
+    font-size: 75%;
+    margin-left: 15px;
+    margin-right: 15px;
+ }
+ .centeredImage {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+ }
+
+ .button-link {
+     font-weight: bold;
+  }
+
+.center-image-column img {
+    max-width: 100px;
+}
+
+.center-image-column {
+    width: 125px;
+    text-align: center;
+}
+
+.center-name {
+    font-weight: bold;
+}
+
+td.center-pi span {
+    /*font-weight: bold;*/
+}
+
+th.submission-count {
+    min-width: 150px;
+}
+
+.fancy-story-container {
+    padding: 30px;
+}
+
+img.fancy-story-img {
+    float: right;
+    margin: 20px;
+}
+
+.featurette img {
+    margin: 15px 25px 10px 0px;
+    width: 150px;
+    height: 150px;
+}
+
+.featurette p.lead {
+    text-align: justify;
+    line-height: 24px;
+}
+
+.ctd2-boxes .span3 p {
+    font-size: 16px;
+    height: 230px;
+}
+
+.ctd2-boxes h4 {
+    text-align: center;
+}
+
+.one-story h4 {
+    margin-bottom: 10px;
+}
+
+.one-story img {
+    width: 150px;
+    height: 150px;
+    margin-left: 20px;
+}
+
+.more-observations-message div.alert {
+    padding-top: 20px;
+    margin-top: 20px;
+}
+
+.navbar {
+    margin-bottom: 8px;
+}
+
+.navbar-wrapper .container {
+    background-color: #f6f6f6;
+    border-left: 5px solid #f6f6f6;
+    border-right: 5px solid #f6f6f6;
+
+}
+
+.footer-container {
+    margin-top: 30px;
+    border: 1px solid #a70001;
+    border-top-width: 10px;
+    border-radius: 10px;
+    background-color: #ffffff;
+}
+
+footer {
+    padding: 10px;
+    text-align: center;
+}
+
+#myCarousel .container {
+    border-left: 5px solid #f6f6f6;
+    border-right: 5px solid #f6f6f6;
+}
+
+.story-cards {
+    height: 325px;
+    overflow-y: auto;
+}
+
+.overview-box {
+    padding-top: 65px;
+    background-color: white;
+    border-radius: 10px;
+}
+
+.homepage-stories-title {
+    margin-bottom: 10px;
+    margin-top: 0px;
+}
+
+#show-hide-overview {
+    font-weight: bold;
+    margin-top: -25px;
+    margin-bottom: 15px;
+    text-align: right;
+}
+
+div.dark-separator {
+    height: 5px;
+    width: 100%;
+    background-color: #555555;
+}
+
+.explore-thumbnail h4 {
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+#explore-container .span3 {
+    min-height: 500px;
+}
+
+#explore-container .span4 {
+    min-height: 500px;
+}
+
+#explore-container .span2 {
+    min-height: 360px;
+}
+
+.explore-thumbnail img {
+    background-color: white;
+}
+
+h2.target, h3.target, h4.target, h5.target {
+    color: #1ea84d;
+    border-top: 0px;
+}
+
+h2.compound, h3.compound, h4.compound, h5.compound {
+    color: #006cbb;
+    border-top: 0px;
+}
+
+h2.context, h3.context, h4.context, h5.context {
+    color: #f99a14;
+    border-top: 0px;
+}
+
+.customize-target, .customize-target:hover {
+    color: #1ea84d;
+}
+
+.customize-compound, .customize-compound:hover {
+    color: #006cbb;
+}
+
+.customize-context, .customize-context:hover {
+    color: #f99a14;
+}
+
+.numbered-image {
+    background-color: white;
+    background-size: cover;
+    background-position-x: 10px;
+    min-height: 120px;
+}
+
+.numbered-image h3 {
+    margin: 2px 2px;
+}
+
+.explore-thumbnail .caption {
+    padding: 5px;
+}
+
+.explore-thumbnail .caption h4 {
+    margin: 5px 0px;
+}
+
+.explore-thumbnail .caption p {
+    font-size: 16px;
+    line-height: 20px;
+}
+
+.nonewline {
+    white-space: nowrap;
+}
+
+.cnkbDescription {  
+    color:grey; 
+    font:8
+}
+
+#queryDescription
+{
+	margin-left: 300px
+}
+/* General font over-rides */
+body {
+    font-family: Helvetica, Arial;
+    line-height: normal;
+}
+
+.carousel-caption {
+    padding-top: 5px;
+    padding-bottom: 15px;
+}
+
+.well {
+    padding: 15px;
+    margin-bottom: 0px;
+    background-color: transparent;
+}
+
+.carousel-caption h4, .carousel-caption p {
+    line-height: 24px;
+}
+
+.table th, .table td {
+    line-height: 24px;
+}
+
+.obs-count {
+    white-space: nowrap;
+}
+
+h1 small, h2 small, h3 small, h4 small, h5 small, h6 small {
+    color: #777777;
+}
+
+blockquote p {
+    line-height: 30px;
+    font-weight: normal;
+}
+
+.alert, .alert h4 {
+    color: #81632f;
+}
+
+#myCarousel {
+    min-width: 950px;
+}
+
+.firstlead {
+    padding-top: 10px;
+}
+ 
+.greenColor
+{
+	color: green
+}
+
+.labelDisable
+{
+	color:#ccc
+}
+
+.cnkbSelectList
+{
+	width: 350px
+}
+
+.geneSelectList
+{
+	width: 300px
+}
+
+#deleteGene {
+    margin-left: 100px
+}
+
+#clearList {
+    margin-left: 35px
+}
+ 
+#loadGenes {
+    margin-left: 70px
+}
+
+#cnkb-query {
+    margin-left: 40px
+}

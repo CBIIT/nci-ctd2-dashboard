@@ -1,0 +1,10 @@
+cell_name_type_id	cell_name_type	cell_name_type_priority
+1	integrated	10
+2	CCLE	20
+3	CTD2	30
+4	Achilles	40
+5	BSP	50
+6	PRISM	60
+7	Sanger sample name	70
+9	other	100
+10	UT Southwestern	90
