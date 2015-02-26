@@ -422,8 +422,8 @@ img.fancy-story-img {
 
 .featurette img {
     margin: 15px 25px 10px 0px;
-    width: 150px;
-    height: 150px;
+    width: 125px;
+    height: 125px;
 }
 
 .featurette p.lead {
@@ -568,8 +568,10 @@ h2.context, h3.context, h4.context, h5.context {
     min-height: 120px;
 }
 
-.numbered-image h3 {
-    margin: 2px 2px;
+.numbered-image b {
+    padding: 5px;
+    background-color: white;
+    color: dimgrey;
 }
 
 .explore-thumbnail .caption {
@@ -682,4 +684,9 @@ blockquote p {
 
 #cnkb-query {
     margin-left: 40px
+}
+
+.help-navigate-text-container {
+    padding-left: 20px;
+    padding-right: 20px;
 }

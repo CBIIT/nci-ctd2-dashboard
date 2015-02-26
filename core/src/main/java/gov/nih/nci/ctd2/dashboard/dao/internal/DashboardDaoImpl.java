@@ -27,6 +27,8 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
     private static final String[] defaultSearchFields = {
             DashboardEntityImpl.FIELD_DISPLAYNAME,
             DashboardEntityImpl.FIELD_DISPLAYNAME_UT,
+            SubjectImpl.FIELD_SYNONYM,
+            SubjectImpl.FIELD_SYNONYM_UT,
             ObservationTemplateImpl.FIELD_DESCRIPTION,
             ObservationTemplateImpl.FIELD_SUBMISSIONDESC,
             ObservationTemplateImpl.FIELD_SUBMISSIONNAME,
@@ -716,5 +718,21 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
             subjects.add((SubjectWithSummaries) o);
         }
         return subjects;
+    }
+
+    @Cacheable(value = "uniprotCache")
+    @Override
+    public List<Protein> findProteinByGene(Gene gene) {
+        Set<Protein> proteins = new HashSet<Protein>();
+        for(Object t: getHibernateTemplate().find("from TranscriptImpl where gene = ?", gene)) {
+            assert t instanceof Transcript;
+
+            for(Object p: getHibernateTemplate().find("from ProteinImpl as p where ? member of p.transcripts", (Transcript) t)) {
+                assert p instanceof Protein;
+                proteins.add((Protein) p);
+            }
+        }
+
+        return (new ArrayList<Protein>(proteins));
     }
 }
