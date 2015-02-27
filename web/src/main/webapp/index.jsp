@@ -113,7 +113,7 @@
            <p>
                <a class="help-navigate" href="#help-navigate">Glossary</a> &middot;
                <a href="http://www.cancer.gov/global/web/policies" target="_blank">Policies</a> &middot;
-               <a href="http://www.cancer.gov/global/web/policies/accessibility" target="_blank">Accesibility</a> &middot;
+               <a href="http://www.cancer.gov/global/web/policies/accessibility" target="_blank">Accessibility</a> &middot;
                <a href="http://www.cancer.gov/global/web/policies/foia" target="_blank">FOIA</a>
            </p>
 
