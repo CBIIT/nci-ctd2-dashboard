@@ -206,7 +206,7 @@
                 <p>
                     Users can browse compounds and perturbagens, which are modulators of cellular phenotype, genes, or proteins in cancer cell lines or tumor model systems. Some examples include small molecules, FDA approved drugs, natural products, and small regulatory RNAs.
                 </p>
-                <a class="btn btn-info btn-block" href="#explore/compound/Perturbagen">Browse &raquo;</a>
+                <a class="btn btn-info btn-block" href="#explore/compound/Perturbagen,Candidate Drug">Browse &raquo;</a>
             </div><!-- /.span3 -->
               <div class="span4 context" data-order="3">
                   <h4 class="homepage-context">Disease <br>Context</h4>
