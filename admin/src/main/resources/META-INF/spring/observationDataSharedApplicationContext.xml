@@ -93,9 +93,29 @@
 		<batch:chunk reader="utswTier4DiscoipyrrolesStoryReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	  </batch:tasklet>
 	</batch:step>
-	<batch:step id="ucsfDifferentialExpressionStep" parent="observationDataStep" next="emoryPPIRAF1Step">
+	<batch:step id="ucsfDifferentialExpressionStep" parent="observationDataStep" next="ucsfMutIsogenicScoresStep">
 	  <batch:tasklet>
 		<batch:chunk reader="ucsfDifferentialExpressionReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+    <batch:step id="ucsfMutIsogenicScoresStep" parent="observationDataStep" next="ucsfWtIsogenicScoresStep">
+	  <batch:tasklet>
+		<batch:chunk reader="ucsfMutIsogenicScoresReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+    <batch:step id="ucsfWtIsogenicScoresStep" parent="observationDataStep" next="ucsfAktResistanceStep">
+	  <batch:tasklet>
+		<batch:chunk reader="ucsfWtIsogenicScoresReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+    <batch:step id="ucsfAktResistanceStep" parent="observationDataStep" next="ucsfDasatinibSensitivityStep">
+	  <batch:tasklet>
+		<batch:chunk reader="ucsfAktResistanceReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+    <batch:step id="ucsfDasatinibSensitivityStep" parent="observationDataStep" next="emoryPPIRAF1Step">
+	  <batch:tasklet>
+		<batch:chunk reader="ucsfDasatinibSensitivityReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	  </batch:tasklet>
 	</batch:step>
 	<batch:step id="emoryPPIRAF1Step" parent="observationDataStep" next="mskccForetinibStep">
@@ -495,7 +515,63 @@
 	<property name="delimiter" value="\u0009"/>
 	<property name="names" value="dummy,submission_name,submission_date,template_name,probeset_id,mutated_gene_condition,mutated_gene_id,species,strain_background,tissue,gene_id,sample_group_1,sample_group_2,t_statistic,fold_change,q_value"/>
   </bean>
+  
+  <!-- ucsf mut isogenic scores -->
 
+  <!-- ucsfMutIsogenicScoresReader defined in: -->
+  <!-- observationDataApplicationContext.xml testObservationDataApplicationContext.xml -->
+  <bean name="ucsfMutIsogenicScoresLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+	<property name="fieldSetMapper" ref="observationDataMapper" />
+	<property name="lineTokenizer" ref="ucsfMutIsogenicScoresLineTokenizer" />
+  </bean>
+
+  <bean name="ucsfMutIsogenicScoresLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+	<property name="delimiter" value="\u0009"/>
+	<property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol,site,cell_type,mutation,drug,direction"/>
+  </bean>
+  
+  <!-- ucsf wt isogenic scores -->
+
+  <!-- ucsfWtIsogenicScoresReader defined in: -->
+  <!-- observationDataApplicationContext.xml testObservationDataApplicationContext.xml -->
+  <bean name="ucsfWtIsogenicScoresLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+	<property name="fieldSetMapper" ref="observationDataMapper" />
+	<property name="lineTokenizer" ref="ucsfWtIsogenicScoresLineTokenizer" />
+  </bean>
+
+  <bean name="ucsfWtIsogenicScoresLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+	<property name="delimiter" value="\u0009"/>
+	<property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol,site,cell_type,drug,direction"/>
+  </bean>
+  
+  <!-- ucsf akt resistance -->
+
+  <!-- ucsfAktResistanceReader defined in: -->
+  <!-- observationDataApplicationContext.xml testObservationDataApplicationContext.xml -->
+  <bean name="ucsfAktResistanceLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+	<property name="fieldSetMapper" ref="observationDataMapper" />
+	<property name="lineTokenizer" ref="ucsfAktResistanceLineTokenizer" />
+  </bean>
+
+  <bean name="ucsfAktResistanceLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+	<property name="delimiter" value="\u0009"/>
+	<property name="names" value="dummy,submission_name,submission_date,template_name,target_group,gene_symbol,gene_target,compound_name,cell_line,interaction_type,figure_1,figure_2,figure_3,publication_url"/>
+  </bean>
+  
+  <!-- ucsf dasatinib sensitivity -->
+
+  <!-- ucsfDasatinibSensitivityReader defined in: -->
+  <!-- observationDataApplicationContext.xml testObservationDataApplicationContext.xml -->
+  <bean name="ucsfDasatinibSensitivityLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+	<property name="fieldSetMapper" ref="observationDataMapper" />
+	<property name="lineTokenizer" ref="ucsfDasatinibSensitivityLineTokenizer" />
+  </bean>
+
+  <bean name="ucsfDasatinibSensitivityLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+	<property name="delimiter" value="\u0009"/>
+	<property name="names" value="dummy,submission_name,submission_date,template_name,target_group,gene_symbol,gene_target,compound_name,cell_line_1,cell_line_2,cell_line_3,interaction_type,figure_1,figure_2,figure_3,figure_4,figure_5,figure_6,figure_7,figure_8,publication_url"/>
+  </bean>
+  
   <!-- emory PPI RAF1 expression -->
 
   <!-- emoryPPIRAF1Reader defined in: -->
@@ -639,7 +715,7 @@
 
   <bean name="cshlAvgMeasureLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol,tumor_type,gene_type,avg_tumor_volume_day_0,avg_tumor_volume_day_7,avg_tumor_volume_day_14,avg_tumor_volume_day_21,avg_tumor_volume_day_28,avg_tumor_volume_day_35,avg_tumor_volume_day_42,injections,tumor_count"/>
+	<property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol,tumor_type,gene_type,avg_tumor_volume_day_0,avg_tumor_volume_day_7,avg_tumor_volume_day_14,avg_tumor_volume_day_21,avg_tumor_volume_day_28,avg_tumor_volume_day_35,avg_tumor_volume_day_42,injections,tumor_count,publication_url"/>
   </bean>
 
   <!-- cshlMouseLiversReader defined in: -->
@@ -1066,7 +1142,49 @@
 		<entry key="ucsf_differential_expression:t_statistic" value="evidence:readDouble:createObservedNumericEvidence" />
 		<entry key="ucsf_differential_expression:fold_change" value="evidence:readDouble:createObservedNumericEvidence" />
 		<entry key="ucsf_differential_expression:q_value" value="evidence:readDouble:createObservedNumericEvidence" />
-		<!-- emory PPI RAF1 -->
+        <!-- ucsf mut isogenic scores -->
+        <entry key="ucsf_mut_isogenic_scores:gene_symbol" value="subject:findGenesBySymbol" />
+        <entry key="ucsf_mut_isogenic_scores:site" value="evidence:readString:createObservedLabelEvidence" />
+        <entry key="ucsf_mut_isogenic_scores:cell_type" value="evidence:readString:createObservedLabelEvidence" />
+        <entry key="ucsf_mut_isogenic_scores:mutation" value="evidence:readString:createObservedLabelEvidence" />
+        <entry key="ucsf_mut_isogenic_scores:drug" value="subject:findCompoundsByName" />
+        <entry key="ucsf_mut_isogenic_scores:direction" value="evidence:readString:createObservedLabelEvidence" />
+        <!-- ucsf wt isogenic scores -->
+        <entry key="ucsf_wt_isogenic_scores:gene_symbol" value="subject:findGenesBySymbol" />
+        <entry key="ucsf_wt_isogenic_scores:site" value="evidence:readString:createObservedLabelEvidence" />
+        <entry key="ucsf_wt_isogenic_scores:cell_type" value="evidence:readString:createObservedLabelEvidence" />
+        <entry key="ucsf_wt_isogenic_scores:drug" value="subject:findCompoundsByName" />
+        <entry key="ucsf_wt_isogenic_scores:direction" value="evidence:readString:createObservedLabelEvidence" />
+        <!-- ucsf akt resistance -->
+        <entry key="ucsf_akt_resistance:target_group" value="evidence:readString:createObservedLabelEvidence" />
+        <entry key="ucsf_akt_resistance:gene_symbol" value="subject:findGenesBySymbol" />
+        <entry key="ucsf_akt_resistance:gene_target" value="evidence:readString:createObservedLabelEvidence" />
+        <entry key="ucsf_akt_resistance:compound_name" value="subject:findCompoundsByName" />
+        <entry key="ucsf_akt_resistance:cell_line" value="subject:findSubjectsBySynonym" />
+        <entry key="ucsf_akt_resistance:interaction_type" value="evidence:readString:createObservedLabelEvidence" />
+        <entry key="ucsf_akt_resistance:figure_1" value="evidence:readString:createObservedFileEvidence" />
+        <entry key="ucsf_akt_resistance:figure_2" value="evidence:readString:createObservedFileEvidence" />
+        <entry key="ucsf_akt_resistance:figure_3" value="evidence:readString:createObservedFileEvidence" />
+        <entry key="ucsf_akt_resistance:publication_url" value="evidence:readString:createObservedUrlEvidence" />
+        <!-- ucsf dasatinib sensitivity -->
+        <entry key="ucsf_dasatinib_sensitivity:target_group" value="evidence:readString:createObservedLabelEvidence" />
+        <entry key="ucsf_dasatinib_sensitivity:gene_symbol" value="subject:findGenesBySymbol" />
+        <entry key="ucsf_dasatinib_sensitivity:gene_target" value="evidence:readString:createObservedLabelEvidence" />
+        <entry key="ucsf_dasatinib_sensitivity:compound_name" value="subject:findCompoundsByName" />
+        <entry key="ucsf_dasatinib_sensitivity:cell_line_1" value="subject:findSubjectsBySynonym" />
+        <entry key="ucsf_dasatinib_sensitivity:cell_line_2" value="subject:findSubjectsBySynonym" />
+        <entry key="ucsf_dasatinib_sensitivity:cell_line_3" value="subject:findSubjectsBySynonym" />
+        <entry key="ucsf_dasatinib_sensitivity:interaction_type" value="evidence:readString:createObservedLabelEvidence" />
+        <entry key="ucsf_dasatinib_sensitivity:figure_1" value="evidence:readString:createObservedFileEvidence" />
+        <entry key="ucsf_dasatinib_sensitivity:figure_2" value="evidence:readString:createObservedFileEvidence" />
+        <entry key="ucsf_dasatinib_sensitivity:figure_3" value="evidence:readString:createObservedFileEvidence" />
+        <entry key="ucsf_dasatinib_sensitivity:figure_4" value="evidence:readString:createObservedFileEvidence" />
+        <entry key="ucsf_dasatinib_sensitivity:figure_5" value="evidence:readString:createObservedFileEvidence" />
+        <entry key="ucsf_dasatinib_sensitivity:figure_6" value="evidence:readString:createObservedFileEvidence" />
+        <entry key="ucsf_dasatinib_sensitivity:figure_7" value="evidence:readString:createObservedFileEvidence" />
+        <entry key="ucsf_dasatinib_sensitivity:figure_8" value="evidence:readString:createObservedFileEvidence" />
+        <entry key="ucsf_dasatinib_sensitivity:publication_url" value="evidence:readString:createObservedUrlEvidence" />
+        <!-- emory PPI RAF1 -->
 		<entry key="emory_PPI_analysis:cell_line" value="subject:findSubjectsBySynonym" />
 		<entry key="emory_PPI_analysis:gene_symbol_1" value="subject:findGenesBySymbol" />
 		<entry key="emory_PPI_analysis:gene_symbol_2" value="subject:findGenesBySymbol" />
@@ -1192,6 +1310,7 @@
 		<entry key="cshl_avgmeasure:avg_tumor_volume_day_42" value="evidence:readDouble:createObservedNumericEvidence" />
 		<entry key="cshl_avgmeasure:injections" value="evidence:readInt:createObservedNumericEvidence" />
 		<entry key="cshl_avgmeasure:tumor_count" value="evidence:readInt:createObservedNumericEvidence" />
+        <entry key="cshl_avgmeasure:publication_url" value="evidence:readString:createObservedUrlEvidence" />
 		<!-- cshl mouse livers -->
 		<entry key="cshl_mouselivers:tumor_type" value="subject:findTissueSampleByName" />
 		<entry key="cshl_mouselivers:gene_symbol" value="subject:findGenesBySymbol" />

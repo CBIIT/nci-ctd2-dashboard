@@ -33,6 +33,8 @@ stanford.methylmix.tier1.data.location=file:${CTD2_DATA_HOME}/submissions/201309
 utsw.tier2.discoipyrroles.story.data.location=file:${CTD2_DATA_HOME}/submissions/20130921-utsw_discoipyrrole_tier2_story/20130921-utsw_discoipyrrole_tier2_story.txt
 emory.ppi-raf1.data.location=file:${CTD2_DATA_HOME}/submissions/20131220-emory_PPI_analysis-RAF1/20131220-emory_PPI_analysis-RAF1.txt
 ucsf.differential-expression.data.location=file:${CTD2_DATA_HOME}/submissions/20140124-ucsf_differential_expression/20140124-ucsf_differential_expression.txt
+ucsf.m.mut.isogenic.scores.data.location=file:${CTD2_DATA_HOME}/submissions/20140303-ucsf-m_mut_isogenic_scores/20140303-ucsf-m_mut_isogenic_scores.txt
+ucsf.m.wt.isogenic.scores.data.location=file:${CTD2_DATA_HOME}/submissions/20140303-ucsf-m_wt_isogenic_scores/20140303-ucsf-m_wt_isogenic_scores.txt
 mda.endo.mutation.baf3.data.location=file:${CTD2_DATA_HOME}/submissions/20140304-mda_endo_mutation_BaF3/20140304-mda_endo_mutation_BaF3.txt
 mskcc.figros.data.location=file:${CTD2_DATA_HOME}/submissions/20140304-mskcc_figros/20140304-mskcc_figros.txt
 mskcc.foretinib.data.location=file:${CTD2_DATA_HOME}/submissions/20140304-mskcc_foretinib/20140304-mskcc_foretinib.txt
@@ -67,6 +69,8 @@ mda.pik3r1.drug.xenografts=file:${CTD2_DATA_HOME}/submissions/20141118-mda_pik3r
 mda.pik3r1.rppa.baf3=file:${CTD2_DATA_HOME}/submissions/20141118-mda_pik3r1_rppa_baf3/20141118-mda_pik3r1_rppa_baf3.txt
 fhcrc.tier1.cst.profiling.data.location=file:${CTD2_DATA_HOME}/submissions/20150111-fhcrc-m_tier1_cst_profiling-SOC/20150111-fhcrc-m_tier1_cst_profiling-SOC.txt
 fhcrc.tier1.cst.profiling1.data.location=file:${CTD2_DATA_HOME}/submissions/20150111-fhcrc-m_tier1_cst_profiling1-SOC/20150111-fhcrc-m_tier1_cst_profiling1-SOC.txt
+ucsf.m.akt.resistance.data.location=file:${CTD2_DATA_HOME}/submissions/20150119-ucsf-m_akt_resistance/20150119-ucsf-m_akt_resistance.txt
+ucsf.m.dasatinib.sensitivity.data.location=file:${CTD2_DATA_HOME}/submissions/20150119-ucsf-m_dasatinib_sensitivity/20150119-ucsf-m_dasatinib_sensitivity.txt
 
 # spring commit interval
 spring.batch.commit.interval=10000
