@@ -141,7 +141,27 @@
   <bean name="ucsfDifferentialExpressionReader" class="org.springframework.batch.item.file.FlatFileItemReader">
 	<property name="lineMapper" ref="ucsfDifferentialExpressionLineMapper" />
   </bean>
-
+  
+  <!-- ucsf mut isogenic scores reader -->
+  <bean name="ucsfMutIsogenicScoresReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="lineMapper" ref="ucsfMutIsogenicScoresLineMapper" />
+  </bean>
+  
+  <!-- ucsf wt isogenic scores reader -->
+  <bean name="ucsfWtIsogenicScoresReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="lineMapper" ref="ucsfWtIsogenicScoresLineMapper" />
+  </bean>
+  
+  <!-- ucsf akt resistance reader -->
+  <bean name="ucsfAktResistanceReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="lineMapper" ref="ucsfAktResistanceLineMapper" />
+  </bean>
+  
+  <!-- ucsf dasatinib sensitivity reader -->
+  <bean name="ucsfDasatinibSensitivityReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="lineMapper" ref="ucsfDasatinibSensitivityLineMapper" />
+  </bean>
+  
   <!-- emory PPI RAF1 -->
   <bean name="emoryPPIRAF1Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
 	<property name="lineMapper" ref="emoryPPIRAF1LineMapper" />
