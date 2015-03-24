@@ -7,6 +7,6 @@ public interface ShRna extends SubjectWithOrganism {
     public void setTranscript(Transcript transcript);
     public String getType();
     public void setType(String type);
-    public String getUniqueName();
-    public void setUniqueName(String uniqueName);
+    public String getReagentName();
+    public void setReagentName(String reagentName);
 }
