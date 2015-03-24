@@ -306,7 +306,7 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
      @Override
     public List<ShRna> findSiRNAByReagentName(String reagent) {
         List<ShRna> list = new ArrayList<ShRna>();
-        for (Object o : getHibernateTemplate().find("from ShRnaImpl where displayName = ?", reagent)) {
+        for (Object o : getHibernateTemplate().find("from ShRnaImpl where uniqueName = ?", reagent)) {
             assert o instanceof ShRna;
             list.add((ShRna) o);
         }

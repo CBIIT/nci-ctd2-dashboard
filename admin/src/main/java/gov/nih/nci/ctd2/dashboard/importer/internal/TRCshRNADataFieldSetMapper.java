@@ -57,6 +57,7 @@ public class TRCshRNADataFieldSetMapper implements FieldSetMapper<ShRna> {
 		if (!tRCshRNAFilterMap.isEmpty() && !tRCshRNAFilterMap.containsKey(cloneId)) return shRNA;
 
         shRNA.setDisplayName(fieldSet.readString(TARGET_SEQ_COL_INDEX));
+        shRNA.setUniqueName(shRNA.getDisplayName());
 		// create synonym back to self
 		Synonym synonym = dashboardFactory.create(Synonym.class);
 		synonym.setDisplayName(fieldSet.readString(CLONE_NAME_COL_INDEX));

@@ -18,6 +18,7 @@ public class ShRnaImpl extends SubjectWithOrganismImpl implements ShRna {
     private String targetSequence;
     private Transcript transcript;
     private String type;
+    private String uniqueName;
 
     @Column(length = 2048, nullable = false)
     public String getTargetSequence() {
@@ -44,5 +45,14 @@ public class ShRnaImpl extends SubjectWithOrganismImpl implements ShRna {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    @Column(length = 255, nullable = false, unique = true)
+    public String getUniqueName() {
+        return uniqueName;
+    }
+
+    public void setUniqueName(String uniqueName) {
+        this.uniqueName = uniqueName;
     }
 }
