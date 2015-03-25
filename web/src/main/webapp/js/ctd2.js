@@ -1478,9 +1478,10 @@
                             dataTable.cells(countCellId).invalidate();
                             dataTable.order(
                                 [
-                                    [2, 'desc'],
+                                    [3, 'desc'],
+                                    [1, 'asc'],
                                     [0, 'desc'],
-                                    [3, 'asc']
+                                    [4, 'asc']
                                 ]
                             ).draw();
                         });
@@ -1490,11 +1491,31 @@
                     $(tableElId).dataTable({
                        "columns": [
                            { "orderDataType": "dashboard-date" },
+                           { "visible": false },
                            null,
                            null,
                            null
-                       ]
-                    }).fnSort( [[2, 'desc']] );
+                       ],
+                        "drawCallback": function(settings) {
+                            var api = this.api();
+                            var rows = api.rows({ page: 'current' }).nodes();
+                            var last = null;
+
+                            api.column(1, { page: 'current' })
+                                .data()
+                                .each(function (group, i) {
+                                    if(last != group) {
+                                        $(rows)
+                                            .eq(i)
+                                            .before(
+                                                _.template($("#tbl-project-title-tmpl").html(), { project: group })
+                                            );
+
+                                        last = group;
+                                    }
+                            } );
+                        }
+                    }).fnSort( [[3, 'desc']] );
                 }
             });
 
@@ -1574,6 +1595,18 @@
             var submissionId = this.model.get("id");
             var sTable = '#submission-observation-grid';
 
+            $.ajax("list/similar/" + submissionId).done(function(similarSubmissions) {
+                if(similarSubmissions.length < 1) {
+                    $("#similar-submission-info").hide();
+                } else {
+                    _.each(similarSubmissions, function(simSub) {
+                        $(thatEl)
+                            .find("ul.similar-submission-list")
+                            .append(_.template($("#similar-submission-item-tmpl").html(), simSub));
+                    });
+                }
+            });
+
             $.ajax("count/observation/?filterBy=" + submissionId).done(function(count) {
                 var observations = new Observations({ submissionId: submissionId });
                 observations.fetch({
@@ -1637,7 +1670,9 @@
                     });
                     moreObservationView.render();
                 }
+
             });
+
 
             return this;
         }

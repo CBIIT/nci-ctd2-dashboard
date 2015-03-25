@@ -315,6 +315,7 @@
                 <thead>
                     <tr>
                         <th width="150">Submission Date</th>
+                        <th>Project</th>
                         <th>Description</th>
                         <th>Tier</th>
                         <th>Details</th>
@@ -330,6 +331,7 @@
     <script type="text/template" id="center-submission-tbl-row-tmpl">
         <tr>
             <td><a href="#submission/{{id}}">{{submissionDate}}</a></td>
+            <td>{{observationTemplate.project}}</td>
             <td>
                 {{(observationTemplate.submissionDescription != "") ? observationTemplate.submissionDescription : observationTemplate.description}}
             </td>
@@ -361,8 +363,18 @@
 
                     <table id="submission-details-grid" class="table table-bordered table-striped">
                         <tr>
+                            <th>Project</th>
+                            <td>{{observationTemplate.project}}</td>
+                        </tr>
+                        <tr>
                             <th>Description</th>
                             <td>{{observationTemplate.description}}</td>
+                        </tr>
+                        <tr id="similar-submission-info">
+                            <th>Similar Submissions</th>
+                            <td>
+                                <ul class="similar-submission-list"></ul>
+                            </td>
                         </tr>
                         <tr>
                             <th width="175">Submission Date</th>
@@ -453,6 +465,10 @@
             <div id="obs-submission-details" class="hide">
                 <table id="obs-submission-details-grid" class="table table-bordered table-striped">
                     <tr>
+                        <th>Project</th>
+                        <td>{{submission.observationTemplate.project}}</td>
+                    </tr>
+                    <tr>
                         <th>Description</th>
                         <td>
                             {{submission.observationTemplate.description}}
@@ -489,6 +505,12 @@
             </table>
 
         </div>
+    </script>
+
+    <script type="text/template" id="similar-submission-item-tmpl">
+        <li>
+            <small><a href="#submission/{{id}}">{{observationTemplate.description}}</a></small>
+        </li>
     </script>
 
     <script type="text/template" id="submission-description-tmpl">
@@ -2662,6 +2684,10 @@
         </div>
     </script>
 
+    <script id="tbl-project-title-tmpl" type="text/template">
+        <tr class="group"><td colspan="5"><b><small>Project: {{project}}</small></b></td></tr>
+    </script>
+
     <!-- end of templates -->
 
     <script src="js/jquery.min.js"></script>
@@ -2680,5 +2706,6 @@
     <script src="js/flippant.js"></script>
     <script src="js/encoder.js"></script>
     <script src="js/ctd2.js"></script>
+
   </body>
 </html>
