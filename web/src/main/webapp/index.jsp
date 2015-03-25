@@ -2663,7 +2663,7 @@
 
                 <li><i>Observation</i>: A <b>Center</b>-determined conclusion that is submitted as a connection between <b>subjects</b> and <b>evidence</b>; the "fundamental unit" of the Dashboard.</li>
 
-                <li><i>Role</i>: The <b>Center</b>-designated function of a gene, protein, or compound based on their interpretation of <b>observations</b> within a particular experimental or computational context. Assigning <b>roles</b> from a restricted list of terms (biomarkers, master regulators, oncogenes, perturbagens, or targets) helps organize <b>subjects</b> in Dashboard for browsing and searching.</li>
+                <li><i>Role</i>: The <b>Center</b>-designated function of a gene, protein, or compound based on their interpretation of observations within a particular experimental or computational context. Assigning <b>role</b>s from a restricted list of terms (biomarkers, diseases, master regulators, interactors, oncogenes, perturbagens, candidate drugs, or targets) helps organize subjects in Dashboard for browsing and searching.
 
                 <li><i>Tier</i>: A CTD<sup>2</sup> Network-defined ranking system for <b>evidence</b> that is based on the extent of characterization associated with a particular study.
                     <ul>
