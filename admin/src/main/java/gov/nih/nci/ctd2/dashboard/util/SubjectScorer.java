@@ -62,6 +62,14 @@ public class SubjectScorer {
         log.info("Scoring is done...");
     }
 
+    /*
+    PROPOSED SORT ORDER
+        for subjects:
+        (1) sum over Centers of (top Tier per Center)
+        (2) top Tier overall
+        (3) number of observations
+        (4) alpha by subject name
+     */
     @Transactional
     public Integer score(Subject subject) {
         List<ObservedSubject> observedSubjectBySubject = dashboardDao.findObservedSubjectBySubject(subject);
@@ -69,21 +77,25 @@ public class SubjectScorer {
             return 0;
         }
 
+        HashMap<SubmissionCenter, Integer> submissionScores = new HashMap<SubmissionCenter, Integer>();
         HashSet<Submission> submissions = new HashSet<Submission>();
-        HashSet<SubmissionCenter> submissionCenters = new HashSet<SubmissionCenter>();
         for (ObservedSubject observedSubject : observedSubjectBySubject) {
             Observation observation = observedSubject.getObservation();
             Submission submission = observation.getSubmission();
             submissions.add(submission);
-            submissionCenters.add(submission.getObservationTemplate().getSubmissionCenter());
+            SubmissionCenter submissionCenter = submission.getObservationTemplate().getSubmissionCenter();
+            Integer tier = submission.getObservationTemplate().getTier();
+
+            Integer earlierScore = submissionScores.get(submissionCenter);
+            submissionScores.put(submissionCenter, earlierScore == null ? tier : Math.max(tier, earlierScore));
         }
 
-        int maxTier = 0;
-        for (Submission submission : submissions) {
-            maxTier = Math.max(maxTier, submission.getObservationTemplate().getTier());
+        int totalScore = 0;
+        for (Integer centerScores : submissionScores.values()) {
+            totalScore += centerScores;
         }
 
-        return maxTier * submissionCenters.size();
+        return totalScore;
     }
 
     @Transactional
@@ -103,6 +115,8 @@ public class SubjectScorer {
 
             HashMap<Subject, SubjectWithSummaries> subjectToSummaries = new HashMap<Subject, SubjectWithSummaries>();
             HashMap<Subject, HashSet<SubmissionCenter>> subjectToCenters = new HashMap<Subject, HashSet<SubmissionCenter>>();
+            HashMap<Subject, HashMap<SubmissionCenter, Integer>> centerBasedScores
+                    = new HashMap<Subject, HashMap<SubmissionCenter, Integer>>();
             for (ObservedSubject observedSubject : dashboardDao.findObservedSubjectByRole(keyword)) {
                 Subject subject = observedSubject.getSubject();
                 SubjectWithSummaries withSummaries = subjectToSummaries.get(subject);
@@ -121,6 +135,9 @@ public class SubjectScorer {
                     withSummaries.setNumberOfSubmissionCenters(1);
                     subjectToCenters.put(subject, centers);
                     subjectToSummaries.put(subject, withSummaries);
+                    HashMap<SubmissionCenter, Integer> cScores = new HashMap<>();
+                    cScores.put(submissionCenter, tier);
+                    centerBasedScores.put(subject, cScores);
                 } else {
                     withSummaries.setMaxTier(Math.max(withSummaries.getMaxTier(), tier));
                     withSummaries.setNumberOfObservations(withSummaries.getNumberOfObservations()+1);
@@ -128,13 +145,21 @@ public class SubjectScorer {
                     HashSet<SubmissionCenter> submissionCenters = subjectToCenters.get(subject);
                     submissionCenters.add(submissionCenter);
                     withSummaries.setNumberOfSubmissionCenters(submissionCenters.size());
+
+                    HashMap<SubmissionCenter, Integer> cScores = centerBasedScores.get(subject);
+                    Integer previousScore = cScores.get(submissionCenter);
+                    cScores.put(submissionCenter, previousScore == null ? tier : Math.max(tier, previousScore));
                 }
             }
 
             List<SubjectWithSummaries> subjectWithSummariesList = new ArrayList<SubjectWithSummaries>();
             subjectWithSummariesList.addAll(subjectToSummaries.values());
             for (SubjectWithSummaries subjectWithSummaries : subjectWithSummariesList) {
-                subjectWithSummaries.setScore(subjectWithSummaries.calculateScore());
+                Integer totalScore = 0;
+                for (Integer aScore : centerBasedScores.get(subjectWithSummaries.getSubject()).values()) {
+                    totalScore += aScore;
+                }
+                subjectWithSummaries.setScore(totalScore);
                 dashboardDao.save(subjectWithSummaries);
             }
 
