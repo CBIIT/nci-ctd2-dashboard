@@ -2890,6 +2890,8 @@
                 var subjectRoles = new SubjectRoles();
                 subjectRoles.fetch({
                     success: function() {
+                        $("#customized-roles-tbl tbody").html("");
+
                         _.each(subjectRoles.models, function(role) {
                             role = role.toJSON();
                             var checked = thatModel.roles.toLowerCase().search(role.displayName.toLowerCase()) > -1;
