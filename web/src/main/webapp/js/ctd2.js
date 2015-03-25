@@ -3553,10 +3553,10 @@
             );                   
          
             var container = $('#cytoscape');                        
-         
+            var layoutName = $("#cytoscape-layouts").val();
             var cyOptions = {                        	             	 
                 layout: {
-                	 name: 'arbor',
+                	 name: layoutName,
                 	 fit: true,                                                  	 
                 	 liveUpdate: false,                       
                 	 maxSimulationTime: 4000, // max length in ms to run the layout                        
