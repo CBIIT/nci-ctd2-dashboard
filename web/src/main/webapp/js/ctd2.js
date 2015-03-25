@@ -1451,10 +1451,11 @@
         el: $("#main-container"),
         template: _.template($("#center-tmpl").html()),
         render: function() {
-            $(this.el).html(this.template(this.model.toJSON()));
+            var centerModel = this.model.toJSON();
+            $(this.el).html(this.template(centerModel));
 
             var thatEl = this.el;
-            var centerSubmissions = new CenterSubmissions({ centerId: this.model.get("id") });
+            var centerSubmissions = new CenterSubmissions({ centerId: centerModel.id });
             centerSubmissions.fetch({
                 success: function() {
                     var tableElId = '#center-submission-grid';
@@ -1516,6 +1517,12 @@
                             } );
                         }
                     }).fnSort( [[3, 'desc']] );
+                }
+            });
+
+            $($("#center-specific-information-tmpl").html()).each(function() {
+                if(centerModel.displayName == $(this).attr("data-center")) {
+                    $(thatEl).find("span.center-link").append($(this));
                 }
             });
 
