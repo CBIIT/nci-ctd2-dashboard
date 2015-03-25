@@ -60,7 +60,12 @@ public class ExploreController {
             public int compare(SubjectWithSummaries o1, SubjectWithSummaries o2) {
                 int i = o2.getScore() - o1.getScore();
                 if(i == 0) {
-                    return o2.getNumberOfObservations() - o1.getNumberOfObservations();
+                    int j = o2.getMaxTier() - o1.getMaxTier();
+                    if(j == 0) {
+                        return o2.getNumberOfObservations() - o1.getNumberOfObservations();
+                    } else {
+                        return j;
+                    }
                 } else {
                     return i;
                 }
