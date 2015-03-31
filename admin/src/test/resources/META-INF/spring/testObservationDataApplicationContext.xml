@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:batch="http://www.springframework.org/schema/batch"
+		xmlns:context="http://www.springframework.org/schema/context"
+        xsi:schemaLocation="http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-2.1.xsd
+							http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+							http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+  <import resource="classpath*:META-INF/spring/observationDataSharedApplicationContext.xml" />
+  <context:component-scan base-package="gov.nih.nci.ctd2.dashboard.importer.internal" />
+
+  <batch:job id="testObservationDataImporterJob">
+	<batch:step id="tierOneObservationDataStep" parent="observationDataStep" next="tierThreeObservationDataStep">
+	  <batch:tasklet>
+		<batch:chunk reader="tierOneObservationDataReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+	<batch:step id="tierThreeObservationDataStep" parent="observationDataStep">
+	  <batch:tasklet>
+		<batch:chunk reader="tierThreeObservationDataReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+  </batch:job>
+
+  <bean name="tierOneObservationDataReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="resource" value="classpath:test-tier-1-observation-data.txt" />
+    <property name="lineMapper" ref="tierOneObservationDataMapper" />
+	<property name="linesToSkip" value="1" />
+  </bean>
+
+  <bean name="tierOneObservationDataMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+	<property name="fieldSetMapper" ref="observationDataMapper" />
+	<property name="lineTokenizer" ref="tierOneObservationDataLineTokenizer" />
+  </bean>
+
+  <bean name="tierOneObservationDataLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+	<property name="delimiter" value="\u0009"/>
+	<property name="names" value="dummy,submission_name,submission_date,template_name,cell_line_subset,cell_line_exclusion,feature_data_set,compound_name,entrez_gene_id,number_of_cell_lines,number_of_mutant_cell_lines,enrichment_direction,log_fdr,response_image_path,feature_image_path,nci_portal,gct_path"/>
+  </bean>
+
+  <bean name="tierThreeObservationDataReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="resource" value="classpath:test-tier-3-observation-data.txt" />
+    <property name="lineMapper" ref="tierThreeObservationDataMapper" />
+	<property name="linesToSkip" value="1" />
+  </bean>
+
+  <bean name="tierThreeObservationDataMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+	<property name="fieldSetMapper" ref="observationDataMapper" />
+	<property name="lineTokenizer" ref="tierThreeObservationDataLineTokenizer" />
+  </bean>
+
+  <bean name="tierThreeObservationDataLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+	<property name="delimiter" value="\u0009"/>
+	<property name="names" value="dummy,submission_name,submission_date,template_name,compound_name,gene_symbol,figure_1,figure_2,figure_3,figure_4,figure_5,figure_6,tier1_evidence"/>
+  </bean>
+
+  <!-- the following beans are not used during testing - only required for proper loading of context files -->
+
+  <!-- broad compound sensitivity lineage enrichment -->
+  <bean name="broadCompoundSensitivityLineageEnrichmentReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+    <property name="lineMapper" ref="broadCompoundSensitivityLineageEnrichmentLineMapper" />
+  </bean>
+
+  <!-- broad compound sensitivity mutation enrichment -->
+  <bean name="broadCompoundSensitivityMutationEnrichmentReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+    <property name="lineMapper" ref="broadCompoundSensitivityMutationEnrichmentLineMapper" />
+  </bean>
+
+  <!-- broad tier3 navitoclax story analysis -->
+  <bean name="broadTier3NavitoclaxStoryReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="lineMapper" ref="broadTier3NavitoclaxStoryLineMapper" />
+  </bean>
+
+  <!-- columbia marina analysis -->
+  <bean name="columbiaMarinaAnalysisReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="lineMapper" ref="columbiaMarinaAnalysisLineMapper" />
+  </bean>
+
+  <!-- columbia mra fet analysis -->
+  <bean name="columbiaMRAFetAnalysisReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="lineMapper" ref="columbiaMRAFetAnalysisLineMapper" />
+  </bean>
+
+  <!-- columbia master regulator analysis with shRNA knockdown -->
+  <bean name="columbiaJointMRSHRNADiffAnalysisReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="lineMapper" ref="columbiaJointMRSHRNADiffAnalysisLineMapper" />
+  </bean>
+
+  <!-- columbia tier4 glioma story -->
+  <bean name="columbiaGbmMrsStoryReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="lineMapper" ref="columbiaGbmMrsStoryLineMapper" />
+  </bean>
+
+  <!-- cshl tier4 fgf19 story -->
+  <bean name="cshlTier4FGF19StoryReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="lineMapper" ref="cshlTier4FGF19StoryLineMapper" />
+  </bean>
+
+  <!-- dfci yap yes story -->
+  <bean name="dfciYapYesStoryReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="lineMapper" ref="dfciYapYesStoryLineMapper" />
+  </bean>
+
+  <!-- dfci reporter analysis reader -->
+  <bean name="dfciReporterAnalysisReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="lineMapper" ref="dfciReporterAnalysisLineMapper" />
+  </bean>
+
+  <!-- dfci ataris analysis reader -->
+  <bean name="dfciAtarisAnalysisReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="lineMapper" ref="dfciAtarisAnalysisLineMapper" />
+  </bean>
+
+  <!-- dfci ovarian analysis reader -->
+  <bean name="dfciOvarianAnalysisReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="lineMapper" ref="dfciOvarianAnalysisLineMapper" />
+  </bean>
+
+  <!-- dfci pax 8 tier 3 reader -->
+  <bean name="dfciPax8Tier3Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="lineMapper" ref="dfciPax8Tier3LineMapper" />
+  </bean>
+
+  <!-- fhcrcCSTTier1 -->
+  <bean name="fhcrcCSTTier1Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
+    <property name="lineMapper" ref="fhcrcCSTTier1LineMapper" />
+  </bean>
+
+  <!-- utsw tier 2 discoipyrroles story reader -->
+  <bean name="utswTier2DiscoipyrrolesStoryReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="lineMapper" ref="utswTier2DiscoipyrrolesStoryLineMapper" />
+  </bean>
+
+  <!-- utsw tier 4 discoipyrroles story reader -->
+  <bean name="utswTier4DiscoipyrrolesStoryReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="lineMapper" ref="utswTier4DiscoipyrrolesStoryLineMapper" />
+  </bean>
+
+  <!-- ucsf differential expression reader -->
+  <bean name="ucsfDifferentialExpressionReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="lineMapper" ref="ucsfDifferentialExpressionLineMapper" />
+  </bean>
+  
+  <!-- ucsf mut isogenic scores reader -->
+  <bean name="ucsfMutIsogenicScoresReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="lineMapper" ref="ucsfMutIsogenicScoresLineMapper" />
+  </bean>
+  
+  <!-- ucsf wt isogenic scores reader -->
+  <bean name="ucsfWtIsogenicScoresReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="lineMapper" ref="ucsfWtIsogenicScoresLineMapper" />
+  </bean>
+  
+  <!-- ucsf akt resistance reader -->
+  <bean name="ucsfAktResistanceReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="lineMapper" ref="ucsfAktResistanceLineMapper" />
+  </bean>
+  
+  <!-- ucsf dasatinib sensitivity reader -->
+  <bean name="ucsfDasatinibSensitivityReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="lineMapper" ref="ucsfDasatinibSensitivityLineMapper" />
+  </bean>
+  
+  <!-- emory PPI RAF1 -->
+  <bean name="emoryPPIRAF1Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="lineMapper" ref="emoryPPIRAF1LineMapper" />
+  </bean>
+
+  <!--  mskcc foretinib -->
+  <bean name="mskccForetinibReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+  <property name="lineMapper" ref="mskccForetinibLineMapper" />
+  </bean>
+
+  <!--  mskcc figros -->
+  <bean name="mskccFigrosReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+  <property name="lineMapper" ref="mskccFigrosLineMapper" />
+  </bean>
+
+  <!-- stanford methlymix tier 1 -->
+  <bean name="stanfordMethylmixTier1Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
+  <property name="lineMapper" ref="stanfordMethylmixTier1LineMapper" />
+  </bean>
+
+  <!-- mda endo mutation baf3 -->
+  <bean name="mdaEndoMutationBaf3Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
+  <property name="lineMapper" ref="mdaEndoMutationBaf3LineMapper" />
+  </bean>
+
+  <!-- mskcc brd4aml brd4 -->
+  <bean name="mskccBrd4amlBrd4Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
+  <property name="lineMapper" ref="mskccBrd4amlBrd4LineMapper" />
+  </bean>
+
+  <!-- mskcc brd4aml jq1 -->
+  <bean name="mskccBrd4amlJq1Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
+  <property name="lineMapper" ref="mskccBrd4amlJq1LineMapper" />
+  </bean>
+
+  <bean name="mskccPdgFrbReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+  <property name="lineMapper" ref="mskccPdgFrbLineMapper" />
+  </bean>
+
+  <bean name="mskccPdgFrbImatinibReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+  <property name="lineMapper" ref="mskccPdgFrbImatinibLineMapper" />
+  </bean>
+
+  <bean name="mskccPdgFrbHumanReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+  <property name="lineMapper" ref="mskccPdgFrbHumanLineMapper" />
+  </bean>
+
+  <bean name="cshlAvgMeasureReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+  <property name="lineMapper" ref="cshlAvgMeasureLineMapper" />
+  </bean>
+
+  <bean name="cshlMouseLiversReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+  <property name="lineMapper" ref="cshlMouseLiversLineMapper" />
+  </bean>
+
+  <bean name="cshlCoExpReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+  <property name="lineMapper" ref="cshlCoExpLineMapper" />
+  </bean>
+
+  <bean name="dfciArid1aMutAnalysisReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+  <property name="lineMapper" ref="dfciArid1aMutAnalysisLineMapper" />
+  </bean>
+
+  <bean name="dfciArid1bDependencyReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+  <property name="lineMapper" ref="dfciArid1bDependencyLineMapper" />
+  </bean>
+
+  <bean name="dfciSmarca4MutAnalysisReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+  <property name="lineMapper" ref="dfciSmarca4MutAnalysisLineMapper" />
+  </bean>
+
+  <bean name="dfciSmarca2DependencyReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+  <property name="lineMapper" ref="dfciSmarca2DependencyLineMapper" />
+  </bean>
+
+  <bean name="mskccPi3kReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+  <property name="lineMapper" ref="mskccPi3kLineMapper" />
+  </bean>
+
+</beans>
