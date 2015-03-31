@@ -304,7 +304,8 @@
         <div class="container common-container" id="center-submission-container">
             <div class="row">
                 <div class="span9">
-                    <h2>{{displayName}} <small>submissions</small></h2>
+                    <h2 class="center-title">{{displayName}} <small>submissions</small></h2>
+                    <div class="center-link-container">(<span class="center-link"></span>)</div>
                 </div>
                 <div class="span3">
                     <img src="img/{{displayName}}.png" title="{{displayName}}" alt="{{displayName}}" class="img-polaroid" width="200">
@@ -315,6 +316,7 @@
                 <thead>
                     <tr>
                         <th width="150">Submission Date</th>
+                        <th>Project</th>
                         <th>Description</th>
                         <th>Tier</th>
                         <th>Details</th>
@@ -330,6 +332,7 @@
     <script type="text/template" id="center-submission-tbl-row-tmpl">
         <tr>
             <td><a href="#submission/{{id}}">{{submissionDate}}</a></td>
+            <td>{{observationTemplate.project}}</td>
             <td>
                 {{(observationTemplate.submissionDescription != "") ? observationTemplate.submissionDescription : observationTemplate.description}}
             </td>
@@ -361,8 +364,18 @@
 
                     <table id="submission-details-grid" class="table table-bordered table-striped">
                         <tr>
+                            <th>Project</th>
+                            <td>{{observationTemplate.project}}</td>
+                        </tr>
+                        <tr>
                             <th>Description</th>
                             <td>{{observationTemplate.description}}</td>
+                        </tr>
+                        <tr id="similar-submission-info">
+                            <th>Similar Submissions</th>
+                            <td>
+                                <ul class="similar-submission-list"></ul>
+                            </td>
                         </tr>
                         <tr>
                             <th width="175">Submission Date</th>
@@ -453,6 +466,10 @@
             <div id="obs-submission-details" class="hide">
                 <table id="obs-submission-details-grid" class="table table-bordered table-striped">
                     <tr>
+                        <th>Project</th>
+                        <td>{{submission.observationTemplate.project}}</td>
+                    </tr>
+                    <tr>
                         <th>Description</th>
                         <td>
                             {{submission.observationTemplate.description}}
@@ -491,6 +508,12 @@
         </div>
     </script>
 
+    <script type="text/template" id="similar-submission-item-tmpl">
+        <li>
+            <small><a href="#submission/{{id}}">{{observationTemplate.description}}</a></small>
+        </li>
+    </script>
+
     <script type="text/template" id="submission-description-tmpl">
         <h3>Submission summary</h3>
         <blockquote>
@@ -518,7 +541,7 @@
     <script type="text/template" id="observedfileevidence-row-tmpl">
         <tr>
             <td>
-                <img src="img/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}" alt="{{observedEvidenceRole.evidenceRole.displayName}}">
+                <img src="img/icons/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}" alt="{{observedEvidenceRole.evidenceRole.displayName}}">
             </td>
             <td>{{observedEvidenceRole.evidenceRole.displayName}}</td>
             <td>{{observedEvidenceRole.displayText}}</td>
@@ -533,7 +556,7 @@
     <script type="text/template" id="observedhtmlfileevidence-row-tmpl">
         <tr>
             <td>
-                <img src="img/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}" alt="{{observedEvidenceRole.evidenceRole.displayName}}">
+                <img src="img/icons/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}" alt="{{observedEvidenceRole.evidenceRole.displayName}}">
             </td>
             <td>{{observedEvidenceRole.evidenceRole.displayName}}</td>
             <td>{{observedEvidenceRole.displayText}}</td>
@@ -549,7 +572,7 @@
     <script type="text/template" id="observedpdffileevidence-row-tmpl">
         <tr>
             <td>
-                <img src="img/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}" alt="{{observedEvidenceRole.evidenceRole.displayName}}">
+                <img src="img/icons/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}" alt="{{observedEvidenceRole.evidenceRole.displayName}}">
             </td>
             <td>{{observedEvidenceRole.evidenceRole.displayName}}</td>
             <td>{{observedEvidenceRole.displayText}}</td>
@@ -564,7 +587,7 @@
     <script type="text/template" id="observedgctfileevidence-row-tmpl">
         <tr>
             <td>
-                <img src="img/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}" alt="{{observedEvidenceRole.evidenceRole.displayName}}">
+                <img src="img/icons/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}" alt="{{observedEvidenceRole.evidenceRole.displayName}}">
             </td>
             <td>{{observedEvidenceRole.evidenceRole.displayName}}</td>
             <td>{{observedEvidenceRole.displayText}}</td>
@@ -590,7 +613,7 @@
     <script type="text/template" id="observedsiffileevidence-row-tmpl">
         <tr>
             <td>
-                <img src="img/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}" alt="{{observedEvidenceRole.evidenceRole.displayName}}">
+                <img src="img/icons/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}" alt="{{observedEvidenceRole.evidenceRole.displayName}}">
             </td>
             <td>{{observedEvidenceRole.evidenceRole.displayName}}</td>
             <td>{{observedEvidenceRole.displayText}}</td>
@@ -615,7 +638,7 @@
     <script type="text/template" id="observedimageevidence-row-tmpl">
         <tr>
             <td>
-                <img src="img/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}" alt="{{observedEvidenceRole.evidenceRole.displayName}}">
+                <img src="img/icons/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}" alt="{{observedEvidenceRole.evidenceRole.displayName}}">
             </td>
             <td>{{observedEvidenceRole.evidenceRole.displayName}}</td>
             <td>{{observedEvidenceRole.displayText}}</td>
@@ -633,7 +656,7 @@
     <script type="text/template" id="observedlabelevidence-row-tmpl">
         <tr>
             <td>
-                <img src="img/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}" alt="{{observedEvidenceRole.evidenceRole.displayName}}">
+                <img src="img/icons/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}" alt="{{observedEvidenceRole.evidenceRole.displayName}}">
             </td>
             <td>{{observedEvidenceRole.evidenceRole.displayName}}</td>
             <td>{{observedEvidenceRole.displayText}}</td>
@@ -644,7 +667,7 @@
     <script type="text/template" id="observedurlevidence-row-tmpl">
         <tr>
             <td>
-                <img src="img/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}" alt="{{observedEvidenceRole.evidenceRole.displayName}}">
+                <img src="img/icons/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}" alt="{{observedEvidenceRole.evidenceRole.displayName}}">
             </td>
             <td>{{observedEvidenceRole.evidenceRole.displayName}}</td>
             <td>{{observedEvidenceRole.displayText}}</td>
@@ -659,7 +682,7 @@
     <script type="text/template" id="observeddatanumericevidence-row-tmpl">
         <tr>
             <td>
-                <img src="img/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}" alt="{{observedEvidenceRole.evidenceRole.displayName}}">
+                <img src="img/icons/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}" alt="{{observedEvidenceRole.evidenceRole.displayName}}">
             </td>
             <td>{{observedEvidenceRole.evidenceRole.displayName}}</td>
             <td>{{observedEvidenceRole.displayText}}</td>
@@ -1725,7 +1748,7 @@
     <script type="text/template" id="observedmrafileevidence-row-tmpl">
         <tr>
             <td>
-                <img src="img/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}" alt="{{observedEvidenceRole.evidenceRole.displayName}}">
+                <img src="img/icons/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}" alt="{{observedEvidenceRole.evidenceRole.displayName}}">
             </td>
             <td>{{observedEvidenceRole.evidenceRole.displayName}}</td>
             <td>{{observedEvidenceRole.displayText}}</td>
@@ -2640,7 +2663,7 @@
 
                 <li><i>Observation</i>: A <b>Center</b>-determined conclusion that is submitted as a connection between <b>subjects</b> and <b>evidence</b>; the "fundamental unit" of the Dashboard.</li>
 
-                <li><i>Role</i>: The <b>Center</b>-designated function of a gene, protein, or compound based on their interpretation of <b>observations</b> within a particular experimental or computational context. Assigning <b>roles</b> from a restricted list of terms (biomarkers, master regulators, oncogenes, perturbagens, or targets) helps organize <b>subjects</b> in Dashboard for browsing and searching.</li>
+                <li><i>Role</i>: The <b>Center</b>-designated function of a gene, protein, or compound based on their interpretation of observations within a particular experimental or computational context. Assigning <b>role</b>s from a restricted list of terms (biomarkers, diseases, master regulators, interactors, oncogenes, perturbagens, candidate drugs, or targets) helps organize subjects in Dashboard for browsing and searching.
 
                 <li><i>Tier</i>: A CTD<sup>2</sup> Network-defined ranking system for <b>evidence</b> that is based on the extent of characterization associated with a particular study.
                     <ul>
@@ -2662,6 +2685,25 @@
         </div>
     </script>
 
+    <script id="tbl-project-title-tmpl" type="text/template">
+        <tr class="group"><td colspan="5"><b><small>Project: {{project}}</small></b></td></tr>
+    </script>
+
+    <script id="center-specific-information-tmpl" type="text/template">
+        <a href="https://ocg.cancer.gov/programs/ctd2/centers#broad-institute" data-center="Broad Institute" target="_blank">view center description</a>
+        <a href="https://ocg.cancer.gov/programs/ctd2/centers#cold-spring-harbor-laboratory" data-center="Cold Spring Harbor Laboratory" target="_blank">view center description</a>
+        <a href="https://ocg.cancer.gov/programs/ctd2/centers#columbia-university" data-center="Columbia University" target="_blank">view center description</a>
+        <a href="https://ocg.cancer.gov/programs/ctd2/centers#dana-farber-cancer-institute" data-center="Dana-Farber Cancer Institute" target="_blank">view center description</a>
+        <a href="https://ocg.cancer.gov/programs/ctd2/centers#emory-university" data-center="Emory University" target="_blank">view center description</a>
+        <a href="https://ocg.cancer.gov/programs/ctd2/centers#fred-hutchinson-cancer-research-center-1" data-center="Fred Hutchinson Cancer Research Center (1)" target="_blank">view center description</a>
+        <a href="https://ocg.cancer.gov/programs/ctd2/centers#fred-hutchinson-cancer-research-center-2" data-center="Fred Hutchinson Cancer Research Center (2)" target="_blank">view center description</a>
+        <a href="https://ocg.cancer.gov/programs/ctd2/centers#university-of-texas-md-anderson-cancer-center" data-center="MD Anderson Cancer Center" target="_blank">view center description</a>
+        <a href="https://ocg.cancer.gov/programs/ctd2/centers#stanford-university" data-center="Stanford University" target="_blank">view center description</a>
+        <a href="https://ocg.cancer.gov/programs/ctd2/centers#university-of-california-san-francisco-1" data-center="University of California San Francisco (1)" target="_blank">view center description</a>
+        <a href="https://ocg.cancer.gov/programs/ctd2/centers#university-of-california-san-francisco-2" data-center="University of California San Francisco (2)" target="_blank">view center description</a>
+        <a href="https://ocg.cancer.gov/programs/ctd2/centers#university-of-texas-southwestern-medical-center" data-center="University of Texas Southwestern Medical Center" target="_blank">view center description</a>
+    </script>
+
     <!-- end of templates -->
 
     <script src="js/jquery.min.js"></script>
@@ -2680,5 +2722,6 @@
     <script src="js/flippant.js"></script>
     <script src="js/encoder.js"></script>
     <script src="js/ctd2.js"></script>
+
   </body>
 </html>

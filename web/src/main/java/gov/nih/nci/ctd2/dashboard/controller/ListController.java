@@ -78,4 +78,23 @@ public class ListController {
         );
     }
 
+    @Transactional
+    @RequestMapping(value="similar/{submissionId}", method = {RequestMethod.GET, RequestMethod.POST}, headers = "Accept=application/json")
+    public ResponseEntity<String> getSimilarSubmissionsInJson(@PathVariable Integer submissionId) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "application/json; charset=utf-8");
+
+        JSONSerializer jsonSerializer = new JSONSerializer()
+                .transform(new ImplTransformer(), Class.class)
+                .transform(new DateTransformer(), Date.class)
+                ;
+        List<Submission> submissions = webServiceUtil.getSimilarSubmissions(submissionId);
+
+        return new ResponseEntity<String>(
+                jsonSerializer.serialize(submissions),
+                headers,
+                HttpStatus.OK
+        );
+    }
+
 }

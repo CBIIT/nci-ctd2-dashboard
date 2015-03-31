@@ -92,4 +92,22 @@ public class WebServiceUtil {
     public List<SubjectWithSummaries> exploreSubjects(String keyword) {
         return dashboardDao.findSubjectWithSummariesByRole(keyword, 1);
     }
+
+    @Transactional
+    @Cacheable(value = "similarCache")
+    public List<Submission> getSimilarSubmissions(Integer submissionId) {
+        ArrayList<Submission> submissions = new ArrayList<Submission>();
+        Submission seedSubmission = dashboardDao.getEntityById(Submission.class, submissionId);
+        String seedProject = seedSubmission.getObservationTemplate().getProject();
+
+        SubmissionCenter submissionCenter = seedSubmission.getObservationTemplate().getSubmissionCenter();
+        for (Submission submission : dashboardDao.findSubmissionBySubmissionCenter(submissionCenter)) {
+            if(submission.getObservationTemplate().getProject().equals(seedProject)
+                    && !submission.equals(seedSubmission)) {
+                submissions.add(submission);
+            }
+        }
+
+        return submissions;
+    }
 }

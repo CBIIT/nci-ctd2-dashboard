@@ -1051,7 +1051,7 @@
 		<entry key="dfci_reporter_analysis:publication_url" value="evidence:readString:createObservedUrlEvidence" />
 		<!-- dfci ataris analysis -->
 		<entry key="dfci_ataris_analysis:number_of_cell_lines" value="evidence:readInt:createObservedNumericEvidence" />
-		<entry key="dfci_ataris_analysis:shRNA_id" value="subject:findSubjectsByXref-BROAD_SHRNA" />
+		<entry key="dfci_ataris_analysis:shRNA_id" value="subject:findSiRNAByReagentName" />
 		<entry key="dfci_ataris_analysis:gene_symbol" value="subject:findGenesBySymbol" />
 		<entry key="dfci_ataris_analysis:solution_name" value="evidence:readString:createObservedLabelEvidence" />
 		<entry key="dfci_ataris_analysis:c_score" value="evidence:readDouble:createObservedNumericEvidence" />
