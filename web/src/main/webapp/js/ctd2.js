@@ -1451,10 +1451,11 @@
         el: $("#main-container"),
         template: _.template($("#center-tmpl").html()),
         render: function() {
-            $(this.el).html(this.template(this.model.toJSON()));
+            var centerModel = this.model.toJSON();
+            $(this.el).html(this.template(centerModel));
 
             var thatEl = this.el;
-            var centerSubmissions = new CenterSubmissions({ centerId: this.model.get("id") });
+            var centerSubmissions = new CenterSubmissions({ centerId: centerModel.id });
             centerSubmissions.fetch({
                 success: function() {
                     var tableElId = '#center-submission-grid';
@@ -1478,9 +1479,10 @@
                             dataTable.cells(countCellId).invalidate();
                             dataTable.order(
                                 [
-                                    [2, 'desc'],
+                                    [3, 'desc'],
+                                    [1, 'asc'],
                                     [0, 'desc'],
-                                    [3, 'asc']
+                                    [4, 'asc']
                                 ]
                             ).draw();
                         });
@@ -1490,11 +1492,37 @@
                     $(tableElId).dataTable({
                        "columns": [
                            { "orderDataType": "dashboard-date" },
+                           { "visible": false },
                            null,
                            null,
                            null
-                       ]
-                    }).fnSort( [[2, 'desc']] );
+                       ],
+                        "drawCallback": function(settings) {
+                            var api = this.api();
+                            var rows = api.rows({ page: 'current' }).nodes();
+                            var last = null;
+
+                            api.column(1, { page: 'current' })
+                                .data()
+                                .each(function (group, i) {
+                                    if(last != group) {
+                                        $(rows)
+                                            .eq(i)
+                                            .before(
+                                                _.template($("#tbl-project-title-tmpl").html(), { project: group })
+                                            );
+
+                                        last = group;
+                                    }
+                            } );
+                        }
+                    }).fnSort( [[3, 'desc']] );
+                }
+            });
+
+            $($("#center-specific-information-tmpl").html()).each(function() {
+                if(centerModel.displayName == $(this).attr("data-center")) {
+                    $(thatEl).find("span.center-link").append($(this));
                 }
             });
 
@@ -1574,6 +1602,18 @@
             var submissionId = this.model.get("id");
             var sTable = '#submission-observation-grid';
 
+            $.ajax("list/similar/" + submissionId).done(function(similarSubmissions) {
+                if(similarSubmissions.length < 1) {
+                    $("#similar-submission-info").hide();
+                } else {
+                    _.each(similarSubmissions, function(simSub) {
+                        $(thatEl)
+                            .find("ul.similar-submission-list")
+                            .append(_.template($("#similar-submission-item-tmpl").html(), simSub));
+                    });
+                }
+            });
+
             $.ajax("count/observation/?filterBy=" + submissionId).done(function(count) {
                 var observations = new Observations({ submissionId: submissionId });
                 observations.fetch({
@@ -1637,7 +1677,9 @@
                     });
                     moreObservationView.render();
                 }
+
             });
+
 
             return this;
         }
@@ -2848,6 +2890,8 @@
                 var subjectRoles = new SubjectRoles();
                 subjectRoles.fetch({
                     success: function() {
+                        $("#customized-roles-tbl tbody").html("");
+
                         _.each(subjectRoles.models, function(role) {
                             role = role.toJSON();
                             var checked = thatModel.roles.toLowerCase().search(role.displayName.toLowerCase()) > -1;
@@ -3509,10 +3553,10 @@
             );                   
          
             var container = $('#cytoscape');                        
-         
+            var layoutName = $("#cytoscape-layouts").val();
             var cyOptions = {                        	             	 
                 layout: {
-                	 name: 'arbor',
+                	 name: layoutName,
                 	 fit: true,                                                  	 
                 	 liveUpdate: false,                       
                 	 maxSimulationTime: 4000, // max length in ms to run the layout                        

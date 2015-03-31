@@ -1,6 +1,5 @@
 package gov.nih.nci.ctd2.dashboard.importer.internal;
 
-import gov.nih.nci.ctd2.dashboard.model.Xref;
 import gov.nih.nci.ctd2.dashboard.model.ShRna;
 import gov.nih.nci.ctd2.dashboard.model.Synonym;
 import gov.nih.nci.ctd2.dashboard.model.Organism;
@@ -12,9 +11,7 @@ import org.springframework.validation.BindException;
 import org.springframework.batch.item.file.transform.FieldSet;
 import org.springframework.batch.item.file.mapping.FieldSetMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 
-import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
 
@@ -44,7 +41,8 @@ public class siRNADataFieldSetMapper implements FieldSetMapper<ShRna> {
         shRNA.setType("sirna");
 
         shRNA.setDisplayName(fieldSet.readString(REAGENT_NAME_COL_INDEX));
-		// create synonym back to self
+        shRNA.setReagentName(shRNA.getDisplayName());
+        // create synonym back to self
 		Synonym synonym = dashboardFactory.create(Synonym.class);
 		synonym.setDisplayName(fieldSet.readString(REAGENT_NAME_COL_INDEX));
 		shRNA.getSynonyms().add(synonym);

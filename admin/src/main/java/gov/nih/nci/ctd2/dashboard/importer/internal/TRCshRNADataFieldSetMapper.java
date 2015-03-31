@@ -14,7 +14,6 @@ import org.springframework.batch.item.file.mapping.FieldSetMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
-import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
 
@@ -57,6 +56,7 @@ public class TRCshRNADataFieldSetMapper implements FieldSetMapper<ShRna> {
 		if (!tRCshRNAFilterMap.isEmpty() && !tRCshRNAFilterMap.containsKey(cloneId)) return shRNA;
 
         shRNA.setDisplayName(fieldSet.readString(TARGET_SEQ_COL_INDEX));
+        shRNA.setReagentName(cloneId);
 		// create synonym back to self
 		Synonym synonym = dashboardFactory.create(Synonym.class);
 		synonym.setDisplayName(fieldSet.readString(CLONE_NAME_COL_INDEX));
