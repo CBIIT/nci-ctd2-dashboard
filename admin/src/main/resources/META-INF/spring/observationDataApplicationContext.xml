@@ -490,7 +490,7 @@
   </bean>
 
   <bean name="mdaPik3r1BrduEndoCellsReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
-  	<property name="resources" value="${mda.pik3r1.brdu.endo.cells}" />
+  	<property name="resources" value="${mda.pik3r1.brdu.endo.cells.data.location}" />
   	<property name="delegate">
   	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
   		<property name="lineMapper" ref="mdaPik3r1BrduEndoCellsLineMapper" />
@@ -500,7 +500,7 @@
   </bean>
 
   <bean name="mdaPik3r1DrugCellLinesReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
-  	<property name="resources" value="${mda.pik3r1.drug.cell.lines}" />
+  	<property name="resources" value="${mda.pik3r1.drug.cell.lines.data.location}" />
   	<property name="delegate">
   	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
   		<property name="lineMapper" ref="mdaPik3r1DrugCellLinesLineMapper" />
@@ -510,7 +510,7 @@
   </bean>
 
   <bean name="mdaPik3r1DrugScreenBaf3Reader" class="org.springframework.batch.item.file.MultiResourceItemReader">
-  	<property name="resources" value="${mda.pik3r1.drug.screen.baf3}" />
+  	<property name="resources" value="${mda.pik3r1.drug.screen.baf3.data.location}" />
   	<property name="delegate">
   	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
   		<property name="lineMapper" ref="mdaPik3r1DrugScreenBaf3LineMapper" />
@@ -520,7 +520,7 @@
   </bean>
 
   <bean name="mdaPik3r1DrugZenograftsReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
-  	<property name="resources" value="${mda.pik3r1.drug.xenografts}" />
+  	<property name="resources" value="${mda.pik3r1.drug.xenografts.data.location}" />
   	<property name="delegate">
   	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
   		<property name="lineMapper" ref="mdaPik3r1DrugZenograftsLineMapper" />
@@ -530,7 +530,7 @@
   </bean>
 
   <bean name="mdaPik3r1RppaBaf3Reader" class="org.springframework.batch.item.file.MultiResourceItemReader">
-  	<property name="resources" value="${mda.pik3r1.rppa.baf3}" />
+  	<property name="resources" value="${mda.pik3r1.rppa.baf3.data.location}" />
   	<property name="delegate">
   	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
   		<property name="lineMapper" ref="mdaPik3r1RppaBaf3LineMapper" />

@@ -445,7 +445,7 @@
 
   <bean name="dfciPax8Tier3LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="dummy,submission_name,submission_date,template_name,target_group,gene_symbol,figure_1,figure_2,figure_3,figure_4,figure_5,tier1_evidence,publication_url"/>
+	<property name="names" value="dummy,submission_name,submission_date,template_name,target_group,gene_symbol,figure_1,figure_2,figure_3,figure_4,figure_5,tier2_evidence,publication_url"/>
   </bean>
 
   <!-- fhcrc cst tier 1 -->
@@ -1143,47 +1143,47 @@
 		<entry key="ucsf_differential_expression:fold_change" value="evidence:readDouble:createObservedNumericEvidence" />
 		<entry key="ucsf_differential_expression:q_value" value="evidence:readDouble:createObservedNumericEvidence" />
         <!-- ucsf mut isogenic scores -->
-        <entry key="ucsf_mut_isogenic_scores:gene_symbol" value="subject:findGenesBySymbol" />
-        <entry key="ucsf_mut_isogenic_scores:site" value="evidence:readString:createObservedLabelEvidence" />
-        <entry key="ucsf_mut_isogenic_scores:cell_type" value="evidence:readString:createObservedLabelEvidence" />
-        <entry key="ucsf_mut_isogenic_scores:mutation" value="evidence:readString:createObservedLabelEvidence" />
-        <entry key="ucsf_mut_isogenic_scores:drug" value="subject:findCompoundsByName" />
-        <entry key="ucsf_mut_isogenic_scores:direction" value="evidence:readString:createObservedLabelEvidence" />
+        <entry key="ucsf-m_mut_isogenic_scores:gene_symbol" value="subject:findGenesBySymbol" />
+        <entry key="ucsf-m_mut_isogenic_scores:site" value="subject:findTissueSampleByName" />
+        <entry key="ucsf-m_mut_isogenic_scores:cell_type" value="subject:findTissueSampleByName" />
+        <entry key="ucsf-m_mut_isogenic_scores:mutation" value="evidence:readString:createObservedLabelEvidence" />
+        <entry key="ucsf-m_mut_isogenic_scores:drug" value="subject:findCompoundsByName" />
+        <entry key="ucsf-m_mut_isogenic_scores:direction" value="evidence:readString:createObservedLabelEvidence" />
         <!-- ucsf wt isogenic scores -->
-        <entry key="ucsf_wt_isogenic_scores:gene_symbol" value="subject:findGenesBySymbol" />
-        <entry key="ucsf_wt_isogenic_scores:site" value="evidence:readString:createObservedLabelEvidence" />
-        <entry key="ucsf_wt_isogenic_scores:cell_type" value="evidence:readString:createObservedLabelEvidence" />
-        <entry key="ucsf_wt_isogenic_scores:drug" value="subject:findCompoundsByName" />
-        <entry key="ucsf_wt_isogenic_scores:direction" value="evidence:readString:createObservedLabelEvidence" />
+        <entry key="ucsf-m_wt_isogenic_scores:gene_symbol" value="subject:findGenesBySymbol" />
+        <entry key="ucsf-m_wt_isogenic_scores:site" value="subject:findTissueSampleByName" />
+        <entry key="ucsf-m_wt_isogenic_scores:cell_type" value="subject:findTissueSampleByName" />
+        <entry key="ucsf-m_wt_isogenic_scores:drug" value="subject:findCompoundsByName" />
+        <entry key="ucsf-m_wt_isogenic_scores:direction" value="evidence:readString:createObservedLabelEvidence" />
         <!-- ucsf akt resistance -->
-        <entry key="ucsf_akt_resistance:target_group" value="evidence:readString:createObservedLabelEvidence" />
-        <entry key="ucsf_akt_resistance:gene_symbol" value="subject:findGenesBySymbol" />
-        <entry key="ucsf_akt_resistance:gene_target" value="evidence:readString:createObservedLabelEvidence" />
-        <entry key="ucsf_akt_resistance:compound_name" value="subject:findCompoundsByName" />
-        <entry key="ucsf_akt_resistance:cell_line" value="subject:findSubjectsBySynonym" />
-        <entry key="ucsf_akt_resistance:interaction_type" value="evidence:readString:createObservedLabelEvidence" />
-        <entry key="ucsf_akt_resistance:figure_1" value="evidence:readString:createObservedFileEvidence" />
-        <entry key="ucsf_akt_resistance:figure_2" value="evidence:readString:createObservedFileEvidence" />
-        <entry key="ucsf_akt_resistance:figure_3" value="evidence:readString:createObservedFileEvidence" />
-        <entry key="ucsf_akt_resistance:publication_url" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="ucsf-m_akt_resistance:target_group" value="subject:findTissueSampleByName" />
+        <entry key="ucsf-m_akt_resistance:gene_symbol" value="subject:findGenesBySymbol" />
+        <entry key="ucsf-m_akt_resistance:gene_target" value="subject:findGenesBySymbol" />
+        <entry key="ucsf-m_akt_resistance:compound_name" value="subject:findCompoundsByName" />
+        <entry key="ucsf-m_akt_resistance:cell_line" value="subject:findSubjectsBySynonym" />
+        <entry key="ucsf-m_akt_resistance:interaction_type" value="evidence:readString:createObservedLabelEvidence" />
+        <entry key="ucsf-m_akt_resistance:figure_1" value="evidence:readString:createObservedFileEvidence" />
+        <entry key="ucsf-m_akt_resistance:figure_2" value="evidence:readString:createObservedFileEvidence" />
+        <entry key="ucsf-m_akt_resistance:figure_3" value="evidence:readString:createObservedFileEvidence" />
+        <entry key="ucsf-m_akt_resistance:publication_url" value="evidence:readString:createObservedUrlEvidence" />
         <!-- ucsf dasatinib sensitivity -->
-        <entry key="ucsf_dasatinib_sensitivity:target_group" value="evidence:readString:createObservedLabelEvidence" />
-        <entry key="ucsf_dasatinib_sensitivity:gene_symbol" value="subject:findGenesBySymbol" />
-        <entry key="ucsf_dasatinib_sensitivity:gene_target" value="evidence:readString:createObservedLabelEvidence" />
-        <entry key="ucsf_dasatinib_sensitivity:compound_name" value="subject:findCompoundsByName" />
-        <entry key="ucsf_dasatinib_sensitivity:cell_line_1" value="subject:findSubjectsBySynonym" />
-        <entry key="ucsf_dasatinib_sensitivity:cell_line_2" value="subject:findSubjectsBySynonym" />
-        <entry key="ucsf_dasatinib_sensitivity:cell_line_3" value="subject:findSubjectsBySynonym" />
-        <entry key="ucsf_dasatinib_sensitivity:interaction_type" value="evidence:readString:createObservedLabelEvidence" />
-        <entry key="ucsf_dasatinib_sensitivity:figure_1" value="evidence:readString:createObservedFileEvidence" />
-        <entry key="ucsf_dasatinib_sensitivity:figure_2" value="evidence:readString:createObservedFileEvidence" />
-        <entry key="ucsf_dasatinib_sensitivity:figure_3" value="evidence:readString:createObservedFileEvidence" />
-        <entry key="ucsf_dasatinib_sensitivity:figure_4" value="evidence:readString:createObservedFileEvidence" />
-        <entry key="ucsf_dasatinib_sensitivity:figure_5" value="evidence:readString:createObservedFileEvidence" />
-        <entry key="ucsf_dasatinib_sensitivity:figure_6" value="evidence:readString:createObservedFileEvidence" />
-        <entry key="ucsf_dasatinib_sensitivity:figure_7" value="evidence:readString:createObservedFileEvidence" />
-        <entry key="ucsf_dasatinib_sensitivity:figure_8" value="evidence:readString:createObservedFileEvidence" />
-        <entry key="ucsf_dasatinib_sensitivity:publication_url" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="ucsf-m_dasatinib_sensitivity:target_group" value="subject:findTissueSampleByName" />
+        <entry key="ucsf-m_dasatinib_sensitivity:gene_symbol" value="subject:findGenesBySymbol" />
+        <entry key="ucsf-m_dasatinib_sensitivity:gene_target" value="subject:findGenesBySymbol" />
+        <entry key="ucsf-m_dasatinib_sensitivity:compound_name" value="subject:findCompoundsByName" />
+        <entry key="ucsf-m_dasatinib_sensitivity:cell_line_1" value="subject:findSubjectsBySynonym" />
+        <entry key="ucsf-m_dasatinib_sensitivity:cell_line_2" value="subject:findSubjectsBySynonym" />
+        <entry key="ucsf-m_dasatinib_sensitivity:cell_line_3" value="subject:findSubjectsBySynonym" />
+        <entry key="ucsf-m_dasatinib_sensitivity:interaction_type" value="evidence:readString:createObservedLabelEvidence" />
+        <entry key="ucsf-m_dasatinib_sensitivity:figure_1" value="evidence:readString:createObservedFileEvidence" />
+        <entry key="ucsf-m_dasatinib_sensitivity:figure_2" value="evidence:readString:createObservedFileEvidence" />
+        <entry key="ucsf-m_dasatinib_sensitivity:figure_3" value="evidence:readString:createObservedFileEvidence" />
+        <entry key="ucsf-m_dasatinib_sensitivity:figure_4" value="evidence:readString:createObservedFileEvidence" />
+        <entry key="ucsf-m_dasatinib_sensitivity:figure_5" value="evidence:readString:createObservedFileEvidence" />
+        <entry key="ucsf-m_dasatinib_sensitivity:figure_6" value="evidence:readString:createObservedFileEvidence" />
+        <entry key="ucsf-m_dasatinib_sensitivity:figure_7" value="evidence:readString:createObservedFileEvidence" />
+        <entry key="ucsf-m_dasatinib_sensitivity:figure_8" value="evidence:readString:createObservedFileEvidence" />
+        <entry key="ucsf-m_dasatinib_sensitivity:publication_url" value="evidence:readString:createObservedUrlEvidence" />
         <!-- emory PPI RAF1 -->
 		<entry key="emory_PPI_analysis:cell_line" value="subject:findSubjectsBySynonym" />
 		<entry key="emory_PPI_analysis:gene_symbol_1" value="subject:findGenesBySymbol" />
@@ -1221,7 +1221,7 @@
 		<!-- stanford methylmix tier 1 -->
 		<entry key="stanford_methylmix:disease_condition" value="subject:findTissueSampleByName" />
 		<entry key="stanford_methylmix:tissue" value="subject:findTissueSampleByName" />
-		<entry key="stanford_methylmix:cell_type" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="stanford_methylmix:cell_type" value="subject:findTissueSampleByName" />
 		<entry key="stanford_methylmix:gene_symbol" value="subject:findGenesBySymbol" />
 		<entry key="stanford_methylmix:differential_methylation_status" value="evidence:readString:createObservedLabelEvidence" />
 		<entry key="stanford_methylmix:prevalence" value="evidence:readDouble:createObservedNumericEvidence" />
@@ -1365,7 +1365,6 @@
 		<entry key="dfci_smarca2_dependency:figure_2" value="evidence:readString:createObservedFileEvidence" />
 		<entry key="dfci_smarca2_dependency:figure_3" value="evidence:readString:createObservedFileEvidence" />
 		<entry key="dfci_smarca2_dependency:figure_4" value="evidence:readString:createObservedFileEvidence" />
-		<entry key="dfci_smarca2_dependency:figure_5" value="evidence:readString:createObservedFileEvidence" />
 		<entry key="dfci_smarca2_dependency:tier2_evidence" value="evidence:readString:createObservedUrlEvidence" />
 		<entry key="dfci_smarca2_dependency:publication_url" value="evidence:readString:createObservedUrlEvidence" />
 		<!-- mskcc pi3k -->
@@ -1429,6 +1428,7 @@
 		<entry key="mda_pik3r1_baf3_survival:number_of_mutations" value="evidence:readInt:createObservedNumericEvidence" />
 		<entry key="mda_pik3r1_baf3_survival:gene_symbol" value="subject:findGenesBySymbol" />
 		<entry key="mda_pik3r1_baf3_survival:cell_line" value="subject:findSubjectsBySynonym" />
+        <entry key="mda_pik3r1_baf3_survival:aberration" value="evidence:readString:createObservedLabelEvidence" />
 		<entry key="mda_pik3r1_baf3_survival:fold_change_avg" value="evidence:readDouble:createObservedNumericEvidence" />
 		<entry key="mda_pik3r1_baf3_survival:fold_change_sd" value="evidence:readDouble:createObservedNumericEvidence" />
 		<entry key="mda_pik3r1_baf3_survival:nci_portal" value="evidence:readString:createObservedUrlEvidence" />
