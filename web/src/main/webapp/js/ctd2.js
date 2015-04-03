@@ -3058,6 +3058,9 @@
                          processInputGenes(genes);
                      }
                      reader.readAsText(file);
+                     $('#geneFileInput').each(function() {
+                         $(this).after($(this).clone(true)).remove();
+                        });
                  });
             } else {             
      	    	showAlertMessage("Load Genes from file is not supported.");
@@ -3217,7 +3220,7 @@
                     	versionDescriptors = data.versionDescriptorList;
                         var description = data.description;                      
                         $('#interactomeDescription').html("");                     
-                        $('#interactomeDescription').html(description);                        
+                        $('#interactomeDescription').html(convertUrl(description));                        
                  	    var list = data.versionDescriptorList; 
                  	   $('#interactomeVersionList').html("");                 	 
                         _.each(list, function(aData){               		        
@@ -3529,7 +3532,23 @@
     	  $("#alert-message-modal").modal('show');
        }   
        
-     
+       var convertUrl = function(description)
+       {
+    	   if ( description.indexOf("http:") > -1)
+    	   {    		  	       
+    	       var word=description.split("http:");
+    	       var temp = $.trim(word[1]);
+    	       if ( temp.match(/.$/))
+    	    	   temp = temp.substring(0, temp.length-1);
+    	       temp = $.trim(temp);
+    	       var link = "<a target=\"_blank\" href=\"" + temp +"\">" + temp + "</a>";  
+    	       return word[0] + link;     	        
+    	   }
+    	   else    	   
+    		   return description;
+    	    
+       }
+       
        var drawCNKBCytoscape = function(data, description)
        {    	     
     		  var svgHtml = "";
@@ -3576,7 +3595,7 @@
                         "font-size": 10,                                                                  
                         "width": "25px",
                         "height": "25px",                                   
-                        "background-color": "#DDD",
+                        "background-color": "data(color)",
                         "border-color": "#555"
                     })
                     .selector("edge")

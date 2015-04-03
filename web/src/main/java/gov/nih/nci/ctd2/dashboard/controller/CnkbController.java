@@ -263,7 +263,7 @@ public class CnkbController {
 			}
 
 			if (edgeList != null && edgeList.size() > 0) {
-				cyNetwork = convertToCyNetwork(edgeList, interactionLimit);
+				cyNetwork = convertToCyNetwork(edgeList, interactionLimit, selectedGenesList);
 			}
 
 		} catch (UnAuthenticatedException uae) {
@@ -588,7 +588,7 @@ public class CnkbController {
 	}
 
 	private CyNetwork convertToCyNetwork(List<CyEdge> edgeList,
-			int interactionLimit) {
+			int interactionLimit, List<String> selectedGenesList) {
 
 		CyNetwork cyNetwork = new CyNetwork();
 		Collections.sort(edgeList, new Comparator<CyEdge>() {
@@ -637,6 +637,10 @@ public class CnkbController {
 		for (String nodeName : nodeNames) {
 			CyNode cyNode = new CyNode();
 			cyNode.setProperty(CyElement.ID, nodeName);
+			if (selectedGenesList.contains(nodeName))
+				cyNode.setProperty(CyElement.COLOR, "yellow");
+			else
+			   cyNode.setProperty(CyElement.COLOR, "#DDD");
 			cyNetwork.addNode(cyNode);
 		}
 

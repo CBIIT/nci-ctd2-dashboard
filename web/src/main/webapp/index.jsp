@@ -2456,10 +2456,11 @@
 
                      <div class="alert alert-warning">
                          <button type="button" class="close" data-dismiss="alert">&times;</button>
-                         <p>
-                             The Gene Cart allows users to build a list of genes and then use it to
-                             query databases of molecular interactions.
-                         </p>
+                           <p>
+                             The Gene Cart allows users to build a list of genes and query the Cellular Networks Knowledge Base (CNKB) for molecular interactions involving these genes.  The CNKB is a database of gene interaction networks maintained at Columbia University [
+                             <a href="#gene-cart-help">More Details</a>
+                             ].
+                           </p>
                      </div>
 
                     <select id="geneNames" class="geneSelectList" size="6" 
@@ -2623,13 +2624,12 @@
          <div class="container common-container" id="cnkbhelp-container" > 
                <div class="span10">                       
                     <h3>Gene Cart Help</h3>
-                    <p>The Gene Cart allows a list of genes to be built up while browsing through Observations in the CTD2 Dashboard.  This list can then be submitted as a query to the Cellular Network Knowledge Base (CNKB), a database maintained at Columbia University.</p>
-                    <p>In the Observations for a particular Dashboard submission, those entries that are genes will have a green "+" sign to right of the gene symbol.  Clicking this "+" sign will add the gene to the Gene Cart.  The Gene Cart is limited to 25 genes.</p>
-                    <p>The CNKB is a repository of molecular interactions, including ones both computationally and experimentally derived. Sources for interactions include reverse-engineered cellular context-specific regulatory interactomes developed in the lab of Dr. Andrea Califano at Columbia University, and also some public-domain datasets. </p>
-                    <p>In the Gene Cart, clicking on "Find Interactions in Networks (CNKB)" will bring the user to the Cellular Networks Knowledge Base page where a particular interactome and version can be chosen.  Descriptive text for each is available by selecting any particular interactome or version.  Clicking "Submit" will initiate a query of the CNKB using the genes in the cart.</p>
-                    <p>The query result is displayed in a table showing the number and type of interactions found for each query gene.  A check box to the left of each gene allows individual results to be selected.  The interactions for selected genes can then be downloaded in the form of a Cytoscape "SIF"-format file, or displayed directly in Cytoscape.js in the browser.  The number of interactions to display is controlled using the "Interactions Limit" pulldown.  Interactions to display are then chosen based on their confidence values, e.g. the top 100 interactions based on confidence value.</p>                  
+                    <p>The Gene Cart allows users to build a list of genes and query the Cellular Networks Knowledge Base (CNKB) for molecular interactions involving these genes.  The CNKB is a repository of molecular interactions networks. It contains computationally-derived networks obtained by applying state of the art Systems and Structure Biology algorithms from the laboratories of Drs. Andrea Califano and Barry Honig at Columbia University. A detailed <a target="_blank" href="http://wiki.c2b2.columbia.edu/workbench/index.php/Cellular_Networks_KnowledgeBase">description of the CNKB</a> is available which also describes how the CNKB can be accessed from within the software platform <a target="_blank" href="http://www.geworkbench.org">geWorkbench</a>.</p>
+                    <p>In the Observations for a particular Dashboard submission, those entries that are genes will have a green "+" sign to right of the gene symbol. Clicking this "+" sign will add the gene to the Gene Cart. The Gene Cart is limited to 25 genes.</p>
+                    <p>In the Gene Cart, clicking on "Find Interactions in Networks (CNKB)" will bring the user to the Cellular Networks Knowledge Base page where a particular interactome and version can be chosen. Descriptive text for each is available by selecting any particular interactome or version. Clicking "Submit" will initiate a query of the CNKB using the genes in the cart.  "Version" may represent different types of interactions inferred on a given dataset.  See the description of each version for details.</p>
+                    <p>The query result is displayed in a table showing the number and type of interactions found for each query gene. A check box to the left of each gene allows individual results to be selected. The interactions for selected genes can then be downloaded in the form of a Cytoscape "SIF"-format file, or displayed directly in Cytoscape.js in the browser. The number of interactions to display is controlled using the "Interactions Limit" pulldown. Interactions to display are then chosen based on a ranking by a measure of likelihood, e.g. the top 100 interactions.</p>
                     <p>Several layout options are available for Cytoscape and can be selected using the "Layout" pulldown.</p>
-                    <p>In Cytoscape.js, several common interaction types have been assigned specific colors used for the lines representing them, and these will be shown on the legend of the graph.</p>
+                    <p>In Cytoscape.js, several common interaction types have been assigned specific colors used for the lines representing them, and these will be shown on the legend of the graph.  The genes used in the CNKB query (hub genes) will be highlighted in yellow.</p>
                 </div>
                 <div class="span1">                                   
                    <a href="javascript:history.back()">Back</a>
