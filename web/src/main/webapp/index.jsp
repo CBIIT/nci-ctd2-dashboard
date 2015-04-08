@@ -315,10 +315,10 @@
             <table id="center-submission-grid" class="table table-bordered table-striped">
                 <thead>
                     <tr>
-                        <th width="150">Submission Date</th>
+                        <th>Tier</th>
                         <th>Project</th>
                         <th>Description</th>
-                        <th>Tier</th>
+                        <th width="90">Date</th>
                         <th>Details</th>
                     </tr>
                 </thead>
@@ -331,12 +331,12 @@
 
     <script type="text/template" id="center-submission-tbl-row-tmpl">
         <tr>
-            <td><a href="#submission/{{id}}">{{submissionDate}}</a></td>
+            <td><span class="badge tier-badge">Tier {{observationTemplate.tier}}</span></td>
             <td>{{observationTemplate.project}}</td>
             <td>
                 {{(observationTemplate.submissionDescription != "") ? observationTemplate.submissionDescription : observationTemplate.description}}
             </td>
-            <td><span class="badge tier-badge">Tier {{observationTemplate.tier}}</span></td>
+            <td><small>{{submissionDate}}</small></td>
             <td width=150>
                 <a href="#submission/{{id}}" class="obs-count" id="observation-count-{{id}}">loading...</a>
             </td>
@@ -1518,7 +1518,7 @@
             <td><a href="#submission/{{dashboardEntity.id}}"><img src="img/{{dashboardEntity.observationTemplate.submissionCenter.displayName}}.png" title="{{dashboardEntity.observationTemplate.submissionCenter.displayName}}" alt="{{dashboardEntity.observationTemplate.submissionCenter.displayName}}" height="50"></a></td>
             <td><span class="badge tier-badge">Tier {{dashboardEntity.observationTemplate.tier}}</span></td>
             <td width=150>
-                <a href="#submission/{{dashboardEntity.id}}" id="search-observation-count-{{dashboardEntity.id}}">{{observationCount}}</a>
+                <a href="#submission/{{dashboardEntity.id}}" id="search-observation-count-{{dashboardEntity.id}}">{{observationCount}} observations</a>
             </td>
         </tr>
     </script>
@@ -2686,7 +2686,7 @@
     </script>
 
     <script id="tbl-project-title-tmpl" type="text/template">
-        <tr class="group"><td colspan="5"><b>Project: {{project}}</b></td></tr>
+        <tr class="group"><td colspan="5">Project: {{project}}</td></tr>
     </script>
 
     <script id="center-specific-information-tmpl" type="text/template">
