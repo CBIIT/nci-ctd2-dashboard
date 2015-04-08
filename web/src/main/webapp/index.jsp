@@ -228,7 +228,7 @@
                     <tr>
                         <th class="center-image-column"></th>
                         <th>Center name</th>
-                        <th>Principal Investigator</th>
+                        <th>Contact Principal Investigator</th>
                         <th class="submission-count">Submissions</th>
                     </tr>
                 </thead>
