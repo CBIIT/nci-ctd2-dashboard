@@ -1479,9 +1479,9 @@
                             dataTable.cells(countCellId).invalidate();
                             dataTable.order(
                                 [
-                                    [3, 'desc'],
-                                    [1, 'asc'],
                                     [0, 'desc'],
+                                    [1, 'asc'],
+                                    [3, 'desc'],
                                     [4, 'asc']
                                 ]
                             ).draw();
@@ -1491,10 +1491,10 @@
                     $(".template-description").tooltip();
                     $(tableElId).dataTable({
                        "columns": [
-                           { "orderDataType": "dashboard-date" },
+                           null,
                            { "visible": false },
                            null,
-                           null,
+                           { "orderDataType": "dashboard-date" },
                            null
                        ],
                         "drawCallback": function(settings) {
@@ -1516,7 +1516,7 @@
                                     }
                             } );
                         }
-                    }).fnSort( [[3, 'desc']] );
+                    }).fnSort( [[0, 'desc']] );
                 }
             });
 
