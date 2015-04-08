@@ -2686,7 +2686,7 @@
     </script>
 
     <script id="tbl-project-title-tmpl" type="text/template">
-        <tr class="group"><td colspan="5"><b><small>Project: {{project}}</small></b></td></tr>
+        <tr class="group"><td colspan="5"><b>Project: {{project}}</b></td></tr>
     </script>
 
     <script id="center-specific-information-tmpl" type="text/template">

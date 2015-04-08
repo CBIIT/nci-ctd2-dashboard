@@ -699,6 +699,13 @@ tr.group td {
     background-color: #ededed !important;
 }
 
+tr.group td {
+    text-align: left;
+    padding-left: 10px;
+    background-color: #ededed !important;
+    color: #a70001;
+}
+
 h2.center-title {
     margin-bottom: 0px;
 }
