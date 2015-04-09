@@ -1449,16 +1449,18 @@
 
     var CenterView = Backbone.View.extend({
         el: $("#main-container"),
+        tableEl: '#center-submission-grid',
         template: _.template($("#center-tmpl").html()),
-        render: function() {
+        render: function(filterProject) {
             var centerModel = this.model.toJSON();
             $(this.el).html(this.template(centerModel));
 
             var thatEl = this.el;
+            var thatTableEl = this.tableEl;
             var centerSubmissions = new CenterSubmissions({ centerId: centerModel.id });
             centerSubmissions.fetch({
                 success: function() {
-                    var tableElId = '#center-submission-grid';
+                    var tableElId = thatTableEl;
                     _.each(centerSubmissions.toJSON(), function(submission) {
                         var centerSubmissionRowView
                             = new CenterSubmissionRowView({ el: $(thatEl).find("tbody"), model: submission });
@@ -1509,7 +1511,7 @@
                                         $(rows)
                                             .eq(i)
                                             .before(
-                                                _.template($("#tbl-project-title-tmpl").html(), { project: group })
+                                                _.template($("#tbl-project-title-tmpl").html(), { project: group, centerId: centerModel.id })
                                             );
 
                                         last = group;
@@ -1517,6 +1519,16 @@
                             } );
                         }
                     }).fnSort( [[0, 'desc']] );
+
+                    if(filterProject != null) {
+                        $(tableElId).DataTable().search(filterProject).draw();
+                        var mpModel = {
+                            filterProject: filterProject,
+                            centerId: centerModel.id
+                        };
+                        var moreProjectsView = new MoreProjectsView({model: mpModel});
+                        moreProjectsView.render();
+                    }
                 }
             });
 
@@ -1527,6 +1539,16 @@
             });
 
             return this;
+        }
+
+    });
+
+    var MoreProjectsView = Backbone.View.extend({
+        template: _.template($("#more-projects-tmpl").html()),
+        el: "#more-project-container",
+
+        render: function() {
+            $(this.el).append(this.template(this.model));
         }
     });
 
@@ -3650,6 +3672,7 @@
             "browse/:type/:character": "browse",
             "explore": "scrollToExplore",
             "explore/:type/:roles": "explore",
+            "center/:id/:project": "showCenterProject",
             "center/:id": "showCenter",
             "submission/:id": "showSubmission",
             "observation/:id": "showObservation",
@@ -3759,10 +3782,24 @@
             center.fetch({
                 success: function() {
                     var centerView = new CenterView({model: center});
-                    centerView.render();
+                    centerView.render(null);
                 }
             });
         },
+
+        showCenterProject: function(id, project) {
+            var center = new SubmissionCenter({id: id});
+            center.fetch({
+                success: function() {
+                    var centerView = new CenterView({model: center});
+                    project = decodeURI(project)
+                        .replace(new RegExp("<", "g"), "")
+                        .replace(new RegExp(">", "g"), "");
+                    centerView.render(project);
+                }
+            });
+        },
+
 
         showSubmission: function(id) {
             var submission = new Submission({id: id});

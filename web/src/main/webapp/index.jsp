@@ -312,6 +312,8 @@
                 </div>
             </div>
 
+            <div id="more-project-container"></div>
+
             <table id="center-submission-grid" class="table table-bordered table-striped">
                 <thead>
                     <tr>
@@ -2432,6 +2434,17 @@
         </div>
     </script>
 
+
+    <script type="text/template" id="more-projects-tmpl">
+        <div class="alert alert-warning">
+            <p><a href="#" class="close" data-dismiss="alert">&times;</a></p>
+            <p>
+                The table below lists all submissions that belong to the project "<b>{{filterProject}}</b>".
+                To view all submissions from this center, please click <a href="#center/{{centerId}}">here</a>.
+            </p>
+        </div>
+    </script>
+
     <script type="text/template" id="ncithesaurus-tmpl">
         <li>
             <a href="http://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI%20Thesaurus&code={{nciId}}" target="_blank">
@@ -2686,7 +2699,7 @@
     </script>
 
     <script id="tbl-project-title-tmpl" type="text/template">
-        <tr class="group"><td colspan="5">Project: {{project}}</td></tr>
+        <tr class="group"><td colspan="5"><a href="#center/{{centerId}}/{{project}}">Project: {{project}}</a></td></tr>
     </script>
 
     <script id="center-specific-information-tmpl" type="text/template">
