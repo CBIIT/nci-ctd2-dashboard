@@ -10,28 +10,6 @@
   <import resource="classpath*:META-INF/spring/observationDataSharedApplicationContext.xml" />
   <context:component-scan base-package="gov.nih.nci.ctd2.dashboard.importer.internal" />
 
-  <!-- broad compound sensitivity lineage enrichment -->
-  <bean name="broadCompoundSensitivityLineageEnrichmentReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
-	<property name="resources" value="${broad.cmp.sens.lineage.enrich.data.location}" />
-	<property name="delegate">
-	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
-		<property name="lineMapper" ref="broadCompoundSensitivityLineageEnrichmentLineMapper" />
-		<property name="linesToSkip" value="7" />
-	  </bean>
-	</property>
-  </bean>
-
-  <!-- broad compound sensitivity mutation enrichment -->
-  <bean name="broadCompoundSensitivityMutationEnrichmentReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
-	<property name="resources" value="${broad.cmp.sens.mutation.enrich.data.location}" />
-	<property name="delegate">
-	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
-		<property name="lineMapper" ref="broadCompoundSensitivityMutationEnrichmentLineMapper" />
-		<property name="linesToSkip" value="7" />
-	  </bean>
-	</property>
-  </bean>
-
   <!-- broad tier3 navitoclax story analysis -->
   <bean name="broadTier3NavitoclaxStoryReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
 	<property name="resources" value="${broad.tier3.navitoclax.story.data.location}" />
@@ -42,6 +20,50 @@
 	  </bean>
 	</property>
   </bean>
+  
+  <!-- broad compound sensitivity ctx mutation enrichment -->
+  <bean name="broadCompoundSensitivityCtxMutationEnrichmentReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+	<property name="resources" value="${broad.cpd.sens.ctx.mut.enrich.data.location}" />
+	<property name="delegate">
+	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+		<property name="lineMapper" ref="broadCompoundSensitivityCtxMutationEnrichmentLineMapper" />
+		<property name="linesToSkip" value="7" />
+	  </bean>
+	</property>
+  </bean>
+
+  <!-- broad compound sensitivity lineage enrichment -->
+  <bean name="broadCompoundSensitivityLineageEnrichmentReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+	<property name="resources" value="${broad.cpd.sens.lineage.enrich.data.location}" />
+	<property name="delegate">
+	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+		<property name="lineMapper" ref="broadCompoundSensitivityLineageEnrichmentLineMapper" />
+		<property name="linesToSkip" value="7" />
+	  </bean>
+	</property>
+  </bean>
+
+  <!-- broad compound sensitivity mutation enrichment -->
+  <bean name="broadCompoundSensitivityMutationEnrichmentReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+	<property name="resources" value="${broad.cpd.sens.mutation.enrich.data.location}" />
+	<property name="delegate">
+	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+		<property name="lineMapper" ref="broadCompoundSensitivityMutationEnrichmentLineMapper" />
+		<property name="linesToSkip" value="7" />
+	  </bean>
+	</property>
+  </bean>
+
+  <!-- broad compound sensitivity sublineage enrichment -->
+  <bean name="broadCompoundSensitivitySublineageEnrichmentReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+	<property name="resources" value="${broad.cpd.sens.sublin.enrich.data.location}" />
+	<property name="delegate">
+	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+		<property name="lineMapper" ref="broadCompoundSensitivitySublineageEnrichmentLineMapper" />
+		<property name="linesToSkip" value="7" />
+	  </bean>
+	</property>
+  </bean>  
 
   <!-- columbia marina analysis -->
   <bean name="columbiaMarinaAnalysisReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
@@ -82,6 +104,17 @@
 	<property name="delegate">
 	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
 		<property name="lineMapper" ref="columbiaGbmMrsStoryLineMapper" />
+		<property name="linesToSkip" value="7" />
+	  </bean>
+	</property>
+  </bean>
+  
+  <!-- columbia precmed -->
+  <bean name="columbiaPrecmedReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+	<property name="resources" value="${columbia.precmed.data.location}" />
+	<property name="delegate">
+	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+		<property name="lineMapper" ref="columbiaPrecmedLineMapper" />
 		<property name="linesToSkip" value="7" />
 	  </bean>
 	</property>
@@ -196,6 +229,17 @@
 	  </bean>
 	</property>
   </bean>
+  
+  <!-- utsw nsclc ascl1 -->
+  <bean name="utswNsclcAscl1Reader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+	<property name="resources" value="${utsw.nsclc.ascl1.data.location}" />
+	<property name="delegate">
+	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+		<property name="lineMapper" ref="utswNsclcAscl1LineMapper" />
+		<property name="linesToSkip" value="7" />
+	  </bean>
+	</property>
+  </bean>
 
   <!-- ucsf differential expression -->
   <bean name="ucsfDifferentialExpressionReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
@@ -252,12 +296,56 @@
 	</property>
   </bean>
   
+  <!-- ucsf splicing genetics -->
+  <bean name="ucsfSplicingGeneticsReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+	<property name="resources" value="${ucsf.w.splicing.genetics.data.location}" />
+	<property name="delegate">
+	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+		<property name="lineMapper" ref="ucsfSplicingGeneticsLineMapper" />
+		<property name="linesToSkip" value="7" />
+	  </bean>
+	</property>
+  </bean>
+  
+  <!-- ucsf chemgen -->
+  <bean name="ucsfChemgenReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+	<property name="resources" value="${ucsf.m.chemgen.data.location}" />
+	<property name="delegate">
+	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+		<property name="lineMapper" ref="ucsfChemgenLineMapper" />
+		<property name="linesToSkip" value="7" />
+	  </bean>
+	</property>
+  </bean>
+  
+  <!-- ucsf kras -->
+  <bean name="ucsfKrasReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+	<property name="resources" value="${ucsf.w.kras.data.location}" />
+	<property name="delegate">
+	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+		<property name="lineMapper" ref="ucsfKrasLineMapper" />
+		<property name="linesToSkip" value="7" />
+	  </bean>
+	</property>
+  </bean>
+  
   <!-- emory PPI RAF1 -->
   <bean name="emoryPPIRAF1Reader" class="org.springframework.batch.item.file.MultiResourceItemReader">
 	<property name="resources" value="${emory.ppi-raf1.data.location}" />
 	<property name="delegate">
 	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
 		<property name="lineMapper" ref="emoryPPIRAF1LineMapper" />
+		<property name="linesToSkip" value="7" />
+	  </bean>
+	</property>
+  </bean>
+  
+  <!-- emory ht bretn PPI -->
+  <bean name="emoryHtBretnPPIReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+	<property name="resources" value="${emory.ht.bretn.ppi.data.location}" />
+	<property name="delegate">
+	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+		<property name="lineMapper" ref="emoryHtBretnPPILineMapper" />
 		<property name="linesToSkip" value="7" />
 	  </bean>
 	</property>
@@ -388,6 +476,16 @@
 	  </bean>
 	</property>
   </bean>
+  
+  <bean name="cshlCdk9Reader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+	<property name="resources" value="${cshl.cdk9.data.location}" />
+	<property name="delegate">
+	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+		<property name="lineMapper" ref="cshlCdk9LineMapper" />
+		<property name="linesToSkip" value="7" />
+	  </bean>
+	</property>
+  </bean>
 
   <bean name="dfciArid1aMutAnalysisReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
 	<property name="resources" value="${dfci.arid1a.mut.analysis.data.location}" />
@@ -428,6 +526,16 @@
 	  </bean>
 	</property>
   </bean>
+  
+  <bean name="dfciFunctionReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+	<property name="resources" value="${dfci.function.data.location}" />
+	<property name="delegate">
+	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+		<property name="lineMapper" ref="dfciFunctionLineMapper" />
+		<property name="linesToSkip" value="7" />
+	  </bean>
+	</property>
+  </bean>
 
   <bean name="mskccPi3kReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
 	<property name="resources" value="${mskcc.pi3k.data.location}" />
@@ -444,6 +552,16 @@
 	<property name="delegate">
 	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
 		<property name="lineMapper" ref="stanfordElasticNetLineMapper" />
+		<property name="linesToSkip" value="7" />
+	  </bean>
+	</property>
+  </bean>
+  
+  <bean name="stanfordOrganoidsReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+	<property name="resources" value="${stanford.organoids.data.location}" />
+	<property name="delegate">
+	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+		<property name="lineMapper" ref="stanfordOrganoidsLineMapper" />
 		<property name="linesToSkip" value="7" />
 	  </bean>
 	</property>
@@ -538,6 +656,35 @@
   	  </bean>
   	</property>
   </bean>
-
+  
+  <bean name="utmdaPik3r1Reader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+  	<property name="resources" value="${utmda.pik3r1.data.location}" />
+  	<property name="delegate">
+  	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+  		<property name="lineMapper" ref="utmdaPik3r1LineMapper" />
+  		<property name="linesToSkip" value="7" />
+  	  </bean>
+  	</property>
+  </bean>
+  
+  <bean name="hutchTargetsReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+  	<property name="resources" value="${hutch.m.targets.data.location}" />
+  	<property name="delegate">
+  	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+  		<property name="lineMapper" ref="hutchTargetsLineMapper" />
+  		<property name="linesToSkip" value="7" />
+  	  </bean>
+  	</property>
+  </bean>
+  
+  <bean name="hutchCtcfReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+  	<property name="resources" value="${hutch.k.ctcf.data.location}" />
+  	<property name="delegate">
+  	  <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+  		<property name="lineMapper" ref="hutchCtcfLineMapper" />
+  		<property name="linesToSkip" value="7" />
+  	  </bean>
+  	</property>
+  </bean>
 
 </beans>
