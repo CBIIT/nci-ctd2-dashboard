@@ -7,7 +7,7 @@
 <html lang="en" xmlns="http://www.w3.org/1999/html">
   <head>
     <meta charset="utf-8">
-    <title>CTD^2: Dashboard</title>
+    <title>CTD^2 Dashboard</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -228,7 +228,7 @@
                     <tr>
                         <th class="center-image-column"></th>
                         <th>Center name</th>
-                        <th>Contact Principal Investigator</th>
+                        <th>Principal Investigator</th>
                         <th class="submission-count">Submissions</th>
                     </tr>
                 </thead>
