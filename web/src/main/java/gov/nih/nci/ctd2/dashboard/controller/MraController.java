@@ -44,8 +44,8 @@ public class MraController {
 	private static Map<String, String> shapeMap = new HashMap<String, String>();
 	static {
 		shapeMap.put("K", "rectangle");
-		shapeMap.put("TF", "circle");
-		shapeMap.put("P", "diamond");
+		shapeMap.put("TF", "ellipse");
+		shapeMap.put("P", "hexagon");
 		shapeMap.put("none", "triangle");
 	}
  

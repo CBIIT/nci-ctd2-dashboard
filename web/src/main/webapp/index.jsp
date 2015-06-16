@@ -1873,7 +1873,7 @@
             <text x="40" y="20" fill="grey">TF</text>
             <rect x="100" y="5" width="18" height="18" fill="white" stroke="grey" stroke-width="2"/>
             <text x="130" y="20" fill="grey">K</text>
-            <polygon  points="191,5,180,16,191,27,202,16" fill="white" stroke="grey" stroke-width="2"/>
+           <polygon  points="185,5,180,16,185,27,196,27,202,16, 196, 5" fill="white" stroke="grey" stroke-width="2"/>
             <text x="212" y="20" fill="grey">P</text>
             <polygon  points="270,7 260,25,280,25" fill="white" stroke="grey" stroke-width="2"/>
             <text x="290" y="20" fill="grey">none</text>

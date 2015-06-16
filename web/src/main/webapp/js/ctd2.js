@@ -641,14 +641,16 @@
                                     layout: {
                                         name: 'arbor',
                                         liveUpdate: false,
-                                        maxSimulationTime: 1000
+                                        maxSimulationTime: 1000,
+                                        stop: function(){                                   		 
+                                      		 this.stop();
+                                      	 } // callback on layoutstop 
                                     },
                                     elements: data,
                                     style: cytoscape.stylesheet()
                                         .selector("node")
                                         .css({
-                                            "content": "data(id)",
-                                            "shape": "data(shape)",
+                                            "content": "data(id)",                                      
                                             "border-width": 3,
                                             "background-color": "#DDD",
                                             "border-color": "#555"
@@ -2166,6 +2168,7 @@
                             	 maxSimulationTime: 8000, // max length in ms to run the layout                        
                             	 stop: function(){
                             		 $("#mra_progress_indicator").hide();
+                            		 this.stop();
                             	 } // callback on layoutstop 
                             	
                             },
@@ -3575,9 +3578,9 @@
        {    	     
     		  var svgHtml = "";
         	  var interactions = data.interactions; 
-        	  var x1 =20+90*(3-interactions.length),  x2=40+90*(3-interactions.length);
+        	  var x1 =20+90*(3-interactions.length),  x2=53+90*(3-interactions.length);
             _.each(interactions, function(aData){                  	                           	 
-          	  svgHtml = svgHtml + '<circle cx="' + x1 + '" cy="15" r="5" fill="' + aData.color +'" stroke="grey" stroke-width="2"/><text x="' + x2 + '" y="20" fill="grey">' + aData.type + '</text>';           
+            	svgHtml = svgHtml + '<rect x="' + x1 + '" y="15" width="30" height="2" fill="' + aData.color +'" stroke="grey" stroke-width="0"/><text x="' + x2 + '" y="20" fill="grey">' + aData.type + '</text>';    
                 x1 = x1 + aData.type.length * 11;
                 x2 = x2 + aData.type.length * 11;
             });  
@@ -3603,6 +3606,7 @@
                 	 maxSimulationTime: 4000, // max length in ms to run the layout                        
                 	 stop: function(){
                 		 $("#cnkb_cytoscape_progress").remove();
+                		 this.stop();
                 	 } // callback on layoutstop 
                 	
                 },
@@ -3610,8 +3614,7 @@
                 style: cytoscape.stylesheet()
                     .selector("node")
                     .css({
-                        "content": "data(id)",
-                        "shape": "data(shape)",                                  
+                        "content": "data(id)",                                              
                         "border-width": 2,
                         "labelValign": "middle",
                         "font-size": 10,                                                                  
