@@ -720,3 +720,12 @@ div.center-link-container {
 .badge {
     padding-top: 5px;
 }
+
+.story-date, .story-details, .center-image-column {
+    white-space: nowrap;
+    vertical-align: middle !important;
+}
+
+.story-details, .center-image-column {
+    text-align: center !important;
+}

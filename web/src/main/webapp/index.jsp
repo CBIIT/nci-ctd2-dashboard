@@ -15,7 +15,6 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/jquery.dataTables.css" rel="stylesheet">
     <link href="css/jquery.fancybox-1.3.4.css" rel="stylesheet" type="text/css" media="screen">
-    <link href="css/flippant.css" rel="stylesheet">
     <link href="css/ctd2.css" rel="stylesheet">
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -243,39 +242,43 @@
     <script type="text/template" id="stories-tmpl">
         <div class="container common-container" id="stories-container">
             <h2>Stories</h2>
-            <ul class="thumbnails stories-list">
+            <table class="table table-bordered table-striped table-compact" id="stories-list">
+                <thead>
+                <tr>
+                    <th class="center-image-column">Center</th>
+                    <th>Description</th>
+                    <th>Date</th>
+                    <th>Details</th>
+                </tr>
+                </thead>
+                <tbody id="stories-tbody">
                 <!-- here will come the stories... -->
-            </ul>
+                </tbody>
+            </table>
         </div>
     </script>
 
 
     <script type="text/template" id="stories-tbl-row-tmpl">
-        <li class="span6 story-cards" id="story-observation-link-{{id}}" title="Click for more details">
-            <a href="#observation/{{id}}" class="thumbnail">
-                <img class="img-circle" src="img/slogos/{{submission.observationTemplate.submissionCenter.displayName}}.png" alt="{{submission.observationTemplate.submissionCenter.displayName}}" title="{{submission.observationTemplate.submissionCenter.displayName}}">
-                <center>
-                    {{submission.observationTemplate.description}}<br>
-                    <small>({{submission.submissionDate}})</small><br>
-                    <br>
-                </center>
-            </a>
-        </li>
-        <div class="hide" id="back-of-story-{{id}}">
-            <h4>{{submission.observationTemplate.description}}</h4>
-
-            <p id="story-list-summary-{{id}}" class="stories-text"></p>
-
-            <p class="pull-right">
-                (<small>
-                <a target="_blank" href="<%=dataURL%>" id="file-link2-{{id}}">
-                    view full story
+        <tr>
+            <td class="center-image-column">
+                <a href="#center/{{submission.observationTemplate.submissionCenter.id}}">
+                    <img src="img/slogos/{{submission.observationTemplate.submissionCenter.displayName}}.png" alt="{{submission.observationTemplate.submissionCenter.displayName}}" title="{{displayName}}" class="img-circle">
                 </a>
-            </small>
-                |
-                <small><a href="#observation/{{id}}">see observation</a></small>)
-            </p>
-        </div>
+            </td>
+            <td>
+                <b>{{submission.observationTemplate.description}}</b><br>
+                <p id="story-list-summary-{{id}}" class="stories-text"></p>
+            </td>
+            <td class="story-date">
+                <small>{{submission.submissionDate}}</small>
+            </td>
+            <td class="story-details">
+                <a target="_blank" href="<%=dataURL%>" id="file-link2-{{id}}">view full story</a>
+                <br>or<br>
+                <a href="#observation/{{id}}">see observation</a>
+            </td>
+        </tr>
     </script>
 
     <script type="text/template" id="centers-tbl-row-tmpl">
@@ -2733,7 +2736,6 @@
     <script src="js/jquery.expander.min.js"></script>
     <script src="js/arbor.js"></script>
     <script src="js/cytoscape.min.js"></script>  
-    <script src="js/flippant.js"></script>
     <script src="js/encoder.js"></script>
     <script src="js/ctd2.js"></script>
 
