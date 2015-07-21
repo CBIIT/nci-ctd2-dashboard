@@ -1612,7 +1612,7 @@
 
     <script type="text/template" id="explore-tmpl">
         <div class="container common-container" id="explore-container">
-            <h2>Explore: <i>{{_.map(roles.split(","), function(o) { return o + "s"; }, []).join(", ")}}</i> <small><a href="#" id="customize-roles" class="customize-{{type}}">(customize)</a></small></h2>
+            <h2>Explore: <i>{{_.map(decodeURIComponent(roles).split(","), function(o) { return o + "s"; }, []).join(", ")}}</i> <small><a href="#" id="customize-roles" class="customize-{{type}}">(customize)</a></small></h2>
 
             <div id="explore-blurb"></div>
 
