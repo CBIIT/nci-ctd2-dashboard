@@ -397,20 +397,6 @@
                 }
             });
 
-            $("#story-observation-link-" + thatModel.id).click(function(e) {
-                e.preventDefault();
-
-                var back = flippant.flip(
-                    this,
-                    $("#back-of-story-" + thatModel.id).show()[0],
-                    'card'
-                );
-
-                $(back).click(function(e) {
-                    back.close();
-                });
-            });
-
             return this;
         }
     });
@@ -962,7 +948,7 @@
                     var counter = 1;
                     _.each(storySubmissions.models, function(aStory) {
                         var storyView = new StoryListItemView({
-                            el: $("#stories-container .stories-list"),
+                            el: $("#stories-list #stories-tbody"),
                             model: aStory.toJSON()
                         });
                         storyView.render();
