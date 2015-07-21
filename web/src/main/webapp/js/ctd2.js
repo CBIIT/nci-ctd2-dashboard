@@ -2940,7 +2940,7 @@
                             });
 
                             $("#role-modal").modal('hide');
-                            window.location.hash = "/explore/" + thatModel.type + "/" + newRoles.join(",");
+                            window.location.hash = "/cexplore/" + thatModel.type + "/" + newRoles.join(",");
                         });
                     }
                 });
@@ -3675,6 +3675,7 @@
             "browse/:type/:character": "browse",
             "explore": "scrollToExplore",
             "explore/:type/:roles": "explore",
+            "cexplore/:type/:roles": "cexplore",
             "center/:id/:project": "showCenterProject",
             "center/:id": "showCenter",
             "submission/:id": "showSubmission",
@@ -3739,7 +3740,19 @@
             var exploreView = new ExploreView({
                 model: {
                     roles: roles.replace(new RegExp("<", "g"), "").replace(new RegExp(">", "g"), ""),
-                    type: type.replace(new RegExp("<", "g"), "").replace(new RegExp(">", "g"), "")
+                    type: type.replace(new RegExp("<", "g"), "").replace(new RegExp(">", "g"), ""),
+                    customized: false
+                }
+            });
+            exploreView.render();
+        },
+
+        cexplore: function(type, roles) {
+            var exploreView = new ExploreView({
+                model: {
+                    roles: roles.replace(new RegExp("<", "g"), "").replace(new RegExp(">", "g"), ""),
+                    type: type.replace(new RegExp("<", "g"), "").replace(new RegExp(">", "g"), ""),
+                    customized: true
                 }
             });
             exploreView.render();
