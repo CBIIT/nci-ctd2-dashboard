@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -43,6 +44,15 @@ public class StoriesController {
             assert observationsBySubmission.size() == 1;
             entities.addAll(observationsBySubmission);
         }
+
+        entities.sort(new Comparator<Observation>() {
+            @Override
+            public int compare(Observation o1, Observation o2) {
+                Integer rank1 = o1.getSubmission().getObservationTemplate().getSubmissionStoryRank();
+                Integer rank2 = o2.getSubmission().getObservationTemplate().getSubmissionStoryRank();
+                return rank1-rank2;
+            }
+        });
 
         JSONSerializer jsonSerializer = new JSONSerializer()
                 .transform(new ImplTransformer(), Class.class)
