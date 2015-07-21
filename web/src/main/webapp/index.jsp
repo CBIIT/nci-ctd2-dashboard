@@ -102,7 +102,8 @@
      	<p>
             <small>
                 <p>
-                    As the CTD<sup>2</sup> Network continues to refine the Dashboard, input from the research community is highly valued to help improve usability.
+                    As the CTD<sup>2</sup> Network continues to refine the Dashboard, input from the research community is highly valued to help improve usability.<br>
+                    <b>Note</b>: Data users must acknowledge CTD<sup>2</sup> Network and visit <a href="http://ocg.cancer.gov/programs/ctd%C2%B2/ctd%C2%B2-publication-guidelines">CTD<sup>2</sup> publication guidelines</a> for more information.<br>
                     To provide feedback, please send comments to <a href="mailto:ocg@mail.nih.gov?subject=CTD2 Dashboard Feedback">ocg@mail.nih.gov</a>.
                 </p>
            </small>
