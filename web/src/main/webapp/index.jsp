@@ -53,8 +53,6 @@
                           <li><a target="_blank" href="http://ocg.cancer.gov/programs/ctd2/publications">Publications</a></li>
                           <li><a target="_blank" href="https://ctd2.nci.nih.gov/dataPortal/">Data Portal - Downloads</a></li>
                           <li><a target="_blank" href="http://ocg.cancer.gov/about-ocg/rss-feeds">RSS feed</a></li>
-                          <li class="divider"></li>
-                          <li><a href="#template-helper">Submission Template Helper</a></li>                          
                       </ul>
                   </li>                 
                    <li class="dropdown">
