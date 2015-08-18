@@ -85,6 +85,9 @@ broad.cpd.sens.ctx.mut.enrich.data.location=file:${CTD2_DATA_HOME}/submissions/2
 broad.cpd.sens.lineage.enrich.data.location=file:${CTD2_DATA_HOME}/submissions/20150406-broad_cpd_sens_lineage_enrich/20150406-broad_cpd_sens_lineage_enrich.txt
 broad.cpd.sens.mutation.enrich.data.location=file:${CTD2_DATA_HOME}/submissions/20150406-broad_cpd_sens_mutation_enrich/20150406-broad_cpd_sens_mutation_enrich.txt
 broad.cpd.sens.sublin.enrich.data.location=file:${CTD2_DATA_HOME}/submissions/20150406-broad_cpd_sens_sublin_enrich/20150406-broad_cpd_sens_sublin_enrich.txt
+columbia.akt.tall.data.location=file:${CTD2_DATA_HOME}/submissions/20150717-columbia_akt_tall/20150717-columbia_akt_tall.txt
+cshl.brd4.data.location=file:${CTD2_DATA_HOME}/submissions/20150717-cshl_brd4/20150717-cshl_brd4.txt
+utsw.nsclc.data.location=file:${CTD2_DATA_HOME}/submissions/20150717-utsw_nsclc/20150717-utsw_nsclc.txt
 
 # spring commit interval
 spring.batch.commit.interval=10000
