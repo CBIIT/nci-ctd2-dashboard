@@ -3584,7 +3584,10 @@
          
             var container = $('#cytoscape');                        
             var layoutName = $("#cytoscape-layouts").val();
-            var cyOptions = {                        	             	 
+             
+            var cy = cytoscape ({
+            	
+            	container: document.getElementById("cytoscape"),
                 layout: {
                 	 name: layoutName,
                 	 fit: true,                                                  	 
@@ -3592,7 +3595,8 @@
                 	 maxSimulationTime: 4000, // max length in ms to run the layout                        
                 	 stop: function(){
                 		 $("#cnkb_cytoscape_progress").remove();
-                		 this.stop();
+                		 this.stop();                		
+                		 
                 	 } // callback on layoutstop 
                 	
                 },
@@ -3645,11 +3649,86 @@
                 ,
 
                 ready: function(){                    	 
-                    window.cy = this; // for debugging
+                    window.cy = this; // for debugging             
+                  
                 }
-            };                    
-            container.cy(cyOptions);     
-  		 
+            });   
+            
+            cy.on('cxttap', 'node', function(){
+      		 
+      			  $.contextMenu( 'destroy', '#cytoscape' );
+      			  var sym = this.data('id');
+      			  $.contextMenu({
+                      selector: '#cytoscape', 
+                     
+                      callback: function(key, options) {
+                                  var m = "clicked: " + key + " on " + sym;
+                                  if(!key || 0 === key.length)
+                                  {
+                                	  $.contextMenu( 'destroy', '#cytoscape' );
+                                	  return;
+                                  }	
+                                  
+                                  var linkUrl = "";                                 
+                                  switch(key) {
+                                      case 'gene': 
+                                    	  linkUrl = "http://www.ncbi.nlm.nih.gov/gene?cmd=Search&term="+sym;                                    	  
+                                    	  break;
+                                      case 'protein':
+                                    	  linkUrl = "http://www.ncbi.nlm.nih.gov/protein?cmd=Search&term=" + sym + "&doptcmdl=GenPept";                                    	  
+                                    	  break;
+                                      case 'pubmed':
+                                    	  linkUrl = "http://www.ncbi.nlm.nih.gov/pubmed?cmd=Search&term=" + sym + "&doptcmdl=Abstract";                                    	  
+                                    	  break;
+                                      case 'nucleotide':
+                                    	  linkUrl = "http://www.ncbi.nlm.nih.gov/nucleotide?cmd=Search&term=" + sym + "&doptcmdl=GenBank";                                    	  
+                                    	  break;
+                                      case 'alldatabases':
+                                    	  linkUrl = "http://www.ncbi.nlm.nih.gov/gquery/?term="+sym;                                    	  
+                                    	  break;
+                                      case 'structure':
+                                    	  linkUrl = "http://www.ncbi.nlm.nih.gov/structure?cmd=Search&term=" + sym + "&doptcmdl=Brief";                                    	  
+                                    	  break;
+                                      case 'omim':
+                                    	  linkUrl = "http://www.ncbi.nlm.nih.gov/omim?cmd=Search&term=" + sym + "&doptcmdl=Synopsis";                                    	  
+                                    	  break;
+                                      case 'genecards':
+                                    	  linkUrl = "http://www.genecards.org/cgi-bin/carddisp.pl?gene=" + sym + "&alias=yes";                                    	  
+                                    	  break;
+                                      case 'ctd2-dashboard' : 
+                                    	  linkUrl = CORE_API_URL + "#search/" + sym;
+                                  
+                                  }
+                                 // alert("test3");
+                                  window.open(linkUrl);
+                                  $.contextMenu( 'destroy', '#cytoscape' );
+                              },
+                      items: {
+                                  "linkout": {"name": 'LinkOut'},
+                                  "sep1": "---------",
+                                  "entrez": {
+                                              "name": "Entrez", 
+                                              "items": {
+                                                  "gene": {"name": "Gene"},
+                                                  "protein": {"name": "Protein"},
+                                                  "pubmed": {"name": "PubMed"},
+                                                  "nucleotide": {"name": "Nucleotide"},
+                                                  "alldatabases": {"name": "All Databases"},
+                                                  "structure": {"name": "Structure"},
+                                                  "omim": {"name": "OMIM"}
+                                              }
+                                          },
+                                   "genecards": {"name": "GeneCards"},         
+                                   "ctd2-dashboard": {"name": "CTD2-Dashboard"}   
+                      
+                      }
+                                
+                  });  
+      			  
+      			 
+      		}); 
+            
+           
      }   
     
 
