@@ -2903,9 +2903,10 @@
                     success: function() {
                         $("#customized-roles-tbl tbody").html("");
 
+                        var currentRoles = decodeURIComponent(thatModel.roles.toLowerCase());
                         _.each(subjectRoles.models, function(role) {
                             role = role.toJSON();
-                            var checked = thatModel.roles.toLowerCase().search(role.displayName.toLowerCase()) > -1;
+                            var checked = currentRoles.search(role.displayName.toLowerCase()) > -1;
                             role["checked"] = checked;
                             var roleName = role.displayName;
                             role.displayName = roleName.charAt(0).toUpperCase() + roleName.slice(1);
