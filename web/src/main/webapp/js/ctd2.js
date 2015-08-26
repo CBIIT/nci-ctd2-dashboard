@@ -2943,7 +2943,11 @@
         template: _.template($("#customize-roles-item-tmpl").html()),
 
         render: function() {
-            $(this.el).append(this.template(this.model));
+            if(this.model.checked) {
+                $(this.el).prepend(this.template(this.model));
+            } else {
+                $(this.el).append(this.template(this.model));
+            }
             return this;
         }
     });
