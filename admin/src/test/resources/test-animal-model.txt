@@ -1,0 +1,2 @@
+animal_model_name	taxonomy_id
+[FVB/N x SPRET/Ei] x FVB/N	10090
