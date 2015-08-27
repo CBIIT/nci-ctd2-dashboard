@@ -303,7 +303,18 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
         return samples;
 	}
 
-     @Override
+    @Override
+    public List<CellSample> findCellLineByName(String name) {
+        List<CellSample> cellSamples = new ArrayList<CellSample>();
+        for (Subject subject : findSubjectsBySynonym(name, true)) {
+            if(subject instanceof CellSample) {
+                cellSamples.add((CellSample) subject);
+            }
+        }
+        return cellSamples;
+    }
+
+    @Override
     public List<ShRna> findSiRNAByReagentName(String reagent) {
         List<ShRna> list = new ArrayList<ShRna>();
         for (Object o : getHibernateTemplate().find("from ShRnaImpl where reagentName = ?", reagent)) {
