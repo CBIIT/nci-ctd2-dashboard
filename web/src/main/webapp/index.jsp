@@ -1614,7 +1614,7 @@
 
     <script type="text/template" id="explore-tmpl">
         <div class="container common-container" id="explore-container">
-            <h2>Explore: <i>{{_.map(decodeURIComponent(roles).split(","), function(o) { return o + "s"; }, []).join(", ")}}</i> <small><a href="#" id="customize-roles" class="customize-{{type}}">({{customized ? "customized" : "customize"}})</a></small></h2>
+            <h2>Explore: <i>{{_.map(decodeURIComponent(roles).split(","), function(o) { return o + "s"; }, []).join(", ")}}</i> <small><a href="#" id="customize-roles" class="customize-{{type}}">({{customized ? "customized" : "select roles"}})</a></small></h2>
 
             <div id="explore-blurb"></div>
 
@@ -1634,7 +1634,7 @@
         <div class="modal hide fade" id="role-modal">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h3>Customize roles</h3>
+                <h3>Select roles</h3>
             </div>
             <div class="modal-body">
                 <p>Please select roles of interest from the list below.</p>
