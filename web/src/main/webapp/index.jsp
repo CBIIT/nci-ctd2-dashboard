@@ -448,7 +448,7 @@
                         <tr>
                             <th width="60">&nbsp;&nbsp;&nbsp;&nbsp;</th>
                             <th>Name</th>
-                            <th>Type</th>
+                            <th>Class</th>
                             <th>Role</th>
                             <th>Description</th>
                         </tr>
@@ -500,7 +500,7 @@
                 <thead>
                 <tr>
                     <th>&nbsp;&nbsp;</th>
-                    <th>Role</th>
+                    <th>Type</th>
                     <th>Description</th>
                     <th width="150">Details</th>
                 </tr>
