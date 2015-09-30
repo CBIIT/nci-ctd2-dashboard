@@ -53,6 +53,16 @@ public class ObservationDataFactoryImpl implements ObservationDataFactory {
 		return submission;
 	}
 
+	private List<Subject> filterEntities(List<Subject> dashboardEntities, Class<? extends Subject> filterClass) {
+		List<Subject> filteredList = new ArrayList<Subject>();
+		for (Subject dashboardEntity : dashboardEntities) {
+			if(filterClass.isInstance(dashboardEntities)) {
+				filteredList.add(dashboardEntity);
+			}
+		}
+		return filteredList;
+	}
+
 	@Override
 	public ObservedSubject createObservedSubject(String subjectValue, String columnName, String templateName,
 												 Observation observation, String daoFindQueryName) throws Exception {
@@ -77,22 +87,27 @@ public class ObservationDataFactoryImpl implements ObservationDataFactory {
 				// if we've searched for gene by symbol and come up empty, try by synonym
 				if (dashboardEntities.isEmpty() && daoFindQueryName.equals("findGenesBySymbol")) {
 					method = dashboardDao.getClass().getMethod("findSubjectsBySynonym", String.class, Boolean.TYPE);
-					dashboardEntities = (List<Subject>)method.invoke(dashboardDao, subjectValue, true);
+					dashboardEntities = filterEntities((List<Subject>) method.invoke(dashboardDao, subjectValue, true), Gene.class);
 				}
 				// if we've searched for gene by synonym and come up empty, try entrez id
 				if (dashboardEntities.isEmpty() && daoFindQueryName.equals("findGenesBySymbol")) {
 					method = dashboardDao.getClass().getMethod("findGenesByEntrezId", String.class);
-					dashboardEntities = (List<Subject>)method.invoke(dashboardDao, subjectValue);
+					dashboardEntities = filterEntities((List<Subject>)method.invoke(dashboardDao, subjectValue), Gene.class);
 				}
 				// if we've searched for tissue sample by name and come up empty, try by synonym
 				if (dashboardEntities.isEmpty() && daoFindQueryName.equals("findTissueSampleByName")) {
 					method = dashboardDao.getClass().getMethod("findSubjectsBySynonym", String.class, Boolean.TYPE);
-					dashboardEntities = (List<Subject>)method.invoke(dashboardDao, subjectValue, true);
+					dashboardEntities = filterEntities((List<Subject>)method.invoke(dashboardDao, subjectValue, true), TissueSample.class);
 				}
 				// if we've searched for drug/compound by name and come up empty, try by synonym
 				if (dashboardEntities.isEmpty() && daoFindQueryName.equals("findCompoundsByName")) {
 					method = dashboardDao.getClass().getMethod("findSubjectsBySynonym", String.class, Boolean.TYPE);
-					dashboardEntities = (List<Subject>)method.invoke(dashboardDao, subjectValue, true);
+					dashboardEntities = filterEntities((List<Subject>)method.invoke(dashboardDao, subjectValue, true), Compound.class);
+				}
+				// if we've searched for drug/compound by name and come up empty, try by synonym
+				if (dashboardEntities.isEmpty() && daoFindQueryName.equals("findCellLineByName")) {
+					method = dashboardDao.getClass().getMethod("findSubjectsBySynonym", String.class, Boolean.TYPE);
+					dashboardEntities = filterEntities((List<Subject>)method.invoke(dashboardDao, subjectValue, true), CellSample.class);
 				}
 			}
 			if (dashboardEntities.size() > 0) {
