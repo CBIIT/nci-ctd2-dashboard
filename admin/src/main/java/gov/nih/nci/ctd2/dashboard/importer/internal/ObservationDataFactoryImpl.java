@@ -56,7 +56,7 @@ public class ObservationDataFactoryImpl implements ObservationDataFactory {
 	private List<Subject> filterEntities(List<Subject> dashboardEntities, Class<? extends Subject> filterClass) {
 		List<Subject> filteredList = new ArrayList<Subject>();
 		for (Subject dashboardEntity : dashboardEntities) {
-			if(filterClass.isInstance(dashboardEntities)) {
+			if(filterClass.isInstance(dashboardEntity)) {
 				filteredList.add(dashboardEntity);
 			}
 		}
