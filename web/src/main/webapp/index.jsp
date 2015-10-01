@@ -394,6 +394,10 @@
                             <th width="175">Submission Date</th>
                             <td>{{submissionDate}}</td>
                         </tr>
+                        <tr>
+                            <th>Source Data</th>
+                            <td><a href="<%=dataURL%>submissions/{{displayName}}.zip">open link</a></td>
+                        </tr>
                     </table>
                 </div>
                 <div class="span2">
@@ -496,6 +500,10 @@
                     <tr>
                         <th>Date</th>
                         <td>{{submission.submissionDate}}</td>
+                    </tr>
+                    <tr>
+                        <th>Source Data</th>
+                        <td><a href="<%=dataURL%>submissions/{{submission.displayName}}.zip">open link</a></td>
                     </tr>
 
 
