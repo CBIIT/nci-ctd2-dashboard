@@ -1482,6 +1482,33 @@
             </td>
         </tr>
     </script>
+    
+    <script type="text/template" id="search-result-gene-row-tmpl">
+        <tr>
+            <td id="search-image-{{dashboardEntity.id}}"></td>
+            <td>
+                <a href="#subject/{{dashboardEntity.id}}">{{dashboardEntity.displayName}}</a>
+                <a href="#" class="addGene-{{dashboardEntity.displayName}} greenColor" title="Add gene to cart" >+</a>
+                <br>
+                <i>{{dashboardEntity.organism.displayName != '-' ? "(" + dashboardEntity.organism.displayName + ")" : ""}}</i>
+            </td>
+            <td>
+                <ul id="synonyms-{{dashboardEntity.id}}">
+                    <!-- here will go the synonyms -->
+                </ul>
+            </td>
+            <td>{{dashboardEntity.type}}</td>
+            <td>
+                <ul id="roles-{{dashboardEntity.id}}" data-score="{{dashboardEntity.score}}">
+                    <!-- here will go the roles -->
+                </ul>
+            </td>
+            <td class="nonewline">
+                <a href="#subject/{{dashboardEntity.id}}" id="subject-observation-count-{{dashboardEntity.id}}">{{observationCount}}</a>
+                <i class="icon-question-sign obs-tooltip {{observationCount < 1 ? 'hide' : ''}}" title="{{observationCount}} observations from {{centerCount}} centers: Tier {{maxTier}}"></i>
+            </td>
+        </tr>
+    </script>
 
     <script type="text/template" id="search-tmpl">
         <div class="container common-container" id="search-results-container">
