@@ -1316,6 +1316,10 @@
 
             $(this.el).html(this.template(result));
 
+            if(!cbioPortalId) {
+            	$("#cbiolink").css("display", "none");
+            }
+
             var thatEl = $("ul.synonyms");
             _.each(result.synonyms, function(aSynonym) {
                 if(aSynonym.displayName == result.displayName ) return;
