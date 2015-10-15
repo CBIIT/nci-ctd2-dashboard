@@ -1050,7 +1050,13 @@
                         });
 
                         var oTable = $(thatEl).dataTable({
-                            "sPaginationType": "bootstrap"
+                            "sPaginationType": "bootstrap",
+                            "columns": [
+                                      { "orderDataType": "dashboard-date" },
+                                      null,
+                                      null,
+                                      null
+                                  ]
                         });
 
                         oTable.fnSort([
