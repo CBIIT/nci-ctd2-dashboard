@@ -7,7 +7,7 @@
 <html lang="en" xmlns="http://www.w3.org/1999/html">
   <head>
     <meta charset="utf-8">
-    <title>CTD^2 Dashboard</title>
+    <title>CTD² Dashboard</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
