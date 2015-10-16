@@ -11,7 +11,8 @@ public class TRCshRNADataProcessor implements ItemProcessor<ShRna, ShRna> {
     public ShRna process(ShRna shRNA) throws Exception {
 		if (shRNA == null) return null;
 		if (shRNA.getOrganism() == null) return null;
-		if (shRNA.getTranscript() == null) return null;
+        // allow null transcript relationship
+		//if (shRNA.getTranscript() == null) return null;
 		return shRNA;
 	}
 }

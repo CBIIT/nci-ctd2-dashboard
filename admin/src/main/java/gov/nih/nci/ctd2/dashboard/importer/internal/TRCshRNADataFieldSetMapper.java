@@ -7,6 +7,7 @@ import gov.nih.nci.ctd2.dashboard.model.Organism;
 import gov.nih.nci.ctd2.dashboard.model.Transcript;
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
 import gov.nih.nci.ctd2.dashboard.model.DashboardFactory;
+import gov.nih.nci.ctd2.dashboard.util.NaturalOrderComparator;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindException;
 import org.springframework.batch.item.file.transform.FieldSet;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Arrays;
 
 @Component("TRCshRNADataMapper")
 public class TRCshRNADataFieldSetMapper implements FieldSetMapper<ShRna> {
@@ -28,7 +30,8 @@ public class TRCshRNADataFieldSetMapper implements FieldSetMapper<ShRna> {
 	private static final int TARGET_SEQ_COL_INDEX = 5;
 	private static final int CLONE_NAME_COL_INDEX = 8;
 	private static final int TAX_ID_COL_INDEX = 11;
-	private static final int TRANSCRIPT_ID_COL_INDEX = 15;
+	private static final int TRANSCRIPT_ID_COL_INDEX = 10;
+    private static final int ALT_TRANSCRIPT_ID_COL_INDEX = 15;
 
     @Autowired
     private DashboardFactory dashboardFactory;
@@ -79,14 +82,29 @@ public class TRCshRNADataFieldSetMapper implements FieldSetMapper<ShRna> {
 		if (organism != null) shRNA.setOrganism(organism);
 		// set transcript
 		Transcript transcript = getTranscript(fieldSet.readString(TRANSCRIPT_ID_COL_INDEX));
-		if (transcript != null) shRNA.setTranscript(transcript);
+		if (transcript != null) {
+            shRNA.setTranscript(transcript);
+        }
+        else {
+		    transcript = getTranscript(fieldSet.readString(ALT_TRANSCRIPT_ID_COL_INDEX));
+            if (transcript != null) shRNA.setTranscript(transcript);
+        }
 
         return shRNA;
 	}
 
 	private Transcript getTranscript(String columnEntry) {
-
-		String[] transcriptIds = columnEntry.split(REFSEQ_DELIMITER);
+        
+        // split individual RefSeq IDs and sort naturally to test more mature RefSeq IDs first
+        // natural order sorts leading zeros and things like .2 < .10 properly
+        // natural order sorts by length properly, i.e. "NM_02044" < "NM_001001556" 
+        // natural order not only sorts NM < XM also lower IDs first (lower RefSeq IDs are more mature)
+        String[] transcriptIds = columnEntry.split(REFSEQ_DELIMITER);
+		Arrays.sort(transcriptIds, new NaturalOrderComparator());
+        // strip off RefSeq versions
+        for (int i = 0; i < transcriptIds.length; i++) {
+            transcriptIds[i] = transcriptIds[i].replaceFirst("\\.\\d+$", "");
+        }
 		// first look in hashmap
 		for (String transcriptId : transcriptIds) {
 			if (transcriptMap.containsKey(transcriptId)) {
