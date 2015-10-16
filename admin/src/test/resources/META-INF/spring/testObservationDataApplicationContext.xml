@@ -352,5 +352,37 @@
   <bean name="utswNsclcReader" class="org.springframework.batch.item.file.FlatFileItemReader">
     <property name="lineMapper" ref="utswNsclcLineMapper" />
   </bean>
+  
+  <bean name="tgenEddyGbmReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+    <property name="lineMapper" ref="tgenEddyGbmLineMapper" />
+  </bean>
+  
+  <bean name="tgenEddyStoryReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+    <property name="lineMapper" ref="tgenEddyStoryLineMapper" />
+  </bean>
+  
+  <bean name="ucsfwNbSplicingReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+    <property name="lineMapper" ref="ucsfwNbSplicingLineMapper" />
+  </bean>
+  
+  <bean name="dfciBarbieReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+    <property name="lineMapper" ref="dfciBarbieLineMapper" />
+  </bean>
+  
+  <bean name="dfciKrasMetaAnalysisReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+    <property name="lineMapper" ref="dfciKrasMetaAnalysisLineMapper" />
+  </bean>
+  
+  <bean name="dfciKrasRigerAnalysisReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+    <property name="lineMapper" ref="dfciKrasRigerAnalysisLineMapper" />
+  </bean>
+  
+  <bean name="dfciKrasTtestAnalysisReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+    <property name="lineMapper" ref="dfciKrasTtestAnalysisLineMapper" />
+  </bean>
+  
+  <bean name="dfciTbk1AnalysisReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+    <property name="lineMapper" ref="dfciTbk1AnalysisLineMapper" />
+  </bean>
 
 </beans>
