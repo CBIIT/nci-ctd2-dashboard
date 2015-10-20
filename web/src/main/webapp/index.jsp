@@ -1,4 +1,9 @@
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %><%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %><%@page import="org.springframework.web.context.WebApplicationContext"%><%@page import="org.springframework.web.context.support.WebApplicationContextUtils"%><%
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@page import="org.springframework.web.context.WebApplicationContext"%>
+<%@page import="org.springframework.web.context.support.WebApplicationContextUtils"%>
+<%@page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
+<%
     WebApplicationContext context = WebApplicationContextUtils
             .getWebApplicationContext(application);
     String dataURL = (String) context.getBean("dataURL");
@@ -6,25 +11,25 @@
 %><!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/html">
   <head>
-    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>CTD² Dashboard</title>
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="description" content="" />
+    <meta name="author" content="" />
 
     <link rel="shortcut icon" href="img/favicon.ico" type="image/vnd.microsoft.icon" />
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/jquery.dataTables.css" rel="stylesheet">
-    <link href="css/jquery.fancybox-1.3.4.css" rel="stylesheet" type="text/css" media="screen">
-    <link href="css/jquery.contextMenu.css" rel="stylesheet" type="text/css" />
-    <link href="css/ctd2.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="css/jquery.dataTables.css" type="text/css" />
+    <link rel="stylesheet" href="css/jquery.fancybox-1.3.4.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="css/jquery.contextMenu.css" type="text/css" />
+    <link rel="stylesheet" href="css/ctd2.css" type="text/css" />
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 
     <!-- Fav and touch icons -->
-    <link rel="shortcut icon" href="img/favicon.png">
+    <link rel="shortcut icon" href="img/favicon.png" />
   </head>
 
   <body>
