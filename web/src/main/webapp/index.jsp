@@ -2498,7 +2498,7 @@
 
     <script type="text/template" id="ncithesaurus-tmpl">
         <li>
-            <a href="http://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI%20Thesaurus&code={{nciId}}" target="_blank">
+            <a href="http://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code={{nciId}}" target="_blank">
                 NCI Thesaurus: {{nciId}}
             </a>
         </li>
