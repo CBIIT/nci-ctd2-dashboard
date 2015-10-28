@@ -2766,11 +2766,12 @@
         <a href="https://ocg.cancer.gov/programs/ctd2/centers#emory-university" data-center="Emory University" target="_blank">view center description</a>
         <a href="https://ocg.cancer.gov/programs/ctd2/centers#fred-hutchinson-cancer-research-center-1" data-center="Fred Hutchinson Cancer Research Center (1)" target="_blank">view center description</a>
         <a href="https://ocg.cancer.gov/programs/ctd2/centers#fred-hutchinson-cancer-research-center-2" data-center="Fred Hutchinson Cancer Research Center (2)" target="_blank">view center description</a>
-        <a href="https://ocg.cancer.gov/programs/ctd2/centers#university-of-texas-md-anderson-cancer-center" data-center="MD Anderson Cancer Center" target="_blank">view center description</a>
+        <a href="https://ocg.cancer.gov/programs/ctd2/centers#university-of-texas-md-anderson-cancer-center" data-center="University of Texas MD Anderson Cancer Center" target="_blank">view center description</a>
         <a href="https://ocg.cancer.gov/programs/ctd2/centers#stanford-university" data-center="Stanford University" target="_blank">view center description</a>
         <a href="https://ocg.cancer.gov/programs/ctd2/centers#university-of-california-san-francisco-1" data-center="University of California San Francisco (1)" target="_blank">view center description</a>
         <a href="https://ocg.cancer.gov/programs/ctd2/centers#university-of-california-san-francisco-2" data-center="University of California San Francisco (2)" target="_blank">view center description</a>
         <a href="https://ocg.cancer.gov/programs/ctd2/centers#university-of-texas-southwestern-medical-center" data-center="University of Texas Southwestern Medical Center" target="_blank">view center description</a>
+        <a href="https://ocg.cancer.gov/programs/ctd2/centers#translational-genomics-research-institute" data-center="Translational Genomics Research Institute" target="_blank">view center description</a>
     </script>
 
     <!-- end of templates -->
