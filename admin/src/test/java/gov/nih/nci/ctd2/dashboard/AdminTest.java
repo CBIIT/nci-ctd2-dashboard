@@ -129,7 +129,7 @@ public class AdminTest {
         assertEquals(1, proteins.size());
         // some transcripts get created along with proteins
         assertEquals(35, dashboardDao.countEntities(Transcript.class).intValue());
-        List<Transcript> transcripts = dashboardDao.findTranscriptsByRefseqId("NM_003404.3");
+        List<Transcript> transcripts = dashboardDao.findTranscriptsByRefseqId("NM_003404");
         assertEquals(1, transcripts.size());
 
         // import some shrna

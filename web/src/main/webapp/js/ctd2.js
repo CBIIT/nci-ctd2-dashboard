@@ -1050,7 +1050,13 @@
                         });
 
                         var oTable = $(thatEl).dataTable({
-                            "sPaginationType": "bootstrap"
+                            "sPaginationType": "bootstrap",
+                            "columns": [
+                                      { "orderDataType": "dashboard-date" },
+                                      null,
+                                      null,
+                                      null
+                                  ]
                         });
 
                         oTable.fnSort([
@@ -1315,6 +1321,10 @@
             result["type"] = result.class;
 
             $(this.el).html(this.template(result));
+
+            if(!cbioPortalId) {
+            	$("#cbiolink").css("display", "none");
+            }
 
             var thatEl = $("ul.synonyms");
             _.each(result.synonyms, function(aSynonym) {
@@ -1845,8 +1855,20 @@
             var result = model.dashboardEntity;
             result["type"] = result.class;
 
-            var tableElId = this.el;
-            $(tableElId).append(this.template(model));
+            if (result.class != "Gene") {
+                this.template = _.template($("#search-result-row-tmpl").html());
+                $(this.el).append(this.template(model));
+            } else {
+                this.template = _.template($("#search-result-gene-row-tmpl").html());
+                $(this.el).append(this.template(model));
+                var currentGene = result["displayName"];
+
+                $(".addGene-" + currentGene).click(function(e) {
+                    e.preventDefault();                  
+                    updateGeneList(currentGene);
+                    return this;
+                });  //end addGene
+            }
 
             var thatEl = $("#synonyms-" + result.id);
             _.each(result.synonyms, function(aSynonym) {
