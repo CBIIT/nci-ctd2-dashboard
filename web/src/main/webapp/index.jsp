@@ -1666,16 +1666,24 @@
 
             <div id="explore-blurb"></div>
 
-            <ul class="thumbnails" id="explore-items">
-                <li class="span12">
-                    <div class="thumbnail">
-                        <h3>Loading...</h3>
-                        <div class="progress progress-striped active">
-                            <div class="bar" style="width: 100%;"></div>
-                        </div>
-                    </div>
-                </li>
-            </ul>
+            <table class="table table-bordered table-striped observations">
+                <thead>
+                <tr>
+                    <th colspan=3></th>
+                    <th colspan=2 style="text-align:center">Observations</th>
+                </tr>
+                <tr>
+                    <th>Class</th>
+                    <th>Name</th>
+                    <th>Role</th>
+                    <th>Tier 3</th>
+                    <th>Tier 2</th>
+                </tr>
+                </thead>
+                <tbody id="explore-items" >
+                    <!-- here will go the rows -->
+                </tbody>
+            </table>
 
         </div>
 
@@ -1712,25 +1720,23 @@
     </script>
 
     <script type="text/template" id="explore-item-tmpl">
-        <li class="span{{spanSize}}">
-            <div class="thumbnail explore-thumbnail">
-                <div class="numbered-image" style="background-image: url({{subject.class == 'Compound' ? '<%=dataURL%>compounds/' + subject.imageFile : 'img/' + subject.class.toLowerCase() + '.png' }});">
-                    <b>#{{order}}</b>
-                </div>
-                <div class="caption">
-                    <h4 data-toggle="tooltip" class="{{type}} nonewline" title="{{subject.displayName}}">{{subject.displayName}}</h4>
-                    <p>
-                        There are {{numberOfObservations}} observation{{numberOfObservations == 1 ? "" : "s"}} from {{numberOfSubmissionCenters}} center{{numberOfSubmissionCenters == 1 ? "" : "s"}} on this <b>{{role}}</b>
-                        <small class="nonewline">(<b>Tier {{maxTier}}</b>)</small>.
-                    </p>
-                    <p align="center">
-                    </p>
-                    <p align="center">
-                        <a href="#subject/{{subject.id}}" class="btn btn-small btn-block {{type == 'target' ? 'btn-success' : (type == 'compound' ? 'btn-info' : 'btn-warning')}}">See details</a>
-                    </p>
-                </div>
-            </div>
-        </li>
+        <tr>
+            <td>
+                <div>
+                     <h4>{{subject.class}}</h4>
+                     <img src="{{subject.class == 'Compound' ? '<%=dataURL%>compounds/' + subject.imageFile : 'img/' + subject.class.toLowerCase() + '.png' }}" class="img-polaroid" width=75 height=75 alt="Gene">
+                 </div>
+            </td>
+            <td>
+                <a href="#/subject/{{subject.id}}">
+                    {{subject.displayName}}
+                </a>
+            </td>
+            <td>{{role}}</td>
+            <td>{{maxTier == 3 ? "<a href='#subject/"+subject.id+"'>"+numberOfObservations+"</a> ("+numberOfSubmissionCenters+" centers)" : ""}}</td>
+            <td>{{maxTier == 2 ? "<a href='#subject/"+subject.id+"'>"+numberOfObservations+"</a> ("+numberOfSubmissionCenters+" centers)" : ""}}</td>
+            <!-- other available fields: {{type}} {{order}}. Data model ('subject summary')needs to be changed to have information of different tiers.-->
+        </tr>
     </script>
 
     <script type="text/template" id="explore-more-item-tmpl">
