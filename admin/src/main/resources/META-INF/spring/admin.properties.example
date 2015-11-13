@@ -88,6 +88,14 @@ broad.cpd.sens.sublin.enrich.data.location=file:${CTD2_DATA_HOME}/submissions/20
 columbia.akt.tall.data.location=file:${CTD2_DATA_HOME}/submissions/20150717-columbia_akt_tall/20150717-columbia_akt_tall.txt
 cshl.brd4.data.location=file:${CTD2_DATA_HOME}/submissions/20150717-cshl_brd4/20150717-cshl_brd4.txt
 utsw.nsclc.data.location=file:${CTD2_DATA_HOME}/submissions/20150717-utsw_nsclc/20150717-utsw_nsclc.txt
+tgen.eddy.gdm.data.location=file:${CTD2_DATA_HOME}/submissions/20150826-tgen_eddy-GBM/20150826-tgen_eddy-GBM.txt
+tgen.eddy.story.data.location=file:${CTD2_DATA_HOME}/submissions/20150909-tgen_eddy_story/20150909-tgen_eddy_story.txt
+ucsfw.nb.splicing.data.location=file:${CTD2_DATA_HOME}/submissions/20150909-ucsfw_nb_splicing/20150909-ucsfw_nb_splicing.txt
+dfci.barbie.data.location=file:${CTD2_DATA_HOME}/submissions/20151001-dfci_barbie/20151001-dfci_barbie.txt
+dfci.kras.meta.analysis.data.location=file:${CTD2_DATA_HOME}/submissions/20151001-dfci_kras_meta_analysis/20151001-dfci_kras_meta_analysis.txt
+dfci.kras.riger.analysis.data.location=file:${CTD2_DATA_HOME}/submissions/20151001-dfci_kras_riger_analysis/20151001-dfci_kras_riger_analysis.txt
+dfci.kras.ttest.analysis.data.location=file:${CTD2_DATA_HOME}/submissions/20151001-dfci_kras_ttest_analysis/20151001-dfci_kras_ttest_analysis.txt
+dfci.tbk1.analysis.data.location=file:${CTD2_DATA_HOME}/submissions/20151001-dfci_tbk1_analysis/20151001-dfci_tbk1_analysis.txt
 
 # spring commit interval
 spring.batch.commit.interval=10000

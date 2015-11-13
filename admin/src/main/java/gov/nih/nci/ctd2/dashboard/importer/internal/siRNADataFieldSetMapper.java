@@ -6,6 +6,7 @@ import gov.nih.nci.ctd2.dashboard.model.Organism;
 import gov.nih.nci.ctd2.dashboard.model.Transcript;
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
 import gov.nih.nci.ctd2.dashboard.model.DashboardFactory;
+import gov.nih.nci.ctd2.dashboard.util.NaturalOrderComparator;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindException;
 import org.springframework.batch.item.file.transform.FieldSet;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Arrays;
 
 @Component("siRNADataMapper")
 public class siRNADataFieldSetMapper implements FieldSetMapper<ShRna> {
@@ -67,8 +69,17 @@ public class siRNADataFieldSetMapper implements FieldSetMapper<ShRna> {
 	}
 
 	private Transcript getTranscript(String targetGene, String columnEntry) {
-
-		String[] transcriptIds = columnEntry.split(REFSEQ_DELIMITER);
+        
+        // split individual RefSeq IDs and sort naturally to test more mature RefSeq IDs first
+        // natural order sorts leading zeros and things like .2 < .10 properly
+        // natural order sorts by length properly, i.e. "NM_02044" < "NM_001001556" 
+        // natural order not only sorts NM < XM also lower IDs first (lower RefSeq IDs are more mature)
+        String[] transcriptIds = columnEntry.split(REFSEQ_DELIMITER);
+		Arrays.sort(transcriptIds, new NaturalOrderComparator());
+        // strip off RefSeq versions
+        for (int i = 0; i < transcriptIds.length; i++) {
+            transcriptIds[i] = transcriptIds[i].replaceFirst("\\.\\d+$", "");
+        }
 		// first look in hashmap
 		for (String transcriptId : transcriptIds) {
 			if (transcriptMap.containsKey(transcriptId)) {

@@ -1,4 +1,9 @@
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %><%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %><%@page import="org.springframework.web.context.WebApplicationContext"%><%@page import="org.springframework.web.context.support.WebApplicationContextUtils"%><%
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@page import="org.springframework.web.context.WebApplicationContext"%>
+<%@page import="org.springframework.web.context.support.WebApplicationContextUtils"%>
+<%@page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
+<%
     WebApplicationContext context = WebApplicationContextUtils
             .getWebApplicationContext(application);
     String dataURL = (String) context.getBean("dataURL");
@@ -6,25 +11,25 @@
 %><!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/html">
   <head>
-    <meta charset="utf-8">
-    <title>CTD^2 Dashboard</title>
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>CTD² Dashboard</title>
+    <meta name="description" content="" />
+    <meta name="author" content="" />
 
     <link rel="shortcut icon" href="img/favicon.ico" type="image/vnd.microsoft.icon" />
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/jquery.dataTables.css" rel="stylesheet">
-    <link href="css/jquery.fancybox-1.3.4.css" rel="stylesheet" type="text/css" media="screen">
-    <link href="css/jquery.contextMenu.css" rel="stylesheet" type="text/css" />
-    <link href="css/ctd2.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="css/jquery.dataTables.css" type="text/css" />
+    <link rel="stylesheet" href="css/jquery.fancybox-1.3.4.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="css/jquery.contextMenu.css" type="text/css" />
+    <link rel="stylesheet" href="css/ctd2.css" type="text/css" />
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 
     <!-- Fav and touch icons -->
-    <link rel="shortcut icon" href="img/favicon.png">
+    <link rel="shortcut icon" href="img/favicon.png" />
   </head>
 
   <body>
@@ -394,6 +399,10 @@
                             <th width="175">Submission Date</th>
                             <td>{{submissionDate}}</td>
                         </tr>
+                        <tr>
+                            <th>Source Data</th>
+                            <td><a href="<%=dataURL%>submissions/{{displayName}}.zip">open link</a></td>
+                        </tr>
                     </table>
                 </div>
                 <div class="span2">
@@ -496,6 +505,10 @@
                     <tr>
                         <th>Date</th>
                         <td>{{submission.submissionDate}}</td>
+                    </tr>
+                    <tr>
+                        <th>Source Data</th>
+                        <td><a href="<%=dataURL%>submissions/{{submission.displayName}}.zip">open link</a></td>
                     </tr>
 
 
@@ -1129,7 +1142,7 @@
                                 <ul></ul>
                             </td>
                         </tr>
-                        <tr>
+                        <tr id="cbiolink">
                             <th>Genomic alterations</th>
                             <td>
                                 <a class="btn btn-small" href="http://www.cbioportal.org/public-portal/case.do?cancer_study_id=cellline_ccle_broad&sample_id={{cbioPortalId}}" target="blank">view in cBioPortal <i class="icon-share"></i></a>
@@ -1455,6 +1468,33 @@
             <td id="search-image-{{dashboardEntity.id}}"></td>
             <td>
                 <a href="#subject/{{dashboardEntity.id}}">{{dashboardEntity.displayName}}</a><br>
+                <i>{{dashboardEntity.organism.displayName != '-' ? "(" + dashboardEntity.organism.displayName + ")" : ""}}</i>
+            </td>
+            <td>
+                <ul id="synonyms-{{dashboardEntity.id}}">
+                    <!-- here will go the synonyms -->
+                </ul>
+            </td>
+            <td>{{dashboardEntity.type}}</td>
+            <td>
+                <ul id="roles-{{dashboardEntity.id}}" data-score="{{dashboardEntity.score}}">
+                    <!-- here will go the roles -->
+                </ul>
+            </td>
+            <td class="nonewline">
+                <a href="#subject/{{dashboardEntity.id}}" id="subject-observation-count-{{dashboardEntity.id}}">{{observationCount}}</a>
+                <i class="icon-question-sign obs-tooltip {{observationCount < 1 ? 'hide' : ''}}" title="{{observationCount}} observations from {{centerCount}} centers: Tier {{maxTier}}"></i>
+            </td>
+        </tr>
+    </script>
+    
+    <script type="text/template" id="search-result-gene-row-tmpl">
+        <tr>
+            <td id="search-image-{{dashboardEntity.id}}"></td>
+            <td>
+                <a href="#subject/{{dashboardEntity.id}}">{{dashboardEntity.displayName}}</a>
+                <a href="#" class="addGene-{{dashboardEntity.displayName}} greenColor" title="Add gene to cart" >+</a>
+                <br>
                 <i>{{dashboardEntity.organism.displayName != '-' ? "(" + dashboardEntity.organism.displayName + ")" : ""}}</i>
             </td>
             <td>
@@ -2458,7 +2498,7 @@
 
     <script type="text/template" id="ncithesaurus-tmpl">
         <li>
-            <a href="http://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI%20Thesaurus&code={{nciId}}" target="_blank">
+            <a href="http://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code={{nciId}}" target="_blank">
                 NCI Thesaurus: {{nciId}}
             </a>
         </li>
@@ -2726,11 +2766,12 @@
         <a href="https://ocg.cancer.gov/programs/ctd2/centers#emory-university" data-center="Emory University" target="_blank">view center description</a>
         <a href="https://ocg.cancer.gov/programs/ctd2/centers#fred-hutchinson-cancer-research-center-1" data-center="Fred Hutchinson Cancer Research Center (1)" target="_blank">view center description</a>
         <a href="https://ocg.cancer.gov/programs/ctd2/centers#fred-hutchinson-cancer-research-center-2" data-center="Fred Hutchinson Cancer Research Center (2)" target="_blank">view center description</a>
-        <a href="https://ocg.cancer.gov/programs/ctd2/centers#university-of-texas-md-anderson-cancer-center" data-center="MD Anderson Cancer Center" target="_blank">view center description</a>
+        <a href="https://ocg.cancer.gov/programs/ctd2/centers#university-of-texas-md-anderson-cancer-center" data-center="University of Texas MD Anderson Cancer Center" target="_blank">view center description</a>
         <a href="https://ocg.cancer.gov/programs/ctd2/centers#stanford-university" data-center="Stanford University" target="_blank">view center description</a>
         <a href="https://ocg.cancer.gov/programs/ctd2/centers#university-of-california-san-francisco-1" data-center="University of California San Francisco (1)" target="_blank">view center description</a>
         <a href="https://ocg.cancer.gov/programs/ctd2/centers#university-of-california-san-francisco-2" data-center="University of California San Francisco (2)" target="_blank">view center description</a>
         <a href="https://ocg.cancer.gov/programs/ctd2/centers#university-of-texas-southwestern-medical-center" data-center="University of Texas Southwestern Medical Center" target="_blank">view center description</a>
+        <a href="https://ocg.cancer.gov/programs/ctd2/centers#translational-genomics-research-institute" data-center="Translational Genomics Research Institute" target="_blank">view center description</a>
     </script>
 
     <!-- end of templates -->

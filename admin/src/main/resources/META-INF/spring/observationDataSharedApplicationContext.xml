@@ -338,9 +338,49 @@
 		<batch:chunk reader="cshlBrd4Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	  </batch:tasklet>
 	</batch:step>
-    <batch:step id="utswNsclcStep" parent="observationDataStep">
+    <batch:step id="utswNsclcStep" parent="observationDataStep" next="tgenEddyGbmStep">
 	  <batch:tasklet>
 		<batch:chunk reader="utswNsclcReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+    <batch:step id="tgenEddyGbmStep" parent="observationDataStep" next="tgenEddyStoryStep">
+	  <batch:tasklet>
+		<batch:chunk reader="tgenEddyGbmReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+    <batch:step id="tgenEddyStoryStep" parent="observationDataStep" next="ucsfwNbSplicingStep">
+	  <batch:tasklet>
+		<batch:chunk reader="tgenEddyStoryReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+    <batch:step id="ucsfwNbSplicingStep" parent="observationDataStep" next="dfciBarbieStep">
+	  <batch:tasklet>
+		<batch:chunk reader="ucsfwNbSplicingReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+    <batch:step id="dfciBarbieStep" parent="observationDataStep" next="dfciKrasMetaAnalysisStep">
+	  <batch:tasklet>
+		<batch:chunk reader="dfciBarbieReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+    <batch:step id="dfciKrasMetaAnalysisStep" parent="observationDataStep" next="dfciKrasRigerAnalysisStep">
+	  <batch:tasklet>
+		<batch:chunk reader="dfciKrasMetaAnalysisReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+    <batch:step id="dfciKrasRigerAnalysisStep" parent="observationDataStep" next="dfciKrasTtestAnalysisStep">
+	  <batch:tasklet>
+		<batch:chunk reader="dfciKrasRigerAnalysisReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+    <batch:step id="dfciKrasTtestAnalysisStep" parent="observationDataStep" next="dfciTbk1AnalysisStep">
+	  <batch:tasklet>
+		<batch:chunk reader="dfciKrasTtestAnalysisReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+    <batch:step id="dfciTbk1AnalysisStep" parent="observationDataStep">
+	  <batch:tasklet>
+		<batch:chunk reader="dfciTbk1AnalysisReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	  </batch:tasklet>
 	</batch:step>
   </batch:job>
@@ -1230,6 +1270,86 @@
   	<property name="delimiter" value="\u0009"/>
   	<property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,gene_symbol_3,gene_symbol_4,gene_symbol_5,gene_symbol_6,compound_name_1,compound_name_2,cell_line_1,cell_line_2,tissue_sample,publication_reference,story_location"/>
   </bean>
+  
+  <bean name="tgenEddyGbmLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+  	<property name="fieldSetMapper" ref="observationDataMapper" />
+  	<property name="lineTokenizer" ref="tgenEddyGbmLineTokenizer" />
+    </bean>
+
+    <bean name="tgenEddyGbmLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+  	<property name="delimiter" value="\u0009"/>
+  	<property name="names" value="dummy,submission_name,submission_date,template_name,pathway,pathway_link,gene_symbol_1,gene_symbol_2,gene_symbol_3,gene_symbol_4,gene_symbol_5,prior_weight,number_of_genes_in_pathway,p_value,jensen_shannon_divergence,proportion_of_new_dependencies,proportion_of_condition_specific_dependencies,differential_dependency_network,program,data_source,disease,classification,publication_reference"/>
+  </bean>
+  
+  <bean name="tgenEddyStoryLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+  	<property name="fieldSetMapper" ref="observationDataMapper" />
+  	<property name="lineTokenizer" ref="tgenEddyStoryLineTokenizer" />
+    </bean>
+
+    <bean name="tgenEddyStoryLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+  	<property name="delimiter" value="\u0009"/>
+  	<property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,compound_name,tissue_sample,resource_url,publication_reference_1,publication_reference_2,story_location"/>
+  </bean>
+  
+  <bean name="ucsfwNbSplicingLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+  	<property name="fieldSetMapper" ref="observationDataMapper" />
+  	<property name="lineTokenizer" ref="ucsfwNbSplicingLineTokenizer" />
+    </bean>
+
+    <bean name="ucsfwNbSplicingLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+  	<property name="delimiter" value="\u0009"/>
+  	<property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,gene_symbol_3,gene_symbol_4,gene_symbol_5,gene_symbol_6,gene_symbol_7,gene_symbol_8,gene_symbol_9,gene_symbol_10,gene_symbol_11,gene_symbol_12,tissue_sample_1,tissue_sample_2,publication_reference_1,publication_reference_2,story_location"/>
+  </bean>
+  
+  <bean name="dfciBarbieLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+  	<property name="fieldSetMapper" ref="observationDataMapper" />
+  	<property name="lineTokenizer" ref="dfciBarbieLineTokenizer" />
+    </bean>
+
+    <bean name="dfciBarbieLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+  	<property name="delimiter" value="\u0009"/>
+  	<property name="names" value="dummy,submission_name,submission_date,template_name,number_of_perturbagens,number_of_cell_lines,nci_portal,publication_url"/>
+  </bean>
+  
+  <bean name="dfciKrasMetaAnalysisLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+  	<property name="fieldSetMapper" ref="observationDataMapper" />
+  	<property name="lineTokenizer" ref="dfciKrasMetaAnalysisLineTokenizer" />
+    </bean>
+
+    <bean name="dfciKrasMetaAnalysisLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+  	<property name="delimiter" value="\u0009"/>
+  	<property name="names" value="dummy,submission_name,submission_date,template_name,target_group_gene,target_group_alteration,number_of_cell_lines,number_of_cell_lines_in_target_group,gene_symbol,gene_scoring,nci_portal,publication_url"/>
+  </bean>
+  
+  <bean name="dfciKrasRigerAnalysisLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+  	<property name="fieldSetMapper" ref="observationDataMapper" />
+  	<property name="lineTokenizer" ref="dfciKrasRigerAnalysisLineTokenizer" />
+    </bean>
+
+    <bean name="dfciKrasRigerAnalysisLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+  	<property name="delimiter" value="\u0009"/>
+  	<property name="names" value="dummy,submission_name,submission_date,template_name,target_group_gene,target_group_alteration,number_of_cell_lines,number_of_cell_lines_in_target_group,method,gene_symbol,score,nci_portal,publication_url"/>
+  </bean>
+  
+  <bean name="dfciKrasTtestAnalysisLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+  	<property name="fieldSetMapper" ref="observationDataMapper" />
+  	<property name="lineTokenizer" ref="dfciKrasTtestAnalysisLineTokenizer" />
+    </bean>
+
+    <bean name="dfciKrasTtestAnalysisLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+  	<property name="delimiter" value="\u0009"/>
+  	<property name="names" value="dummy,submission_name,submission_date,template_name,target_group_gene,target_group_alteration,number_of_cell_lines,number_of_cell_lines_in_target_group,method,perturbagen,gene_symbol,score,nci_portal,publication_url"/>
+  </bean>
+  
+  <bean name="dfciTbk1AnalysisLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+  	<property name="fieldSetMapper" ref="observationDataMapper" />
+  	<property name="lineTokenizer" ref="dfciTbk1AnalysisLineTokenizer" />
+    </bean>
+
+    <bean name="dfciTbk1AnalysisLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+  	<property name="delimiter" value="\u0009"/>
+  	<property name="names" value="dummy,submission_name,submission_date,template_name,target_group_gene,target_group_alteration,gene_symbol,figure_1,figure_2,figure_3,figure_4,tier2_evidence_1,tier2_evidence_2,tier2_evidence_3,publication_url"/>
+  </bean>
 
   <!-- shared helper beans -->
   <bean name="observationTemplateMap" class="java.util.HashMap">
@@ -1951,6 +2071,100 @@
         <entry key="utsw_nsclc:tissue_sample" value="subject:findTissueSampleByName" />
         <entry key="utsw_nsclc:publication_reference" value="evidence:readString:createObservedUrlEvidence" />
         <entry key="utsw_nsclc:story_location" value="evidence:readString:createObservedFileEvidence" />
+        <!-- tgen eddy gbm -->
+        <entry key="tgen_eddy:pathway" value="evidence:readString:createObservedLabelEvidence" />
+        <entry key="tgen_eddy:pathway_link" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="tgen_eddy:gene_symbol_1" value="subject:findGenesBySymbol" />
+        <entry key="tgen_eddy:gene_symbol_2" value="subject:findGenesBySymbol" />
+        <entry key="tgen_eddy:gene_symbol_3" value="subject:findGenesBySymbol" />
+        <entry key="tgen_eddy:gene_symbol_4" value="subject:findGenesBySymbol" />
+        <entry key="tgen_eddy:gene_symbol_5" value="subject:findGenesBySymbol" />
+        <entry key="tgen_eddy:prior_weight" value="evidence:readDouble:createObservedNumericEvidence" />
+        <entry key="tgen_eddy:number_of_genes_in_pathway" value="evidence:readInt:createObservedNumericEvidence" />
+        <entry key="tgen_eddy:p_value" value="evidence:readDouble:createObservedNumericEvidence" />
+        <entry key="tgen_eddy:jensen_shannon_divergence" value="evidence:readDouble:createObservedNumericEvidence" />
+        <entry key="tgen_eddy:proportion_of_new_dependencies" value="evidence:readDouble:createObservedNumericEvidence" />
+        <entry key="tgen_eddy:proportion_of_condition_specific_dependencies" value="evidence:readDouble:createObservedNumericEvidence" />
+        <entry key="tgen_eddy:differential_dependency_network" value="evidence:readString:createObservedFileEvidence" />
+        <entry key="tgen_eddy:program" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="tgen_eddy:data_source" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="tgen_eddy:disease" value="subject:findTissueSampleByName" />
+        <entry key="tgen_eddy:classification" value="evidence:readString:createObservedLabelEvidence" />
+        <entry key="tgen_eddy:publication_reference" value="evidence:readString:createObservedUrlEvidence" />
+        <!-- tgen eddy story -->
+        <entry key="tgen_eddy_story:gene_symbol_1" value="subject:findGenesBySymbol" />
+        <entry key="tgen_eddy_story:gene_symbol_2" value="subject:findGenesBySymbol" />
+        <entry key="tgen_eddy_story:compound_name" value="subject:findCompoundsByName" />
+        <entry key="tgen_eddy_story:tissue_sample" value="subject:findTissueSampleByName" />
+        <entry key="tgen_eddy_story:resource_url" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="tgen_eddy_story:publication_reference_1" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="tgen_eddy_story:publication_reference_2" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="tgen_eddy_story:story_location" value="evidence:readString:createObservedFileEvidence" />
+        <!-- ucsfw nb splicing -->
+        <entry key="ucsfw_nb_splicing:gene_symbol_1" value="subject:findGenesBySymbol" />
+        <entry key="ucsfw_nb_splicing:gene_symbol_2" value="subject:findGenesBySymbol" />
+        <entry key="ucsfw_nb_splicing:gene_symbol_3" value="subject:findGenesBySymbol" />
+        <entry key="ucsfw_nb_splicing:gene_symbol_4" value="subject:findGenesBySymbol" />
+        <entry key="ucsfw_nb_splicing:gene_symbol_5" value="subject:findGenesBySymbol" />
+        <entry key="ucsfw_nb_splicing:gene_symbol_6" value="subject:findGenesBySymbol" />
+        <entry key="ucsfw_nb_splicing:gene_symbol_7" value="subject:findGenesBySymbol" />
+        <entry key="ucsfw_nb_splicing:gene_symbol_8" value="subject:findGenesBySymbol" />
+        <entry key="ucsfw_nb_splicing:gene_symbol_9" value="subject:findGenesBySymbol" />
+        <entry key="ucsfw_nb_splicing:gene_symbol_10" value="subject:findGenesBySymbol" />
+        <entry key="ucsfw_nb_splicing:gene_symbol_11" value="subject:findGenesBySymbol" />
+        <entry key="ucsfw_nb_splicing:gene_symbol_12" value="subject:findGenesBySymbol" />
+        <entry key="ucsfw_nb_splicing:tissue_sample_1" value="subject:findTissueSampleByName" />
+        <entry key="ucsfw_nb_splicing:tissue_sample_2" value="subject:findTissueSampleByName" />
+        <entry key="ucsfw_nb_splicing:publication_reference_1" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="ucsfw_nb_splicing:publication_reference_2" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="ucsfw_nb_splicing:story_location" value="evidence:readString:createObservedFileEvidence" />
+        <!-- dfci barbie -->
+        <entry key="dfci_barbie:number_of_perturbagens" value="evidence:readInt:createObservedNumericEvidence" />
+        <entry key="dfci_barbie:number_of_cell_lines" value="evidence:readInt:createObservedNumericEvidence" />
+        <entry key="dfci_barbie:nci_portal" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="dfci_barbie:publication_url" value="evidence:readString:createObservedUrlEvidence" />
+        <!-- dfci kras meta analysis -->
+        <entry key="dfci_kras_meta_analysis:target_group_gene" value="subject:findGenesBySymbol" />
+        <entry key="dfci_kras_meta_analysis:target_group_alteration" value="evidence:readString:createObservedLabelEvidence" />
+        <entry key="dfci_kras_meta_analysis:number_of_cell_lines" value="evidence:readInt:createObservedNumericEvidence" />
+        <entry key="dfci_kras_meta_analysis:number_of_cell_lines_in_target_group" value="evidence:readInt:createObservedNumericEvidence" />
+        <entry key="dfci_kras_meta_analysis:gene_symbol" value="subject:findGenesBySymbol" />
+        <entry key="dfci_kras_meta_analysis:gene_scoring" value="evidence:readString:createObservedLabelEvidence" />
+        <entry key="dfci_kras_meta_analysis:nci_portal" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="dfci_kras_meta_analysis:publication_url" value="evidence:readString:createObservedUrlEvidence" />
+        <!-- dfci kras riger analysis -->
+        <entry key="dfci_kras_riger_analysis:target_group_gene" value="subject:findGenesBySymbol" />
+        <entry key="dfci_kras_riger_analysis:target_group_alteration" value="evidence:readString:createObservedLabelEvidence" />
+        <entry key="dfci_kras_riger_analysis:number_of_cell_lines" value="evidence:readInt:createObservedNumericEvidence" />
+        <entry key="dfci_kras_riger_analysis:number_of_cell_lines_in_target_group" value="evidence:readInt:createObservedNumericEvidence" />
+        <entry key="dfci_kras_riger_analysis:method" value="evidence:readString:createObservedLabelEvidence" />
+        <entry key="dfci_kras_riger_analysis:gene_symbol" value="subject:findGenesBySymbol" />
+        <entry key="dfci_kras_riger_analysis:score" value="evidence:readDouble:createObservedNumericEvidence" />
+        <entry key="dfci_kras_riger_analysis:nci_portal" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="dfci_kras_riger_analysis:publication_url" value="evidence:readString:createObservedUrlEvidence" />
+        <!-- dfci kras ttest analysis -->
+        <entry key="dfci_kras_ttest_analysis:target_group_gene" value="subject:findGenesBySymbol" />
+        <entry key="dfci_kras_ttest_analysis:target_group_alteration" value="evidence:readString:createObservedLabelEvidence" />
+        <entry key="dfci_kras_ttest_analysis:number_of_cell_lines" value="evidence:readInt:createObservedNumericEvidence" />
+        <entry key="dfci_kras_ttest_analysis:number_of_cell_lines_in_target_group" value="evidence:readInt:createObservedNumericEvidence" />
+        <entry key="dfci_kras_ttest_analysis:method" value="evidence:readString:createObservedLabelEvidence" />
+        <entry key="dfci_kras_ttest_analysis:perturbagen" value="subject:findSiRNAByReagentName" />
+        <entry key="dfci_kras_ttest_analysis:gene_symbol" value="subject:findGenesBySymbol" />
+        <entry key="dfci_kras_ttest_analysis:score" value="evidence:readDouble:createObservedNumericEvidence" />
+        <entry key="dfci_kras_ttest_analysis:nci_portal" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="dfci_kras_ttest_analysis:publication_url" value="evidence:readString:createObservedUrlEvidence" />
+        <!-- dfci tbk1 analysis -->
+        <entry key="dfci_tbk1_analysis:target_group_gene" value="subject:findGenesBySymbol" />
+        <entry key="dfci_tbk1_analysis:target_group_alteration" value="evidence:readString:createObservedLabelEvidence" />
+        <entry key="dfci_tbk1_analysis:gene_symbol" value="subject:findGenesBySymbol" />
+        <entry key="dfci_tbk1_analysis:figure_1" value="evidence:readString:createObservedFileEvidence" />
+        <entry key="dfci_tbk1_analysis:figure_2" value="evidence:readString:createObservedFileEvidence" />
+        <entry key="dfci_tbk1_analysis:figure_3" value="evidence:readString:createObservedFileEvidence" />
+        <entry key="dfci_tbk1_analysis:figure_4" value="evidence:readString:createObservedFileEvidence" />
+        <entry key="dfci_tbk1_analysis:tier2_evidence_1" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="dfci_tbk1_analysis:tier2_evidence_2" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="dfci_tbk1_analysis:tier2_evidence_3" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="dfci_tbk1_analysis:publication_url" value="evidence:readString:createObservedUrlEvidence" />
         
 	  </map>
 	</constructor-arg>

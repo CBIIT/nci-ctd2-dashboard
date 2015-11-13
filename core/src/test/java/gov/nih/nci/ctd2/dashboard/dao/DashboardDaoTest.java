@@ -333,8 +333,8 @@ public class DashboardDaoTest {
 
     @Test
     public void findTranscriptByRefseqIdTest() {
-        String refseq1 = "NM_014219.2";
-        String refseq2 = "NM_203373.2";
+        String refseq1 = "NM_014219";
+        String refseq2 = "NM_203373";
         Transcript transcript1 = dashboardFactory.create(Transcript.class);
         transcript1.setRefseqId(refseq1);
         dashboardDao.save(transcript1);
@@ -348,7 +348,7 @@ public class DashboardDaoTest {
         List<Transcript> r2transcripts = dashboardDao.findTranscriptsByRefseqId(refseq1);
         assertEquals(1, r2transcripts.size());
         assertNotSame(r1transcripts.iterator().next(), r2transcripts.iterator().next());
-        assertTrue(dashboardDao.findProteinsByUniprotId("NM_104573.10").isEmpty());
+        assertTrue(dashboardDao.findProteinsByUniprotId("NM_104573").isEmpty());
     }
 
     @Test
