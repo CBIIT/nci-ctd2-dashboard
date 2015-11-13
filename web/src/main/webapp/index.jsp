@@ -1722,10 +1722,8 @@
     <script type="text/template" id="explore-item-tmpl">
         <tr>
             <td>
-                <div>
-                     <h4>{{subject.class}}</h4>
-                     <img src="{{subject.class == 'Compound' ? '<%=dataURL%>compounds/' + subject.imageFile : 'img/' + subject.class.toLowerCase() + '.png' }}" class="img-polaroid" width=75 height=75 alt="Gene">
-                 </div>
+                 {{subject.class}}
+                 <img src="{{subject.class == 'Compound' ? '<%=dataURL%>compounds/' + subject.imageFile : 'img/' + subject.class.toLowerCase() + '.png' }}" style="height:25px" alt="">
             </td>
             <td>
                 <a href="#/subject/{{subject.id}}">
@@ -1740,23 +1738,13 @@
     </script>
 
     <script type="text/template" id="explore-more-item-tmpl">
-        <li class="span2" id="show-more-{{type}}">
-            <div class="thumbnail explore-thumbnail">
-                <div class="numbered-image">
-                    <br>
-                    <p align="center">
-                        <center><h1>&gt;&gt;</h1></center>
-                    </p>
-                </div>
-                <div class="caption">
-                    <p>
-                        Only {{shown}} of {{known}} subjects are shown here.
-                    </p>
-                    <p align="center">
-                        <a class="btn btn-small btn-block {{type == 'target' ? 'btn-success' : (type == 'compound' ? 'btn-info' : 'btn-warning')}}">Load more</a>
-                    </p>
-                </div>
-            </div>
+        <tr id="show-more-{{type}}">
+        <td colspan=5>
+            <center><b>&gt;&gt;</b>
+            Only {{shown}} of {{known}} subjects are shown here.
+            <a class="btn btn-small {{type == 'target' ? 'btn-success' : (type == 'compound' ? 'btn-info' : 'btn-warning')}}">Load more</a>
+            </center>
+        </td>
         </li>
     </script>
 
