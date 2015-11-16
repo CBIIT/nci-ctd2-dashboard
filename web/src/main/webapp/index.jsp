@@ -1748,50 +1748,6 @@
         </li>
     </script>
 
-
-    <script type="text/template" id="browse-tmpl">
-        <div class="container common-container" id="browse-container">
-            <h2>Browse {{type}}s</h2>
-
-            <div class="alert alert-block">
-                <a href="#" class="close" data-dismiss="alert">&times;</a>
-                <p>
-                    Below is a list of {{type}}s that have at least one observation associated with it.
-                    The number in the parentheses show how many observations there are for the corresponding {{type}}.
-                </p>
-            </div>
-
-            <div class="pagination browse-pagination" id="browse-pagination">
-                <ul class="nav">
-                </ul>
-            </div>
-
-
-            <h3 class="loading">Loading...</h3>
-
-            <div class="alert alert-error alert-block hide" id="noitems-to-browse">
-                No {{type}}s were found starting with <strong>{{character.toUpperCase()}}</strong>
-            </div>
-
-            <ul id="browsed-items-list">
-
-            </ul>
-        </div>
-    </script>
-
-    <script type="text/template" id="browse-pagination-template">
-        <li class="{{className}}">
-            <a href="#browse/{{type}}/{{character}}" id="character-link-{{character}}" class="character-link">{{character.toUpperCase()}}</a>
-        </li>
-    </script>
-
-    <script type="text/template" id="browsed-item-tmpl">
-        <li class="browsed-item span3">
-            <a href="#subject/{{id}}">{{displayName}}</a>
-            (<small><i><span id="browsed-item-count-{{id}}">loading...</span></i></small>)
-        </li>
-    </script>
-    
     <script type="text/template" id="observedmrafileevidence-row-tmpl">
         <tr>
             <td>
