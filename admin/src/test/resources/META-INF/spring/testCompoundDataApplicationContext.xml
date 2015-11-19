@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:batch="http://www.springframework.org/schema/batch"
+		xmlns:context="http://www.springframework.org/schema/context"
+        xsi:schemaLocation="http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-2.1.xsd
+							http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+							http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+  <context:component-scan base-package="gov.nih.nci.ctd2.dashboard.importer.internal" />
+
+  <batch:job id="compoundDataImporterJob">
+	<batch:step id="compoundsStep" parent="compoundDataStep" next="compoundSynonymsStep">
+	  <batch:tasklet>
+		<batch:chunk reader="compoundsReader" writer="compoundsWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+	<batch:step id="compoundSynonymsStep" parent="compoundDataStep" next="compoundWriterStep">
+	  <batch:tasklet>
+		<batch:chunk reader="compoundSynonymsReader" writer="compoundSynonymsWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+	<batch:step id="compoundWriterStep" parent="compoundDataStep">
+	  <batch:tasklet ref="compoundDataWriter"/>
+	</batch:step>
+  </batch:job>
+
+  <bean id="compoundDataStep" class="org.springframework.batch.core.step.item.SimpleStepFactoryBean" abstract="true">
+	<property name="transactionManager" ref="transactionManager" />
+	<property name="jobRepository" ref="jobRepository" />
+	<property name="commitInterval" value="${spring.batch.commit.interval}" />
+  </bean>
+
+  <!-- compounds beans -->
+  <bean name="compoundsReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="resource" value="classpath:test-compounds.txt" />
+    <property name="lineMapper" ref="compoundsLineMapper" />
+	<property name="linesToSkip" value="1" />
+  </bean>
+
+  <bean name="compoundsLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+	<property name="fieldSetMapper" ref="compoundsMapper" />
+	<property name="lineTokenizer" ref="compoundsLineTokenizer" />
+  </bean>
+
+  <bean name="compoundsLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+	<property name="names" value="CPD_ID,CPD_PRIMARY_NAME,SMILES,STRUCTURE_FILE,PUBCHEM_CID,CAS_NUMBER"/>
+	<property name="delimiter" value="\u0009"/>
+  </bean>
+
+  <!-- compound synonyms beans -->
+  <bean name="compoundSynonymsReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="resource" value="classpath:test-compound-synonyms.txt" />
+    <property name="lineMapper" ref="compoundSynonymsLineMapper" />
+	<property name="linesToSkip" value="1" />
+  </bean>
+
+  <bean name="compoundSynonymsLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+	<property name="fieldSetMapper" ref="compoundSynonymsMapper" />
+	<property name="lineTokenizer" ref="compoundSynonymsLineTokenizer" />
+  </bean>
+
+  <bean name="compoundSynonymsLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+	<property name="names" value="CPD_ID,CPD_NAME"/>
+	<property name="delimiter" value="\u0009"/>
+  </bean>
+
+  <!-- used for compound data writing -->
+
+  <bean name="compoundDataWriter" class="gov.nih.nci.ctd2.dashboard.importer.internal.CompoundDataWriter"/>
+
+  <!-- the following beans are shared between all the steps of the compound importer job -->
+  <bean name="compoundMap" class="java.util.HashMap">
+	<constructor-arg index="0" type="java.util.Map">
+	  <map key-type="java.lang.String" value-type="gov.nih.nci.ctd2.dashboard.model.Compound"/>
+	</constructor-arg>
+  </bean>
+
+</beans>

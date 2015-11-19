@@ -1,0 +1,91 @@
+<ehcache>
+    <diskStore path="java.io.tmpdir"/>
+    <defaultCache
+            eternal="false"
+            timeToIdleSeconds="120"
+            timeToLiveSeconds="120"
+            overflowToDisk="true"
+            diskPersistent="false"
+            diskExpiryThreadIntervalSeconds="120"
+            memoryStoreEvictionPolicy="LRU"
+            maxElementsInMemory="1000"
+            />
+
+    <cache name="searchCache"
+           eternal="false"
+           timeToIdleSeconds="604800"
+           timeToLiveSeconds="604800"
+           overflowToDisk="true"
+           diskPersistent="false"
+           diskExpiryThreadIntervalSeconds="604800"
+           memoryStoreEvictionPolicy="LRU"
+           maxElementsInMemory="1000"
+            />
+
+    <cache name="browseTargetCache"
+           eternal="false"
+           timeToIdleSeconds="604800"
+           timeToLiveSeconds="604800"
+           overflowToDisk="true"
+           diskPersistent="false"
+           diskExpiryThreadIntervalSeconds="604800"
+           memoryStoreEvictionPolicy="LRU"
+           maxElementsInMemory="1000"
+            />
+
+    <cache name="browseCompoundCache"
+           eternal="false"
+           timeToIdleSeconds="604800"
+           timeToLiveSeconds="604800"
+           overflowToDisk="true"
+           diskPersistent="false"
+           diskExpiryThreadIntervalSeconds="604800"
+           memoryStoreEvictionPolicy="LRU"
+           maxElementsInMemory="1000"
+            />
+
+    <cache name="entityCache"
+           eternal="false"
+           timeToIdleSeconds="604800"
+           timeToLiveSeconds="604800"
+           overflowToDisk="true"
+           diskPersistent="false"
+           diskExpiryThreadIntervalSeconds="604800"
+           memoryStoreEvictionPolicy="LRU"
+           maxElementsInMemory="100000"
+            />
+
+    <cache name="exploreCache"
+           eternal="false"
+           timeToIdleSeconds="604800"
+           timeToLiveSeconds="604800"
+           overflowToDisk="true"
+           diskPersistent="false"
+           diskExpiryThreadIntervalSeconds="604800"
+           memoryStoreEvictionPolicy="LRU"
+           maxElementsInMemory="100000"
+            />
+
+    <cache name="uniprotCache"
+           eternal="false"
+           timeToIdleSeconds="604800"
+           timeToLiveSeconds="604800"
+           overflowToDisk="true"
+           diskPersistent="false"
+           diskExpiryThreadIntervalSeconds="604800"
+           memoryStoreEvictionPolicy="LRU"
+           maxElementsInMemory="100000"
+            />
+
+    <cache name="similarCache"
+           eternal="false"
+           timeToIdleSeconds="604800"
+           timeToLiveSeconds="604800"
+           overflowToDisk="true"
+           diskPersistent="false"
+           diskExpiryThreadIntervalSeconds="604800"
+           memoryStoreEvictionPolicy="LRU"
+           maxElementsInMemory="100"
+            />
+
+</ehcache>
