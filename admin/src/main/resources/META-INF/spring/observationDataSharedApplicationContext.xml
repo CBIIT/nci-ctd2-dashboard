@@ -378,9 +378,29 @@
 		<batch:chunk reader="dfciKrasTtestAnalysisReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	  </batch:tasklet>
 	</batch:step>
-    <batch:step id="dfciTbk1AnalysisStep" parent="observationDataStep">
+    <batch:step id="dfciTbk1AnalysisStep" parent="observationDataStep" next="hutchkKinomicsStep">
 	  <batch:tasklet>
 		<batch:chunk reader="dfciTbk1AnalysisReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+    <batch:step id="hutchkKinomicsStep" parent="observationDataStep" next="stanfordMethylmixStoryStep">
+	  <batch:tasklet>
+		<batch:chunk reader="hutchkKinomicsReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+    <batch:step id="stanfordMethylmixStoryStep" parent="observationDataStep" next="cshlPdacStep">
+	  <batch:tasklet>
+		<batch:chunk reader="stanfordMethylmixStoryReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+    <batch:step id="cshlPdacStep" parent="observationDataStep" next="stanfordTgfbr2Step">
+	  <batch:tasklet>
+		<batch:chunk reader="cshlPdacReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+    <batch:step id="stanfordTgfbr2Step" parent="observationDataStep">
+	  <batch:tasklet>
+		<batch:chunk reader="stanfordTgfbr2Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	  </batch:tasklet>
 	</batch:step>
   </batch:job>
@@ -1350,6 +1370,46 @@
   	<property name="delimiter" value="\u0009"/>
   	<property name="names" value="dummy,submission_name,submission_date,template_name,target_group_gene,target_group_alteration,gene_symbol,figure_1,figure_2,figure_3,figure_4,tier2_evidence_1,tier2_evidence_2,tier2_evidence_3,publication_url"/>
   </bean>
+  
+  <bean name="hutchkKinomicsLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+  	<property name="fieldSetMapper" ref="observationDataMapper" />
+  	<property name="lineTokenizer" ref="hutchkKinomicsLineTokenizer" />
+    </bean>
+
+    <bean name="hutchkKinomicsLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+  	<property name="delimiter" value="\u0009"/>
+  	<property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,gene_symbol_3,gene_symbol_4,compound_name_1,compound_name_2,cell_line,tissue_sample,publication_reference,story_location"/>
+  </bean>
+  
+  <bean name="stanfordMethylmixStoryLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+  	<property name="fieldSetMapper" ref="observationDataMapper" />
+  	<property name="lineTokenizer" ref="stanfordMethylmixStoryLineTokenizer" />
+    </bean>
+
+    <bean name="stanfordMethylmixStoryLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+  	<property name="delimiter" value="\u0009"/>
+  	<property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,gene_symbol_3,gene_symbol_4,gene_symbol_5,gene_symbol_6,gene_symbol_7,gene_symbol_8,gene_symbol_9,gene_symbol_10,gene_symbol_11,tissue_sample_1,tissue_sample_2,tissue_sample_3,tissue_sample_4,tissue_sample_5,tissue_sample_6,tissue_sample_7,resource_url_1,resource_url_2,resource_url_3,resource_url_4,resource_url_5,resource_url_6,resource_url_7,resource_url_8,link_url,publication_reference_1,publication_reference_2,story_location"/>
+  </bean>
+  
+  <bean name="cshlPdacLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+  	<property name="fieldSetMapper" ref="observationDataMapper" />
+  	<property name="lineTokenizer" ref="cshlPdacLineTokenizer" />
+    </bean>
+
+    <bean name="cshlPdacLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+  	<property name="delimiter" value="\u0009"/>
+  	<property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,gene_symbol_3,gene_symbol_4,tissue_sample,link_url,publication_reference,story_location"/>
+  </bean>
+  
+  <bean name="stanfordTgfbr2LineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+  	<property name="fieldSetMapper" ref="observationDataMapper" />
+  	<property name="lineTokenizer" ref="stanfordTgfbr2LineTokenizer" />
+    </bean>
+
+    <bean name="stanfordTgfbr2LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+  	<property name="delimiter" value="\u0009"/>
+  	<property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,gene_symbol_3,gene_symbol_4,tissue_sample_1,tissue_sample_2,publication_reference,story_location"/>
+  </bean>
 
   <!-- shared helper beans -->
   <bean name="observationTemplateMap" class="java.util.HashMap">
@@ -2165,6 +2225,66 @@
         <entry key="dfci_tbk1_analysis:tier2_evidence_2" value="evidence:readString:createObservedUrlEvidence" />
         <entry key="dfci_tbk1_analysis:tier2_evidence_3" value="evidence:readString:createObservedUrlEvidence" />
         <entry key="dfci_tbk1_analysis:publication_url" value="evidence:readString:createObservedUrlEvidence" />
+        <!-- hutch k kinomics -->
+        <entry key="hutchk_kinomics:gene_symbol_1" value="subject:findGenesBySymbol" />
+        <entry key="hutchk_kinomics:gene_symbol_2" value="subject:findGenesBySymbol" />
+        <entry key="hutchk_kinomics:gene_symbol_3" value="subject:findGenesBySymbol" />
+        <entry key="hutchk_kinomics:gene_symbol_4" value="subject:findGenesBySymbol" />
+        <entry key="hutchk_kinomics:compound_name_1" value="subject:findCompoundsByName" />
+        <entry key="hutchk_kinomics:compound_name_2" value="subject:findCompoundsByName" />
+        <entry key="hutchk_kinomics:cell_line" value="subject:findCellLineByName" />
+        <entry key="hutchk_kinomics:tissue_sample" value="subject:findTissueSampleByName" />
+        <entry key="hutchk_kinomics:publication_reference" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="hutchk_kinomics:story_location" value="evidence:readString:createObservedFileEvidence" />
+        <!-- stanford methylmix story -->
+        <entry key="stanford_methylmix_story:gene_symbol_1" value="subject:findGenesBySymbol" />
+        <entry key="stanford_methylmix_story:gene_symbol_2" value="subject:findGenesBySymbol" />
+        <entry key="stanford_methylmix_story:gene_symbol_3" value="subject:findGenesBySymbol" />
+        <entry key="stanford_methylmix_story:gene_symbol_4" value="subject:findGenesBySymbol" />
+        <entry key="stanford_methylmix_story:gene_symbol_5" value="subject:findGenesBySymbol" />
+        <entry key="stanford_methylmix_story:gene_symbol_6" value="subject:findGenesBySymbol" />
+        <entry key="stanford_methylmix_story:gene_symbol_7" value="subject:findGenesBySymbol" />
+        <entry key="stanford_methylmix_story:gene_symbol_8" value="subject:findGenesBySymbol" />
+        <entry key="stanford_methylmix_story:gene_symbol_9" value="subject:findGenesBySymbol" />
+        <entry key="stanford_methylmix_story:gene_symbol_10" value="subject:findGenesBySymbol" />
+        <entry key="stanford_methylmix_story:gene_symbol_11" value="subject:findGenesBySymbol" />
+        <entry key="stanford_methylmix_story:tissue_sample_1" value="subject:findTissueSampleByName" />
+        <entry key="stanford_methylmix_story:tissue_sample_2" value="subject:findTissueSampleByName" />
+        <entry key="stanford_methylmix_story:tissue_sample_3" value="subject:findTissueSampleByName" />
+        <entry key="stanford_methylmix_story:tissue_sample_4" value="subject:findTissueSampleByName" />
+        <entry key="stanford_methylmix_story:tissue_sample_5" value="subject:findTissueSampleByName" />
+        <entry key="stanford_methylmix_story:tissue_sample_6" value="subject:findTissueSampleByName" />
+        <entry key="stanford_methylmix_story:tissue_sample_7" value="subject:findTissueSampleByName" />
+        <entry key="stanford_methylmix_story:resource_url_1" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="stanford_methylmix_story:resource_url_2" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="stanford_methylmix_story:resource_url_3" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="stanford_methylmix_story:resource_url_4" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="stanford_methylmix_story:resource_url_5" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="stanford_methylmix_story:resource_url_6" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="stanford_methylmix_story:resource_url_7" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="stanford_methylmix_story:resource_url_8" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="stanford_methylmix_story:link_url" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="stanford_methylmix_story:publication_reference_1" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="stanford_methylmix_story:publication_reference_2" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="stanford_methylmix_story:story_location" value="evidence:readString:createObservedFileEvidence" />
+        <!-- cshl pdac -->
+        <entry key="cshl_pdac:gene_symbol_1" value="subject:findGenesBySymbol" />
+        <entry key="cshl_pdac:gene_symbol_2" value="subject:findGenesBySymbol" />
+        <entry key="cshl_pdac:gene_symbol_3" value="subject:findGenesBySymbol" />
+        <entry key="cshl_pdac:gene_symbol_4" value="subject:findGenesBySymbol" />
+        <entry key="cshl_pdac:tissue_sample" value="subject:findTissueSampleByName" />
+        <entry key="cshl_pdac:link_url" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="cshl_pdac:publication_reference" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="cshl_pdac:story_location" value="evidence:readString:createObservedFileEvidence" />
+        <!-- stanford tgfbr2 -->
+        <entry key="stanford_tgfbr2:gene_symbol_1" value="subject:findGenesBySymbol" />
+        <entry key="stanford_tgfbr2:gene_symbol_2" value="subject:findGenesBySymbol" />
+        <entry key="stanford_tgfbr2:gene_symbol_3" value="subject:findGenesBySymbol" />
+        <entry key="stanford_tgfbr2:gene_symbol_4" value="subject:findGenesBySymbol" />
+        <entry key="stanford_tgfbr2:tissue_sample_1" value="subject:findTissueSampleByName" />
+        <entry key="stanford_tgfbr2:tissue_sample_2" value="subject:findTissueSampleByName" />
+        <entry key="stanford_tgfbr2:publication_reference" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="stanford_tgfbr2:story_location" value="evidence:readString:createObservedFileEvidence" />
         
 	  </map>
 	</constructor-arg>

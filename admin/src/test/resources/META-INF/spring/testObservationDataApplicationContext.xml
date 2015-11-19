@@ -384,5 +384,21 @@
   <bean name="dfciTbk1AnalysisReader" class="org.springframework.batch.item.file.FlatFileItemReader">
     <property name="lineMapper" ref="dfciTbk1AnalysisLineMapper" />
   </bean>
+  
+  <bean name="hutchkKinomicsReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+    <property name="lineMapper" ref="hutchkKinomicsLineMapper" />
+  </bean>
+  
+  <bean name="stanfordMethylmixStoryReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+    <property name="lineMapper" ref="stanfordMethylmixStoryLineMapper" />
+  </bean>
+  
+  <bean name="cshlPdacReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+    <property name="lineMapper" ref="cshlPdacLineMapper" />
+  </bean>
+  
+  <bean name="stanfordTgfbr2Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
+    <property name="lineMapper" ref="stanfordTgfbr2LineMapper" />
+  </bean>
 
 </beans>
