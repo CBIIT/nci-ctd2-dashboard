@@ -21,9 +21,9 @@ public class ObservationDataFactoryImpl implements ObservationDataFactory {
 
 	private static final String DASHBOARD_SUBMISSION_URL = "/#/submission/";	
     private static final String DASHBOARD_OBSERVATION_URL = "/#/observation/";
-    private static final Pattern LINKBACK_URL_EVIDENCE_REGEX = Pattern.compile("tier._evidence");
-    // submission_name:column_name=column_value
-    private static final Pattern LINKBACK_URL_REGEX = Pattern.compile("([\\w|\\-]+):([\\w|\\-|&|=]+)");
+    //private static final Pattern LINKBACK_URL_EVIDENCE_REGEX = Pattern.compile("tier._evidence");
+    // submission_name:col_name_1=col_val_1&col_name_2=col_val_2
+    private static final Pattern LINKBACK_URL_REGEX = Pattern.compile("([\\w\\-]+):([\\w\\-&=]+)");
 
     private class LinkbackURL {
         public String submissionName;
@@ -219,23 +219,23 @@ public class ObservationDataFactoryImpl implements ObservationDataFactory {
 
         String evidenceURL = null;
         
-        Matcher linkbackURLEvidenceMatcher = LINKBACK_URL_EVIDENCE_REGEX.matcher(columnName);
+        //Matcher linkbackURLEvidenceMatcher = LINKBACK_URL_EVIDENCE_REGEX.matcher(columnName);
         // is this a linkback
-        if (linkbackURLEvidenceMatcher.find()) {
-            Matcher linkbackURLMatcher = LINKBACK_URL_REGEX.matcher(evidenceValue);
-	        // is this a linkback to an observation
-            if (linkbackToObservation(linkbackURLMatcher)) {
-                LinkbackURL linkbackURL = getLinkbackURL(linkbackURLMatcher);
-                Submission submission = dashboardDao.findSubmissionByName(linkbackURL.submissionName);
-                evidenceURL = getLinkbackURL(linkbackURL.columnValuePairs,
-                                             getObservations(submission));
-            }
-	        // is this a linkback to submission
-    	    else if (linkbackToSubmission(evidenceValue)) {
-	    		Submission submission = dashboardDao.findSubmissionByName(evidenceValue);
-	        	evidenceURL = DASHBOARD_SUBMISSION_URL + submission.getId();
-	        }
+        //if (linkbackURLEvidenceMatcher.find()) {
+        Matcher linkbackURLMatcher = LINKBACK_URL_REGEX.matcher(evidenceValue);
+	    // is this a linkback to an observation
+        if (linkbackToObservation(linkbackURLMatcher)) {
+            LinkbackURL linkbackURL = getLinkbackURL(linkbackURLMatcher);
+            Submission submission = dashboardDao.findSubmissionByName(linkbackURL.submissionName);
+            evidenceURL = getLinkbackURL(linkbackURL.columnValuePairs,
+                                         getObservations(submission));
         }
+	    // is this a linkback to submission
+    	else if (linkbackToSubmission(evidenceValue)) {
+	    	Submission submission = dashboardDao.findSubmissionByName(evidenceValue);
+	        evidenceURL = DASHBOARD_SUBMISSION_URL + submission.getId();
+	    }
+        //}
         
         return (evidenceURL == null) ? evidenceValue : evidenceURL;
     }
