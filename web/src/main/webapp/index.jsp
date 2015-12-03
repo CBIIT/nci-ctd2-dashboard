@@ -1731,8 +1731,8 @@
                 </a>
             </td>
             <td>{{role}}</td>
-            <td>{{maxTier == 3 ? "<a href='#subject/"+subject.id+"'>"+numberOfObservations+"</a> ("+numberOfSubmissionCenters+" centers)" : ""}}</td>
-            <td>{{maxTier == 2 ? "<a href='#subject/"+subject.id+"'>"+numberOfObservations+"</a> ("+numberOfSubmissionCenters+" centers)" : ""}}</td>
+            <td>{{ "<a href='#subject/"+subject.id+"'>"+numberOfTier3Observations+"</a> ("+numberOfTier3SubmissionCenters+" centers)" }}</td>
+            <td>{{ "<a href='#subject/"+subject.id+"'>"+numberOfTier2Observations+"</a> ("+numberOfTier2SubmissionCenters+" centers)" }}</td>
             <!-- other available fields: {{type}} {{order}}. Data model ('subject summary')needs to be changed to have information of different tiers.-->
         </tr>
     </script>
