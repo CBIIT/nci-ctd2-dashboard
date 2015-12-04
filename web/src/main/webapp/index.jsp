@@ -1723,7 +1723,7 @@
         <tr>
             <td>
                  {{subject.class}}
-                 <img src="{{subject.class == 'Compound' ? '<%=dataURL%>compounds/' + subject.imageFile : 'img/' + subject.class.toLowerCase() + '.png' }}" style="height:25px" alt="">
+                 {{subject.class == 'Compound' ? "<a href='<%=dataURL%>compounds/"+ subject.imageFile +"' target='_blank' class='compound-image' title='Compound: " + subject.displayName + "'><img class='img-polaroid' style='height:25px' src='<%=dataURL%>compounds/" + subject.imageFile + "' alt='Compound: " + subject.displayName +"'></a>" : "<img src='img/"+ subject.class.toLowerCase() + ".png' style='height:25px' alt=''>" }}
             </td>
             <td>
                 <a href="#/subject/{{subject.id}}">
@@ -1731,8 +1731,8 @@
                 </a>
             </td>
             <td>{{role}}</td>
-            <td>{{ "<a href='#subject/"+subject.id+"'>"+numberOfTier3Observations+"</a> ("+numberOfTier3SubmissionCenters+" centers)" }}</td>
-            <td>{{ "<a href='#subject/"+subject.id+"'>"+numberOfTier2Observations+"</a> ("+numberOfTier2SubmissionCenters+" centers)" }}</td>
+            <td>{{ "<a href='#subject/"+subject.id+"'>"+numberOfTier3Observations+"</a> ("+numberOfTier3SubmissionCenters+" center" }}{{numberOfTier3SubmissionCenters <= 1 ? "" : "s"}})</td>
+            <td>{{ "<a href='#subject/"+subject.id+"'>"+numberOfTier2Observations+"</a> ("+numberOfTier2SubmissionCenters+" center" }}{{numberOfTier2SubmissionCenters <= 1 ? "" : "s"}})</td>
             <!-- other available fields: {{type}} {{order}}. Data model ('subject summary')needs to be changed to have information of different tiers.-->
         </tr>
     </script>

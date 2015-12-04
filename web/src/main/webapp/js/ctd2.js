@@ -2898,6 +2898,7 @@
 
         render: function() {
             $(this.el).append(this.template(this.model));
+            $("a.compound-image").fancybox({titlePosition: 'inside'});
             return this;
         }
     });
