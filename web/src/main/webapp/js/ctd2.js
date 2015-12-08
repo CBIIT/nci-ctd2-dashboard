@@ -1021,7 +1021,9 @@
     var SubjectObservationsView = Backbone.View.extend({
         render: function() {
             var thatEl = $(this.el);
-            var subjectId = this.model;
+            var thatModel = this.model;
+            var subjectId = thatModel.subjectId;
+            var tier = thatModel.tier; // possibly undefined
 
             $.ajax("count/observation/?filterBy=" + subjectId).done(function(count) {
                 var observations = new Observations({ subjectId: subjectId });
@@ -1030,6 +1032,8 @@
                         $(".subject-observations-loading", thatEl).remove();
                         _.each(observations.models, function (observation) {
                             observation = observation.toJSON();
+                            var obsv_tier = observation.submission.observationTemplate.tier;
+                            if(typeof tier != 'undefined' && obsv_tier!=tier) return;
 
                             var observationRowView
                                 = new ObservationRowView({ el: $(thatEl).find("tbody"), model: observation });
@@ -1081,7 +1085,8 @@
         el: $("#main-container"),
         template:  _.template($("#gene-tmpl").html()),
         render: function() {
-            var result = this.model.toJSON();
+            var thatModel = this.model;
+            var result = thatModel.subject.toJSON();
             // Find out the UniProt ID
 
             result["type"] = result.class;
@@ -1103,7 +1108,7 @@
             });
 
             var subjectObservationView = new SubjectObservationsView({
-                model: result.id,
+                model: {subjectId: result.id, tier:thatModel.tier},
                 el: "#gene-observation-grid"
             });
             subjectObservationView.render();
@@ -3692,6 +3697,7 @@
             "observation/:id": "showObservation",
             "search/:term": "search",
             "subject/:id": "showSubject",
+            "subject/:id/:tier": "showSubject",
             "evidence/:id": "showMraView",
             "template-helper": "showTemplateHelper",
             "about": "helpNavigate",
@@ -3758,14 +3764,14 @@
             exploreView.render();
         },
 
-        showSubject: function(id) {
+        showSubject: function(id, tier) {
             var subject = new Subject({ id: id });
             subject.fetch({
                 success: function() {
                     var type = subject.get("class");
                     var subjectView;
                     if(type == "Gene") {
-                        subjectView = new GeneView({ model: subject });
+                        subjectView = new GeneView({ model: {subject:subject, tier:tier} });
                     } else if(type == "AnimalModel") {
                         subjectView = new AnimalModelView({ model: subject });
                     } else if(type == "Compound") {
@@ -3786,7 +3792,7 @@
                     } else if(type == "Protein") {
                         subjectView = new ProteinView({model: subject });
                     } else {
-                        subjectView = new GeneView({ model: subject });
+                        subjectView = new GeneView({ model: {subject:subject, tier:tier} });
                     }
                     subjectView.render();
                 }

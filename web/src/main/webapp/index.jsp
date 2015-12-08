@@ -1731,8 +1731,8 @@
                 </a>
             </td>
             <td>{{role}}</td>
-            <td>{{ "<a href='#subject/"+subject.id+"'>"+numberOfTier3Observations+"</a> ("+numberOfTier3SubmissionCenters+" center" }}{{numberOfTier3SubmissionCenters <= 1 ? "" : "s"}})</td>
-            <td>{{ "<a href='#subject/"+subject.id+"'>"+numberOfTier2Observations+"</a> ("+numberOfTier2SubmissionCenters+" center" }}{{numberOfTier2SubmissionCenters <= 1 ? "" : "s"}})</td>
+            <td>{{ "<a href='#subject/"+subject.id+"/3'>"+numberOfTier3Observations+"</a> ("+numberOfTier3SubmissionCenters+" center" }}{{numberOfTier3SubmissionCenters <= 1 ? "" : "s"}})</td>
+            <td>{{ "<a href='#subject/"+subject.id+"/2'>"+numberOfTier2Observations+"</a> ("+numberOfTier2SubmissionCenters+" center" }}{{numberOfTier2SubmissionCenters <= 1 ? "" : "s"}})</td>
             <!-- other available fields: {{type}} {{order}}. Data model ('subject summary')needs to be changed to have information of different tiers.-->
         </tr>
     </script>
