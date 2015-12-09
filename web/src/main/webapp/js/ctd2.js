@@ -981,7 +981,8 @@
          el: $("#main-container"),
          template:  _.template($("#compound-tmpl").html()),
          render: function() {
-             var result = this.model.toJSON();
+             var thatModel = this.model;
+             var result = thatModel.subject.toJSON();
 
              result["pubchem"] = result["cas"] = false;
 
@@ -1008,7 +1009,7 @@
              });
 
              var subjectObservationView = new SubjectObservationsView({
-                 model: result.id,
+                 model: {subjectId: result.id, tier:thatModel.tier},
                  el: "#compound-observation-grid"
              });
              subjectObservationView.render();
@@ -1128,7 +1129,8 @@
         el: $("#main-container"),
         template:  _.template($("#protein-tmpl").html()),
         render: function() {
-            var result = this.model.toJSON();
+            var thatModel = this.model;
+            var result = thatModel.subject.toJSON();
             result["type"] = result.class;
             $(this.el).html(this.template(result));
 
@@ -1148,7 +1150,7 @@
 
 
             var subjectObservationView = new SubjectObservationsView({
-                model: result.id,
+                model: {subjectId: result.id, tier:thatModel.tier},
                 el: "#protein-observation-grid"
             });
             subjectObservationView.render();
@@ -1161,12 +1163,13 @@
         el: $("#main-container"),
         template:  _.template($("#shrna-tmpl").html()),
         render: function() {
-            var result = this.model.toJSON();
+            var thatModel = this.model;
+            var result = thatModel.subject.toJSON();
             result["type"] = result.class;
             $(this.el).html(this.template(result));
 
             var subjectObservationView = new SubjectObservationsView({
-                model: result.id,
+                model: {subjectId: result.id, tier:thatModel.tier},
                 el: "#shrna-observation-grid"
             });
             subjectObservationView.render();
@@ -1179,12 +1182,13 @@
         el: $("#main-container"),
         template:  _.template($("#sirna-tmpl").html()),
         render: function() {
-            var result = this.model.toJSON();
+            var thatModel = this.model;
+            var result = thatModel.subject.toJSON();
             result["type"] = "sirna";
             $(this.el).html(this.template(result));
 
             var subjectObservationView = new SubjectObservationsView({
-                model: result.id,
+                model: {subjectId: result.id, tier:thatModel.tier},
                 el: "#sirna-observation-grid"
             });
             subjectObservationView.render();
@@ -1197,12 +1201,13 @@
         el: $("#main-container"),
         template:  _.template($("#transcript-tmpl").html()),
         render: function() {
-            var result = this.model.toJSON();
+            var thatModel = this.model;
+            var result = thatModel.subject.toJSON();
             result["type"] = result.class;
             $(this.el).html(this.template(result));
 
             var subjectObservationView = new SubjectObservationsView({
-                model: result.id,
+                model: {subjectId: result.id, tier:thatModel.tier},
                 el: "#transcript-observation-grid"
             });
             subjectObservationView.render();
@@ -1215,7 +1220,8 @@
         el: $("#main-container"),
         template:  _.template($("#tissuesample-tmpl").html()),
         render: function() {
-            var result = this.model.toJSON();
+            var thatModel = this.model;
+            var result = thatModel.subject.toJSON();
             result["type"] = result.class;
             $(this.el).html(this.template(result));
 
@@ -1243,7 +1249,7 @@
             });
 
             var subjectObservationView = new SubjectObservationsView({
-                model: result.id,
+                model: {subjectId: result.id, tier:thatModel.tier},
                 el: "#tissuesample-observation-grid"
             });
             subjectObservationView.render();
@@ -1257,7 +1263,8 @@
         el: $("#main-container"),
         template:  _.template($("#animalmodel-tmpl").html()),
         render: function() {
-            var result = this.model.toJSON();
+            var thatModel = this.model;
+            var result = thatModel.subject.toJSON();
             result["type"] = result.class;
             $(this.el).html(this.template(result));
 
@@ -1277,7 +1284,7 @@
             });
 
             var subjectObservationView = new SubjectObservationsView({
-                model: result.id,
+                model: {subjectId: result.id, tier:thatModel.tier},
                 el: "#animalmodel-observation-grid"
             });
             subjectObservationView.render();
@@ -1298,7 +1305,8 @@
         el: $("#main-container"),
         template:  _.template($("#cellsample-tmpl").html()),
         render: function() {
-            var result = this.model.toJSON();
+            var thatModel = this.model;
+            var result = thatModel.subject.toJSON();
             result["type"] = result.class;
 
             // Look for cbioPortal Id
@@ -1334,7 +1342,7 @@
             });
 
             var subjectObservationView = new SubjectObservationsView({
-                model: result.id,
+                model: {subjectId: result.id, tier:thatModel.tier},
                 el: "#cellsample-observation-grid"
             });
             subjectObservationView.render();
@@ -3773,24 +3781,24 @@
                     if(type == "Gene") {
                         subjectView = new GeneView({ model: {subject:subject, tier:tier} });
                     } else if(type == "AnimalModel") {
-                        subjectView = new AnimalModelView({ model: subject });
+                        subjectView = new AnimalModelView({ model: {subject:subject, tier:tier} });
                     } else if(type == "Compound") {
-                        subjectView = new CompoundView({ model: subject });
+                        subjectView = new CompoundView({ model: {subject:subject, tier:tier} });
                     } else if(type == "CellSample") {
-                        subjectView = new CellSampleView({ model: subject });
+                        subjectView = new CellSampleView({ model: {subject:subject, tier:tier} });
                     } else if(type == "TissueSample") {
-                        subjectView = new TissueSampleView({ model: subject });
+                        subjectView = new TissueSampleView({ model: {subject:subject, tier:tier} });
                     } else if(type == "ShRna") {
                         // shRna covers both siRNA and shRNA
                         if(subject.get("type").toLowerCase() == "sirna") {
-                            subjectView = new SirnaView({ model: subject });
+                            subjectView = new SirnaView({ model: {subject:subject, tier:tier} });
                         } else {
-                            subjectView = new ShrnaView({ model: subject });
+                            subjectView = new ShrnaView({ model: {subject:subject, tier:tier} });
                         }
                     } else if(type == "Transcript") {
-                        subjectView = new TranscriptView({ model: subject });
+                        subjectView = new TranscriptView({ model: {subject:subject, tier:tier} });
                     } else if(type == "Protein") {
-                        subjectView = new ProteinView({model: subject });
+                        subjectView = new ProteinView({model: {subject:subject, tier:tier} });
                     } else {
                         subjectView = new GeneView({ model: {subject:subject, tier:tier} });
                     }
