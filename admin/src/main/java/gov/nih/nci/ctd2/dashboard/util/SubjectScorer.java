@@ -133,6 +133,7 @@ public class SubjectScorer {
                     HashSet<SubmissionCenter> centers = new HashSet<SubmissionCenter>();
                     centers.add(submissionCenter);
                     withSummaries.setNumberOfSubmissionCenters(1);
+                    withSummaries.addSubmission(tier, submissionCenter.getId());
                     subjectToCenters.put(subject, centers);
                     subjectToSummaries.put(subject, withSummaries);
                     HashMap<SubmissionCenter, Integer> cScores = new HashMap<>();
@@ -145,6 +146,7 @@ public class SubjectScorer {
                     HashSet<SubmissionCenter> submissionCenters = subjectToCenters.get(subject);
                     submissionCenters.add(submissionCenter);
                     withSummaries.setNumberOfSubmissionCenters(submissionCenters.size());
+                    withSummaries.addSubmission(tier, submissionCenter.getId());
 
                     HashMap<SubmissionCenter, Integer> cScores = centerBasedScores.get(subject);
                     Integer previousScore = cScores.get(submissionCenter);

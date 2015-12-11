@@ -94,12 +94,6 @@ public class WebServiceUtil {
     }
 
     @Transactional
-    /* don't make this cacheable */
-    public List<ObservedSubject> findObservedSubjectByRole(String keyword) {
-        return dashboardDao.findObservedSubjectByRole(keyword);
-    }
-
-    @Transactional
     @Cacheable(value = "similarCache")
     public List<Submission> getSimilarSubmissions(Integer submissionId) {
         ArrayList<Submission> submissions = new ArrayList<Submission>();
