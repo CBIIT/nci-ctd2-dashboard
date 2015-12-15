@@ -1630,7 +1630,7 @@
         </div>
     </script>
 
-    <script type="text/template" id="text-blurb-biomarker-target">
+    <script type="text/template" id="text-blurb-target">
         <div class="alert alert-warning">
             <button type="button" class="close" data-dismiss="alert">&times;</button>
             <p>
@@ -1640,7 +1640,7 @@
         </div>
     </script>
 
-    <script type="text/template" id="text-blurb-perturbagen">
+    <script type="text/template" id="text-blurb-compound">
         <div class="alert alert-warning">
             <button type="button" class="close" data-dismiss="alert">&times;</button>
             <p>
@@ -1650,7 +1650,7 @@
         </div>
     </script>
 
-    <script type="text/template" id="text-blurb-disease">
+    <script type="text/template" id="text-blurb-context">
         <div class="alert alert-warning">
             <button type="button" class="close" data-dismiss="alert">&times;</button>
             <p>
