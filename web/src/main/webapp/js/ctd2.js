@@ -2859,6 +2859,7 @@
                         var currentRoles = decodeURIComponent(thatModel.roles.toLowerCase());
                         _.each(subjectRoles.models, function(role) {
                             role = role.toJSON();
+                            if(browseRole[thatModel.type].indexOf(role.displayName)==-1) return;
                             var checked = currentRoles.search(role.displayName.toLowerCase()) > -1;
                             role["checked"] = checked;
                             var roleName = role.displayName;
@@ -2889,6 +2890,12 @@
             return this;
         }
     });
+
+	var browseRole = {
+		target: ["background", "biomarker", "candidate master regulator", "interactor", "master regulator", "oncogene", "target"],
+		compound: ["candidate drug", "control compound", "perturbagen"],
+		context: ["disease", "metastasis", "tissue"]
+	};
 
     //customize-roles-item-tmpl
     var CustomRoleItemView = Backbone.View.extend({
