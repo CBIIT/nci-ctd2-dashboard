@@ -1732,10 +1732,9 @@
                 </a>
             </td>
             <td>{{role}}</td>
-            <td>{{ "<a href='#subject/"+subject.id+"/3'>"+numberOfTier3Observations+"</a> ("+numberOfTier3SubmissionCenters+" center" }}{{numberOfTier3SubmissionCenters <= 1 ? "" : "s"}})</td>
-            <td>{{ "<a href='#subject/"+subject.id+"/2'>"+numberOfTier2Observations+"</a> ("+numberOfTier2SubmissionCenters+" center" }}{{numberOfTier2SubmissionCenters <= 1 ? "" : "s"}})</td>
-            <td>{{ "<a href='#subject/"+subject.id+"/1'>"+numberOfTier1Observations+"</a> ("+numberOfTier1SubmissionCenters+" center" }}{{numberOfTier1SubmissionCenters <= 1 ? "" : "s"}})</td>
-            <!-- other available fields: {{type}} {{order}}. Data model ('subject summary')needs to be changed to have information of different tiers.-->
+            <td>{{ numberOfTier3Observations==0?"":"<a href='#subject/"+subject.id+"/3'>"+numberOfTier3Observations+"</a> ("+numberOfTier3SubmissionCenters+" center" }}{{numberOfTier3SubmissionCenters>1 ? "s" : ""}}{{numberOfTier3SubmissionCenters>0 ? ")" : ""}}</td>
+            <td>{{ numberOfTier2Observations==0?"":"<a href='#subject/"+subject.id+"/2'>"+numberOfTier2Observations+"</a> ("+numberOfTier2SubmissionCenters+" center" }}{{numberOfTier2SubmissionCenters>1 ? "s" : ""}}{{numberOfTier2SubmissionCenters>0 ? ")" : ""}}</td>
+            <td>{{ numberOfTier1Observations==0?"":"<a href='#subject/"+subject.id+"/1'>"+numberOfTier1Observations+"</a> ("+numberOfTier1SubmissionCenters+" center" }}{{numberOfTier1SubmissionCenters>1 ? "s" : ""}}{{numberOfTier1SubmissionCenters>0 ? ")" : ""}}</td>
         </tr>
     </script>
 
