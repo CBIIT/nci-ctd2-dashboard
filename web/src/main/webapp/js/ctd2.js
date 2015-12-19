@@ -2768,6 +2768,17 @@
         }
     });
 
+    var reformattedClassName = {
+    		"Gene": "gene",
+    		"AnimalModel": "animal model",
+    		"Compound": "compound",
+    		"CellSample": "cell sample",
+    		"TissueSample": "tissue sample",
+    		"ShRna": "shRNA",
+    		"Transcript": "transcript",
+    		"Protein": "protein",
+    };
+
     var ExploreView = Backbone.View.extend({
         el: $("#main-container"),
         template: _.template($("#explore-tmpl").html()),
@@ -2791,6 +2802,7 @@
                             sModel["spanSize"] = spanSize;
                             sModel["type"] = thatModel.type;
                             sModel["order"] = order;
+                            sModel["reformattedClassName"] = reformattedClassName[sModel.subject.class];
                             if(sModel.subject.class == "Compound") {
                                 _.each(sModel.subject.xrefs, function(xref) {
                                     if(xref.databaseName == "IMAGE") {
@@ -2820,6 +2832,7 @@
                                     sModel["spanSize"] = spanSize;
                                     sModel["type"] = thatModel.type;
                                     sModel["order"] = j;
+                                    sModel["reformattedClassName"] = reformattedClassName[sModel.subject.class];
                                     if(sModel.subject.class == "Compound") {
                                         _.each(sModel.subject.xrefs, function(xref) {
                                             if(xref.databaseName == "IMAGE") {
@@ -2837,9 +2850,9 @@
                     }
 
                     $(".explore-thumbnail h4").tooltip();
-                    var blurb = $("#text-blurb-" + thatModel.type);
+                    var blurb = $("#text-blurb");
                     if(blurb.length > 0) {
-                        $("#explore-blurb").append(_.template(blurb.html(), {}));
+                        $("#explore-blurb").append(_.template(blurb.html(), {subject_type: subjectType[thatModel.type], roles: thatModel.roles}));
                         $("#explore-blurb .blurb-help").click(function(e) {
                             e.preventDefault();
                             (new HelpNavigateView()).render();
@@ -2895,6 +2908,12 @@
 		target: ["background", "biomarker", "candidate master regulator", "interactor", "master regulator", "oncogene", "target"],
 		compound: ["candidate drug", "control compound", "perturbagen"],
 		context: ["disease", "metastasis", "tissue"]
+	};
+
+	var subjectType = {
+			target: "Biomarkers, Targets, Genes & Proteins (genes)",
+			compound: "Compounds and Perturbagens (compounds, shRNA, genes)",
+			context: "Disease Context (tissues)"
 	};
 
     //customize-roles-item-tmpl

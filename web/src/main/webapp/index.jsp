@@ -1630,32 +1630,13 @@
         </div>
     </script>
 
-    <script type="text/template" id="text-blurb-target">
+    <script type="text/template" id="text-blurb">
         <div class="alert alert-warning">
             <button type="button" class="close" data-dismiss="alert">&times;</button>
             <p>
-                Entries listed below are ordered by relevance, which is determined by number of observations and <a class="blurb-help" href="#help-navigate">Tier</a>s of evidence associated with a gene or protein.
-                Each gene and protein in the following list has at least one associated observation that assigns it the role of biomarker or target.
-            </p>
-        </div>
-    </script>
-
-    <script type="text/template" id="text-blurb-compound">
-        <div class="alert alert-warning">
-            <button type="button" class="close" data-dismiss="alert">&times;</button>
-            <p>
-                Entries listed below are ordered by relevance, which is determined by number of observations and <a class="blurb-help" href="#help-navigate">Tier</a>s of evidence associated with a compound.
-                Each compound in the following list has at least one associated observation that assigns it the role of perturbagen.
-            </p>
-        </div>
-    </script>
-
-    <script type="text/template" id="text-blurb-context">
-        <div class="alert alert-warning">
-            <button type="button" class="close" data-dismiss="alert">&times;</button>
-            <p>
-                Entries listed below are ordered by relevance, which is determined by number of observations within the CTD<sup>2</sup> Network and <a class="blurb-help" href="#help-navigate">Tier</a>s of evidence associated with a disease.
-                Each disease context in the following list has at least one associated observation relevant to that disease.
+                Currently displaying summary data for Tier 1 – Tier 3 observations involving {{subject_type}} that have been assigned one of the following roles:
+                {{ decodeURIComponent(roles).split(",").join(", ") }}
+                (see <a class="blurb-help" href="#help-navigate">background information</a> for the meaning of observations, roles, and Tiers).
             </p>
         </div>
     </script>
@@ -1721,9 +1702,9 @@
     </script>
 
     <script type="text/template" id="explore-item-tmpl">
-        <tr>
+        <tr style='white-space: nowrap;'>
             <td>
-                 {{subject.class}}
+                 {{reformattedClassName}}
                  {{subject.class == 'Compound' ? "<a href='<%=dataURL%>compounds/"+ subject.imageFile +"' target='_blank' class='compound-image' title='Compound: " + subject.displayName + "'><img class='img-polaroid' style='height:25px' src='<%=dataURL%>compounds/" + subject.imageFile + "' alt='Compound: " + subject.displayName +"'></a>" : "<img src='img/"+ subject.class.toLowerCase() + ".png' style='height:25px' alt=''>" }}
             </td>
             <td>
