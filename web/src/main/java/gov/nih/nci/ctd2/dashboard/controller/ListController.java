@@ -61,7 +61,13 @@ public class ListController {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json; charset=utf-8");
 
-        List<? extends DashboardEntity> entities = webServiceUtil.getDashboardEntities(type, filterBy);
+        List<? extends DashboardEntity> entities = null;
+        if(type.startsWith("observations-")) { // observation list per role
+            String role = type.substring(type.indexOf("-")+1);
+            entities = webServiceUtil.getObservationsPerRole(filterBy, role);
+        } else {
+            entities = webServiceUtil.getDashboardEntities(type, filterBy);
+        }
         if(!getAll && entities.size() > getMaxNumberOfEntities()) {
             entities = entities.subList(0, getMaxNumberOfEntities()-1);
         }
