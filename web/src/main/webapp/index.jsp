@@ -1708,14 +1708,14 @@
                  {{subject.class == 'Compound' ? "<a href='<%=dataURL%>compounds/"+ subject.imageFile +"' target='_blank' class='compound-image' title='Compound: " + subject.displayName + "'><img class='img-polaroid' style='height:25px' src='<%=dataURL%>compounds/" + subject.imageFile + "' alt='Compound: " + subject.displayName +"'></a>" : "<img src='img/"+ subject.class.toLowerCase() + ".png' style='height:25px' alt=''>" }}
             </td>
             <td>
-                <a href="#/subject/{{subject.id}}">
+                <a href="#/subject/{{subject.id}}/{{role}}">
                     {{subject.displayName}}
                 </a>
             </td>
             <td>{{role}}</td>
-            <td>{{ numberOfTier3Observations==0?"":"<a href='#subject/"+subject.id+"/3'>"+numberOfTier3Observations+"</a> ("+numberOfTier3SubmissionCenters+" center" }}{{numberOfTier3SubmissionCenters>1 ? "s" : ""}}{{numberOfTier3SubmissionCenters>0 ? ")" : ""}}</td>
-            <td>{{ numberOfTier2Observations==0?"":"<a href='#subject/"+subject.id+"/2'>"+numberOfTier2Observations+"</a> ("+numberOfTier2SubmissionCenters+" center" }}{{numberOfTier2SubmissionCenters>1 ? "s" : ""}}{{numberOfTier2SubmissionCenters>0 ? ")" : ""}}</td>
-            <td>{{ numberOfTier1Observations==0?"":"<a href='#subject/"+subject.id+"/1'>"+numberOfTier1Observations+"</a> ("+numberOfTier1SubmissionCenters+" center" }}{{numberOfTier1SubmissionCenters>1 ? "s" : ""}}{{numberOfTier1SubmissionCenters>0 ? ")" : ""}}</td>
+            <td>{{ numberOfTier3Observations==0?"":"<a href='#subject/"+subject.id+"/"+role+"/3'>"+numberOfTier3Observations+"</a> ("+numberOfTier3SubmissionCenters+" center" }}{{numberOfTier3SubmissionCenters>1 ? "s" : ""}}{{numberOfTier3SubmissionCenters>0 ? ")" : ""}}</td>
+            <td>{{ numberOfTier2Observations==0?"":"<a href='#subject/"+subject.id+"/"+role+"/2'>"+numberOfTier2Observations+"</a> ("+numberOfTier2SubmissionCenters+" center" }}{{numberOfTier2SubmissionCenters>1 ? "s" : ""}}{{numberOfTier2SubmissionCenters>0 ? ")" : ""}}</td>
+            <td>{{ numberOfTier1Observations==0?"":"<a href='#subject/"+subject.id+"/"+role+"/1'>"+numberOfTier1Observations+"</a> ("+numberOfTier1SubmissionCenters+" center" }}{{numberOfTier1SubmissionCenters>1 ? "s" : ""}}{{numberOfTier1SubmissionCenters>0 ? ")" : ""}}</td>
         </tr>
     </script>
 

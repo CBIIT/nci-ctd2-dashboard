@@ -105,7 +105,11 @@
 
         initialize: function(attributes) {
             if(attributes.subjectId != undefined) {
-                this.url += attributes.subjectId;
+                if(attributes.role != undefined) {
+                    this.url = CORE_API_URL + "list/observations-"+attributes.role+"/?filterBy="+attributes.subjectId;
+                } else {
+                    this.url += attributes.subjectId;
+                }
             } else {
                 this.url += attributes.submissionId;
             }
@@ -1009,7 +1013,7 @@
              });
 
              var subjectObservationView = new SubjectObservationsView({
-                 model: {subjectId: result.id, tier:thatModel.tier},
+                 model: {subjectId: result.id, tier:thatModel.tier, role:thatModel.role},
                  el: "#compound-observation-grid"
              });
              subjectObservationView.render();
@@ -1025,9 +1029,10 @@
             var thatModel = this.model;
             var subjectId = thatModel.subjectId;
             var tier = thatModel.tier; // possibly undefined
+            var role = thatModel.role; // possibly undefined
 
             $.ajax("count/observation/?filterBy=" + subjectId).done(function(count) {
-                var observations = new Observations({ subjectId: subjectId });
+                var observations = new Observations({ subjectId: subjectId, role: role });
                 observations.fetch({
                     success: function () {
                         $(".subject-observations-loading", thatEl).remove();
@@ -1109,7 +1114,7 @@
             });
 
             var subjectObservationView = new SubjectObservationsView({
-                model: {subjectId: result.id, tier:thatModel.tier},
+                model: {subjectId: result.id, tier:thatModel.tier, role:thatModel.role},
                 el: "#gene-observation-grid"
             });
             subjectObservationView.render();
@@ -1150,7 +1155,7 @@
 
 
             var subjectObservationView = new SubjectObservationsView({
-                model: {subjectId: result.id, tier:thatModel.tier},
+                model: {subjectId: result.id, tier:thatModel.tier, role:thatModel.role},
                 el: "#protein-observation-grid"
             });
             subjectObservationView.render();
@@ -1169,7 +1174,7 @@
             $(this.el).html(this.template(result));
 
             var subjectObservationView = new SubjectObservationsView({
-                model: {subjectId: result.id, tier:thatModel.tier},
+                model: {subjectId: result.id, tier:thatModel.tier, role:thatModel.role},
                 el: "#shrna-observation-grid"
             });
             subjectObservationView.render();
@@ -1188,7 +1193,7 @@
             $(this.el).html(this.template(result));
 
             var subjectObservationView = new SubjectObservationsView({
-                model: {subjectId: result.id, tier:thatModel.tier},
+                model: {subjectId: result.id, tier:thatModel.tier, role:thatModel.role},
                 el: "#sirna-observation-grid"
             });
             subjectObservationView.render();
@@ -1207,7 +1212,7 @@
             $(this.el).html(this.template(result));
 
             var subjectObservationView = new SubjectObservationsView({
-                model: {subjectId: result.id, tier:thatModel.tier},
+                model: {subjectId: result.id, tier:thatModel.tier, role:thatModel.role},
                 el: "#transcript-observation-grid"
             });
             subjectObservationView.render();
@@ -1249,7 +1254,7 @@
             });
 
             var subjectObservationView = new SubjectObservationsView({
-                model: {subjectId: result.id, tier:thatModel.tier},
+                model: {subjectId: result.id, tier:thatModel.tier, role:thatModel.role},
                 el: "#tissuesample-observation-grid"
             });
             subjectObservationView.render();
@@ -1284,7 +1289,7 @@
             });
 
             var subjectObservationView = new SubjectObservationsView({
-                model: {subjectId: result.id, tier:thatModel.tier},
+                model: {subjectId: result.id, tier:thatModel.tier, role:thatModel.role},
                 el: "#animalmodel-observation-grid"
             });
             subjectObservationView.render();
@@ -1342,7 +1347,7 @@
             });
 
             var subjectObservationView = new SubjectObservationsView({
-                model: {subjectId: result.id, tier:thatModel.tier},
+                model: {subjectId: result.id, tier:thatModel.tier, role:thatModel.role},
                 el: "#cellsample-observation-grid"
             });
             subjectObservationView.render();
@@ -3730,7 +3735,8 @@
             "observation/:id": "showObservation",
             "search/:term": "search",
             "subject/:id": "showSubject",
-            "subject/:id/:tier": "showSubject",
+            "subject/:id/:role": "showSubject",
+            "subject/:id/:role/:tier": "showSubject",
             "evidence/:id": "showMraView",
             "template-helper": "showTemplateHelper",
             "about": "helpNavigate",
@@ -3786,35 +3792,35 @@
             exploreView.render();
         },
 
-        showSubject: function(id, tier) {
+        showSubject: function(id, role, tier) {
             var subject = new Subject({ id: id });
             subject.fetch({
                 success: function() {
                     var type = subject.get("class");
                     var subjectView;
                     if(type == "Gene") {
-                        subjectView = new GeneView({ model: {subject:subject, tier:tier} });
+                        subjectView = new GeneView({ model: {subject:subject, tier:tier, role:role} });
                     } else if(type == "AnimalModel") {
-                        subjectView = new AnimalModelView({ model: {subject:subject, tier:tier} });
+                        subjectView = new AnimalModelView({ model: {subject:subject, tier:tier, role:role} });
                     } else if(type == "Compound") {
-                        subjectView = new CompoundView({ model: {subject:subject, tier:tier} });
+                        subjectView = new CompoundView({ model: {subject:subject, tier:tier, role:role} });
                     } else if(type == "CellSample") {
-                        subjectView = new CellSampleView({ model: {subject:subject, tier:tier} });
+                        subjectView = new CellSampleView({ model: {subject:subject, tier:tier, role:role} });
                     } else if(type == "TissueSample") {
-                        subjectView = new TissueSampleView({ model: {subject:subject, tier:tier} });
+                        subjectView = new TissueSampleView({ model: {subject:subject, tier:tier, role:role} });
                     } else if(type == "ShRna") {
                         // shRna covers both siRNA and shRNA
                         if(subject.get("type").toLowerCase() == "sirna") {
-                            subjectView = new SirnaView({ model: {subject:subject, tier:tier} });
+                            subjectView = new SirnaView({ model: {subject:subject, tier:tier, role:role} });
                         } else {
-                            subjectView = new ShrnaView({ model: {subject:subject, tier:tier} });
+                            subjectView = new ShrnaView({ model: {subject:subject, tier:tier, role:role} });
                         }
                     } else if(type == "Transcript") {
-                        subjectView = new TranscriptView({ model: {subject:subject, tier:tier} });
+                        subjectView = new TranscriptView({ model: {subject:subject, tier:tier, role:role} });
                     } else if(type == "Protein") {
-                        subjectView = new ProteinView({model: {subject:subject, tier:tier} });
+                        subjectView = new ProteinView({model: {subject:subject, tier:tier, role:role} });
                     } else {
-                        subjectView = new GeneView({ model: {subject:subject, tier:tier} });
+                        subjectView = new GeneView({ model: {subject:subject, tier:tier, role:role} });
                     }
                     subjectView.render();
                 }
