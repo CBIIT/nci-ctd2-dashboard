@@ -1634,7 +1634,8 @@
         <div class="alert alert-warning">
             <button type="button" class="close" data-dismiss="alert">&times;</button>
             <p>
-                Currently displaying summary data for Tier 1 – Tier 3 observations involving {{subject_type}} that have been assigned one of the following roles:
+                Entries listed below are ordered by relevance, based on the number of observations and Tier evidence level (must be at least Tier 2). 
+                Currently displaying observations involving {{subject_type}} that have been assigned one of the following roles:
                 {{ decodeURIComponent(roles).split(",").join(", ") }}
                 (see <a class="blurb-help" href="#help-navigate">background information</a> for the meaning of observations, roles, and Tiers).
             </p>
