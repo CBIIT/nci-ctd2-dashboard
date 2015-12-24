@@ -56,20 +56,21 @@ public class ListController {
     public ResponseEntity<String> getSearchResultsInJson(
             @PathVariable String type,
             @RequestParam("filterBy") Integer filterBy,
+            @RequestParam(value = "role", required = false, defaultValue = "") String role,
+            @RequestParam(value = "tier", required = false, defaultValue = "0") Integer tier,
             @RequestParam(value = "getAll", required = false, defaultValue = "false") Boolean getAll
     ) {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json; charset=utf-8");
 
         List<? extends DashboardEntity> entities = null;
-        if(type.startsWith("observations-")) { // observation list per role
-            String role = type.substring(type.indexOf("-")+1);
-            entities = webServiceUtil.getObservationsPerRole(filterBy, role);
+        if("observation".equals(type)) { // different logic for observation list
+            entities = webServiceUtil.getObservationsPerRoleTier(filterBy, role, tier);
         } else {
             entities = webServiceUtil.getDashboardEntities(type, filterBy);
         }
         if(!getAll && entities.size() > getMaxNumberOfEntities()) {
-            entities = entities.subList(0, getMaxNumberOfEntities()-1);
+            entities = entities.subList(0, getMaxNumberOfEntities());
         }
 
         JSONSerializer jsonSerializer = new JSONSerializer()

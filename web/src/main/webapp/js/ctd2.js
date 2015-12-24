@@ -105,10 +105,12 @@
 
         initialize: function(attributes) {
             if(attributes.subjectId != undefined) {
+                this.url += attributes.subjectId;
                 if(attributes.role != undefined) {
-                    this.url = CORE_API_URL + "list/observations-"+attributes.role+"/?filterBy="+attributes.subjectId;
-                } else {
-                    this.url += attributes.subjectId;
+                    this.url += "&role="+attributes.role;
+                }
+                if(attributes.tier != undefined) {
+                    this.url += "&tier="+attributes.tier;
                 }
             } else {
                 this.url += attributes.submissionId;
@@ -1031,16 +1033,21 @@
             var tier = thatModel.tier; // possibly undefined
             var role = thatModel.role; // possibly undefined
 
-            $.ajax("count/observation/?filterBy=" + subjectId).done(function(count) {
-                var observations = new Observations({ subjectId: subjectId, role: role });
+            var countUrl = "count/observation/?filterBy=" + subjectId;
+            if(role != undefined) {
+                countUrl += "&role="+role;
+            }
+            if(tier != undefined) {
+                countUrl += "&tier="+tier;
+            }
+
+            $.ajax(countUrl).done(function(count) {
+                var observations = new Observations({ subjectId: subjectId, role: role , tier: tier});
                 observations.fetch({
                     success: function () {
                         $(".subject-observations-loading", thatEl).remove();
                         _.each(observations.models, function (observation) {
                             observation = observation.toJSON();
-                            var obsv_tier = observation.submission.observationTemplate.tier;
-                            if(typeof tier != 'undefined' && obsv_tier!=tier) return;
-
                             var observationRowView
                                 = new ObservationRowView({ el: $(thatEl).find("tbody"), model: observation });
                             observationRowView.render();
@@ -1066,6 +1073,7 @@
                 if(count > maxNumberOfEntities) {
                     var moreObservationView = new MoreObservationView({
                         model: {
+                            role: role , tier: tier,
                             numOfObservations: maxNumberOfEntities,
                             numOfAllObservations: count,
                             subjectId: subjectId,
@@ -1715,6 +1723,8 @@
         template: _.template($("#more-observations-tmpl").html()),
         render: function() {
             var model = this.model;
+            var role = model.role;
+            var tier = model.tier;
             var thatEl = this.el;
             $(thatEl).html(this.template(model));
             $(thatEl).find("a.load-more-observations").click(function(e) {
@@ -1728,7 +1738,8 @@
                 if(model.submissionId != undefined) {
                     observations = new Observations({ submissionId: model.submissionId, getAll: true });
                 } else if(model.subjectId != undefined) {
-                    observations = new Observations({ subjectId: model.subjectId, getAll: true });
+                    observations = new Observations({ subjectId: model.subjectId, getAll: true,
+                    	role: role , tier: tier});
                 } else {
                     console.log("something is wrong here!");
                 }
