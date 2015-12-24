@@ -31,11 +31,19 @@ public class CountController {
 
     @Transactional
     @RequestMapping(value="{type}", method = {RequestMethod.GET, RequestMethod.POST}, headers = "Accept=application/json")
-    public ResponseEntity<String> getSearchResultsInJson(@PathVariable String type, @RequestParam("filterBy") Integer filterBy) {
+    public ResponseEntity<String> getSearchResultsInJson(@PathVariable String type, @RequestParam("filterBy") Integer filterBy,
+            @RequestParam(value = "role", required = false, defaultValue = "") String role,
+            @RequestParam(value = "tier", required = false, defaultValue = "0") Integer tier
+    		) {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json; charset=utf-8");
 
-        List<? extends DashboardEntity> entities = webServiceUtil.getDashboardEntities(type, filterBy);
+        List<? extends DashboardEntity> entities = null;
+        if("observation".equals(type)) { // different logic for observation list
+            entities = webServiceUtil.getObservationsPerRoleTier(filterBy, role, tier);
+        } else {
+            entities = webServiceUtil.getDashboardEntities(type, filterBy);
+        }
         JSONSerializer jsonSerializer = new JSONSerializer()
                 .transform(new ImplTransformer(), Class.class)
                 .transform(new DateTransformer(), Date.class)

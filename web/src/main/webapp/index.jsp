@@ -1630,32 +1630,14 @@
         </div>
     </script>
 
-    <script type="text/template" id="text-blurb-biomarker-target">
+    <script type="text/template" id="text-blurb">
         <div class="alert alert-warning">
             <button type="button" class="close" data-dismiss="alert">&times;</button>
             <p>
-                Entries listed below are ordered by relevance, which is determined by number of observations and <a class="blurb-help" href="#help-navigate">Tier</a>s of evidence associated with a gene or protein.
-                Each gene and protein in the following list has at least one associated observation that assigns it the role of biomarker or target.
-            </p>
-        </div>
-    </script>
-
-    <script type="text/template" id="text-blurb-perturbagen">
-        <div class="alert alert-warning">
-            <button type="button" class="close" data-dismiss="alert">&times;</button>
-            <p>
-                Entries listed below are ordered by relevance, which is determined by number of observations and <a class="blurb-help" href="#help-navigate">Tier</a>s of evidence associated with a compound.
-                Each compound in the following list has at least one associated observation that assigns it the role of perturbagen.
-            </p>
-        </div>
-    </script>
-
-    <script type="text/template" id="text-blurb-disease">
-        <div class="alert alert-warning">
-            <button type="button" class="close" data-dismiss="alert">&times;</button>
-            <p>
-                Entries listed below are ordered by relevance, which is determined by number of observations within the CTD<sup>2</sup> Network and <a class="blurb-help" href="#help-navigate">Tier</a>s of evidence associated with a disease.
-                Each disease context in the following list has at least one associated observation relevant to that disease.
+                Entries listed below are ordered by relevance, based on the number of observations and Tier evidence level (must be at least Tier 2). 
+                Currently displaying observations involving {{subject_type}} that have been assigned one of the following roles:
+                {{ decodeURIComponent(roles).split(",").join(", ") }}
+                (see <a class="blurb-help" href="#help-navigate">background information</a> for the meaning of observations, roles, and Tiers).
             </p>
         </div>
     </script>
@@ -1666,16 +1648,25 @@
 
             <div id="explore-blurb"></div>
 
-            <ul class="thumbnails" id="explore-items">
-                <li class="span12">
-                    <div class="thumbnail">
-                        <h3>Loading...</h3>
-                        <div class="progress progress-striped active">
-                            <div class="bar" style="width: 100%;"></div>
-                        </div>
-                    </div>
-                </li>
-            </ul>
+            <table class="table table-bordered table-striped observations">
+                <thead>
+                <tr>
+                    <th colspan=3></th>
+                    <th colspan=2 style="text-align:center">Observations</th>
+                </tr>
+                <tr>
+                    <th>Class</th>
+                    <th>Name</th>
+                    <th>Role</th>
+                    <th>Tier 3</th>
+                    <th>Tier 2</th>
+                    <th>Tier 1</th>
+                </tr>
+                </thead>
+                <tbody id="explore-items" >
+                    <!-- here will go the rows -->
+                </tbody>
+            </table>
 
         </div>
 
@@ -1712,92 +1703,34 @@
     </script>
 
     <script type="text/template" id="explore-item-tmpl">
-        <li class="span{{spanSize}}">
-            <div class="thumbnail explore-thumbnail">
-                <div class="numbered-image" style="background-image: url({{subject.class == 'Compound' ? '<%=dataURL%>compounds/' + subject.imageFile : 'img/' + subject.class.toLowerCase() + '.png' }});">
-                    <b>#{{order}}</b>
-                </div>
-                <div class="caption">
-                    <h4 data-toggle="tooltip" class="{{type}} nonewline" title="{{subject.displayName}}">{{subject.displayName}}</h4>
-                    <p>
-                        There are {{numberOfObservations}} observation{{numberOfObservations == 1 ? "" : "s"}} from {{numberOfSubmissionCenters}} center{{numberOfSubmissionCenters == 1 ? "" : "s"}} on this <b>{{role}}</b>
-                        <small class="nonewline">(<b>Tier {{maxTier}}</b>)</small>.
-                    </p>
-                    <p align="center">
-                    </p>
-                    <p align="center">
-                        <a href="#subject/{{subject.id}}" class="btn btn-small btn-block {{type == 'target' ? 'btn-success' : (type == 'compound' ? 'btn-info' : 'btn-warning')}}">See details</a>
-                    </p>
-                </div>
-            </div>
-        </li>
+        <tr style='white-space: nowrap;'>
+            <td>
+                 {{reformattedClassName}}
+                 {{subject.class == 'Compound' ? "<a href='<%=dataURL%>compounds/"+ subject.imageFile +"' target='_blank' class='compound-image' title='Compound: " + subject.displayName + "'><img class='img-polaroid' style='height:25px' src='<%=dataURL%>compounds/" + subject.imageFile + "' alt='Compound: " + subject.displayName +"'></a>" : "<img src='img/"+ subject.class.toLowerCase() + ".png' style='height:25px' alt=''>" }}
+            </td>
+            <td>
+                <a href="#/subject/{{subject.id}}/{{role}}">
+                    {{subject.displayName}}
+                </a>
+            </td>
+            <td>{{role}}</td>
+            <td>{{ numberOfTier3Observations==0?"":"<a href='#subject/"+subject.id+"/"+role+"/3'>"+numberOfTier3Observations+"</a> ("+numberOfTier3SubmissionCenters+" center" }}{{numberOfTier3SubmissionCenters>1 ? "s" : ""}}{{numberOfTier3SubmissionCenters>0 ? ")" : ""}}</td>
+            <td>{{ numberOfTier2Observations==0?"":"<a href='#subject/"+subject.id+"/"+role+"/2'>"+numberOfTier2Observations+"</a> ("+numberOfTier2SubmissionCenters+" center" }}{{numberOfTier2SubmissionCenters>1 ? "s" : ""}}{{numberOfTier2SubmissionCenters>0 ? ")" : ""}}</td>
+            <td>{{ numberOfTier1Observations==0?"":"<a href='#subject/"+subject.id+"/"+role+"/1'>"+numberOfTier1Observations+"</a> ("+numberOfTier1SubmissionCenters+" center" }}{{numberOfTier1SubmissionCenters>1 ? "s" : ""}}{{numberOfTier1SubmissionCenters>0 ? ")" : ""}}</td>
+        </tr>
     </script>
 
     <script type="text/template" id="explore-more-item-tmpl">
-        <li class="span2" id="show-more-{{type}}">
-            <div class="thumbnail explore-thumbnail">
-                <div class="numbered-image">
-                    <br>
-                    <p align="center">
-                        <center><h1>&gt;&gt;</h1></center>
-                    </p>
-                </div>
-                <div class="caption">
-                    <p>
-                        Only {{shown}} of {{known}} subjects are shown here.
-                    </p>
-                    <p align="center">
-                        <a class="btn btn-small btn-block {{type == 'target' ? 'btn-success' : (type == 'compound' ? 'btn-info' : 'btn-warning')}}">Load more</a>
-                    </p>
-                </div>
-            </div>
+        <tr id="show-more-{{type}}">
+        <td colspan=5>
+            <center><b>&gt;&gt;</b>
+            Only {{shown}} of {{known}} subjects are shown here.
+            <a class="btn btn-small {{type == 'target' ? 'btn-success' : (type == 'compound' ? 'btn-info' : 'btn-warning')}}">Load more</a>
+            </center>
+        </td>
         </li>
     </script>
 
-
-    <script type="text/template" id="browse-tmpl">
-        <div class="container common-container" id="browse-container">
-            <h2>Browse {{type}}s</h2>
-
-            <div class="alert alert-block">
-                <a href="#" class="close" data-dismiss="alert">&times;</a>
-                <p>
-                    Below is a list of {{type}}s that have at least one observation associated with it.
-                    The number in the parentheses show how many observations there are for the corresponding {{type}}.
-                </p>
-            </div>
-
-            <div class="pagination browse-pagination" id="browse-pagination">
-                <ul class="nav">
-                </ul>
-            </div>
-
-
-            <h3 class="loading">Loading...</h3>
-
-            <div class="alert alert-error alert-block hide" id="noitems-to-browse">
-                No {{type}}s were found starting with <strong>{{character.toUpperCase()}}</strong>
-            </div>
-
-            <ul id="browsed-items-list">
-
-            </ul>
-        </div>
-    </script>
-
-    <script type="text/template" id="browse-pagination-template">
-        <li class="{{className}}">
-            <a href="#browse/{{type}}/{{character}}" id="character-link-{{character}}" class="character-link">{{character.toUpperCase()}}</a>
-        </li>
-    </script>
-
-    <script type="text/template" id="browsed-item-tmpl">
-        <li class="browsed-item span3">
-            <a href="#subject/{{id}}">{{displayName}}</a>
-            (<small><i><span id="browsed-item-count-{{id}}">loading...</span></i></small>)
-        </li>
-    </script>
-    
     <script type="text/template" id="observedmrafileevidence-row-tmpl">
         <tr>
             <td>

@@ -106,6 +106,12 @@
         initialize: function(attributes) {
             if(attributes.subjectId != undefined) {
                 this.url += attributes.subjectId;
+                if(attributes.role != undefined) {
+                    this.url += "&role="+attributes.role;
+                }
+                if(attributes.tier != undefined) {
+                    this.url += "&tier="+attributes.tier;
+                }
             } else {
                 this.url += attributes.submissionId;
             }
@@ -120,19 +126,6 @@
     var SubjectRoles = Backbone.Collection.extend({
         url: CORE_API_URL + "list/role?filterBy=",
         model: SubjectRole
-    });
-
-    var BrowsedItems = Backbone.Collection.extend({
-        url: CORE_API_URL + "browse/",
-        defaults: {
-            type: "target",
-            character: "A"
-        },
-
-        initialize: function(attributes) {
-            var attr = _.extend(this.defaults, attributes);
-            this.url += attr.type + "/" + attr.character;
-        }
     });
 
     var ObservedEvidence = Backbone.Model.extend({
@@ -994,7 +987,8 @@
          el: $("#main-container"),
          template:  _.template($("#compound-tmpl").html()),
          render: function() {
-             var result = this.model.toJSON();
+             var thatModel = this.model;
+             var result = thatModel.subject.toJSON();
 
              result["pubchem"] = result["cas"] = false;
 
@@ -1021,7 +1015,7 @@
              });
 
              var subjectObservationView = new SubjectObservationsView({
-                 model: result.id,
+                 model: {subjectId: result.id, tier:thatModel.tier, role:thatModel.role},
                  el: "#compound-observation-grid"
              });
              subjectObservationView.render();
@@ -1034,16 +1028,26 @@
     var SubjectObservationsView = Backbone.View.extend({
         render: function() {
             var thatEl = $(this.el);
-            var subjectId = this.model;
+            var thatModel = this.model;
+            var subjectId = thatModel.subjectId;
+            var tier = thatModel.tier; // possibly undefined
+            var role = thatModel.role; // possibly undefined
 
-            $.ajax("count/observation/?filterBy=" + subjectId).done(function(count) {
-                var observations = new Observations({ subjectId: subjectId });
+            var countUrl = "count/observation/?filterBy=" + subjectId;
+            if(role != undefined) {
+                countUrl += "&role="+role;
+            }
+            if(tier != undefined) {
+                countUrl += "&tier="+tier;
+            }
+
+            $.ajax(countUrl).done(function(count) {
+                var observations = new Observations({ subjectId: subjectId, role: role , tier: tier});
                 observations.fetch({
                     success: function () {
                         $(".subject-observations-loading", thatEl).remove();
                         _.each(observations.models, function (observation) {
                             observation = observation.toJSON();
-
                             var observationRowView
                                 = new ObservationRowView({ el: $(thatEl).find("tbody"), model: observation });
                             observationRowView.render();
@@ -1069,6 +1073,7 @@
                 if(count > maxNumberOfEntities) {
                     var moreObservationView = new MoreObservationView({
                         model: {
+                            role: role , tier: tier,
                             numOfObservations: maxNumberOfEntities,
                             numOfAllObservations: count,
                             subjectId: subjectId,
@@ -1094,7 +1099,8 @@
         el: $("#main-container"),
         template:  _.template($("#gene-tmpl").html()),
         render: function() {
-            var result = this.model.toJSON();
+            var thatModel = this.model;
+            var result = thatModel.subject.toJSON();
             // Find out the UniProt ID
 
             result["type"] = result.class;
@@ -1116,7 +1122,7 @@
             });
 
             var subjectObservationView = new SubjectObservationsView({
-                model: result.id,
+                model: {subjectId: result.id, tier:thatModel.tier, role:thatModel.role},
                 el: "#gene-observation-grid"
             });
             subjectObservationView.render();
@@ -1136,7 +1142,8 @@
         el: $("#main-container"),
         template:  _.template($("#protein-tmpl").html()),
         render: function() {
-            var result = this.model.toJSON();
+            var thatModel = this.model;
+            var result = thatModel.subject.toJSON();
             result["type"] = result.class;
             $(this.el).html(this.template(result));
 
@@ -1156,7 +1163,7 @@
 
 
             var subjectObservationView = new SubjectObservationsView({
-                model: result.id,
+                model: {subjectId: result.id, tier:thatModel.tier, role:thatModel.role},
                 el: "#protein-observation-grid"
             });
             subjectObservationView.render();
@@ -1169,12 +1176,13 @@
         el: $("#main-container"),
         template:  _.template($("#shrna-tmpl").html()),
         render: function() {
-            var result = this.model.toJSON();
+            var thatModel = this.model;
+            var result = thatModel.subject.toJSON();
             result["type"] = result.class;
             $(this.el).html(this.template(result));
 
             var subjectObservationView = new SubjectObservationsView({
-                model: result.id,
+                model: {subjectId: result.id, tier:thatModel.tier, role:thatModel.role},
                 el: "#shrna-observation-grid"
             });
             subjectObservationView.render();
@@ -1187,12 +1195,13 @@
         el: $("#main-container"),
         template:  _.template($("#sirna-tmpl").html()),
         render: function() {
-            var result = this.model.toJSON();
+            var thatModel = this.model;
+            var result = thatModel.subject.toJSON();
             result["type"] = "sirna";
             $(this.el).html(this.template(result));
 
             var subjectObservationView = new SubjectObservationsView({
-                model: result.id,
+                model: {subjectId: result.id, tier:thatModel.tier, role:thatModel.role},
                 el: "#sirna-observation-grid"
             });
             subjectObservationView.render();
@@ -1205,12 +1214,13 @@
         el: $("#main-container"),
         template:  _.template($("#transcript-tmpl").html()),
         render: function() {
-            var result = this.model.toJSON();
+            var thatModel = this.model;
+            var result = thatModel.subject.toJSON();
             result["type"] = result.class;
             $(this.el).html(this.template(result));
 
             var subjectObservationView = new SubjectObservationsView({
-                model: result.id,
+                model: {subjectId: result.id, tier:thatModel.tier, role:thatModel.role},
                 el: "#transcript-observation-grid"
             });
             subjectObservationView.render();
@@ -1223,7 +1233,8 @@
         el: $("#main-container"),
         template:  _.template($("#tissuesample-tmpl").html()),
         render: function() {
-            var result = this.model.toJSON();
+            var thatModel = this.model;
+            var result = thatModel.subject.toJSON();
             result["type"] = result.class;
             $(this.el).html(this.template(result));
 
@@ -1251,7 +1262,7 @@
             });
 
             var subjectObservationView = new SubjectObservationsView({
-                model: result.id,
+                model: {subjectId: result.id, tier:thatModel.tier, role:thatModel.role},
                 el: "#tissuesample-observation-grid"
             });
             subjectObservationView.render();
@@ -1265,7 +1276,8 @@
         el: $("#main-container"),
         template:  _.template($("#animalmodel-tmpl").html()),
         render: function() {
-            var result = this.model.toJSON();
+            var thatModel = this.model;
+            var result = thatModel.subject.toJSON();
             result["type"] = result.class;
             $(this.el).html(this.template(result));
 
@@ -1285,7 +1297,7 @@
             });
 
             var subjectObservationView = new SubjectObservationsView({
-                model: result.id,
+                model: {subjectId: result.id, tier:thatModel.tier, role:thatModel.role},
                 el: "#animalmodel-observation-grid"
             });
             subjectObservationView.render();
@@ -1306,7 +1318,8 @@
         el: $("#main-container"),
         template:  _.template($("#cellsample-tmpl").html()),
         render: function() {
-            var result = this.model.toJSON();
+            var thatModel = this.model;
+            var result = thatModel.subject.toJSON();
             result["type"] = result.class;
 
             // Look for cbioPortal Id
@@ -1342,7 +1355,7 @@
             });
 
             var subjectObservationView = new SubjectObservationsView({
-                model: result.id,
+                model: {subjectId: result.id, tier:thatModel.tier, role:thatModel.role},
                 el: "#cellsample-observation-grid"
             });
             subjectObservationView.render();
@@ -1710,6 +1723,8 @@
         template: _.template($("#more-observations-tmpl").html()),
         render: function() {
             var model = this.model;
+            var role = model.role;
+            var tier = model.tier;
             var thatEl = this.el;
             $(thatEl).html(this.template(model));
             $(thatEl).find("a.load-more-observations").click(function(e) {
@@ -1723,7 +1738,8 @@
                 if(model.submissionId != undefined) {
                     observations = new Observations({ submissionId: model.submissionId, getAll: true });
                 } else if(model.subjectId != undefined) {
-                    observations = new Observations({ subjectId: model.subjectId, getAll: true });
+                    observations = new Observations({ subjectId: model.subjectId, getAll: true,
+                    	role: role , tier: tier});
                 } else {
                     console.log("something is wrong here!");
                 }
@@ -2011,75 +2027,6 @@
         }
     });
 
-    var BrowseView = Backbone.View.extend({
-        template: _.template($("#browse-tmpl").html()),
-        el: $("#main-container"),
-
-        render: function() {
-            $(this.el).html(this.template(this.model));
-
-            var str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-            for(var i = 0; i < str.length; i++) {
-                var nextChar = str.charAt(i);
-
-                $("#browse-pagination ul.nav").append(
-                    _.template(
-                        $("#browse-pagination-template").html(),
-                        {
-                            className: this.model.character == nextChar ? "active" : "",
-                            character: nextChar,
-                            type: this.model.type
-                        }
-                    )
-                );
-            }
-
-            var browsedItems = new BrowsedItems(this.model);
-            browsedItems.fetch({
-                success: function() {
-                    if(browsedItems.models.length < 1) {
-                        $("#noitems-to-browse").slideDown();
-                    }
-
-                    _.each(browsedItems.models, function(browseItem) {
-                        (new BrowsedItemView({
-                            el: $("#browsed-items-list"),
-                            model: browseItem.toJSON()
-                        })).render();
-
-                    });
-
-                    $(".loading").hide();
-                }
-            });
-
-            return this;
-        }
-    });
-
-    var BrowsedItemView = Backbone.View.extend({
-        template: _.template($("#browsed-item-tmpl").html()),
-
-        render: function() {
-            $(this.el).append(this.template(this.model));
-
-            var observedSubjects = new ObservedSubjects({ subjectId: this.model.id });
-            var thatId = this.model.id;
-
-            var actions = {
-                success: function() {
-                    $("#browsed-item-count-" + thatId).text(observedSubjects.models.length);
-                },
-
-                error: function() {
-                    observedSubjects.fetch(actions);
-                }
-            };
-
-            observedSubjects.fetch(actions);
-        }
-    });
-    
     //MRA View
     var MraView = Backbone.View.extend({
         el: $("#main-container"),
@@ -2837,6 +2784,17 @@
         }
     });
 
+    var reformattedClassName = {
+    		"Gene": "gene",
+    		"AnimalModel": "animal model",
+    		"Compound": "compound",
+    		"CellSample": "cell sample",
+    		"TissueSample": "tissue sample",
+    		"ShRna": "shRNA",
+    		"Transcript": "transcript",
+    		"Protein": "protein",
+    };
+
     var ExploreView = Backbone.View.extend({
         el: $("#main-container"),
         template: _.template($("#explore-tmpl").html()),
@@ -2860,6 +2818,7 @@
                             sModel["spanSize"] = spanSize;
                             sModel["type"] = thatModel.type;
                             sModel["order"] = order;
+                            sModel["reformattedClassName"] = reformattedClassName[sModel.subject.class];
                             if(sModel.subject.class == "Compound") {
                                 _.each(sModel.subject.xrefs, function(xref) {
                                     if(xref.databaseName == "IMAGE") {
@@ -2889,6 +2848,7 @@
                                     sModel["spanSize"] = spanSize;
                                     sModel["type"] = thatModel.type;
                                     sModel["order"] = j;
+                                    sModel["reformattedClassName"] = reformattedClassName[sModel.subject.class];
                                     if(sModel.subject.class == "Compound") {
                                         _.each(sModel.subject.xrefs, function(xref) {
                                             if(xref.databaseName == "IMAGE") {
@@ -2906,9 +2866,9 @@
                     }
 
                     $(".explore-thumbnail h4").tooltip();
-                    var blurb = $("#text-blurb-" + thatModel.roles.toLowerCase().replace(/,/g, "-"));
+                    var blurb = $("#text-blurb");
                     if(blurb.length > 0) {
-                        $("#explore-blurb").append(_.template(blurb.html(), {}));
+                        $("#explore-blurb").append(_.template(blurb.html(), {subject_type: subjectType[thatModel.type], roles: thatModel.roles}));
                         $("#explore-blurb .blurb-help").click(function(e) {
                             e.preventDefault();
                             (new HelpNavigateView()).render();
@@ -2928,6 +2888,7 @@
                         var currentRoles = decodeURIComponent(thatModel.roles.toLowerCase());
                         _.each(subjectRoles.models, function(role) {
                             role = role.toJSON();
+                            if(browseRole[thatModel.type].indexOf(role.displayName)==-1) return;
                             var checked = currentRoles.search(role.displayName.toLowerCase()) > -1;
                             role["checked"] = checked;
                             var roleName = role.displayName;
@@ -2949,7 +2910,7 @@
                             });
 
                             $("#role-modal").modal('hide');
-                            window.location.hash = "/cexplore/" + thatModel.type + "/" + newRoles.join(",");
+                            window.location.hash = "/explore/" + thatModel.type + "/" + newRoles.join(",");
                         });
                     }
                 });
@@ -2958,6 +2919,18 @@
             return this;
         }
     });
+
+	var browseRole = {
+		target: ["background", "biomarker", "candidate master regulator", "interactor", "master regulator", "oncogene", "target"],
+		compound: ["candidate drug", "control compound", "perturbagen"],
+		context: ["disease", "metastasis", "tissue"]
+	};
+
+	var subjectType = {
+			target: "Biomarkers, Targets, Genes & Proteins (genes)",
+			compound: "Compounds and Perturbagens (compounds, shRNA, genes)",
+			context: "Disease Context (tissues)"
+	};
 
     //customize-roles-item-tmpl
     var CustomRoleItemView = Backbone.View.extend({
@@ -2980,6 +2953,7 @@
 
         render: function() {
             $(this.el).append(this.template(this.model));
+            $("a.compound-image").fancybox({titlePosition: 'inside'});
             return this;
         }
     });
@@ -3764,16 +3738,16 @@
         routes: {
             "centers": "listCenters",
             "stories": "listStories",
-            "browse/:type/:character": "browse",
             "explore": "scrollToExplore",
             "explore/:type/:roles": "explore",
-            "cexplore/:type/:roles": "cexplore",
             "center/:id/:project": "showCenterProject",
             "center/:id": "showCenter",
             "submission/:id": "showSubmission",
             "observation/:id": "showObservation",
             "search/:term": "search",
             "subject/:id": "showSubject",
+            "subject/:id/:role": "showSubject",
+            "subject/:id/:role/:tier": "showSubject",
             "evidence/:id": "showMraView",
             "template-helper": "showTemplateHelper",
             "about": "helpNavigate",
@@ -3818,16 +3792,6 @@
             searchView.render();
         },
 
-        browse: function(type, character) {
-            var browseView = new BrowseView({
-                model: {
-                    type: type.replace(new RegExp("<", "g"), "").replace(new RegExp(">", "g"), ""),
-                    character: character.replace(new RegExp("<", "g"), "").replace(new RegExp(">", "g"), "")
-                }
-            });
-            browseView.render();
-        },
-
         explore: function(type, roles) {
             var exploreView = new ExploreView({
                 model: {
@@ -3839,46 +3803,35 @@
             exploreView.render();
         },
 
-        cexplore: function(type, roles) {
-            var exploreView = new ExploreView({
-                model: {
-                    roles: roles.replace(new RegExp("<", "g"), "").replace(new RegExp(">", "g"), ""),
-                    type: type.replace(new RegExp("<", "g"), "").replace(new RegExp(">", "g"), ""),
-                    customized: true
-                }
-            });
-            exploreView.render();
-        },
-
-        showSubject: function(id) {
+        showSubject: function(id, role, tier) {
             var subject = new Subject({ id: id });
             subject.fetch({
                 success: function() {
                     var type = subject.get("class");
                     var subjectView;
                     if(type == "Gene") {
-                        subjectView = new GeneView({ model: subject });
+                        subjectView = new GeneView({ model: {subject:subject, tier:tier, role:role} });
                     } else if(type == "AnimalModel") {
-                        subjectView = new AnimalModelView({ model: subject });
+                        subjectView = new AnimalModelView({ model: {subject:subject, tier:tier, role:role} });
                     } else if(type == "Compound") {
-                        subjectView = new CompoundView({ model: subject });
+                        subjectView = new CompoundView({ model: {subject:subject, tier:tier, role:role} });
                     } else if(type == "CellSample") {
-                        subjectView = new CellSampleView({ model: subject });
+                        subjectView = new CellSampleView({ model: {subject:subject, tier:tier, role:role} });
                     } else if(type == "TissueSample") {
-                        subjectView = new TissueSampleView({ model: subject });
+                        subjectView = new TissueSampleView({ model: {subject:subject, tier:tier, role:role} });
                     } else if(type == "ShRna") {
                         // shRna covers both siRNA and shRNA
                         if(subject.get("type").toLowerCase() == "sirna") {
-                            subjectView = new SirnaView({ model: subject });
+                            subjectView = new SirnaView({ model: {subject:subject, tier:tier, role:role} });
                         } else {
-                            subjectView = new ShrnaView({ model: subject });
+                            subjectView = new ShrnaView({ model: {subject:subject, tier:tier, role:role} });
                         }
                     } else if(type == "Transcript") {
-                        subjectView = new TranscriptView({ model: subject });
+                        subjectView = new TranscriptView({ model: {subject:subject, tier:tier, role:role} });
                     } else if(type == "Protein") {
-                        subjectView = new ProteinView({model: subject });
+                        subjectView = new ProteinView({model: {subject:subject, tier:tier, role:role} });
                     } else {
-                        subjectView = new GeneView({ model: subject });
+                        subjectView = new GeneView({ model: {subject:subject, tier:tier, role:role} });
                     }
                     subjectView.render();
                 }
