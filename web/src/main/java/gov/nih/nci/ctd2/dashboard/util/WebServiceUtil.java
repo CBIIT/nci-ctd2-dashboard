@@ -89,7 +89,7 @@ public class WebServiceUtil {
 
     @Transactional
     @Cacheable(value = "entityCache")
-    public List<? extends DashboardEntity> getObservationsPerRole(Integer subjectId, String role) {
+    public List<? extends DashboardEntity> getObservationsPerRoleTier(Integer subjectId, String role, Integer tier) {
         List<? extends DashboardEntity> entities = new ArrayList<DashboardEntity>();
         Subject subject = dashboardDao.getEntityById(Subject.class, subjectId);
         if(subject != null) {
@@ -97,7 +97,8 @@ public class WebServiceUtil {
             for (ObservedSubject observedSubject : dashboardDao.findObservedSubjectBySubject(subject)) {
                 ObservedSubjectRole observedSubjectRole = observedSubject.getObservedSubjectRole();
                 String subjectRole = observedSubjectRole.getSubjectRole().getDisplayName();
-                if(role.equals(subjectRole)) {
+                Integer observationTier = observedSubject.getObservation().getSubmission().getObservationTemplate().getTier();
+                if( (role.equals("") || role.equals(subjectRole)) && (tier==0 || tier==observationTier) ) {
                     observations.add(observedSubject.getObservation());
                 }
             }
