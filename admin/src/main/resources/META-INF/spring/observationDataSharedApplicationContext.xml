@@ -398,9 +398,19 @@
 		<batch:chunk reader="cshlPdacReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	  </batch:tasklet>
 	</batch:step>
-    <batch:step id="stanfordTgfbr2Step" parent="observationDataStep">
+    <batch:step id="stanfordTgfbr2Step" parent="observationDataStep"  next="utmdaPik3caStep">
 	  <batch:tasklet>
 		<batch:chunk reader="stanfordTgfbr2Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+    <batch:step id="utmdaPik3caStep" parent="observationDataStep" next="emoryBretnStep">
+	  <batch:tasklet>
+		<batch:chunk reader="utmdaPik3caReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+    <batch:step id="emoryBretnStep" parent="observationDataStep">
+	  <batch:tasklet>
+		<batch:chunk reader="emoryBretnReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	  </batch:tasklet>
 	</batch:step>
   </batch:job>
@@ -1410,7 +1420,27 @@
   	<property name="delimiter" value="\u0009"/>
   	<property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,gene_symbol_3,gene_symbol_4,tissue_sample_1,tissue_sample_2,publication_reference,story_location"/>
   </bean>
+  
+  <bean name="utmdaPik3caLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+  	<property name="fieldSetMapper" ref="observationDataMapper" />
+  	<property name="lineTokenizer" ref="utmdaPik3caLineTokenizer" />
+    </bean>
 
+    <bean name="utmdaPik3caLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+  	<property name="delimiter" value="\u0009"/>
+  	<property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,compound_name_1,compound_name_2,compound_name_3,cell_line_1,cell_line_2,tissue_sample,resource_url,publication_reference,story_location"/>
+  </bean>
+  
+  <bean name="emoryBretnLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+  	<property name="fieldSetMapper" ref="observationDataMapper" />
+  	<property name="lineTokenizer" ref="emoryBretnLineTokenizer" />
+    </bean>
+
+    <bean name="emoryBretnLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+  	<property name="delimiter" value="\u0009"/>
+  	<property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,gene_symbol_3,gene_symbol_4,gene_symbol_5,gene_symbol_6,gene_symbol_7,gene_symbol_8,gene_symbol_9,gene_symbol_10,gene_symbol_11,gene_symbol_12,gene_symbol_13,compound_name,publication_reference_1,publication_reference_2,story_location"/>
+  </bean>
+  
   <!-- shared helper beans -->
   <bean name="observationTemplateMap" class="java.util.HashMap">
 	<constructor-arg index="0" type="java.util.Map">
@@ -1769,7 +1799,7 @@
         <entry key="emory_ht_bretn_ppi_data:average_fold_over_control_value" value="evidence:readDouble:createObservedNumericEvidence" />
         <entry key="emory_ht_bretn_ppi_data:p_value" value="evidence:readDouble:createObservedNumericEvidence" />
         <entry key="emory_ht_bretn_ppi_data:nci_portal" value="evidence:readString:createObservedUrlEvidence" />
-        <entry key="emory_ht_bretn_ppi_data:publication_url" value="evidence:readString:createObservedLabelEvidence" />
+        <entry key="emory_ht_bretn_ppi_data:publication_url" value="evidence:readString:createObservedUrlEvidence" />
 		<!-- mskcc foretinib -->
 		<entry key="mskcc_foretinib:species" value="evidence:readString:createObservedLabelEvidence" />
 		<entry key="mskcc_foretinib:tissue" value="subject:findTissueSampleByName" />
@@ -1938,10 +1968,10 @@
 		<!-- dfci smarca2 dependency -->
 		<entry key="dfci_smarca2_dependency:target_group" value="evidence:readString:createObservedLabelEvidence" />
 		<entry key="dfci_smarca2_dependency:gene_symbol" value="subject:findGenesBySymbol" />
-		<entry key="dfci_smarca2_dependency:figure_1" value="evidence:readString:createObservedFileEvidence" />
-		<entry key="dfci_smarca2_dependency:figure_2" value="evidence:readString:createObservedFileEvidence" />
-		<entry key="dfci_smarca2_dependency:figure_3" value="evidence:readString:createObservedFileEvidence" />
-		<entry key="dfci_smarca2_dependency:figure_4" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="dfci_smarca2_dependency:figure_1" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="dfci_smarca2_dependency:figure_2" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="dfci_smarca2_dependency:figure_3" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="dfci_smarca2_dependency:figure_4" value="evidence:readString:createObservedUrlEvidence" />
 		<entry key="dfci_smarca2_dependency:tier2_evidence" value="evidence:readString:createObservedUrlEvidence" />
 		<entry key="dfci_smarca2_dependency:publication_url" value="evidence:readString:createObservedUrlEvidence" />
         <!-- dfci function -->
@@ -2145,7 +2175,7 @@
         <entry key="tgen_eddy:jensen_shannon_divergence" value="evidence:readDouble:createObservedNumericEvidence" />
         <entry key="tgen_eddy:proportion_of_new_dependencies" value="evidence:readDouble:createObservedNumericEvidence" />
         <entry key="tgen_eddy:proportion_of_condition_specific_dependencies" value="evidence:readDouble:createObservedNumericEvidence" />
-        <entry key="tgen_eddy:differential_dependency_network" value="evidence:readString:createObservedFileEvidence" />
+        <entry key="tgen_eddy:differential_dependency_network" value="evidence:readString:createObservedUrlEvidence" />
         <entry key="tgen_eddy:program" value="evidence:readString:createObservedUrlEvidence" />
         <entry key="tgen_eddy:data_source" value="evidence:readString:createObservedUrlEvidence" />
         <entry key="tgen_eddy:disease" value="subject:findTissueSampleByName" />
@@ -2285,6 +2315,36 @@
         <entry key="stanford_tgfbr2:tissue_sample_2" value="subject:findTissueSampleByName" />
         <entry key="stanford_tgfbr2:publication_reference" value="evidence:readString:createObservedUrlEvidence" />
         <entry key="stanford_tgfbr2:story_location" value="evidence:readString:createObservedFileEvidence" />
+        <!-- utmda pik3ca -->
+        <entry key="utmda_pik3ca:gene_symbol_1" value="subject:findGenesBySymbol" />
+        <entry key="utmda_pik3ca:gene_symbol_2" value="subject:findGenesBySymbol" />
+        <entry key="utmda_pik3ca:compound_name_1" value="subject:findCompoundsByName" />
+        <entry key="utmda_pik3ca:compound_name_2" value="subject:findCompoundsByName" />
+        <entry key="utmda_pik3ca:compound_name_3" value="subject:findCompoundsByName" />
+        <entry key="utmda_pik3ca:cell_line_1" value="subject:findCellLineByName" />
+        <entry key="utmda_pik3ca:cell_line_2" value="subject:findCellLineByName" />
+        <entry key="utmda_pik3ca:tissue_sample" value="subject:findTissueSampleByName" />
+        <entry key="utmda_pik3ca:resource_url" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="utmda_pik3ca:publication_reference" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="utmda_pik3ca:story_location" value="evidence:readString:createObservedFileEvidence" />
+        <!-- emory bretn -->
+        <entry key="emory_bretn:gene_symbol_1" value="subject:findGenesBySymbol" />
+        <entry key="emory_bretn:gene_symbol_2" value="subject:findGenesBySymbol" />
+        <entry key="emory_bretn:gene_symbol_3" value="subject:findGenesBySymbol" />
+        <entry key="emory_bretn:gene_symbol_4" value="subject:findGenesBySymbol" />
+        <entry key="emory_bretn:gene_symbol_5" value="subject:findGenesBySymbol" />
+        <entry key="emory_bretn:gene_symbol_6" value="subject:findGenesBySymbol" />
+        <entry key="emory_bretn:gene_symbol_7" value="subject:findGenesBySymbol" />
+        <entry key="emory_bretn:gene_symbol_8" value="subject:findGenesBySymbol" />
+        <entry key="emory_bretn:gene_symbol_9" value="subject:findGenesBySymbol" />
+        <entry key="emory_bretn:gene_symbol_10" value="subject:findGenesBySymbol" />
+        <entry key="emory_bretn:gene_symbol_11" value="subject:findGenesBySymbol" />
+        <entry key="emory_bretn:gene_symbol_12" value="subject:findGenesBySymbol" />
+        <entry key="emory_bretn:gene_symbol_13" value="subject:findGenesBySymbol" />
+        <entry key="emory_bretn:compound_name" value="subject:findCompoundsByName" />
+        <entry key="emory_bretn:publication_reference_1" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="emory_bretn:publication_reference_2" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="emory_bretn:story_location" value="evidence:readString:createObservedFileEvidence" />
         
 	  </map>
 	</constructor-arg>
