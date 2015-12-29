@@ -89,28 +89,37 @@ public class WebServiceUtil {
 
     @Transactional
     @Cacheable(value = "entityCache")
-    public List<? extends DashboardEntity> getObservationsPerRoleTier(Integer subjectId, String role, Integer tier) {
+    public List<? extends DashboardEntity> getObservationsPerRoleTier(Integer filterBy, String role, Integer tier) {
         List<? extends DashboardEntity> entities = new ArrayList<DashboardEntity>();
-        Subject subject = dashboardDao.getEntityById(Subject.class, subjectId);
-        if(subject != null) {
-            ArrayList<Observation> observations = new ArrayList<Observation>();
-            for (ObservedSubject observedSubject : dashboardDao.findObservedSubjectBySubject(subject)) {
-                ObservedSubjectRole observedSubjectRole = observedSubject.getObservedSubjectRole();
-                String subjectRole = observedSubjectRole.getSubjectRole().getDisplayName();
-                Integer observationTier = observedSubject.getObservation().getSubmission().getObservationTemplate().getTier();
-                if( (role.equals("") || role.equals(subjectRole)) && (tier==0 || tier==observationTier) ) {
-                    observations.add(observedSubject.getObservation());
+        if(filterBy != null) {
+            Submission submission = dashboardDao.getEntityById(Submission.class, filterBy);
+            if(submission != null) {
+                entities = dashboardDao.findObservationsBySubmission(submission);
+            } else {
+                Subject subject = dashboardDao.getEntityById(Subject.class, filterBy);
+                if(subject != null) {
+                        ArrayList<Observation> observations = new ArrayList<Observation>();
+                        for (ObservedSubject observedSubject : dashboardDao.findObservedSubjectBySubject(subject)) {
+                            ObservedSubjectRole observedSubjectRole = observedSubject.getObservedSubjectRole();
+                            String subjectRole = observedSubjectRole.getSubjectRole().getDisplayName();
+                            Integer observationTier = observedSubject.getObservation().getSubmission().getObservationTemplate().getTier();
+                            if( (role.equals("") || role.equals(subjectRole)) && (tier==0 || tier==observationTier) ) {
+                                observations.add(observedSubject.getObservation());
+                            }
+                        }
+                        Collections.sort(observations, new Comparator<Observation>() {
+                            @Override
+                            public int compare(Observation o1, Observation o2) {
+                                Integer tier2 = o2.getSubmission().getObservationTemplate().getTier();
+                                Integer tier1 = o1.getSubmission().getObservationTemplate().getTier();
+                                return tier2 - tier1;
+                            }
+                        });
+                        entities = observations;
                 }
             }
-            Collections.sort(observations, new Comparator<Observation>() {
-                @Override
-                public int compare(Observation o1, Observation o2) {
-                    Integer tier2 = o2.getSubmission().getObservationTemplate().getTier();
-                    Integer tier1 = o1.getSubmission().getObservationTemplate().getTier();
-                    return tier2 - tier1;
-                }
-            });
-            entities = observations;
+        } else {
+            entities = dashboardDao.findEntities(Observation.class);
         }
 
         return entities;
