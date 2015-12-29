@@ -98,8 +98,10 @@ dfci.kras.ttest.analysis.data.location=file:${CTD2_DATA_HOME}/submissions/201510
 dfci.tbk1.analysis.data.location=file:${CTD2_DATA_HOME}/submissions/20151001-dfci_tbk1_analysis/20151001-dfci_tbk1_analysis.txt
 hutch.k.kinomics.data.location=file:${CTD2_DATA_HOME}/submissions/20151006-hutchk_kinomics/20151006-hutchk_kinomics.txt
 stanford.methylmix.story.data.location=file:${CTD2_DATA_HOME}/submissions/20151008-stanford_methylmix_story/20151008-stanford_methylmix_story.txt
+utmda.pik3ca.data.location=file:${CTD2_DATA_HOME}/submissions/20151012-utmda_pik3ca/20151012-utmda_pik3ca.txt
 cshl.pdac.data.location=file:${CTD2_DATA_HOME}/submissions/20151029-cshl_pdac/20151029-cshl_pdac.txt
 stanford.tgfbr2.data.location=file:${CTD2_DATA_HOME}/submissions/20151030-stanford_tgfbr2/20151030-stanford_tgfbr2.txt
+emory.bretn.data.location=file:${CTD2_DATA_HOME}/submissions/20151120-emory_bretn/20151120-emory_bretn.txt
 
 # spring commit interval
 spring.batch.commit.interval=10000

@@ -400,5 +400,13 @@
   <bean name="stanfordTgfbr2Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
     <property name="lineMapper" ref="stanfordTgfbr2LineMapper" />
   </bean>
-
+  
+  <bean name="utmdaPik3caReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+    <property name="lineMapper" ref="utmdaPik3caLineMapper" />
+  </bean>
+  
+  <bean name="emoryBretnReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+    <property name="lineMapper" ref="emoryBretnLineMapper" />
+  </bean>
+  
 </beans>
