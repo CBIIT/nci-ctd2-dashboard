@@ -1714,9 +1714,9 @@
                 </a>
             </td>
             <td>{{role}}</td>
-            <td>{{ numberOfTier3Observations==0?"":"<a href='#subject/"+subject.id+"/"+role+"/3'>"+numberOfTier3Observations+"</a> ("+numberOfTier3SubmissionCenters+" center" }}{{numberOfTier3SubmissionCenters>1 ? "s" : ""}}{{numberOfTier3SubmissionCenters>0 ? ")" : ""}}</td>
-            <td>{{ numberOfTier2Observations==0?"":"<a href='#subject/"+subject.id+"/"+role+"/2'>"+numberOfTier2Observations+"</a> ("+numberOfTier2SubmissionCenters+" center" }}{{numberOfTier2SubmissionCenters>1 ? "s" : ""}}{{numberOfTier2SubmissionCenters>0 ? ")" : ""}}</td>
-            <td>{{ numberOfTier1Observations==0?"":"<a href='#subject/"+subject.id+"/"+role+"/1'>"+numberOfTier1Observations+"</a> ("+numberOfTier1SubmissionCenters+" center" }}{{numberOfTier1SubmissionCenters>1 ? "s" : ""}}{{numberOfTier1SubmissionCenters>0 ? ")" : ""}}</td>
+            <td>{{numberOfTier3Observations==0?"":"<a href='#subject/"+subject.id+"/"+role+"/3'>"+numberOfTier3Observations+"</a>"}} {{numberOfTier3Observations>1?"("+numberOfTier3SubmissionCenters+" center"+ (numberOfTier3SubmissionCenters>1?"s":"") +")":""}}</td>
+            <td>{{numberOfTier2Observations==0?"":"<a href='#subject/"+subject.id+"/"+role+"/2'>"+numberOfTier2Observations+"</a>"}} {{numberOfTier2Observations>1?"("+numberOfTier2SubmissionCenters+" center"+ (numberOfTier2SubmissionCenters>1?"s":"") +")":""}}</td>
+            <td>{{numberOfTier1Observations==0?"":"<a href='#subject/"+subject.id+"/"+role+"/1'>"+numberOfTier1Observations+"</a>"}} {{numberOfTier1Observations>1?"("+numberOfTier1SubmissionCenters+" center"+ (numberOfTier1SubmissionCenters>1?"s":"") +")":""}}</td>
         </tr>
     </script>
 
