@@ -173,13 +173,8 @@
         urlRoot: CORE_API_URL + "get/subject"
     });
 
-    var SubjectWithSummary = Backbone.Model.extend({
-        urlRoot: CORE_API_URL + "get/subject"
-    });
-
     var SubjectWithSummaryCollection = Backbone.Collection.extend({
         url: CORE_API_URL + "explore/",
-        model: SubjectWithSummary,
 
         initialize: function(attributes) {
             this.url += attributes.roles;
