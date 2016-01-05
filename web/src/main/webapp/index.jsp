@@ -1648,11 +1648,11 @@
 
             <div id="explore-blurb"></div>
 
-            <table class="table table-bordered table-striped observations">
+            <table class="table table-bordered table-striped observations" id="explore-table">
                 <thead>
                 <tr>
                     <th colspan=3></th>
-                    <th colspan=2 style="text-align:center">Observations</th>
+                    <th colspan=3 style="text-align:center">Observations</th>
                 </tr>
                 <tr>
                     <th>Class</th>
@@ -1718,17 +1718,6 @@
             <td>{{numberOfTier2Observations==0?"":"<a href='#subject/"+subject.id+"/"+role+"/2'>"+numberOfTier2Observations+"</a>"}} {{numberOfTier2Observations>1?"("+numberOfTier2SubmissionCenters+" center"+ (numberOfTier2SubmissionCenters>1?"s":"") +")":""}}</td>
             <td>{{numberOfTier1Observations==0?"":"<a href='#subject/"+subject.id+"/"+role+"/1'>"+numberOfTier1Observations+"</a>"}} {{numberOfTier1Observations>1?"("+numberOfTier1SubmissionCenters+" center"+ (numberOfTier1SubmissionCenters>1?"s":"") +")":""}}</td>
         </tr>
-    </script>
-
-    <script type="text/template" id="explore-more-item-tmpl">
-        <tr id="show-more-{{type}}">
-        <td colspan=5>
-            <center><b>&gt;&gt;</b>
-            Only {{shown}} of {{known}} subjects are shown here.
-            <a class="btn btn-small {{type == 'target' ? 'btn-success' : (type == 'compound' ? 'btn-info' : 'btn-warning')}}">Load more</a>
-            </center>
-        </td>
-        </li>
     </script>
 
     <script type="text/template" id="observedmrafileevidence-row-tmpl">

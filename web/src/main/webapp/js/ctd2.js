@@ -2806,13 +2806,10 @@
 
                     var numberOfEls = subjectWithSummaryCollection.models.length;
                     var spanSize = 2;
-                    for(order=1; order <= numberOfEls; order++) {
-                        var subjectWithSummary = subjectWithSummaryCollection.models[order-1];
-                        if(order < exploreLimit) {
+                    _.each(subjectWithSummaryCollection.models, function(subjectWithSummary) {
                             var sModel = subjectWithSummary.toJSON();
                             sModel["spanSize"] = spanSize;
                             sModel["type"] = thatModel.type;
-                            sModel["order"] = order;
                             sModel["reformattedClassName"] = reformattedClassName[sModel.subject.class];
                             if(sModel.subject.class == "Compound") {
                                 _.each(sModel.subject.xrefs, function(xref) {
@@ -2823,42 +2820,8 @@
                             }
                             var exploreItemView = new ExploreItemView({ model: sModel });
                             exploreItemView.render();
-                        } else {
-                            var exploreMoreItemView = new ExploreMoreItemView({
-                                model: {
-                                    shown: order-1,
-                                    known: numberOfEls,
-                                    type: thatModel.type
-                                }
-                            });
-                            exploreMoreItemView.render();
-
-                            $("#show-more-" + thatModel.type).click(function(e) {
-                                e.preventDefault();
-                                $(this).fadeOut();
-
-                                for(var j=order; j <=  numberOfEls; j++) {
-                                    var subjectWithSummary = subjectWithSummaryCollection.models[j-1];
-                                    var sModel = subjectWithSummary.toJSON();
-                                    sModel["spanSize"] = spanSize;
-                                    sModel["type"] = thatModel.type;
-                                    sModel["order"] = j;
-                                    sModel["reformattedClassName"] = reformattedClassName[sModel.subject.class];
-                                    if(sModel.subject.class == "Compound") {
-                                        _.each(sModel.subject.xrefs, function(xref) {
-                                            if(xref.databaseName == "IMAGE") {
-                                                sModel.subject["imageFile"] = xref.databaseId;
-                                            }
-                                        });
-                                    }
-                                    var exploreItemView = new ExploreItemView({ model: sModel });
-                                    exploreItemView.render();
-                                }
-                            });
-
-                            break;
-                        }
-                    }
+                    });
+                    $("#explore-table").dataTable();
 
                     $(".explore-thumbnail h4").tooltip();
                     var blurb = $("#text-blurb");
@@ -2952,17 +2915,6 @@
             return this;
         }
     });
-    
-    var ExploreMoreItemView = Backbone.View.extend({
-        el: "#explore-items",
-        template: _.template($("#explore-more-item-tmpl").html()),
-
-        render: function() {
-            $(this.el).append(this.template(this.model));
-            return this;
-        }
-    });
-
 
     //Gene List View
     var GeneListView = Backbone.View.extend({
