@@ -47,7 +47,7 @@
         }
     });
 
-    // Let datatables know about our date format
+    // Let datatables know about dashboard rank (for sorting)
     $.extend($.fn.dataTable.ext.order, {
         "dashboard-rank": function(settings, col) {
             return this.api().column( col, {order:'index'} ).nodes().map(
@@ -58,6 +58,19 @@
         }
     });
 
+    // Let datatables know about observation count (for sorting)
+    $.extend($.fn.dataTable.ext.order, {
+        "observation-count": function(settings, col) {
+            return this.api().column( col, {order:'index'} ).nodes().map(
+                function(td, i) {
+                    var count_text = $('a', td).html();
+                    var count = 0;
+                    if(count_text != undefined) count = parseInt(count_text);
+                    return count;
+                }
+            );
+        }
+    });
 
     /* Models */
     var SubmissionCenter = Backbone.Model.extend({
@@ -2821,7 +2834,16 @@
                             var exploreItemView = new ExploreItemView({ model: sModel });
                             exploreItemView.render();
                     });
-                    $("#explore-table").dataTable();
+                    $("#explore-table").dataTable( {
+                    	"columns": [
+                                    null,
+                                    null,
+                                    null,
+                                    { "orderDataType": "observation-count", "type": "numeric" },
+                                    { "orderDataType": "observation-count", "type": "numeric" },
+                                    { "orderDataType": "observation-count", "type": "numeric" }
+                                ]
+                    });
 
                     $(".explore-thumbnail h4").tooltip();
                     var blurb = $("#text-blurb");
