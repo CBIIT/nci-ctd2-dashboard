@@ -1024,7 +1024,7 @@
              });
              result["type"] = result.class;
 
-             $(this.el).html(this.template(result));
+             $(this.el).html(this.template( $.extend(result, {tier:thatModel.tier?thatModel.tier:null, role:thatModel.role?thatModel.role:null}) ));
 
              var thatEl = $("ul.synonyms");
              _.each(result.synonyms, function(aSynonym) {
@@ -1165,7 +1165,7 @@
             var thatModel = this.model;
             var result = thatModel.subject.toJSON();
             result["type"] = result.class;
-            $(this.el).html(this.template(result));
+            $(this.el).html(this.template( $.extend(result, {tier:thatModel.tier?thatModel.tier:null, role:thatModel.role?thatModel.role:null}) ));
 
             var thatEl = $("ul.synonyms");
             _.each(result.synonyms, function(aSynonym) {
@@ -1199,7 +1199,7 @@
             var thatModel = this.model;
             var result = thatModel.subject.toJSON();
             result["type"] = result.class;
-            $(this.el).html(this.template(result));
+            $(this.el).html(this.template( $.extend(result, {tier:thatModel.tier?thatModel.tier:null, role:thatModel.role?thatModel.role:null}) ));
 
             var subjectObservationView = new SubjectObservationsView({
                 model: {subjectId: result.id, tier:thatModel.tier, role:thatModel.role},
@@ -1218,7 +1218,7 @@
             var thatModel = this.model;
             var result = thatModel.subject.toJSON();
             result["type"] = "sirna";
-            $(this.el).html(this.template(result));
+            $(this.el).html(this.template( $.extend(result, {tier:thatModel.tier?thatModel.tier:null, role:thatModel.role?thatModel.role:null}) ));
 
             var subjectObservationView = new SubjectObservationsView({
                 model: {subjectId: result.id, tier:thatModel.tier, role:thatModel.role},
@@ -1237,7 +1237,7 @@
             var thatModel = this.model;
             var result = thatModel.subject.toJSON();
             result["type"] = result.class;
-            $(this.el).html(this.template(result));
+            $(this.el).html(this.template( $.extend(result, {tier:thatModel.tier?thatModel.tier:null, role:thatModel.role?thatModel.role:null}) ));
 
             var subjectObservationView = new SubjectObservationsView({
                 model: {subjectId: result.id, tier:thatModel.tier, role:thatModel.role},
@@ -1256,7 +1256,7 @@
             var thatModel = this.model;
             var result = thatModel.subject.toJSON();
             result["type"] = result.class;
-            $(this.el).html(this.template(result));
+            $(this.el).html(this.template( $.extend(result, {tier:thatModel.tier?thatModel.tier:null, role:thatModel.role?thatModel.role:null}) ));
 
             var thatEl = this.el;
             if(result.xrefs.length == 0) { $(thatEl).find("#tissue-refs").hide(); }
@@ -1299,7 +1299,7 @@
             var thatModel = this.model;
             var result = thatModel.subject.toJSON();
             result["type"] = result.class;
-            $(this.el).html(this.template(result));
+            $(this.el).html(this.template( $.extend(result, {tier:thatModel.tier?thatModel.tier:null, role:thatModel.role?thatModel.role:null}) ));
 
             var thatEl = $("ul.synonyms");
             _.each(result.synonyms, function(aSynonym) {
@@ -1353,7 +1353,7 @@
             result["cbioPortalId"] = cbioPortalId;
             result["type"] = result.class;
 
-            $(this.el).html(this.template(result));
+            $(this.el).html(this.template( $.extend(result, {tier:thatModel.tier?thatModel.tier:null, role:thatModel.role?thatModel.role:null}) ));
 
             if(!cbioPortalId) {
             	$("#cbiolink").css("display", "none");

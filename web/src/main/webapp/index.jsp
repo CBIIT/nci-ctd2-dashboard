@@ -842,7 +842,7 @@
                 </div>
             </div>
 
-            <h3>Related observations</h3>
+            <h3>Related observations <small>{{ role?"for the role of "+role:"" }} {{tier?"and tier "+tier:""}}</small></h3>
 
             <div class="more-observations-message"></div>
 
@@ -905,7 +905,7 @@
                 </div>
             </div>
 
-            <h3>Related observations</h3>
+            <h3>Related observations <small>{{ role?"for the role of "+role:"" }} {{tier?"and tier "+tier:""}}</small></h3>
 
             <div class="more-observations-message"></div>
 
@@ -968,7 +968,7 @@
                 </div>
             </div>
 
-            <h3>Related observations</h3>
+            <h3>Related observations <small>{{ role?"for the role of "+role:"" }} {{tier?"and tier "+tier:""}}</small></h3>
 
             <div class="more-observations-message"></div>
 
@@ -1028,7 +1028,7 @@
                 </div>
             </div>
 
-            <h3>Related observations</h3>
+            <h3>Related observations <small>{{ role?"for the role of "+role:"" }} {{tier?"and tier "+tier:""}}</small></h3>
 
             <div class="more-observations-message"></div>
 
@@ -1087,7 +1087,7 @@
                 </div>
             </div>
 
-            <h3>Related observations</h3>
+            <h3>Related observations <small>{{ role?"for the role of "+role:"" }} {{tier?"and tier "+tier:""}}</small></h3>
 
             <div class="more-observations-message"></div>
 
@@ -1155,7 +1155,7 @@
                         <img src="img/cellsample.png" class="img-polaroid" width=175 height=175 alt="Cell sample">
                 </div>
             </div>
-            <h3>Related observations</h3>
+            <h3>Related observations <small>{{ role?"for the role of "+role:"" }} {{tier?"and tier "+tier:""}}</small></h3>
 
             <div class="more-observations-message"></div>
 
@@ -1211,7 +1211,7 @@
                     <img src="img/animalmodel.png" class="img-polaroid" width=175 height=175 alt="Animal model">
                 </div>
             </div>
-            <h3>Related observations</h3>
+            <h3>Related observations <small>{{ role?"for the role of "+role:"" }} {{tier?"and tier "+tier:""}}</small></h3>
 
             <div class="more-observations-message"></div>
 
@@ -1281,7 +1281,7 @@
                   </div>
               </div>
 
-              <h3>Related observations</h3>
+              <h3>Related observations <small>{{ role?"for the role of "+role:"" }} {{tier?"and tier "+tier:""}}</small></h3>
 
               <div class="more-observations-message"></div>
 
