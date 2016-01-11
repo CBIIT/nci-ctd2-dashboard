@@ -1281,7 +1281,7 @@
                   </div>
               </div>
 
-              <h3>Related observations <small>{{ role?"for the role of "+role:"" }} {{tier?"and tier "+tier:""}}</small></h3>
+              <h3>Related observations <small>{{ role?"for the role of "+decodeURI(role):"" }} {{tier?"and tier "+tier:""}}</small></h3>
 
               <div class="more-observations-message"></div>
 
