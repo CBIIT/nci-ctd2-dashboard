@@ -773,7 +773,7 @@
                  </div>
              </div>
 
-             <h3>Related observations</h3>
+             <h3>Related observations <small>{{ role?"for the role of "+role:"" }} {{tier?"and tier "+tier:""}}</small></h3>
 
              <div class="more-observations-message"></div>
 
@@ -1647,6 +1647,7 @@
             <h2>Explore: <i>{{_.map(decodeURIComponent(roles).split(","), function(o) { return o + "s"; }, []).join(", ")}}</i> <small><a href="#" id="customize-roles" class="customize-{{type}}">({{customized ? "customized" : "select roles"}})</a></small></h2>
 
             <div id="explore-blurb"></div>
+            <button type="button" class="btn btn-default" id="reset-ordering">Reset initial ordering</button>
 
             <table class="table table-bordered table-striped observations" id="explore-table">
                 <thead>
