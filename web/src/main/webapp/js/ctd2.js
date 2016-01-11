@@ -72,6 +72,18 @@
         }
     });
 
+    $.fn.dataTable.Api.register( 'order.neutral()', function () {
+    	return this.iterator( 'table', function ( s ) {
+    		s.aaSorting.length = 0;
+    		s.aiDisplay.sort( function (a,b) {
+    			return a-b;
+    		} );
+    		s.aiDisplayMaster.sort( function (a,b) {
+    			return a-b;
+    		} );
+    	} );
+    } );
+
     /* Models */
     var SubmissionCenter = Backbone.Model.extend({
         urlRoot: CORE_API_URL + "get/center"
@@ -1112,7 +1124,7 @@
             // Find out the UniProt ID
 
             result["type"] = result.class;
-            $(this.el).html(this.template(result));
+            $(this.el).html(this.template( $.extend(result, {tier:thatModel.tier?thatModel.tier:null, role:thatModel.role?thatModel.role:null}) ));
 
             var thatEl = $("ul.synonyms");
             _.each(result.synonyms, function(aSynonym) {
@@ -2854,6 +2866,7 @@
                             (new HelpNavigateView()).render();
                         });
                     }
+                    $("#reset-ordering").click( function() { $("#explore-table").DataTable().order.neutral().draw(); } );
                 }
             });
 
