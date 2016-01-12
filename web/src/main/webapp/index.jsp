@@ -1707,7 +1707,7 @@
         <tr style='white-space: nowrap;'>
             <td>
                  {{reformattedClassName}}
-                 {{subject.class == 'Compound' ? "<a href='<%=dataURL%>compounds/"+ subject.imageFile +"' target='_blank' class='compound-image' title='Compound: " + subject.displayName + "'><img class='img-polaroid' style='height:25px' src='<%=dataURL%>compounds/" + subject.imageFile + "' alt='Compound: " + subject.displayName +"'></a>" : "<img src='img/"+ subject.class.toLowerCase() + ".png' style='height:25px' alt=''>" }}
+                 {{subject.class == 'Compound' ? "<span style='display:inline-block;width:100px'><a href='<%=dataURL%>compounds/"+ subject.imageFile +"' target='_blank' class='compound-image' title='Compound: " + subject.displayName + "'><img class='img-polaroid' style='height:25px' src='<%=dataURL%>compounds/" + subject.imageFile + "' alt='Compound: " + subject.displayName +"'></a></span>" : "<img src='img/"+ subject.class.toLowerCase() + ".png' style='height:25px' alt=''>" }}
             </td>
             <td>
                 <a href="#/subject/{{subject.id}}/{{role}}">
