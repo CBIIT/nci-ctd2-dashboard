@@ -409,4 +409,12 @@
     <property name="lineMapper" ref="emoryBretnLineMapper" />
   </bean>
   
+  <bean name="utmdaNadkPdacReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+    <property name="lineMapper" ref="utmdaNadkPdacLineMapper" />
+  </bean>
+  
+  <bean name="broadCtrpv2Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
+    <property name="lineMapper" ref="broadCtrpv2LineMapper" />
+  </bean>
+  
 </beans>
