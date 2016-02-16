@@ -408,9 +408,19 @@
 		<batch:chunk reader="utmdaPik3caReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	  </batch:tasklet>
 	</batch:step>
-    <batch:step id="emoryBretnStep" parent="observationDataStep">
+    <batch:step id="emoryBretnStep" parent="observationDataStep" next="utmdaNadkPdacStep">
 	  <batch:tasklet>
 		<batch:chunk reader="emoryBretnReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+    <batch:step id="utmdaNadkPdacStep" parent="observationDataStep" next="broadCtrpv2Step">
+	  <batch:tasklet>
+		<batch:chunk reader="utmdaNadkPdacReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+    <batch:step id="broadCtrpv2Step" parent="observationDataStep">
+	  <batch:tasklet>
+		<batch:chunk reader="broadCtrpv2Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	  </batch:tasklet>
 	</batch:step>
   </batch:job>
@@ -1214,7 +1224,7 @@
 
     <bean name="mdaPik3r1DrugZenograftsLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
   	<property name="delimiter" value="\u0009"/>
-  	<property name="names" value="dummy,submission_name,submission_date,template_name,cell_line,aberration,drug,tgi,nci_portal,publication_url"/>
+  	<property name="names" value="dummy,submission_name,submission_date,template_name,cell_line,gene_symbol,aberration,drug,tgi,nci_portal,publication_url"/>
   </bean>
 
   <!-- mdaPik3r1RppaBaf3Reader defined in: -->
@@ -1298,7 +1308,7 @@
 
     <bean name="utswNsclcLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
   	<property name="delimiter" value="\u0009"/>
-  	<property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,gene_symbol_3,gene_symbol_4,gene_symbol_5,gene_symbol_6,compound_name_1,compound_name_2,cell_line_1,cell_line_2,tissue_sample,publication_reference,story_location"/>
+  	<property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,gene_symbol_3,gene_symbol_4,gene_symbol_5,gene_symbol_6,compound_name_1,compound_name_2,cell_line_1,cell_line_2,tissue_sample,publication_reference_1,publication_reference_2,publication_reference_3,story_location"/>
   </bean>
   
   <bean name="tgenEddyGbmLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
@@ -1308,7 +1318,7 @@
 
     <bean name="tgenEddyGbmLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
   	<property name="delimiter" value="\u0009"/>
-  	<property name="names" value="dummy,submission_name,submission_date,template_name,pathway,pathway_link,gene_symbol_1,gene_symbol_2,gene_symbol_3,gene_symbol_4,gene_symbol_5,prior_weight,number_of_genes_in_pathway,p_value,jensen_shannon_divergence,proportion_of_new_dependencies,proportion_of_condition_specific_dependencies,differential_dependency_network,program,data_source,disease,classification,publication_reference"/>
+  	<property name="names" value="dummy,submission_name,submission_date,template_name,pathway,pathway_link,gene_symbol_1,gene_symbol_2,gene_symbol_3,gene_symbol_4,gene_symbol_5,prior_weight,number_of_genes_in_pathway,p_value,jensen_shannon_divergence,proportion_of_new_dependencies,proportion_of_condition_specific_dependencies,differential_dependency_network,program,data_source,disease,classification,publication_reference_1,publication_reference_2"/>
   </bean>
   
   <bean name="tgenEddyStoryLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
@@ -1439,6 +1449,26 @@
     <bean name="emoryBretnLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
   	<property name="delimiter" value="\u0009"/>
   	<property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,gene_symbol_3,gene_symbol_4,gene_symbol_5,gene_symbol_6,gene_symbol_7,gene_symbol_8,gene_symbol_9,gene_symbol_10,gene_symbol_11,gene_symbol_12,gene_symbol_13,compound_name,publication_reference_1,publication_reference_2,story_location"/>
+  </bean>
+  
+  <bean name="utmdaNadkPdacLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+  	<property name="fieldSetMapper" ref="observationDataMapper" />
+  	<property name="lineTokenizer" ref="utmdaNadkPdacLineTokenizer" />
+    </bean>
+
+    <bean name="utmdaNadkPdacLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+  	<property name="delimiter" value="\u0009"/>
+  	<property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,gene_symbol_3,gene_symbol_4,gene_symbol_5,gene_symbol_6,gene_symbol_7,gene_symbol_8,tissue_sample,resource_url_1,resource_url_2,resource_url_3,publication_reference_1,story_location"/>
+  </bean>
+  
+  <bean name="broadCtrpv2LineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+  	<property name="fieldSetMapper" ref="observationDataMapper" />
+  	<property name="lineTokenizer" ref="broadCtrpv2LineTokenizer" />
+    </bean>
+
+    <bean name="broadCtrpv2LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+  	<property name="delimiter" value="\u0009"/>
+  	<property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,gene_symbol_3,gene_symbol_4,compound_name_1,compound_name_2,cell_line_1,cell_line_2,tissue_sample,resource_url,publication_reference_1,publication_reference_2,story_location"/>
   </bean>
   
   <!-- shared helper beans -->
@@ -2080,6 +2110,7 @@
 		<entry key="mda_pik3r1_drug_screen_baf3:publication_url" value="evidence:readString:createObservedUrlEvidence" />
 		<!-- mda_pik3r1_drug_xenografts -->
 		<entry key="mda_pik3r1_drug_xenografts:cell_line" value="subject:findCellLineByName" />
+        <entry key="mda_pik3r1_drug_xenografts:gene_symbol" value="subject:findGenesBySymbol" />
 		<entry key="mda_pik3r1_drug_xenografts:aberration" value="evidence:readString:createObservedLabelEvidence" />
 		<entry key="mda_pik3r1_drug_xenografts:drug" value="subject:findCompoundsByName" />
 		<entry key="mda_pik3r1_drug_xenografts:tgi" value="evidence:readDouble:createObservedNumericEvidence" />
@@ -2159,7 +2190,9 @@
         <entry key="utsw_nsclc:cell_line_1" value="subject:findCellLineByName" />
         <entry key="utsw_nsclc:cell_line_2" value="subject:findCellLineByName" />
         <entry key="utsw_nsclc:tissue_sample" value="subject:findTissueSampleByName" />
-        <entry key="utsw_nsclc:publication_reference" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="utsw_nsclc:publication_reference_1" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="utsw_nsclc:publication_reference_2" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="utsw_nsclc:publication_reference_3" value="evidence:readString:createObservedUrlEvidence" />
         <entry key="utsw_nsclc:story_location" value="evidence:readString:createObservedFileEvidence" />
         <!-- tgen eddy gbm -->
         <entry key="tgen_eddy:pathway" value="evidence:readString:createObservedLabelEvidence" />
@@ -2180,7 +2213,8 @@
         <entry key="tgen_eddy:data_source" value="evidence:readString:createObservedUrlEvidence" />
         <entry key="tgen_eddy:disease" value="subject:findTissueSampleByName" />
         <entry key="tgen_eddy:classification" value="evidence:readString:createObservedLabelEvidence" />
-        <entry key="tgen_eddy:publication_reference" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="tgen_eddy:publication_reference_1" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="tgen_eddy:publication_reference_2" value="evidence:readString:createObservedUrlEvidence" />
         <!-- tgen eddy story -->
         <entry key="tgen_eddy_story:gene_symbol_1" value="subject:findGenesBySymbol" />
         <entry key="tgen_eddy_story:gene_symbol_2" value="subject:findGenesBySymbol" />
@@ -2345,6 +2379,35 @@
         <entry key="emory_bretn:publication_reference_1" value="evidence:readString:createObservedUrlEvidence" />
         <entry key="emory_bretn:publication_reference_2" value="evidence:readString:createObservedUrlEvidence" />
         <entry key="emory_bretn:story_location" value="evidence:readString:createObservedFileEvidence" />
+        <!-- utmda nadk pdac -->
+        <entry key="utmda_nadk_pdac:gene_symbol_1" value="subject:findGenesBySymbol" />
+        <entry key="utmda_nadk_pdac:gene_symbol_2" value="subject:findGenesBySymbol" />
+        <entry key="utmda_nadk_pdac:gene_symbol_3" value="subject:findGenesBySymbol" />
+        <entry key="utmda_nadk_pdac:gene_symbol_4" value="subject:findGenesBySymbol" />
+        <entry key="utmda_nadk_pdac:gene_symbol_5" value="subject:findGenesBySymbol" />
+        <entry key="utmda_nadk_pdac:gene_symbol_6" value="subject:findGenesBySymbol" />
+        <entry key="utmda_nadk_pdac:gene_symbol_7" value="subject:findGenesBySymbol" />
+        <entry key="utmda_nadk_pdac:gene_symbol_8" value="subject:findGenesBySymbol" />
+        <entry key="utmda_nadk_pdac:tissue_sample" value="subject:findTissueSampleByName" />
+        <entry key="utmda_nadk_pdac:resource_url_1" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="utmda_nadk_pdac:resource_url_2" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="utmda_nadk_pdac:resource_url_3" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="utmda_nadk_pdac:publication_reference_1" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="utmda_nadk_pdac:story_location" value="evidence:readString:createObservedFileEvidence" />
+        <!-- broad ctrpv2 -->
+        <entry key="broad_ctrpv2:gene_symbol_1" value="subject:findGenesBySymbol" />
+        <entry key="broad_ctrpv2:gene_symbol_2" value="subject:findGenesBySymbol" />
+        <entry key="broad_ctrpv2:gene_symbol_3" value="subject:findGenesBySymbol" />
+        <entry key="broad_ctrpv2:gene_symbol_4" value="subject:findGenesBySymbol" />
+        <entry key="broad_ctrpv2:compound_name_1" value="subject:findCompoundsByName" />
+        <entry key="broad_ctrpv2:compound_name_2" value="subject:findCompoundsByName" />
+        <entry key="broad_ctrpv2:cell_line_1" value="subject:findCellLineByName" />
+        <entry key="broad_ctrpv2:cell_line_2" value="subject:findCellLineByName" />
+        <entry key="broad_ctrpv2:tissue_sample" value="subject:findTissueSampleByName" />
+        <entry key="broad_ctrpv2:resource_url" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="broad_ctrpv2:publication_reference_1" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="broad_ctrpv2:publication_reference_2" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="broad_ctrpv2:story_location" value="evidence:readString:createObservedFileEvidence" />
         
 	  </map>
 	</constructor-arg>

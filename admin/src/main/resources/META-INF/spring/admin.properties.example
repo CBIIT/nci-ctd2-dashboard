@@ -102,6 +102,8 @@ utmda.pik3ca.data.location=file:${CTD2_DATA_HOME}/submissions/20151012-utmda_pik
 cshl.pdac.data.location=file:${CTD2_DATA_HOME}/submissions/20151029-cshl_pdac/20151029-cshl_pdac.txt
 stanford.tgfbr2.data.location=file:${CTD2_DATA_HOME}/submissions/20151030-stanford_tgfbr2/20151030-stanford_tgfbr2.txt
 emory.bretn.data.location=file:${CTD2_DATA_HOME}/submissions/20151120-emory_bretn/20151120-emory_bretn.txt
+utmda.nadk.pdac.data.location=file:${CTD2_DATA_HOME}/submissions/20151005-utmda_nadk_pdac/20151005-utmda_nadk_pdac.txt
+broad.ctrpv2.data.location=file:${CTD2_DATA_HOME}/submissions/20151216-broad_ctrpv2/20151216-broad_ctrpv2.txt
 
 # spring commit interval
 spring.batch.commit.interval=10000
