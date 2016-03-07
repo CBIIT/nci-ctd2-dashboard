@@ -30,5 +30,5 @@ web.data.url=http://cbio.mskcc.org/cancergenomics/ctd2-dashboard/
 # If you make this too high and the client will suffer a lot to load details for each observation
 list.max.observations=100
 
-#this is the URL for CNKB query
+# this is the URL for CNKB query
 cnkb.data.url=http://cagridnode.c2b2.columbia.edu:8080/cknb/InteractionsServlet_new/InteractionsServlet
