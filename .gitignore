@@ -1,7 +1,7 @@
 target/
-database.properties
-dashboard.properties
-log4j.properties
-admin.properties
+#database.properties
+#dashboard.properties
+#log4j.properties
+#admin.properties
 .DS_Store
 .svn
