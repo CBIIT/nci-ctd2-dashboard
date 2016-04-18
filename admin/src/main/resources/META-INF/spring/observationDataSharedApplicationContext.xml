@@ -418,9 +418,74 @@
 		<batch:chunk reader="utmdaNadkPdacReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	  </batch:tasklet>
 	</batch:step>
-    <batch:step id="broadCtrpv2Step" parent="observationDataStep">
+    <batch:step id="broadCtrpv2Step" parent="observationDataStep" next="stanfordElasticNetGeneStep">
 	  <batch:tasklet>
 		<batch:chunk reader="broadCtrpv2Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+    <batch:step id="stanfordElasticNetGeneStep" parent="observationDataStep" next="stanfordElasticNetMirStep">
+	  <batch:tasklet>
+		<batch:chunk reader="stanfordElasticNetGeneReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+    <batch:step id="stanfordElasticNetMirStep" parent="observationDataStep" next="stanfordElasticNetProtStep">
+	  <batch:tasklet>
+		<batch:chunk reader="stanfordElasticNetMirReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+    <batch:step id="stanfordElasticNetProtStep" parent="observationDataStep" next="columbiaMoaStep">
+	  <batch:tasklet>
+		<batch:chunk reader="stanfordElasticNetProtReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+    <batch:step id="columbiaMoaStep" parent="observationDataStep" next="broadAcmeLineageStep">
+	  <batch:tasklet>
+		<batch:chunk reader="columbiaMoaReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+    <batch:step id="broadAcmeLineageStep" parent="observationDataStep" next="broadAcmeMutationStep">
+	  <batch:tasklet>
+		<batch:chunk reader="broadAcmeLineageReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+    <batch:step id="broadAcmeMutationStep" parent="observationDataStep" next="dfciPax8Step">
+	  <batch:tasklet>
+		<batch:chunk reader="broadAcmeMutationReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+    <batch:step id="dfciPax8Step" parent="observationDataStep" next="dfciTbk1Step">
+	  <batch:tasklet>
+		<batch:chunk reader="dfciPax8Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+    <batch:step id="dfciTbk1Step" parent="observationDataStep" next="broadKrasDecitabineStep">
+	  <batch:tasklet>
+		<batch:chunk reader="dfciTbk1Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+    <batch:step id="broadKrasDecitabineStep" parent="observationDataStep" next="broadKrasDecitabineMekStep">
+	  <batch:tasklet>
+		<batch:chunk reader="broadKrasDecitabineReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+    <batch:step id="broadKrasDecitabineMekStep" parent="observationDataStep" next="broadKrasDecitabineNavitoclaxStep">
+	  <batch:tasklet>
+		<batch:chunk reader="broadKrasDecitabineMekReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+    <batch:step id="broadKrasDecitabineNavitoclaxStep" parent="observationDataStep" next="broadKrasXenograftStep">
+	  <batch:tasklet>
+		<batch:chunk reader="broadKrasDecitabineNavitoclaxReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+    <batch:step id="broadKrasXenograftStep" parent="observationDataStep" next="dfciSwisnfStep">
+	  <batch:tasklet>
+		<batch:chunk reader="broadKrasXenograftReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+    <batch:step id="dfciSwisnfStep" parent="observationDataStep">
+	  <batch:tasklet>
+		<batch:chunk reader="dfciSwisnfReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	  </batch:tasklet>
 	</batch:step>
   </batch:job>
@@ -1471,6 +1536,136 @@
   	<property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,gene_symbol_3,gene_symbol_4,compound_name_1,compound_name_2,cell_line_1,cell_line_2,tissue_sample,resource_url,publication_reference_1,publication_reference_2,story_location"/>
   </bean>
   
+  <bean name="stanfordElasticNetGeneLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+  	<property name="fieldSetMapper" ref="observationDataMapper" />
+  	<property name="lineTokenizer" ref="stanfordElasticNetGeneLineTokenizer" />
+    </bean>
+
+    <bean name="stanfordElasticNetGeneLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+  	<property name="delimiter" value="\u0009"/>
+  	<property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol,disease_abbr,disease,clinical_phenotype,association_description,analysis_type,supporting_genomics,elastic_net_rank,differential_status,sample_count,mse,bootstrapping,data,publication"/>
+  </bean>
+  
+  <bean name="stanfordElasticNetMirLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+  	<property name="fieldSetMapper" ref="observationDataMapper" />
+  	<property name="lineTokenizer" ref="stanfordElasticNetMirLineTokenizer" />
+    </bean>
+
+    <bean name="stanfordElasticNetMirLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+  	<property name="delimiter" value="\u0009"/>
+  	<property name="names" value="dummy,submission_name,submission_date,template_name,miR_symbol,gene_symbol,disease_abbr,disease,clinical_phenotype,association_description,analysis_type,supporting_genomics,elastic_net_rank,differential_status,sample_count,mse,bootstrapping,data,publication"/>
+  </bean>
+  
+  <bean name="stanfordElasticNetProtLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+  	<property name="fieldSetMapper" ref="observationDataMapper" />
+  	<property name="lineTokenizer" ref="stanfordElasticNetProtLineTokenizer" />
+    </bean>
+
+    <bean name="stanfordElasticNetProtLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+  	<property name="delimiter" value="\u0009"/>
+  	<property name="names" value="dummy,submission_name,submission_date,template_name,protein_symbol,gene_symbol,disease_abbr,disease,clinical_phenotype,association_description,analysis_type,supporting_genomics,elastic_net_rank,differential_status,sample_count,mse,bootstrapping,data,publication"/>
+  </bean>
+  
+  <bean name="columbiaMoaLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+  	<property name="fieldSetMapper" ref="observationDataMapper" />
+  	<property name="lineTokenizer" ref="columbiaMoaLineTokenizer" />
+    </bean>
+
+    <bean name="columbiaMoaLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+  	<property name="delimiter" value="\u0009"/>
+  	<property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,gene_symbol_3,compound_name_1,compound_name_2,compound_name_3,compound_name_4,compound_name_5,resource_url_1,resource_url_2,publication_reference,story_location"/>
+  </bean>
+  
+  <bean name="broadAcmeLineageLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+  	<property name="fieldSetMapper" ref="observationDataMapper" />
+  	<property name="lineTokenizer" ref="broadAcmeLineageLineTokenizer" />
+    </bean>
+
+    <bean name="broadAcmeLineageLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+  	<property name="delimiter" value="\u0009"/>
+  	<property name="names" value="dummy,submission_name,submission_date,template_name,compound_name,enriched_protein_target,lineage,hotspot_q_value,hotspot_size,hotspot_log_likelihood,hotspot_median_auc,delta_auc_between_hotspot_and_null,nci_portal,AUC_matrix_path,publication_reference"/>
+  </bean>
+  
+  <bean name="broadAcmeMutationLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+  	<property name="fieldSetMapper" ref="observationDataMapper" />
+  	<property name="lineTokenizer" ref="broadAcmeMutationLineTokenizer" />
+    </bean>
+
+    <bean name="broadAcmeMutationLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+  	<property name="delimiter" value="\u0009"/>
+  	<property name="names" value="dummy,submission_name,submission_date,template_name,compound_name,gene_symbol,enriched_cell_line_feature,gene_symbol_of_enriched_feature,hotspot_q_value,hotspot_size,hotspot_log_likelihood,hotspot_median_auc,delta_auc_between_hotspot_and_null,nci_portal,AUC_matrix_path,publication_reference"/>
+  </bean>
+  
+  <bean name="dfciPax8LineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+  	<property name="fieldSetMapper" ref="observationDataMapper" />
+  	<property name="lineTokenizer" ref="dfciPax8LineTokenizer" />
+    </bean>
+
+    <bean name="dfciPax8LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+  	<property name="delimiter" value="\u0009"/>
+  	<property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,tissue_sample_1,resource_url_1,resource_url_2,resource_url_3,publication_reference_1,story_location"/>
+  </bean>
+  
+  <bean name="dfciTbk1LineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+  	<property name="fieldSetMapper" ref="observationDataMapper" />
+  	<property name="lineTokenizer" ref="dfciTbk1LineTokenizer" />
+    </bean>
+
+    <bean name="dfciTbk1LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+  	<property name="delimiter" value="\u0009"/>
+  	<property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,gene_symbol_3,gene_symbol_4,gene_symbol_5,gene_symbol_6,gene_symbol_7,gene_symbol_8,gene_symbol_9,gene_symbol_10,compound_name_1,compound_name_2,tissue_sample_1,tissue_sample_2,resource_url_1,resource_url_2,publication_reference_1,publication_reference_2,story_location"/>
+  </bean>
+  
+  <bean name="broadKrasDecitabineLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+  	<property name="fieldSetMapper" ref="observationDataMapper" />
+  	<property name="lineTokenizer" ref="broadKrasDecitabineLineTokenizer" />
+    </bean>
+
+    <bean name="broadKrasDecitabineLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+  	<property name="delimiter" value="\u0009"/>
+  	<property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol,cell_line,compound_name,disease,figure_1a,figure_2a,figure_2b,figure_2c,publication_reference"/>
+  </bean>
+  
+  <bean name="broadKrasDecitabineMekLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+  	<property name="fieldSetMapper" ref="observationDataMapper" />
+  	<property name="lineTokenizer" ref="broadKrasDecitabineMekLineTokenizer" />
+    </bean>
+
+    <bean name="broadKrasDecitabineMekLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+  	<property name="delimiter" value="\u0009"/>
+  	<property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,cell_line_1,cell_line_2,compound_name_1,compound_name_2,disease,figure_5a,figure_5b,figure_5c,tier1_evidence,publication_reference"/>
+  </bean>
+  
+  <bean name="broadKrasDecitabineNavitoclaxLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+  	<property name="fieldSetMapper" ref="observationDataMapper" />
+  	<property name="lineTokenizer" ref="broadKrasDecitabineNavitoclaxLineTokenizer" />
+    </bean>
+
+    <bean name="broadKrasDecitabineNavitoclaxLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+  	<property name="delimiter" value="\u0009"/>
+  	<property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol,cell_line_1,cell_line_2,cell_line_3,compound_name_1,compound_name_2,disease,figure_6a,figure_6b,figure_6c,figure_6d,tier1_evidence,publication_reference"/>
+  </bean>
+  
+  <bean name="broadKrasXenograftLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+  	<property name="fieldSetMapper" ref="observationDataMapper" />
+  	<property name="lineTokenizer" ref="broadKrasXenograftLineTokenizer" />
+    </bean>
+
+    <bean name="broadKrasXenograftLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+  	<property name="delimiter" value="\u0009"/>
+  	<property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol,cell_line,compound_name_1,compound_name_2,disease,figure_7a,figure_7b,tier2_evidence,publication_reference"/>
+  </bean>
+  
+  <bean name="dfciSwisnfLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+  	<property name="fieldSetMapper" ref="observationDataMapper" />
+  	<property name="lineTokenizer" ref="dfciSwisnfLineTokenizer" />
+    </bean>
+
+    <bean name="dfciSwisnfLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+  	<property name="delimiter" value="\u0009"/>
+  	<property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,gene_symbol_3,tissue_sample_1,tissue_sample_2,tissue_sample_3,tissue_sample_4,tissue_sample_5,tissue_sample_6,tissue_sample_7,gene_symbol_4,gene_symbol_5,tissue_sample_8,tissue_sample_9,tissue_sample_10,resource_url_1,resource_url_2,publication_reference_1,publication_reference_2,publication_reference_3,story_location"/>
+  </bean>
+  
   <!-- shared helper beans -->
   <bean name="observationTemplateMap" class="java.util.HashMap">
 	<constructor-arg index="0" type="java.util.Map">
@@ -2018,7 +2213,7 @@
 		<entry key="mskcc_pi3k:figure_2AM" value="evidence:readString:createObservedFileEvidence" />
 		<entry key="mskcc_pi3k:figure_3BCD" value="evidence:readString:createObservedFileEvidence" />
 		<entry key="mskcc_pi3k:publication_url" value="evidence:readString:createObservedUrlEvidence" />
-		<!-- stanford elastic-net -->
+		<!-- stanford elastic net -->
 		<entry key="stanford_elastic_net:gene_symbol" value="subject:findGenesBySymbol" />
 		<entry key="stanford_elastic_net:disease" value="subject:findTissueSampleByName" />
 		<entry key="stanford_elastic_net:analysis_type" value="evidence:readString:createObservedLabelEvidence" />
@@ -2408,6 +2603,189 @@
         <entry key="broad_ctrpv2:publication_reference_1" value="evidence:readString:createObservedUrlEvidence" />
         <entry key="broad_ctrpv2:publication_reference_2" value="evidence:readString:createObservedUrlEvidence" />
         <entry key="broad_ctrpv2:story_location" value="evidence:readString:createObservedFileEvidence" />
+        <!-- stanford elastic net gene -->
+        <entry key="stanford_elastic_net_gene:gene_symbol" value="subject:findGenesBySymbol" />
+        <entry key="stanford_elastic_net_gene:disease_abbr" value="evidence:readString:createObservedLabelEvidence" />
+        <entry key="stanford_elastic_net_gene:disease" value="subject:findTissueSampleByName" />
+        <entry key="stanford_elastic_net_gene:clinical_phenotype" value="evidence:readString:createObservedLabelEvidence" />
+        <entry key="stanford_elastic_net_gene:association_description" value="evidence:readString:createObservedLabelEvidence" />
+        <entry key="stanford_elastic_net_gene:analysis_type" value="evidence:readString:createObservedLabelEvidence" />
+        <entry key="stanford_elastic_net_gene:supporting_genomics" value="evidence:readString:createObservedLabelEvidence" />
+        <entry key="stanford_elastic_net_gene:elastic_net_rank" value="evidence:readInt:createObservedNumericEvidence" />
+        <entry key="stanford_elastic_net_gene:differential_status" value="evidence:readString:createObservedLabelEvidence" />
+        <entry key="stanford_elastic_net_gene:sample_count" value="evidence:readInt:createObservedNumericEvidence" />
+        <entry key="stanford_elastic_net_gene:mse" value="evidence:readDouble:createObservedNumericEvidence" />
+        <entry key="stanford_elastic_net_gene:bootstrapping" value="evidence:readDouble:createObservedNumericEvidence" />
+        <entry key="stanford_elastic_net_gene:data" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="stanford_elastic_net_gene:publication" value="evidence:readString:createObservedUrlEvidence" />
+        <!-- stanford elastic net mir -->
+        <entry key="stanford_elastic_net_mir:miR_symbol" value="evidence:readString:createObservedLabelEvidence" />
+        <entry key="stanford_elastic_net_mir:gene_symbol" value="subject:findGenesBySymbol" />
+        <entry key="stanford_elastic_net_mir:disease_abbr" value="evidence:readString:createObservedLabelEvidence" />
+        <entry key="stanford_elastic_net_mir:disease" value="subject:findTissueSampleByName" />
+        <entry key="stanford_elastic_net_mir:clinical_phenotype" value="evidence:readString:createObservedLabelEvidence" />
+        <entry key="stanford_elastic_net_mir:association_description" value="evidence:readString:createObservedLabelEvidence" />
+        <entry key="stanford_elastic_net_mir:analysis_type" value="evidence:readString:createObservedLabelEvidence" />
+        <entry key="stanford_elastic_net_mir:supporting_genomics" value="evidence:readString:createObservedLabelEvidence" />
+        <entry key="stanford_elastic_net_mir:elastic_net_rank" value="evidence:readInt:createObservedNumericEvidence" />
+        <entry key="stanford_elastic_net_mir:differential_status" value="evidence:readString:createObservedLabelEvidence" />
+        <entry key="stanford_elastic_net_mir:sample_count" value="evidence:readInt:createObservedNumericEvidence" />
+        <entry key="stanford_elastic_net_mir:mse" value="evidence:readDouble:createObservedNumericEvidence" />
+        <entry key="stanford_elastic_net_mir:bootstrapping" value="evidence:readDouble:createObservedNumericEvidence" />
+        <entry key="stanford_elastic_net_mir:data" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="stanford_elastic_net_mir:publication" value="evidence:readString:createObservedUrlEvidence" />
+        <!-- stanford elastic net prot -->
+        <entry key="stanford_elastic_net_prot:protein_symbol" value="evidence:readString:createObservedLabelEvidence" />
+        <entry key="stanford_elastic_net_prot:gene_symbol" value="subject:findGenesBySymbol" />
+        <entry key="stanford_elastic_net_prot:disease_abbr" value="evidence:readString:createObservedLabelEvidence" />
+        <entry key="stanford_elastic_net_prot:disease" value="subject:findTissueSampleByName" />
+        <entry key="stanford_elastic_net_prot:clinical_phenotype" value="evidence:readString:createObservedLabelEvidence" />
+        <entry key="stanford_elastic_net_prot:association_description" value="evidence:readString:createObservedLabelEvidence" />
+        <entry key="stanford_elastic_net_prot:analysis_type" value="evidence:readString:createObservedLabelEvidence" />
+        <entry key="stanford_elastic_net_prot:supporting_genomics" value="evidence:readString:createObservedLabelEvidence" />
+        <entry key="stanford_elastic_net_prot:elastic_net_rank" value="evidence:readInt:createObservedNumericEvidence" />
+        <entry key="stanford_elastic_net_prot:differential_status" value="evidence:readString:createObservedLabelEvidence" />
+        <entry key="stanford_elastic_net_prot:sample_count" value="evidence:readInt:createObservedNumericEvidence" />
+        <entry key="stanford_elastic_net_prot:mse" value="evidence:readDouble:createObservedNumericEvidence" />
+        <entry key="stanford_elastic_net_prot:bootstrapping" value="evidence:readDouble:createObservedNumericEvidence" />
+        <entry key="stanford_elastic_net_prot:data" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="stanford_elastic_net_prot:publication" value="evidence:readString:createObservedUrlEvidence" />
+        <!-- columbia moa -->
+        <entry key="columbia_moa:gene_symbol_1" value="subject:findGenesBySymbol" />
+        <entry key="columbia_moa:gene_symbol_2" value="subject:findGenesBySymbol" />
+        <entry key="columbia_moa:gene_symbol_3" value="subject:findGenesBySymbol" />
+        <entry key="columbia_moa:compound_name_1" value="subject:findCompoundsByName" />
+        <entry key="columbia_moa:compound_name_2" value="subject:findCompoundsByName" />
+        <entry key="columbia_moa:compound_name_3" value="subject:findCompoundsByName" />
+        <entry key="columbia_moa:compound_name_4" value="subject:findCompoundsByName" />
+        <entry key="columbia_moa:compound_name_5" value="subject:findCompoundsByName" />
+        <entry key="columbia_moa:resource_url_1" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="columbia_moa:resource_url_2" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="columbia_moa:publication_reference" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="columbia_moa:story_location" value="evidence:readString:createObservedFileEvidence" />
+        <!-- broad acme lineage -->
+        <entry key="broad_acme_lineage:compound_name" value="subject:findCompoundsByName" />
+        <entry key="broad_acme_lineage:enriched_protein_target" value="subject:findGenesBySymbol" />
+        <entry key="broad_acme_lineage:lineage" value="subject:findTissueSampleByName" />
+        <entry key="broad_acme_lineage:hotspot_q_value" value="evidence:readDouble:createObservedNumericEvidence" />
+        <entry key="broad_acme_lineage:hotspot_size" value="evidence:readInt:createObservedNumericEvidence" />
+        <entry key="broad_acme_lineage:hotspot_log_likelihood" value="evidence:readDouble:createObservedNumericEvidence" />
+        <entry key="broad_acme_lineage:hotspot_median_auc" value="evidence:readDouble:createObservedNumericEvidence" />
+        <entry key="broad_acme_lineage:delta_auc_between_hotspot_and_null" value="evidence:readDouble:createObservedNumericEvidence" />
+        <entry key="broad_acme_lineage:nci_portal" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="broad_acme_lineage:AUC_matrix_path" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="broad_acme_lineage:publication_reference" value="evidence:readString:createObservedUrlEvidence" />
+        <!-- broad acme mutation -->
+        <entry key="broad_acme_mutation:compound_name" value="subject:findCompoundsByName" />
+        <entry key="broad_acme_mutation:gene_symbol" value="subject:findGenesBySymbol" />
+        <entry key="broad_acme_mutation:enriched_cell_line_feature" value="evidence:readString:createObservedLabelEvidence" />
+        <entry key="broad_acme_mutation:gene_symbol_of_enriched_feature" value="subject:findGenesBySymbol" />
+        <entry key="broad_acme_mutation:hotspot_q_value" value="evidence:readDouble:createObservedNumericEvidence" />
+        <entry key="broad_acme_mutation:hotspot_size" value="evidence:readInt:createObservedNumericEvidence" />
+        <entry key="broad_acme_mutation:hotspot_log_likelihood" value="evidence:readDouble:createObservedNumericEvidence" />
+        <entry key="broad_acme_mutation:hotspot_median_auc" value="evidence:readDouble:createObservedNumericEvidence" />
+        <entry key="broad_acme_mutation:delta_auc_between_hotspot_and_null" value="evidence:readDouble:createObservedNumericEvidence" />
+        <entry key="broad_acme_mutation:nci_portal" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="broad_acme_mutation:AUC_matrix_path" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="broad_acme_mutation:publication_reference" value="evidence:readString:createObservedUrlEvidence" />
+        <!-- dfci pax8 -->
+        <entry key="dfci_pax8:gene_symbol_1" value="subject:findGenesBySymbol" />
+        <entry key="dfci_pax8:gene_symbol_2" value="subject:findGenesBySymbol" />
+        <entry key="dfci_pax8:tissue_sample_1" value="subject:findTissueSampleByName" />
+        <entry key="dfci_pax8:resource_url_1" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="dfci_pax8:resource_url_2" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="dfci_pax8:resource_url_3" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="dfci_pax8:publication_reference_1" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="dfci_pax8:story_location" value="evidence:readString:createObservedFileEvidence" />
+        <!-- dfci tbk1 -->
+        <entry key="dfci_tbk1:gene_symbol_1" value="subject:findGenesBySymbol" />
+        <entry key="dfci_tbk1:gene_symbol_2" value="subject:findGenesBySymbol" />
+        <entry key="dfci_tbk1:gene_symbol_3" value="subject:findGenesBySymbol" />
+        <entry key="dfci_tbk1:gene_symbol_4" value="subject:findGenesBySymbol" />
+        <entry key="dfci_tbk1:gene_symbol_5" value="subject:findGenesBySymbol" />
+        <entry key="dfci_tbk1:gene_symbol_6" value="subject:findGenesBySymbol" />
+        <entry key="dfci_tbk1:gene_symbol_7" value="subject:findGenesBySymbol" />
+        <entry key="dfci_tbk1:gene_symbol_8" value="subject:findGenesBySymbol" />
+        <entry key="dfci_tbk1:gene_symbol_9" value="subject:findGenesBySymbol" />
+        <entry key="dfci_tbk1:gene_symbol_10" value="subject:findGenesBySymbol" />
+        <entry key="dfci_tbk1:compound_name_1" value="subject:findCompoundsByName" />
+        <entry key="dfci_tbk1:compound_name_2" value="subject:findCompoundsByName" />
+        <entry key="dfci_tbk1:tissue_sample_1" value="subject:findTissueSampleByName" />
+        <entry key="dfci_tbk1:tissue_sample_2" value="subject:findTissueSampleByName" />
+        <entry key="dfci_tbk1:resource_url_1" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="dfci_tbk1:resource_url_2" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="dfci_tbk1:publication_reference_1" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="dfci_tbk1:publication_reference_2" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="dfci_tbk1:story_location" value="evidence:readString:createObservedFileEvidence" />
+        <!-- broad kras decitabine -->
+        <entry key="broad_kras_decitabine:gene_symbol" value="subject:findGenesBySymbol" />
+        <entry key="broad_kras_decitabine:cell_line" value="subject:findCellLineByName" />
+        <entry key="broad_kras_decitabine:compound_name" value="subject:findCompoundsByName" />
+        <entry key="broad_kras_decitabine:disease" value="subject:findTissueSampleByName" />
+        <entry key="broad_kras_decitabine:figure_1a" value="evidence:readString:createObservedFileEvidence" />
+        <entry key="broad_kras_decitabine:figure_2a" value="evidence:readString:createObservedFileEvidence" />
+        <entry key="broad_kras_decitabine:figure_2b" value="evidence:readString:createObservedFileEvidence" />
+        <entry key="broad_kras_decitabine:figure_2c" value="evidence:readString:createObservedFileEvidence" />
+        <entry key="broad_kras_decitabine:publication_reference" value="evidence:readString:createObservedUrlEvidence" />
+        <!-- broad kras decitabine mek -->
+        <entry key="broad_kras_decitabine_mek:gene_symbol_1" value="subject:findGenesBySymbol" />
+        <entry key="broad_kras_decitabine_mek:gene_symbol_2" value="subject:findGenesBySymbol" />
+        <entry key="broad_kras_decitabine_mek:cell_line_1" value="subject:findCellLineByName" />
+        <entry key="broad_kras_decitabine_mek:cell_line_2" value="subject:findCellLineByName" />
+        <entry key="broad_kras_decitabine_mek:compound_name_1" value="subject:findCompoundsByName" />
+        <entry key="broad_kras_decitabine_mek:compound_name_2" value="subject:findCompoundsByName" />
+        <entry key="broad_kras_decitabine_mek:disease" value="subject:findTissueSampleByName" />
+        <entry key="broad_kras_decitabine_mek:figure_5a" value="evidence:readString:createObservedFileEvidence" />
+        <entry key="broad_kras_decitabine_mek:figure_5b" value="evidence:readString:createObservedFileEvidence" />
+        <entry key="broad_kras_decitabine_mek:figure_5c" value="evidence:readString:createObservedFileEvidence" />
+        <entry key="broad_kras_decitabine_mek:tier1_evidence" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="broad_kras_decitabine_mek:publication_reference" value="evidence:readString:createObservedUrlEvidence" />
+        <!-- broad kras decitabine navitoclax -->
+        <entry key="broad_kras_decitabine_navitoclax:gene_symbol" value="subject:findGenesBySymbol" />
+        <entry key="broad_kras_decitabine_navitoclax:cell_line_1" value="subject:findCellLineByName" />
+        <entry key="broad_kras_decitabine_navitoclax:cell_line_2" value="subject:findCellLineByName" />
+        <entry key="broad_kras_decitabine_navitoclax:cell_line_3" value="subject:findCellLineByName" />
+        <entry key="broad_kras_decitabine_navitoclax:compound_name_1" value="subject:findCompoundsByName" />
+        <entry key="broad_kras_decitabine_navitoclax:compound_name_2" value="subject:findCompoundsByName" />
+        <entry key="broad_kras_decitabine_navitoclax:disease" value="subject:findTissueSampleByName" />
+        <entry key="broad_kras_decitabine_navitoclax:figure_6a" value="evidence:readString:createObservedFileEvidence" />
+        <entry key="broad_kras_decitabine_navitoclax:figure_6b" value="evidence:readString:createObservedFileEvidence" />
+        <entry key="broad_kras_decitabine_navitoclax:figure_6c" value="evidence:readString:createObservedFileEvidence" />
+        <entry key="broad_kras_decitabine_navitoclax:figure_6d" value="evidence:readString:createObservedFileEvidence" />
+        <entry key="broad_kras_decitabine_navitoclax:tier1_evidence" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="broad_kras_decitabine_navitoclax:publication_reference" value="evidence:readString:createObservedUrlEvidence" />
+        <!-- broad kras xenograft -->
+        <entry key="broad_kras_xenograft:gene_symbol" value="subject:findGenesBySymbol" />
+        <entry key="broad_kras_xenograft:cell_line" value="subject:findCellLineByName" />
+        <entry key="broad_kras_xenograft:compound_name_1" value="subject:findCompoundsByName" />
+        <entry key="broad_kras_xenograft:compound_name_2" value="subject:findCompoundsByName" />
+        <entry key="broad_kras_xenograft:disease" value="subject:findTissueSampleByName" />
+        <entry key="broad_kras_xenograft:figure_7a" value="evidence:readString:createObservedFileEvidence" />
+        <entry key="broad_kras_xenograft:figure_7b" value="evidence:readString:createObservedFileEvidence" />
+        <entry key="broad_kras_xenograft:tier2_evidence" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="broad_kras_xenograft:publication_reference" value="evidence:readString:createObservedUrlEvidence" />
+        <!-- dfci swisnf -->
+        <entry key="dfci_swisnf:gene_symbol_1" value="subject:findGenesBySymbol" />
+        <entry key="dfci_swisnf:gene_symbol_2" value="subject:findGenesBySymbol" />
+        <entry key="dfci_swisnf:gene_symbol_3" value="subject:findGenesBySymbol" />
+        <entry key="dfci_swisnf:tissue_sample_1" value="subject:findTissueSampleByName" />
+        <entry key="dfci_swisnf:tissue_sample_2" value="subject:findTissueSampleByName" />
+        <entry key="dfci_swisnf:tissue_sample_3" value="subject:findTissueSampleByName" />
+        <entry key="dfci_swisnf:tissue_sample_4" value="subject:findTissueSampleByName" />
+        <entry key="dfci_swisnf:tissue_sample_5" value="subject:findTissueSampleByName" />
+        <entry key="dfci_swisnf:tissue_sample_6" value="subject:findTissueSampleByName" />
+        <entry key="dfci_swisnf:tissue_sample_7" value="subject:findTissueSampleByName" />
+        <entry key="dfci_swisnf:gene_symbol_4" value="subject:findGenesBySymbol" />
+        <entry key="dfci_swisnf:gene_symbol_5" value="subject:findGenesBySymbol" />
+        <entry key="dfci_swisnf:tissue_sample_8" value="subject:findTissueSampleByName" />
+        <entry key="dfci_swisnf:tissue_sample_9" value="subject:findTissueSampleByName" />
+        <entry key="dfci_swisnf:tissue_sample_10" value="subject:findTissueSampleByName" />
+        <entry key="dfci_swisnf:resource_url_1" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="dfci_swisnf:resource_url_2" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="dfci_swisnf:publication_reference_1" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="dfci_swisnf:publication_reference_2" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="dfci_swisnf:publication_reference_3" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="dfci_swisnf:story_location" value="evidence:readString:createObservedFileEvidence" />
         
 	  </map>
 	</constructor-arg>

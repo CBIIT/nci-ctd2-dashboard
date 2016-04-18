@@ -1,5 +1,4 @@
 target/
 .DS_Store
 .svn
-.hg
-.hgtags
+.git

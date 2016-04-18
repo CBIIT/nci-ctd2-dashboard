@@ -417,4 +417,56 @@
     <property name="lineMapper" ref="broadCtrpv2LineMapper" />
   </bean>
   
+  <bean name="stanfordElasticNetGeneReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+    <property name="lineMapper" ref="stanfordElasticNetGeneLineMapper" />
+  </bean>
+  
+  <bean name="stanfordElasticNetMirReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+    <property name="lineMapper" ref="stanfordElasticNetMirLineMapper" />
+  </bean>
+  
+  <bean name="stanfordElasticNetProtReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+    <property name="lineMapper" ref="stanfordElasticNetProtLineMapper" />
+  </bean>
+  
+  <bean name="columbiaMoaReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+    <property name="lineMapper" ref="columbiaMoaLineMapper" />
+  </bean>
+  
+  <bean name="broadAcmeLineageReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+    <property name="lineMapper" ref="broadAcmeLineageLineMapper" />
+  </bean>
+  
+  <bean name="broadAcmeMutationReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+    <property name="lineMapper" ref="broadAcmeMutationLineMapper" />
+  </bean>
+  
+  <bean name="dfciPax8Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
+    <property name="lineMapper" ref="dfciPax8LineMapper" />
+  </bean>
+  
+  <bean name="dfciTbk1Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
+    <property name="lineMapper" ref="dfciTbk1LineMapper" />
+  </bean>
+  
+  <bean name="broadKrasDecitabineReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+    <property name="lineMapper" ref="broadKrasDecitabineLineMapper" />
+  </bean>
+  
+  <bean name="broadKrasDecitabineMekReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+    <property name="lineMapper" ref="broadKrasDecitabineMekLineMapper" />
+  </bean>
+  
+  <bean name="broadKrasDecitabineNavitoclaxReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+    <property name="lineMapper" ref="broadKrasDecitabineNavitoclaxLineMapper" />
+  </bean>
+  
+  <bean name="broadKrasXenograftReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+    <property name="lineMapper" ref="broadKrasXenograftLineMapper" />
+  </bean>
+  
+  <bean name="dfciSwisnfReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+    <property name="lineMapper" ref="dfciSwisnfLineMapper" />
+  </bean>
+  
 </beans>
