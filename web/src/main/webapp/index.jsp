@@ -198,7 +198,7 @@
         </div><!-- /.carousel -->
 
         <div class="container marketing ctd2-boxes">
-          <div class="row">
+          <div class="row" style="display:table">
               <!--
             <div class="span3 stories" data-order="0">
               <h4>Stories</h4>
@@ -207,26 +207,26 @@
               </p>
               <a class="btn btn-danger btn-block" href="#stories">Browse &raquo;</a>
             </div><!-- /.span3 -->
-            <div class="span4 target" data-order="1">
+            <div class="span4 target" data-order="1" style="display:table-cell;float:none;position:relative;padding-bottom:25px">
               <h4>Biomarkers, Targets, <br>Genes &amp; Proteins</h4>
                 <p>
                     Users can browse a list of genes and proteins that Centers have identified using analyses that generate results with low frequencies of false positives. In some cases, genes and proteins have been assigned roles as biomarkers or targets based on observations.
                 </p>
-                <a class="btn btn-success btn-block" href="#explore/target/Biomarker,Target">Browse &raquo;</a>
+                <a class="btn btn-success btn-block" href="#explore/target/Biomarker,Target" style="position:absolute;bottom:0;">Browse &raquo;</a>
             </div><!-- /.span3 -->
-            <div class="span4 drug" data-order="2">
+            <div class="span4 drug" data-order="2" style="display:table-cell;float:none;position:relative;padding-bottom:25px">
               <h4>Compounds &amp; Perturbagens</h4>
                 <p>
                     Users can browse compounds and perturbagens, which are modulators of cellular phenotype, genes, or proteins in cancer cell lines or tumor model systems. Some examples include small molecules, FDA approved drugs, natural products, and small regulatory RNAs.
                 </p>
-                <a class="btn btn-info btn-block" href="#explore/compound/Perturbagen,Candidate Drug">Browse &raquo;</a>
+                <a class="btn btn-info btn-block" href="#explore/compound/Perturbagen,Candidate Drug" style="position:absolute;bottom:0;">Browse &raquo;</a>
             </div><!-- /.span3 -->
-              <div class="span4 context" data-order="3">
+              <div class="span4 context" data-order="3" style="display:table-cell;float:none;position:relative;padding-bottom:25px">
                   <h4 class="homepage-context">Disease <br>Context</h4>
                   <p>
                       Users can browse disease context, which groups subjects by observations pertinent to a particular disease or tumor type.
                   </p>
-                  <a class="btn btn-warning btn-block" href="#explore/context/Disease">Browse &raquo;</a>
+                  <a class="btn btn-warning btn-block" href="#explore/context/Disease" style="position:absolute;bottom:0;">Browse &raquo;</a>
               </div><!-- /.span3 -->
 
           </div><!-- /.row -->
