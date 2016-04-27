@@ -1495,30 +1495,18 @@
                     _.each(centerSubmissions.toJSON(), function(submission) {
                         var centerSubmissionRowView
                             = new CenterSubmissionRowView({ el: $(thatEl).find("tbody"), model: submission });
-                        centerSubmissionRowView.render();
 
-                        $.ajax("count/observation/?filterBy=" + submission.id).done(function(count) {
+                        $.ajax("count/observation/?filterBy=" + submission.id, {"async": false}).done(function(count) {
                             var tmplName = submission.observationTemplate.isSubmissionStory
                                 ? "#count-story-tmpl"
                                 : "#count-observations-tmpl";
-                            var cntContent = _.template(
+                            submission.details = _.template(
                                 $(tmplName).html(),
                                 { count: count }
                             );
-
-                            var countCellId = "#observation-count-" + submission.id;
-                            $(countCellId).html(cntContent);
-                            var dataTable = $(tableElId).DataTable();
-                            dataTable.cells(countCellId).invalidate();
-                            dataTable.order(
-                                [
-                                    [0, 'desc'],
-                                    [1, 'asc'],
-                                    [3, 'desc'],
-                                    [4, 'asc']
-                                ]
-                            ).draw();
                         });
+
+                        centerSubmissionRowView.render();
                     });
 
                     $(".template-description").tooltip();

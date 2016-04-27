@@ -357,7 +357,7 @@
             </td>
             <td><small>{{submissionDate}}</small></td>
             <td width=150>
-                <a href="#submission/{{id}}" class="obs-count" id="observation-count-{{id}}">loading...</a>
+                <a href="#submission/{{id}}" class="obs-count" id="observation-count-{{id}}">{{details}}</a>
             </td>
         </tr>
     </script>
