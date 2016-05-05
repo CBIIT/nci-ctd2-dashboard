@@ -1661,34 +1661,6 @@
                     success: function() {
                         $(".submission-observations-loading").hide();
 
-                        // If there is only one observation, directly go there
-                        if(observations.models.length == 1) {
-                            $("#redirect-message").slideDown();
-
-                            var countBack = 5;
-                            var clickedCancel = false;
-                            $("#cancel-redirect").click(function(e) {
-                                e.preventDefault();
-                                clickedCancel = true;
-                                $("#redirect-message").slideUp();
-                            });
-
-                            var countBackFunc = function() {
-                                if(clickedCancel) return;
-
-                                $("#seconds-left").text(countBack);
-                                if(countBack-- < 1) {
-                                    var observation =  observations.models[0].toJSON().id;
-                                    window.location.hash = "observation/" + observation;
-                                } else {
-                                    window.setTimeout(countBackFunc, 1000);
-                                }
-                            };
-
-                            countBackFunc();
-                        }
-
-
                         _.each(observations.models, function(observation) {
                             observation = observation.toJSON();
 
