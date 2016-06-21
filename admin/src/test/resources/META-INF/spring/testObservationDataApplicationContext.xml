@@ -265,10 +265,6 @@
     <property name="lineMapper" ref="cshlCdk9LineMapper" />
   </bean>
   
-  <bean name="dfciFunctionReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="dfciFunctionLineMapper" />
-  </bean>
-  
   <bean name="emoryHtBretnPPIReader" class="org.springframework.batch.item.file.FlatFileItemReader">
     <property name="lineMapper" ref="emoryHtBretnPPILineMapper" />
   </bean>
@@ -467,6 +463,22 @@
   
   <bean name="dfciSwisnfReader" class="org.springframework.batch.item.file.FlatFileItemReader">
     <property name="lineMapper" ref="dfciSwisnfLineMapper" />
+  </bean>
+  
+  <bean name="dfciGab2Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
+    <property name="lineMapper" ref="dfciGab2LineMapper" />
+  </bean>
+  
+  <bean name="dfciGab2AnalysisReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+    <property name="lineMapper" ref="dfciGab2AnalysisLineMapper" />
+  </bean>
+  
+  <bean name="dfciYap1Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
+    <property name="lineMapper" ref="dfciYap1LineMapper" />
+  </bean>
+  
+  <bean name="dfciYap1AnalysisReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+    <property name="lineMapper" ref="dfciYap1AnalysisLineMapper" />
   </bean>
   
 </beans>

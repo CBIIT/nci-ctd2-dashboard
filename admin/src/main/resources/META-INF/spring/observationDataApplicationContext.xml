@@ -527,16 +527,6 @@
     </property>
   </bean>
   
-  <bean name="dfciFunctionReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
-    <property name="resources" value="${dfci.function.data.location}" />
-    <property name="delegate">
-      <bean class="org.springframework.batch.item.file.FlatFileItemReader">
-        <property name="lineMapper" ref="dfciFunctionLineMapper" />
-        <property name="linesToSkip" value="7" />
-      </bean>
-    </property>
-  </bean>
-
   <bean name="mskccPi3kReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
     <property name="resources" value="${mskcc.pi3k.data.location}" />
     <property name="delegate">
@@ -1005,6 +995,46 @@
           <property name="linesToSkip" value="7" />
         </bean>
       </property>
+  </bean>
+  
+  <bean name="dfciGab2Reader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+    <property name="resources" value="${dfci.gab2.data.location}" />
+    <property name="delegate">
+      <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="dfciGab2LineMapper" />
+        <property name="linesToSkip" value="7" />
+      </bean>
+    </property>
+  </bean>
+
+  <bean name="dfciGab2AnalysisReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+    <property name="resources" value="${dfci.gab2.analysis.data.location}" />
+    <property name="delegate">
+      <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="dfciGab2AnalysisLineMapper" />
+        <property name="linesToSkip" value="7" />
+      </bean>
+    </property>
+  </bean>
+
+  <bean name="dfciYap1Reader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+    <property name="resources" value="${dfci.yap1.data.location}" />
+    <property name="delegate">
+      <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="dfciYap1LineMapper" />
+        <property name="linesToSkip" value="7" />
+      </bean>
+    </property>
+  </bean>
+
+  <bean name="dfciYap1AnalysisReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+    <property name="resources" value="${dfci.yap1.analysis.data.location}" />
+    <property name="delegate">
+      <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="dfciYap1AnalysisLineMapper" />
+        <property name="linesToSkip" value="7" />
+      </bean>
+    </property>
   </bean>
 
 </beans>
