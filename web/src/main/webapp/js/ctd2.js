@@ -190,7 +190,7 @@
         model: SearchResult,
 
         initialize: function(attributes) {
-            this.url += encodeURIComponent(attributes.term.toLowerCase())
+            this.url += encodeURIComponent(attributes.term);
         }
     });
 

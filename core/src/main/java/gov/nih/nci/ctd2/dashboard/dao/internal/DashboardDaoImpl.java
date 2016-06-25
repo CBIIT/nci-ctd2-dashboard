@@ -625,9 +625,20 @@ public class DashboardDaoImpl extends HibernateDaoSupport implements DashboardDa
             );
             Query luceneQuery = null;
             try {
-                luceneQuery = multiFieldQueryParser.parse(keyword);
+            	String[] tokens = keyword.split("\\s");
+            	StringBuilder sb = new StringBuilder();
+            	for(String t : tokens) {
+            		if(t.equalsIgnoreCase("AND") || t.equalsIgnoreCase("OR")) {
+            			sb.append(t).append(' ');
+            		} else {
+            			sb.append(t.toLowerCase()).append(' ');
+            		}
+            	}
+                luceneQuery = multiFieldQueryParser.parse(sb.toString());
             } catch (ParseException e) {
-                e.printStackTrace();
+            	// suppressing syntax exception warning
+                //e.printStackTrace();
+            	System.out.println("ParseException "+e+" caused by "+keyword); 
             }
 
             Class[] classes = searchableClasses;
