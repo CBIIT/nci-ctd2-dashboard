@@ -1862,22 +1862,23 @@
 
     <script type="text/template" id="template-helper-tmpl">
         <div class="container common-container" id="template-helper-container">
-            <h2>Submission Template Helper</h2>
+            <h2>CTD<sup>2</sup> Data Submission Builder</h2>
 
             <div class="alert alert-warning alert-block">
                 <a href="#" class="close" data-dismiss="alert">&times;</a>
                 <p>
                     <strong>Welcome to the submission template helper!</strong><br>
+                    ... introductory text, briefly exaplaining the submission process ...
                     This tool will help create a basic Dashboard submission template from scratch.
                     Once a basic template is prepared, the template can be downloaded for local use and preparation of a Dashboard submission.
                 </p>
             </div>
 
             <div id="step1">
-                <h3>Step 1: Select submission center</h3>
+                <h3>Submission Builder Home</h3>
                 <table class="table">
                     <tr>
-                        <th>Select a center</th>
+                        <th>Please choose you CTD<sup>2</sup> group</th>
                         <td>
                             <select id="template-submission-centers" class="input-xxlarge">
                                 <option value="">-</option>
@@ -1885,42 +1886,88 @@
                         </td>
                     </tr>
                     <tr>
-                        <th>
-                            ... or enter a new one:
-                        </th>
-                        <td>
-                            <input id="template-submission-centers-custom" placeholder="e.g. National Cancer Institute" class="input-xxlarge">
-                        </td>
-                        </tr>
-                    <tr>
                         <td colspan=2 class="next-cell">
-                            <button id="apply-submission-center" class="btn">Next</button>
+                            <button id="apply-submission-center" class="btn">Continue</button>
                         </td>
                     </tr>
                 </table>
             </div>
 
             <div id="step2" class="hide">
-                <h3>Step 2: Enter a template name</h3>
+                <h3>Manage Submission</h3>
+                <b>Center:</b> <span id="center-name"></span>
+                <div class="alert alert-warning alert-block">
+                <a href="#" class="close" data-dismiss="alert">&times;</a>
+                <p>
+                    A submission is a collection of one or more observations that summarize the results of experimental or computational investigations. A scientific publication can give rise to one or multiple such submissions. For example, a single publication may advance a hypothesis step by step, with each step potentially meriting a separate submission. 
+                </p>
+                </div>
+                <div class="alert alert-warning alert-block">
+                <a href="#" class="close" data-dismiss="alert">&times;</a>
+                <p>
+                    You will be able to reuse information entered for one submission in additional, related submissions. A project title is used to group together such related submissions. 
+                </p>
+                </div>
+                <table class="table table-bordered table-striped" id="template-meta-table">
+                        <tr id="template-header">
+                            <td>Submission Name</td><td>Submission Description</td><td>Project</td><td>Tier</td><td>Date last modified</td><td>Complete</td><td>Action</td>
+                        </tr>
+                        <tr id="xxx">
+                            <td>Name 4</td><td>descriptive text</td><td>this is project 3 ...</td><td></td><td></td><td></td><td>DROP LIST OF ACTIONS</td>
+                        </tr>
+                        <tr id="yyy">
+                            <td>Name 3</td><td>descriptive text</td><td>this is project ...</td>
+                        </tr>
+                        <tr id="zzz" class="sample-data">
+                            <td>Name 2</td><td>descriptive text</td><td>this is project ...</td><td><i>sample data row #1</i></td>
+                        </tr>
+                        <tr id="aaa" class="sample-data">
+                            <td>Name 1</td><td>descriptive text</td><td>this is project ...</td><td>sample data row #2</td>
+                        </tr>
+                </table>
+                    this table needs to be changed to a template that populated by DB service
+
                 <table  class="table">
                     <tr>
-                        <td>
-                            <input id="template-name" placeholder="e.g. centername_your_description" class="input-xxlarge">
-                            <button id="apply-template-name" class="btn">Next</button>
+                        <td class="next-cell">
+                            <button id="create-new-submission" class="btn">Create New Submission</button>
                         </td>
                     </tr>
                 </table>
             </div>
 
             <div id="step3" class="hide">
-                <h3>Step 3: Enter a template/submission description</h3>
+                <h3>Submitter Information</h3>
+                <b>Center:</b> <span id="center-name"></span>
                 <table  class="table">
                     <tr>
+                        <th>Center</th>
+                        <td>
+                            <span id="???center" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Submitter First Name</th>
+                        <td>
+                            <input id="first-name" class="input-xxxlarge">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Submitter Last Name</th>
+                        <td>
+                            <input id="last-name" class="input-xxxlarge">
+                        </td>
+                    </tr>
+                </table>
+                <h3>Submission Description</h3>
+                <b>Center:</b> <span id="center-name"></span>
+                <table class="table">
+                    <tr>
                         <th>
-                            Template description
+                            Submission Name
                         </th>
                         <td>
-                            <input id="template-desc" placeholder="e.g. Analysis of differentially expressed transcripts in some condition" class="input-xxxlarge">
+                            <input id="template-name" placeholder="e.g. centername_your_description" class="input-xxlarge">
                         </td>
                     </tr>
                     <tr>
@@ -1929,44 +1976,63 @@
                             <input id="template-submission-desc" placeholder="e.g. Down-regulated genes in PTEN-null cell lines" class="input-xxxlarge">
                         </td>
                     </tr>
+                </table>
+                <table class="table">
                     <tr>
-                        <td colspan=2 class="next-cell">
-                            <button id="apply-template-desc" class="btn">Next</button>
+                        <td class="next-cell">
+                            <button id="apply-submitter-information">Continue</button>
                         </td>
                     </tr>
                 </table>
             </div>
 
             <div id="step4" class="hide">
-                <h3>Step 4: Select a tier</h3>
+                <h3>Submission Data</h3>
+                <b>Center:</b> <span id="center-name"></span><br/>
+                <b>Submission Name:</b> <span id="submission-name"></span>
+                <!-- this table contains the main data, which dictate the data structure I should use -->
+                <table class="table table-bordered table-striped" id="template-table">
+                        <tr id="subject-header">
+                            <th>Delete Row</th><th>Column Tag</th><th>Subject Classs</th><th>Subject Role</th><th>Description</th><th>Observation 1</th>
+                        </tr>
+                        <tr id="xxx">
+                            <td>X</td><td>gene_1. Q: why is coloumn necessary at all??</td><td>Gene</td><td>Biomarker</td><td>Subdes1</td><td>gene1a</td>
+                        </tr>
+                        <tr id="evidence-header">
+                            <th>Delete Row</th><th>Column Tag</th><th>Evidence Type (Q: is the matching column number purely conincidence?)</th><th>Value Type</th><th>Description</th><th>Observation 1 (enter values) (Q: why does this have this "enter values" part but subject section does not have it?)</th>
+                        </tr>
+                        <tr id="xxx">
+                            <td>X</td><td>evidence_1. Q: why is coloumn necessary at all??</td><td>background</td><td>Text</td><td>Evdes1</td><td>ev1a</td>
+                        </tr>
+                </table>
                 <table  class="table">
                     <tr>
-                        <td>
-                            <select id="template-tier">
-                                <option selected="selected" value="1">Tier 1</option>
-                                <option value="2">Tier 2</option>
-                                <option value="3">Tier 3</option>
-                                <option value="4">Tier 4</option>
-                            </select>
-                            <button id="apply-template-tier" class="btn">Next</button>
-                        </td>
+                    <td>
+                        <button id="add-subject" class="next-cell">Add New Subject</button>
+                    </td>
+                    <td>
+                        <button id="add-evidence" class="next-cell">Add New Evidence</button>
+                    </td>
+                    <td>
+                        <button id="add-observation" class="next-cell">Add New Observation</button>
+                    </td>
+                    <td>
+                        <button id="apply-template-submission-data" class="next-cell">Continue</button>
+                    </td>
                     </tr>
                 </table>
             </div>
 
             <div id="step5" class="hide">
-                <h3>Step 5: Add subjects/evidence</h3>
-                <table class="table">
-                    <tr>
-                        <td>
-                            <button class="btn" id="add-subject">Subject <i class="icon-plus"></i></button>
-                            <button class="btn" id="add-evidence">Evidence <i class="icon-plus"></i></button>
-                        </td>
-                    </tr>
-                </table>
-
-                <hr>
-                <h3>Step 6: Create an observation summary</h3>
+                <h3>Observation Summary</h3>
+                <b>Center:</b> <span id="center-name"></span><br/>
+                <b>Submission Name:</b> <span id="submission-name"></span><br/>
+                <ul>
+                    <li>Please write/update a summary of the observations, using any or all of the "tgas" pre-entred in the text box.</li>
+                    <li>On the dashboard, the tag will be replaced with the actual values you submit. (Q: this does not make sense if this is the actual submission instead of a template.)</li>
+                    <li>Delate tags you do not need.</li>
+                    <li>Use the Helper to see all available tags.</li>
+                </ul>
                 <table class="table">
                     <tr>
                         <th>Observation summary</th>
@@ -1977,396 +2043,22 @@
                 </table>
             </div>
 
-            <div class="modal hide fade" id="subject-modal">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h3>Add a subject</h3>
-                </div>
-                <div class="modal-body">
-                    <div id="subject-step1">
-                        <h4>Step #1: Subject type</h4>
-                        <table class="table">
-                            <tr>
-                                <th>Select a type</th>
-                                <td>
-                                    <select id="subject-type">
-                                        <option value="">-</option>
-                                        <option value="Animal Model">Animal Model</option>
-                                        <option value="CellSample">Cell Sample</option>
-                                        <option value="Compound">Compound</option>
-                                        <option value="Gene">Gene</option>
-                                        <option value="ShRna">shRNA</option>
-                                        <option value="TissueSample">Tissue Sample</option>
-                                    </select>
-                                    <button id="apply-subject-type" class="btn">Next</button>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-
-                    <div id="subject-step2" class="hide">
-                        <h4>Step #2: Subject column name</h4>
-                        <table class="table">
-                            <tr>
-                                <th>Select a column name</th>
-                                <td>
-                                    <select id="subject-cname">
-                                        <option value="">-</option>
-                                        <option value='cell_line_1'>cell_line_1</option>
-                                        <option value='cell_line_2'>cell_line_2</option>
-                                        <option value='cell_lineage'>cell_lineage</option>
-                                        <option value='column_name'>column_name</option>
-                                        <option value='compound_name'>compound_name</option>
-                                        <option value='disease_condition'>disease_condition</option>
-                                        <option value='disease_condition_1'>disease_condition_1</option>
-                                        <option value='disease_condition_2'>disease_condition_2</option>
-                                        <option value='drug_candidate'>drug_candidate</option>
-                                        <option value='entrez_gene_id'>entrez_gene_id</option>
-                                        <option value='gene_symbol'>gene_symbol</option>
-                                        <option value='gene_symbol_1'>gene_symbol_1</option>
-                                        <option value='gene_symbol_2'>gene_symbol_2</option>
-                                        <option value='gene_symbol_3'>gene_symbol_3</option>
-                                        <option value='gene_symbol_4'>gene_symbol_4</option>
-                                        <option value='gene_symbol_5'>gene_symbol_5</option>
-                                        <option value='shRNA_id'>shRNA_id</option>
-                                        <option value='target_group'>target_group</option>
-                                        <option value='tissue_sample'>tissue_sample</option>
-                                        <option value='tissue_sample_1'>tissue_sample_1</option>
-                                        <option value='tissue_sample_2'>tissue_sample_2</option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    or enter new one:
-                                </th>
-                                <td>
-                                    <input id="subject-cname-custom" placeholder="e.g. gene_symbol" class="input-large">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan=2 class="next-cell">
-                                    <button id="apply-subject-cname" class="btn">Next</button>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-
-                    <div id="subject-step3" class="hide">
-                        <h4>Step #3: Select a role</h4>
-                        <table class="table">
-                            <tr>
-                                <th>Select a role </th>
-                                <td>
-                                    <select id="subject-role">
-                                        <option value="">-</option>
-                                        <option value='drug candidate'>drug candidate</option>
-                                        <option value='enriched feature'>enriched feature</option>
-                                        <option value='enriched regulon'>enriched regulon</option>
-                                        <option value='histology type'>histology type</option>
-                                        <option value='master regulator'>master regulator</option>
-                                        <option value='modulator'>modulator</option>
-                                        <option value='oncogene'>oncogene</option>
-                                        <option value='perturbagen'>perturbagen</option>
-                                        <option value='primary site'>primary site</option>
-                                        <option value='regulator'>regulator</option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    ... or enter new one:
-                                </th>
-                                <td>
-                                    <input id="subject-role-custom" placeholder="e.g. perturbagen" class="input-large">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan=2 class="next-cell">
-                                    <button id="apply-subject-role" class="btn">Next</button>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-
-                    <div id="subject-step4" class="hide">
-                        <h4>Step #4: Enter description</h4>
-                        <table class="table">
-                            <tr>
-                                <td>
-                                    <input id="subject-desc" placeholder="e.g. mutated gene" class="input-xlarge">
-                                    <button id="apply-subject-desc" class="btn">Next</button>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-primary" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-
-            <div class="modal hide fade" id="evidence-modal">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h3>Add an evidence</h3>
-                </div>
-                <div class="modal-body">
-                    <div id="evidence-step1">
-                        <h4>Step #1: Evidence type</h4>
-                        <table class="table">
-                            <tr>
-                                <td>
-                                    <select id="evidence-type">
-                                        <option value="">Select a type</option>
-                                        <option value="File">File</option>
-                                        <option value="Label">Label</option>
-                                        <option value="Label">Numeric</option>
-                                        <option value="URL">URL</option>
-                                    </select>
-                                    <button id="apply-evidence-type" class="btn">Next</button>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-
-                    <div id="evidence-step1-mime" class="hide">
-                        <h4>Step #1 cont.: File (MIME) type</h4>
-                        <table class="table">
-                            <tr>
-                                <th>Select a file type</th>
-                                <td>
-                                    <select id="evidence-mime-type">
-                                        <option value="">-</option>
-                                        <option value="application/pdf">PDF (application/pdf)</option>
-                                        <option value="image/png">PNG (image/png)</option>
-                                        <option value="text/gct">GCT (text/gct)</option>
-                                        <option value="text/sif">SIF (text/sif)</option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>... or enter new one</th>
-                                <td>
-                                    <input id="evidence-mime-type-custom" placeholder="e.g. image/gif" class="input-large">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan=2 class="next-cell">
-                                    <button id="apply-evidence-mime-type" class="btn">Next</button>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-
-                    <div id="evidence-step1-unit" class="hide">
-                        <h4>Step #1 cont.: Numeric unit</h4>
-                        <table class="table">
-                            <tr>
-                                <th>Numeric unit (optional)</th>
-                                <td>
-                                    <input id="evidence-numeric-unit" placeholder="e.g. pL" class="input-large">
-                                    <button id="apply-evidence-numeric-unit" class="btn">Next</button>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-
-                    <div id="evidence-step2" class="hide">
-                        <h4>Step #2: Subject column name</h4>
-                        <table class="table">
-                            <tr>
-                                <th>Select a column name</th>
-                                <td>
-                                    <select id="evidence-cname">
-                                        <option value="">-</option>
-                                        <option value='additional_evidence'>additional_evidence</option>
-                                        <option value='c_score'>c_score</option>
-                                        <option value='cell_line_exclusion'>cell_line_exclusion</option>
-                                        <option value='cell_line_subset'>cell_line_subset</option>
-                                        <option value='cell_type'>cell_type</option>
-                                        <option value='column_name'>column_name</option>
-                                        <option value='drug_candidate_class'>drug_candidate_class</option>
-                                        <option value='enrichment_direction'>enrichment_direction</option>
-                                        <option value='fdr'>fdr</option>
-                                        <option value='feature_data_set'>feature_data_set</option>
-                                        <option value='feature_image_path'>feature_image_path</option>
-                                        <option value='figure_1'>figure_1</option>
-                                        <option value='figure_2'>figure_2</option>
-                                        <option value='figure_3'>figure_3</option>
-                                        <option value='figure_4'>figure_4</option>
-                                        <option value='figure_5'>figure_5</option>
-                                        <option value='figure_6'>figure_6</option>
-                                        <option value='func_type'>func_type</option>
-                                        <option value='gct_path'>gct_path</option>
-                                        <option value='gene_scoring'>gene_scoring</option>
-                                        <option value='log_fdr'>log_fdr</option>
-                                        <option value='mr_gsea_es'>mr_gsea_es</option>
-                                        <option value='mr_gsea_fdr'>mr_gsea_fdr</option>
-                                        <option value='mr_gsea_p_value'>mr_gsea_p_value</option>
-                                        <option value='mr_regulon_set_size'>mr_regulon_set_size</option>
-                                        <option value='mra_fet_p_value'>mra_fet_p_value</option>
-                                        <option value='mra_overlap_rank'>mra_overlap_rank</option>
-                                        <option value='mra_regulon_signature_overlap'>mra_regulon_signature_overlap</option>
-                                        <option value='nci_portal'>nci_portal</option>
-                                        <option value='network_1'>network_1</option>
-                                        <option value='num_shRNAs'>num_shRNAs</option>
-                                        <option value='number_of_cell_lines'>number_of_cell_lines</option>
-                                        <option value='number_of_cell_lines_in_target_group'>number_of_cell_lines_in_target_group</option>
-                                        <option value='number_of_example_cell_lines'>number_of_example_cell_lines</option>
-                                        <option value='number_of_mutant_cell_lines'>number_of_mutant_cell_lines</option>
-                                        <option value='p_value'>p_value</option>
-                                        <option value='probeset_id'>probeset_id</option>
-                                        <option value='publication_reference'>publication_reference</option>
-                                        <option value='publication_url'>publication_url</option>
-                                        <option value='response_image_path'>response_image_path</option>
-                                        <option value='shrna_diff_rep_fdr_combined'>shrna_diff_rep_fdr_combined</option>
-                                        <option value='shrna_diff_rep_net_direction_combined'>shrna_diff_rep_net_direction_combined</option>
-                                        <option value='shrna_diff_rep_p_value_combined'>shrna_diff_rep_p_value_combined</option>
-                                        <option value='shrna_diff_rep_z_score_combined'>shrna_diff_rep_z_score_combined</option>
-                                        <option value='solution_name'>solution_name</option>
-                                        <option value='story_location'>story_location</option>
-                                        <option value='target_group'>target_group</option>
-                                        <option value='tier1_evidence'>tier1_evidence</option>
-                                        <option value='tissue'>tissue</option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>... or enter new one</th>
-                                <td>
-                                    <input id="evidence-cname-custom" placeholder="e.g. feature_image_path" class="input-xlarge">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2" class="next-cell">
-                                    <button id="apply-evidence-cname" class="btn">Next</button>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-
-                    <div id="evidence-step3" class="hide">
-                        <h4>Step #3: Select a role</h4>
-                        <table class="table">
-                            <tr>
-                                <th>Select a role</th>
-                                <td>
-                                    <select id="evidence-role">
-                                        <option value="">-</option>
-                                        <option value='computed'>computed</option>
-                                        <option value='context'>context</option>
-                                        <option value='literature'>literature</option>
-                                        <option value='modulator'>modulator</option>
-                                        <option value='oncogene'>oncogene</option>
-                                        <option value='perturbagen'>perturbagen</option>
-                                        <option value='primary site'>primary site</option>
-                                        <option value='regulator'>regulator</option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>... or enter new one</th>
-                                <td>
-                                    <input id="evidence-role-custom" placeholder="e.g. enriched feature" class="input-xlarge">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2" class="next-cell">
-                                    <button id="apply-evidence-role" class="btn">Next</button>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-
-                    <div id="evidence-step4" class="hide">
-                        <h4>Step #4: Enter description</h4>
-                        <table class="table">
-                            <tr>
-                                <td>
-                                    <input id="evidence-desc" placeholder="e.g. heatmap image" class="input-xlarge">
-                                    <button id="apply-evidence-desc" class="btn">Next</button>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-primary" data-dismiss="modal">Close</button>
-                </div>
-            </div>
 
             <div class="row hide" id="template-preview">
                 <hr>
-                <div class="template-preview-wrapper span12">
-                    <h2>Template Preview</h2>
-                    <table class="table table-bordered table-striped" id="template-table">
-                        <tr id="template-header">
-                            <td><!--intentionally left blank--></td>
-                        </tr>
-                        <tr id="template-subject">
-                            <th>subject</th>
-                        </tr>
-                        <tr id="template-evidence">
-                            <th>evidence</th>
-                        </tr>
-                        <tr id="template-role">
-                            <th>role</th>
-                        </tr>
-                        <tr id="template-mime_type">
-                            <th>mime_type</th>
-                        </tr>
-                        <tr id="template-numeric_units">
-                            <th>numeric_units</th>
-                        </tr>
-                        <tr id="template-display_text">
-                            <th>display_text</th>
-                        </tr>
-                        <tr id="template-sample-data1" class="sample-data">
-                            <td><i>sample data row #1</i></td>
-                        </tr>
-                        <tr id="template-sample-data2" class="sample-data">
-                            <td><i>sample data row #2</i></td>
-                        </tr>
-                    </table>
-                </div>
-
-                <div class="template-preview-wrapper span12">
-                    <h2>Template Meta-Data Preview</h2>
-                    <table class="table table-bordered table-striped" id="template-meta-table">
-                        <tr>
-                            <th>observation_tier</th>
-                            <th>template_name</th>
-                            <th>observation_summary</th>
-                            <th>template_description</th>
-                            <th>submission_name</th>
-                            <th>submission_description</th>
-                        </tr>
-                        <tr>
-                            <td id="meta-observation_tier"></td>
-                            <td id="meta-template_name"></td>
-                            <td id="meta-observation_summary"></td>
-                            <td id="meta-template_description"></td>
-                            <td id="meta-submission_name"></td>
-                            <td id="meta-submission_description"></td>
-                        </tr>
-                    </table>
-                </div>
 
                 <div class="span8 offset2 template-download">
                     <button class="btn btn-large" id="preview-template">Preview template</button>
                     <div class="span4">
-                        <form action="download/template" method="POST" id="download-form">
+                        <form action="template/download" method="POST" id="download-form">
                             <button class="btn btn-warning btn-large" id="download-template">Download template</button>
                             <input type="hidden" name="template" id="template-input">
-                            <input type="hidden" name="metatemplate" id="template-meta-input">
                             <input type="hidden" name="filename" id="filename-input">
                         </form>
                     </div>
                 </div>
-            </div>
-        </div>
+            </div><!-- end of template-preview -->
+        </div><!-- end of template-helper-container -->
     </script>
 
     <script type="text/template" id="template-helper-center-tmpl">
@@ -2383,20 +2075,51 @@
 
     <script type="text/template" id="preview-tmpl">
         <div id="preview-container" class="container">
-            <h2>Template preview</h2>
-            <ul class="nav nav-tabs" id="preview-tabs">
-                <li class="active"><a href="#submission-preview">Submission</a></li>
-                <li><a href="#obs1-preview">Observation</a></li>
-            </ul>
-
-            <div class="tab-content">
-                <div class="tab-pane active" id="submission-preview">
-                    <h2>Here will come the submission</h2>
+        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="false">
+            <h2>Submission preview</h2>
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingOne">
+                <h4 class="panel-title">
+                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    Observation #1
+                    </a>
+                </h4>
                 </div>
-                <div class="tab-pane" id="obs1-preview">
-                    <h2>Here will come the observation #1</h2>
+                <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                <div class="panel-body">
+                    Observation #1 preview TO BE IMPLEMENTED
+                </div>
                 </div>
             </div>
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingTwo">
+                <h4 class="panel-title">
+                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    Observation #2
+                    </a>
+                </h4>
+                </div>
+                <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                <div class="panel-body">
+                    Observation #2 preview TO BE IMPLEMENTED
+                </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingThree">
+                <h4 class="panel-title">
+                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                    Observation #3
+                    </a>
+                </h4>
+                </div>
+                <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                <div class="panel-body">
+                    Observation #3 preview TO BE IMPLEMENTED
+                </div>
+                </div>
+            </div>
+        </div>
         </div>
     </script>
 

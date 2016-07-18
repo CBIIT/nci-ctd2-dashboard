@@ -1752,6 +1752,7 @@
         template: _.template($("#submission-tmpl").html()),
         render: function() {
             var submission = this.model.submission;
+            /*
             $(this.el).html(this.template(submission));
             $(".submission-observations-loading").remove();
 
@@ -1768,7 +1769,16 @@
                 submissionRowView.render();
             });
 
-            $('#submission-observation-grid').dataTable();
+            $('#submission-observation-grid').dataTable();*/
+            $('#headingOne').click(function(){
+                $('.in').collapse('toggle');
+            });
+            $('#headingTwo').click(function(){
+                $('.in').collapse('toggle');
+            });
+            $('#headingThree').click(function(){
+                $('.in').collapse('toggle');
+            });
 
             return this;
         }
@@ -2286,25 +2296,6 @@
         metaTable: "#template-meta-table",
         preview: "#template-preview",
 
-        addColumn: function(identifier, displayTextEditable, columnType) {
-            $(this.table).find("tr")
-                .append(_.template($("#template-header-col-tmpl").html(), {id: identifier, columnType: columnType}));
-            $(this.table).find("#template-header td").last().text(identifier);
-            var inputTemplate = _.template($("#template-sample-data-tmpl").html(), {});
-            $(this.table).find("tr.sample-data td." + identifier).append(inputTemplate);
-
-            if(displayTextEditable)
-                $(this.table).find("#template-display_text td." + identifier).append(inputTemplate);
-
-            return this;
-        },
-
-        addMetaColumn: function(identifier, displayText) {
-            $(this.metaTable).find("#meta-" + identifier).text(displayText);
-
-            return this;
-        },
-
         render: function() {
             $(this.el).html(this.template(this.model));
 
@@ -2324,58 +2315,54 @@
             $("#apply-submission-center").click(function() {
                 var centerName = $("#template-submission-centers").val();
                 if(centerName.length == 0) {
-                    centerName = $("#template-submission-centers-custom").val();
-                }
-
-                if(centerName.length == 0) {
                     return; // error control
                 }
 
                 $("#step1").fadeOut();
                 $("#step2").slideDown();
-                self.addColumn("submission_center", false, "meta");
-                $(self.table).find("tr.sample-data td.submission_center").each(function() {
-                    $(this).find("input").val(centerName);
-                });
+                $("span#center-name").text(centerName);
             });
 
-            $("#apply-template-name").click(function() {
-                var tmplName = $("#template-name").val();
-                if(tmplName.length == 0) return;
-
+            $("#create-new-submission").click(function() {
                 $("#step2").fadeOut();
                 $("#step3").slideDown();
-                self.addColumn("template_name", false, "meta");
-                $(self.table).find("tr.sample-data td.template_name").each(function() {
-                    $(this).find("input").val(tmplName);
-                });
-                var dateString = (function(date) {
-                    var d = date.getDate();
-                    var m = date.getMonth() + 1;
-                    var y = date.getFullYear();
-                    return '' + y +  (m<=9 ? '0' + m : m) + (d <= 9 ? '0' + d : d);
-                })(new Date());
-                self.addMetaColumn("template_name", tmplName);
-                self.addMetaColumn("submission_name", dateString + "-" + tmplName);
             });
 
-            $("#apply-template-desc").click(function() {
-                var templDesc = $("#template-desc").val();
-                var templSubmissionDesc = $("#template-submission-desc").val();
+            // although the other button is called #create-new-submission, this is where it is really created back-end
+            $("#apply-submitter-information").click(function() {
+                var submissionName = $("#template-name").val();//"get this from the form...";
+                var subjectList = ['gene1', 'gene2', 'compound1', 'cell_line1'];
 
-                if(templDesc.length == 0 || templSubmissionDesc.length == 0) {
+                var firstName = $("#first-name").val();
+                var lastName = $("#last-name").val();
+
+                if(firstName.length == 0 || lastName.length == 0
+                    || submissionName.length == 0) {
                     return; // error control
                 }
 
                 $("#step3").fadeOut();
                 $("#step4").slideDown();
-                self.addMetaColumn("template_description", templDesc);
-                self.addMetaColumn("submission_description", templSubmissionDesc);
+                $("span#submission-name").text(submissionName);
+                $.ajax({
+                    url: "template/create",
+                    type: "POST",
+                    data: jQuery.param({
+                        name : submissionName,
+                        firstName: firstName,
+                        lastName: lastName,
+                        subjectList: subjectList
+                       }),
+                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8', //"json",                   
+                    success: function(data) {                    
+                        console.log("done:"+data);
+                   }
+                 });
             });
 
-            $("#apply-template-tier").click(function() {
-                var tmplTier = $("#template-tier").val();
-                self.addMetaColumn("observation_tier", tmplTier);
+            $("#apply-template-submission-data").click(function() {
+                //var tmplTier = $("#template-tier").val();
+                //self.addMetaColumn("observation_tier", tmplTier);
 
                 $("#step4").fadeOut();
                 $("#step5").slideDown();
@@ -2384,158 +2371,22 @@
 
 
             $("#add-evidence").click(function() {
-                $("#evidence-modal").modal('show');
-            });
-
-            // The following variables are shared across evidence/subject add buttons
-            var stype, cname, role, mime, unit;
-
-            $("#apply-evidence-type").click(function() {
-                stype = $("#evidence-type").val();
-                if(stype.length == 0) return;
-
-                $("#evidence-step1").fadeOut();
-                if(stype == "File") {
-                    $("#evidence-step1-mime").slideDown();
-                } else if(stype == "Numeric") {
-                    $("#evidence-step1-unit").slideDown();
-                } else {
-                    $("#evidence-step2").slideDown();
-                }
-            });
-
-            $("#apply-evidence-mime-type").click(function() {
-                mime = $("#evidence-mime-type").val();
-                if(mime.length == 0) {
-                    mime = $("#evidence-mime-type-custom").val();
-                }
-
-                if(mime.length == 0) {
-                    return; // error control
-                }
-
-                $("#evidence-step1-mime").fadeOut();
-                $("#evidence-step2").slideDown();
-            });
-
-            $("#apply-evidence-numeric-unit").click(function() {
-                unit = $("#evidence-numeric-unit").val();
-                $("#evidence-step1-unit").fadeOut();
-                $("#evidence-step2").slideDown();
-            });
-
-            $("#apply-evidence-cname").click(function() {
-                cname = $("#evidence-cname").val();
-                if(cname.length == 0) {
-                    cname = $("#evidence-cname-custom").val();
-                }
-
-                if(cname.length == 0) {
-                    return; // error control
-                }
-
-                $("#evidence-step2").fadeOut();
-                $("#evidence-step3").slideDown();
-            });
-
-            $("#apply-evidence-role").click(function() {
-                role = $("#evidence-role").val();
-                if(role.length == 0) {
-                    role = $("#evidence-role-custom").val();
-                }
-
-                if(role.length == 0) {
-                    return; // error control
-                }
-
-                $("#evidence-step3").fadeOut();
-                $("#evidence-step4").slideDown();
-            });
-
-            $("#apply-evidence-desc").click(function() {
-                var desc = $("#evidence-desc").val();
-                if(desc.length == 0) return;
-
-                self.addColumn(cname, true, "evidence");
-
-                $(self.table).find("#template-evidence td." + cname).text(stype);
-                $(self.table).find("#template-role td." + cname).text(role);
-                $(self.table).find("#template-display_text td." + cname + " input").val(desc);
-                $(self.table).find("tr.sample-data td." + cname + " input").val(stype + " value");
-                $(self.table).find("#template-mime_type td." + cname).text(mime);
-                $(self.table).find("#template-numeric_units td." + cname).text(unit);
-
-                $("#evidence-step4").hide();
-                $("#evidence-step1").show();
-
-                $("#evidence-modal").modal('hide');
-
+                // TODO
+                console.log("add-evidence clicked");
             });
 
             $("#add-subject").click(function() {
-                $("#subject-modal").modal('show');
-            });
-
-            $("#apply-subject-type").click(function() {
-                stype = $("#subject-type").val();
-                if(stype.length == 0) return;
-
-                $("#subject-step1").fadeOut();
-                $("#subject-step2").slideDown();
-            });
-
-            $("#apply-subject-cname").click(function() {
-                cname = $("#subject-cname").val();
-                if(cname.length == 0) {
-                    cname = $("#subject-cname-custom").val();
-                }
-
-                if(cname.length == 0) {
-                    return; // error control
-                }
-
-                $("#subject-step2").fadeOut();
-                $("#subject-step3").slideDown();
-            });
-
-            $("#apply-subject-role").click(function() {
-                role = $("#subject-role").val();
-                if(role.length == 0) {
-                    role = $("#subject-role-custom").val();
-                }
-
-                if(role.length == 0) {
-                    return; // error control
-                }
-
-                $("#subject-step3").fadeOut();
-                $("#subject-step4").slideDown();
-            });
-
-            $("#apply-subject-desc").click(function() {
-                var desc = $("#subject-desc").val();
-                if(desc.length == 0) return;
-
-                self.addColumn(cname, true, "subject");
-                $(self.table).find("#template-subject td." + cname).text(stype);
-                $(self.table).find("#template-role td." + cname).text(role);
-                $(self.table).find("#template-display_text td." + cname + " input").val(desc);
-                $(self.table).find("tr.sample-data td." + cname + " input").val(stype + " ID");
-
-                $("#subject-step4").hide();
-                $("#subject-step1").show();
-
-                $("#subject-modal").modal('hide');
-
+                // TODO
+                console.log("add-subject clicked")
             });
 
             $("#download-template").click(function() {
-                self.addMetaColumn("observation_summary", $("#template-obs-summary").val());
+                //self.addMetaColumn("observation_summary", $("#template-obs-summary").val());
                 return this;
             });
 
             $("#preview-template").click(function() {
-                self.addMetaColumn("observation_summary", $("#template-obs-summary").val());
+                //self.addMetaColumn("observation_summary", $("#template-obs-summary").val());
 
                 $.fancybox(
                     _.template($("#preview-tmpl").html()),
@@ -2548,156 +2399,14 @@
                     }
                 );
 
-                var mockId = 1;
-
-                // create submission center
-                var submissionCenter = {
-                    'class': "SubmissionCenter",
-                    displayName: $(self.table).find("tr.sample-data td.submission_center input").val(),
-                    id: mockId++
-                };
-    
-                // create template
-                var observationTemplate = {
-                    'class': "observationTemplate",
-                    description: $("#meta-template_description").text(),
-                    displayName: $("#meta-submission_name").text(),
-                    id: mockId++,
-                    isSubmissionStory: false,
-                    observationSummary: $("#meta-observation_summary").text(),
-                    submissionDescription: $("#meta-submission_description").text(),
-                    submissionName: $("#meta-submission_name").text(),
-                    submissionStoryRank: 0,
-                    tier: $("#meta-observation_tier").text()
-                };
-
                 // create submission
                 var submission = {
-                    'class': "Submission",
-                    displayName: $("#meta-submission_name").text(),
-                    id: mockId++,
-                    submissionDate: (new Date()).toDateString(),
-                    observationTemplate: observationTemplate,
-                    submissionCenter: submissionCenter
+                    // TODO
                 };
 
-                // create observations
-                var createObservations = function(id, preview) {
-                    var rowId = "#" + "template-sample-data" + id;
-
-                    var observation = {
-                        'class': "Observation",
-                        id: mockId++,
-                        displayName: "",
-                        submission: submission
-                    };
-
-                    var observedSubjects = [];
-                    var observedEvidences = [];
-
-                    $("#template-header td").each(function(i, aCell) {
-                        var cellType = $(aCell).data("type");
-                        var className = $(aCell).text();
-
-                        if( i < 1 || cellType == "meta" )
-                            return; // this will get rid of non-essential cells
-
-                        var displayText = $("#template-display_text").find("td." + className + " input").val();
-                        var displayName = $(rowId).find("td." + className + " input").val();
-                        switch(cellType) {
-                            case "subject":
-                                var subject = {
-                                    'class': $("#template-subject").find("td." + className).text(),
-                                    id: mockId++,
-                                    displayName: displayName
-                                };
-
-                                var subjectRole = {
-                                    'class': "SubjectRole",
-                                    id: mockId++,
-                                    displayName: $("#template-role").find("td." + className).text()
-                                };
-
-                                var observedSubjectRole = {
-                                    subjectRole: subjectRole,
-                                    observationTemplate: observationTemplate,
-                                    id: mockId++,
-                                    'class': "ObservedSubjectRole",
-                                    columnName: className,
-                                    displayName: displayText,
-                                    displayText: displayText
-                                };
-
-                                var observedSubject = {
-                                    'class': "ObservedSubject",
-                                    displayName: subject.displayName,
-                                    id: mockId++,
-                                    observation: observation,
-                                    observedSubjectRole: observedSubjectRole,
-                                    subject: subject
-                                };
-
-                                observedSubjects.push(observedSubject);
-
-                                break;
-                            case "evidence":
-                                var evidence = {
-                                    'class': $("#template-evidence").find("td." + className).text(),
-                                    id: mockId++,
-                                    displayName: displayName,
-                                    mimeType: $("#template-evidence").find("td." + className).text(),
-                                    filePath: displayName,
-                                    url: displayName
-                                };
-
-                                var evidenceRole = {
-                                    'class': "EvidenceRole",
-                                    id: mockId++,
-                                    displayName: $("#template-role").find("td." + className).text()
-                                };
-
-                                var observedEvidenceRole = {
-                                    evidenceRole: evidenceRole,
-                                    observationTemplate: observationTemplate,
-                                    id: mockId++,
-                                    'class': "ObservedEvidenceRole",
-                                    columnName: className,
-                                    displayName: displayText,
-                                    displayText: displayText
-                                };
-
-                                var observedEvidence = {
-                                    'class': "ObservedEvidence",
-                                    displayName: evidence.displayName,
-                                    id: mockId++,
-                                    observation: observation,
-                                    observedEvidenceRole: observedEvidenceRole,
-                                    evidence: evidence
-                                };
-
-                                observedEvidences.push(observedEvidence);
-                                break;
-                        }
-                    });
-
-                    var returnObject = {
-                        observation: observation,
-                        observedEvidences: observedEvidences,
-                        observedSubjects: observedSubjects
-                    };
-
-                    if(preview) {
-                        (new ObservationPreviewView({
-                            model: returnObject,
-                            el: $("#obs" + id + "-preview")
-                        })).render();
-                    }
-
-                    return returnObject;
-                };
-
-                var obs1 = createObservations(1, true);
-                var obs2 = createObservations(2, false);
+                // TODO fake data
+                var obs1 = null;
+                var obs2 = null;
 
                 // Create the submission preview
                 (new SubmissionPreviewView({
@@ -2744,15 +2453,13 @@
                 };
 
                 $("#template-input").val(table2TSV("#template-table"));
-                $("#template-meta-input").val(table2TSV("#template-meta-table"));
                 $("#filename-input").val($("#meta-submission_name").text());
 
                 return true;
             });
 
-
             return this;
-        }
+        } // end render function starting on line 2299
     });
 
     var TemplateHelperCenterView = Backbone.View.extend({
