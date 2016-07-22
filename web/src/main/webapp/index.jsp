@@ -1645,7 +1645,7 @@
         </div>
     </script>
 
-    <script type="text/template" id="explore-tmpl">
+    <script type="text/template" id="explore-tmpl" data-url="<%=dataURL%>">
         <div class="container common-container" id="explore-container">
             <h2>Explore: <i>{{_.map(decodeURIComponent(roles).split(","), function(o) { return o + "s"; }, []).join(", ")}}</i> <small><a href="#" id="customize-roles" class="customize-{{type}}">({{customized ? "customized" : "select roles"}})</a></small></h2>
 
@@ -1667,7 +1667,7 @@
                     <th>Tier 1</th>
                 </tr>
                 </thead>
-                <tbody id="explore-items" >
+                <tbody id="explore-items" style='white-space: nowrap;'>
                     <!-- here will go the rows -->
                 </tbody>
             </table>
@@ -1703,24 +1703,6 @@
         <tr>
             <td>{{displayName}}</td>
             <td><input {{checked ? "checked " : ""}} type="checkbox" data-role="{{displayName}}"></td>
-        </tr>
-    </script>
-
-    <script type="text/template" id="explore-item-tmpl">
-        <tr style='white-space: nowrap;'>
-            <td>
-                 {{reformattedClassName}}
-                 {{subject.class == 'Compound' ? "<span style='display:inline-block;width:100px'><a href='<%=dataURL%>compounds/"+ subject.imageFile +"' target='_blank' class='compound-image' title='Compound: " + subject.displayName + "'><img class='img-polaroid' style='height:25px' src='<%=dataURL%>compounds/" + subject.imageFile + "' alt='Compound: " + subject.displayName +"'></a></span>" : "<img src='img/"+ subject.class.toLowerCase() + ".png' style='height:25px' alt=''>" }}
-            </td>
-            <td>
-                <a href="#/subject/{{subject.id}}/{{role}}">
-                    {{subject.displayName}}
-                </a>
-            </td>
-            <td>{{role}}</td>
-            <td>{{numberOfTier3Observations==0?"":"<a href='#subject/"+subject.id+"/"+role+"/3'>"+numberOfTier3Observations+"</a>"}} {{numberOfTier3Observations>1?"("+numberOfTier3SubmissionCenters+" center"+ (numberOfTier3SubmissionCenters>1?"s":"") +")":""}}</td>
-            <td>{{numberOfTier2Observations==0?"":"<a href='#subject/"+subject.id+"/"+role+"/2'>"+numberOfTier2Observations+"</a>"}} {{numberOfTier2Observations>1?"("+numberOfTier2SubmissionCenters+" center"+ (numberOfTier2SubmissionCenters>1?"s":"") +")":""}}</td>
-            <td>{{numberOfTier1Observations==0?"":"<a href='#subject/"+subject.id+"/"+role+"/1'>"+numberOfTier1Observations+"</a>"}} {{numberOfTier1Observations>1?"("+numberOfTier1SubmissionCenters+" center"+ (numberOfTier1SubmissionCenters>1?"s":"") +")":""}}</td>
         </tr>
     </script>
 
