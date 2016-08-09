@@ -59,16 +59,16 @@
     });
 
     // Let datatables know about observation count (for sorting)
-    $.extend($.fn.dataTable.ext.order, {
-        "observation-count": function(settings, col) {
-            return this.api().column( col, {order:'index'} ).nodes().map(
-                function(td, i) {
-                    var count_text = $('a', td).html();
-                    var count = 0;
-                    if(count_text != undefined) count = parseInt(count_text);
-                    return count;
-                }
-            );
+    $.extend($.fn.dataTable.ext.type.order, {
+        "observation-count-pre": function(d) {
+            if(d==null || d=="") return 0;
+            var start = d.indexOf(">");
+            var end = d.indexOf("<", start);
+            if(end<=start) return 0;
+            var count_text = d.substring(start+1, end);
+            var count = 0;
+            if(count_text != undefined) count = parseInt(count_text);
+            return count;
         }
     });
 
@@ -2491,37 +2491,63 @@
 
             var thatModel = this.model;
             $(this.el).html(this.template(thatModel));
+            var data_url = $("#explore-tmpl").attr("data-url");
             var subjectWithSummaryCollection = new SubjectWithSummaryCollection(thatModel);
             subjectWithSummaryCollection.fetch({
                 success: function() {
                     $("#explore-items").html("");
 
                     var numberOfEls = subjectWithSummaryCollection.models.length;
-                    var spanSize = 2;
+                    var table_data = [];
                     _.each(subjectWithSummaryCollection.models, function(subjectWithSummary) {
                             var sModel = subjectWithSummary.toJSON();
-                            sModel["spanSize"] = spanSize;
-                            sModel["type"] = thatModel.type;
-                            sModel["reformattedClassName"] = reformattedClassName[sModel.subject.class];
-                            if(sModel.subject.class == "Compound") {
-                                _.each(sModel.subject.xrefs, function(xref) {
+                            var subject = sModel.subject;
+                            if(subject.class == "Compound") {
+                                _.each(subject.xrefs, function(xref) {
                                     if(xref.databaseName == "IMAGE") {
-                                        sModel.subject["imageFile"] = xref.databaseId;
+                                        subject.imageFile = xref.databaseId;
                                     }
                                 });
                             }
-                            var exploreItemView = new ExploreItemView({ model: sModel });
-                            exploreItemView.render();
+                            var role = sModel.role;
+                            var reformatted = reformattedClassName[subject.class];
+                            if(subject.class == 'Compound') {
+                                reformatted += " <span style='display:inline-block;width:100px'><a href='"+data_url+"compounds/"
+                                    + subject.imageFile +"' target='_blank' class='compound-image' title='Compound: " 
+                                    + subject.displayName + "'><img class='img-polaroid' style='height:25px' src='"+data_url+"compounds/" 
+                                    + subject.imageFile + "' alt='Compound: " + subject.displayName +"'></a></span>";
+                            } else {
+                                reformatted += " <img src='img/"+ subject.class.toLowerCase() + ".png' style='height:25px' alt=''>";
+                            }
+                            var nameLink = "<a href='#/subject/"+subject.id+"/"+role+"'>"+subject.displayName+"</a>";
+                            var n3obv = sModel.numberOfTier3Observations;
+                            var n3ctr = sModel.numberOfTier3SubmissionCenters;
+                            var n3link = ( n3obv==0 ? "" : "<a href='#subject/"+subject.id+"/"+role+"/3'>"+n3obv+"</a>" )
+                                    + ( n3obv>1 ? " ("+n3ctr+" center" + (n3ctr>1?"s":"") +")":"" );
+                            var n2obv = sModel.numberOfTier2Observations;
+                            var n2ctr = sModel.numberOfTier2SubmissionCenters;
+                            var n2link = ( n2obv==0 ? "" : "<a href='#subject/"+subject.id+"/"+role+"/2'>"+n2obv+"</a>" )
+                                    + ( n2obv>1 ? " ("+n2ctr+" center" + (n2ctr>1?"s":"") +")":"" );
+                            var n1obv = sModel.numberOfTier1Observations;
+                            var n1ctr = sModel.numberOfTier1SubmissionCenters;
+                            var n1link = ( n1obv==0 ? "" : "<a href='#subject/"+subject.id+"/"+role+"/1'>"+n1obv+"</a>" )
+                                    + ( n1obv>1 ? " ("+n1ctr+" center" + (n1ctr>1?"s":"") +")":"" );
+                            table_data.push( [reformatted, nameLink, role, n3link, n2link, n1link] );
                     });
                     $("#explore-table").dataTable( {
-                    	"columns": [
+                        'data': table_data,
+                        "deferRender": true,
+                        "columns": [
                                     null,
                                     null,
                                     null,
-                                    { "orderDataType": "observation-count", "type": "numeric" },
-                                    { "orderDataType": "observation-count", "type": "numeric" },
-                                    { "orderDataType": "observation-count", "type": "numeric" }
-                                ]
+                                    { "type": "observation-count" },
+                                    { "type": "observation-count" },
+                                    { "type": "observation-count" }
+                                ],
+                        "drawCallback": function( settings ) {
+                            $("a.compound-image").fancybox({titlePosition: 'inside'});
+                        }
                     });
 
                     $(".explore-thumbnail h4").tooltip();
@@ -2603,17 +2629,6 @@
             } else {
                 $(this.el).append(this.template(this.model));
             }
-            return this;
-        }
-    });
-
-    var ExploreItemView = Backbone.View.extend({
-        el: "#explore-items",
-        template: _.template($("#explore-item-tmpl").html()),
-
-        render: function() {
-            $(this.el).append(this.template(this.model));
-            $("a.compound-image").fancybox({titlePosition: 'inside'});
             return this;
         }
     });
@@ -3607,4 +3622,14 @@
         });
     });
 
+    var subjectWithSummaryCollection = new SubjectWithSummaryCollection( { 
+        roles: "Perturbagen,Candidate Drug",
+        type: "compound",
+        customized: false
+    });
+    subjectWithSummaryCollection.fetch({
+        success: function() {
+            console.log('long query pre-prepared '+performance.now());
+        }
+    } );
 }(window.jQuery);
