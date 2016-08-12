@@ -82,6 +82,8 @@ public class WebServiceUtil {
                 }
             });
             entities = sRoles;
+        } else if(type.equals("template")) {
+            entities = dashboardDao.findEntities(SubmissionTemplate.class);
         }
 
         return entities;

@@ -3,16 +3,16 @@ package gov.nih.nci.ctd2.dashboard.impl;
 import org.hibernate.annotations.Proxy;
 import org.hibernate.search.annotations.Indexed;
 
+import gov.nih.nci.ctd2.dashboard.model.SubmissionTemplate;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-//@Proxy(proxyClass = SubmissionTemplateInterface.class)
+@Proxy(proxyClass = SubmissionTemplate.class)
 @Table(name = "submission_template")
 @Indexed
-public class SubmissionTemplate extends DashboardEntityImpl 
-//implements SubmissionTemplateInterface {
-{
+public class SubmissionTemplateImpl extends DashboardEntityImpl implements SubmissionTemplate {
     private String submissionCenter;
     private String description;
 
@@ -24,11 +24,11 @@ public class SubmissionTemplate extends DashboardEntityImpl
         this.description = description;
     }
 
-	public String getSubmissionCenter() {
-		return submissionCenter;
-	}
+    public String getSubmissionCenter() {
+        return submissionCenter;
+    }
 
-	public void setSubmissionCenter(String submissionCenter) {
-		this.submissionCenter = submissionCenter;
-	}
+    public void setSubmissionCenter(String submissionCenter) {
+        this.submissionCenter = submissionCenter;
+    }
 }

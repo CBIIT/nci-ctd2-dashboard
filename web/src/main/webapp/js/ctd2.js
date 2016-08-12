@@ -206,6 +206,14 @@
         }
     });
 
+    var SubmissionTemplate = Backbone.Model.extend({
+        urlRoot: CORE_API_URL + "get/template"
+    });
+    var StoredTemplates = Backbone.Collection.extend({
+        url: CORE_API_URL + "list/template/?filterBy=",
+        model: SubmissionTemplate
+    });
+
     /* Views */
     var HomeView = Backbone.View.extend({
         el: $("#main-container"),
@@ -2293,7 +2301,6 @@
         template: _.template($("#template-helper-tmpl").html()),
         el: $("#main-container"),
         table: "#template-table",
-        metaTable: "#template-meta-table",
         preview: "#template-preview",
 
         render: function() {
@@ -2321,6 +2328,25 @@
                 $("#step1").fadeOut();
                 $("#step2").slideDown();
                 $("span#center-name").text(centerName);
+                var storedTemplates = new StoredTemplates();
+                storedTemplates.fetch({
+                    success: function() {
+                        _.each(storedTemplates.models, function(oneTemplate) {
+                            console.log(oneTemplate.toJSON());
+                            (new TemplateHelperCenterView({
+                                model: oneTemplate.toJSON(),
+                                el: $("#existing-template-table")
+                            })).render();
+                        });
+                    }
+                });
+
+                (new ExistingTemplateView({
+                    model: {templateName:"template#1", templateDescription:"blahblah", templateProject:"project name...",
+                        templateTier:6, templateDate:"what? date?", templateComplete:"yeso",
+                    },
+                    el: $("#existing-template-table")
+                })).render();
             });
 
             $("#create-new-submission").click(function() {
@@ -2466,6 +2492,15 @@
         template: _.template($("#template-helper-center-tmpl").html()),
 
         render: function() {        	
+            $(this.el).append(this.template(this.model));
+            return this;
+        }
+    });
+
+    var ExistingTemplateView = Backbone.View.extend({
+        template: _.template($("#existing-template-row-tmpl").html()),
+
+        render: function() {            
             $(this.el).append(this.template(this.model));
             return this;
         }

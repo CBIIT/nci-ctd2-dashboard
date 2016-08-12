@@ -1842,6 +1842,13 @@
         </div>
     </script>
 
+    <script type="text/template" id="existing-template-row-tmpl">
+        <tr id="template_{{templateName}}">
+            <td>{{templateName}}</td><td>{{templateDescription}}</td><td>{{templateProject}}</td>
+                <td>{{templateTier}}</td><td>{{templateDate}}</td><td>{{templateComplete}}</td><td><select></select></td>
+        </tr>
+    </script>
+
     <script type="text/template" id="template-helper-tmpl">
         <div class="container common-container" id="template-helper-container">
             <h2>CTD<sup>2</sup> Data Submission Builder</h2>
@@ -1850,7 +1857,7 @@
                 <a href="#" class="close" data-dismiss="alert">&times;</a>
                 <p>
                     <strong>Welcome to the submission template helper!</strong><br>
-                    ... introductory text, briefly exaplaining the submission process ...
+                    ... introductory text, briefly explaining the submission process ...
                     This tool will help create a basic Dashboard submission template from scratch.
                     Once a basic template is prepared, the template can be downloaded for local use and preparation of a Dashboard submission.
                 </p>
@@ -1890,21 +1897,9 @@
                     You will be able to reuse information entered for one submission in additional, related submissions. A project title is used to group together such related submissions. 
                 </p>
                 </div>
-                <table class="table table-bordered table-striped" id="template-meta-table">
+                <table class="table table-bordered table-striped" id="existing-template-table">
                         <tr id="template-header">
-                            <td>Submission Name</td><td>Submission Description</td><td>Project</td><td>Tier</td><td>Date last modified</td><td>Complete</td><td>Action</td>
-                        </tr>
-                        <tr id="xxx">
-                            <td>Name 4</td><td>descriptive text</td><td>this is project 3 ...</td><td></td><td></td><td></td><td>DROP LIST OF ACTIONS</td>
-                        </tr>
-                        <tr id="yyy">
-                            <td>Name 3</td><td>descriptive text</td><td>this is project ...</td>
-                        </tr>
-                        <tr id="zzz" class="sample-data">
-                            <td>Name 2</td><td>descriptive text</td><td>this is project ...</td><td><i>sample data row #1</i></td>
-                        </tr>
-                        <tr id="aaa" class="sample-data">
-                            <td>Name 1</td><td>descriptive text</td><td>this is project ...</td><td>sample data row #2</td>
+                            <th>Submission Name</th><th>Submission Description</th><th>Project</th><th>Tier</th><th>Date last modified</th><th>Complete</th><th>Action</th>
                         </tr>
                 </table>
                     this table needs to be changed to a template that populated by DB service

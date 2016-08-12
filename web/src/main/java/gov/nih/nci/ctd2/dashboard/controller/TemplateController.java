@@ -16,7 +16,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
-import gov.nih.nci.ctd2.dashboard.impl.SubmissionTemplate;
+import gov.nih.nci.ctd2.dashboard.impl.SubmissionTemplateImpl;
+import gov.nih.nci.ctd2.dashboard.model.SubmissionTemplate;
 
 @Controller
 @RequestMapping("/template")
@@ -33,9 +34,10 @@ public class TemplateController {
             )
     {
     	System.out.println("... ... creating submission template:"+name+"...");
-    	SubmissionTemplate template = new SubmissionTemplate();
-    	template.setDescription("description:"+name);
-    	template.setSubmissionCenter("submission center:"+name);
+    	SubmissionTemplate template = new SubmissionTemplateImpl();
+    	// TODO this used to work
+    	//template.setDescription("description:"+name);
+    	//template.setSubmissionCenter("submission center:"+name);
     	dashboardDao.save(template);
     	System.out.println("=== === DONE with submission template:"+name+"...");
 
