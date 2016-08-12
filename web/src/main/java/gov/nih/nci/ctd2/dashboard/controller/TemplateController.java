@@ -1,5 +1,11 @@
 package gov.nih.nci.ctd2.dashboard.controller;
 
+import java.io.IOException;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
+
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,5 +40,29 @@ public class TemplateController {
     	System.out.println("=== === DONE with submission template:"+name+"...");
 
     	return new ResponseEntity<String>(name+" CREATED", HttpStatus.OK);
-	}
+    }
+
+    @Transactional
+    @RequestMapping(value="download", method = {RequestMethod.POST})
+    public void downloadTemplate(
+            @RequestParam("filename") String filename,
+            @RequestParam("template") String template,
+            HttpServletResponse response)
+    {
+        System.out.println("... ... download controller is called:"+filename+"..."+template);
+        
+        response.setContentType("application/zip");
+        response.addHeader("Content-Disposition", "attachment; filename=\"" + filename + ".zip\"");
+        response.addHeader("Content-Transfer-Encoding", "binary");
+
+        try {
+            ZipOutputStream zipOutputStream = new ZipOutputStream(response.getOutputStream());
+            zipOutputStream.putNextEntry(new ZipEntry(filename + ".tsv"));
+            zipOutputStream.write(template.getBytes());
+            zipOutputStream.closeEntry();
+            zipOutputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
