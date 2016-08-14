@@ -634,7 +634,7 @@
 
   <bean name="columbiaGbmMrsStoryLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="dummy,submission_name,submission_date,template_name,disease_condition,gene_symbol_1,gene_symbol_2,gene_symbol_3,publication_reference,tier1_evidence,story_location"/>
+	<property name="names" value="dummy,submission_name,submission_date,template_name,disease_condition,gene_symbol_1,gene_symbol_2,gene_symbol_3,publication_reference_1,publication_reference_2,tier1_evidence,story_location"/>
   </bean>
   
   <!-- columbia precmed -->
@@ -648,7 +648,7 @@
 
   <bean name="columbiaPrecmedLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,tissue_sample_1,tissue_sample_2,publication_reference_1,publication_reference_2,story_location"/>
+	<property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,tissue_sample_1,tissue_sample_2,publication_reference_1,publication_reference_2,publication_reference_3,publication_reference_4,story_location"/>
   </bean>
 
   <!-- cshl tier4 fgf19 story -->
@@ -1818,7 +1818,8 @@
 		<entry key="columbia_gbm_mrs:gene_symbol_1" value="subject:findGenesBySymbol" />
 		<entry key="columbia_gbm_mrs:gene_symbol_2" value="subject:findGenesBySymbol" />
 		<entry key="columbia_gbm_mrs:gene_symbol_3" value="subject:findGenesBySymbol" />
-		<entry key="columbia_gbm_mrs:publication_reference" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="columbia_gbm_mrs:publication_reference_1" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="columbia_gbm_mrs:publication_reference_2" value="evidence:readString:createObservedUrlEvidence" />
 		<entry key="columbia_gbm_mrs:tier1_evidence" value="evidence:readString:createObservedUrlEvidence" />
 		<entry key="columbia_gbm_mrs:story_location" value="evidence:readString:createObservedFileEvidence" />
         <!-- columbia precmed -->
@@ -1828,6 +1829,8 @@
         <entry key="columbia_precmed:tissue_sample_2" value="subject:findTissueSampleByName" />
         <entry key="columbia_precmed:publication_reference_1" value="evidence:readString:createObservedUrlEvidence" />
         <entry key="columbia_precmed:publication_reference_2" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="columbia_precmed:publication_reference_3" value="evidence:readString:createObservedUrlEvidence" />
+        <entry key="columbia_precmed:publication_reference_4" value="evidence:readString:createObservedUrlEvidence" />
         <entry key="columbia_precmed:story_location" value="evidence:readString:createObservedFileEvidence" />
 		<!-- cshl tier4 fgf19 story -->
 		<entry key="cshl_fgf19:gene_symbol_1" value="subject:findGenesBySymbol" />
