@@ -2333,20 +2333,13 @@
                     success: function() {
                         _.each(storedTemplates.models, function(oneTemplate) {
                             console.log(oneTemplate.toJSON());
-                            (new TemplateHelperCenterView({
+                            (new ExistingTemplateView({
                                 model: oneTemplate.toJSON(),
                                 el: $("#existing-template-table")
                             })).render();
                         });
                     }
                 });
-
-                (new ExistingTemplateView({
-                    model: {templateName:"template#1", templateDescription:"blahblah", templateProject:"project name...",
-                        templateTier:6, templateDate:"what? date?", templateComplete:"yeso",
-                    },
-                    el: $("#existing-template-table")
-                })).render();
             });
 
             $("#create-new-submission").click(function() {

@@ -5,6 +5,8 @@ import org.hibernate.search.annotations.Indexed;
 
 import gov.nih.nci.ctd2.dashboard.model.SubmissionTemplate;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -30,5 +32,37 @@ public class SubmissionTemplateImpl extends DashboardEntityImpl implements Submi
 
     public void setSubmissionCenter(String submissionCenter) {
         this.submissionCenter = submissionCenter;
+    }
+
+    public String getProject() {
+        return "fixed title for test"; // FIXME
+    }
+
+    public void setProject(String projectTitle) {
+        return; // FIXME
+    }
+
+    public Integer getTier() {
+        return 99; // FIXME
+    }
+
+    public void setTier(Integer tier) {
+        return; // FIXME
+    }
+
+    public Boolean getComplete() {
+        return false; // FIXME
+    }
+
+    public void setComplete(Boolean complete) {
+        return; // FIXME
+    }
+
+    public Date getDateLastModified() {
+        return new Date(); // FIXME
+    }
+
+    public void setDateLastModified(Date dateLastModified) {
+        return; // FIXME
     }
 }

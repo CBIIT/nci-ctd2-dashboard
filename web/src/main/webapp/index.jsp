@@ -1843,9 +1843,17 @@
     </script>
 
     <script type="text/template" id="existing-template-row-tmpl">
-        <tr id="template_{{templateName}}">
-            <td>{{templateName}}</td><td>{{templateDescription}}</td><td>{{templateProject}}</td>
-                <td>{{templateTier}}</td><td>{{templateDate}}</td><td>{{templateComplete}}</td><td><select></select></td>
+        <tr id="template_{{displayName}}">
+            <td>{{displayName}}</td><td>{{description}}</td><td>{{project}}</td>
+                <td>{{tier}}</td><td>{{dateLastModified}}</td><td>{{complete}}</td>
+                <td><select>
+                    <option vlaue='edit'>Edit</option>
+                    <option vlaue='preview'>Preview</option>
+                    <option vlaue='clone'>Clone</option>
+                    <option vlaue='delete'>Delete</option>
+                    <option vlaue='download'>Download</option>
+                    </select>
+                </td>
         </tr>
     </script>
 
@@ -1902,7 +1910,6 @@
                             <th>Submission Name</th><th>Submission Description</th><th>Project</th><th>Tier</th><th>Date last modified</th><th>Complete</th><th>Action</th>
                         </tr>
                 </table>
-                    this table needs to be changed to a template that populated by DB service
 
                 <table  class="table">
                     <tr>
@@ -1918,26 +1925,31 @@
                 <b>Center:</b> <span id="center-name"></span>
                 <table  class="table">
                     <tr>
-                        <th>Center</th>
-                        <td>
-                            <span id="???center" />
-                        </td>
-                    </tr>
-                    <tr>
                         <th>Submitter First Name</th>
                         <td>
-                            <input id="first-name" class="input-xxxlarge">
+                            <input id="first-name" placeholder="first name is required" class="input-xxxlarge">
                         </td>
                     </tr>
                     <tr>
                         <th>Submitter Last Name</th>
                         <td>
-                            <input id="last-name" class="input-xxxlarge">
+                            <input id="last-name" placeholder="last name is required" class="input-xxxlarge">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Contact E-mail</th>
+                        <td>
+                            <input id="email" placeholder="email is required" class="input-xxxlarge">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Contact phone number</th>
+                        <td>
+                            <input id="phone" placeholder="phone number is optional" class="input-xxxlarge">
                         </td>
                     </tr>
                 </table>
                 <h3>Submission Description</h3>
-                <b>Center:</b> <span id="center-name"></span>
                 <table class="table">
                     <tr>
                         <th>
@@ -1948,10 +1960,30 @@
                         </td>
                     </tr>
                     <tr>
-                        <th>Submission description</th>
+                        <th>Submission Description</th>
                         <td>
                             <input id="template-submission-desc" placeholder="e.g. Down-regulated genes in PTEN-null cell lines" class="input-xxxlarge">
                         </td>
+                    </tr>
+                    <tr>
+                        <th>Project Title</th>
+                        <td>
+                            <input id="template-project-title" placeholder="Please enter a title for this or a collection of related subissions (correponds e.g. to an entire paper)" class="input-xxxlarge">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Request Tier</th>
+                        <td>
+                            <select id="template-tier">
+                                <option>Tier 1 (initial or screening)</option>
+                                <option>Tier 2 (in vitro)</option>
+                                <option>Tier 3 (in vivo validation)</option>
+                            </slect>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Is this submission a story?</th>
+                        <td><input id="tempalte-is-story" type="checkbox" /></td>
                     </tr>
                 </table>
                 <table class="table">
