@@ -2613,6 +2613,10 @@
         <option value="{{displayItem}}">{{displayItem}}</option>
      </script>
 
+     <script type="text/template" id="gene-cart-option-tmpl-preselected">
+        <option value="{{displayItem}}" selected>{{displayItem}}</option>
+     </script>
+
     <script type="text/template" id="help-navigate-tmpl">
         <div class="help-navigate-text-container">
             <h3>Navigating and Understanding Dashboard Content</h3>

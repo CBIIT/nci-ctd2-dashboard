@@ -3168,12 +3168,33 @@
                 	      throttle : ""},
                    dataType: "json",
                    contentType: "json",                   
-                   success: function(data) {                	 
-                	   var list = data.interactomeList;                	   
-                       _.each(list, function(aData){              		       
-               		       $("#interactomeList").append(_.template($("#gene-cart-option-tmpl").html(), {displayItem: aData})); 
-                       });          
-                       $('#interactomeVersionList').disabled = true;                      
+                   success: function(data) {
+                       var list = data.interactomeList;
+                       _.each(list, function(aData){
+                           if(aData.toLowerCase().startsWith("preppi")) {
+                               $("#interactomeList").prepend(_.template($("#gene-cart-option-tmpl-preselected").html(), {displayItem: aData}));
+                               var interactome = aData.split("(")[0].trim();
+                               $.ajax({ // query the description
+                                   url: "cnkb/query",
+                                   data: {dataType : "interactome-version", interactome: interactome, version: "", selectedGenes: "", interactionLimit: 0, throttle: ""},
+                                   dataType: "json",
+                                   contentType: "json",
+                                   success: function(data) {
+                                       $('#interactomeDescription').html("");
+                                       $('#interactomeDescription').html(convertUrl(data.description));
+                                       $('#interactomeVersionList').html("");
+                                       _.each(data.versionDescriptorList, function(aData){
+                                              $("#interactomeVersionList").append(_.template($("#gene-cart-option-tmpl").html(), {displayItem: aData.version})); 
+                                       }); 
+                                       $('#interactomeVersionList').disabled = false;
+                                       $('#selectVersion').css('color', '#5a5a5a');
+                                       $('#versionDescription').html("");
+                                   }
+                               });  //ajax
+                           } else
+                               $("#interactomeList").append(_.template($("#gene-cart-option-tmpl").html(), {displayItem: aData}));
+                       });
+                       $('#interactomeVersionList').disabled = true;
                   }
             });  //ajax   
         	
