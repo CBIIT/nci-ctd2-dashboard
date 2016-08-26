@@ -47,9 +47,9 @@ public class TemplateController {
     	template.setSubmissionCenter(submissionCenter);
     	template.setDescription(description);
     	template.setProject(project);
+    	template.setFirstName(firstName);
+    	template.setLastName(lastName);
     	dashboardDao.save(template);
-    	System.out.println(firstName+" "+lastName);
-    	System.out.println("=== === DONE with submission template:"+name+"...");
 
     	return new ResponseEntity<String>(name+" CREATED", HttpStatus.OK);
     }

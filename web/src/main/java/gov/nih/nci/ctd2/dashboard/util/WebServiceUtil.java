@@ -82,15 +82,6 @@ public class WebServiceUtil {
                 }
             });
             entities = sRoles;
-        } else if(type.equals("template")) {
-            List<SubmissionTemplate> list = new ArrayList<SubmissionTemplate>();
-            SubmissionCenter submissionCenter = dashboardDao.getEntityById(SubmissionCenter.class, filterBy);
-            for (SubmissionTemplate submissionTemplete : dashboardDao.findEntities(SubmissionTemplate.class)) {
-                if (submissionTemplete.getSubmissionCenter().equals(submissionCenter)) {
-                    list.add(submissionTemplete);
-                }
-            }
-            entities = list;
         }
 
         return entities;
@@ -156,5 +147,16 @@ public class WebServiceUtil {
         }
 
         return submissions;
+    }
+
+    public List<? extends DashboardEntity> getTemplates(Integer centerId) {
+        List<SubmissionTemplate> list = new ArrayList<SubmissionTemplate>();
+        SubmissionCenter submissionCenter = dashboardDao.getEntityById(SubmissionCenter.class, centerId);
+        for (SubmissionTemplate submissionTemplete : dashboardDao.findEntities(SubmissionTemplate.class)) {
+            if (submissionTemplete.getSubmissionCenter().equals(submissionCenter)) {
+                list.add(submissionTemplete);
+            }
+        }
+        return list;
     }
 }
