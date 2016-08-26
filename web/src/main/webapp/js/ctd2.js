@@ -211,7 +211,10 @@
     });
     var StoredTemplates = Backbone.Collection.extend({
         url: CORE_API_URL + "list/template/?filterBy=",
-        model: SubmissionTemplate
+        model: SubmissionTemplate,
+        initialize: function(attributes) {
+            this.url += attributes.centerId;
+        }
     });
 
     /* Views */
@@ -2320,15 +2323,16 @@
 
             var self = this;
             $("#apply-submission-center").click(function() {
-                var centerName = $("#template-submission-centers").val();
-                if(centerName.length == 0) {
+                var centerId = $("#template-submission-centers").val();
+                console.log(centerId);
+                if(centerId.length == 0) {
                     return; // error control
                 }
 
                 $("#step1").fadeOut();
                 $("#step2").slideDown();
-                $("span#center-name").text(centerName);
-                var storedTemplates = new StoredTemplates();
+                $("span#center-name").text($("#template-submission-centers option:selected").text());
+                var storedTemplates = new StoredTemplates({centerId: centerId});
                 storedTemplates.fetch({
                     success: function() {
                         _.each(storedTemplates.models, function(oneTemplate) {
@@ -2348,7 +2352,41 @@
             });
 
             // although the other button is called #create-new-submission, this is where it is really created back-end
-            $("#apply-submitter-information").click(function() {
+            $("#save-submmitter-description").click(function() {
+                var centerId = $("#template-submission-centers").val();
+                var submissionName = $("#template-name").val();
+
+                var firstName = $("#first-name").val();
+                var lastName = $("#last-name").val();
+                var description = $("#template-submission-desc").val();
+                var project = $("#template-project-title").val();
+
+                if(centerId.length==0 || firstName.length == 0 || lastName.length == 0
+                    || submissionName.length == 0) {
+                    console.log("not saved due to incomplete information");
+                    return; // error control
+                }
+
+                $("span#submission-name").text(submissionName);
+                $.ajax({
+                    url: "template/create",
+                    type: "POST",
+                    data: jQuery.param({
+                        centerId: centerId,
+                        name : submissionName,
+                        firstName: firstName,
+                        lastName: lastName,
+                        description: description,
+                        project: project,
+                       }),
+                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                    success: function(data) {
+                        console.log("done:"+data);
+                   }
+                 });
+            });
+            $("#apply-submitter-information").click(function() { // similar to save, additionally moving to the next
+                var centerId = $("#template-submission-centers").val();
                 var submissionName = $("#template-name").val();//"get this from the form...";
                 var subjectList = ['gene1', 'gene2', 'compound1', 'cell_line1'];
 
@@ -2367,6 +2405,7 @@
                     url: "template/create",
                     type: "POST",
                     data: jQuery.param({
+                        centerId: centerId,
                         name : submissionName,
                         firstName: firstName,
                         lastName: lastName,

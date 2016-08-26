@@ -1,6 +1,7 @@
 package gov.nih.nci.ctd2.dashboard.controller;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
 import gov.nih.nci.ctd2.dashboard.impl.SubmissionTemplateImpl;
+import gov.nih.nci.ctd2.dashboard.model.SubmissionCenter;
 import gov.nih.nci.ctd2.dashboard.model.SubmissionTemplate;
 
 @Controller
@@ -30,15 +32,23 @@ public class TemplateController {
     public 
     ResponseEntity<String>
     createNewSubmissionTemplate( /* the method name has no effect, @RequestMapping value binds this method */
-            @RequestParam("name") String name
+            @RequestParam("centerId") Integer centerId,
+            @RequestParam("name") String name,
+            @RequestParam("firstName") String firstName,
+            @RequestParam("lastName") String lastName,
+            @RequestParam("description") String description,
+            @RequestParam("project") String project
             )
     {
-    	System.out.println("... ... creating submission template:"+name+"...");
-    	SubmissionTemplate template = new SubmissionTemplateImpl();
-    	// TODO this used to work
-    	//template.setDescription("description:"+name);
-    	//template.setSubmissionCenter("submission center:"+name);
+    	SubmissionTemplateImpl template = new SubmissionTemplateImpl();
+    	template.setDisplayName(name);
+    	template.setDateLastModified(new Date());
+    	SubmissionCenter submissionCenter = dashboardDao.getEntityById(SubmissionCenter.class, centerId);
+    	template.setSubmissionCenter(submissionCenter);
+    	template.setDescription(description);
+    	template.setProject(project);
     	dashboardDao.save(template);
+    	System.out.println(firstName+" "+lastName);
     	System.out.println("=== === DONE with submission template:"+name+"...");
 
     	return new ResponseEntity<String>(name+" CREATED", HttpStatus.OK);

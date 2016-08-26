@@ -83,7 +83,14 @@ public class WebServiceUtil {
             });
             entities = sRoles;
         } else if(type.equals("template")) {
-            entities = dashboardDao.findEntities(SubmissionTemplate.class);
+            List<SubmissionTemplate> list = new ArrayList<SubmissionTemplate>();
+            SubmissionCenter submissionCenter = dashboardDao.getEntityById(SubmissionCenter.class, filterBy);
+            for (SubmissionTemplate submissionTemplete : dashboardDao.findEntities(SubmissionTemplate.class)) {
+                if (submissionTemplete.getSubmissionCenter().equals(submissionCenter)) {
+                    list.add(submissionTemplete);
+                }
+            }
+            entities = list;
         }
 
         return entities;

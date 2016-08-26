@@ -1989,6 +1989,9 @@
                 <table class="table">
                     <tr>
                         <td class="next-cell">
+                            <button id="save-submmitter-description">Save</button>
+                        </td>
+                        <td class="next-cell">
                             <button id="apply-submitter-information">Continue</button>
                         </td>
                     </tr>
@@ -2071,7 +2074,7 @@
     </script>
 
     <script type="text/template" id="template-helper-center-tmpl">
-        <option value="{{displayName}}">{{displayName}}</option>
+        <option value="{{id}}">{{displayName}}</option>
     </script>
 
     <script type="text/template" id="template-header-col-tmpl">
