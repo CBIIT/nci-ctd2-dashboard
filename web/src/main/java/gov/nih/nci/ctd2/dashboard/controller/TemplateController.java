@@ -40,7 +40,7 @@ public class TemplateController {
             @RequestParam("project") String project
             )
     {
-    	SubmissionTemplateImpl template = new SubmissionTemplateImpl();
+    	SubmissionTemplate template = new SubmissionTemplateImpl();
     	template.setDisplayName(name);
     	template.setDateLastModified(new Date());
     	SubmissionCenter submissionCenter = dashboardDao.getEntityById(SubmissionCenter.class, centerId);

@@ -1,16 +1,16 @@
 package gov.nih.nci.ctd2.dashboard.impl;
 
-import org.hibernate.annotations.Proxy;
-import org.hibernate.search.annotations.Indexed;
-
-import gov.nih.nci.ctd2.dashboard.model.SubmissionCenter;
-import gov.nih.nci.ctd2.dashboard.model.SubmissionTemplate;
-
 import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Proxy;
+import org.hibernate.search.annotations.Indexed;
+
+import gov.nih.nci.ctd2.dashboard.model.SubmissionCenter;
+import gov.nih.nci.ctd2.dashboard.model.SubmissionTemplate;
 
 @Entity
 @Proxy(proxyClass = SubmissionTemplate.class)
@@ -27,6 +27,8 @@ public class SubmissionTemplateImpl extends DashboardEntityImpl implements Submi
     private Integer tier;
     private Boolean complete;
     private Date dateLastModified;
+    private String[] subjectColumns;
+    private String[] evidenceColumns;
 
     public String getDescription() {
         return description;
@@ -107,5 +109,25 @@ public class SubmissionTemplateImpl extends DashboardEntityImpl implements Submi
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    @Override
+    public String[] getSubjectColumns() {
+        return subjectColumns;
+    }
+
+    @Override
+    public void setSubjectColumns(String[] subjects) {
+        subjectColumns = subjects;
+    }
+
+    @Override
+    public String[] getEvidenceColumns() {
+        return evidenceColumns;
+    }
+
+    @Override
+    public void setEvidenceColumns(String[] evidences) {
+        evidenceColumns = evidences;
     }
 }

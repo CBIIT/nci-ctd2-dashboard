@@ -2334,6 +2334,7 @@
                 $("#template-name").val("");
                 $("#save-submmitter-description").removeAttr("disabled");
                 result = true;
+                $("span#submission-name").text(submissionName);
            }
          });
         if (async || result)
@@ -2402,7 +2403,6 @@
                 if(saveNewTemplate(true)) {
                     $("#step3").fadeOut();
                     $("#step4").slideDown();
-                    $("span#submission-name").text(submissionName);
                 }
             });
 
@@ -2422,8 +2422,7 @@
             });
 
             $("#add-subject").click(function() {
-                // TODO
-                console.log("add-subject clicked")
+                $("#template-table").append("<tr><td>aaa</td><td>bbb</td></tr>");
             });
 
             $("#download-template").click(function() {

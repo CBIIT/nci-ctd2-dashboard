@@ -2003,7 +2003,8 @@
                 <b>Center:</b> <span id="center-name"></span><br/>
                 <b>Submission Name:</b> <span id="submission-name"></span>
                 <!-- this table contains the main data, which dictate the data structure I should use -->
-                <table class="table table-bordered table-striped" id="template-table">
+                <table class="table table-bordered table-striped">
+                    <tbody id="template-table">
                         <tr id="subject-header">
                             <th>Delete Row</th><th>Column Tag</th><th>Subject Classs</th><th>Subject Role</th><th>Description</th><th>Observation 1</th>
                         </tr>
@@ -2016,6 +2017,7 @@
                         <tr id="xxx">
                             <td>X</td><td>evidence_1. Q: why is coloumn necessary at all??</td><td>background</td><td>Text</td><td>Evdes1</td><td>ev1a</td>
                         </tr>
+                    </tbody>
                 </table>
                 <table  class="table">
                     <tr>
