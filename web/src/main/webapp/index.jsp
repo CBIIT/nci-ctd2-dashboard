@@ -61,6 +61,11 @@
                           <li><a target="_blank" href="http://ocg.cancer.gov/about-ocg/rss-feeds">RSS feed</a></li>
                           <li><a target="_blank" href="https://ocg.cancer.gov/programs/ctd2/analytical-tools">Analytical Tools</a></li>
                           <li><a target="_blank" href="https://ocg.cancer.gov/programs/ctd2/resources/ocg-supported-resources">OCG-Supported Resources</a></li>
+                          <li class="dropdown-submenu"><a tabindex="-1" href="#">Outside Resources</a>
+                                <ul class="dropdown-menu">
+                                    <li><a target="_blank" href="http://www.lincsproject.org/">LINCS</a></li>
+                                </ul>
+                           </li>
                       </ul>
                   </li>                 
                    <li class="dropdown">
@@ -2611,6 +2616,10 @@
      
      <script type="text/template" id="gene-cart-option-tmpl">
         <option value="{{displayItem}}">{{displayItem}}</option>
+     </script>
+
+     <script type="text/template" id="gene-cart-option-tmpl-preselected">
+        <option value="{{displayItem}}" selected>{{displayItem}}</option>
      </script>
 
     <script type="text/template" id="help-navigate-tmpl">
