@@ -35,7 +35,7 @@ ROLES = {
     'shrna': {'perturbagen'},
     'tissue_sample': {'metastasis','disease','tissue'},
     'cell_sample': {'cell line'},
-    'compound': {'candidate drug','perturbagen','control compound'},
+    'compound': {'candidate drug','perturbagen','metabolite','control compound'},
     'animal_model': {'strain'},
     'numeric': {'measured','observed','computed','background'},
     'label': {'measured','observed','computed','species','background'},
@@ -61,12 +61,16 @@ TEMPLATE_NAME_HEADER = 'template_name'
 
 CHECK_FILE_CACHE = {}
 CHECK_URL_CACHE = set()
+CHECK_URLS = False
 
 def main():
+    global CHECK_URLS
     if len(sys.argv) < 2:
         print("ERROR: Submission folder not specified", file=sys.stderr)
         sys.exit(2)
     submissionFolder = sys.argv[1]
+    if len(sys.argv) > 2 and sys.argv[2] == '+':
+        CHECK_URLS = True
     print("INFO: Submission folder = '"+submissionFolder+"'")
     columns = loadColumns(submissionFolder)
     backgroundData = loadBackgroundData(submissionFolder)
@@ -496,7 +500,7 @@ def checkNumericValue(value, rowIndex, submissionName):
 def checkUrlValue(value, rowIndex, submissionName, columns):
     if value[0:8] == 'https://' or value[0:7] == 'http://' or value[0:6] == 'ftp://':
         # check the site
-        if value not in CHECK_URL_CACHE:
+        if CHECK_URLS and value not in CHECK_URL_CACHE:
             CHECK_URL_CACHE.add(value)
             try:
                 code = urlopen(quote(value, safe='&:/?=%#'), data=None, timeout=5).code
@@ -734,6 +738,22 @@ def loadShRNA(submissionFolder):
                 else:
                     shrna.add(row[nameColumnIndex])
                 rowIndex = rowIndex + 1
+
+        trcnFile = submissionFolder+'/subject_data/shrna/trc_public.05Apr11.txt'
+        print('INFO: Loading '+trcnFile)
+        rowIndex = 0
+        with open(trcnFile,'r') as input:
+            for line in input:
+                row = line.strip().split('\t')
+                if rowIndex == 0:
+                    cloneIdIndex = findIndex(row,'cloneId')
+                    sequenceIndex = findIndex(row,'targetSeq')
+                else:
+                    cloneId = row[cloneIdIndex]
+                    if cloneId in shrna:
+                        shrna.add(row[sequenceIndex])
+                rowIndex = rowIndex + 1
+
         sirnaFile = submissionFolder+'/subject_data/sirna/siRNA_reagents.txt'
         print('INFO: Loading '+sirnaFile)
         rowIndex = 0
