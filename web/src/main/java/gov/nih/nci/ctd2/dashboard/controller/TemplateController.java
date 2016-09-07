@@ -51,7 +51,25 @@ public class TemplateController {
     	template.setLastName(lastName);
     	dashboardDao.save(template);
 
-    	return new ResponseEntity<String>(name+" CREATED", HttpStatus.OK);
+    	return new ResponseEntity<String>(template.getId().toString(), HttpStatus.OK);
+    }
+
+    @Transactional
+    @RequestMapping(value="update", method = {RequestMethod.POST}, headers = "Accept=application/text")
+    public 
+    ResponseEntity<String>
+    updateSubmissionTemplate(
+            @RequestParam("templateId") Integer templateId,
+            @RequestParam("subjects") String[] subjects,
+            @RequestParam("evidences") String[] evidences
+            )
+    {
+        SubmissionTemplate template = dashboardDao.getEntityById(SubmissionTemplate.class, templateId);
+        template.setSubjectColumns(subjects);
+        template.setEvidenceColumns(evidences);
+        dashboardDao.save(template);
+
+        return new ResponseEntity<String>("SubmissionTemplate " + templateId + " UPDATED", HttpStatus.OK);
     }
 
     @Transactional

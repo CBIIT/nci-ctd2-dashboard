@@ -1846,14 +1846,24 @@
         <tr id="template_{{displayName}}">
             <td>{{displayName}}</td><td>{{description}}</td><td>{{project}}</td>
                 <td>{{tier}}</td><td>{{dateLastModified}}</td><td>{{complete}}</td>
-                <td><select>
-                    <option vlaue='edit'>Edit</option>
-                    <option vlaue='preview'>Preview</option>
-                    <option vlaue='clone'>Clone</option>
-                    <option vlaue='delete'>Delete</option>
-                    <option vlaue='download'>Download</option>
+                <td><select id='template-action-{{id}}'>
+                    <option value=''>-</option>
+                    <option value='edit'>Edit</option>
+                    <option value='preview'>Preview</option>
+                    <option value='clone'>Clone</option>
+                    <option value='delete'>Delete</option>
+                    <option value='download'>Download</option>
                     </select>
                 </td>
+        </tr>
+    </script>
+
+    <script type="text/template" id="template-data-row-tmpl">
+        <tr id="template_{{displayName}}">
+            <td>x</td>
+            <td>columns tag</td>
+            <td>subject class</td>
+            <td>subject role</td>
         </tr>
     </script>
 
@@ -2003,14 +2013,16 @@
                 <b>Center:</b> <span id="center-name"></span><br/>
                 <b>Submission Name:</b> <span id="submission-name"></span>
                 <!-- this table contains the main data, which dictate the data structure I should use -->
-                <table class="table table-bordered table-striped">
-                    <tbody id="template-table">
+                <table class="table table-bordered table-striped" id="template-table">
+                    <tbody id="template-table-subject">
                         <tr id="subject-header">
                             <th>Delete Row</th><th>Column Tag</th><th>Subject Classs</th><th>Subject Role</th><th>Description</th><th>Observation 1</th>
                         </tr>
                         <tr id="xxx">
                             <td>X</td><td>gene_1. Q: why is coloumn necessary at all??</td><td>Gene</td><td>Biomarker</td><td>Subdes1</td><td>gene1a</td>
                         </tr>
+                    </tbody>
+                    <tbody id="template-table-evidence">
                         <tr id="evidence-header">
                             <th>Delete Row</th><th>Column Tag</th><th>Evidence Type (Q: is the matching column number purely conincidence?)</th><th>Value Type</th><th>Description</th><th>Observation 1 (enter values) (Q: why does this have this "enter values" part but subject section does not have it?)</th>
                         </tr>
@@ -2029,6 +2041,11 @@
                     </td>
                     <td>
                         <button id="add-observation" class="next-cell">Add New Observation</button>
+                    </td>
+                    </tr>
+                    <tr>
+                    <td>
+                        <button id="save-template-submission-data" class="next-cell">Save</button>
                     </td>
                     <td>
                         <button id="apply-template-submission-data" class="next-cell">Continue</button>

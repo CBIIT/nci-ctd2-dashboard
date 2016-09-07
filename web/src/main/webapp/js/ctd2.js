@@ -2299,6 +2299,7 @@
         }
     });
     
+    var templateId = 0;
     var saveNewTemplate = function(sync) {
         var centerId = $("#template-submission-centers").val();
         var submissionName = $("#template-name").val();
@@ -2330,10 +2331,11 @@
                 project: project,
                }),
             contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-            success: function(data) {
+            success: function(resultId) {
                 $("#template-name").val("");
                 $("#save-submmitter-description").removeAttr("disabled");
                 result = true;
+                templateId = resultId;
                 $("span#submission-name").text(submissionName);
            }
          });
@@ -2343,6 +2345,41 @@
             return false;
     };
     
+    var updateTemplate = function(sync) {
+        var subjects = $("#template-table-subject").val();
+        var evidences = $("#template-table-evidence").val();
+        console.log('subjects='+subjects);
+        console.log('evidences='+evidences);
+        subjects = 'subj1,subj2';
+        evidences = "evd1,evd2,ebd3";
+        console.log("subjects="+subjects);
+        console.log("evidences="+evidences);
+        var async = true;
+        if(sync) async = false;
+        var result = false;
+        $.ajax({
+            async: async,
+            url: "template/update",
+            type: "POST",
+            data: jQuery.param({
+                templateId: templateId,
+                subjects: subjects,
+                evidences: evidences,
+               }),
+            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+            success: function(data) {
+                console.log("return value: "+data);
+                $("#template-name").val("");
+                $("#save-submmitter-description").removeAttr("disabled");
+                result = true;
+           }
+         });
+        if (async || result)
+            return true;
+        else
+            return false;
+    };
+
     var TemplateHelperView = Backbone.View.extend({
         template: _.template($("#template-helper-tmpl").html()),
         el: $("#main-container"),
@@ -2384,6 +2421,10 @@
                                 model: oneTemplate.toJSON(),
                                 el: $("#existing-template-table")
                             })).render();
+                            (new TemplateDataRowView({
+                                model: oneTemplate.toJSON(),
+                                el: $("#template-table-subject")
+                            })).render();
                         });
                     }
                 });
@@ -2406,6 +2447,11 @@
                 }
             });
 
+            $("#save-template-submission-data").click(function() {
+                // TODO save existing template with the updated submission data
+                console.log("saving the submission data ...");
+                updateTemplate();
+            });
             $("#apply-template-submission-data").click(function() {
                 //var tmplTier = $("#template-tier").val();
                 //self.addMetaColumn("observation_tier", tmplTier);
@@ -2417,12 +2463,11 @@
 
 
             $("#add-evidence").click(function() {
-                // TODO
-                console.log("add-evidence clicked");
+                $("#template-table-evidence").append("<tr><td>x</td><td>evidence column tag</td><td>evidence type</td></tr>");
             });
 
             $("#add-subject").click(function() {
-                $("#template-table").append("<tr><td>aaa</td><td>bbb</td></tr>");
+                $("#template-table-subject").append("<tr><td>x</td><td>subject column tag</td><td>subject class</td></tr>");
             });
 
             $("#download-template").click(function() {
@@ -2519,7 +2564,23 @@
     var ExistingTemplateView = Backbone.View.extend({
         template: _.template($("#existing-template-row-tmpl").html()),
 
-        render: function() {            
+        render: function() {
+            $(this.el).append(this.template(this.model));
+            var rowModel = this.model;
+            console.log("... for debug "+rowModel.id+" "+rowModel.displayName);
+            $("#template-action-"+rowModel.id).change(function() {
+                // TODO only EDIT for now
+                console.log(rowModel.displayName+' '+$(this).val()+' clicked');
+                $("#step2").fadeOut();
+                $("#step4").slideDown();
+            });
+            return this;
+        }
+    });
+
+    var TemplateDataRowView = Backbone.View.extend({
+        template: _.template($("#template-data-row-tmpl").html()),
+        render: function() {
             $(this.el).append(this.template(this.model));
             return this;
         }
