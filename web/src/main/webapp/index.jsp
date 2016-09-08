@@ -2651,7 +2651,7 @@
 
                 <li><i>Observation</i>: A <b>Center</b>-determined conclusion that is submitted as a connection between <b>subjects</b> and <b>evidence</b>; the "fundamental unit" of the Dashboard.</li>
 
-                <li><i>Tier</i>: A CTD<sup>2</sup> Network-defined ranking system for <b>evidence</b> that is based on the extent of characterization associated with a particular study.
+                <li><i><a href="http://www.ncbi.nlm.nih.gov/pubmed/27401613" target="_blank">Tier</a></i>: A CTD<sup>2</sup> Network-defined ranking system for <b>evidence</b> that is based on the extent of characterization associated with a particular study.
                     <ul>
                         <li><i>Tier 1</i>: Preliminary positive observations.</li>
                         <li><i>Tier 2</i>: Confirmation of primary results <i>in vitro</i>.</li>
