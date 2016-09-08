@@ -250,9 +250,16 @@ find({
         elsif (-f) {
             my $file_name = $_;
             my $file_path = $File::Find::name;
+            my $file_dir  = $File::Find::dir;
+            my @file_dir_parts = File::Spec->splitdir($file_dir);
+            my $submission_dir_name = $file_dir_parts[$#file_dir_parts];
             my ($file_basename, undef, $file_ext) = fileparse($file_path, qr/\.[^.]*/);
-            # txt files only
-            if (lc($file_ext) eq '.txt' and !exists $admin_properties_files{$file_path}) {
+            # submission txt files only
+            if (
+                lc($file_ext) eq '.txt' and 
+                $file_basename eq $submission_dir_name and
+                !exists $admin_properties_files{$file_path}
+            ) {
                 print "\n", (-t STDOUT ? colored('ERROR', 'red') : 'ERROR'), 
                       ": $file_path not in $admin_properties_file_name";
                 $admin_props_errors++;
