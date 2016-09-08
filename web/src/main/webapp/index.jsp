@@ -1643,7 +1643,9 @@
         <div class="alert alert-warning">
             <button type="button" class="close" data-dismiss="alert">&times;</button>
             <p>
-                Entries listed below are ordered by relevance, based on the number of observations and Tier evidence level (must be at least Tier 2). 
+                Entries listed below are ordered by relevance, based on the number of Centers providing observations and Tier evidence level.
+                For each Center, only its highest Tier of evidence counts toward the score.
+                Entries must have Tier 2 evidence or higher to be in the list.
                 Currently displaying observations involving {{subject_type}} that have been assigned one of the following roles:
                 {{ decodeURIComponent(roles).split(",").join(", ") }}
                 (see <a class="blurb-help" href="#help-navigate">background information</a> for the meaning of observations, roles, and Tiers).
