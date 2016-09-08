@@ -748,7 +748,7 @@
                              </td>
                          </tr>
                          <tr>
-                             <th>Synonyms</th>
+                             <th>Synonyms/Related terms</th>
                              <td>
                                  <ul class="synonyms"></ul>
                              </td>
