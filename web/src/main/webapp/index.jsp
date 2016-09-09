@@ -55,7 +55,7 @@
                 <li class="dropdown">
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown">Resources <b class="caret"></b></a>
                       <ul class="dropdown-menu">
-                          <li><a target="_blank" href="http://ocg.cancer.gov/programs/ctd2">CTD<sup>2</sup> Home page</a></li>
+                          <li><a target="_blank" href="http://ocg.cancer.gov/programs/ctd2">CTD<sup>2</sup> Home Page</a></li>
                           <li><a target="_blank" href="http://ocg.cancer.gov/programs/ctd2/publications">Publications</a></li>
                           <li><a target="_blank" href="https://ctd2.nci.nih.gov/dataPortal/">Data Portal - Downloads</a></li>
                           <li><a target="_blank" href="https://ocg.cancer.gov/programs/ctd2/analytical-tools">Analytical Tools</a></li>
@@ -151,7 +151,7 @@
                             <img class="img-polaroid pull-left" src="img/logos/ctd2_overall.png" alt="CTD2 general image" title="CTD2 general image">
                             </a>
                             <p class="lead firstlead">
-                                <a href="https://ocg.cancer.gov/programs/ctd2"><b>The Cancer Target Discovery and Development (CTD2<sup>2</sup>) Network</b></a> mines and functionally validates data from large-scale adult and pediatric cancer genome characterization initiatives and advances them toward use in precision oncology.
+                                <a href="https://ocg.cancer.gov/programs/ctd2"><b>The Cancer Target Discovery and Development (CTD<sup>2</sup>) Network</b></a> mines and functionally validates data from large-scale adult and pediatric cancer genome characterization initiatives and advances them toward use in precision oncology.
                                 The Network developed the open-access “CTD2 Dashboard,” a web interface that compiles Network-generated summaries about key cancer biology findings and cancer-relevant results related to genes, proteins, and compounds.
                                 Submissions are “ranked” with the validation “<a href="http://www.ncbi.nlm.nih.gov/pubmed/27401613" target="_blank">Tier</a>” system to indicate strength of evidence.
                                 To learn how the Dashboard is organized, visit <a id="homepage-help-navigate" href="#help-navigate">Navigating and Understanding Dashboard Content</a>.
