@@ -30,6 +30,9 @@
 
     <!-- Fav and touch icons -->
     <link rel="shortcut icon" href="img/favicon.png" />
+    <style>
+        #topmenu a:hover {color: yellow !important},
+    </style>
   </head>
 
   <body>
@@ -49,11 +52,11 @@
               <span class="icon-bar"></span>
             </a>
             <div class="nav-collapse collapse">
-              <ul class="nav topmenu">
+              <ul class="nav topmenu" id="topmenu">
                 <li class="active"><a href="#">CTD<sup>2</sup> Dashboard</a></li>
-                <li><a href="#centers">Centers</a></li>
+                <li><a href="#centers" style="color:white">Centers</a></li>
                 <li class="dropdown">
-                      <a href="#" class="dropdown-toggle" data-toggle="dropdown">Resources <b class="caret"></b></a>
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="color:white">Resources <b class="caret"></b></a>
                       <ul class="dropdown-menu">
                           <li><a target="_blank" href="http://ocg.cancer.gov/programs/ctd2">CTD<sup>2</sup> Home Page</a></li>
                           <li><a target="_blank" href="http://ocg.cancer.gov/programs/ctd2/publications">Publications</a></li>
@@ -68,10 +71,10 @@
                       </ul>
                   </li>                 
                    <li class="dropdown">
-                      <a href="#" class="dropdown-toggle" data-toggle="dropdown">Gene Cart <b class="caret"></b></a>
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="color:white">Gene Cart <b class="caret"></b></a>
                       <ul class="dropdown-menu">
                           <li><a href="#genes">Go To Cart</a></li> 
-                          <li><a href="#gene-cart-help">Help</a></li>                          
+                          <li><a href="#gene-cart-help">Help</a></li>
                       </ul>
                   </li>
               </ul>
