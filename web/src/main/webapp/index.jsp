@@ -59,7 +59,7 @@
                           <li><a target="_blank" href="http://ocg.cancer.gov/programs/ctd2/publications">Publications</a></li>
                           <li><a target="_blank" href="https://ctd2.nci.nih.gov/dataPortal/">Data Portal - Downloads</a></li>
                           <li><a target="_blank" href="https://ocg.cancer.gov/programs/ctd2/analytical-tools">Analytical Tools</a></li>
-                          <li><a target="_blank" href="https://ocg.cancer.gov/programs/ctd2/resources/ocg-supported-resources">OCG-Supported Resources</a></li>
+                          <li><a target="_blank" href="https://ocg.cancer.gov/programs/ctd2/supported-reagents">Supported Reagents</a></li>
                           <li class="dropdown-submenu"><a tabindex="-1" href="#">Outside Resources</a>
                                 <ul class="dropdown-menu">
                                     <li><a target="_blank" href="http://www.lincsproject.org/">LINCS</a></li>
