@@ -77,8 +77,14 @@ public class ListController {
                 .transform(new DateTransformer(), Date.class)
         ;
 
+        String s = null;
+        if("template".equals(type)) {
+            s = jsonSerializer.deepSerialize(entities);
+        } else {
+            s = jsonSerializer.serialize(entities);
+        }
         return new ResponseEntity<String>(
-                jsonSerializer.serialize(entities),
+                s,
                 headers,
                 HttpStatus.OK
         );

@@ -1859,7 +1859,7 @@
     </script>
 
     <script type="text/template" id="template-data-row-tmpl">
-        <tr id="template_{{displayName}}">
+        <tr id="template-subject-row-columntag-{{displayName}}">
             <td>x</td>
             <td>columns tag</td>
             <td>subject class</td>

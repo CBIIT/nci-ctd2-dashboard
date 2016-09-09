@@ -2346,6 +2346,10 @@
     };
     
     var updateTemplate = function(sync) {
+        if(templateId==0) {
+        	alert('error: templateId==0');
+        	return;
+        }
         var subjects = $("#template-table-subject").val();
         var evidences = $("#template-table-evidence").val();
         console.log('subjects='+subjects);
@@ -2416,7 +2420,10 @@
                 storedTemplates.fetch({
                     success: function() {
                         _.each(storedTemplates.models, function(oneTemplate) {
+                            console.log("DEBUG PURPOSE (delete this later): ");
                             console.log(oneTemplate.toJSON());
+                            console.log(oneTemplate);
+                            console.log(oneTemplate.toJSON().subjectColumns);
                             (new ExistingTemplateView({
                                 model: oneTemplate.toJSON(),
                                 el: $("#existing-template-table")
@@ -2569,10 +2576,16 @@
             var rowModel = this.model;
             console.log("... for debug "+rowModel.id+" "+rowModel.displayName);
             $("#template-action-"+rowModel.id).change(function() {
-                // TODO only EDIT for now
-                console.log(rowModel.displayName+' '+$(this).val()+' clicked');
-                $("#step2").fadeOut();
-                $("#step4").slideDown();
+                var action = $(this).val();
+                if(action=='edit') {
+                    templateId = rowModel.id;
+                    console.log("templateId="+templateId);
+                    console.log("rowModel="+rowModel);
+                    $("#step2").fadeOut();
+                    $("#step4").slideDown();
+                } else { // TODO
+                    alert(rowModel.displayName+' '+$(this).val()+' clicked');
+                }
             });
             return this;
         }
