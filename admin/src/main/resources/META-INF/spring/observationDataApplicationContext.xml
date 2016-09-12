@@ -1036,5 +1036,175 @@
       </bean>
     </property>
   </bean>
+  
+  <bean name="dfciCowley2014AtarisAnalysisReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+    <property name="resources" value="${dfci.cowley2014.ataris.analysis.data.location}" />
+    <property name="delegate">
+      <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="dfciCowley2014AtarisAnalysisLineMapper" />
+        <property name="linesToSkip" value="7" />
+      </bean>
+    </property>
+  </bean>
+  
+  <bean name="columbiaKlhl9PrognosisReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+    <property name="resources" value="${columbia.klhl9.prognosis.data.location}" />
+    <property name="delegate">
+      <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="columbiaKlhl9PrognosisLineMapper" />
+        <property name="linesToSkip" value="7" />
+      </bean>
+    </property>
+  </bean>
+  
+  <bean name="columbiaKlhl9ProteasomalReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+    <property name="resources" value="${columbia.klhl9.proteasomal.data.location}" />
+    <property name="delegate">
+      <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="columbiaKlhl9ProteasomalLineMapper" />
+        <property name="linesToSkip" value="7" />
+      </bean>
+    </property>
+  </bean>
+  
+  <bean name="columbiaKlhl9RescueReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+    <property name="resources" value="${columbia.klhl9.rescue.data.location}" />
+    <property name="delegate">
+      <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="columbiaKlhl9RescueLineMapper" />
+        <property name="linesToSkip" value="7" />
+      </bean>
+    </property>
+  </bean>
+  
+  <bean name="columbiaKlhl9SphaseReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+    <property name="resources" value="${columbia.klhl9.s-phase.data.location}" />
+    <property name="delegate">
+      <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="columbiaKlhl9SphaseLineMapper" />
+        <property name="linesToSkip" value="7" />
+      </bean>
+    </property>
+  </bean>
+  
+  <bean name="columbiaKlhl9XenograftsReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+    <property name="resources" value="${columbia.klhl9.xenografts.data.location}" />
+    <property name="delegate">
+      <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="columbiaKlhl9XenograftsLineMapper" />
+        <property name="linesToSkip" value="7" />
+      </bean>
+    </property>
+  </bean>
+  
+  <bean name="columbiaDemandAltretamineReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+    <property name="resources" value="${columbia.DeMAND.altretamine.data.location}" />
+    <property name="delegate">
+      <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="columbiaDemandAltretamineLineMapper" />
+        <property name="linesToSkip" value="7" />
+      </bean>
+    </property>
+  </bean>
+  
+  <bean name="columbiaBisikirskaFlDlbclM1Reader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+    <property name="resources" value="${columbia.bisikirska.FL.DLBCL.M1.data.location}" />
+    <property name="delegate">
+      <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="columbiaBisikirskaFlDlbclM1LineMapper" />
+        <property name="linesToSkip" value="7" />
+      </bean>
+    </property>
+  </bean>
+  
+  <bean name="columbiaBisikirskaFlDlbclM2Reader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+    <property name="resources" value="${columbia.bisikirska.FL.DLBCL.M2.data.location}" />
+    <property name="delegate">
+      <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="columbiaBisikirskaFlDlbclM2LineMapper" />
+        <property name="linesToSkip" value="7" />
+      </bean>
+    </property>
+  </bean>
+  
+  <bean name="columbiaBisikirskaFlDlbclSyReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+    <property name="resources" value="${columbia.bisikirska.FL.DLBCL.sy.data.location}" />
+    <property name="delegate">
+      <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="columbiaBisikirskaFlDlbclSyLineMapper" />
+        <property name="linesToSkip" value="7" />
+      </bean>
+    </property>
+  </bean>
+  
+  <bean name="columbiaPiovanAktNr3c1ActReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+    <property name="resources" value="${columbia.piovan.AKT.NR3C1.act.data.location}" />
+    <property name="delegate">
+      <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="columbiaPiovanAktNr3c1ActLineMapper" />
+        <property name="linesToSkip" value="7" />
+      </bean>
+    </property>
+  </bean>
+  
+  <bean name="columbiaPiovanAktNr3c1BindReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+    <property name="resources" value="${columbia.piovan.AKT.NR3C1.bind.data.location}" />
+    <property name="delegate">
+      <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="columbiaPiovanAktNr3c1BindLineMapper" />
+        <property name="linesToSkip" value="7" />
+      </bean>
+    </property>
+  </bean>
+  
+  <bean name="columbiaPiovanAktNr3c1Inh1Reader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+    <property name="resources" value="${columbia.piovan.AKT.NR3C1.inh1.data.location}" />
+    <property name="delegate">
+      <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="columbiaPiovanAktNr3c1Inh1LineMapper" />
+        <property name="linesToSkip" value="7" />
+      </bean>
+    </property>
+  </bean>
+  
+  <bean name="columbiaPiovanAktNr3c1Inh2Reader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+    <property name="resources" value="${columbia.piovan.AKT.NR3C1.inh2.data.location}" />
+    <property name="delegate">
+      <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="columbiaPiovanAktNr3c1Inh2LineMapper" />
+        <property name="linesToSkip" value="7" />
+      </bean>
+    </property>
+  </bean>
+  
+  <bean name="columbiaPiovanAktNr3c1Inh3Reader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+    <property name="resources" value="${columbia.piovan.AKT.NR3C1.inh3.data.location}" />
+    <property name="delegate">
+      <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="columbiaPiovanAktNr3c1Inh3LineMapper" />
+        <property name="linesToSkip" value="7" />
+      </bean>
+    </property>
+  </bean>
+  
+  <bean name="columbiaPiovanAktNr3c1PhosReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+    <property name="resources" value="${columbia.piovan.AKT.NR3C1.phos.data.location}" />
+    <property name="delegate">
+      <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="columbiaPiovanAktNr3c1PhosLineMapper" />
+        <property name="linesToSkip" value="7" />
+      </bean>
+    </property>
+  </bean>
+  
+  <bean name="columbiaPiovanAktNr3c1SigReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+    <property name="resources" value="${columbia.piovan.AKT.NR3C1.sig.data.location}" />
+    <property name="delegate">
+      <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="columbiaPiovanAktNr3c1SigLineMapper" />
+        <property name="linesToSkip" value="7" />
+      </bean>
+    </property>
+  </bean>
 
 </beans>
