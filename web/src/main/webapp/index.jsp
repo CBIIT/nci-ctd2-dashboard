@@ -69,8 +69,17 @@
                                 </ul>
                            </li>
                       </ul>
-                  </li>                 
-                   <li class="dropdown">
+                  </li>
+                  <li class="dropdown">
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="color:white">Browse <b class="caret"></b></a>
+                      <ul class="dropdown-menu">
+                          <li><a href="#stories">Stories</a></li>
+                          <li><a href="#explore/target/Biomarker,Target">Genes (Biomarkers, Targets, etc.)</a></li>
+                          <li><a href="#explore/compound/Perturbagen,Candidate Drug">Compounds and Perturbagens</a></li>
+                          <li><a href="#explore/context/Disease">Disease Contexts</a></li>
+                      </ul>
+                  </li>
+                  <li class="dropdown">
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="color:white">Gene Cart <b class="caret"></b></a>
                       <ul class="dropdown-menu">
                           <li><a href="#genes">Go To Cart</a></li> 
