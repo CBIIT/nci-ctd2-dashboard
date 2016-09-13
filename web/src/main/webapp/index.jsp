@@ -30,15 +30,62 @@
 
     <!-- Fav and touch icons -->
     <link rel="shortcut icon" href="img/favicon.png" />
-    <style>
-        #topmenu a:hover {color: yellow !important},
-    </style>
   </head>
 
   <body>
-
     <!-- NAVBAR
     ================================================== -->
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery.ba-hashchange.min.js"></script>
+    <script>
+    $(function() {
+        // Bind an event to window.onhashchange that, when the hash changes, 
+        // gets the hash and alters class of desired navlinks
+        $(window).hashchange(function() {
+            var hash = location.hash || '#';
+            $('[id^="navlink-"]').each(function() {
+                // navbar regular items
+                if (
+                    $(this).attr('id') == 'navlink-dashboard' ||
+                    $(this).attr('id') == 'navlink-centers'
+                ) {
+                    if ($(this).attr('href') === decodeURIComponent(hash)) {
+                        $(this).removeClass('navlink');
+                        $(this).addClass('navlink-current');
+                    }
+                    else {
+                        $(this).removeClass('navlink-current');
+                        $(this).addClass('navlink');
+                    }
+                }
+                // navbar dropdown menu items
+                else if (
+                    $(this).attr('id') == 'navlink-browse' ||
+                    $(this).attr('id') == 'navlink-genecart'
+                ) {
+                    var id = $(this).attr('id') == 'navlink-browse'
+                           ? 'dropdown-menu-browse'
+                           : 'dropdown-menu-genecart';
+                    var dropdownLink = $(this);
+                    $('#' + id + ' li a').each(function() {
+                        if ($(this).attr('href') === decodeURIComponent(hash)) {
+                            dropdownLink.removeClass('navlink');
+                            dropdownLink.addClass('navlink-current');
+                            return false;
+                        }
+                        else {
+                            dropdownLink.removeClass('navlink-current');
+                            dropdownLink.addClass('navlink');
+                        }
+                    });
+                }
+            });
+        });
+        // Since the event is only triggered when the hash changes, we need to trigger
+        // the event now, to handle the hash the page may have been loaded with.
+        $(window).hashchange();
+    });
+    </script>
     <div class="navbar-wrapper">
       <!-- Wrap the .navbar in .container to center it within the absolutely positioned parent. -->
       <div class="container">
@@ -52,11 +99,11 @@
               <span class="icon-bar"></span>
             </a>
             <div class="nav-collapse collapse">
-              <ul class="nav topmenu" id="topmenu">
-                <li class="active"><a href="#">CTD<sup>2</sup> Dashboard</a></li>
-                <li><a href="#centers" style="color:white">Centers</a></li>
+              <ul id="nav" class="nav">
+                <li><a id="navlink-dashboard" class="navlink" href="#">CTD<sup>2</sup> Dashboard</a></li>
+                <li><a id="navlink-centers" class="navlink" href="#centers">Centers</a></li>
                 <li class="dropdown">
-                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="color:white">Resources <b class="caret"></b></a>
+                      <a class="dropdown-toggle navlink" href="#" data-toggle="dropdown">Resources <b class="caret"></b></a>
                       <ul class="dropdown-menu">
                           <li><a target="_blank" href="http://ocg.cancer.gov/programs/ctd2">CTD<sup>2</sup> Home Page</a></li>
                           <li><a target="_blank" href="http://ocg.cancer.gov/programs/ctd2/publications">Publications</a></li>
@@ -71,8 +118,8 @@
                       </ul>
                   </li>
                   <li class="dropdown">
-                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="color:white">Browse <b class="caret"></b></a>
-                      <ul class="dropdown-menu">
+                      <a id="navlink-browse" class="dropdown-toggle navlink" href="#" data-toggle="dropdown">Browse <b class="caret"></b></a>
+                      <ul id="dropdown-menu-browse" class="dropdown-menu">
                           <li><a href="#stories">Stories</a></li>
                           <li><a href="#explore/target/Biomarker,Target">Genes (Biomarkers, Targets, etc.)</a></li>
                           <li><a href="#explore/compound/Perturbagen,Candidate Drug">Compounds and Perturbagens</a></li>
@@ -80,8 +127,8 @@
                       </ul>
                   </li>
                   <li class="dropdown">
-                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="color:white">Gene Cart <b class="caret"></b></a>
-                      <ul class="dropdown-menu">
+                      <a id="navlink-genecart" class="dropdown-toggle navlink" href="#" data-toggle="dropdown">Gene Cart <b class="caret"></b></a>
+                      <ul id="dropdown-menu-genecart" class="dropdown-menu">
                           <li><a href="#genes">Go To Cart</a></li> 
                           <li><a href="#gene-cart-help">Help</a></li>
                       </ul>
@@ -185,7 +232,7 @@
 
         <!-- Carousel
         ================================================== -->
-        <div id="myCarousel" class="carousel slide">
+        <div class="carousel slide">
           <div class="carousel-inner">
             <div class="item active">
               <img src="img/bg-red.png" alt="Red background image" title="red background image" class="cimg">
@@ -217,7 +264,7 @@
         </div><!-- /.carousel -->
 
         <div class="container marketing ctd2-boxes">
-          <div class="row" style="display:table">
+          <div style="display:table">
               <!--
             <div class="span3 stories" data-order="0">
               <h4>Stories</h4>
@@ -295,7 +342,7 @@
         <tr>
             <td class="center-image-column">
                 <a href="#center/{{submission.observationTemplate.submissionCenter.id}}">
-                    <img src="img/slogos/{{submission.observationTemplate.submissionCenter.displayName}}.png" alt="{{submission.observationTemplate.submissionCenter.displayName}}" title="{{displayName}}" class="img-circle">
+                    <img src="img/slogos/{{submission.observationTemplate.submissionCenter.displayName}}.png" alt="{{submission.observationTemplate.submissionCenter.displayName}}" title="{{submission.observationTemplate.submissionCenter.displayName}}" class="img-circle">
                 </a>
             </td>
             <td>
@@ -2706,8 +2753,7 @@
     </script>
 
     <!-- end of templates -->
-
-    <script src="js/jquery.min.js"></script>
+    
     <script src="js/jquery.dataTables.min.js"></script>
     <script src="js/paging.js"></script>
     <script src="js/holder.js"></script>
