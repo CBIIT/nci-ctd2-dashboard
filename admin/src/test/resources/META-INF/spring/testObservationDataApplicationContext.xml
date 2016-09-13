@@ -7,530 +7,396 @@
 							http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
 							http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 
-  <import resource="classpath*:META-INF/spring/observationDataSharedApplicationContext.xml" />
-  <context:component-scan base-package="gov.nih.nci.ctd2.dashboard.importer.internal" />
+    <import resource="classpath*:META-INF/spring/observationDataSharedApplicationContext.xml" />
+    <context:component-scan base-package="gov.nih.nci.ctd2.dashboard.importer.internal" />
 
-  <batch:job id="testObservationDataImporterJob">
-	<batch:step id="tierOneObservationDataStep" parent="observationDataStep" next="tierThreeObservationDataStep">
-	  <batch:tasklet>
-		<batch:chunk reader="tierOneObservationDataReader" processor="observationDataProcessor" writer="observationDataWriter"/>
-	  </batch:tasklet>
-	</batch:step>
-	<batch:step id="tierThreeObservationDataStep" parent="observationDataStep">
-	  <batch:tasklet>
-		<batch:chunk reader="tierThreeObservationDataReader" processor="observationDataProcessor" writer="observationDataWriter"/>
-	  </batch:tasklet>
-	</batch:step>
-  </batch:job>
+    <batch:job id="testObservationDataImporterJob">
+        <batch:step id="tierOneObservationDataStep" parent="observationDataStep" next="tierThreeObservationDataStep">
+            <batch:tasklet>
+                <batch:chunk reader="tierOneObservationDataReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+            </batch:tasklet>
+        </batch:step>
+        <batch:step id="tierThreeObservationDataStep" parent="observationDataStep">
+            <batch:tasklet>
+                <batch:chunk reader="tierThreeObservationDataReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+            </batch:tasklet>
+        </batch:step>
+    </batch:job>
 
-  <bean name="tierOneObservationDataReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-	<property name="resource" value="classpath:test-tier-1-observation-data.txt" />
-    <property name="lineMapper" ref="tierOneObservationDataMapper" />
-	<property name="linesToSkip" value="1" />
-  </bean>
+    <bean name="tierOneObservationDataReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="resource" value="classpath:test-tier-1-observation-data.txt" />
+        <property name="lineMapper" ref="tierOneObservationDataMapper" />
+        <property name="linesToSkip" value="1" />
+    </bean>
+    <bean name="tierOneObservationDataMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="tierOneObservationDataLineTokenizer" />
+    </bean>
+    <bean name="tierOneObservationDataLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="\u0009"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,cell_line_subset,cell_line_exclusion,feature_data_set,compound_name,entrez_gene_id,number_of_cell_lines,number_of_mutant_cell_lines,enrichment_direction,log_fdr,response_image_path,feature_image_path,nci_portal,gct_path"/>
+    </bean>
+    <bean name="tierThreeObservationDataReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="resource" value="classpath:test-tier-3-observation-data.txt" />
+        <property name="lineMapper" ref="tierThreeObservationDataMapper" />
+        <property name="linesToSkip" value="1" />
+    </bean>
+    <bean name="tierThreeObservationDataMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="tierThreeObservationDataLineTokenizer" />
+    </bean>
+    <bean name="tierThreeObservationDataLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="\u0009"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,compound_name,gene_symbol,figure_1,figure_2,figure_3,figure_4,figure_5,figure_6,tier1_evidence"/>
+    </bean>
+    
+    <bean name="broadCompoundSensitivityLineageEnrichmentReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="broadCompoundSensitivityLineageEnrichmentLineMapper" />
+    </bean>
+    <bean name="broadCompoundSensitivityMutationEnrichmentReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="broadCompoundSensitivityMutationEnrichmentLineMapper" />
+    </bean>
+    <bean name="broadTier3NavitoclaxStoryReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="broadTier3NavitoclaxStoryLineMapper" />
+    </bean>
+    <bean name="columbiaMarinaAnalysisReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="columbiaMarinaAnalysisLineMapper" />
+    </bean>
+    <bean name="columbiaMRAFetAnalysisReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="columbiaMRAFetAnalysisLineMapper" />
+    </bean>
+    <bean name="columbiaJointMRSHRNADiffAnalysisReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="columbiaJointMRSHRNADiffAnalysisLineMapper" />
+    </bean>
+    <bean name="columbiaGbmMrsStoryReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="columbiaGbmMrsStoryLineMapper" />
+    </bean>
+    <bean name="cshlTier4FGF19StoryReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="cshlTier4FGF19StoryLineMapper" />
+    </bean>
+    <bean name="dfciYapYesStoryReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="dfciYapYesStoryLineMapper" />
+    </bean>
+    <bean name="dfciReporterAnalysisReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="dfciReporterAnalysisLineMapper" />
+    </bean>
+    <bean name="dfciAtarisAnalysisReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="dfciAtarisAnalysisLineMapper" />
+    </bean>
+    <bean name="dfciOvarianAnalysisReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="dfciOvarianAnalysisLineMapper" />
+    </bean>
+    <bean name="dfciPax8Tier3Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="dfciPax8Tier3LineMapper" />
+    </bean>
+    <bean name="fhcrcCSTTier1Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="fhcrcCSTTier1LineMapper" />
+    </bean>
+    <bean name="utswTier2DiscoipyrrolesStoryReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="utswTier2DiscoipyrrolesStoryLineMapper" />
+    </bean>
+    <bean name="utswTier4DiscoipyrrolesStoryReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="utswTier4DiscoipyrrolesStoryLineMapper" />
+    </bean>
+    <bean name="ucsfDifferentialExpressionReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="ucsfDifferentialExpressionLineMapper" />
+    </bean>
+    <bean name="ucsfMutIsogenicScoresReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="ucsfMutIsogenicScoresLineMapper" />
+    </bean>
+    <bean name="ucsfWtIsogenicScoresReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="ucsfWtIsogenicScoresLineMapper" />
+    </bean>
+    <bean name="ucsfAktResistanceReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="ucsfAktResistanceLineMapper" />
+    </bean>
+    <bean name="ucsfDasatinibSensitivityReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="ucsfDasatinibSensitivityLineMapper" />
+    </bean>
+    <bean name="emoryPPIRAF1Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="emoryPPIRAF1LineMapper" />
+    </bean>
+    <bean name="mskccForetinibReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="mskccForetinibLineMapper" />
+    </bean>
+    <bean name="mskccFigrosReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="mskccFigrosLineMapper" />
+    </bean>
+    <bean name="stanfordMethylmixTier1Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="stanfordMethylmixTier1LineMapper" />
+    </bean>
+    <bean name="mdaEndoMutationBaf3Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="mdaEndoMutationBaf3LineMapper" />
+    </bean>
+    <bean name="mskccBrd4amlBrd4Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="mskccBrd4amlBrd4LineMapper" />
+    </bean>
+    <bean name="mskccBrd4amlJq1Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="mskccBrd4amlJq1LineMapper" />
+    </bean>
+    <bean name="mskccPdgFrbReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="mskccPdgFrbLineMapper" />
+    </bean>
+    <bean name="mskccPdgFrbImatinibReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="mskccPdgFrbImatinibLineMapper" />
+    </bean>
+    <bean name="mskccPdgFrbHumanReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="mskccPdgFrbHumanLineMapper" />
+    </bean>
+    <bean name="cshlAvgMeasureReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="cshlAvgMeasureLineMapper" />
+    </bean>
+    <bean name="cshlMouseLiversReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="cshlMouseLiversLineMapper" />
+    </bean>
+    <bean name="cshlCoExpReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="cshlCoExpLineMapper" />
+    </bean>
+    <bean name="dfciArid1aMutAnalysisReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="dfciArid1aMutAnalysisLineMapper" />
+    </bean>
+    <bean name="dfciArid1bDependencyReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="dfciArid1bDependencyLineMapper" />
+    </bean>
+    <bean name="dfciSmarca4MutAnalysisReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="dfciSmarca4MutAnalysisLineMapper" />
+    </bean>
+    <bean name="dfciSmarca2DependencyReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="dfciSmarca2DependencyLineMapper" />
+    </bean>
+    <bean name="mskccPi3kReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="mskccPi3kLineMapper" />
+    </bean>
+    <bean name="broadCompoundSensitivityCtxMutationEnrichmentReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="broadCompoundSensitivityCtxMutationEnrichmentLineMapper" />
+    </bean>
+    <bean name="broadCompoundSensitivitySublineageEnrichmentReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="broadCompoundSensitivitySublineageEnrichmentLineMapper" />
+    </bean>
+    <bean name="columbiaAktTallReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="columbiaAktTallLineMapper" />
+    </bean>
+    <bean name="columbiaPrecmedReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="columbiaPrecmedLineMapper" />
+    </bean>
+    <bean name="cshlBrd4Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="cshlBrd4LineMapper" />
+    </bean>
+    <bean name="cshlCdk9Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="cshlCdk9LineMapper" />
+    </bean>
+    <bean name="emoryHtBretnPPIReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="emoryHtBretnPPILineMapper" />
+    </bean>
+    <bean name="fhcrcCSTTier1-1Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="fhcrcCSTTier1-1LineMapper" />
+    </bean>
+    <bean name="fhcrcKKinomeSiRNA2Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="fhcrcKKinomeSiRNA2LineMapper" />
+    </bean>
+    <bean name="fhcrcKKinomeSiRNA3Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="fhcrcKKinomeSiRNA3LineMapper" />
+    </bean>
+    <bean name="hutchCtcfReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="hutchCtcfLineMapper" />
+    </bean>
+    <bean name="hutchTargetsReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="hutchTargetsLineMapper" />
+    </bean>
+    <bean name="mdaPik3r1ApoptosisEndoCellsReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="mdaPik3r1ApoptosisEndoCellsLineMapper" />
+    </bean>
+    <bean name="mdaPik3r1Baf3SurvivalReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="mdaPik3r1Baf3SurvivalLineMapper" />
+    </bean>
+    <bean name="mdaPik3r1BrduEndoCellsReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="mdaPik3r1BrduEndoCellsLineMapper" />
+    </bean>
+    <bean name="mdaPik3r1DrugCellLinesReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="mdaPik3r1DrugCellLinesLineMapper" />
+    </bean>
+    <bean name="mdaPik3r1DrugScreenBaf3Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="mdaPik3r1DrugScreenBaf3LineMapper" />
+    </bean>
+    <bean name="mdaPik3r1DrugZenograftsReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="mdaPik3r1DrugZenograftsLineMapper" />
+    </bean>
+    <bean name="mdaPik3r1RppaBaf3Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="mdaPik3r1RppaBaf3LineMapper" />
+    </bean>
+    <bean name="stanfordElasticNetReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="stanfordElasticNetLineMapper" />
+    </bean>
+    <bean name="stanfordOrganoidsReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="stanfordOrganoidsLineMapper" />
+    </bean>
+    <bean name="ucsfChemgenReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="ucsfChemgenLineMapper" />
+    </bean>
+    <bean name="ucsfKrasReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="ucsfKrasLineMapper" />
+    </bean>
+    <bean name="ucsfSplicingGeneticsReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="ucsfSplicingGeneticsLineMapper" />
+    </bean>
+    <bean name="utmdaPik3r1Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="utmdaPik3r1LineMapper" />
+    </bean>
+    <bean name="utswNsclcAscl1Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="utswNsclcAscl1LineMapper" />
+    </bean>
+    <bean name="utswNsclcReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="utswNsclcLineMapper" />
+    </bean>
+    <bean name="tgenEddyGbmReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="tgenEddyGbmLineMapper" />
+    </bean>
+    <bean name="tgenEddyStoryReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="tgenEddyStoryLineMapper" />
+    </bean>
+    <bean name="ucsfwNbSplicingReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="ucsfwNbSplicingLineMapper" />
+    </bean>
+    <bean name="dfciBarbieReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="dfciBarbieLineMapper" />
+    </bean>
+    <bean name="dfciKrasMetaAnalysisReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="dfciKrasMetaAnalysisLineMapper" />
+    </bean>
+    <bean name="dfciKrasRigerAnalysisReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="dfciKrasRigerAnalysisLineMapper" />
+    </bean>
+    <bean name="dfciKrasTtestAnalysisReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="dfciKrasTtestAnalysisLineMapper" />
+    </bean>
+    <bean name="dfciTbk1AnalysisReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="dfciTbk1AnalysisLineMapper" />
+    </bean>
+    <bean name="hutchkKinomicsReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="hutchkKinomicsLineMapper" />
+    </bean>
+    <bean name="stanfordMethylmixStoryReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="stanfordMethylmixStoryLineMapper" />
+    </bean>
+    <bean name="cshlPdacReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="cshlPdacLineMapper" />
+    </bean>
+    <bean name="stanfordTgfbr2Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="stanfordTgfbr2LineMapper" />
+    </bean>
+    <bean name="utmdaPik3caReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="utmdaPik3caLineMapper" />
+    </bean>
+    <bean name="emoryBretnReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="emoryBretnLineMapper" />
+    </bean>
+    <bean name="utmdaNadkPdacReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="utmdaNadkPdacLineMapper" />
+    </bean>
+    <bean name="broadCtrpv2Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="broadCtrpv2LineMapper" />
+    </bean>
+    <bean name="stanfordElasticNetGeneReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="stanfordElasticNetGeneLineMapper" />
+    </bean>
+    <bean name="stanfordElasticNetMirReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="stanfordElasticNetMirLineMapper" />
+    </bean>
+    <bean name="stanfordElasticNetProtReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="stanfordElasticNetProtLineMapper" />
+    </bean>
+    <bean name="columbiaMoaReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="columbiaMoaLineMapper" />
+    </bean>
+    <bean name="broadAcmeLineageReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="broadAcmeLineageLineMapper" />
+    </bean>
+    <bean name="broadAcmeMutationReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="broadAcmeMutationLineMapper" />
+    </bean>
+    <bean name="dfciPax8Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="dfciPax8LineMapper" />
+    </bean>
+    <bean name="dfciTbk1Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="dfciTbk1LineMapper" />
+    </bean>
+    <bean name="broadKrasDecitabineReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="broadKrasDecitabineLineMapper" />
+    </bean>
+    <bean name="broadKrasDecitabineMekReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="broadKrasDecitabineMekLineMapper" />
+    </bean>
+    <bean name="broadKrasDecitabineNavitoclaxReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="broadKrasDecitabineNavitoclaxLineMapper" />
+    </bean>
+    <bean name="broadKrasXenograftReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="broadKrasXenograftLineMapper" />
+    </bean>
+    <bean name="dfciSwisnfReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="dfciSwisnfLineMapper" />
+    </bean>
+    <bean name="dfciGab2Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="dfciGab2LineMapper" />
+    </bean>
+    <bean name="dfciGab2AnalysisReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="dfciGab2AnalysisLineMapper" />
+    </bean>
+    <bean name="dfciYap1Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="dfciYap1LineMapper" />
+    </bean>
+    <bean name="dfciYap1AnalysisReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="dfciYap1AnalysisLineMapper" />
+    </bean>
+    <bean name="dfciCowley2014AtarisAnalysisReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="dfciCowley2014AtarisAnalysisLineMapper" />
+    </bean>
+    <bean name="columbiaKlhl9PrognosisReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="columbiaKlhl9PrognosisLineMapper" />
+    </bean>
+    <bean name="columbiaKlhl9ProteasomalReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="columbiaKlhl9ProteasomalLineMapper" />
+    </bean>
+    <bean name="columbiaKlhl9RescueReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="columbiaKlhl9RescueLineMapper" />
+    </bean>
+    <bean name="columbiaKlhl9SphaseReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="columbiaKlhl9SphaseLineMapper" />
+    </bean>
+    <bean name="columbiaKlhl9XenograftsReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="columbiaKlhl9XenograftsLineMapper" />
+    </bean>
+    <bean name="columbiaBisikirskaFlDlbclM1Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="columbiaBisikirskaFlDlbclM1LineMapper" />
+    </bean>
+    <bean name="columbiaBisikirskaFlDlbclM2Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="columbiaBisikirskaFlDlbclM2LineMapper" />
+    </bean>
+    <bean name="columbiaBisikirskaFlDlbclSyReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="columbiaBisikirskaFlDlbclSyLineMapper" />
+    </bean>
+    <bean name="columbiaDemandAltretamineReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="columbiaDemandAltretamineLineMapper" />
+    </bean>
+    <bean name="columbiaPiovanAktNr3c1ActReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="columbiaPiovanAktNr3c1ActLineMapper" />
+    </bean>
+    <bean name="columbiaPiovanAktNr3c1BindReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="columbiaPiovanAktNr3c1BindLineMapper" />
+    </bean>
+    <bean name="columbiaPiovanAktNr3c1Inh1Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="columbiaPiovanAktNr3c1Inh1LineMapper" />
+    </bean>
+    <bean name="columbiaPiovanAktNr3c1Inh2Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="columbiaPiovanAktNr3c1Inh2LineMapper" />
+    </bean>
+    <bean name="columbiaPiovanAktNr3c1Inh3Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="columbiaPiovanAktNr3c1Inh3LineMapper" />
+    </bean>
+    <bean name="columbiaPiovanAktNr3c1PhosReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="columbiaPiovanAktNr3c1PhosLineMapper" />
+    </bean>
+    <bean name="columbiaPiovanAktNr3c1SigReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="columbiaPiovanAktNr3c1SigLineMapper" />
+    </bean>
 
-  <bean name="tierOneObservationDataMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
-	<property name="fieldSetMapper" ref="observationDataMapper" />
-	<property name="lineTokenizer" ref="tierOneObservationDataLineTokenizer" />
-  </bean>
-
-  <bean name="tierOneObservationDataLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="dummy,submission_name,submission_date,template_name,cell_line_subset,cell_line_exclusion,feature_data_set,compound_name,entrez_gene_id,number_of_cell_lines,number_of_mutant_cell_lines,enrichment_direction,log_fdr,response_image_path,feature_image_path,nci_portal,gct_path"/>
-  </bean>
-
-  <bean name="tierThreeObservationDataReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-	<property name="resource" value="classpath:test-tier-3-observation-data.txt" />
-    <property name="lineMapper" ref="tierThreeObservationDataMapper" />
-	<property name="linesToSkip" value="1" />
-  </bean>
-
-  <bean name="tierThreeObservationDataMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
-	<property name="fieldSetMapper" ref="observationDataMapper" />
-	<property name="lineTokenizer" ref="tierThreeObservationDataLineTokenizer" />
-  </bean>
-
-  <bean name="tierThreeObservationDataLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-	<property name="delimiter" value="\u0009"/>
-	<property name="names" value="dummy,submission_name,submission_date,template_name,compound_name,gene_symbol,figure_1,figure_2,figure_3,figure_4,figure_5,figure_6,tier1_evidence"/>
-  </bean>
-
-  <!-- the following beans are not used during testing - only required for proper loading of context files -->
-
-  <!-- broad compound sensitivity lineage enrichment -->
-  <bean name="broadCompoundSensitivityLineageEnrichmentReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="broadCompoundSensitivityLineageEnrichmentLineMapper" />
-  </bean>
-
-  <!-- broad compound sensitivity mutation enrichment -->
-  <bean name="broadCompoundSensitivityMutationEnrichmentReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="broadCompoundSensitivityMutationEnrichmentLineMapper" />
-  </bean>
-
-  <!-- broad tier3 navitoclax story analysis -->
-  <bean name="broadTier3NavitoclaxStoryReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-	<property name="lineMapper" ref="broadTier3NavitoclaxStoryLineMapper" />
-  </bean>
-
-  <!-- columbia marina analysis -->
-  <bean name="columbiaMarinaAnalysisReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-	<property name="lineMapper" ref="columbiaMarinaAnalysisLineMapper" />
-  </bean>
-
-  <!-- columbia mra fet analysis -->
-  <bean name="columbiaMRAFetAnalysisReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-	<property name="lineMapper" ref="columbiaMRAFetAnalysisLineMapper" />
-  </bean>
-
-  <!-- columbia master regulator analysis with shRNA knockdown -->
-  <bean name="columbiaJointMRSHRNADiffAnalysisReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-	<property name="lineMapper" ref="columbiaJointMRSHRNADiffAnalysisLineMapper" />
-  </bean>
-
-  <!-- columbia tier4 glioma story -->
-  <bean name="columbiaGbmMrsStoryReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-	<property name="lineMapper" ref="columbiaGbmMrsStoryLineMapper" />
-  </bean>
-
-  <!-- cshl tier4 fgf19 story -->
-  <bean name="cshlTier4FGF19StoryReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-	<property name="lineMapper" ref="cshlTier4FGF19StoryLineMapper" />
-  </bean>
-
-  <!-- dfci yap yes story -->
-  <bean name="dfciYapYesStoryReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-	<property name="lineMapper" ref="dfciYapYesStoryLineMapper" />
-  </bean>
-
-  <!-- dfci reporter analysis reader -->
-  <bean name="dfciReporterAnalysisReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-	<property name="lineMapper" ref="dfciReporterAnalysisLineMapper" />
-  </bean>
-
-  <!-- dfci ataris analysis reader -->
-  <bean name="dfciAtarisAnalysisReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-	<property name="lineMapper" ref="dfciAtarisAnalysisLineMapper" />
-  </bean>
-
-  <!-- dfci ovarian analysis reader -->
-  <bean name="dfciOvarianAnalysisReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-	<property name="lineMapper" ref="dfciOvarianAnalysisLineMapper" />
-  </bean>
-
-  <!-- dfci pax 8 tier 3 reader -->
-  <bean name="dfciPax8Tier3Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
-	<property name="lineMapper" ref="dfciPax8Tier3LineMapper" />
-  </bean>
-
-  <!-- fhcrcCSTTier1 -->
-  <bean name="fhcrcCSTTier1Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="fhcrcCSTTier1LineMapper" />
-  </bean>
-
-  <!-- utsw tier 2 discoipyrroles story reader -->
-  <bean name="utswTier2DiscoipyrrolesStoryReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-	<property name="lineMapper" ref="utswTier2DiscoipyrrolesStoryLineMapper" />
-  </bean>
-
-  <!-- utsw tier 4 discoipyrroles story reader -->
-  <bean name="utswTier4DiscoipyrrolesStoryReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-	<property name="lineMapper" ref="utswTier4DiscoipyrrolesStoryLineMapper" />
-  </bean>
-
-  <!-- ucsf differential expression reader -->
-  <bean name="ucsfDifferentialExpressionReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-	<property name="lineMapper" ref="ucsfDifferentialExpressionLineMapper" />
-  </bean>
-  
-  <!-- ucsf mut isogenic scores reader -->
-  <bean name="ucsfMutIsogenicScoresReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-	<property name="lineMapper" ref="ucsfMutIsogenicScoresLineMapper" />
-  </bean>
-  
-  <!-- ucsf wt isogenic scores reader -->
-  <bean name="ucsfWtIsogenicScoresReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-	<property name="lineMapper" ref="ucsfWtIsogenicScoresLineMapper" />
-  </bean>
-  
-  <!-- ucsf akt resistance reader -->
-  <bean name="ucsfAktResistanceReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-	<property name="lineMapper" ref="ucsfAktResistanceLineMapper" />
-  </bean>
-  
-  <!-- ucsf dasatinib sensitivity reader -->
-  <bean name="ucsfDasatinibSensitivityReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-	<property name="lineMapper" ref="ucsfDasatinibSensitivityLineMapper" />
-  </bean>
-  
-  <!-- emory PPI RAF1 -->
-  <bean name="emoryPPIRAF1Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
-	<property name="lineMapper" ref="emoryPPIRAF1LineMapper" />
-  </bean>
-
-  <!--  mskcc foretinib -->
-  <bean name="mskccForetinibReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-  <property name="lineMapper" ref="mskccForetinibLineMapper" />
-  </bean>
-
-  <!--  mskcc figros -->
-  <bean name="mskccFigrosReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-  <property name="lineMapper" ref="mskccFigrosLineMapper" />
-  </bean>
-
-  <!-- stanford methlymix tier 1 -->
-  <bean name="stanfordMethylmixTier1Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
-  <property name="lineMapper" ref="stanfordMethylmixTier1LineMapper" />
-  </bean>
-
-  <!-- mda endo mutation baf3 -->
-  <bean name="mdaEndoMutationBaf3Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
-  <property name="lineMapper" ref="mdaEndoMutationBaf3LineMapper" />
-  </bean>
-
-  <!-- mskcc brd4aml brd4 -->
-  <bean name="mskccBrd4amlBrd4Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
-  <property name="lineMapper" ref="mskccBrd4amlBrd4LineMapper" />
-  </bean>
-
-  <!-- mskcc brd4aml jq1 -->
-  <bean name="mskccBrd4amlJq1Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="mskccBrd4amlJq1LineMapper" />
-  </bean>
-
-  <bean name="mskccPdgFrbReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="mskccPdgFrbLineMapper" />
-  </bean>
-
-  <bean name="mskccPdgFrbImatinibReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="mskccPdgFrbImatinibLineMapper" />
-  </bean>
-
-  <bean name="mskccPdgFrbHumanReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="mskccPdgFrbHumanLineMapper" />
-  </bean>
-
-  <bean name="cshlAvgMeasureReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="cshlAvgMeasureLineMapper" />
-  </bean>
-
-  <bean name="cshlMouseLiversReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="cshlMouseLiversLineMapper" />
-  </bean>
-
-  <bean name="cshlCoExpReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="cshlCoExpLineMapper" />
-  </bean>
-
-  <bean name="dfciArid1aMutAnalysisReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="dfciArid1aMutAnalysisLineMapper" />
-  </bean>
-
-  <bean name="dfciArid1bDependencyReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="dfciArid1bDependencyLineMapper" />
-  </bean>
-
-  <bean name="dfciSmarca4MutAnalysisReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="dfciSmarca4MutAnalysisLineMapper" />
-  </bean>
-
-  <bean name="dfciSmarca2DependencyReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="dfciSmarca2DependencyLineMapper" />
-  </bean>
-
-  <bean name="mskccPi3kReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="mskccPi3kLineMapper" />
-  </bean>
-  
-  <bean name="broadCompoundSensitivityCtxMutationEnrichmentReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="broadCompoundSensitivityCtxMutationEnrichmentLineMapper" />
-  </bean>
-  
-  <bean name="broadCompoundSensitivitySublineageEnrichmentReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="broadCompoundSensitivitySublineageEnrichmentLineMapper" />
-  </bean>
-  
-  <bean name="columbiaAktTallReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="columbiaAktTallLineMapper" />
-  </bean>
-  
-  <bean name="columbiaPrecmedReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="columbiaPrecmedLineMapper" />
-  </bean>
-  
-  <bean name="cshlBrd4Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="cshlBrd4LineMapper" />
-  </bean>
-  
-  <bean name="cshlCdk9Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="cshlCdk9LineMapper" />
-  </bean>
-  
-  <bean name="emoryHtBretnPPIReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="emoryHtBretnPPILineMapper" />
-  </bean>
-  
-  <bean name="fhcrcCSTTier1-1Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="fhcrcCSTTier1-1LineMapper" />
-  </bean>
-  
-  <bean name="fhcrcKKinomeSiRNA2Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="fhcrcKKinomeSiRNA2LineMapper" />
-  </bean>
-  
-  <bean name="fhcrcKKinomeSiRNA3Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="fhcrcKKinomeSiRNA3LineMapper" />
-  </bean>
-  
-  <bean name="hutchCtcfReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="hutchCtcfLineMapper" />
-  </bean>
-  
-  <bean name="hutchTargetsReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="hutchTargetsLineMapper" />
-  </bean>
-  
-  <bean name="mdaPik3r1ApoptosisEndoCellsReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="mdaPik3r1ApoptosisEndoCellsLineMapper" />
-  </bean>
-  
-  <bean name="mdaPik3r1Baf3SurvivalReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="mdaPik3r1Baf3SurvivalLineMapper" />
-  </bean>
-  
-  <bean name="mdaPik3r1BrduEndoCellsReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="mdaPik3r1BrduEndoCellsLineMapper" />
-  </bean>
-  
-  <bean name="mdaPik3r1DrugCellLinesReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="mdaPik3r1DrugCellLinesLineMapper" />
-  </bean>
-  
-  <bean name="mdaPik3r1DrugScreenBaf3Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="mdaPik3r1DrugScreenBaf3LineMapper" />
-  </bean>
-  
-  <bean name="mdaPik3r1DrugZenograftsReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="mdaPik3r1DrugZenograftsLineMapper" />
-  </bean>
-  
-  <bean name="mdaPik3r1RppaBaf3Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="mdaPik3r1RppaBaf3LineMapper" />
-  </bean>
-  
-  <bean name="stanfordElasticNetReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="stanfordElasticNetLineMapper" />
-  </bean>
-  
-  <bean name="stanfordOrganoidsReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="stanfordOrganoidsLineMapper" />
-  </bean>
-  
-  <bean name="ucsfChemgenReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="ucsfChemgenLineMapper" />
-  </bean>
-  
-  <bean name="ucsfKrasReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="ucsfKrasLineMapper" />
-  </bean>
-  
-  <bean name="ucsfSplicingGeneticsReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="ucsfSplicingGeneticsLineMapper" />
-  </bean>
-  
-  <bean name="utmdaPik3r1Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="utmdaPik3r1LineMapper" />
-  </bean>
-  
-  <bean name="utswNsclcAscl1Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="utswNsclcAscl1LineMapper" />
-  </bean>
-  
-  <bean name="utswNsclcReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="utswNsclcLineMapper" />
-  </bean>
-  
-  <bean name="tgenEddyGbmReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="tgenEddyGbmLineMapper" />
-  </bean>
-  
-  <bean name="tgenEddyStoryReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="tgenEddyStoryLineMapper" />
-  </bean>
-  
-  <bean name="ucsfwNbSplicingReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="ucsfwNbSplicingLineMapper" />
-  </bean>
-  
-  <bean name="dfciBarbieReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="dfciBarbieLineMapper" />
-  </bean>
-  
-  <bean name="dfciKrasMetaAnalysisReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="dfciKrasMetaAnalysisLineMapper" />
-  </bean>
-  
-  <bean name="dfciKrasRigerAnalysisReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="dfciKrasRigerAnalysisLineMapper" />
-  </bean>
-  
-  <bean name="dfciKrasTtestAnalysisReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="dfciKrasTtestAnalysisLineMapper" />
-  </bean>
-  
-  <bean name="dfciTbk1AnalysisReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="dfciTbk1AnalysisLineMapper" />
-  </bean>
-  
-  <bean name="hutchkKinomicsReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="hutchkKinomicsLineMapper" />
-  </bean>
-  
-  <bean name="stanfordMethylmixStoryReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="stanfordMethylmixStoryLineMapper" />
-  </bean>
-  
-  <bean name="cshlPdacReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="cshlPdacLineMapper" />
-  </bean>
-  
-  <bean name="stanfordTgfbr2Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="stanfordTgfbr2LineMapper" />
-  </bean>
-  
-  <bean name="utmdaPik3caReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="utmdaPik3caLineMapper" />
-  </bean>
-  
-  <bean name="emoryBretnReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="emoryBretnLineMapper" />
-  </bean>
-  
-  <bean name="utmdaNadkPdacReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="utmdaNadkPdacLineMapper" />
-  </bean>
-  
-  <bean name="broadCtrpv2Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="broadCtrpv2LineMapper" />
-  </bean>
-  
-  <bean name="stanfordElasticNetGeneReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="stanfordElasticNetGeneLineMapper" />
-  </bean>
-  
-  <bean name="stanfordElasticNetMirReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="stanfordElasticNetMirLineMapper" />
-  </bean>
-  
-  <bean name="stanfordElasticNetProtReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="stanfordElasticNetProtLineMapper" />
-  </bean>
-  
-  <bean name="columbiaMoaReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="columbiaMoaLineMapper" />
-  </bean>
-  
-  <bean name="broadAcmeLineageReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="broadAcmeLineageLineMapper" />
-  </bean>
-  
-  <bean name="broadAcmeMutationReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="broadAcmeMutationLineMapper" />
-  </bean>
-  
-  <bean name="dfciPax8Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="dfciPax8LineMapper" />
-  </bean>
-  
-  <bean name="dfciTbk1Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="dfciTbk1LineMapper" />
-  </bean>
-  
-  <bean name="broadKrasDecitabineReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="broadKrasDecitabineLineMapper" />
-  </bean>
-  
-  <bean name="broadKrasDecitabineMekReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="broadKrasDecitabineMekLineMapper" />
-  </bean>
-  
-  <bean name="broadKrasDecitabineNavitoclaxReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="broadKrasDecitabineNavitoclaxLineMapper" />
-  </bean>
-  
-  <bean name="broadKrasXenograftReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="broadKrasXenograftLineMapper" />
-  </bean>
-  
-  <bean name="dfciSwisnfReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="dfciSwisnfLineMapper" />
-  </bean>
-  
-  <bean name="dfciGab2Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="dfciGab2LineMapper" />
-  </bean>
-  
-  <bean name="dfciGab2AnalysisReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="dfciGab2AnalysisLineMapper" />
-  </bean>
-  
-  <bean name="dfciYap1Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="dfciYap1LineMapper" />
-  </bean>
-  
-  <bean name="dfciYap1AnalysisReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="dfciYap1AnalysisLineMapper" />
-  </bean>
-  
-  <bean name="dfciCowley2014AtarisAnalysisReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="dfciCowley2014AtarisAnalysisLineMapper" />
-  </bean>
-  <bean name="columbiaKlhl9PrognosisReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="columbiaKlhl9PrognosisLineMapper" />
-  </bean>
-  <bean name="columbiaKlhl9ProteasomalReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="columbiaKlhl9ProteasomalLineMapper" />
-  </bean>
-  <bean name="columbiaKlhl9RescueReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="columbiaKlhl9RescueLineMapper" />
-  </bean>
-  <bean name="columbiaKlhl9SphaseReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="columbiaKlhl9SphaseLineMapper" />
-  </bean>
-  <bean name="columbiaKlhl9XenograftsReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="columbiaKlhl9XenograftsLineMapper" />
-  </bean>
-  <bean name="columbiaBisikirskaFlDlbclM1Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="columbiaBisikirskaFlDlbclM1LineMapper" />
-  </bean>
-  <bean name="columbiaBisikirskaFlDlbclM2Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="columbiaBisikirskaFlDlbclM2LineMapper" />
-  </bean>
-  <bean name="columbiaBisikirskaFlDlbclSyReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="columbiaBisikirskaFlDlbclSyLineMapper" />
-  </bean>
-  <bean name="columbiaDemandAltretamineReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="columbiaDemandAltretamineLineMapper" />
-  </bean>
-  <bean name="columbiaPiovanAktNr3c1ActReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="columbiaPiovanAktNr3c1ActLineMapper" />
-  </bean>
-  <bean name="columbiaPiovanAktNr3c1BindReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="columbiaPiovanAktNr3c1BindLineMapper" />
-  </bean>
-  <bean name="columbiaPiovanAktNr3c1Inh1Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="columbiaPiovanAktNr3c1Inh1LineMapper" />
-  </bean>
-  <bean name="columbiaPiovanAktNr3c1Inh2Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="columbiaPiovanAktNr3c1Inh2LineMapper" />
-  </bean>
-  <bean name="columbiaPiovanAktNr3c1Inh3Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="columbiaPiovanAktNr3c1Inh3LineMapper" />
-  </bean>
-  <bean name="columbiaPiovanAktNr3c1PhosReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="columbiaPiovanAktNr3c1PhosLineMapper" />
-  </bean>
-  <bean name="columbiaPiovanAktNr3c1SigReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-    <property name="lineMapper" ref="columbiaPiovanAktNr3c1SigLineMapper" />
-  </bean>
-  
 </beans>
