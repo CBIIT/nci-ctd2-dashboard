@@ -53,6 +53,9 @@
     <bean id="cnkbDataURL" class="java.lang.String">
         <constructor-arg index="0" value="${cnkb.data.url}"/>
     </bean>
-
-
+    
+    <bean id="dashboardReleaseVersion" class="java.lang.String">
+        <constructor-arg index="0" value="${dashboard.release.version}"/>
+    </bean>
+    
 </beans>

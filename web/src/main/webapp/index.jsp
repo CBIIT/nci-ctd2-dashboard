@@ -8,6 +8,7 @@
             .getWebApplicationContext(application);
     String dataURL = (String) context.getBean("dataURL");
     Integer maxNumOfObservations = (Integer) context.getBean("maxNumberOfEntities");
+    String dashboardReleaseVersion = (String) context.getBean("dashboardReleaseVersion");
 %><!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/html">
   <head>
@@ -167,6 +168,7 @@
     <div class="container footer-container">
         <!-- FOOTER -->
        <footer>
+        <p><small>Dashboard Release <%=dashboardReleaseVersion%></small></p>
      	<p>
             <small>
                 <p>

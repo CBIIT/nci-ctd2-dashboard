@@ -26,5 +26,5 @@
     <bean id="maxNumberOfEntities" class="java.lang.Integer">
         <constructor-arg type="int" value="${list.max.observations}"/>
     </bean>
-
+    
 </beans>
