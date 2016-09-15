@@ -2428,10 +2428,6 @@
                                 model: oneTemplate.toJSON(),
                                 el: $("#existing-template-table")
                             })).render();
-                            (new TemplateDataRowView({
-                                model: oneTemplate.toJSON(),
-                                el: $("#template-table-subject")
-                            })).render();
                         });
                     }
                 });
@@ -2579,6 +2575,14 @@
                 var action = $(this).val();
                 if(action=='edit') {
                     templateId = rowModel.id;
+                    $("span#submission-name").text(rowModel.displayName);
+
+                    // FIXME template-table-subject needs to be cleared?
+                    (new TemplateDataRowView({
+                        model: rowModel,
+                        el: $("#template-table-subject")
+                    })).render();
+
                     console.log("templateId="+templateId);
                     console.log("rowModel="+rowModel);
                     $("#step2").fadeOut();

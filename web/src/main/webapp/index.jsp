@@ -2018,9 +2018,7 @@
                         <tr id="subject-header">
                             <th>Delete Row</th><th>Column Tag</th><th>Subject Classs</th><th>Subject Role</th><th>Description</th><th>Observation 1</th>
                         </tr>
-                        <tr id="xxx">
-                            <td>X</td><td>gene_1. Q: why is coloumn necessary at all??</td><td>Gene</td><td>Biomarker</td><td>Subdes1</td><td>gene1a</td>
-                        </tr>
+                        <!-- here are rows for ONE template -->
                     </tbody>
                     <tbody id="template-table-evidence">
                         <tr id="evidence-header">
