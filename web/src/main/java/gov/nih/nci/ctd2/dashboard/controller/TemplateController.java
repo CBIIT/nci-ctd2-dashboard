@@ -73,6 +73,19 @@ public class TemplateController {
     }
 
     @Transactional
+    @RequestMapping(value="delete", method = {RequestMethod.POST}, headers = "Accept=application/text")
+    public 
+    ResponseEntity<String>
+    deleteSubmissionTemplate(
+            @RequestParam("templateId") Integer templateId
+            )
+    {
+        SubmissionTemplate template = dashboardDao.getEntityById(SubmissionTemplate.class, templateId);
+        dashboardDao.delete(template);
+        return new ResponseEntity<String>("SubmissionTemplate " + templateId + " DELETED", HttpStatus.OK);
+    }
+
+    @Transactional
     @RequestMapping(value="download", method = {RequestMethod.POST})
     public void downloadTemplate(
             @RequestParam("filename") String filename,

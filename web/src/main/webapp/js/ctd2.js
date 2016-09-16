@@ -2564,6 +2564,28 @@
         }
     });
 
+    var deleteTemplate = function(tobeDeleted) {
+        $("#confirmed-delete").unbind('click').click(function(){
+            $(this).attr("disabled", "disabled");
+            $.ajax({
+                async: false,
+                url: "template/delete",
+                type: "POST",
+                data: jQuery.param({
+                    templateId: tobeDeleted,
+                }),
+                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                success: function(response) {
+                    console.log(response);
+                    $("#template-table-row-"+tobeDeleted).remove();
+                }
+            });
+            $(this).removeAttr("disabled");
+        });
+        //$("#confirmation-message").text("... updated message (if ncessary)");
+        $("#confirmation-modal").modal('show');
+    };
+
     var ExistingTemplateView = Backbone.View.extend({
         template: _.template($("#existing-template-row-tmpl").html()),
 
@@ -2573,22 +2595,24 @@
             console.log("... for debug "+rowModel.id+" "+rowModel.displayName);
             $("#template-action-"+rowModel.id).change(function() {
                 var action = $(this).val();
-                if(action=='edit') {
-                    templateId = rowModel.id;
-                    $("span#submission-name").text(rowModel.displayName);
+                switch(action) {
+                    case 'edit':
+                        templateId = rowModel.id;
+                        $("span#submission-name").text(rowModel.displayName);
+                        (new TemplateDataRowView({
+                            model: rowModel,
+                            el: $("#template-table-subject")
+                        })).render();
 
-                    // FIXME template-table-subject needs to be cleared?
-                    (new TemplateDataRowView({
-                        model: rowModel,
-                        el: $("#template-table-subject")
-                    })).render();
-
-                    console.log("templateId="+templateId);
-                    console.log("rowModel="+rowModel);
-                    $("#step2").fadeOut();
-                    $("#step4").slideDown();
-                } else { // TODO
-                    alert(rowModel.displayName+' '+$(this).val()+' clicked');
+                        $("#step2").fadeOut();
+                        $("#step4").slideDown();
+                        break;
+                    case 'delete':
+                        deleteTemplate(rowModel.id);
+                        $("#template-action-"+rowModel.id).val(""); // in case not confirmed 
+                        break;
+                    default:
+                        alert(rowModel.displayName+' '+action+' clicked');
                 }
             });
             return this;

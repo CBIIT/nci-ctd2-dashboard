@@ -135,7 +135,25 @@
                     <button class="btn btn-primary" data-dismiss="modal">Close</button>
                 </div>
     </div>
-    
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="confirmation-modal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Delete Confirmation</h4>
+                </div>
+                <div class="modal-body">
+                    <p id="confirmation-message">Are you sure you want to delete this submission template?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="confirmed-delete">Yes, delete it.</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- these are the templates -->
     <script type="text/template" id="home-tmpl">
         <div class="overview-container">
@@ -1843,7 +1861,7 @@
     </script>
 
     <script type="text/template" id="existing-template-row-tmpl">
-        <tr id="template_{{displayName}}">
+        <tr id="template-table-row-{{id}}">
             <td>{{displayName}}</td><td>{{description}}</td><td>{{project}}</td>
                 <td>{{tier}}</td><td>{{dateLastModified}}</td><td>{{complete}}</td>
                 <td><select id='template-action-{{id}}'>
