@@ -213,7 +213,7 @@
                             </a>
                             <p class="lead firstlead">
                                 <a href="https://ocg.cancer.gov/programs/ctd2"><b>The Cancer Target Discovery and Development (CTD<sup>2</sup>) Network</b></a> mines and functionally validates data from large-scale adult and pediatric cancer genome characterization initiatives and advances them toward use in precision oncology.
-                                The Network developed the open-access “CTD2 Dashboard,” a web interface that compiles Network-generated summaries about key cancer biology findings and cancer-relevant results related to genes, proteins, and compounds.
+                                The Network developed the open-access “CTD<sup>2</sup> Dashboard,” a web interface that compiles Network-generated summaries about key cancer biology findings and cancer-relevant results related to genes, proteins, and compounds.
                                 Submissions are “ranked” with the validation “<a href="http://www.ncbi.nlm.nih.gov/pubmed/27401613" target="_blank">Tier</a>” system to indicate strength of evidence.
                                 To learn how the Dashboard is organized, visit <a id="homepage-help-navigate" href="#help-navigate">Navigating and Understanding Dashboard Content</a>.
                                 To understand more about the Dashboard functions, please read <a href="https://ocg.cancer.gov/news-publications/e-newsletter-issue/issue-14#1721">CTD<sup>2</sup> Dashboard: A Platform to Explore Evidence-based Observations</a>.
