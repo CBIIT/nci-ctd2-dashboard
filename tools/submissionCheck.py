@@ -59,6 +59,16 @@ SUBMISSION_NAME_HEADER = 'submission_name'
 SUBMISSION_DATE_HEADER = 'submission_date'
 TEMPLATE_NAME_HEADER = 'template_name'
 
+MAX_LENGTH = {
+    'template_description':1024, 'observation_summary':1024, 'submission_name':128, 'submission_description':1024, 'project':1024, 'principal_investigator': 64, # ObservationTemplate
+    'url': 2048, # UrlEvidence
+    'file_path':1024, 'file_name':1024, 'mime_type': 256, # FileEvidence
+    'subject_display_text':10240, 'subject_column_name': 1024, # ObservedSubjectRole
+    'evidence_display_text':10240, 'evidence_column_name': 1024, 'attribute': 128, # ObservedEvidenceRole
+    'units': 32, # DataNumericValue
+    'role': 128, # SubjectWithSummaries
+}
+
 CHECK_FILE_CACHE = {}
 CHECK_URL_CACHE = set()
 CHECK_URLS = False
@@ -82,7 +92,7 @@ def main():
 
 def checkTemplates(submissionFolder, columns):
     """ Check dashboard-CV-per-template.txt file,
-    return submission -> template and story -> storyTitle mappings
+    return submission -> template, story -> storyTitle, and submission -> tier mappings
     """
     submissions = {}
     storyTitles = {}
@@ -118,6 +128,7 @@ def checkTemplates(submissionFolder, columns):
                 checkTemplateName(row, templateNameIndex, submissionNameIndex)
                 checkSummary(row, summaryIndex, columns.get(templateName, set()), submissionNameIndex)
                 checkTemplateDescription(row, templateDescriptionIndex, submissionNameIndex)
+                checkSubmissionDescription(row, submissionDescriptionIndex, storyIndex, submissionNameIndex)
                 checkSubmissionName(row, submissionNameIndex, templateNameIndex, submissionNameIndex)
                 checkProject(row, projectIndex, submissionNameIndex)
                 checkStory(row, storyIndex, submissionNameIndex)
@@ -159,6 +170,9 @@ def checkSummary(row, index, columnSet, submissionNameIndex):
         if summary == '':
             print('ERROR: Missing observation_summary @' + row[submissionNameIndex], file=sys.stderr)
             return
+        maxLen = MAX_LENGTH['observation_summary']
+        if len(summary) >= maxLen:
+            print('ERROR: The length of observation_summary @ ' + row[submissionNameIndex] + ' exceeds threshold ('+str(maxLen)+')', file=sys.stderr)
         for fragment in summary.split('<'):
             if fragment.find('>') > 0:
                 columnName = fragment[:fragment.find('>')]
@@ -171,6 +185,20 @@ def checkTemplateDescription(row, index, submissionNameIndex):
         templateDescription = row[index]
         if templateDescription == '':
             print('ERROR: Missing template_description @' + row[submissionNameIndex], file=sys.stderr)
+        maxLen = MAX_LENGTH['template_description']
+        if len(templateDescription) >= maxLen:
+            print('ERROR: The length of template_description @ ' + row[submissionNameIndex] + ' exceeds threshold ('+str(maxLen)+')', file=sys.stderr)
+
+
+def checkSubmissionDescription(row, index, storyIndex, submissionNameIndex):
+    if index >= 0:
+        story = row[storyIndex]
+        submissionDescription = row[index]
+        if story == 'TRUE' and submissionDescription == '':
+            print('ERROR: Missing submission_description @' + row[submissionNameIndex], file=sys.stderr)
+        maxLen = MAX_LENGTH['submission_description']
+        if len(submissionDescription) >= maxLen:
+            print('ERROR: The length of submission_description @ ' + row[submissionNameIndex] + ' exceeds threshold ('+str(maxLen)+')', file=sys.stderr)
 
 
 def checkSubmissionName(row, index, templateNameIndex, submissionNameIndex):
@@ -180,6 +208,9 @@ def checkSubmissionName(row, index, templateNameIndex, submissionNameIndex):
         if submissionName == '':
             print('ERROR: Missing submission_name @' + row[submissionNameIndex], file=sys.stderr)
             return
+        maxLen = MAX_LENGTH['submission_name']
+        if len(submissionName) >= maxLen:
+            print('ERROR: The length of submission_name @ ' + row[submissionNameIndex] + ' exceeds threshold ('+str(maxLen)+')', file=sys.stderr)
         if not submissionName[0:8].isdigit():
             print('ERROR: Wrong submission_name format @' + row[submissionNameIndex] + ': ' + submissionName, file=sys.stderr)
         if submissionName[8] != '-' or submissionName[9:9+len(templateName)] != templateName:
@@ -191,6 +222,9 @@ def checkProject(row, index, submissionNameIndex):
         project = row[index]
         if project == '':
             print('ERROR: Missing project @' + row[submissionNameIndex], file=sys.stderr)
+        maxLen = MAX_LENGTH['project']
+        if len(project) >= maxLen:
+            print('ERROR: The length of project @ ' + row[submissionNameIndex] + ' exceeds threshold ('+str(maxLen)+')', file=sys.stderr)
 
 
 def checkStory(row, index, submissionNameIndex):
@@ -245,6 +279,9 @@ def checkPI(row, index, centerIndex, submissionNameIndex):
             return
         if pi != CENTERS.get(center):
             print('WARNING: Wrong principal_investigator @' + row[submissionNameIndex] + ': ' + pi, file=sys.stderr)
+        maxLen = MAX_LENGTH['principal_investigator']
+        if len(pi) >= maxLen:
+            print('ERROR: The length of principal_investigator @ ' + row[submissionNameIndex] + ' exceeds threshold ('+str(maxLen)+')', file=sys.stderr)
 
 
 def getColumn(row, index):
@@ -282,6 +319,7 @@ def checkColumns(submissionFolder, templateSet):
                 checkColumnRole(row, roleIndex, subjectIndex, evidenceIndex, templateIndex, rowIndex)
                 checkColumnMimeType(row, mimetypeIndex, evidenceIndex, rowIndex)
                 checkColumnUnits(row, unitsIndex, evidenceIndex, rowIndex)
+                checkColumnDisplayText(row, descriptionIndex, rowIndex)
             rowIndex = rowIndex + 1
 
 
@@ -298,6 +336,9 @@ def checkColumnTemplateName(row, index, templateSet, rowIndex):
 def checkColumnName(row, index, rowIndex):
     if index >= 0:
         columnName = row[index]
+        maxLen = min(MAX_LENGTH['subject_column_name'],MAX_LENGTH['evidence_column_name'])
+        if len(columnName) >= maxLen:
+            print('ERROR: The length of column_name @ row ' + str(rowIndex) + ' exceeds threshold ('+str(maxLen)+')', file=sys.stderr)
         if columnName == '':
             print('ERROR: Missing column_name @ row ' + str(rowIndex), file=sys.stderr)
 
@@ -331,6 +372,9 @@ def checkColumnSubjectEvidence(row, subjectIndex, evidenceIndex, rowIndex):
 def checkColumnRole(row, index, subjectIndex, evidenceIndex, templateIndex, rowIndex):
     if index >= 0:
         role = row[index]
+        maxLen = MAX_LENGTH['role']
+        if len(role) >= maxLen:
+            print('ERROR: The length of role @ row ' + str(rowIndex) + ' exceeds threshold ('+str(maxLen)+')', file=sys.stderr)
         if role == '':
             print('ERROR: '+row[templateIndex]+':Missing role @ row ' + str(rowIndex), file=sys.stderr)
             return
@@ -345,6 +389,9 @@ def checkColumnMimeType(row, index, evidenceIndex, rowIndex):
     if index >= 0:
         mimeType = row[index]
         evidence = row[evidenceIndex]
+        maxLen = min(MAX_LENGTH['mime_type'],MAX_LENGTH['attribute'])
+        if len(mimeType) >= maxLen:
+            print('ERROR: The length of mime_type @ row ' + str(rowIndex) + ' exceeds threshold ('+str(maxLen)+')', file=sys.stderr)
         if evidence == 'file' and mimeType == '':
             print('ERROR: Missing mime_type @ row ' + str(rowIndex), file=sys.stderr)
         elif evidence != 'file' and mimeType != '':
@@ -355,8 +402,21 @@ def checkColumnUnits(row, index, evidenceIndex, rowIndex):
     if index >= 0:
         units = row[index]
         evidence = row[evidenceIndex]
+        maxLen = min(MAX_LENGTH['units'],MAX_LENGTH['attribute'])
+        if len(units) >= maxLen:
+            print('ERROR: The length of units @ row ' + str(rowIndex) + ' exceeds threshold ('+str(maxLen)+')', file=sys.stderr)
         if evidence != 'numeric' and units != '':
             print('WARNING: numeric_units not allowed for '+evidence+' @ row ' + str(rowIndex) + ': ' + units, file=sys.stderr)
+
+
+def checkColumnDisplayText(row, index, rowIndex):
+    if index >= 0:
+        displayText = row[index]
+        maxLen = min(MAX_LENGTH['subject_display_text'],MAX_LENGTH['evidence_display_text'])
+        if len(displayText) >= maxLen:
+            print('ERROR: The length of display_text @ row ' + str(rowIndex) + ' exceeds threshold ('+str(maxLen)+')', file=sys.stderr)
+        if displayText == '':
+            print('ERROR: Missing display_text @ row ' + str(rowIndex), file=sys.stderr)
 
 
 def checkSubmission(submissionFolder, submissionName, storyTitle, tier, submissions, columns, backgroundData):
@@ -467,6 +527,12 @@ def checkFileValue(value, rowIndex, submissionFolder, submissionName):
     if value[0:14] != './submissions/':
         print('ERROR: '+submissionName+': Wrong file prefix @ row ' + str(rowIndex) + ': ' + value, file=sys.stderr)
     (folder, filename) = os.path.split(submissionFolder+value[1:])
+    maxLen = MAX_LENGTH['file_path']
+    if len(folder) >= maxLen:
+        print('ERROR: '+submissionName+' @ row ' + str(rowIndex) + ': The length of file path exceeds threshold ('+str(maxLen)+')', file=sys.stderr)
+    maxLen = MAX_LENGTH['file_name']
+    if len(filename) >= maxLen:
+        print('ERROR: '+submissionName+' @ row ' + str(rowIndex) + ': The length of file name exceeds threshold ('+str(maxLen)+')', file=sys.stderr)
     if folder not in CHECK_FILE_CACHE:
         if os.path.isdir(folder):
             CHECK_FILE_CACHE[folder] = set(os.listdir(folder))
@@ -498,6 +564,10 @@ def checkNumericValue(value, rowIndex, submissionName):
 
 
 def checkUrlValue(value, rowIndex, submissionName, columns):
+
+    maxLen = MAX_LENGTH['url']
+    if len(value) >= maxLen:
+        print('ERROR: '+submissionName+' @ row ' + str(rowIndex) + ': The length of URL exceeds threshold ('+str(maxLen)+')', file=sys.stderr)
     if value[0:8] == 'https://' or value[0:7] == 'http://' or value[0:6] == 'ftp://':
         # check the site
         if CHECK_URLS and value not in CHECK_URL_CACHE:
