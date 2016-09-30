@@ -60,6 +60,7 @@ SUBMISSION_DATE_HEADER = 'submission_date'
 TEMPLATE_NAME_HEADER = 'template_name'
 
 MAX_LENGTH = {
+    'display_name':255, # DashboardEntity
     'template_description':1024, 'observation_summary':1024, 'submission_name':128, 'submission_description':1024, 'project':1024, 'principal_investigator': 64, # ObservationTemplate
     'url': 2048, # UrlEvidence
     'file_path':1024, 'file_name':1024, 'mime_type': 256, # FileEvidence
@@ -67,6 +68,11 @@ MAX_LENGTH = {
     'evidence_display_text':10240, 'evidence_column_name': 1024, 'attribute': 128, # ObservedEvidenceRole
     'units': 32, # DataNumericValue
     'role': 128, # SubjectWithSummaries
+    'sequence':2048, 'type':5, 'reagent_name':255, # ShRna
+    'smiles':2048, # CompoundImpl
+    'gene_id':32, 'gene_symbol':32, # GeneImpl
+    'annotation_source':128, 'annotation_type':128, # AnnotationImpl
+    'database_id':128, 'database_name':128 # XrefImpl
 }
 
 CHECK_FILE_CACHE = {}
@@ -86,7 +92,7 @@ def main():
     backgroundData = loadBackgroundData(submissionFolder)
     (submissions, storyTitles, tiers) = checkTemplates(submissionFolder, columns)
     checkColumns(submissionFolder, set(submissions.values()))
-    for submission in submissions:
+    for submission in sorted(submissions):
         checkSubmission(submissionFolder, submission, storyTitles.get(submission), tiers.get(submission), submissions, columns, backgroundData)
 
 
@@ -173,6 +179,8 @@ def checkSummary(row, index, columnSet, submissionNameIndex):
         maxLen = MAX_LENGTH['observation_summary']
         if len(summary) >= maxLen:
             print('ERROR: The length of observation_summary @ ' + row[submissionNameIndex] + ' exceeds threshold ('+str(maxLen)+')', file=sys.stderr)
+        if summary[-1] != '.':
+            print('WARNING: The last symbol of observation_summary @ ' + row[submissionNameIndex] + ' is not period', file=sys.stderr)
         for fragment in summary.split('<'):
             if fragment.find('>') > 0:
                 columnName = fragment[:fragment.find('>')]
@@ -655,7 +663,9 @@ def loadColumns(submissionFolder):
 
                 columnMap = columns.get(templateName, {})
                 if columnName in columnMap.keys():
-                    print('WARNING: column '+columnName+' is present twice in ' + templateName, file=sys.stderr)
+                    print('ERROR: column '+columnName+' is present twice in ' + templateName, file=sys.stderr)
+                if columnName == 'dummy':
+                    print('ERROR: column '+columnName+' will be ignored ' + templateName, file=sys.stderr)
                 columnMap[columnName] = map
                 columns[templateName] = columnMap
             rowIndex = rowIndex + 1
@@ -668,12 +678,20 @@ def loadBackgroundData(submissionFolder):
     backgroundData = {}
     backgroundData['animal_model'] = loadAnimalModels(submissionFolder)
     backgroundData['cell_sample'] = loadCellSamples(submissionFolder)
+    checkCellAnnotations(submissionFolder)
     backgroundData['compound'] = loadCompounds(submissionFolder)
     backgroundData['gene'] = loadGenes(submissionFolder)
-    backgroundData['protein'] = None
+    backgroundData['protein'] = set()
     backgroundData['shrna'] = loadShRNA(submissionFolder)
     backgroundData['tissue_sample'] = loadTissueSamples(submissionFolder)
-    backgroundData['transcript'] = None
+    backgroundData['transcript'] = set()
+
+    maxLen = MAX_LENGTH['display_name']
+    for subject in backgroundData:
+        print('INFO: Checking '+subject+' string lengths')
+        for name in backgroundData[subject]:
+            if len(name) >= maxLen:
+                print('ERROR: The length of '+subject+' "' + name + '" exceeds threshold ('+str(maxLen)+')', file=sys.stderr)
     return backgroundData
 
 
@@ -718,6 +736,75 @@ def loadCellSamples(submissionFolder):
         print('ERROR: Unable to load cell_sample background data: ' + str(e), file=sys.stderr)
         return None
 
+def checkCellAnnotations(submissionFolder):
+    checkCellAnnotationNames(submissionFolder)
+    checkCellAnnotationSources(submissionFolder)
+    checkCellAnnotationTypes(submissionFolder)
+
+
+def checkCellAnnotationNames(submissionFolder):
+    try:
+        cellAnnotationFile = submissionFolder+'/subject_data/cell_sample/cell_anno_name.txt'
+        print('INFO: Loading '+cellAnnotationFile)
+        rowIndex = 0
+        maxLen = MAX_LENGTH['display_name']
+        with open(cellAnnotationFile,'r') as input:
+            for line in input:
+                row = line.strip().split('\t')
+                if rowIndex == 0:
+                    idColumnIndex = findIndex(row,'CELL_ANNO_NAME_ID')
+                    nameColumnIndex = findIndex(row,'CELL_ANNO_NAME')
+                else:
+                    annotation = row[nameColumnIndex]
+                    if len(annotation) >= maxLen:
+                        print('ERROR: The length of annotation for CELL_ANNO_NAME_ID=' + row[idColumnIndex] + ' exceeds threshold ('+str(maxLen)+')', file=sys.stderr)
+                rowIndex = rowIndex + 1
+        print('INFO: Loaded '+str(rowIndex-1)+' cell annotation names')
+    except Exception as e:
+        print('ERROR: Unable to load cell_sample annotation data: ' + str(e), file=sys.stderr)
+
+
+def checkCellAnnotationSources(submissionFolder):
+    try:
+        cellAnnotationSourceFile = submissionFolder+'/subject_data/cell_sample/cell_anno_source.txt'
+        print('INFO: Loading '+cellAnnotationSourceFile)
+        rowIndex = 0
+        maxLen = MAX_LENGTH['annotation_source']
+        with open(cellAnnotationSourceFile,'r') as input:
+            for line in input:
+                row = line.strip().split('\t')
+                if rowIndex == 0:
+                    sourceColumnIndex = findIndex(row,'cell_anno_source')
+                else:
+                    source = row[sourceColumnIndex]
+                    if len(source) >= maxLen:
+                        print('ERROR: The length of annotation source "' + source + '" exceeds threshold ('+str(maxLen)+')', file=sys.stderr)
+                rowIndex = rowIndex + 1
+        print('INFO: Loaded '+str(rowIndex-1)+' cell annotation sources')
+    except Exception as e:
+        print('ERROR: Unable to load cell_sample annotation source data: ' + str(e), file=sys.stderr)
+
+
+def checkCellAnnotationTypes(submissionFolder):
+    try:
+        cellAnnotationTypeFile = submissionFolder+'/subject_data/cell_sample/cell_anno_type.txt'
+        print('INFO: Loading '+cellAnnotationTypeFile)
+        rowIndex = 0
+        maxLen = MAX_LENGTH['annotation_type']
+        with open(cellAnnotationTypeFile,'r') as input:
+            for line in input:
+                row = line.strip().split('\t')
+                if rowIndex == 0:
+                    typeColumnIndex = findIndex(row,'CELL_ANNO_TYPE')
+                else:
+                    type = row[typeColumnIndex]
+                    if len(type) >= maxLen:
+                        print('ERROR: The length of annotation type "' + type + '" exceeds threshold ('+str(maxLen)+')', file=sys.stderr)
+                rowIndex = rowIndex + 1
+        print('INFO: Loaded '+str(rowIndex-1)+' cell annotation types')
+    except Exception as e:
+        print('ERROR: Unable to load cell_sample annotation type data: ' + str(e), file=sys.stderr)
+
 
 def loadCompounds(submissionFolder):
     try:
@@ -727,16 +814,22 @@ def loadCompounds(submissionFolder):
         images = set(os.listdir(imageFolder))
         print('INFO: Loading '+compoundFile)
         rowIndex = 0
+        maxLen = MAX_LENGTH['smiles']
         with open(compoundFile,'r') as input:
             for line in input:
                 row = line.strip().split('\t')
                 if rowIndex == 0:
+                    idColumnIndex = findIndex(row,'CPD_ID')
                     nameColumnIndex = findIndex(row,'CPD_PRIMARY_NAME')
                     structureFileColumnIndex = findIndex(row,'STRUCTURE_FILE')
+                    smilesColumnIndex = findIndex(row,'SMILES')
                 else:
                     compounds.add(row[nameColumnIndex])
                     if row[structureFileColumnIndex] not in images:
                         print('WARNING: Compounds.txt: image file not found: ' + row[structureFileColumnIndex], file=sys.stderr)
+                    smiles = row[smilesColumnIndex]
+                    if len(smiles) >= maxLen:
+                        print('ERROR: The length of SMILES for CPD_ID=' + row[idColumnIndex] + ' exceeds threshold ('+str(maxLen)+')', file=sys.stderr)
                 rowIndex = rowIndex + 1
         compoundFile = submissionFolder+'/subject_data/compound/CompoundSynonyms.txt'
         print('INFO: Loading '+compoundFile)
@@ -773,6 +866,8 @@ def loadSpeciesGenes(submissionFolder, species, taxid):
         geneFile = submissionFolder+'/subject_data/gene/'+species+'.gene_info.gz'
         print('INFO: Loading '+geneFile)
         rowIndex = 0
+        geneIdMaxLen = MAX_LENGTH['gene_id']
+        symbolMaxLen = MAX_LENGTH['gene_symbol']
         with gzip.open(geneFile,'rt') as input:
             for line in input:
                 if (rowIndex > 0):
@@ -780,7 +875,11 @@ def loadSpeciesGenes(submissionFolder, species, taxid):
                     if (row[0] == taxid):
                         geneid = row[1]
                         genes.add(geneid)
+                        if len(geneid) >= geneIdMaxLen:
+                            print('ERROR: The length of gene ID "' + geneid + '" exceeds threshold ('+str(geneIdMaxLen)+')', file=sys.stderr)
                         symbol = row[2]
+                        if len(symbol) >= symbolMaxLen:
+                            print('ERROR: The length of gene symbol "' + symbol + '" exceeds threshold ('+str(symbolMaxLen)+')', file=sys.stderr)
                         genes.add(symbol)
                         synonyms = row[4]
                         if (synonyms != '-'):
@@ -809,6 +908,8 @@ def loadShRNA(submissionFolder):
                     shrna.add(row[nameColumnIndex])
                 rowIndex = rowIndex + 1
 
+        seqMaxLen = MAX_LENGTH['sequence']
+        reagentMaxLen = MAX_LENGTH['reagent_name']
         trcnFile = submissionFolder+'/subject_data/shrna/trc_public.05Apr11.txt'
         print('INFO: Loading '+trcnFile)
         rowIndex = 0
@@ -821,7 +922,12 @@ def loadShRNA(submissionFolder):
                 else:
                     cloneId = row[cloneIdIndex]
                     if cloneId in shrna:
-                        shrna.add(row[sequenceIndex])
+                        if len(cloneId) >= reagentMaxLen:
+                            print('ERROR: The length of shRNA name "' + cloneId + '" exceeds threshold ('+str(reagentMaxLen)+')', file=sys.stderr)
+                        sequence = row[sequenceIndex]
+                        shrna.add(sequence)
+                        if len(sequence) >= seqMaxLen:
+                            print('ERROR: The length of shRNA sequence "' + sequence + '" exceeds threshold ('+str(seqMaxLen)+')', file=sys.stderr)
                 rowIndex = rowIndex + 1
 
         sirnaFile = submissionFolder+'/subject_data/sirna/siRNA_reagents.txt'
@@ -832,8 +938,15 @@ def loadShRNA(submissionFolder):
                 row = line.strip().split('\t')
                 if rowIndex == 0:
                     nameColumnIndex = findIndex(row,'reagent_name')
+                    sequenceIndex = findIndex(row,'target_sequence')
                 else:
-                    shrna.add(row[nameColumnIndex])
+                    reagentName = row[nameColumnIndex]
+                    shrna.add(reagentName)
+                    if len(reagentName) >= reagentMaxLen:
+                        print('ERROR: The length of siRNA name "' + reagentName + '" exceeds threshold ('+str(reagentMaxLen)+')', file=sys.stderr)
+                    sequence = row[sequenceIndex]
+                    if len(sequence) >= seqMaxLen:
+                        print('ERROR: The length of siRNA sequence "' + sequence + '" exceeds threshold ('+str(seqMaxLen)+')', file=sys.stderr)
                 rowIndex = rowIndex + 1
         print('INFO: Loaded '+str(len(shrna))+' shrna names')
         return shrna
