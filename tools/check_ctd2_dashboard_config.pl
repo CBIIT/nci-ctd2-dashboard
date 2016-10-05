@@ -577,9 +577,11 @@ for my $template_name (natsort keys %submission_column_info) {
                     #    }
                     #}
                     #elsif ($observation_template_map{"$template_name:$column_info->{column_name}"} ne 'subject:findSiRNAByReagentName') {
-                    if ($observation_template_map{"$template_name:$column_info->{column_name}"} ne 'subject:findSiRNAByReagentName') {
+                    if ($observation_template_map{"$template_name:$column_info->{column_name}"} ne 'subject:findSiRNAByReagentName' and
+                        $observation_template_map{"$template_name:$column_info->{column_name}"} ne 'subject:findSiRNAByTargetSequence') {
                         print "\n", (-t STDOUT ? colored('ERROR', 'red') : 'ERROR'), 
-                              ": '$template_name:$column_info->{column_name}' needs value 'subject:findSiRNAByReagentName'";
+                              ": '$template_name:$column_info->{column_name}' needs value ",
+                              "'subject:findSiRNAByReagentName' or 'subject:findSiRNAByTargetSequence";
                         $obs_data_shared_app_context_xml_errors++;
                     }
                 }
