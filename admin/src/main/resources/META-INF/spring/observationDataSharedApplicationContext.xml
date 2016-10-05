@@ -23,24 +23,14 @@
                 <batch:chunk reader="broadCompoundSensitivityMutationEnrichmentReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
         </batch:step>
-        <batch:step id="broadTier3NavitoclaxStoryStep" parent="observationDataStep" next="columbiaMarinaAnalysisStep">
+        <batch:step id="broadTier3NavitoclaxStoryStep" parent="observationDataStep" next="columbiaMRAFetAnalysisStep">
             <batch:tasklet>
                 <batch:chunk reader="broadTier3NavitoclaxStoryReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
         </batch:step>
-        <batch:step id="columbiaMarinaAnalysisStep" parent="observationDataStep" next="columbiaMRAFetAnalysisStep">
-            <batch:tasklet>
-                <batch:chunk reader="columbiaMarinaAnalysisReader" processor="observationDataProcessor" writer="observationDataWriter"/>
-            </batch:tasklet>
-        </batch:step>
-        <batch:step id="columbiaMRAFetAnalysisStep" parent="observationDataStep" next="columbiaJointMRSHRNADiffAnalysisStep">
+        <batch:step id="columbiaMRAFetAnalysisStep" parent="observationDataStep" next="columbiaGbmMrsStoryStep">
             <batch:tasklet>
                 <batch:chunk reader="columbiaMRAFetAnalysisReader" processor="observationDataProcessor" writer="observationDataWriter"/>
-            </batch:tasklet>
-        </batch:step>
-        <batch:step id="columbiaJointMRSHRNADiffAnalysisStep" parent="observationDataStep" next="columbiaGbmMrsStoryStep">
-            <batch:tasklet>
-                <batch:chunk reader="columbiaJointMRSHRNADiffAnalysisReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
         </batch:step>
         <batch:step id="columbiaGbmMrsStoryStep" parent="observationDataStep" next="cshlTier4FGF19StoryStep">
@@ -318,14 +308,9 @@
                 <batch:chunk reader="utmdaPik3r1Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
         </batch:step>
-        <batch:step id="utswNsclcAscl1Step" parent="observationDataStep" next="columbiaAktTallStep">
+        <batch:step id="utswNsclcAscl1Step" parent="observationDataStep" next="cshlBrd4Step">
             <batch:tasklet>
                 <batch:chunk reader="utswNsclcAscl1Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
-            </batch:tasklet>
-        </batch:step>
-        <batch:step id="columbiaAktTallStep" parent="observationDataStep" next="cshlBrd4Step">
-            <batch:tasklet>
-                <batch:chunk reader="columbiaAktTallReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
         </batch:step>
         <batch:step id="cshlBrd4Step" parent="observationDataStep" next="utswNsclcStep">
@@ -583,12 +568,46 @@
                 <batch:chunk reader="columbiaPiovanAktNr3c1PhosReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
         </batch:step>
-        <batch:step id="columbiaPiovanAktNr3c1SigStep" parent="observationDataStep">
+        <batch:step id="columbiaPiovanAktNr3c1SigStep" parent="observationDataStep" next="columbiaAktTallStep">
             <batch:tasklet>
                 <batch:chunk reader="columbiaPiovanAktNr3c1SigReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
         </batch:step>
-
+        <batch:step id="columbiaAktTallStep" parent="observationDataStep" next="dfciKimExpressProfileStep">
+            <batch:tasklet>
+                <batch:chunk reader="columbiaAktTallReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+            </batch:tasklet>
+        </batch:step>
+        <batch:step id="dfciKimExpressProfileStep" parent="observationDataStep" next="dfciKimHtTransStep">
+            <batch:tasklet>
+                <batch:chunk reader="dfciKimExpressProfileReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+            </batch:tasklet>
+        </batch:step>
+        <batch:step id="dfciKimHtTransStep" parent="observationDataStep" next="dfciKimTumorAssayStep">
+            <batch:tasklet>
+                <batch:chunk reader="dfciKimHtTransReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+            </batch:tasklet>
+        </batch:step>
+        <batch:step id="dfciKimTumorAssayStep" parent="observationDataStep" next="dfciRareStep">
+            <batch:tasklet>
+                <batch:chunk reader="dfciKimTumorAssayReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+            </batch:tasklet>
+        </batch:step>
+        <batch:step id="dfciRareStep" parent="observationDataStep" next="tgenEddyCcleCtrpStep">
+            <batch:tasklet>
+                <batch:chunk reader="dfciRareReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+            </batch:tasklet>
+        </batch:step>
+        <batch:step id="tgenEddyCcleCtrpStep" parent="observationDataStep" next="tgenEddyCcleCtrpCombStep">
+            <batch:tasklet>
+                <batch:chunk reader="tgenEddyCcleCtrpReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+            </batch:tasklet>
+        </batch:step>
+        <batch:step id="tgenEddyCcleCtrpCombStep" parent="observationDataStep">
+            <batch:tasklet>
+                <batch:chunk reader="tgenEddyCcleCtrpCombReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+            </batch:tasklet>
+        </batch:step>
     </batch:job>
 
     <bean id="observationDataStep" class="org.springframework.batch.core.step.item.SimpleStepFactoryBean" abstract="true">
@@ -641,15 +660,6 @@
         <property name="delimiter" value="\u0009"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,cell_lineage,compound_name,cell_sublineage,number_of_cell_lines,number_of_example_cell_lines,enrichment_direction,fdr_q_value,image_path,nci_portal,gct_path,ctrp_portal,publication_url"/>
     </bean>
-
-    <bean name="columbiaMarinaAnalysisLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
-        <property name="fieldSetMapper" ref="observationDataMapper" />
-        <property name="lineTokenizer" ref="columbiaMarinaAnalysisLineTokenizer" />
-    </bean>
-    <bean name="columbiaMarinaAnalysisLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
-        <property name="names" value="dummy,submission_name,submission_date,template_name,probeset_id,disease_condition,tissue,cell_type,cell_lineage,gene_symbol,func_type,mr_regulon_set_size,mr_gsea_es,mr_gsea_p_value,mr_gsea_fdr"/>
-    </bean>
     
     <bean name="columbiaMRAFetAnalysisLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
         <property name="fieldSetMapper" ref="observationDataMapper" />
@@ -658,15 +668,6 @@
     <bean name="columbiaMRAFetAnalysisLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
         <property name="delimiter" value="\u0009"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,disease_condition,tissue,gene_symbol,func_type,mra_regulon_signature_overlap,mra_overlap_rank,mra_fet_p_value,figure_1,network_1,network_2,publication_url"/>
-    </bean>
-    
-    <bean name="columbiaJointMRSHRNADiffAnalysisLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
-        <property name="fieldSetMapper" ref="observationDataMapper" />
-        <property name="lineTokenizer" ref="columbiaJointMRSHRNADiffAnalysisLineTokenizer" />
-    </bean>
-    <bean name="columbiaJointMRSHRNADiffAnalysisLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
-        <property name="names" value="dummy,submission_name,submission_date,template_name,probeset_id,disease_condition,cell_line_1,cell_line_2,gene_symbol,func_type,mr_regulon_set_size,mr_gsea_es,mr_gsea_p_value,mr_gsea_fdr,num_shRNAs,shrna_diff_rep_z_score_combined,shrna_diff_rep_p_value_combined,shrna_diff_rep_fdr_combined,shrna_diff_rep_net_direction_combined,nci_portal"/>
     </bean>
     
     <bean name="columbiaGbmMrsStoryLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
@@ -1164,15 +1165,6 @@
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,gene_symbol_3,gene_symbol_4,gene_symbol_5,gene_symbol_6,gene_symbol_7,gene_symbol_8,gene_symbol_9,tissue_sample,resource_url_1,resource_url_2,resource_url_3,story_location"/>
     </bean>
     
-    <bean name="columbiaAktTallLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
-        <property name="fieldSetMapper" ref="observationDataMapper" />
-        <property name="lineTokenizer" ref="columbiaAktTallLineTokenizer" />
-    </bean>
-    <bean name="columbiaAktTallLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
-        <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,gene_symbol_3,gene_symbol_4,gene_symbol_5,compound_name_1,compound_name_2,cell_line_1,cell_line_2,tissue_sample,publication_reference,story_location"/>
-    </bean>
-    
     <bean name="cshlBrd4LineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
         <property name="fieldSetMapper" ref="observationDataMapper" />
         <property name="lineTokenizer" ref="cshlBrd4LineTokenizer" />
@@ -1640,6 +1632,69 @@
         <property name="delimiter" value="\u0009"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,cell_line_1,cell_line_2,compound_1,figure_2abcd,figure_2e,figure_2f,publication_reference"/>
     </bean>
+    
+    <bean name="columbiaAktTallLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="columbiaAktTallLineTokenizer" />
+    </bean>
+    <bean name="columbiaAktTallLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="\u0009"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,gene_symbol_3,gene_symbol_4,gene_symbol_5,compound_name_1,compound_name_2,cell_line_1,cell_line_2,tissue_sample,publication_reference,link_to_mouse_model,story_location"/>
+    </bean>
+    
+    <bean name="dfciKimExpressProfileLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="dfciKimExpressProfileLineTokenizer" />
+    </bean>
+    <bean name="dfciKimExpressProfileLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="\u0009"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,allele_1,gene_symbol_2,allele_2,correlation,publication_url,nci_portal"/>
+    </bean>
+    
+    <bean name="dfciKimHtTransLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="dfciKimHtTransLineTokenizer" />
+    </bean>
+    <bean name="dfciKimHtTransLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="\u0009"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol,allele,pools,maximum_enrichment,penetrance,number_of_tumors,publication_url,nci_portal"/>
+    </bean>
+    
+    <bean name="dfciKimTumorAssayLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="dfciKimTumorAssayLineTokenizer" />
+    </bean>
+    <bean name="dfciKimTumorAssayLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="\u0009"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol,allele,incidence,number_tumors_WT,number_of_sites_WT,number_tumors,number_of_sites,publication_url,nci_portal"/>
+    </bean>
+    
+    <bean name="dfciRareLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="dfciRareLineTokenizer" />
+    </bean>
+    <bean name="dfciRareLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="\u0009"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,gene_symbol_3,gene_symbol_4,resource_url,publication_reference_1,story_location"/>
+    </bean>
+    
+    <bean name="tgenEddyCcleCtrpLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="tgenEddyCcleCtrpLineTokenizer" />
+    </bean>
+    <bean name="tgenEddyCcleCtrpLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="\u0009"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,pathway,pathway_link,gene_symbol,compound_name,mediator_type,p_value,number_of_genes_in_pathway,differential_dependency_network,program,data_source_1,data_source_2,data_source_3,cell_line_subset,classification,publication_reference_1,publication_reference_2"/>
+    </bean>
+    
+    <bean name="tgenEddyCcleCtrpCombLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="tgenEddyCcleCtrpCombLineTokenizer" />
+    </bean>
+    <bean name="tgenEddyCcleCtrpCombLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="\u0009"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,pathway,pathway_link,gene_symbol,compound_1_name,compound_2_name,proportion,mediator_type,p_value,number_of_genes_in_pathway,differential_dependency_network,program,data_source_1,data_source_2,data_source_3,cell_line_subset,classification,publication_reference_1,publication_reference_2"/>
+    </bean>
 
     <!-- shared helper beans -->
     <bean name="observationTemplateMap" class="java.util.HashMap">
@@ -1701,17 +1756,6 @@
                 <entry key="broad_cpd_sens_sublin_enrich:gct_path" value="evidence:readString:createObservedFileEvidence" />
                 <entry key="broad_cpd_sens_sublin_enrich:ctrp_portal" value="evidence:readString:createObservedUrlEvidence" />
                 <entry key="broad_cpd_sens_sublin_enrich:publication_url" value="evidence:readString:createObservedUrlEvidence" />
-                <entry key="columbia_marina_analysis:probeset_id" value="evidence:readString:createObservedLabelEvidence" />
-                <entry key="columbia_marina_analysis:disease_condition" value="subject:findTissueSampleByName" />
-                <entry key="columbia_marina_analysis:tissue" value="evidence:readString:createObservedLabelEvidence" />
-                <entry key="columbia_marina_analysis:cell_type" value="evidence:readString:createObservedLabelEvidence" />
-                <entry key="columbia_marina_analysis:cell_lineage" value="subject:findTissueSampleByName" />
-                <entry key="columbia_marina_analysis:gene_symbol" value="subject:findGenesBySymbol" />
-                <entry key="columbia_marina_analysis:func_type" value="evidence:readString:createObservedLabelEvidence" />
-                <entry key="columbia_marina_analysis:mr_regulon_set_size" value="evidence:readInt:createObservedNumericEvidence" />
-                <entry key="columbia_marina_analysis:mr_gsea_es" value="evidence:readDouble:createObservedNumericEvidence" />
-                <entry key="columbia_marina_analysis:mr_gsea_p_value" value="evidence:readDouble:createObservedNumericEvidence" />
-                <entry key="columbia_marina_analysis:mr_gsea_fdr" value="evidence:readDouble:createObservedNumericEvidence" />
                 <entry key="columbia_mra_fet_analysis:disease_condition" value="subject:findTissueSampleByName" />
                 <entry key="columbia_mra_fet_analysis:tissue" value="subject:findTissueSampleByName" />
                 <entry key="columbia_mra_fet_analysis:gene_symbol" value="subject:findGenesBySymbol" />
@@ -1723,22 +1767,6 @@
                 <entry key="columbia_mra_fet_analysis:network_1" value="evidence:readString:createObservedFileEvidence" />
                 <entry key="columbia_mra_fet_analysis:network_2" value="evidence:readString:createObservedFileEvidence" />
                 <entry key="columbia_mra_fet_analysis:publication_url" value="evidence:readString:createObservedUrlEvidence" />
-                <entry key="columbia_joint_mr_shrna_diff:probeset_id" value="evidence:readString:createObservedLabelEvidence" />
-                <entry key="columbia_joint_mr_shrna_diff:disease_condition" value="subject:findTissueSampleByName" />
-                <entry key="columbia_joint_mr_shrna_diff:cell_line_1" value="subject:findCellLineByName" />
-                <entry key="columbia_joint_mr_shrna_diff:cell_line_2" value="subject:findCellLineByName" />
-                <entry key="columbia_joint_mr_shrna_diff:gene_symbol" value="subject:findGenesBySymbol" />
-                <entry key="columbia_joint_mr_shrna_diff:func_type" value="evidence:readString:createObservedLabelEvidence" />
-                <entry key="columbia_joint_mr_shrna_diff:mr_regulon_set_size" value="evidence:readInt:createObservedNumericEvidence" />
-                <entry key="columbia_joint_mr_shrna_diff:mr_gsea_es" value="evidence:readDouble:createObservedNumericEvidence" />
-                <entry key="columbia_joint_mr_shrna_diff:mr_gsea_p_value" value="evidence:readDouble:createObservedNumericEvidence" />
-                <entry key="columbia_joint_mr_shrna_diff:mr_gsea_fdr" value="evidence:readDouble:createObservedNumericEvidence" />
-                <entry key="columbia_joint_mr_shrna_diff:num_shRNAs" value="evidence:readInt:createObservedNumericEvidence" />
-                <entry key="columbia_joint_mr_shrna_diff:shrna_diff_rep_z_score_combined" value="evidence:readDouble:createObservedNumericEvidence" />
-                <entry key="columbia_joint_mr_shrna_diff:shrna_diff_rep_p_value_combined" value="evidence:readDouble:createObservedNumericEvidence" />
-                <entry key="columbia_joint_mr_shrna_diff:shrna_diff_rep_fdr_combined" value="evidence:readDouble:createObservedNumericEvidence" />
-                <entry key="columbia_joint_mr_shrna_diff:shrna_diff_rep_net_direction_combined" value="evidence:readString:createObservedLabelEvidence" />
-                <entry key="columbia_joint_mr_shrna_diff:nci_portal" value="evidence:readString:createObservedUrlEvidence" />
                 <entry key="columbia_gbm_mrs:disease_condition" value="subject:findTissueSampleByName" />
                 <entry key="columbia_gbm_mrs:gene_symbol_1" value="subject:findGenesBySymbol" />
                 <entry key="columbia_gbm_mrs:gene_symbol_2" value="subject:findGenesBySymbol" />
@@ -2265,18 +2293,6 @@
                 <entry key="hutch-m_targets:resource_url_2" value="evidence:readString:createObservedUrlEvidence" />
                 <entry key="hutch-m_targets:resource_url_3" value="evidence:readString:createObservedUrlEvidence" />
                 <entry key="hutch-m_targets:story_location" value="evidence:readString:createObservedFileEvidence" />
-                <entry key="columbia_akt_tall:gene_symbol_1" value="subject:findGenesBySymbol" />
-                <entry key="columbia_akt_tall:gene_symbol_2" value="subject:findGenesBySymbol" />
-                <entry key="columbia_akt_tall:gene_symbol_3" value="subject:findGenesBySymbol" />
-                <entry key="columbia_akt_tall:gene_symbol_4" value="subject:findGenesBySymbol" />
-                <entry key="columbia_akt_tall:gene_symbol_5" value="subject:findGenesBySymbol" />
-                <entry key="columbia_akt_tall:compound_name_1" value="subject:findCompoundsByName" />
-                <entry key="columbia_akt_tall:compound_name_2" value="subject:findCompoundsByName" />
-                <entry key="columbia_akt_tall:cell_line_1" value="subject:findCellLineByName" />
-                <entry key="columbia_akt_tall:cell_line_2" value="subject:findCellLineByName" />
-                <entry key="columbia_akt_tall:tissue_sample" value="subject:findTissueSampleByName" />
-                <entry key="columbia_akt_tall:publication_reference" value="evidence:readString:createObservedUrlEvidence" />
-                <entry key="columbia_akt_tall:story_location" value="evidence:readString:createObservedFileEvidence" />
                 <entry key="cshl_brd4:gene_symbol_1" value="subject:findGenesBySymbol" />
                 <entry key="cshl_brd4:gene_symbol_2" value="subject:findGenesBySymbol" />
                 <entry key="cshl_brd4:gene_symbol_3" value="subject:findGenesBySymbol" />
@@ -2696,7 +2712,7 @@
                 <entry key="dfci_yap1_analysis:publication_url" value="evidence:readString:createObservedUrlEvidence" />
                 <entry key="dfci_yap1_analysis:nci_portal" value="evidence:readString:createObservedUrlEvidence" />
                 <entry key="dfci_cowley2014_ataris_analysis:number_of_cell_lines" value="evidence:readInt:createObservedNumericEvidence" />
-                <entry key="dfci_cowley2014_ataris_analysis:shRNA_id" value="subject:findSiRNAByReagentName" />
+                <entry key="dfci_cowley2014_ataris_analysis:shRNA_id" value="subject:findSiRNAByTargetSequence" />
                 <entry key="dfci_cowley2014_ataris_analysis:gene_symbol" value="subject:findGenesBySymbol" />
                 <entry key="dfci_cowley2014_ataris_analysis:solution_name" value="evidence:readString:createObservedLabelEvidence" />
                 <entry key="dfci_cowley2014_ataris_analysis:c_score" value="evidence:readDouble:createObservedNumericEvidence" />
@@ -2840,6 +2856,84 @@
                 <entry key="columbia_piovan_AKT_NR3C1_sig:figure_2e" value="evidence:readString:createObservedFileEvidence" />
                 <entry key="columbia_piovan_AKT_NR3C1_sig:figure_2f" value="evidence:readString:createObservedFileEvidence" />
                 <entry key="columbia_piovan_AKT_NR3C1_sig:publication_reference" value="evidence:readString:createObservedUrlEvidence" />
+                <entry key="columbia_akt_tall:gene_symbol_1" value="subject:findGenesBySymbol" />
+                <entry key="columbia_akt_tall:gene_symbol_2" value="subject:findGenesBySymbol" />
+                <entry key="columbia_akt_tall:gene_symbol_3" value="subject:findGenesBySymbol" />
+                <entry key="columbia_akt_tall:gene_symbol_4" value="subject:findGenesBySymbol" />
+                <entry key="columbia_akt_tall:gene_symbol_5" value="subject:findGenesBySymbol" />
+                <entry key="columbia_akt_tall:compound_name_1" value="subject:findCompoundsByName" />
+                <entry key="columbia_akt_tall:compound_name_2" value="subject:findCompoundsByName" />
+                <entry key="columbia_akt_tall:cell_line_1" value="subject:findCellLineByName" />
+                <entry key="columbia_akt_tall:cell_line_2" value="subject:findCellLineByName" />
+                <entry key="columbia_akt_tall:tissue_sample" value="subject:findTissueSampleByName" />
+                <entry key="columbia_akt_tall:publication_reference" value="evidence:readString:createObservedUrlEvidence" />
+                <entry key="columbia_akt_tall:story_location" value="evidence:readString:createObservedFileEvidence" />
+                <entry key="columbia_akt_tall:link_to_mouse_model" value="evidence:readString:createObservedUrlEvidence" />
+                <entry key="dfci_kim_expression_profiling:gene_symbol_1" value="subject:findGenesBySymbol" />
+                <entry key="dfci_kim_expression_profiling:allele_1" value="evidence:readString:createObservedLabelEvidence" />
+                <entry key="dfci_kim_expression_profiling:gene_symbol_2" value="subject:findGenesBySymbol" />
+                <entry key="dfci_kim_expression_profiling:allele_2" value="evidence:readString:createObservedLabelEvidence" />
+                <entry key="dfci_kim_expression_profiling:correlation" value="evidence:readDouble:createObservedNumericEvidence" />
+                <entry key="dfci_kim_expression_profiling:publication_url" value="evidence:readString:createObservedUrlEvidence" />
+                <entry key="dfci_kim_expression_profiling:nci_portal" value="evidence:readString:createObservedUrlEvidence" />
+                <entry key="dfci_kim_ht_transformation:gene_symbol" value="subject:findGenesBySymbol" />
+                <entry key="dfci_kim_ht_transformation:allele" value="evidence:readString:createObservedLabelEvidence" />
+                <entry key="dfci_kim_ht_transformation:pools" value="evidence:readString:createObservedLabelEvidence" />
+                <entry key="dfci_kim_ht_transformation:maximum_enrichment" value="evidence:readDouble:createObservedNumericEvidence" />
+                <entry key="dfci_kim_ht_transformation:penetrance" value="evidence:readDouble:createObservedNumericEvidence" />
+                <entry key="dfci_kim_ht_transformation:number_of_tumors" value="evidence:readInt:createObservedNumericEvidence" />
+                <entry key="dfci_kim_ht_transformation:publication_url" value="evidence:readString:createObservedUrlEvidence" />
+                <entry key="dfci_kim_ht_transformation:nci_portal" value="evidence:readString:createObservedUrlEvidence" />
+                <entry key="dfci_kim_tumorigenic_assay:gene_symbol" value="subject:findGenesBySymbol" />
+                <entry key="dfci_kim_tumorigenic_assay:allele" value="evidence:readString:createObservedLabelEvidence" />
+                <entry key="dfci_kim_tumorigenic_assay:incidence" value="evidence:readInt:createObservedNumericEvidence" />
+                <entry key="dfci_kim_tumorigenic_assay:number_tumors_WT" value="evidence:readInt:createObservedNumericEvidence" />
+                <entry key="dfci_kim_tumorigenic_assay:number_of_sites_WT" value="evidence:readInt:createObservedNumericEvidence" />
+                <entry key="dfci_kim_tumorigenic_assay:number_tumors" value="evidence:readInt:createObservedNumericEvidence" />
+                <entry key="dfci_kim_tumorigenic_assay:number_of_sites" value="evidence:readInt:createObservedNumericEvidence" />
+                <entry key="dfci_kim_tumorigenic_assay:publication_url" value="evidence:readString:createObservedUrlEvidence" />
+                <entry key="dfci_kim_tumorigenic_assay:nci_portal" value="evidence:readString:createObservedUrlEvidence" />
+                <entry key="dfci_rare:gene_symbol_1" value="subject:findGenesBySymbol" />
+                <entry key="dfci_rare:gene_symbol_2" value="subject:findGenesBySymbol" />
+                <entry key="dfci_rare:gene_symbol_3" value="subject:findGenesBySymbol" />
+                <entry key="dfci_rare:gene_symbol_4" value="subject:findGenesBySymbol" />
+                <entry key="dfci_rare:resource_url" value="evidence:readString:createObservedUrlEvidence" />
+                <entry key="dfci_rare:publication_reference_1" value="evidence:readString:createObservedUrlEvidence" />
+                <entry key="dfci_rare:story_location" value="evidence:readString:createObservedFileEvidence" />
+                <entry key="tgen_eddy_ccle_ctrp:pathway" value="evidence:readString:createObservedLabelEvidence" />
+                <entry key="tgen_eddy_ccle_ctrp:pathway_link" value="evidence:readString:createObservedUrlEvidence" />
+                <entry key="tgen_eddy_ccle_ctrp:gene_symbol" value="subject:findGenesBySymbol" />
+                <entry key="tgen_eddy_ccle_ctrp:compound_name" value="subject:findCompoundsByName" />
+                <entry key="tgen_eddy_ccle_ctrp:mediator_type" value="evidence:readString:createObservedLabelEvidence" />
+                <entry key="tgen_eddy_ccle_ctrp:p_value" value="evidence:readDouble:createObservedNumericEvidence" />
+                <entry key="tgen_eddy_ccle_ctrp:number_of_genes_in_pathway" value="evidence:readInt:createObservedNumericEvidence" />
+                <entry key="tgen_eddy_ccle_ctrp:differential_dependency_network" value="evidence:readString:createObservedUrlEvidence" />
+                <entry key="tgen_eddy_ccle_ctrp:program" value="evidence:readString:createObservedUrlEvidence" />
+                <entry key="tgen_eddy_ccle_ctrp:data_source_1" value="evidence:readString:createObservedUrlEvidence" />
+                <entry key="tgen_eddy_ccle_ctrp:data_source_2" value="evidence:readString:createObservedUrlEvidence" />
+                <entry key="tgen_eddy_ccle_ctrp:data_source_3" value="evidence:readString:createObservedUrlEvidence" />
+                <entry key="tgen_eddy_ccle_ctrp:cell_line_subset" value="evidence:readString:createObservedLabelEvidence" />
+                <entry key="tgen_eddy_ccle_ctrp:classification" value="evidence:readString:createObservedLabelEvidence" />
+                <entry key="tgen_eddy_ccle_ctrp:publication_reference_1" value="evidence:readString:createObservedUrlEvidence" />
+                <entry key="tgen_eddy_ccle_ctrp:publication_reference_2" value="evidence:readString:createObservedUrlEvidence" />
+                <entry key="tgen_eddy_ccle_ctrp_comb:pathway" value="evidence:readString:createObservedLabelEvidence" />
+                <entry key="tgen_eddy_ccle_ctrp_comb:pathway_link" value="evidence:readString:createObservedUrlEvidence" />
+                <entry key="tgen_eddy_ccle_ctrp_comb:gene_symbol" value="subject:findGenesBySymbol" />
+                <entry key="tgen_eddy_ccle_ctrp_comb:compound_1_name" value="subject:findCompoundsByName" />
+                <entry key="tgen_eddy_ccle_ctrp_comb:compound_2_name" value="subject:findCompoundsByName" />
+                <entry key="tgen_eddy_ccle_ctrp_comb:proportion" value="evidence:readString:createObservedLabelEvidence" />
+                <entry key="tgen_eddy_ccle_ctrp_comb:mediator_type" value="evidence:readString:createObservedLabelEvidence" />
+                <entry key="tgen_eddy_ccle_ctrp_comb:p_value" value="evidence:readDouble:createObservedNumericEvidence" />
+                <entry key="tgen_eddy_ccle_ctrp_comb:number_of_genes_in_pathway" value="evidence:readInt:createObservedNumericEvidence" />
+                <entry key="tgen_eddy_ccle_ctrp_comb:differential_dependency_network" value="evidence:readString:createObservedUrlEvidence" />
+                <entry key="tgen_eddy_ccle_ctrp_comb:program" value="evidence:readString:createObservedUrlEvidence" />
+                <entry key="tgen_eddy_ccle_ctrp_comb:data_source_1" value="evidence:readString:createObservedUrlEvidence" />
+                <entry key="tgen_eddy_ccle_ctrp_comb:data_source_2" value="evidence:readString:createObservedUrlEvidence" />
+                <entry key="tgen_eddy_ccle_ctrp_comb:data_source_3" value="evidence:readString:createObservedUrlEvidence" />
+                <entry key="tgen_eddy_ccle_ctrp_comb:cell_line_subset" value="evidence:readString:createObservedLabelEvidence" />
+                <entry key="tgen_eddy_ccle_ctrp_comb:classification" value="evidence:readString:createObservedLabelEvidence" />
+                <entry key="tgen_eddy_ccle_ctrp_comb:publication_reference_1" value="evidence:readString:createObservedUrlEvidence" />
+                <entry key="tgen_eddy_ccle_ctrp_comb:publication_reference_2" value="evidence:readString:createObservedUrlEvidence" />
             </map>
         </constructor-arg>
     </bean>

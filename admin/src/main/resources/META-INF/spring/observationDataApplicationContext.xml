@@ -54,30 +54,12 @@
                 <property name="linesToSkip" value="7" />
             </bean>
         </property>
-    </bean>  
-    <bean name="columbiaMarinaAnalysisReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
-        <property name="resources" value="${columbia.marina.analysis.data.location}" />
-        <property name="delegate">
-            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
-                <property name="lineMapper" ref="columbiaMarinaAnalysisLineMapper" />
-                <property name="linesToSkip" value="7" />
-            </bean>
-        </property>
     </bean>
     <bean name="columbiaMRAFetAnalysisReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
         <property name="resources" value="${columbia.mra.fet.analysis.data.location}" />
         <property name="delegate">
             <bean class="org.springframework.batch.item.file.FlatFileItemReader">
                 <property name="lineMapper" ref="columbiaMRAFetAnalysisLineMapper" />
-                <property name="linesToSkip" value="7" />
-            </bean>
-        </property>
-    </bean>
-    <bean name="columbiaJointMRSHRNADiffAnalysisReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
-        <property name="resources" value="${columbia.joint.mr.shrna.diff.analysis.data.location}" />
-        <property name="delegate">
-            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
-                <property name="lineMapper" ref="columbiaJointMRSHRNADiffAnalysisLineMapper" />
                 <property name="linesToSkip" value="7" />
             </bean>
         </property>
@@ -577,15 +559,6 @@
             </bean>
         </property>
     </bean>
-    <bean name="columbiaAktTallReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
-        <property name="resources" value="${columbia.akt.tall.data.location}" />
-        <property name="delegate">
-            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
-                <property name="lineMapper" ref="columbiaAktTallLineMapper" />
-                <property name="linesToSkip" value="7" />
-            </bean>
-        </property>
-    </bean>
     <bean name="cshlBrd4Reader" class="org.springframework.batch.item.file.MultiResourceItemReader">
         <property name="resources" value="${cshl.brd4.data.location}" />
         <property name="delegate">
@@ -1054,5 +1027,67 @@
             </bean>
         </property>
     </bean>
-    
+    <bean name="columbiaAktTallReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${columbia.akt.tall.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="columbiaAktTallLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="dfciKimExpressProfileReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${dfci.kim.express.profile.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="dfciKimExpressProfileLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="dfciKimHtTransReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${dfci.kim.ht.trans.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="dfciKimHtTransLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="dfciKimTumorAssayReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${dfci.kim.tumor.assay.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="dfciKimTumorAssayLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="dfciRareReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${dfci.rare.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="dfciRareLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="tgenEddyCcleCtrpReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${tgen.eddy.ccle.ctrp.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="tgenEddyCcleCtrpLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="tgenEddyCcleCtrpCombReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${tgen.eddy.ccle.ctrp.comb.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="tgenEddyCcleCtrpCombLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
 </beans>
