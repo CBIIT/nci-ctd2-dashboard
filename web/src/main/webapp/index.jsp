@@ -803,13 +803,13 @@
                  <div class="span9">
                      <table id="gene-details-grid" class="table table-bordered table-striped">
                          <tr>
-                             <th>Gene symbol</th>
+                             <th>Gene symbol<div style="font-size:10px; font-style:italic">(from HGNC)</div></th>
                              <td>{{displayName}}&nbsp;&nbsp;
                                   <a href="#" class="addGene-{{displayName}} greenColor" title="Add gene to cart">+</a>  
                              </td>
                          </tr>
                          <tr>
-                             <th>Synonyms/Related terms</th>
+                             <th>Synonyms/Related terms<div style="font-size:10px; font-style:italic">(from Entrez)</div></th>
                              <td>
                                  <ul class="synonyms"></ul>
                              </td>
@@ -878,11 +878,11 @@
                 <div class="span9">
                     <table id="protein-details-grid" class="table table-bordered table-striped">
                         <tr>
-                            <th>Gene symbol</th>
+                            <th>Gene symbol<div style="font-size:10px; font-style:italic">(from HGNC)</div></th>
                             <td>{{displayName}}</td>
                         </tr>
                         <tr>
-                            <th>Synonyms</th>
+                            <th>Synonyms/Related terms<div style="font-size:10px; font-style:italic">(from Entrez)</div></th>
                             <td>
                                 <ul class="synonyms"></ul>
                             </td>
