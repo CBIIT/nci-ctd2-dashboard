@@ -2599,10 +2599,13 @@
                     case 'edit':
                         templateId = rowModel.id;
                         $("span#submission-name").text(rowModel.displayName);
-                        (new TemplateDataRowView({
-                            model: rowModel,
-                            el: $("#template-table-subject")
-                        })).render();
+                        var subjectColumns = rowModel.subjectColumns; // this is an array of strings
+                        for (var i=0; i < subjectColumns.length; i++) {
+                            (new TemplateDataRowView({
+                                model: {columnTag: subjectColumns[i], subjectClass: "TEST_SUBJECT_CLASS"},
+                                el: $("#template-table-subject")
+                            })).render();
+                        }
 
                         $("#step2").fadeOut();
                         $("#step4").slideDown();

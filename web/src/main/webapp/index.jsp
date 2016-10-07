@@ -1877,11 +1877,12 @@
     </script>
 
     <script type="text/template" id="template-data-row-tmpl">
-        <tr id="template-subject-row-columntag-{{displayName}}">
-            <td>x</td>
-            <td>columns tag</td>
-            <td>subject class</td>
-            <td>subject role</td>
+        <tr id="template-subject-row-columntag-{{columnTag}}">
+            <td><img src="img/icons/remove.png" style="width:20px;height:20px;"></td>
+            <td><input type="text" class="form-control" id="columntag-{{columnTag}}" value="{{columnTag}}" placeholder="column tag"></td>
+            <td><select><option>Gene</option><option>{{subjectClass}}</option></select></td>
+            <td><select><option>Biomarker</option><option>Target</option></select></td>
+            <td><input type="text" class="form-control" id="description-{{columnTag}}" placeholder="subject description"></td>
         </tr>
     </script>
 
@@ -2040,10 +2041,10 @@
                     </tbody>
                     <tbody id="template-table-evidence">
                         <tr id="evidence-header">
-                            <th>Delete Row</th><th>Column Tag</th><th>Evidence Type (Q: is the matching column number purely conincidence?)</th><th>Value Type</th><th>Description</th><th>Observation 1 (enter values) (Q: why does this have this "enter values" part but subject section does not have it?)</th>
+                            <th>Delete Row</th><th>Column Tag</th><th>Evidence Type</th><th>Value Type</th><th>Description</th><th>Observation 1</th>
                         </tr>
                         <tr id="xxx">
-                            <td>X</td><td>evidence_1. Q: why is coloumn necessary at all??</td><td>background</td><td>Text</td><td>Evdes1</td><td>ev1a</td>
+                            <td>X</td><td>evidence_1</td><td>background</td><td>Text</td><td>Evdes1</td><td>ev1a</td>
                         </tr>
                     </tbody>
                 </table>
