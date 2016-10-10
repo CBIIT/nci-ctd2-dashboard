@@ -2626,6 +2626,13 @@
         template: _.template($("#template-data-row-tmpl").html()),
         render: function() {
             $(this.el).append(this.template(this.model));
+            var columnTag = this.model.columnTag;
+            $("#delete-subject-"+columnTag).click(function()  {
+                $("#confirmed-delete").unbind('click').click(function(){
+                    $('tr#template-subject-row-columntag-'+columnTag).remove();
+                });
+                $("#confirmation-modal").modal('show'); // TODO: the text needs to be cutomized
+            });
             return this;
         }
     });
