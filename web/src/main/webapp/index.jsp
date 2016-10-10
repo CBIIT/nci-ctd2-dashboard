@@ -1879,7 +1879,7 @@
     <script type="text/template" id="template-data-row-tmpl">
         <tr id="template-subject-row-columntag-{{columnTag}}">
             <td><img src="img/icons/remove.png" style="width:20px;height:20px;"></td>
-            <td><input type="text" class="form-control" id="columntag-{{columnTag}}" value="{{columnTag}}" placeholder="column tag"></td>
+            <td><input type="text" class="form-control subject-columntag" value="{{columnTag}}" placeholder="column tag"></td>
             <td><select><option>Gene</option><option>{{subjectClass}}</option></select></td>
             <td><select><option>Biomarker</option><option>Target</option></select></td>
             <td><input type="text" class="form-control" id="description-{{columnTag}}" placeholder="subject description"></td>

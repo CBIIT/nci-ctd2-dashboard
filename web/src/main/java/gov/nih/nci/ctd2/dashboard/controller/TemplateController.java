@@ -67,7 +67,7 @@ public class TemplateController {
         SubmissionTemplate template = dashboardDao.getEntityById(SubmissionTemplate.class, templateId);
         template.setSubjectColumns(subjects);
         template.setEvidenceColumns(evidences);
-        dashboardDao.save(template);
+        dashboardDao.update(template);
 
         return new ResponseEntity<String>("SubmissionTemplate " + templateId + " UPDATED", HttpStatus.OK);
     }

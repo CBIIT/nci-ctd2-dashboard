@@ -2350,13 +2350,16 @@
         	alert('error: templateId==0');
         	return;
         }
-        var subjects = $("#template-table-subject").val();
+        var subjects = "";
+        $('#template-table-subject input.subject-columntag').each(function (i, row) {
+            if(i>0) subjects += ","
+            subjects += $(row).val();
+        });
+
         var evidences = $("#template-table-evidence").val();
         console.log('subjects='+subjects);
         console.log('evidences='+evidences);
-        subjects = 'subj1,subj2';
         evidences = "evd1,evd2,ebd3";
-        console.log("subjects="+subjects);
         console.log("evidences="+evidences);
         var async = true;
         if(sync) async = false;
@@ -2420,9 +2423,6 @@
                 storedTemplates.fetch({
                     success: function() {
                         _.each(storedTemplates.models, function(oneTemplate) {
-                            console.log("DEBUG PURPOSE (delete this later): ");
-                            console.log(oneTemplate.toJSON());
-                            console.log(oneTemplate);
                             console.log(oneTemplate.toJSON().subjectColumns);
                             (new ExistingTemplateView({
                                 model: oneTemplate.toJSON(),
