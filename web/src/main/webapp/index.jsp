@@ -1878,7 +1878,7 @@
 
     <script type="text/template" id="template-data-row-tmpl">
         <tr id="template-subject-row-columntag-{{columnTag}}">
-            <td><img src="img/icons/remove.png" style="width:20px;height:20px;margin-left:auto;margin-right:auto" id="delete-subject-{{columnTag}}" /></td>
+            <td style="text-align:center;"><img src="img/icons/remove.png" style="width:20px;height:20px;" id="delete-subject-{{columnTag}}" /></td>
             <td><input type="text" class="form-control subject-columntag" value="{{columnTag}}" placeholder="column tag"></td>
             <td><select><option>Gene</option><option>{{subjectClass}}</option></select></td>
             <td><select><option>Biomarker</option><option>Target</option></select></td>

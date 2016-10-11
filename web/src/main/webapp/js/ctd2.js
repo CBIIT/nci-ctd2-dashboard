@@ -2470,7 +2470,10 @@
             });
 
             $("#add-subject").click(function() {
-                $("#template-table-subject").append("<tr><td>x</td><td>subject column tag</td><td>subject class</td></tr>");
+                (new TemplateDataRowView({
+                    model: {columnTag: 'new column tag', subjectClass: "new subject class"},
+                    el: $("#template-table-subject")
+                })).render();
             });
 
             $("#download-template").click(function() {
