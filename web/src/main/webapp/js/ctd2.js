@@ -2387,6 +2387,16 @@
             return false;
     };
 
+    var SubjectRoleDropdownRowView = Backbone.View.extend({
+        template: _.template($('#role-dropdown-row-tmpl').html()),
+        render: function() {
+            $(this.el).append(this.template(this.model));
+        }
+    });
+
+    var subjectRoles = new SubjectRoles();
+    subjectRoles.fetch( {async:false} );
+
     var TemplateHelperView = Backbone.View.extend({
         template: _.template($("#template-helper-tmpl").html()),
         el: $("#main-container"),
@@ -2411,8 +2421,8 @@
             var self = this;
             $("#apply-submission-center").click(function() {
                 var centerId = $("#template-submission-centers").val();
-                console.log(centerId);
                 if(centerId.length == 0) {
+                    console.log("centerId is empty");
                     return; // error control
                 }
 
@@ -2423,7 +2433,6 @@
                 storedTemplates.fetch({
                     success: function() {
                         _.each(storedTemplates.models, function(oneTemplate) {
-                            console.log(oneTemplate.toJSON().subjectColumns);
                             (new ExistingTemplateView({
                                 model: oneTemplate.toJSON(),
                                 el: $("#existing-template-table")
@@ -2471,7 +2480,7 @@
 
             $("#add-subject").click(function() {
                 (new TemplateDataRowView({
-                    model: {columnTag: 'new column tag', subjectClass: "new subject class"},
+                    model: {columnTag: 'new column tag', subjectClass: "new subject class", subjectRole: "TOBE"},
                     el: $("#template-table-subject")
                 })).render();
             });
@@ -2595,7 +2604,6 @@
         render: function() {
             $(this.el).append(this.template(this.model));
             var rowModel = this.model;
-            console.log("... for debug "+rowModel.id+" "+rowModel.displayName);
             $("#template-action-"+rowModel.id).change(function() {
                 var action = $(this).val();
                 switch(action) {
@@ -2605,7 +2613,7 @@
                         var subjectColumns = rowModel.subjectColumns; // this is an array of strings
                         for (var i=0; i < subjectColumns.length; i++) {
                             (new TemplateDataRowView({
-                                model: {columnTag: subjectColumns[i], subjectClass: "TEST_SUBJECT_CLASS"},
+                                model: {columnTag: subjectColumns[i].replace(/ /g, "-"), subjectClass: "TEST_SUBJECT_CLASS", subjectRole: "cell line"},
                                 el: $("#template-table-subject")
                             })).render();
                         }
@@ -2636,6 +2644,20 @@
                 });
                 $("#confirmation-modal").modal('show'); // TODO: the text needs to be cutomized
             });
+
+            var role = this.model.subjectRole;
+            // the list of role is fixed, but 'selected' is row-specific
+            var roleModels = subjectRoles.models;
+            for (var i = 0; i < roleModels.length; i++) {
+                var roleName = roleModels[i].toJSON().displayName;
+                var cName = roleName.charAt(0).toUpperCase() + roleName.slice(1);
+                new SubjectRoleDropdownRowView(
+                        {
+                            el: $('#role-dropdown-'+columnTag.replace(/ /g, "-")),
+                            model: { roleName:roleName, cName: cName, selected:roleName==role?'selected':null }
+                        } ).render();
+            }
+
             return this;
         }
     });
