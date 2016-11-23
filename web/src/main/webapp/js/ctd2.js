@@ -2401,10 +2401,49 @@
         template: _.template($("#template-helper-tmpl").html()),
         el: $("#main-container"),
         table: "#template-table",
-        preview: "#template-preview",
 
         render: function() {
             $(this.el).html(this.template(this.model));
+
+            // top menu
+            $("#menu_home").click(function() {
+                $("#step1").slideDown();
+                $("#step2").fadeOut();
+                $("#step3").fadeOut();
+                $("#step4").fadeOut();
+                $("#step5").fadeOut();
+            });
+            $("#menu_manage").click(function() {
+                $("#step1").fadeOut();
+                $("#step2").slideDown();
+                $("#step3").fadeOut();
+                $("#step4").fadeOut();
+                $("#step5").fadeOut();
+            });
+            $("#menu_description").click(function() {
+                $("#step1").fadeOut();
+                $("#step2").fadeOut();
+                $("#step3").slideDown();
+                $("#step4").fadeOut();
+                $("#step5").fadeOut();
+            });
+            $("#menu_data").click(function() {
+                $("#step1").fadeOut();
+                $("#step2").fadeOut();
+                $("#step3").fadeOut();
+                $("#step4").slideDown();
+                $("#step5").fadeOut();
+            });
+            $("#menu_summary").click(function() {
+                $("#step1").fadeOut();
+                $("#step2").fadeOut();
+                $("#step3").fadeOut();
+                $("#step4").fadeOut();
+                $("#step5").slideDown();
+            });
+            $("#menu_preview").click(function() {
+                alert("preview...");
+            });
 
             var submissionCenters = new SubmissionCenters();
             submissionCenters.fetch({
@@ -2470,7 +2509,6 @@
 
                 $("#step4").fadeOut();
                 $("#step5").slideDown();
-                $(self.preview).slideDown();
             });
 
 

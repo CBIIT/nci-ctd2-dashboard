@@ -1894,17 +1894,25 @@
         <div class="container common-container" id="template-helper-container">
             <h2>CTD<sup>2</sup> Data Submission Builder</h2>
 
-            <div class="alert alert-warning alert-block">
-                <a href="#" class="close" data-dismiss="alert">&times;</a>
-                <p>
+            <div class="btn-group" role="group" aria-label="...">
+            <button type="button" class="btn btn-default" id='menu_home'>Home</button>
+            <button type="button" class="btn btn-default" id='menu_manage'>Manage Submission</button>
+            <button type="button" class="btn btn-default" id='menu_description'>Submission Description</button>
+            <button type="button" class="btn btn-default" id='menu_data'>Submission Data</button>
+            <button type="button" class="btn btn-default" id='menu_summary'>Observation Summary</button>
+            <button type="button" class="btn btn-default" id='menu_preview'>Preview</button>
+            </div>
+
+            <div id="step1">
+                <div class="alert alert-warning alert-block">
+                  <a href="#" class="close" data-dismiss="alert">&times;</a>
+                  <p>
                     <strong>Welcome to the submission template helper!</strong><br>
                     ... introductory text, briefly explaining the submission process ...
                     This tool will help create a basic Dashboard submission template from scratch.
                     Once a basic template is prepared, the template can be downloaded for local use and preparation of a Dashboard submission.
-                </p>
-            </div>
-
-            <div id="step1">
+                  </p>
+                </div>
                 <h3>Submission Builder Home</h3>
                 <table class="table">
                     <tr>
@@ -2093,12 +2101,8 @@
                         </td>
                     </tr>
                 </table>
-            </div>
 
-
-            <div class="row hide" id="template-preview">
                 <hr>
-
                 <div class="span8 offset2 template-download">
                     <button class="btn btn-large" id="preview-template">Preview template</button>
                     <div class="span4">
@@ -2109,7 +2113,8 @@
                         </form>
                     </div>
                 </div>
-            </div><!-- end of template-preview -->
+            </div> <!-- end of step 5 -->
+
         </div><!-- end of template-helper-container -->
     </script>
 
