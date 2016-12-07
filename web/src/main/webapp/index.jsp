@@ -2044,6 +2044,7 @@
                 <b>Center:</b> <span id="center-name"></span><br/>
                 <b>Submission Name:</b> <span id="submission-name"></span>
                 <!-- this table contains the main data, which dictate the data structure I should use -->
+                <div style="overflow-x:auto;">
                 <table class="table table-bordered table-striped" id="template-table">
                     <tbody id="template-table-subject">
                         <tr id="subject-header">
@@ -2060,6 +2061,7 @@
                         </tr>
                     </tbody>
                 </table>
+                </div>
                 <table  class="table">
                     <tr>
                     <td>
