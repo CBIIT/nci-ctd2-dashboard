@@ -2143,7 +2143,7 @@
                 </h4>
                 </div>
                 <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-                <div class="panel-body">
+                <div class="panel-body" id=observation_1>
                     Observation #1 preview TO BE IMPLEMENTED
                 </div>
                 </div>
@@ -2157,7 +2157,7 @@
                 </h4>
                 </div>
                 <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-                <div class="panel-body">
+                <div class="panel-body" id=observation_2>
                     Observation #2 preview TO BE IMPLEMENTED
                 </div>
                 </div>
@@ -2171,7 +2171,7 @@
                 </h4>
                 </div>
                 <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
-                <div class="panel-body">
+                <div class="panel-body" id=observation_x>
                     Observation #3 preview TO BE IMPLEMENTED
                 </div>
                 </div>

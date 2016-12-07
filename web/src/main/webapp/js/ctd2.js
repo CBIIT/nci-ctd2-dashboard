@@ -1781,6 +1781,12 @@
             });
 
             $('#submission-observation-grid').dataTable();*/
+
+ //           $('#magicX').html(this.template(submission)); // put the actual preview to the fancybox. if this idea works at all
+            $('#observation_1').html(JSON.stringify(this.model.observations[0]));
+            $('#observation_2').html(JSON.stringify(this.model.observations[1]));
+            $('#observation_x').html(JSON.stringify(this.model.observations));
+
             $('#headingOne').click(function(){
                 $('.in').collapse('toggle');
             });
@@ -2548,8 +2554,8 @@
                 };
 
                 // TODO fake data
-                var obs1 = null;
-                var obs2 = null;
+                var obs1 = {gene_1:"GENE 1", gene_2:"GENE 2", evidence_1:"EVIDENCE 1"};
+                var obs2 = {gene_1:"GENE A", gene_2:"GENE B", evidence_1:"EVIDENCE A"};;
 
                 // Create the submission preview
                 (new SubmissionPreviewView({
