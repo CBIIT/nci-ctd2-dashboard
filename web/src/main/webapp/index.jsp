@@ -1922,12 +1922,14 @@
             <h2>CTD<sup>2</sup> Data Submission Builder</h2>
 
             <div class="btn-group" role="group" aria-label="...">
-            <button type="button" class="btn btn-default" id='menu_home'>Home</button>
-            <button type="button" class="btn btn-default" id='menu_manage'>Manage Submission</button>
-            <button type="button" class="btn btn-default" id='menu_description'>Submission Description</button>
-            <button type="button" class="btn btn-default" id='menu_data'>Submission Data</button>
-            <button type="button" class="btn btn-default" id='menu_summary'>Observation Summary</button>
-            <button type="button" class="btn btn-default" id='menu_preview'>Preview</button>
+            <button type="button" class="btn btn-link" id='menu_home'>Home</button>
+            <button type="button" class="btn btn-link" id='menu_manage'>Manage Submission</button>
+            </div>
+            <div class="btn-group" role="group" aria-label="...">
+            <button type="button" class="btn btn-link" id='menu_description'>Submission Description</button>
+            <button type="button" class="btn btn-link" id='menu_data'>Submission Data</button>
+            <button type="button" class="btn btn-link" id='menu_summary'>Observation Summary</button>
+            <button type="button" class="btn btn-link" id='menu_preview'>Preview</button>
             </div>
 
             <div id="step1">
