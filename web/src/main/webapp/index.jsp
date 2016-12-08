@@ -2120,6 +2120,10 @@
         </div><!-- end of template-helper-container -->
     </script>
 
+    <script type="text/template" id="temp-observation-tmpl">
+        <td>{{obvText}}</td>
+    </script>
+
     <script type="text/template" id="template-helper-center-tmpl">
         <option value="{{id}}">{{displayName}}</option>
     </script>

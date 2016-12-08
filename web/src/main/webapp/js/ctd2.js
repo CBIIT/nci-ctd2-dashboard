@@ -2529,6 +2529,13 @@
                 })).render();
             });
 
+            $("#add-observation").click(function() {
+                new TempObservationView({
+                    el: $("#template-table"),
+                    model: {obvText: "TEST"}, // TODO make this an array for all rows (corresponding to both suject and evidence parts)
+                }).render();
+            });
+
             $("#download-template").click(function() {
                 //self.addMetaColumn("observation_summary", $("#template-obs-summary").val());
                 return this;
@@ -2674,6 +2681,18 @@
                 }
             });
             return this;
+        }
+    });
+
+    var TempObservationView = Backbone.View.extend({
+        template: _.template($("#temp-observation-tmpl").html()),
+        render: function() {
+            // this.model should have a field named obvText
+            var obvTemp = this.template(this.model);
+            $(this.el).find("tr").each( function() {
+                $(this).append(obvTemp);
+            }
+            );
         }
     });
 
