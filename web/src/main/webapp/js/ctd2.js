@@ -2519,11 +2519,14 @@
 
 
             $("#add-evidence").click(function() {
-                $("#template-table-evidence").append("<tr><td>x</td><td>evidence column tag</td><td>evidence type</td></tr>");
+                (new TemplateEvidenceDataRowView({
+                    model: {columnTag: 'new column tag', evidenceType: "background", valueType: "Document"},
+                    el: $("#template-table-evidence")
+                })).render();
             });
 
             $("#add-subject").click(function() {
-                (new TemplateDataRowView({
+                (new TemplateSubjectDataRowView({
                     model: {columnTag: 'new column tag', subjectClass: "new subject class", subjectRole: "TOBE"},
                     el: $("#template-table-subject")
                 })).render();
@@ -2663,11 +2666,12 @@
                         $("span#submission-name").text(rowModel.displayName);
                         var subjectColumns = rowModel.subjectColumns; // this is an array of strings
                         for (var i=0; i < subjectColumns.length; i++) {
-                            (new TemplateDataRowView({
+                            (new TemplateSubjectDataRowView({
                                 model: {columnTag: subjectColumns[i].replace(/ /g, "-"), subjectClass: "TEST_SUBJECT_CLASS", subjectRole: "cell line"},
                                 el: $("#template-table-subject")
                             })).render();
                         }
+                        // TODO evidence data (similar to subject data)
 
                         $("#step2").fadeOut();
                         $("#step4").slideDown();
@@ -2696,8 +2700,8 @@
         }
     });
 
-    var TemplateDataRowView = Backbone.View.extend({
-        template: _.template($("#template-data-row-tmpl").html()),
+    var TemplateSubjectDataRowView = Backbone.View.extend({
+        template: _.template($("#template-subject-data-row-tmpl").html()),
         render: function() {
             $(this.el).append(this.template(this.model));
             var columnTag = this.model.columnTag;
@@ -2720,6 +2724,36 @@
                             model: { roleName:roleName, cName: cName, selected:roleName==role?'selected':null }
                         } ).render();
             }
+
+            return this;
+        }
+    });
+
+    var TemplateEvidenceDataRowView = Backbone.View.extend({
+        template: _.template($("#template-evidence-data-row-tmpl").html()),
+        render: function() {
+            $(this.el).append(this.template(this.model));
+            var columnTag = this.model.columnTag;
+            $("#delete-evidence-"+columnTag).click(function()  {
+                $("#confirmed-delete").unbind('click').click(function(){
+                    $('tr#template-evidence-row-columntag-'+columnTag).remove();
+                });
+                $("#confirmation-modal").modal('show'); // TODO: the text needs to be cutomized
+            });
+
+            /*
+            var selectedValueType = this.model.valueType;
+            // the list of role is fixed, but 'selected' is row-specific
+            var roleModels = valueTypes.models;
+            for (var i = 0; i < valueTypes.length; i++) {
+                var valueType = valueTypes[i].toJSON().displayName;
+                var vtName = valueType.charAt(0).toUpperCase() + valueType.slice(1);
+                new EvidenceTypeDropdownRowView( // TODO not existing yet
+                        {
+                            el: $('#role-dropdown-'+columnTag.replace(/ /g, "-")),
+                            model: { valueType:valueType, vtName: vtName, selected:valueType==selectedValueType?'selected':null }
+                        } ).render();
+            }*/
 
             return this;
         }

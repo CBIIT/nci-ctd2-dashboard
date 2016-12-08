@@ -1880,13 +1880,40 @@
         <option value="{{roleName}}" {{selected}}>{{cName}}</option>
     </script>
 
-    <script type="text/template" id="template-data-row-tmpl">
+    <script type="text/template" id="template-subject-data-row-tmpl">
         <tr id="template-subject-row-columntag-{{columnTag}}">
             <td style="text-align:center;"><img src="img/icons/remove.png" style="width:20px;height:20px;" id="delete-subject-{{columnTag}}" /></td>
             <td><input type="text" class="form-control subject-columntag" value="{{columnTag}}" placeholder="column tag"></td>
             <td><select><option>Gene</option><option>{{subjectClass}}</option></select></td>
             <td><select id="role-dropdown-{{columnTag}}"></select></td>
             <td><input type="text" class="form-control" id="description-{{columnTag}}" placeholder="subject description"></td>
+        </tr>
+    </script>
+
+    <script type="text/template" id="template-evidence-data-row-tmpl">
+        <tr id="template-evidence-row-columntag-{{columnTag}}">
+            <td style="text-align:center;"><img src="img/icons/remove.png" style="width:20px;height:20px;" id="delete-evidence-{{columnTag}}" /></td>
+            <td><input type="text" class="form-control evidence-columntag" value="{{columnTag}}" placeholder="column tag"></td>
+            <td><select id="evidence-type-{{columnTag}}">
+                <option>background</option>
+                <option>computed</option>
+                <option>link</option>
+                <option>literature</option>
+                <option>measuredd</option>
+                <option>observed</option>
+                <option>reference</option>
+                <option>{{evidenceType}}</option><!-- TODO not an addition option, but 'selected' -->
+            </select></td>
+            <td><select id="value-type-{{columnTag}}">
+                <option>Document</option>
+                <option>Image</option>
+                <option>Number</option>
+                <option>Document</option>
+                <option>Text</option>
+                <option>URL</option>
+                <option>Internal dashboard link</option>
+            </select></td>
+            <td><input type="text" class="form-control" id="description-{{columnTag}}" placeholder="evidence description"></td>
         </tr>
     </script>
 
@@ -2050,15 +2077,13 @@
                         <tr id="subject-header">
                             <th>Delete Row</th><th>Column Tag</th><th>Subject Classs</th><th>Subject Role</th><th>Description</th><th>Observation 1</th>
                         </tr>
-                        <!-- here are rows for ONE template -->
+                        <!-- here goes rows for subject columns -->
                     </tbody>
                     <tbody id="template-table-evidence">
                         <tr id="evidence-header">
                             <th>Delete Row</th><th>Column Tag</th><th>Evidence Type</th><th>Value Type</th><th>Description</th><th>Observation 1</th>
                         </tr>
-                        <tr id="xxx">
-                            <td>X</td><td>evidence_1</td><td>background</td><td>Text</td><td>Evdes1</td><td>ev1a</td>
-                        </tr>
+                        <!-- here goes the rows for evidence columns -->
                     </tbody>
                 </table>
                 </div>
