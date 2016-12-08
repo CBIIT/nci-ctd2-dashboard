@@ -2517,6 +2517,18 @@
                 $("#step5").slideDown();
             });
 
+            if($("#template-table-subject tr").length<=1) {
+                (new TemplateSubjectDataRowView({
+                    model: {columnTag: 'new column tag', subjectClass: "Compound", subjectRole: "Candidate drug"},
+                    el: $("#template-table-subject")
+                })).render();
+            }
+            if($("#template-table-evidence tr").length<=1) {
+                (new TemplateEvidenceDataRowView({
+                    model: {columnTag: 'new column tag', evidenceType: "background", valueType: "Document"},
+                    el: $("#template-table-evidence")
+                })).render();
+            }
 
             $("#add-evidence").click(function() {
                 (new TemplateEvidenceDataRowView({
