@@ -2044,7 +2044,7 @@
                     <tr>
                         <th>Request Tier</th>
                         <td>
-                            <select id="template-tier">
+                            <select id="template-tier" style="width:300px">
                                 <option>Tier 1 (initial or screening)</option>
                                 <option>Tier 2 (in vitro)</option>
                                 <option>Tier 3 (in vivo validation)</option>
