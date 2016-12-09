@@ -1881,7 +1881,7 @@
     </script>
 
     <script type="text/template" id="template-subject-data-row-tmpl">
-        <tr id="template-subject-row-columntag-{{columnTag}}">
+        <tr id="template-subject-row-columntag-{{columnTag}}" class="template-data-row">
             <td style="text-align:center;"><img src="img/icons/remove.png" style="width:20px;height:20px;" id="delete-subject-{{columnTag}}" /></td>
             <td><input type="text" class="form-control subject-columntag" value="{{columnTag}}" placeholder="column tag"></td>
             <td><select><option>Gene</option><option>{{subjectClass}}</option></select></td>
@@ -1891,7 +1891,7 @@
     </script>
 
     <script type="text/template" id="template-evidence-data-row-tmpl">
-        <tr id="template-evidence-row-columntag-{{columnTag}}">
+        <tr id="template-evidence-row-columntag-{{columnTag}}" class="template-data-row">
             <td style="text-align:center;"><img src="img/icons/remove.png" style="width:20px;height:20px;" id="delete-evidence-{{columnTag}}" /></td>
             <td><input type="text" class="form-control evidence-columntag" value="{{columnTag}}" placeholder="column tag"></td>
             <td><select id="evidence-type-{{columnTag}}">
@@ -2077,13 +2077,13 @@
                 <table class="table table-bordered table-striped" id="template-table">
                     <tbody id="template-table-subject">
                         <tr id="subject-header">
-                            <th>Delete Row</th><th>Column Tag</th><th>Subject Classs</th><th>Subject Role</th><th>Description</th><th>Observation 1</th>
+                            <th>Delete Row</th><th>Column Tag</th><th>Subject Classs</th><th>Subject Role</th><th>Description</th>
                         </tr>
                         <!-- here goes rows for subject columns -->
                     </tbody>
                     <tbody id="template-table-evidence">
                         <tr id="evidence-header">
-                            <th>Delete Row</th><th>Column Tag</th><th>Evidence Type</th><th>Value Type</th><th>Description</th><th>Observation 1</th>
+                            <th>Delete Row</th><th>Column Tag</th><th>Evidence Type</th><th>Value Type</th><th>Description</th>
                         </tr>
                         <!-- here goes the rows for evidence columns -->
                     </tbody>
@@ -2148,7 +2148,7 @@
     </script>
 
     <script type="text/template" id="temp-observation-tmpl">
-        <td>{{obvText}}</td>
+        <td><input type="text" class="form-control" id="observation-{{obvNumber}}-{{obvColumn}}" placeholder="{{obvText}}"></td>
     </script>
 
     <script type="text/template" id="template-helper-center-tmpl">

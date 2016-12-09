@@ -2403,6 +2403,8 @@
     var subjectRoles = new SubjectRoles();
     subjectRoles.fetch( {async:false} );
 
+    var obvNumber = 1; // next obsveration number to be added
+
     var TemplateHelperView = Backbone.View.extend({
         template: _.template($("#template-helper-tmpl").html()),
         el: $("#main-container"),
@@ -2547,7 +2549,7 @@
             $("#add-observation").click(function() {
                 new TempObservationView({
                     el: $("#template-table"),
-                    model: {obvText: "TEST"}, // TODO make this an array for all rows (corresponding to both suject and evidence parts)
+                    model: {obvNumber: obvNumber, obvColumn: "", obvText: ""}, // TODO make this an array for all rows (corresponding to both suject and evidence parts)
                 }).render();
             });
 
@@ -2703,12 +2705,15 @@
     var TempObservationView = Backbone.View.extend({
         template: _.template($("#temp-observation-tmpl").html()),
         render: function() {
-            // this.model should have a field named obvText
+            // this.model should have fields: obvNumber, obvColumn, and obvText for now
             var obvTemp = this.template(this.model);
-            $(this.el).find("tr").each( function() {
+            $(this.el).find("tr.template-data-row").each( function() {
                 $(this).append(obvTemp);
             }
             );
+            $(this.el).find("tr#subject-header").append("<th>Observation "+obvNumber+"</th>");
+            $(this.el).find("tr#evidence-header").append("<th>Observation "+obvNumber+"</th>");
+            obvNumber++;
         }
     });
 
