@@ -2396,12 +2396,20 @@
     var SubjectRoleDropdownRowView = Backbone.View.extend({
         template: _.template($('#role-dropdown-row-tmpl').html()),
         render: function() {
+            // the template expects roleName, selected, cName from the model
             $(this.el).append(this.template(this.model));
         }
     });
 
     var subjectRoles = new SubjectRoles();
-    subjectRoles.fetch( {async:false} );
+    //subjectRoles.fetch( {async:false} ); // TODO hard-coded for now
+    subjectRoles = {'Compound':['Candidate drug', 'Control compound', 'Perturbagen'],
+        'Gene': ['Background', 'Biomarker', 'Condidate master regulator', 'Interactor', 'Master regultor', 'Oncogone', 'Perturbagen', 'Target'],
+        'RNA': ['Perturbagen'],
+        'Tissue': ['Disease', 'Metastasis', 'Tissue'],
+        'Cell': ['Cell line'],
+        'Animal': ['Strain'],
+    };
 
     var obvNumber = 1; // next obsveration number to be added
 
@@ -2480,8 +2488,23 @@
                 storedTemplates.fetch({
                     success: function() {
                         _.each(storedTemplates.models, function(oneTemplate) {
+                            var oneTemplateModel = oneTemplate.toJSON();
+
+                            if(oneTemplateModel.subjectColumns==null) {
+                                // this should not happend with proper backend data
+                                console.log("subjectColumns is null for "+oneTemplateModel);
+                                return;
+                            }
+
+                            // TODO debug only
+                            var subjectColumnCount = oneTemplateModel.subjectColumns.length;
+                            oneTemplateModel.subjectClasses = []; // the length should match other columns, e.g. column tags, subject roles, descriptions.
+                            for(var i=0; i<subjectColumnCount; i++) {
+                                oneTemplateModel.subjectClasses[i] = Object.keys(subjectRoles)[i]; // TODO testing data for now
+                            }
+
                             (new ExistingTemplateView({
-                                model: oneTemplate.toJSON(),
+                                model: oneTemplateModel,
                                 el: $("#existing-template-table")
                             })).render();
                         });
@@ -2679,9 +2702,16 @@
                         templateId = rowModel.id;
                         $("span#submission-name").text(rowModel.displayName);
                         var subjectColumns = rowModel.subjectColumns; // this is an array of strings
+                        var subjectClasses = rowModel.subjectClasses; // this is an array of strings
+
+                        // debugging only
+                        console.log("subjectClasses="+subjectClasses);
+                        console.log("subjectClasses.length="+subjectClasses.length);
+
                         for (var i=0; i < subjectColumns.length; i++) {
+                            console.log("subjectClasses["+i+"]="+subjectClasses[i]);
                             (new TemplateSubjectDataRowView({
-                                model: {columnTag: subjectColumns[i].replace(/ /g, "-"), subjectClass: "TEST_SUBJECT_CLASS", subjectRole: "cell line"},
+                                model: {columnTag: subjectColumns[i].replace(/ /g, "-"), subjectClass: subjectClasses[i], subjectRole: "cell line"},
                                 el: $("#template-table-subject")
                             })).render();
                         }
@@ -2730,10 +2760,20 @@
             });
 
             var role = this.model.subjectRole;
-            // the list of role is fixed, but 'selected' is row-specific
-            var roleModels = subjectRoles.models;
-            for (var i = 0; i < roleModels.length; i++) {
-                var roleName = roleModels[i].toJSON().displayName;
+            var subjectClass = this.model.subjectClass;
+            console.log("subjectClass="+subjectClass);
+            if(subjectClass===undefined) subjectClass = "Compound"; // simple default value
+
+            // the list of role depends on subject class; 'selected' is row-specific
+            var roleOptions = subjectRoles[subjectClass]; //subjectRoles.models; // TODO temperarily using hard-coded object
+            console.log("roleOptions="+roleOptions);
+
+            if(roleOptions===undefined) { // exceptional case
+                return;
+            }
+
+            for (var i = 0; i < roleOptions.length; i++) {
+                var roleName = roleOptions[i]; //.toJSON().displayName; // TODO temparily using hard-coded values
                 var cName = roleName.charAt(0).toUpperCase() + roleName.slice(1);
                 new SubjectRoleDropdownRowView(
                         {

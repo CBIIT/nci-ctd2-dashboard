@@ -1888,7 +1888,7 @@
                 <option {{ subjectClass=='Compound'?'selected=selected':'' }}>Compound</option>
                 <option {{ subjectClass=='Gene'?'selected=selected':'' }}>Gene</option>
                 <option {{ subjectClass=='RNA'?'selected=selected':'' }} value='RNA'>RNA-based reagent</option>
-                <option {{ subjectClass=='Tissue'?'selected=selected':''} value='Tissue'}>Tissue Sample (disease context)</option>
+                <option {{ subjectClass=='Tissue'?'selected=selected':'' }} value='Tissue'>Tissue Sample (disease context)</option>
                 <option {{ subjectClass=='Cell'?'selected=selected':'' }} value='Cell'>Cell Sample (cell line)</option>
                 <option {{ subjectClass=='Animal'?'selected=selected':'' }} value='Animal'>Animal Model</option>
             </select></td>
