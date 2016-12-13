@@ -2002,13 +2002,13 @@
                 <b>Center:</b> <span id="center-name"></span>
                 <table  class="table">
                     <tr>
-                        <th>Submitter First Name</th>
+                        <th>Submitter First Name *</th>
                         <td>
                             <input id="first-name" placeholder="first name is required" class="input-xxxlarge">
                         </td>
                     </tr>
                     <tr>
-                        <th>Submitter Last Name</th>
+                        <th>Submitter Last Name *</th>
                         <td>
                             <input id="last-name" placeholder="last name is required" class="input-xxxlarge">
                         </td>
@@ -2030,7 +2030,7 @@
                 <table class="table">
                     <tr>
                         <th>
-                            Submission Name
+                            Submission Name *
                         </th>
                         <td>
                             <input id="template-name" placeholder="e.g. centername_your_description" class="input-xxlarge">
