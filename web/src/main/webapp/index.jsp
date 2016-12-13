@@ -2124,7 +2124,7 @@
                 <b>Center:</b> <span id="center-name"></span><br/>
                 <b>Submission Name:</b> <span id="submission-name"></span><br/>
                 <ul>
-                    <li>Please write/update a summary of the observations, using any or all of the "tgas" pre-entred in the text box.</li>
+                    <li>Please write/update a summary of the observations, using any or all of the "tags" pre-entred in the text box.</li>
                     <li>On the dashboard, the tag will be replaced with the actual values you submit. (Q: this does not make sense if this is the actual submission instead of a template.)</li>
                     <li>Delate tags you do not need.</li>
                     <li>Use the Helper to see all available tags.</li>
@@ -2161,6 +2161,19 @@
                     </div>
                 </div> -->
             </div> <!-- end of step 5 -->
+
+            <div id="step6" class="hide">
+                <h3>Observation Summary</h3>
+                <b>Center:</b> <span id="center-name"></span><br/>
+                <b>Submission Name:</b> <span id="submission-name"></span><br/>
+                <select id="preview-select">
+                    <option>observation 1</option><option>observation 2</option><option>observation 3</option>
+                </select>
+                <div id=template-preview-1 style="display:block"><img src="obv1.png"></div>
+                <div id=template-preview-2 style="display:none"><img src="obv2.png"></div>
+                <div id=template-preview-3 style="display:none"><img src="obv3.png"></div>
+
+            </div> <!-- end of step 6 -->
 
         </div><!-- end of template-helper-container -->
     </script>

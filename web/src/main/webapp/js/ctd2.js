@@ -2428,6 +2428,7 @@
                 $("#step3").fadeOut();
                 $("#step4").fadeOut();
                 $("#step5").fadeOut();
+                $("#step6").fadeOut();
             });
             $("#menu_manage").click(function() {
                 $("#step1").fadeOut();
@@ -2435,6 +2436,7 @@
                 $("#step3").fadeOut();
                 $("#step4").fadeOut();
                 $("#step5").fadeOut();
+                $("#step6").fadeOut();
             });
             $("#menu_description").click(function() {
                 $("#step1").fadeOut();
@@ -2442,6 +2444,7 @@
                 $("#step3").slideDown();
                 $("#step4").fadeOut();
                 $("#step5").fadeOut();
+                $("#step6").fadeOut();
             });
             $("#menu_data").click(function() {
                 $("#step1").fadeOut();
@@ -2449,6 +2452,7 @@
                 $("#step3").fadeOut();
                 $("#step4").slideDown();
                 $("#step5").fadeOut();
+                $("#step6").fadeOut();
             });
             $("#menu_summary").click(function() {
                 $("#step1").fadeOut();
@@ -2456,9 +2460,15 @@
                 $("#step3").fadeOut();
                 $("#step4").fadeOut();
                 $("#step5").slideDown();
+                $("#step6").fadeOut();
             });
             $("#menu_preview").click(function() {
-                alert("preview...");
+                $("#step1").fadeOut();
+                $("#step2").fadeOut();
+                $("#step3").fadeOut();
+                $("#step4").fadeOut();
+                $("#step5").fadeOut();
+                $("#step6").slideDown();
             });
 
             var submissionCenters = new SubmissionCenters();
@@ -2581,6 +2591,16 @@
                 input.val( input.val() + "<" +$(this).text() + ">" );
             };
             $(".helper-tag").click(helper);
+
+            $("#preview-select").change(function() {
+                var selected = $(this).val();
+                $(this).children("option").each(function() {
+                    var option = $(this).val();
+                    var viewId = option.replace("observation ", "#template-preview-");
+                    if(option==selected) $(viewId).show();
+                    else $(viewId).hide();
+                });
+            });
 
             $("#download-template").click(function() {
                 //self.addMetaColumn("observation_summary", $("#template-obs-summary").val());
