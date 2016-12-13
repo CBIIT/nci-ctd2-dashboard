@@ -136,20 +136,20 @@
             </bean>
         </property>
     </bean>
-    <bean name="fhcrcCSTTier1Reader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+    <bean name="fhcrcCstTier1Reader" class="org.springframework.batch.item.file.MultiResourceItemReader">
         <property name="resources" value="${fhcrc.tier1.cst.profiling.data.location}" />
         <property name="delegate">
             <bean class="org.springframework.batch.item.file.FlatFileItemReader">
-                <property name="lineMapper" ref="fhcrcCSTTier1LineMapper" />
+                <property name="lineMapper" ref="fhcrcCstTier1LineMapper" />
                 <property name="linesToSkip" value="7" />
             </bean>
         </property>
     </bean>
-    <bean name="fhcrcCSTTier1-1Reader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+    <bean name="fhcrcCstTier1Profiling1Reader" class="org.springframework.batch.item.file.MultiResourceItemReader">
         <property name="resources" value="${fhcrc.tier1.cst.profiling1.data.location}" />
         <property name="delegate">
             <bean class="org.springframework.batch.item.file.FlatFileItemReader">
-                <property name="lineMapper" ref="fhcrcCSTTier1-1LineMapper" />
+                <property name="lineMapper" ref="fhcrcCstTier1Profiling1LineMapper" />
                 <property name="linesToSkip" value="7" />
             </bean>
         </property>
@@ -253,20 +253,20 @@
             </bean>
         </property>
     </bean>
-    <bean name="emoryPPIRAF1Reader" class="org.springframework.batch.item.file.MultiResourceItemReader">
-        <property name="resources" value="${emory.ppi-raf1.data.location}" />
+    <bean name="emoryPpiRaf1Reader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${emory.ppi.raf1.data.location}" />
         <property name="delegate">
             <bean class="org.springframework.batch.item.file.FlatFileItemReader">
-                <property name="lineMapper" ref="emoryPPIRAF1LineMapper" />
+                <property name="lineMapper" ref="emoryPpiRaf1LineMapper" />
                 <property name="linesToSkip" value="7" />
             </bean>
         </property>
     </bean>
-    <bean name="emoryHtBretnPPIReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+    <bean name="emoryHtBretnPpiReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
         <property name="resources" value="${emory.ht.bretn.ppi.data.location}" />
         <property name="delegate">
             <bean class="org.springframework.batch.item.file.FlatFileItemReader">
-                <property name="lineMapper" ref="emoryHtBretnPPILineMapper" />
+                <property name="lineMapper" ref="emoryHtBretnPpiLineMapper" />
                 <property name="linesToSkip" value="7" />
             </bean>
         </property>
@@ -1086,6 +1086,51 @@
         <property name="delegate">
             <bean class="org.springframework.batch.item.file.FlatFileItemReader">
                 <property name="lineMapper" ref="tgenEddyCcleCtrpCombLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="emoryPras40PpiReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${emory.pras40.ppi.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="emoryPras40PpiLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="emoryPras40Rpl11CoIpReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${emory.pras40.rpl11.coIP.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="emoryPras40Rpl11CoIpLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="emoryPras40Rpl11CoLocReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${emory.pras40.rpl11.coLoc.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="emoryPras40Rpl11CoLocLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="emoryPras40Rpl11TruncationsReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${emory.pras40.rpl11.truncations.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="emoryPras40Rpl11TruncationsLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="utswKrasXpo1Reader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${utsw.kras.xpo1.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="utswKrasXpo1LineMapper" />
                 <property name="linesToSkip" value="7" />
             </bean>
         </property>

@@ -58,19 +58,19 @@
                 <batch:chunk reader="dfciOvarianAnalysisReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
         </batch:step>
-        <batch:step id="dfciPax8Tier3Step" parent="observationDataStep" next="fhcrcCSTTier1Step">
+        <batch:step id="dfciPax8Tier3Step" parent="observationDataStep" next="fhcrcCstTier1Step">
             <batch:tasklet>
                 <batch:chunk reader="dfciPax8Tier3Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
         </batch:step>
-        <batch:step id="fhcrcCSTTier1Step" parent="observationDataStep" next="fhcrcCSTTier1-1Step">
+        <batch:step id="fhcrcCstTier1Step" parent="observationDataStep" next="fhcrcCstTier1Profiling1Step">
             <batch:tasklet>
-                <batch:chunk reader="fhcrcCSTTier1Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
+                <batch:chunk reader="fhcrcCstTier1Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
         </batch:step>
-        <batch:step id="fhcrcCSTTier1-1Step" parent="observationDataStep" next="utswTier2DiscoipyrrolesStoryStep">
+        <batch:step id="fhcrcCstTier1Profiling1Step" parent="observationDataStep" next="utswTier2DiscoipyrrolesStoryStep">
             <batch:tasklet>
-                <batch:chunk reader="fhcrcCSTTier1-1Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
+                <batch:chunk reader="fhcrcCstTier1Profiling1Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
         </batch:step>
         <batch:step id="utswTier2DiscoipyrrolesStoryStep" parent="observationDataStep" next="utswTier4DiscoipyrrolesStoryStep">
@@ -103,14 +103,14 @@
                 <batch:chunk reader="ucsfAktResistanceReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
         </batch:step>
-        <batch:step id="ucsfDasatinibSensitivityStep" parent="observationDataStep" next="emoryPPIRAF1Step">
+        <batch:step id="ucsfDasatinibSensitivityStep" parent="observationDataStep" next="emoryPpiRaf1Step">
             <batch:tasklet>
                 <batch:chunk reader="ucsfDasatinibSensitivityReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
         </batch:step>
-        <batch:step id="emoryPPIRAF1Step" parent="observationDataStep" next="mskccForetinibStep">
+        <batch:step id="emoryPpiRaf1Step" parent="observationDataStep" next="mskccForetinibStep">
             <batch:tasklet>
-                <batch:chunk reader="emoryPPIRAF1Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
+                <batch:chunk reader="emoryPpiRaf1Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
         </batch:step>
         <batch:step id="mskccForetinibStep" parent="observationDataStep" next="mskccFigrosStep">
@@ -263,14 +263,14 @@
                 <batch:chunk reader="columbiaPrecmedReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
         </batch:step>
-        <batch:step id="cshlCdk9Step" parent="observationDataStep" next="emoryHtBretnPPIStep">
+        <batch:step id="cshlCdk9Step" parent="observationDataStep" next="emoryHtBretnPpiStep">
             <batch:tasklet>
                 <batch:chunk reader="cshlCdk9Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
         </batch:step>
-        <batch:step id="emoryHtBretnPPIStep" parent="observationDataStep" next="hutchCtcfStep">
+        <batch:step id="emoryHtBretnPpiStep" parent="observationDataStep" next="hutchCtcfStep">
             <batch:tasklet>
-                <batch:chunk reader="emoryHtBretnPPIReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+                <batch:chunk reader="emoryHtBretnPpiReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
         </batch:step>
         <batch:step id="hutchCtcfStep" parent="observationDataStep" next="hutchTargetsStep">
@@ -603,9 +603,34 @@
                 <batch:chunk reader="tgenEddyCcleCtrpReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
         </batch:step>
-        <batch:step id="tgenEddyCcleCtrpCombStep" parent="observationDataStep">
+        <batch:step id="tgenEddyCcleCtrpCombStep" parent="observationDataStep" next="emoryPras40PpiStep">
             <batch:tasklet>
                 <batch:chunk reader="tgenEddyCcleCtrpCombReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+            </batch:tasklet>
+        </batch:step>
+        <batch:step id="emoryPras40PpiStep" parent="observationDataStep" next="emoryPras40Rpl11CoIpStep">
+            <batch:tasklet>
+                <batch:chunk reader="emoryPras40PpiReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+            </batch:tasklet>
+        </batch:step>
+        <batch:step id="emoryPras40Rpl11CoIpStep" parent="observationDataStep" next="emoryPras40Rpl11CoLocStep">
+            <batch:tasklet>
+                <batch:chunk reader="emoryPras40Rpl11CoIpReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+            </batch:tasklet>
+        </batch:step>
+        <batch:step id="emoryPras40Rpl11CoLocStep" parent="observationDataStep" next="emoryPras40Rpl11TruncationsStep">
+            <batch:tasklet>
+                <batch:chunk reader="emoryPras40Rpl11CoLocReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+            </batch:tasklet>
+        </batch:step>
+        <batch:step id="emoryPras40Rpl11TruncationsStep" parent="observationDataStep" next="utswKrasXpo1Step">
+            <batch:tasklet>
+                <batch:chunk reader="emoryPras40Rpl11TruncationsReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+            </batch:tasklet>
+        </batch:step>
+        <batch:step id="utswKrasXpo1Step" parent="observationDataStep">
+            <batch:tasklet>
+                <batch:chunk reader="utswKrasXpo1Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
         </batch:step>
     </batch:job>
@@ -751,20 +776,20 @@
         <property name="names" value="dummy,submission_name,submission_date,template_name,target_group,gene_symbol,figure_1,figure_2,figure_3,figure_4,figure_5,tier2_evidence,publication_url"/>
     </bean>
     
-    <bean name="fhcrcCSTTier1LineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+    <bean name="fhcrcCstTier1LineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
         <property name="fieldSetMapper" ref="observationDataMapper" />
-        <property name="lineTokenizer" ref="fhcrcCSTTier1LineTokenizer" />
+        <property name="lineTokenizer" ref="fhcrcCstTier1LineTokenizer" />
     </bean>
-    <bean name="fhcrcCSTTier1LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+    <bean name="fhcrcCstTier1LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
         <property name="delimiter" value="\u0009"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol,splice_junction,disease_condition,number_of_tumor_samples,number_of_tumor_samples_with_junction,average_number_of_supporting_reads,number_of_samples_with_supporting_rpts,junction_type,is_observed_in_ip_tissue,has_supporting_ests,genomic_reference_assembly"/>
     </bean>
     
-    <bean name="fhcrcCSTTier1-1LineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+    <bean name="fhcrcCstTier1Profiling1LineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
         <property name="fieldSetMapper" ref="observationDataMapper" />
-        <property name="lineTokenizer" ref="fhcrcCSTTier1-1LineTokenizer" />
+        <property name="lineTokenizer" ref="fhcrcCstTier1Profiling1LineTokenizer" />
     </bean>
-    <bean name="fhcrcCSTTier1-1LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+    <bean name="fhcrcCstTier1Profiling1LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
         <property name="delimiter" value="\u0009"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,splice_junction,disease_condition,number_of_tumor_samples,number_of_tumor_samples_with_junction,average_number_of_supporting_reads,number_of_samples_with_supporting_rpts,junction_type,is_observed_in_ip_tissue,has_supporting_ests,genomic_reference_assembly"/>
     </bean>
@@ -868,20 +893,20 @@
         <property name="names" value="dummy,submission_name,submission_date,template_name,mutated_gene,disease,cohort_size,splicing_gv,gv_location,splicing_sm,sm_location,publication_url,nci_portal"/>
     </bean>
     
-    <bean name="emoryPPIRAF1LineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+    <bean name="emoryPpiRaf1LineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
         <property name="fieldSetMapper" ref="observationDataMapper" />
-        <property name="lineTokenizer" ref="emoryPPIRAF1LineTokenizer" />
+        <property name="lineTokenizer" ref="emoryPpiRaf1LineTokenizer" />
     </bean>
-    <bean name="emoryPPIRAF1LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+    <bean name="emoryPpiRaf1LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
         <property name="delimiter" value="\u0009"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,cell_line,gene_symbol_1,gene_symbol_2,assay_type,number_of_measurements,average_fold_over_control_value,p_value,nci_portal"/>
     </bean>
     
-    <bean name="emoryHtBretnPPILineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+    <bean name="emoryHtBretnPpiLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
         <property name="fieldSetMapper" ref="observationDataMapper" />
-        <property name="lineTokenizer" ref="emoryHtBretnPPILineTokenizer" />
+        <property name="lineTokenizer" ref="emoryHtBretnPpiLineTokenizer" />
     </bean>
-    <bean name="emoryHtBretnPPILineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+    <bean name="emoryHtBretnPpiLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
         <property name="delimiter" value="\u0009"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,cell_line,gene_symbol_1,gene_symbol_2,assay_type,number_of_measurements,average_fold_over_control_value,p_value,nci_portal,publication_url"/>
     </bean>
@@ -1694,6 +1719,51 @@
     <bean name="tgenEddyCcleCtrpCombLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
         <property name="delimiter" value="\u0009"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,pathway,pathway_link,gene_symbol,compound_1_name,compound_2_name,proportion,mediator_type,p_value,number_of_genes_in_pathway,differential_dependency_network,program,data_source_1,data_source_2,data_source_3,cell_line_subset,classification,publication_reference_1,publication_reference_2"/>
+    </bean>
+    
+    <bean name="emoryPras40PpiLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="emoryPras40PpiLineTokenizer" />
+    </bean>
+    <bean name="emoryPras40PpiLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="\u0009"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,cell_line,gene_symbol_1,gene_symbol_2,assay_type,figure2b,nci_portal,publication_url"/>
+    </bean>
+    
+    <bean name="emoryPras40Rpl11CoIpLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="emoryPras40Rpl11CoIpLineTokenizer" />
+    </bean>
+    <bean name="emoryPras40Rpl11CoIpLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="\u0009"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,cell_line,gene_symbol_1,gene_symbol_2,assay_type,figure2c,nci_portal,publication_url"/>
+    </bean>
+    
+    <bean name="emoryPras40Rpl11CoLocLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="emoryPras40Rpl11CoLocLineTokenizer" />
+    </bean>
+    <bean name="emoryPras40Rpl11CoLocLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="\u0009"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,cell_line,gene_symbol_1,gene_symbol_2,assay_type,figure2d,nci_portal,publication_url"/>
+    </bean>
+    
+    <bean name="emoryPras40Rpl11TruncationsLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="emoryPras40Rpl11TruncationsLineTokenizer" />
+    </bean>
+    <bean name="emoryPras40Rpl11TruncationsLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="\u0009"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,cell_line,gene_symbol_1,gene_symbol_2,assay_type,figure3a,nci_portal,publication_url"/>
+    </bean>
+    
+    <bean name="utswKrasXpo1LineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="utswKrasXpo1LineTokenizer" />
+    </bean>
+    <bean name="utswKrasXpo1LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="\u0009"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,compound_name,gene_symbol_1,gene_symbol_2,disease_condition,figure_1,figure_2,figure_3,figure_4,publication_url"/>
     </bean>
 
     <!-- shared helper beans -->
@@ -2934,6 +3004,43 @@
                 <entry key="tgen_eddy_ccle_ctrp_comb:classification" value="evidence:readString:createObservedLabelEvidence" />
                 <entry key="tgen_eddy_ccle_ctrp_comb:publication_reference_1" value="evidence:readString:createObservedUrlEvidence" />
                 <entry key="tgen_eddy_ccle_ctrp_comb:publication_reference_2" value="evidence:readString:createObservedUrlEvidence" />
+                <entry key="emory_pras40_ppi:cell_line" value="subject:findCellLineByName" />
+                <entry key="emory_pras40_ppi:gene_symbol_1" value="subject:findGenesBySymbol" />
+                <entry key="emory_pras40_ppi:gene_symbol_2" value="subject:findGenesBySymbol" />
+                <entry key="emory_pras40_ppi:assay_type" value="evidence:readString:createObservedLabelEvidence" />
+                <entry key="emory_pras40_ppi:figure2b" value="evidence:readString:createObservedFileEvidence" />
+                <entry key="emory_pras40_ppi:nci_portal" value="evidence:readString:createObservedUrlEvidence" />
+                <entry key="emory_pras40_ppi:publication_url" value="evidence:readString:createObservedUrlEvidence" />
+                <entry key="emory_pras40_rpl11_coIP:cell_line" value="subject:findCellLineByName" />
+                <entry key="emory_pras40_rpl11_coIP:gene_symbol_1" value="subject:findGenesBySymbol" />
+                <entry key="emory_pras40_rpl11_coIP:gene_symbol_2" value="subject:findGenesBySymbol" />
+                <entry key="emory_pras40_rpl11_coIP:assay_type" value="evidence:readString:createObservedLabelEvidence" />
+                <entry key="emory_pras40_rpl11_coIP:figure2c" value="evidence:readString:createObservedFileEvidence" />
+                <entry key="emory_pras40_rpl11_coIP:nci_portal" value="evidence:readString:createObservedUrlEvidence" />
+                <entry key="emory_pras40_rpl11_coIP:publication_url" value="evidence:readString:createObservedUrlEvidence" />
+                <entry key="emory_pras40_rpl11_coLoc:cell_line" value="subject:findCellLineByName" />
+                <entry key="emory_pras40_rpl11_coLoc:gene_symbol_1" value="subject:findGenesBySymbol" />
+                <entry key="emory_pras40_rpl11_coLoc:gene_symbol_2" value="subject:findGenesBySymbol" />
+                <entry key="emory_pras40_rpl11_coLoc:assay_type" value="evidence:readString:createObservedLabelEvidence" />
+                <entry key="emory_pras40_rpl11_coLoc:figure2d" value="evidence:readString:createObservedFileEvidence" />
+                <entry key="emory_pras40_rpl11_coLoc:nci_portal" value="evidence:readString:createObservedUrlEvidence" />
+                <entry key="emory_pras40_rpl11_coLoc:publication_url" value="evidence:readString:createObservedUrlEvidence" />
+                <entry key="emory_pras40_rpl11_truncations:cell_line" value="subject:findCellLineByName" />
+                <entry key="emory_pras40_rpl11_truncations:gene_symbol_1" value="subject:findGenesBySymbol" />
+                <entry key="emory_pras40_rpl11_truncations:gene_symbol_2" value="subject:findGenesBySymbol" />
+                <entry key="emory_pras40_rpl11_truncations:assay_type" value="evidence:readString:createObservedLabelEvidence" />
+                <entry key="emory_pras40_rpl11_truncations:figure3a" value="evidence:readString:createObservedFileEvidence" />
+                <entry key="emory_pras40_rpl11_truncations:nci_portal" value="evidence:readString:createObservedUrlEvidence" />
+                <entry key="emory_pras40_rpl11_truncations:publication_url" value="evidence:readString:createObservedUrlEvidence" />
+                <entry key="utsw_kras_xpo1:compound_name" value="subject:findCompoundsByName" />
+                <entry key="utsw_kras_xpo1:gene_symbol_1" value="subject:findGenesBySymbol" />
+                <entry key="utsw_kras_xpo1:gene_symbol_2" value="subject:findGenesBySymbol" />
+                <entry key="utsw_kras_xpo1:disease_condition" value="subject:findTissueSampleByName" />
+                <entry key="utsw_kras_xpo1:figure_1" value="evidence:readString:createObservedFileEvidence" />
+                <entry key="utsw_kras_xpo1:figure_2" value="evidence:readString:createObservedFileEvidence" />
+                <entry key="utsw_kras_xpo1:figure_3" value="evidence:readString:createObservedFileEvidence" />
+                <entry key="utsw_kras_xpo1:figure_4" value="evidence:readString:createObservedFileEvidence" />
+                <entry key="utsw_kras_xpo1:publication_url" value="evidence:readString:createObservedUrlEvidence" />
             </map>
         </constructor-arg>
     </bean>

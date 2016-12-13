@@ -83,8 +83,8 @@
     <bean name="dfciPax8Tier3Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
         <property name="lineMapper" ref="dfciPax8Tier3LineMapper" />
     </bean>
-    <bean name="fhcrcCSTTier1Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
-        <property name="lineMapper" ref="fhcrcCSTTier1LineMapper" />
+    <bean name="fhcrcCstTier1Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="fhcrcCstTier1LineMapper" />
     </bean>
     <bean name="utswTier2DiscoipyrrolesStoryReader" class="org.springframework.batch.item.file.FlatFileItemReader">
         <property name="lineMapper" ref="utswTier2DiscoipyrrolesStoryLineMapper" />
@@ -107,8 +107,8 @@
     <bean name="ucsfDasatinibSensitivityReader" class="org.springframework.batch.item.file.FlatFileItemReader">
         <property name="lineMapper" ref="ucsfDasatinibSensitivityLineMapper" />
     </bean>
-    <bean name="emoryPPIRAF1Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
-        <property name="lineMapper" ref="emoryPPIRAF1LineMapper" />
+    <bean name="emoryPpiRaf1Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="emoryPpiRaf1LineMapper" />
     </bean>
     <bean name="mskccForetinibReader" class="org.springframework.batch.item.file.FlatFileItemReader">
         <property name="lineMapper" ref="mskccForetinibLineMapper" />
@@ -176,11 +176,11 @@
     <bean name="cshlCdk9Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
         <property name="lineMapper" ref="cshlCdk9LineMapper" />
     </bean>
-    <bean name="emoryHtBretnPPIReader" class="org.springframework.batch.item.file.FlatFileItemReader">
-        <property name="lineMapper" ref="emoryHtBretnPPILineMapper" />
+    <bean name="emoryHtBretnPpiReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="emoryHtBretnPpiLineMapper" />
     </bean>
-    <bean name="fhcrcCSTTier1-1Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
-        <property name="lineMapper" ref="fhcrcCSTTier1-1LineMapper" />
+    <bean name="fhcrcCstTier1Profiling1Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="fhcrcCstTier1Profiling1LineMapper" />
     </bean>
     <bean name="fhcrcKKinomeSiRNA2Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
         <property name="lineMapper" ref="fhcrcKKinomeSiRNA2LineMapper" />
@@ -409,5 +409,20 @@
     </bean>
     <bean name="tgenEddyCcleCtrpCombReader" class="org.springframework.batch.item.file.FlatFileItemReader">
         <property name="lineMapper" ref="tgenEddyCcleCtrpCombLineMapper" />
+    </bean>
+    <bean name="emoryPras40PpiReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="emoryPras40PpiLineMapper" />
+    </bean>
+    <bean name="emoryPras40Rpl11CoIpReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="emoryPras40Rpl11CoIpLineMapper" />
+    </bean>
+    <bean name="emoryPras40Rpl11CoLocReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="emoryPras40Rpl11CoLocLineMapper" />
+    </bean>
+    <bean name="emoryPras40Rpl11TruncationsReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="emoryPras40Rpl11TruncationsLineMapper" />
+    </bean>
+    <bean name="utswKrasXpo1Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="utswKrasXpo1LineMapper" />
     </bean>
 </beans>
