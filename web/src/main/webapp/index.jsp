@@ -2137,8 +2137,19 @@
                         </td>
                     </tr>
                 </table>
+                <span class="dropdown">
+                    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Helper
+                    <span class="caret"></span></button>
+                    <ul class="dropdown-menu">
+                    <li id=tag1 class=helper-tag>TAG1</li>
+                    <li id=tag2 class=helper-tag>TAG2</li>
+                    <li id=tag3 class=helper-tag>TAG3</li>
+                    </ul>
+                </span> 
+                <button id="summary-save">Save</button>
+                <button id="summary-continue">Continue</button>
 
-                <hr>
+                <!-- <hr>
                 <div class="span8 offset2 template-download">
                     <button class="btn btn-large" id="preview-template">Preview template</button>
                     <div class="span4">
@@ -2148,7 +2159,7 @@
                             <input type="hidden" name="filename" id="filename-input">
                         </form>
                     </div>
-                </div>
+                </div> -->
             </div> <!-- end of step 5 -->
 
         </div><!-- end of template-helper-container -->

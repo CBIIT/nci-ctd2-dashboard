@@ -2576,6 +2576,12 @@
                 }).render();
             });
 
+            var helper = function() {
+                var input = $( "#template-obs-summary" );
+                input.val( input.val() + "<" +$(this).text() + ">" );
+            };
+            $(".helper-tag").click(helper);
+
             $("#download-template").click(function() {
                 //self.addMetaColumn("observation_summary", $("#template-obs-summary").val());
                 return this;
