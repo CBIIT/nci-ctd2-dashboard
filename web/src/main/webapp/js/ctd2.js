@@ -2413,6 +2413,13 @@
 
     var obvNumber = 1; // next obsveration number to be added
 
+    var showTemplateMenu = function() {
+        $("#menu_description").show();
+        $("#menu_data").show();
+        $("#menu_summary").show();
+        $("#menu_preview").show();
+    };
+
     var TemplateHelperView = Backbone.View.extend({
         template: _.template($("#template-helper-tmpl").html()),
         el: $("#main-container"),
@@ -2437,7 +2444,7 @@
                 $("#step4").fadeOut();
                 $("#step5").fadeOut();
                 $("#step6").fadeOut();
-            });
+            }).hide();
             $("#menu_description").click(function() {
                 $("#step1").fadeOut();
                 $("#step2").fadeOut();
@@ -2445,7 +2452,7 @@
                 $("#step4").fadeOut();
                 $("#step5").fadeOut();
                 $("#step6").fadeOut();
-            });
+            }).hide();
             $("#menu_data").click(function() {
                 $("#step1").fadeOut();
                 $("#step2").fadeOut();
@@ -2453,7 +2460,7 @@
                 $("#step4").slideDown();
                 $("#step5").fadeOut();
                 $("#step6").fadeOut();
-            });
+            }).hide();
             $("#menu_summary").click(function() {
                 $("#step1").fadeOut();
                 $("#step2").fadeOut();
@@ -2461,7 +2468,7 @@
                 $("#step4").fadeOut();
                 $("#step5").slideDown();
                 $("#step6").fadeOut();
-            });
+            }).hide();
             $("#menu_preview").click(function() {
                 $("#step1").fadeOut();
                 $("#step2").fadeOut();
@@ -2469,7 +2476,7 @@
                 $("#step4").fadeOut();
                 $("#step5").fadeOut();
                 $("#step6").slideDown();
-            });
+            }).hide();
 
             var submissionCenters = new SubmissionCenters();
             submissionCenters.fetch({
@@ -2491,6 +2498,7 @@
                     return; // error control
                 }
 
+                $("#menu_manage").show();
                 $("#step1").fadeOut();
                 $("#step2").slideDown();
                 $("span#center-name").text($("#template-submission-centers option:selected").text());
@@ -2523,6 +2531,7 @@
             });
 
             $("#create-new-submission").click(function() {
+                showTemplateMenu();
                 $("#step2").fadeOut();
                 $("#step3").slideDown();
             });
@@ -2725,6 +2734,7 @@
                 var action = $(this).val();
                 switch(action) {
                     case 'edit':
+                        showTemplateMenu();
                         templateId = rowModel.id;
                         $("span#submission-name").text(rowModel.displayName);
                         var subjectColumns = rowModel.subjectColumns; // this is an array of strings
@@ -2749,6 +2759,11 @@
                     case 'delete':
                         deleteTemplate(rowModel.id);
                         $("#template-action-"+rowModel.id).val(""); // in case not confirmed 
+                        break;
+                    case 'preview':
+                        showTemplateMenu();
+                        $("#step2").fadeOut();
+                        $("#step6").slideDown();
                         break;
                     default:
                         alert(rowModel.displayName+' '+action+' clicked');
