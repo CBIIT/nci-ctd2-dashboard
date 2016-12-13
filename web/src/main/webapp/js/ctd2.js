@@ -2741,8 +2741,12 @@
                 $(this).append(obvTemp);
             }
             );
-            $(this.el).find("tr#subject-header").append("<th>Observation "+obvNumber+"</th>");
+            var deleteButton = "delete-column-"+obvNumber;
+            $(this.el).find("tr#subject-header").append("<th>Observation "+obvNumber+"<br>(<button class='btn btn-link' id='"+deleteButton+"'>delete</button>)</th>");
             $(this.el).find("tr#evidence-header").append("<th>Observation "+obvNumber+"</th>");
+            $("#"+deleteButton).click(function() {
+                console.log(deleteButton+" to be implemented");
+            });
             obvNumber++;
         }
     });
