@@ -2765,6 +2765,9 @@
                         $("#step2").fadeOut();
                         $("#step6").slideDown();
                         break;
+                    case 'download':
+                        window.open("/ctd2test.zip"); // TODO only to demo the feature
+                        break;
                     default:
                         alert(rowModel.displayName+' '+action+' clicked');
                 }
