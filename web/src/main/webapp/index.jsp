@@ -2563,6 +2563,7 @@
     <script src="js/jquery.contextMenu.js"></script>   
     <script src="js/jquery.ui.position.js"></script>    
     <script src="js/ctd2.js"></script>
+    <script src="js/template.helper.js"></script>
 
   </body>
 </html>
