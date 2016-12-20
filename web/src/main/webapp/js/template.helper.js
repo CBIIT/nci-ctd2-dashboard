@@ -332,6 +332,7 @@ $ctd2.ExistingTemplateView = Backbone.View.extend({
                         $("#step2").fadeOut();
                         // TODO clone the template, store it, show the main data page
                         $("#step4").slideDown();
+                        break;
                     case 'download':
                         window.open("/ctd2test.zip"); // TODO only to demo the feature
                         break;
