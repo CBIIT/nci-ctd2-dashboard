@@ -114,17 +114,16 @@ $ctd2.TemplateHelperView = Backbone.View.extend({
             });
 
             $("#create-new-submission").click(function() {
-                $ctd2.showTemplateMenu();
                 $("#step2").fadeOut();
                 $("#step3").slideDown();
             });
 
             // although the other button is called #create-new-submission, this is where it is really created back-end
-            $("#save-submmitter-description").click(function() {
-                $("#save-submmitter-description").attr("disabled", "disabled");
+            $("#save-name-description").click(function() {
+                $("#save-name-description").attr("disabled", "disabled");
                 $ctd2.saveNewTemplate();
             });
-            $("#apply-submitter-information").click(function() { // similar to save, additionally moving to the next
+            $("#continue-to-main-data").click(function() { // similar to save, additionally moving to the next
                 if($ctd2.saveNewTemplate(true)) {
                     $("#step3").fadeOut();
                     $("#step4").slideDown();
@@ -328,6 +327,11 @@ $ctd2.ExistingTemplateView = Backbone.View.extend({
                         $("#step2").fadeOut();
                         $("#step6").slideDown();
                         break;
+                    case 'clone':
+                        $ctd2.showTemplateMenu();
+                        $("#step2").fadeOut();
+                        // TODO clone the template, store it, show the main data page
+                        $("#step4").slideDown();
                     case 'download':
                         window.open("/ctd2test.zip"); // TODO only to demo the feature
                         break;
@@ -520,7 +524,7 @@ $ctd2.updateTemplate = function(sync) {
             success: function(data) {
                 console.log("return value: "+data);
                 $("#template-name").val("");
-                $("#save-submmitter-description").removeAttr("disabled");
+                $("#save-name-description").removeAttr("disabled");
                 result = true;
            }
          });
@@ -563,10 +567,11 @@ $ctd2.saveNewTemplate = function(sync) {
             contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
             success: function(resultId) {
                 $("#template-name").val("");
-                $("#save-submmitter-description").removeAttr("disabled");
+                $("#save-name-description").removeAttr("disabled");
                 result = true;
                 $ctd2.templateId = resultId;
                 $("span#submission-name").text(submissionName);
+                $ctd2.showTemplateMenu();
            }
          });
         if (async || result)

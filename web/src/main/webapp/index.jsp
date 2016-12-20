@@ -2066,10 +2066,10 @@
                 <table class="table">
                     <tr>
                         <td class="next-cell">
-                            <button id="save-submmitter-description">Save</button>
+                            <button id="save-name-description">Save</button>
                         </td>
                         <td class="next-cell">
-                            <button id="apply-submitter-information">Continue</button>
+                            <button id="continue-to-main-data">Continue</button>
                         </td>
                     </tr>
                 </table>
