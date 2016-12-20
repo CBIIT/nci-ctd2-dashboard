@@ -6,7 +6,6 @@ $ctd2.obvNumber = 1; // next obsveration number to be added
 $ctd2.TemplateHelperView = Backbone.View.extend({
         template: _.template($("#template-helper-tmpl").html()),
         el: $("#main-container"),
-        table: "#template-table",
 
         render: function() {
             $(this.el).html(this.template(this.model));
@@ -85,8 +84,8 @@ $ctd2.TemplateHelperView = Backbone.View.extend({
                 $("#step1").fadeOut();
                 $("#step2").slideDown();
                 $("span#center-name").text($("#template-submission-centers option:selected").text());
-                console.log("DEBUG 101:"+$ctd2.StoredTemplates);
                 var storedTemplates = new $ctd2.StoredTemplates({centerId: centerId});
+                $("#existing-template-table > .stored-template-row").remove();
                 storedTemplates.fetch({
                     success: function() {
                         _.each(storedTemplates.models, function(oneTemplate) {

@@ -1861,7 +1861,7 @@
     </script>
 
     <script type="text/template" id="existing-template-row-tmpl">
-        <tr id="template-table-row-{{id}}">
+        <tr id="template-table-row-{{id}}" class='stored-template-row'>
             <td>{{displayName}}</td><td>{{description}}</td><td>{{project}}</td>
                 <td>{{tier}}</td><td>{{dateLastModified}}</td><td>{{complete}}</td>
                 <td><select id='template-action-{{id}}'>
