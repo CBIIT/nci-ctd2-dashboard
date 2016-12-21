@@ -27,7 +27,7 @@ public class SubmissionTemplateImpl extends DashboardEntityImpl implements Submi
     private Integer tier;
     private Boolean complete;
     private Date dateLastModified;
-    private String[] subjectColumns;
+    private String[] subjectColumns = new String[0];
     private String[] evidenceColumns;
 
     public String getDescription() {

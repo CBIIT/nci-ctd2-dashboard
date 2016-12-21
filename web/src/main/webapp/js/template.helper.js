@@ -92,12 +92,11 @@ $ctd2.TemplateHelperView = Backbone.View.extend({
                             var oneTemplateModel = oneTemplate.toJSON();
 
                             if(oneTemplateModel.subjectColumns==null) {
-                                // this should not happend with proper backend data
-                                console.log("subjectColumns is null for "+oneTemplateModel);
-                                return;
+                                // treat this as empty subject column tags
+                                oneTemplateModel.subjectColumns = [];
                             }
 
-                            // TODO debug only
+                            // TODO placeholder for now - subjectClasses should be from database as well
                             var subjectColumnCount = oneTemplateModel.subjectColumns.length;
                             oneTemplateModel.subjectClasses = []; // the length should match other columns, e.g. column tags, subject roles, descriptions.
                             for(var i=0; i<subjectColumnCount; i++) {
