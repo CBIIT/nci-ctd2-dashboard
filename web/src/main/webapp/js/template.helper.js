@@ -91,10 +91,8 @@ $ctd2.TemplateHelperView = Backbone.View.extend({
                         _.each(storedTemplates.models, function(oneTemplate) {
                             var oneTemplateModel = oneTemplate.toJSON();
 
-                            if(oneTemplateModel.subjectColumns==null) {
-                                // treat this as empty subject column tags
+                            if(oneTemplateModel.subjectColumns==null)
                                 oneTemplateModel.subjectColumns = [];
-                            }
 
                             // TODO placeholder for now - subjectClasses should be from database as well
                             var subjectColumnCount = oneTemplateModel.subjectColumns.length;
@@ -102,6 +100,9 @@ $ctd2.TemplateHelperView = Backbone.View.extend({
                             for(var i=0; i<subjectColumnCount; i++) {
                                 oneTemplateModel.subjectClasses[i] = Object.keys($ctd2.subjectRoles)[i]; // TODO testing data for now
                             }
+
+                            if(oneTemplateModel.evidenceColumns==null)
+                                oneTemplateModel.evidenceColumns = [];
 
                             (new $ctd2.ExistingTemplateView({
                                 model: oneTemplateModel,
