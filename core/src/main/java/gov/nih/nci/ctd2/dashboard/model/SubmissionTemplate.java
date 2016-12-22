@@ -25,6 +25,18 @@ public interface SubmissionTemplate extends DashboardEntity {
     public void setPhone(String phone);
     public String[] getSubjectColumns();
     public void setSubjectColumns(String[] subjects);
+    public String[] getSubjectClasses();
+    public void setSubjectClasses(String[] c);
+    public String[] getSubjectRoles();
+    public void setSubjectRoles(String[] r);
+    public String[] getSubjectDescriptions();
+    public void setSubjectDescriptions(String[] d);
     public String[] getEvidenceColumns();
     public void setEvidenceColumns(String[] evidences);
+    public String[] getEvidenceTypes();
+    public void setEvidenceTypes(String[] t);
+    public String[] getValueTypes();
+    public void setValueTypes(String[] v);
+    public String[] getEvidenceDescriptions();
+    public void setEvidenceDescriptions(String[] d);
 }

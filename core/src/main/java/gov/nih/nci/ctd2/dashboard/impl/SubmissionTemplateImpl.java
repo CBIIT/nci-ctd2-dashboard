@@ -17,6 +17,8 @@ import gov.nih.nci.ctd2.dashboard.model.SubmissionTemplate;
 @Table(name = "submission_template")
 @Indexed
 public class SubmissionTemplateImpl extends DashboardEntityImpl implements SubmissionTemplate {
+    private static final long serialVersionUID = -4224162359280232544L;
+
     private SubmissionCenter submissionCenter;
     private String description;
     private String firstName;
@@ -28,7 +30,13 @@ public class SubmissionTemplateImpl extends DashboardEntityImpl implements Submi
     private Boolean complete;
     private Date dateLastModified;
     private String[] subjectColumns = new String[0];
-    private String[] evidenceColumns;
+    private String[] evidenceColumns = new String[0];
+    private String[] subjectClasses = new String[0];
+    private String[] subjectRoles = new String[0];
+    private String[] subjectDescriptions = new String[0];
+    private String[] evidenceTypes = new String[0];
+    private String[] valueTypes = new String[0];
+    private String[] evidenceDescriptions = new String[0];
 
     public String getDescription() {
         return description;
@@ -129,5 +137,65 @@ public class SubmissionTemplateImpl extends DashboardEntityImpl implements Submi
     @Override
     public void setEvidenceColumns(String[] evidences) {
         evidenceColumns = evidences;
+    }
+
+    @Override
+    public String[] getSubjectClasses() {
+        return subjectClasses;
+    }
+
+    @Override
+    public void setSubjectClasses(String[] c) {
+        subjectClasses = c;
+    }
+
+    @Override
+    public String[] getSubjectRoles() {
+        return subjectRoles;
+    }
+
+    @Override
+    public void setSubjectRoles(String[] r) {
+        subjectRoles = r;
+    }
+
+    @Override
+    public String[] getSubjectDescriptions() {
+        return subjectDescriptions;
+    }
+
+    @Override
+    public void setSubjectDescriptions(String[] d) {
+        subjectDescriptions = d;
+    }
+
+    @Override
+    public String[] getEvidenceTypes() {
+        return evidenceTypes;
+    }
+
+    @Override
+    public void setEvidenceTypes(String[] t) {
+        evidenceTypes = t;
+    }
+
+    @Override
+    public String[] getValueTypes() {
+        return valueTypes;
+    }
+
+    @Override
+    public void setValueTypes(String[] v) {
+        valueTypes = v;
+    }
+
+    @Override
+    public String[] getEvidenceDescriptions() {
+        return evidenceDescriptions;
+    }
+
+    @Override
+    public void setEvidenceDescriptions(String[] d) {
+        evidenceDescriptions = d;
     }
 }

@@ -298,12 +298,9 @@ $ctd2.ExistingTemplateView = Backbone.View.extend({
                         $ctd2.showTemplateMenu();
                         $ctd2.templateId = rowModel.id;
                         $("span#submission-name").text(rowModel.displayName);
+                        // TODO subject data, not complete
                         var subjectColumns = rowModel.subjectColumns; // this is an array of strings
                         var subjectClasses = rowModel.subjectClasses; // this is an array of strings
-
-                        // debugging only
-                        console.log("subjectClasses="+subjectClasses);
-                        console.log("subjectClasses.length="+subjectClasses.length);
 
                         for (var i=0; i < subjectColumns.length; i++) {
                             console.log("subjectClasses["+i+"]="+subjectClasses[i]);
@@ -312,7 +309,20 @@ $ctd2.ExistingTemplateView = Backbone.View.extend({
                                 el: $("#template-table-subject")
                             })).render();
                         }
-                        // TODO evidence data (similar to subject data)
+                        // TODO evidence data, not complete
+                        var evidenceColumns = rowModel.evidenceColumns;
+                        var evidenceTypes = rowModel.evidenceTypes;
+                        var valueTypes = rowModel.valueTypes;
+                        var evidenceDescriptions = rowModel.evidenceDescriptions;
+                        for (var i=0; i < evidenceColumns.length; i++) {
+                            (new $ctd2.TemplateEvidenceDataRowView({
+                                model: {columnTag: evidenceColumns[i].replace(/ /g, "-"), 
+                                    evidenceType: evidenceTypes[i], 
+                                    valueType: valueTypes[i], 
+                                    evidenceDescription: evidenceDescriptions[i]},
+                                el: $("#template-table-evidence")
+                            })).render();
+                        }
 
                         $("#step2").fadeOut();
                         $("#step4").slideDown();
@@ -391,7 +401,7 @@ $ctd2.TemplateEvidenceDataRowView = Backbone.View.extend({
                 $("#confirmed-delete").unbind('click').click(function(){
                     $('tr#template-evidence-row-columntag-'+columnTag).remove();
                 });
-                $("#confirmation-modal").modal('show'); // TODO: the text needs to be cutomized
+                $("#confirmation-modal").modal('show'); // TODO: the text needs to be customized
             });
 
             /*
@@ -492,22 +502,29 @@ $ctd2.deleteTemplate = function(tobeDeleted) {
         $("#confirmation-modal").modal('show');
 };
 
+$ctd2.getStringList = function(searchTag) {
+    var s = "";
+    $(searchTag).each(function (i, row) {
+        if(i>0) s += ","
+        s += $(row).val();
+    });
+    return s;
+}
+
 $ctd2.updateTemplate = function(sync) {
         if($ctd2.templateId==0) {
         	alert('error: $ctd2.templateId==0');
         	return;
         }
-        var subjects = "";
-        $('#template-table-subject input.subject-columntag').each(function (i, row) {
-            if(i>0) subjects += ","
-            subjects += $(row).val();
-        });
+        var subjects = $ctd2.getStringList('#template-table-subject input.subject-columntag');
+        var subjectClasses = $ctd2.getStringList('#template-table-subject input.subject-classes');
+        var subjectRoles = $ctd2.getStringList('#template-table-subject input.subject-roles');
+        var subjectDescriptions = $ctd2.getStringList('#template-table-subject input.subject-descriptions');
+        var evidences = $ctd2.getStringList('#template-table-evidence input.evidence-columntag');
+        var evidenceTypes = $ctd2.getStringList('#template-table-evidence input.evidence-types');
+        var valueTypes = $ctd2.getStringList('#template-table-evidence input.value-types');
+        var evidenceDescriptions = $ctd2.getStringList('#template-table-evidence input.evidence-descriptions');
 
-        var evidences = $("#template-table-evidence").val();
-        console.log('subjects='+subjects);
-        console.log('evidences='+evidences);
-        evidences = "evd1,evd2,ebd3";
-        console.log("evidences="+evidences);
         var async = true;
         if(sync) async = false;
         var result = false;
@@ -518,7 +535,13 @@ $ctd2.updateTemplate = function(sync) {
             data: jQuery.param({
                 templateId: $ctd2.templateId,
                 subjects: subjects,
+                subjectClasses: subjectClasses,
+                subjectRoles: subjectRoles,
+                subjectDescriptions: subjectDescriptions,
                 evidences: evidences,
+                evidenceTypes: evidenceTypes,
+                valueTypes: valueTypes,
+                evidenceDescriptions: evidenceDescriptions,
                }),
             contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
             success: function(data) {

@@ -1884,7 +1884,7 @@
         <tr id="template-subject-row-columntag-{{columnTag}}" class="template-data-row">
             <td style="text-align:center;"><img src="img/icons/remove.png" style="width:20px;height:20px;" id="delete-subject-{{columnTag}}" /></td>
             <td><input type="text" class="form-control subject-columntag" value="{{columnTag}}" placeholder="column tag"></td>
-            <td><select>
+            <td><select class='subject-classes'>
                 <option {{ subjectClass=='Compound'?'selected=selected':'' }}>Compound</option>
                 <option {{ subjectClass=='Gene'?'selected=selected':'' }}>Gene</option>
                 <option {{ subjectClass=='RNA'?'selected=selected':'' }} value='RNA'>RNA-based reagent</option>
@@ -1892,8 +1892,8 @@
                 <option {{ subjectClass=='Cell'?'selected=selected':'' }} value='Cell'>Cell Sample (cell line)</option>
                 <option {{ subjectClass=='Animal'?'selected=selected':'' }} value='Animal'>Animal Model</option>
             </select></td>
-            <td><select id="role-dropdown-{{columnTag}}"></select></td>
-            <td><input type="text" class="form-control" id="description-{{columnTag}}" placeholder="subject description"></td>
+            <td><select id="role-dropdown-{{columnTag}}" class='subject-roles'></select></td>
+            <td><input type="text" class="form-control subject-descriptions" id="description-{{columnTag}}" placeholder="subject description"></td>
         </tr>
     </script>
 
@@ -1901,7 +1901,7 @@
         <tr id="template-evidence-row-columntag-{{columnTag}}" class="template-data-row">
             <td style="text-align:center;"><img src="img/icons/remove.png" style="width:20px;height:20px;" id="delete-evidence-{{columnTag}}" /></td>
             <td><input type="text" class="form-control evidence-columntag" value="{{columnTag}}" placeholder="column tag"></td>
-            <td><select id="evidence-type-{{columnTag}}">
+            <td><select id="evidence-type-{{columnTag}}" class='evidence-types'>
                 <option>background</option>
                 <option>computed</option>
                 <option>link</option>
@@ -1911,7 +1911,7 @@
                 <option>reference</option>
                 <option>{{evidenceType}}</option><!-- TODO not an addition option, but 'selected' -->
             </select></td>
-            <td><select id="value-type-{{columnTag}}">
+            <td><select id="value-type-{{columnTag}}" class='value-types'>
                 <option>Document</option>
                 <option>Image</option>
                 <option>Number</option>
@@ -1920,7 +1920,7 @@
                 <option>URL</option>
                 <option>Internal dashboard link</option>
             </select></td>
-            <td><input type="text" class="form-control" id="description-{{columnTag}}" placeholder="evidence description"></td>
+            <td><input type="text" class="form-control evidence-descriptions" id="description-{{columnTag}}" placeholder="evidence description"></td>
         </tr>
     </script>
 

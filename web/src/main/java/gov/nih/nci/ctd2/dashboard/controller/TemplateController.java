@@ -61,12 +61,24 @@ public class TemplateController {
     updateSubmissionTemplate(
             @RequestParam("templateId") Integer templateId,
             @RequestParam("subjects") String[] subjects,
-            @RequestParam("evidences") String[] evidences
+            @RequestParam("subjectClasses") String[] subjectClasses,
+            @RequestParam("subjectRoles") String[] subjectRoles,
+            @RequestParam("subjectDescriptions") String[] subjectDescriptions,
+            @RequestParam("evidences") String[] evidences,
+            @RequestParam("evidenceTypes") String[] evidenceTypes,
+            @RequestParam("valueTypes") String[] valueTypes,
+            @RequestParam("evidenceDescriptions") String[] evidenceDescriptions
             )
     {
         SubmissionTemplate template = dashboardDao.getEntityById(SubmissionTemplate.class, templateId);
         template.setSubjectColumns(subjects);
+        template.setSubjectClasses(subjectClasses);
+        template.setSubjectRoles(subjectRoles);
+        template.setSubjectDescriptions(subjectDescriptions);
         template.setEvidenceColumns(evidences);
+        template.setEvidenceTypes(evidenceTypes);
+        template.setValueTypes(valueTypes);
+        template.setEvidenceDescriptions(evidenceDescriptions);
         dashboardDao.update(template);
 
         return new ResponseEntity<String>("SubmissionTemplate " + templateId + " UPDATED", HttpStatus.OK);
