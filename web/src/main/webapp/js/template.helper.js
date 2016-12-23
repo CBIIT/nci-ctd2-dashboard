@@ -294,6 +294,7 @@ $ctd2.ExistingTemplateView = Backbone.View.extend({
                         $ctd2.templateId = rowModel.id;
                         $("span#submission-name").text(rowModel.displayName);
                         // TODO subject data, not complete
+                        $("#template-table-subject > .template-data-row").remove();
                         var subjectColumns = rowModel.subjectColumns; // this is an array of strings
                         var subjectClasses = rowModel.subjectClasses; // this is an array of strings
 
@@ -305,6 +306,7 @@ $ctd2.ExistingTemplateView = Backbone.View.extend({
                             })).render();
                         }
                         // TODO evidence data, not complete
+                        $("#template-table-evidence > .template-data-row").remove();
                         var evidenceColumns = rowModel.evidenceColumns;
                         var evidenceTypes = rowModel.evidenceTypes;
                         var valueTypes = rowModel.valueTypes;
