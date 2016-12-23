@@ -152,11 +152,37 @@ public class WebServiceUtil {
     public List<? extends DashboardEntity> getTemplates(Integer centerId) {
         List<SubmissionTemplate> list = new ArrayList<SubmissionTemplate>();
         SubmissionCenter submissionCenter = dashboardDao.getEntityById(SubmissionCenter.class, centerId);
-        for (SubmissionTemplate submissionTemplete : dashboardDao.findEntities(SubmissionTemplate.class)) {
-            if (submissionTemplete.getSubmissionCenter().equals(submissionCenter)) {
-                list.add(submissionTemplete);
+        for (SubmissionTemplate submissionTemplate : dashboardDao.findEntities(SubmissionTemplate.class)) {
+            if (submissionTemplate.getSubmissionCenter().equals(submissionCenter)) {
+                forceConsistency(submissionTemplate);
+                list.add(submissionTemplate);
             }
         }
         return list;
+    }
+
+    /* safe-guard the data for the client in case it is inconsistent for some reason */
+    private void forceConsistency(SubmissionTemplate submissionTemplate) {
+        // TODO complete this for all relevant fields
+        String[] subjectColumns = submissionTemplate.getSubjectColumns();
+        if(subjectColumns==null) {
+            submissionTemplate.setSubjectColumns( new String[0] );
+        }
+        String[] evidenceColumns = submissionTemplate.getEvidenceColumns();
+        if(evidenceColumns==null) {
+            submissionTemplate.setEvidenceColumns( new String[0] );
+        }
+        String[] evidenceTypes = submissionTemplate.getEvidenceTypes();
+        if(evidenceTypes==null) {
+            submissionTemplate.setEvidenceTypes( new String[0] );
+        }
+        String[] valueTypes = submissionTemplate.getValueTypes();
+        if(valueTypes==null) {
+            submissionTemplate.setValueTypes( new String[0] );
+        }
+        String[] evidenceDescription = submissionTemplate.getEvidenceDescriptions();
+        if(evidenceDescription==null) {
+            submissionTemplate.setEvidenceDescriptions( new String[0] );
+        }
     }
 }
