@@ -342,7 +342,8 @@ $ctd2.ExistingTemplateView = Backbone.View.extend({
                         break;
                     default:
                         alert(rowModel.displayName+' '+action+' clicked');
-                }
+                };
+                $(this).val('');
             });
             return this;
         }
