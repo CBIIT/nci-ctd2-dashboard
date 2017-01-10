@@ -39,4 +39,8 @@ public interface SubmissionTemplate extends DashboardEntity {
     public void setValueTypes(String[] v);
     public String[] getEvidenceDescriptions();
     public void setEvidenceDescriptions(String[] d);
+    public Integer getObservationNumber();
+    public void setObservationNumber(Integer observationNumber);
+    public String[] getObservations();
+    public void setObservations(String[] d);
 }

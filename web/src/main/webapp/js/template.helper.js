@@ -1,7 +1,5 @@
 $ctd2 = {}; /* the supporting module of ctd2-dashboard app ctd2.js */
 
-$ctd2.obvNumber = 1; // next obsveration number to be added
-
 // following code used to be in ctd2.js
 $ctd2.TemplateHelperView = Backbone.View.extend({
         template: _.template($("#template-helper-tmpl").html()),
@@ -165,9 +163,10 @@ $ctd2.TemplateHelperView = Backbone.View.extend({
             });
 
             $("#add-observation").click(function() {
-                new $ctd2.TempObservationView({
+                var newObvNumber = 1; // TODO a smart serial number
+                new $ctd2.OneObservationView({
                     el: $("#template-table"),
-                    model: {obvNumber: $ctd2.obvNumber, obvColumn: "", obvText: ""}, // TODO make this an array for all rows (corresponding to both suject and evidence parts)
+                    model: {obvNumber: newObvNumber, obvColumn: "TEMP", obvText: "empty"},
                 }).render();
             });
 
@@ -297,11 +296,33 @@ $ctd2.ExistingTemplateView = Backbone.View.extend({
                         $("#template-table-subject > .template-data-row").remove();
                         var subjectColumns = rowModel.subjectColumns; // this is an array of strings
                         var subjectClasses = rowModel.subjectClasses; // this is an array of strings
+                        var observations = rowModel.observations;
+                        var observationNumber = rowModel.observationNumber;
 
+                        // make headers for observation part
+                        $("th.observation-header").remove();
+                        for(var column=1; column<=observationNumber; column++) {
+                            var deleteButton = "delete-column-"+column;
+                            $("#template-table tr#subject-header").append("<th class=observation-header>Observation "+column+"<br>(<button class='btn btn-link' id='"+deleteButton+"'>delete</button>)</th>");
+                            $("#template-table tr#evidence-header").append("<th class=observation-header>Observation "+column+"</th>");
+                            $("#"+deleteButton).click(function() {
+                                console.log($(this).attr('id')+" to be implemented");
+                            });
+                        }
+
+                        var totalRows = subjectColumns.length; // FIXME, add the evidence columns
                         for (var i=0; i < subjectColumns.length; i++) {
-                            console.log("subjectClasses["+i+"]="+subjectClasses[i]);
+                            var observationsPerRow = new Array(observationNumber);
+                            for(var column=0; column<observationNumber; column++) {
+                                observationsPerRow[column] = observations[totalRows*column+i];
+                            };
+
                             (new $ctd2.TemplateSubjectDataRowView({
-                                model: {columnTag: subjectColumns[i].replace(/ /g, "-"), subjectClass: subjectClasses[i], subjectRole: "cell line"},
+                                model: {columnTag: subjectColumns[i].replace(/ /g, "-"), subjectClass: subjectClasses[i], subjectRole: "cell line",
+                                    totalRows: totalRows, row: i, 
+                                    observationNumber: observationNumber,
+                                    observations: observationsPerRow
+                                    },
                                 el: $("#template-table-subject")
                             })).render();
                         }
@@ -370,7 +391,6 @@ $ctd2.TemplateSubjectDataRowView = Backbone.View.extend({
 
             // the list of role depends on subject class; 'selected' is row-specific
             var roleOptions = $ctd2.subjectRoles[subjectClass]; //subjectRoles.models; // TODO temperarily using hard-coded object
-            console.log("roleOptions="+roleOptions);
 
             if(roleOptions===undefined) { // exceptional case
                 return;
@@ -385,6 +405,17 @@ $ctd2.TemplateSubjectDataRowView = Backbone.View.extend({
                             model: { roleName:roleName, cName: cName, selected:roleName==role?'selected':null }
                         } ).render();
             }
+
+            // render observation celss for one row (subject or evidence column tag)
+            var tableRow = $('#template-subject-row-columntag-'+this.model.columnTag);
+            var totalRows = this.model.totalRows;
+            var row = this.model.row;
+            var observationNumber = this.model.observationNumber;
+            var observations = this.model.observations;
+            new $ctd2.TempObservationView({
+                el: tableRow,
+                model: {columnTag: columnTag, observationNumber: observationNumber, observations: observations},
+            }).render();
 
             return this;
         }
@@ -428,18 +459,50 @@ $ctd2.SubjectRoleDropdownRowView = Backbone.View.extend({
         }
 });
 
+/* This view's model covers observation data of one row (i.e. subject column tag),
+ * but the template is for individual cells 
+ * so the template's own model contains individual cell's data.
+ * This is necessary because the number of observations, and thus the column number, is a variable. 
+ */
 $ctd2.TempObservationView = Backbone.View.extend({
         template: _.template($("#temp-observation-tmpl").html()),
         render: function() {
             // this.model should have fields: obvNumber, obvColumn, and obvText for now
+            var obvModel = this.model;
+            for(var column=0; column<obvModel.observationNumber; column++) {
+                var obvContent = obvModel.observations[column];
+                var cellModel = {
+                    obvNumber: column, 
+                    obvColumn: obvModel.columnTag,
+                    obvText: obvContent, };
+                var obvTemp = this.template(cellModel);
+                $(this.el).append(obvTemp);
+            }
+
+            for(var column=0; column<obvModel.observationNumbers; column++) {
+                var deleteButton = "delete-column-"+column;
+                $(this.el).find("tr#subject-header").append("<th>Observation "+column+"<br>(<button class='btn btn-link' id='"+deleteButton+"'>delete</button>)</th>");
+                $(this.el).find("tr#evidence-header").append("<th>Observation "+column+"</th>");
+                $("#"+deleteButton).click(function() {
+                    console.log(deleteButton+" to be implemented");
+                });
+            }
+        }
+});
+
+// this is one column in the data table
+$ctd2.OneObservationView = Backbone.View.extend({
+        template: _.template($("#temp-observation-tmpl").html()),
+        render: function() {
             var obvTemp = this.template(this.model);
             $(this.el).find("tr.template-data-row").each( function() {
                 $(this).append(obvTemp);
             }
             );
-            var deleteButton = "delete-column-"+$ctd2.obvNumber;
-            $(this.el).find("tr#subject-header").append("<th>Observation "+$ctd2.obvNumber+"<br>(<button class='btn btn-link' id='"+deleteButton+"'>delete</button>)</th>");
-            $(this.el).find("tr#evidence-header").append("<th>Observation "+$ctd2.obvNumber+"</th>");
+            var obvNumber = 1; // TODO add a smart serial number
+            var deleteButton = "delete-column-"+obvNumber;
+            $(this.el).find("tr#subject-header").append("<th>Observation "+obvNumber+"<br>(<button class='btn btn-link' id='"+deleteButton+"'>delete</button>)</th>");
+            $(this.el).find("tr#evidence-header").append("<th>Observation "+obvNumber+"</th>");
             $("#"+deleteButton).click(function() {
                 console.log(deleteButton+" to be implemented");
             });
@@ -522,6 +585,8 @@ $ctd2.updateTemplate = function(sync) {
         var evidenceTypes = $ctd2.getStringList('#template-table-evidence input.evidence-types');
         var valueTypes = $ctd2.getStringList('#template-table-evidence input.value-types');
         var evidenceDescriptions = $ctd2.getStringList('#template-table-evidence input.evidence-descriptions');
+        var observationNumber = 2; //$ctd2.get...;
+        var observations = 'a, b, c, d, e, f'; //$ctd2.getStringList...;
 
         var async = true;
         if(sync) async = false;
@@ -540,6 +605,8 @@ $ctd2.updateTemplate = function(sync) {
                 evidenceTypes: evidenceTypes,
                 valueTypes: valueTypes,
                 evidenceDescriptions: evidenceDescriptions,
+                observationNumber: observationNumber,
+                observations: observations,
                }),
             contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
             success: function(data) {

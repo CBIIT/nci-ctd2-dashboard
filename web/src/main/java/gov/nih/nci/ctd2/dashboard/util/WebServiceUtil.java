@@ -166,11 +166,13 @@ public class WebServiceUtil {
         // TODO complete this for all relevant fields
         String[] subjectColumns = submissionTemplate.getSubjectColumns();
         if(subjectColumns==null) {
-            submissionTemplate.setSubjectColumns( new String[0] );
+            subjectColumns = new String[0];
+            submissionTemplate.setSubjectColumns( subjectColumns );
         }
         String[] evidenceColumns = submissionTemplate.getEvidenceColumns();
         if(evidenceColumns==null) {
-            submissionTemplate.setEvidenceColumns( new String[0] );
+            evidenceColumns = new String[0];
+            submissionTemplate.setEvidenceColumns( evidenceColumns );
         }
         String[] evidenceTypes = submissionTemplate.getEvidenceTypes();
         if(evidenceTypes==null) {
@@ -183,6 +185,27 @@ public class WebServiceUtil {
         String[] evidenceDescription = submissionTemplate.getEvidenceDescriptions();
         if(evidenceDescription==null) {
             submissionTemplate.setEvidenceDescriptions( new String[0] );
+        }
+        Integer observationNumber = submissionTemplate.getObservationNumber();
+        if(observationNumber==null) {
+            observationNumber = 0;
+            submissionTemplate.setObservationNumber(observationNumber);
+        }
+        String[] observations = submissionTemplate.getObservations();
+        if(observations==null) {
+            observations = new String[0];
+        }
+        int t = observationNumber*(subjectColumns.length+evidenceColumns.length);
+        if(observations.length<t) {
+            String[] x = new String[t];
+            for(int i=0; i<observations.length; i++) {
+                x[i] = observations[i];
+            }
+            for(int i=observations.length; i<t; i++) {
+                x[i] = "";
+            }
+            observations = x;
+            submissionTemplate.setObservations(observations);
         }
     }
 }

@@ -37,6 +37,8 @@ public class SubmissionTemplateImpl extends DashboardEntityImpl implements Submi
     private String[] evidenceTypes = new String[0];
     private String[] valueTypes = new String[0];
     private String[] evidenceDescriptions = new String[0];
+    Integer observationNumber;
+    private String[] observations = new String[0];
 
     public String getDescription() {
         return description;
@@ -197,5 +199,25 @@ public class SubmissionTemplateImpl extends DashboardEntityImpl implements Submi
     @Override
     public void setEvidenceDescriptions(String[] d) {
         evidenceDescriptions = d;
+    }
+
+    @Override
+    public Integer getObservationNumber() {
+        return observationNumber;
+    }
+
+    @Override
+    public void setObservationNumber(Integer observationNumber) {
+        this.observationNumber = observationNumber;
+    }
+
+    @Override
+    public String[] getObservations() {
+        return observations;
+    }
+
+    @Override
+    public void setObservations(String[] d) {
+        observations = d;
     }
 }
