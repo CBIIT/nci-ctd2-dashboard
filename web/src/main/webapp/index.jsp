@@ -232,39 +232,6 @@
 
         <div class="dark-separator"></div>
 
-        <!-- Carousel
-        ================================================== -->
-        <div class="carousel slide">
-          <div class="carousel-inner">
-            <div class="item active">
-              <img src="img/bg-red.png" alt="Red background image" title="red background image" class="cimg">
-              <div class="container">
-                  <div class="carousel-caption">
-                        <h3 class="homepage-stories-title">Recent Stories</h3>
-                        <div class="well carousel-well">
-                            <div class="tab-content stories-tabs">
-                                <div class="container tab-pane active fade in" id="story-1"></div>
-                                <div class="container tab-pane fade" id="story-2"></div>
-                                <div class="container tab-pane fade" id="story-3"></div>
-                                <div class="container tab-pane fade" id="story-4"></div>
-                            </div>
-                            <div class="pagination pagination-centered stories-pagination">
-                                <ul class="nav">
-                                    <li class="active"><a href="#story-1" class="story-link">&bull;</a></li>
-                                    <li><a href="#story-2" class="story-link">&bull;</a></li>
-                                    <li><a href="#story-3" class="story-link">&bull;</a></li>
-                                    <li><a href="#story-4" class="story-link">&bull;</a></li>
-                                    <li><a href="#stories">More stories &raquo;</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                  </div>
-              </div>
-            </div>
-          </div>
-
-        </div><!-- /.carousel -->
-
         <div class="container marketing ctd2-boxes">
           <div style="display:table">
               <!--
@@ -299,6 +266,40 @@
 
           </div><!-- /.row -->
         </div><!-- /.container -->
+
+        <!-- Carousel
+        ================================================== -->
+        <div class="carousel slide">
+          <div class="carousel-inner">
+            <div class="item active">
+              <img src="img/bg-red.png" alt="Red background image" title="red background image" class="cimg">
+              <div class="container">
+                  <div class="carousel-caption">
+                        <h3 class="homepage-stories-title">Recent Stories</h3>
+                        <div class="well carousel-well">
+                            <div class="tab-content stories-tabs">
+                                <div class="container tab-pane active fade in" id="story-1"></div>
+                                <div class="container tab-pane fade" id="story-2"></div>
+                                <div class="container tab-pane fade" id="story-3"></div>
+                                <div class="container tab-pane fade" id="story-4"></div>
+                            </div>
+                            <div class="pagination pagination-centered stories-pagination">
+                                <ul class="nav">
+                                    <li class="active"><a href="#story-1" class="story-link">&bull;</a></li>
+                                    <li><a href="#story-2" class="story-link">&bull;</a></li>
+                                    <li><a href="#story-3" class="story-link">&bull;</a></li>
+                                    <li><a href="#story-4" class="story-link">&bull;</a></li>
+                                    <li><a href="#stories">More stories &raquo;</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                  </div>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /.carousel -->
+
     </script>
 
     <script type="text/template" id="centers-tmpl">
