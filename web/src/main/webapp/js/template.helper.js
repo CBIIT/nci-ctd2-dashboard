@@ -89,13 +89,6 @@ $ctd2.TemplateHelperView = Backbone.View.extend({
                         _.each(storedTemplates.models, function(oneTemplate) {
                             var oneTemplateModel = oneTemplate.toJSON();
 
-                            // TODO placeholder for now - subjectClasses should be from database as well
-                            var subjectColumnCount = oneTemplateModel.subjectColumns.length;
-                            oneTemplateModel.subjectClasses = []; // the length should match other columns, e.g. column tags, subject roles, descriptions.
-                            for(var i=0; i<subjectColumnCount; i++) {
-                                oneTemplateModel.subjectClasses[i] = Object.keys($ctd2.subjectRoles)[i]; // TODO testing data for now
-                            }
-
                             (new $ctd2.ExistingTemplateView({
                                 model: oneTemplateModel,
                                 el: $("#existing-template-table")
@@ -388,7 +381,6 @@ $ctd2.TemplateSubjectDataRowView = Backbone.View.extend({
 
             var role = this.model.subjectRole;
             var subjectClass = this.model.subjectClass;
-            console.log("subjectClass="+subjectClass);
             if(subjectClass===undefined) subjectClass = "Compound"; // simple default value
 
             // the list of role depends on subject class; 'selected' is row-specific
@@ -596,12 +588,12 @@ $ctd2.updateTemplate = function(sync) {
         	return;
         }
         var subjects = $ctd2.getStringList('#template-table-subject input.subject-columntag');
-        var subjectClasses = $ctd2.getStringList('#template-table-subject input.subject-classes');
-        var subjectRoles = $ctd2.getStringList('#template-table-subject input.subject-roles');
+        var subjectClasses = $ctd2.getStringList('#template-table-subject select.subject-classes');
+        var subjectRoles = $ctd2.getStringList('#template-table-subject select.subject-roles');
         var subjectDescriptions = $ctd2.getStringList('#template-table-subject input.subject-descriptions');
         var evidences = $ctd2.getStringList('#template-table-evidence input.evidence-columntag');
-        var evidenceTypes = $ctd2.getStringList('#template-table-evidence input.evidence-types');
-        var valueTypes = $ctd2.getStringList('#template-table-evidence input.value-types');
+        var evidenceTypes = $ctd2.getStringList('#template-table-evidence select.evidence-types');
+        var valueTypes = $ctd2.getStringList('#template-table-evidence select.value-types');
         var evidenceDescriptions = $ctd2.getStringList('#template-table-evidence input.evidence-descriptions');
         var observationNumber = $(".observation-header").length/2;
         var observations = $ctd2.getObservations();
