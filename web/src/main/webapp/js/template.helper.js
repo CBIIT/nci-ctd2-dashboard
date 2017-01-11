@@ -312,7 +312,8 @@ $ctd2.ExistingTemplateView = Backbone.View.extend({
 
                             (new $ctd2.TemplateSubjectDataRowView({
                                 model: {columnTag: subjectColumns[i].replace(/ /g, "-"), 
-                                    subjectClass: subjectClasses[i], subjectRole: "cell line",
+                                    subjectClass: subjectClasses[i],
+                                    subjectRole: rowModel.subjectRoles[i],
                                     subjectDescription: rowModel.subjectDescriptions[i],
                                     totalRows: totalRows, row: i, 
                                     observationNumber: observationNumber,
