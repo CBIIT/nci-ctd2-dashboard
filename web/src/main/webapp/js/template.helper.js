@@ -318,7 +318,9 @@ $ctd2.ExistingTemplateView = Backbone.View.extend({
                             };
 
                             (new $ctd2.TemplateSubjectDataRowView({
-                                model: {columnTag: subjectColumns[i].replace(/ /g, "-"), subjectClass: subjectClasses[i], subjectRole: "cell line",
+                                model: {columnTag: subjectColumns[i].replace(/ /g, "-"), 
+                                    subjectClass: subjectClasses[i], subjectRole: "cell line",
+                                    subjectDescription: rowModel.subjectDescriptions[i],
                                     totalRows: totalRows, row: i, 
                                     observationNumber: observationNumber,
                                     observations: observationsPerRow

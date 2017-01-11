@@ -1893,7 +1893,7 @@
                 <option {{ subjectClass=='Animal'?'selected=selected':'' }} value='Animal'>Animal Model</option>
             </select></td>
             <td><select id="role-dropdown-{{columnTag}}" class='subject-roles'></select></td>
-            <td><input type="text" class="form-control subject-descriptions" id="description-{{columnTag}}" placeholder="subject description"></td>
+            <td><input type="text" class="form-control subject-descriptions" id="description-{{columnTag}}" placeholder="subject description" value="{{subjectDescription}}"></td>
         </tr>
     </script>
 
@@ -1920,7 +1920,7 @@
                 <option>URL</option>
                 <option>Internal dashboard link</option>
             </select></td>
-            <td><input type="text" class="form-control evidence-descriptions" id="description-{{columnTag}}" placeholder="evidence description"></td>
+            <td><input type="text" class="form-control evidence-descriptions" id="description-{{columnTag}}" placeholder="evidence description" value={{evidenceDescription}}></td>
         </tr>
     </script>
 
