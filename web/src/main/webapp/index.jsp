@@ -1902,14 +1902,13 @@
             <td style="text-align:center;"><img src="img/icons/remove.png" style="width:20px;height:20px;" id="delete-evidence-{{columnTag}}" /></td>
             <td><input type="text" class="form-control evidence-columntag" value="{{columnTag}}" placeholder="column tag"></td>
             <td><select id="evidence-type-{{columnTag}}" class='evidence-types'>
-                <option>background</option>
-                <option>computed</option>
-                <option>link</option>
-                <option>literature</option>
-                <option>measuredd</option>
-                <option>observed</option>
-                <option>reference</option>
-                <option>{{evidenceType}}</option><!-- TODO not an addition option, but 'selected' -->
+                <option {{ evidenceType=='background'?'selected=selected':'' }} >background</option>
+                <option {{ evidenceType=='computed'?'selected=selected':'' }} >computed</option>
+                <option {{ evidenceType=='link'?'selected=selected':'' }} >link</option>
+                <option {{ evidenceType=='literature'?'selected=selected':'' }} >literature</option>
+                <option {{ evidenceType=='measured'?'selected=selected':'' }} >measured</option>
+                <option {{ evidenceType=='observed'?'selected=selected':'' }} >observed</option>
+                <option {{ evidenceType=='reference'?'selected=selected':'' }} >reference</option>
             </select></td>
             <td><select id="value-type-{{columnTag}}" class='value-types'>
                 <option>Document</option>
