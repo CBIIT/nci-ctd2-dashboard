@@ -570,7 +570,23 @@ $ctd2.getStringList = function(searchTag) {
         s += $(row).val();
     });
     return s;
-}
+};
+
+$ctd2.getObservations = function() {
+    var columns = $(".observation-header").length/2;
+    var rows = $("#template-table tr").length-2;
+    var array = new Array(rows*columns);
+    $("#template-table tr.template-data-row").each(function (i, row) {
+        $(row).find("[id^=observation]").each(function(j, c){
+            array[j*rows+i] = $(c).val();
+        });
+    });
+    var s = "";
+    for(var i=0; i<rows*columns; i++) {
+        s += array[i]+",";
+    }
+    return s.substring(0, s.length-1);
+};
 
 $ctd2.updateTemplate = function(sync) {
         if($ctd2.templateId==0) {
@@ -585,8 +601,8 @@ $ctd2.updateTemplate = function(sync) {
         var evidenceTypes = $ctd2.getStringList('#template-table-evidence input.evidence-types');
         var valueTypes = $ctd2.getStringList('#template-table-evidence input.value-types');
         var evidenceDescriptions = $ctd2.getStringList('#template-table-evidence input.evidence-descriptions');
-        var observationNumber = 2; //$ctd2.get...;
-        var observations = 'a, b, c, d, e, f'; //$ctd2.getStringList...;
+        var observationNumber = $(".observation-header").length/2;
+        var observations = $ctd2.getObservations();
 
         var async = true;
         if(sync) async = false;
