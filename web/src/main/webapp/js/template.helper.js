@@ -285,12 +285,13 @@ $ctd2.ExistingTemplateView = Backbone.View.extend({
                         $ctd2.showTemplateMenu();
                         $ctd2.templateId = rowModel.id;
                         $("span#submission-name").text(rowModel.displayName);
-                        // TODO subject data, not complete
+
                         $("#template-table-subject > .template-data-row").remove();
                         var subjectColumns = rowModel.subjectColumns; // this is an array of strings
                         var subjectClasses = rowModel.subjectClasses; // this is an array of strings
                         var observations = rowModel.observations;
                         var observationNumber = rowModel.observationNumber;
+                        var evidenceColumns = rowModel.evidenceColumns;
 
                         // make headers for observation part
                         $("th.observation-header").remove();
@@ -303,7 +304,9 @@ $ctd2.ExistingTemplateView = Backbone.View.extend({
                             });
                         }
 
-                        var totalRows = subjectColumns.length; // FIXME, add the evidence columns
+                        var subjectRows = subjectColumns.length;
+                        var evidenceRows = evidenceColumns.length;
+                        var totalRows = subjectRows+evidenceRows;
                         for (var i=0; i < subjectColumns.length; i++) {
                             var observationsPerRow = new Array(observationNumber);
                             for(var column=0; column<observationNumber; column++) {
@@ -322,18 +325,25 @@ $ctd2.ExistingTemplateView = Backbone.View.extend({
                                 el: $("#template-table-subject")
                             })).render();
                         }
-                        // TODO evidence data, not complete
+
                         $("#template-table-evidence > .template-data-row").remove();
-                        var evidenceColumns = rowModel.evidenceColumns;
                         var evidenceTypes = rowModel.evidenceTypes;
                         var valueTypes = rowModel.valueTypes;
                         var evidenceDescriptions = rowModel.evidenceDescriptions;
                         for (var i=0; i < evidenceColumns.length; i++) {
+                            var observationsPerRow = new Array(observationNumber);
+                            for(var column=0; column<observationNumber; column++) {
+                                observationsPerRow[column] = observations[totalRows*column+i+subjectRows];
+                            };
                             (new $ctd2.TemplateEvidenceDataRowView({
                                 model: {columnTag: evidenceColumns[i].replace(/ /g, "-"), 
                                     evidenceType: evidenceTypes[i], 
                                     valueType: valueTypes[i], 
-                                    evidenceDescription: evidenceDescriptions[i]},
+                                    evidenceDescription: evidenceDescriptions[i],
+                                    totalRows: totalRows, row: i+subjectRows,
+                                    observationNumber: observationNumber,
+                                    observations: observationsPerRow
+                                    },
                                 el: $("#template-table-evidence")
                             })).render();
                         }
@@ -401,7 +411,7 @@ $ctd2.TemplateSubjectDataRowView = Backbone.View.extend({
                         } ).render();
             }
 
-            // render observation celss for one row (subject or evidence column tag)
+            // render observation cells for one row (subject or evidence column tag)
             var tableRow = $('#template-subject-row-columntag-'+this.model.columnTag);
             var totalRows = this.model.totalRows;
             var row = this.model.row;
@@ -428,19 +438,16 @@ $ctd2.TemplateEvidenceDataRowView = Backbone.View.extend({
                 $("#confirmation-modal").modal('show'); // TODO: the text needs to be customized
             });
 
-            /*
-            var selectedValueType = this.model.valueType;
-            // the list of role is fixed, but 'selected' is row-specific
-            var roleModels = valueTypes.models;
-            for (var i = 0; i < valueTypes.length; i++) {
-                var valueType = valueTypes[i].toJSON().displayName;
-                var vtName = valueType.charAt(0).toUpperCase() + valueType.slice(1);
-                new EvidenceTypeDropdownRowView( // TODO not existing yet
-                        {
-                            el: $('#role-dropdown-'+columnTag.replace(/ /g, "-")),
-                            model: { valueType:valueType, vtName: vtName, selected:valueType==selectedValueType?'selected':null }
-                        } ).render();
-            }*/
+            // render observation cells for one row (evidence column tag)
+            var tableRow = $('#template-evidence-row-columntag-'+this.model.columnTag);
+            var totalRows = this.model.totalRows;
+            var row = this.model.row;
+            var observationNumber = this.model.observationNumber;
+            var observations = this.model.observations;
+            new $ctd2.TempObservationView({
+                el: tableRow,
+                model: {columnTag: columnTag, observationNumber: observationNumber, observations: observations},
+            }).render();
 
             return this;
         }
