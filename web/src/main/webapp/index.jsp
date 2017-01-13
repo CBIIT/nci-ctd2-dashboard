@@ -1911,13 +1911,12 @@
                 <option {{ evidenceType=='reference'?'selected=selected':'' }} >reference</option>
             </select></td>
             <td><select id="value-type-{{columnTag}}" class='value-types'>
-                <option>Document</option>
-                <option>Image</option>
-                <option>Number</option>
-                <option>Document</option>
-                <option>Text</option>
-                <option>URL</option>
-                <option>Internal dashboard link</option>
+                <option {{ valueType=='Document'?'selected=selected':'' }} >Document</option>
+                <option {{ valueType=='Image'?'selected=selected':'' }} >Image</option>
+                <option {{ valueType=='Number'?'selected=selected':'' }} >Number</option>
+                <option {{ valueType=='Text'?'selected=selected':'' }} >Text</option>
+                <option {{ valueType=='URL'?'selected=selected':'' }} >URL</option>
+                <option {{ valueType=='Internal dashboard link'?'selected=selected':'' }} >Internal dashboard link</option>
             </select></td>
             <td><input type="text" class="form-control evidence-descriptions" id="description-{{columnTag}}" placeholder="evidence description" value={{evidenceDescription}}></td>
         </tr>
