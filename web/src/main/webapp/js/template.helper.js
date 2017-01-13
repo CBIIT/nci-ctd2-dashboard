@@ -481,14 +481,6 @@ $ctd2.TempObservationView = Backbone.View.extend({
                 $(this.el).append(obvTemp);
             }
 
-            for(var column=0; column<obvModel.observationNumbers; column++) {
-                var deleteButton = "delete-column-"+column;
-                $(this.el).find("tr#subject-header").append("<th>Observation "+column+"<br>(<button class='btn btn-link' id='"+deleteButton+"'>delete</button>)</th>");
-                $(this.el).find("tr#evidence-header").append("<th>Observation "+column+"</th>");
-                $("#"+deleteButton).click(function() {
-                    console.log(deleteButton+" to be implemented");
-                });
-            }
         }
 });
 
@@ -506,8 +498,8 @@ $ctd2.OneObservationView = Backbone.View.extend({
             );
             var obvNumber = columnModel.obvNumber;
             var deleteButton = "delete-column-"+obvNumber;
-            $(this.el).find("tr#subject-header").append("<th>Observation "+obvNumber+"<br>(<button class='btn btn-link' id='"+deleteButton+"'>delete</button>)</th>");
-            $(this.el).find("tr#evidence-header").append("<th>Observation "+obvNumber+"</th>");
+            $(this.el).find("tr#subject-header").append("<th class=observation-header>Observation "+obvNumber+"<br>(<button class='btn btn-link' id='"+deleteButton+"'>delete</button>)</th>");
+            $(this.el).find("tr#evidence-header").append("<th class=observation-header>Observation "+obvNumber+"</th>");
             $("#"+deleteButton).click(function() {
                 console.log(deleteButton+" to be implemented");
             });
