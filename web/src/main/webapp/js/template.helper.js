@@ -130,27 +130,27 @@ $ctd2.TemplateHelperView = Backbone.View.extend({
 
             if($("#template-table-subject tr").length<=1) {
                 (new $ctd2.TemplateSubjectDataRowView({
-                    model: {columnTag: 'new column tag', subjectClass: "Compound", subjectRole: "Candidate drug"},
+                    model: {columnTag: 'new column tag', subjectClass: "Compound", subjectRole: "Candidate drug", subjectDescription:null},
                     el: $("#template-table-subject")
                 })).render();
-            }
+            };
             if($("#template-table-evidence tr").length<=1) {
                 (new $ctd2.TemplateEvidenceDataRowView({
-                    model: {columnTag: 'new column tag', evidenceType: "background", valueType: "Document"},
+                    model: {columnTag: 'new column tag', evidenceType: "background", valueType: "Document", evidenceDescription:null},
                     el: $("#template-table-evidence")
                 })).render();
-            }
+            };
 
             $("#add-evidence").click(function() {
                 (new $ctd2.TemplateEvidenceDataRowView({
-                    model: {columnTag: 'new column tag', evidenceType: "background", valueType: "Document"},
+                    model: {columnTag: 'new column tag', evidenceType: "background", valueType: "Document", evidenceDescription:null},
                     el: $("#template-table-evidence")
                 })).render();
             });
 
             $("#add-subject").click(function() {
                 (new $ctd2.TemplateSubjectDataRowView({
-                    model: {columnTag: 'new column tag', subjectClass: "new subject class", subjectRole: "TOBE"},
+                    model: {columnTag: 'new column tag', subjectClass: null, subjectRole: null, subjectDescription:null},
                     el: $("#template-table-subject")
                 })).render();
             });
@@ -159,7 +159,7 @@ $ctd2.TemplateHelperView = Backbone.View.extend({
                 var newObvNumber = 1; // TODO a smart serial number
                 new $ctd2.OneObservationView({
                     el: $("#template-table"),
-                    model: {obvNumber: newObvNumber, obvColumn: "TEMP", obvText: "empty"},
+                    model: {obvNumber: newObvNumber, obvText: null},
                 }).render();
             });
 
@@ -496,12 +496,15 @@ $ctd2.TempObservationView = Backbone.View.extend({
 $ctd2.OneObservationView = Backbone.View.extend({
         template: _.template($("#temp-observation-tmpl").html()),
         render: function() {
-            var obvTemp = this.template(this.model);
+            var tmplt = this.template;
+            var columnModel = this.model;
             $(this.el).find("tr.template-data-row").each( function() {
+                columnModel.obvColumn = $(this).attr('id');
+                var obvTemp = tmplt(columnModel);
                 $(this).append(obvTemp);
             }
             );
-            var obvNumber = 1; // TODO add a smart serial number
+            var obvNumber = columnModel.obvNumber;
             var deleteButton = "delete-column-"+obvNumber;
             $(this.el).find("tr#subject-header").append("<th>Observation "+obvNumber+"<br>(<button class='btn btn-link' id='"+deleteButton+"'>delete</button>)</th>");
             $(this.el).find("tr#evidence-header").append("<th>Observation "+obvNumber+"</th>");
