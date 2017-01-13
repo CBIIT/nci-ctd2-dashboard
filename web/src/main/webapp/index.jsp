@@ -2177,7 +2177,7 @@
     </script>
 
     <script type="text/template" id="temp-observation-tmpl">
-        <td><input type="text" class="form-control" id="observation-{{obvNumber}}-{{obvColumn}}" placeholder="{{obvText}}"></td>
+        <td><input type="text" class="form-control" id="observation-{{obvNumber}}-{{obvColumn}}" value="{{obvText}}" placeholder="enter value"></td>
     </script>
 
     <script type="text/template" id="template-helper-center-tmpl">
