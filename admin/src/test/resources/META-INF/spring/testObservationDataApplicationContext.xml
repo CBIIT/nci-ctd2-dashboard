@@ -425,4 +425,13 @@
     <bean name="utswKrasXpo1Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
         <property name="lineMapper" ref="utswKrasXpo1LineMapper" />
     </bean>
+    <bean name="emoryOncoppiTier1Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="emoryOncoppiTier1LineMapper" />
+    </bean>
+    <bean name="emoryOncoppiTier2Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="emoryOncoppiTier2LineMapper" />
+    </bean>
+    <bean name="utswSW044248Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="utswSW044248LineMapper" />
+    </bean>
 </beans>

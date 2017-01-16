@@ -1135,4 +1135,31 @@
             </bean>
         </property>
     </bean>
+    <bean name="emoryOncoppiTier1Reader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${emory.oncoppi.tier1.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="emoryOncoppiTier1LineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="emoryOncoppiTier2Reader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${emory.oncoppi.tier2.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="emoryOncoppiTier2LineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="utswSW044248Reader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${utsw.SW044248.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="utswSW044248LineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
 </beans>
