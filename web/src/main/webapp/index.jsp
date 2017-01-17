@@ -106,9 +106,9 @@
                 <li class="dropdown">
                       <a class="dropdown-toggle navlink" href="#" data-toggle="dropdown">Resources <b class="caret"></b></a>
                       <ul class="dropdown-menu">
-                          <li><a target="_blank" href="http://ocg.cancer.gov/programs/ctd2">CTD<sup>2</sup> Home Page</a></li>
-                          <li><a target="_blank" href="http://ocg.cancer.gov/programs/ctd2/publications">Publications</a></li>
-                          <li><a target="_blank" href="https://ctd2.nci.nih.gov/dataPortal/">Data Portal - Downloads</a></li>
+                          <li><a target="_blank" href="https://ocg.cancer.gov/programs/ctd2">CTD<sup>2</sup> Home Page</a></li>
+                          <li><a target="_blank" href="https://ocg.cancer.gov/programs/ctd2/publications">Publications</a></li>
+                          <li><a target="_blank" href="https://ocg.cancer.gov/programs/ctd2/data-portal">Data Portal - Downloads</a></li>
                           <li><a target="_blank" href="https://ocg.cancer.gov/programs/ctd2/analytical-tools">Analytical Tools</a></li>
                           <li><a target="_blank" href="https://ocg.cancer.gov/programs/ctd2/supported-reagents">Supported Reagents</a></li>
                           <li class="dropdown-submenu"><a tabindex="-1" href="#">Outside Resources</a>
@@ -222,7 +222,7 @@
                     </div>
                     <div class="span3">
                         <br><br>
-                        <a href="https://ctd2.nci.nih.gov/dataPortal/" style="vertical-align: middle">
+                        <a href="https://ocg.cancer.gov/programs/ctd2/data-portal" style="vertical-align: middle">
                           <img src="img/logos/image001.png" onmouseover="this.src='img/logos/image002.png'" onmouseout="this.src='img/logos/image001.png'" alt="CTD2 general image" title="CTD2 Data Portal image" style="vertical-align: middle">
                         </a>
                         <div>
