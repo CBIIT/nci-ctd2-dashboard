@@ -130,27 +130,27 @@ $ctd2.TemplateHelperView = Backbone.View.extend({
 
             if($("#template-table-subject tr").length<=1) {
                 (new $ctd2.TemplateSubjectDataRowView({
-                    model: {columnTag: 'new column tag', subjectClass: "Compound", subjectRole: "Candidate drug", subjectDescription:null},
+                    model: {columnTagId: "new-column-tag", columnTag: 'new column tag', subjectClass: "Compound", subjectRole: "Candidate drug", subjectDescription:null},
                     el: $("#template-table-subject")
                 })).render();
             };
             if($("#template-table-evidence tr").length<=1) {
                 (new $ctd2.TemplateEvidenceDataRowView({
-                    model: {columnTag: 'new column tag', evidenceType: "background", valueType: "Document", evidenceDescription:null},
+                    model: {columnTagId: "new-column-tag", columnTag: 'new column tag', evidenceType: "background", valueType: "Document", evidenceDescription:null},
                     el: $("#template-table-evidence")
                 })).render();
             };
 
             $("#add-evidence").click(function() {
                 (new $ctd2.TemplateEvidenceDataRowView({
-                    model: {columnTag: 'new column tag', evidenceType: "background", valueType: "Document", evidenceDescription:null},
+                    model: {columnTagId: "new-column-tag", columnTag: 'new column tag', evidenceType: "background", valueType: "Document", evidenceDescription:null},
                     el: $("#template-table-evidence")
                 })).render();
             });
 
             $("#add-subject").click(function() {
                 (new $ctd2.TemplateSubjectDataRowView({
-                    model: {columnTag: 'new column tag', subjectClass: null, subjectRole: null, subjectDescription:null},
+                    model: {columnTagId: "new-column-tag", columnTag: 'new column tag', subjectClass: null, subjectRole: null, subjectDescription:null},
                     el: $("#template-table-subject")
                 })).render();
             });
@@ -314,7 +314,8 @@ $ctd2.ExistingTemplateView = Backbone.View.extend({
                             };
 
                             (new $ctd2.TemplateSubjectDataRowView({
-                                model: {columnTag: subjectColumns[i].replace(/ /g, "-"), 
+                                model: {columnTagId: subjectColumns[i].replace(/ /g, "-"),
+                                    columnTag: subjectColumns[i],
                                     subjectClass: subjectClasses[i],
                                     subjectRole: rowModel.subjectRoles[i],
                                     subjectDescription: rowModel.subjectDescriptions[i],
@@ -336,7 +337,8 @@ $ctd2.ExistingTemplateView = Backbone.View.extend({
                                 observationsPerRow[column] = observations[totalRows*column+i+subjectRows];
                             };
                             (new $ctd2.TemplateEvidenceDataRowView({
-                                model: {columnTag: evidenceColumns[i].replace(/ /g, "-"), 
+                                model: {columnTagId: evidenceColumns[i].replace(/ /g, "-"),
+                                    columnTag: evidenceColumns[i],
                                     evidenceType: evidenceTypes[i], 
                                     valueType: valueTypes[i], 
                                     evidenceDescription: evidenceDescriptions[i],
@@ -392,7 +394,8 @@ $ctd2.TemplateSubjectDataRowView = Backbone.View.extend({
 
             var role = this.model.subjectRole;
             var subjectClass = this.model.subjectClass;
-            if(subjectClass===undefined) subjectClass = "Compound"; // simple default value
+            console.log("subjectClass="+subjectClass);
+            if(subjectClass===undefined || subjectClass==null) subjectClass = "Compound"; // simple default value
 
             // the list of role depends on subject class; 'selected' is row-specific
             var roleOptions = $ctd2.subjectRoles[subjectClass]; //subjectRoles.models; // TODO temperarily using hard-coded object
@@ -401,18 +404,19 @@ $ctd2.TemplateSubjectDataRowView = Backbone.View.extend({
                 return;
             }
 
+            var columnTagId = this.model.columnTagId;
             for (var i = 0; i < roleOptions.length; i++) {
                 var roleName = roleOptions[i]; //.toJSON().displayName; // TODO temparily using hard-coded values
                 var cName = roleName.charAt(0).toUpperCase() + roleName.slice(1);
                 new $ctd2.SubjectRoleDropdownRowView(
                         {
-                            el: $('#role-dropdown-'+columnTag.replace(/ /g, "-")),
+                            el: $('#role-dropdown-'+columnTagId),
                             model: { roleName:roleName, cName: cName, selected:roleName==role?'selected':null }
                         } ).render();
             }
 
             // render observation cells for one row (subject or evidence column tag)
-            var tableRow = $('#template-subject-row-columntag-'+this.model.columnTag);
+            var tableRow = $('#template-subject-row-columntag-'+columnTagId);
             var totalRows = this.model.totalRows;
             var row = this.model.row;
             var observationNumber = this.model.observationNumber;
@@ -439,7 +443,7 @@ $ctd2.TemplateEvidenceDataRowView = Backbone.View.extend({
             });
 
             // render observation cells for one row (evidence column tag)
-            var tableRow = $('#template-evidence-row-columntag-'+this.model.columnTag);
+            var tableRow = $('#template-evidence-row-columntag-'+this.model.columnTagId);
             var totalRows = this.model.totalRows;
             var row = this.model.row;
             var observationNumber = this.model.observationNumber;

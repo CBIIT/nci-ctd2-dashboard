@@ -1881,8 +1881,8 @@
     </script>
 
     <script type="text/template" id="template-subject-data-row-tmpl">
-        <tr id="template-subject-row-columntag-{{columnTag}}" class="template-data-row">
-            <td style="text-align:center;"><img src="img/icons/remove.png" style="width:20px;height:20px;" id="delete-subject-{{columnTag}}" /></td>
+        <tr id="template-subject-row-columntag-{{columnTagId}}" class="template-data-row">
+            <td style="text-align:center;"><img src="img/icons/remove.png" style="width:20px;height:20px;" id="delete-subject-{{columnTagId}}" /></td>
             <td><input type="text" class="form-control subject-columntag" value="{{columnTag}}" placeholder="column tag"></td>
             <td><select class='subject-classes'>
                 <option {{ subjectClass=='Compound'?'selected=selected':'' }}>Compound</option>
@@ -1892,16 +1892,16 @@
                 <option {{ subjectClass=='Cell'?'selected=selected':'' }} value='Cell'>Cell Sample (cell line)</option>
                 <option {{ subjectClass=='Animal'?'selected=selected':'' }} value='Animal'>Animal Model</option>
             </select></td>
-            <td><select id="role-dropdown-{{columnTag}}" class='subject-roles'></select></td>
-            <td><input type="text" class="form-control subject-descriptions" id="description-{{columnTag}}" placeholder="subject description" value="{{subjectDescription}}"></td>
+            <td><select id="role-dropdown-{{columnTagId}}" class='subject-roles'></select></td>
+            <td><input type="text" class="form-control subject-descriptions" id="description-{{columnTagId}}" placeholder="subject description" value="{{subjectDescription}}"></td>
         </tr>
     </script>
 
     <script type="text/template" id="template-evidence-data-row-tmpl">
-        <tr id="template-evidence-row-columntag-{{columnTag}}" class="template-data-row">
-            <td style="text-align:center;"><img src="img/icons/remove.png" style="width:20px;height:20px;" id="delete-evidence-{{columnTag}}" /></td>
+        <tr id="template-evidence-row-columntag-{{columnTagId}}" class="template-data-row">
+            <td style="text-align:center;"><img src="img/icons/remove.png" style="width:20px;height:20px;" id="delete-evidence-{{columnTagId}}" /></td>
             <td><input type="text" class="form-control evidence-columntag" value="{{columnTag}}" placeholder="column tag"></td>
-            <td><select id="evidence-type-{{columnTag}}" class='evidence-types'>
+            <td><select id="evidence-type-{{columnTagId}}" class='evidence-types'>
                 <option {{ evidenceType=='background'?'selected=selected':'' }} >background</option>
                 <option {{ evidenceType=='computed'?'selected=selected':'' }} >computed</option>
                 <option {{ evidenceType=='link'?'selected=selected':'' }} >link</option>
@@ -1910,7 +1910,7 @@
                 <option {{ evidenceType=='observed'?'selected=selected':'' }} >observed</option>
                 <option {{ evidenceType=='reference'?'selected=selected':'' }} >reference</option>
             </select></td>
-            <td><select id="value-type-{{columnTag}}" class='value-types'>
+            <td><select id="value-type-{{columnTagId}}" class='value-types'>
                 <option {{ valueType=='Document'?'selected=selected':'' }} >Document</option>
                 <option {{ valueType=='Image'?'selected=selected':'' }} >Image</option>
                 <option {{ valueType=='Number'?'selected=selected':'' }} >Number</option>
@@ -1918,7 +1918,7 @@
                 <option {{ valueType=='URL'?'selected=selected':'' }} >URL</option>
                 <option {{ valueType=='Internal dashboard link'?'selected=selected':'' }} >Internal dashboard link</option>
             </select></td>
-            <td><input type="text" class="form-control evidence-descriptions" id="description-{{columnTag}}" placeholder="evidence description" value={{evidenceDescription}}></td>
+            <td><input type="text" class="form-control evidence-descriptions" id="description-{{columnTagId}}" placeholder="evidence description" value={{evidenceDescription}}></td>
         </tr>
     </script>
 
