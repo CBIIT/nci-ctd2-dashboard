@@ -179,51 +179,6 @@ $ctd2.TemplateHelperView = Backbone.View.extend({
                 });
             });
 
-            $("#download-template").click(function() {
-                //self.addMetaColumn("observation_summary", $("#template-obs-summary").val());
-                return this;
-            });
-
-            $("#preview-template").click(function() {
-                //self.addMetaColumn("observation_summary", $("#template-obs-summary").val());
-
-                $.fancybox(
-                    _.template($("#preview-tmpl").html()),
-                    {
-                        'autoDimensions' : false,
-                        'width' : '100%',
-                        'height' : '100%',
-                        'transitionIn' : 'none',
-                        'transitionOut' : 'none'
-                    }
-                );
-
-                // create submission
-                var submission = {
-                    // TODO
-                };
-
-                // TODO fake data
-                var obs1 = {gene_1:"GENE 1", gene_2:"GENE 2", evidence_1:"EVIDENCE 1"};
-                var obs2 = {gene_1:"GENE A", gene_2:"GENE B", evidence_1:"EVIDENCE A"};;
-
-                // Create the submission preview
-                (new SubmissionPreviewView({
-                    model: {
-                        submission: submission,
-                        observations: [obs1, obs2]
-                    }
-                })).render();
-
-                $("#preview-container div.common-container").removeClass("common-container");
-                $('#preview-tabs a').click(function (e) {
-                    e.preventDefault();
-                    $(this).tab('show');
-                });
-
-                return this;
-            });
-
             $("#download-form").submit(function() {
                 var table2TSV = function(id) {
                     var text = "";
@@ -252,7 +207,7 @@ $ctd2.TemplateHelperView = Backbone.View.extend({
                 };
 
                 $("#template-input").val(table2TSV("#template-table"));
-                $("#filename-input").val($("#meta-submission_name").text());
+                $("#filename-input").val("ctd2test"); //$("#meta-submission_name").text());
 
                 return true;
             });
@@ -369,7 +324,8 @@ $ctd2.ExistingTemplateView = Backbone.View.extend({
                         $("#step4").slideDown();
                         break;
                     case 'download':
-                        window.open("/ctd2test.zip"); // TODO only to demo the feature
+                        // FIXME this does not work before the tempalte table is actually populated
+                        $("#download-form").submit();
                         break;
                     default:
                         alert(rowModel.displayName+' '+action+' clicked');

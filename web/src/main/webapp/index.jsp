@@ -2147,17 +2147,11 @@
                 <button id="summary-save">Save</button>
                 <button id="summary-continue">Continue</button>
 
-                <!-- <hr>
-                <div class="span8 offset2 template-download">
-                    <button class="btn btn-large" id="preview-template">Preview template</button>
-                    <div class="span4">
-                        <form action="template/download" method="POST" id="download-form">
-                            <button class="btn btn-warning btn-large" id="download-template">Download template</button>
+                <form action="template/download" method="POST" id="download-form" style="display:inline">
+                            <button id="download-template">Download template</button>
                             <input type="hidden" name="template" id="template-input">
                             <input type="hidden" name="filename" id="filename-input">
-                        </form>
-                    </div>
-                </div> -->
+                </form>
             </div> <!-- end of step 5 -->
 
             <div id="step6" class="hide">
@@ -2190,56 +2184,6 @@
 
     <script type="text/template" id="template-sample-data-tmpl">
         <input placeholder="enter data" class="sample-data-input">
-    </script>
-
-    <script type="text/template" id="preview-tmpl">
-        <div id="preview-container" class="container">
-        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="false">
-            <h2>Submission preview</h2>
-            <div class="panel panel-default">
-                <div class="panel-heading" role="tab" id="headingOne">
-                <h4 class="panel-title">
-                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                    Observation #1
-                    </a>
-                </h4>
-                </div>
-                <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-                <div class="panel-body" id=observation_1>
-                    Observation #1 preview TO BE IMPLEMENTED
-                </div>
-                </div>
-            </div>
-            <div class="panel panel-default">
-                <div class="panel-heading" role="tab" id="headingTwo">
-                <h4 class="panel-title">
-                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                    Observation #2
-                    </a>
-                </h4>
-                </div>
-                <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-                <div class="panel-body" id=observation_2>
-                    Observation #2 preview TO BE IMPLEMENTED
-                </div>
-                </div>
-            </div>
-            <div class="panel panel-default">
-                <div class="panel-heading" role="tab" id="headingThree">
-                <h4 class="panel-title">
-                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                    Observation #3
-                    </a>
-                </h4>
-                </div>
-                <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
-                <div class="panel-body" id=observation_x>
-                    Observation #3 preview TO BE IMPLEMENTED
-                </div>
-                </div>
-            </div>
-        </div>
-        </div>
     </script>
 
     <script type="text/template" id="more-observations-tmpl">
