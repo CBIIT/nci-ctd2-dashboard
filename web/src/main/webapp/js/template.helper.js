@@ -128,29 +128,18 @@ $ctd2.TemplateHelperView = Backbone.View.extend({
                 $("#step5").slideDown();
             });
 
-            if($("#template-table-subject tr").length<=1) {
-                (new $ctd2.TemplateSubjectDataRowView({
-                    model: {columnTagId: "new-column-tag", columnTag: 'new column tag', subjectClass: "Compound", subjectRole: "Candidate drug", subjectDescription:null},
-                    el: $("#template-table-subject")
-                })).render();
-            };
-            if($("#template-table-evidence tr").length<=1) {
-                (new $ctd2.TemplateEvidenceDataRowView({
-                    model: {columnTagId: "new-column-tag", columnTag: 'new column tag', evidenceType: "background", valueType: "Document", evidenceDescription:null},
-                    el: $("#template-table-evidence")
-                })).render();
-            };
-
             $("#add-evidence").click(function() {
+                var tagid = $("#template-table-evidence tr").length;
                 (new $ctd2.TemplateEvidenceDataRowView({
-                    model: {columnTagId: "new-column-tag", columnTag: 'new column tag', evidenceType: "background", valueType: "Document", evidenceDescription:null},
+                    model: {columnTagId: tagid, columnTag: null, evidenceType: "background", valueType: "Document", evidenceDescription:null},
                     el: $("#template-table-evidence")
                 })).render();
             });
 
             $("#add-subject").click(function() {
+                var tagid = $("#template-table-subject tr").length;
                 (new $ctd2.TemplateSubjectDataRowView({
-                    model: {columnTagId: "new-column-tag", columnTag: 'new column tag', subjectClass: null, subjectRole: null, subjectDescription:null},
+                    model: {columnTagId: tagid, columnTag: null, subjectClass: null, subjectRole: null, subjectDescription:null},
                     el: $("#template-table-subject")
                 })).render();
             });
@@ -269,7 +258,8 @@ $ctd2.ExistingTemplateView = Backbone.View.extend({
                             };
 
                             (new $ctd2.TemplateSubjectDataRowView({
-                                model: {columnTagId: subjectColumns[i].replace(/ /g, "-"),
+                                model: {
+                                    columnTagId: i,
                                     columnTag: subjectColumns[i],
                                     subjectClass: subjectClasses[i],
                                     subjectRole: rowModel.subjectRoles[i],
