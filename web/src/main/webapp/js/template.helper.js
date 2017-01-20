@@ -340,10 +340,10 @@ $ctd2.TemplateSubjectDataRowView = Backbone.View.extend({
         template: _.template($("#template-subject-data-row-tmpl").html()),
         render: function() {
             $(this.el).append(this.template(this.model));
-            var columnTag = this.model.columnTag;
-            $("#delete-subject-"+columnTag).click(function()  {
+            var columnTagId = this.model.columnTagId;
+            $("#delete-subject-"+columnTagId).click(function()  {
                 $("#confirmed-delete").unbind('click').click(function(){
-                    $('tr#template-subject-row-columntag-'+columnTag).remove();
+                    $('tr#template-subject-row-columntag-'+columnTagId).remove();
                 });
                 $("#confirmation-modal").modal('show'); // TODO: the text needs to be cutomized
             });
@@ -360,7 +360,6 @@ $ctd2.TemplateSubjectDataRowView = Backbone.View.extend({
                 return;
             }
 
-            var columnTagId = this.model.columnTagId;
             for (var i = 0; i < roleOptions.length; i++) {
                 var roleName = roleOptions[i]; //.toJSON().displayName; // TODO temparily using hard-coded values
                 var cName = roleName.charAt(0).toUpperCase() + roleName.slice(1);
@@ -393,7 +392,7 @@ $ctd2.TemplateSubjectDataRowView = Backbone.View.extend({
             var observations = this.model.observations;
             new $ctd2.TempObservationView({
                 el: tableRow,
-                model: {columnTag: columnTag, observationNumber: observationNumber, observations: observations},
+                model: {columnTagId: columnTagId, observationNumber: observationNumber, observations: observations},
             }).render();
 
             return this;
@@ -404,23 +403,23 @@ $ctd2.TemplateEvidenceDataRowView = Backbone.View.extend({
         template: _.template($("#template-evidence-data-row-tmpl").html()),
         render: function() {
             $(this.el).append(this.template(this.model));
-            var columnTag = this.model.columnTag;
-            $("#delete-evidence-"+columnTag).click(function()  {
+            var columnTagId = this.model.columnTagId;
+            $("#delete-evidence-"+columnTagId).click(function()  {
                 $("#confirmed-delete").unbind('click').click(function(){
-                    $('tr#template-evidence-row-columntag-'+columnTag).remove();
+                    $('tr#template-evidence-row-columntag-'+columnTagId).remove();
                 });
                 $("#confirmation-modal").modal('show'); // TODO: the text needs to be customized
             });
 
             // render observation cells for one row (evidence column tag)
-            var tableRow = $('#template-evidence-row-columntag-'+this.model.columnTagId);
+            var tableRow = $('#template-evidence-row-columntag-'+columnTagId);
             var totalRows = this.model.totalRows;
             var row = this.model.row;
             var observationNumber = this.model.observationNumber;
             var observations = this.model.observations;
             new $ctd2.TempObservationView({
                 el: tableRow,
-                model: {columnTag: columnTag, observationNumber: observationNumber, observations: observations},
+                model: {columnTagId: columnTagId, observationNumber: observationNumber, observations: observations},
             }).render();
 
             return this;
@@ -449,7 +448,7 @@ $ctd2.TempObservationView = Backbone.View.extend({
                 var obvContent = obvModel.observations[column];
                 var cellModel = {
                     obvNumber: column, 
-                    obvColumn: obvModel.columnTag,
+                    obvColumn: obvModel.columnTagId,
                     obvText: obvContent, };
                 var obvTemp = this.template(cellModel);
                 $(this.el).append(obvTemp);
