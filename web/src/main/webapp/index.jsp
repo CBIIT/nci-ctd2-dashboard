@@ -1884,7 +1884,7 @@
         <tr id="template-subject-row-columntag-{{columnTagId}}" class="template-data-row">
             <td style="text-align:center;"><img src="img/icons/remove.png" style="width:20px;height:20px;" id="delete-subject-{{columnTagId}}" /></td>
             <td><input type="text" class="form-control subject-columntag" value="{{columnTag}}" placeholder="column tag"></td>
-            <td><select class='subject-classes'>
+            <td><select id="subject-class-dropdown-{{columnTagId}}" class='subject-classes'>
                 <option {{ subjectClass=='Compound'?'selected=selected':'' }}>Compound</option>
                 <option {{ subjectClass=='Gene'?'selected=selected':'' }}>Gene</option>
                 <option {{ subjectClass=='RNA'?'selected=selected':'' }} value='RNA'>RNA-based reagent</option>

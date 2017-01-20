@@ -354,7 +354,7 @@ $ctd2.TemplateSubjectDataRowView = Backbone.View.extend({
             if(subjectClass===undefined || subjectClass==null) subjectClass = "Compound"; // simple default value
 
             // the list of role depends on subject class; 'selected' is row-specific
-            var roleOptions = $ctd2.subjectRoles[subjectClass]; //subjectRoles.models; // TODO temperarily using hard-coded object
+            var roleOptions = $ctd2.subjectRoles[subjectClass];
 
             if(roleOptions===undefined) { // exceptional case
                 return;
@@ -370,6 +370,20 @@ $ctd2.TemplateSubjectDataRowView = Backbone.View.extend({
                             model: { roleName:roleName, cName: cName, selected:roleName==role?'selected':null }
                         } ).render();
             }
+            $('#subject-class-dropdown-'+columnTagId).change(function() {
+                subjectClass = $(this).val();
+                roleOptions = $ctd2.subjectRoles[subjectClass];
+                $('#role-dropdown-'+columnTagId).empty();
+                for (var i = 0; i < roleOptions.length; i++) {
+                    var roleName = roleOptions[i];
+                    var cName = roleName.charAt(0).toUpperCase() + roleName.slice(1);
+                    new $ctd2.SubjectRoleDropdownRowView(
+                        {
+                            el: $('#role-dropdown-'+columnTagId),
+                            model: { roleName:roleName, cName: cName, selected:roleName==role?'selected':null }
+                        } ).render();
+                }
+            });
 
             // render observation cells for one row (subject or evidence column tag)
             var tableRow = $('#template-subject-row-columntag-'+columnTagId);
