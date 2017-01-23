@@ -340,7 +340,6 @@ $ctd2.TemplateSubjectDataRowView = Backbone.View.extend({
 
             var role = this.model.subjectRole;
             var subjectClass = this.model.subjectClass;
-            console.log("subjectClass="+subjectClass);
             if(subjectClass===undefined || subjectClass==null) subjectClass = "Compound"; // simple default value
 
             // the list of role depends on subject class; 'selected' is row-specific
@@ -360,8 +359,7 @@ $ctd2.TemplateSubjectDataRowView = Backbone.View.extend({
                         } ).render();
             }
             $('#subject-class-dropdown-'+columnTagId).change(function() {
-                subjectClass = $(this).val();
-                roleOptions = $ctd2.subjectRoles[subjectClass];
+                roleOptions = $ctd2.subjectRoles[$(this).val()];
                 $('#role-dropdown-'+columnTagId).empty();
                 for (var i = 0; i < roleOptions.length; i++) {
                     var roleName = roleOptions[i];
@@ -369,7 +367,7 @@ $ctd2.TemplateSubjectDataRowView = Backbone.View.extend({
                     new $ctd2.SubjectRoleDropdownRowView(
                         {
                             el: $('#role-dropdown-'+columnTagId),
-                            model: { roleName:roleName, cName: cName, selected:roleName==role?'selected':null }
+                            model: { roleName:roleName, cName: cName, selected:null }
                         } ).render();
                 }
             });
