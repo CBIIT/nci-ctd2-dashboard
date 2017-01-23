@@ -244,7 +244,8 @@ $ctd2.ExistingTemplateView = Backbone.View.extend({
                             $("#template-table tr#subject-header").append("<th class=observation-header>Observation "+column+"<br>(<button class='btn btn-link' id='"+deleteButton+"'>delete</button>)</th>");
                             $("#template-table tr#evidence-header").append("<th class=observation-header>Observation "+column+"</th>");
                             $("#"+deleteButton).click(function() {
-                                console.log($(this).attr('id')+" to be implemented");
+                                var c = $('#template-table tr#subject-header').find('th').index($(this).parent());
+                                $('#template-table tr').find('td:eq('+c+'),th:eq('+c+')').remove();
                             });
                         }
 
@@ -457,12 +458,13 @@ $ctd2.OneObservationView = Backbone.View.extend({
                 $(this).append(obvTemp);
             }
             );
-            var obvNumber = columnModel.obvNumber;
+            var obvNumber = $('#template-table tr#subject-header').find('th').length-4;
             var deleteButton = "delete-column-"+obvNumber;
             $(this.el).find("tr#subject-header").append("<th class=observation-header>Observation "+obvNumber+"<br>(<button class='btn btn-link' id='"+deleteButton+"'>delete</button>)</th>");
             $(this.el).find("tr#evidence-header").append("<th class=observation-header>Observation "+obvNumber+"</th>");
             $("#"+deleteButton).click(function() {
-                console.log(deleteButton+" to be implemented");
+                var c = $('#template-table tr#subject-header').find('th').index($(this).parent());
+                $('#template-table tr').find('td:eq('+c+'),th:eq('+c+')').remove();
             });
             $ctd2.obvNumber++;
         }
