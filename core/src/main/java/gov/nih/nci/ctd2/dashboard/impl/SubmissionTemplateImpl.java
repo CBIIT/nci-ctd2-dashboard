@@ -27,7 +27,7 @@ public class SubmissionTemplateImpl extends DashboardEntityImpl implements Submi
     private String phone;
     private String project;
     private Integer tier;
-    private Boolean complete;
+    private Boolean isStory;
     private Date dateLastModified;
     private String[] subjectColumns = new String[0];
     private String[] evidenceColumns = new String[0];
@@ -73,12 +73,14 @@ public class SubmissionTemplateImpl extends DashboardEntityImpl implements Submi
         this.tier = tier;
     }
 
-    public Boolean getComplete() {
-        return complete;
+    @Override
+    public Boolean getIsStory() {
+        return isStory;
     }
 
-    public void setComplete(Boolean complete) {
-        this.complete = complete;
+    @Override
+    public void setIsStory(Boolean isStory) {
+        this.isStory = isStory;
     }
 
     public Date getDateLastModified() {

@@ -11,8 +11,8 @@ public interface SubmissionTemplate extends DashboardEntity {
     public void setProject(String project);
     public Integer getTier();
     public void setTier(Integer tier);
-    public Boolean getComplete();
-    public void setComplete(Boolean complete);
+    public Boolean getIsStory();
+    public void setIsStory(Boolean isStory);
     public Date getDateLastModified();
     public void setDateLastModified(Date dateLastModified);
     public String getFirstName();

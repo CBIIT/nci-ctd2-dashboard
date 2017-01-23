@@ -602,6 +602,17 @@ $ctd2.updateTemplate = function(sync) {
         	alert('error: $ctd2.templateId==0');
         	return;
         }
+
+        var firstName = $("#first-name").val();
+        var lastName = $("#last-name").val();
+        var email = $("#email").val();
+        var phone = $("#phone").val();
+        var submissionName = $("#template-name").val();
+        var description = $("#template-submission-desc").val();
+        var project = $("#template-project-title").val();
+        var tier = $("#template-tier").val();
+        var isStory = $("#template-is-story").val();
+
         var subjects = $ctd2.getStringList('#template-table-subject input.subject-columntag');
         var subjectClasses = $ctd2.getStringList('#template-table-subject select.subject-classes');
         var subjectRoles = $ctd2.getStringList('#template-table-subject select.subject-roles');
@@ -622,6 +633,15 @@ $ctd2.updateTemplate = function(sync) {
             type: "POST",
             data: jQuery.param({
                 templateId: $ctd2.templateId,
+                firstName: firstName,
+                lastName: lastName,
+                email: email,
+                phone: phone,
+                name : submissionName,
+                description: description,
+                project: project,
+                tier: tier,
+                isStory: isStory,
                 subjects: subjects,
                 subjectClasses: subjectClasses,
                 subjectRoles: subjectRoles,

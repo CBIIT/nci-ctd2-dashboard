@@ -36,8 +36,12 @@ public class TemplateController {
             @RequestParam("name") String name,
             @RequestParam("firstName") String firstName,
             @RequestParam("lastName") String lastName,
+            @RequestParam("email") String email,
+            @RequestParam("phone") String phone,
             @RequestParam("description") String description,
-            @RequestParam("project") String project
+            @RequestParam("project") String project,
+            @RequestParam("tier") Integer tier,
+            @RequestParam("isStory") Boolean isStory
             )
     {
     	SubmissionTemplate template = new SubmissionTemplateImpl();
@@ -47,8 +51,12 @@ public class TemplateController {
     	template.setSubmissionCenter(submissionCenter);
     	template.setDescription(description);
     	template.setProject(project);
+        template.setTier(tier);
+        template.setIsStory(isStory);
     	template.setFirstName(firstName);
     	template.setLastName(lastName);
+        template.setEmail(email);
+        template.setPhone(phone);
     	dashboardDao.save(template);
 
     	return new ResponseEntity<String>(template.getId().toString(), HttpStatus.OK);
@@ -60,6 +68,15 @@ public class TemplateController {
     ResponseEntity<String>
     updateSubmissionTemplate(
             @RequestParam("templateId") Integer templateId,
+            @RequestParam("firstName") String firstName,
+            @RequestParam("lastName") String lastName,
+            @RequestParam("email") String email,
+            @RequestParam("phone") String phone,
+            @RequestParam("name") String name,
+            @RequestParam("description") String description,
+            @RequestParam("project") String project,
+            @RequestParam("tier") Integer tier,
+            @RequestParam("isStory") Boolean isStory,
             @RequestParam("subjects") String[] subjects,
             @RequestParam("subjectClasses") String[] subjectClasses,
             @RequestParam("subjectRoles") String[] subjectRoles,
@@ -73,6 +90,17 @@ public class TemplateController {
             )
     {
         SubmissionTemplate template = dashboardDao.getEntityById(SubmissionTemplate.class, templateId);
+    	template.setDisplayName(name);
+    	template.setDateLastModified(new Date());
+    	template.setDescription(description);
+    	template.setProject(project);
+    	template.setTier(tier);
+        template.setIsStory(isStory);
+    	template.setFirstName(firstName);
+    	template.setLastName(lastName);
+        template.setEmail(email);
+        template.setPhone(phone);
+
         template.setSubjectColumns(subjects);
         template.setSubjectClasses(subjectClasses);
         template.setSubjectRoles(subjectRoles);
@@ -83,6 +111,7 @@ public class TemplateController {
         template.setEvidenceDescriptions(evidenceDescriptions);
         template.setObservationNumber(observationNumber);
         template.setObservations(observations);
+
         dashboardDao.update(template);
 
         return new ResponseEntity<String>("SubmissionTemplate " + templateId + " UPDATED", HttpStatus.OK);

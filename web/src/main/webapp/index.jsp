@@ -1863,7 +1863,7 @@
     <script type="text/template" id="existing-template-row-tmpl">
         <tr id="template-table-row-{{id}}" class='stored-template-row'>
             <td>{{displayName}}</td><td>{{description}}</td><td>{{project}}</td>
-                <td>{{tier}}</td><td>{{dateLastModified}}</td><td>{{complete}}</td>
+                <td>{{tier}}</td><td>{{dateLastModified}}</td><td>{{isStory}}</td>
                 <td><select id='template-action-{{id}}'>
                     <option value=''>-</option>
                     <option value='edit'>Edit</option>
@@ -1944,9 +1944,9 @@
         </tr>
         <tr><th>Request Tier</th>
             <td><select id="template-tier" style="width:300px">
-                <option {{tier==1?'selected=selected':null}}>Tier 1 (initial or screening)</option>
-                <option {{tier==2?'selected=selected':null}}>Tier 2 (in vitro)</option>
-                <option {{tier==3?'selected=selected':null}}>Tier 3 (in vivo validation)</option>
+                <option value=1 {{tier==1?'selected=selected':null}}>Tier 1 (initial or screening)</option>
+                <option value=2 {{tier==2?'selected=selected':null}}>Tier 2 (in vitro)</option>
+                <option value=3 {{tier==3?'selected=selected':null}}>Tier 3 (in vivo validation)</option>
             </slect></td>
         </tr>
         <tr><th>Is this submission a story?</th><td><input id="tempalte-is-story" type="checkbox" value={{isstory}} /></td></tr>
@@ -2012,7 +2012,7 @@
                 </div>
                 <table class="table table-bordered table-striped" id="existing-template-table">
                         <tr id="template-header">
-                            <th>Submission Name</th><th>Submission Description</th><th>Project</th><th>Tier</th><th>Date last modified</th><th>Complete</th><th>Action</th>
+                            <th>Submission Name</th><th>Submission Description</th><th>Project</th><th>Tier</th><th>Date last modified</th><th>Is Story</th><th>Action</th>
                         </tr>
                 </table>
 
