@@ -99,6 +99,16 @@ $ctd2.TemplateHelperView = Backbone.View.extend({
             });
 
             $("#create-new-submission").click(function() {
+                $("#submitter-information").empty();
+                $("#template-description").empty();
+                (new $ctd2.SubmitterInformationView({
+                    model: {firstname:null, lastname:null, email:null, phone:null},
+                    el: $("#submitter-information")
+                })).render();
+                (new $ctd2.TemplateDescriptionView({
+                    model: {name:null, description:null, projecttitle:null, tier:null, isstory:null},
+                    el: $("#template-description")
+                })).render();
                 $("#step2").fadeOut();
                 $("#step3").slideDown();
             });
@@ -208,7 +218,25 @@ $ctd2.TemplateHelperView = Backbone.View.extend({
 $ctd2.TemplateHelperCenterView = Backbone.View.extend({
         template: _.template($("#template-helper-center-tmpl").html()),
 
-        render: function() {        	
+        render: function() {
+            $(this.el).append(this.template(this.model));
+            return this;
+        }
+});
+
+$ctd2.SubmitterInformationView = Backbone.View.extend({
+        template: _.template($("#submitter-information-tmpl").html()),
+
+        render: function() {
+            $(this.el).append(this.template(this.model));
+            return this;
+        }
+});
+
+$ctd2.TemplateDescriptionView = Backbone.View.extend({
+        template: _.template($("#template-description-tmpl").html()),
+
+        render: function() {
             $(this.el).append(this.template(this.model));
             return this;
         }
@@ -229,6 +257,17 @@ $ctd2.ExistingTemplateView = Backbone.View.extend({
                         $ctd2.showTemplateMenu();
                         $ctd2.templateId = rowModel.id;
                         $("span#submission-name").text(rowModel.displayName);
+
+                        $("#submitter-information").empty();
+                        $("#template-description").empty();
+                        (new $ctd2.SubmitterInformationView({
+                            model: {firstname: rowModel.firstName, lastname: rowModel.lastName, email:"", phone:""},
+                            el: $("#submitter-information")
+                        })).render();
+                        (new $ctd2.TemplateDescriptionView({
+                            model: {name: rowModel.displayName, description:rowModel.description, projecttitle:rowModel.project, tier:1, isstory:true},
+                           el: $("#template-description")
+                        })).render();
 
                         $("#template-table-subject > .template-data-row").remove();
                         var subjectColumns = rowModel.subjectColumns; // this is an array of strings
