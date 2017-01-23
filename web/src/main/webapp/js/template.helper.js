@@ -116,10 +116,20 @@ $ctd2.TemplateHelperView = Backbone.View.extend({
             // although the other button is called #create-new-submission, this is where it is really created back-end
             $("#save-name-description").click(function() {
                 $("#save-name-description").attr("disabled", "disabled");
-                $ctd2.saveNewTemplate();
+                if($ctd2.templateId==0) {
+                    $ctd2.saveNewTemplate();
+                } else {
+                    $ctd2.updateTemplate();
+                }
             });
             $("#continue-to-main-data").click(function() { // similar to save, additionally moving to the next
-                if($ctd2.saveNewTemplate(true)) {
+                var ret = true;
+                if($ctd2.templateId==0) {
+                    ret = $ctd2.saveNewTemplate(true);
+                } else {
+                    ret = $ctd2.updateTemplate();
+                }
+                if(ret) {
                     $("#step3").fadeOut();
                     $("#step4").slideDown();
                 }
