@@ -271,7 +271,7 @@ $ctd2.ExistingTemplateView = Backbone.View.extend({
                         $("#submitter-information").empty();
                         $("#template-description").empty();
                         (new $ctd2.SubmitterInformationView({
-                            model: {firstname: rowModel.firstName, lastname: rowModel.lastName, email:"", phone:""},
+                            model: {firstname: rowModel.firstName, lastname: rowModel.lastName, email:rowModel.email, phone:rowModel.phone},
                             el: $("#submitter-information")
                         })).render();
                         (new $ctd2.TemplateDescriptionView({
