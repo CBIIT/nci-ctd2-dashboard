@@ -99,6 +99,7 @@ $ctd2.TemplateHelperView = Backbone.View.extend({
             });
 
             $("#create-new-submission").click(function() {
+                $ctd2.templateId = 0;
                 $("#submitter-information").empty();
                 $("#template-description").empty();
                 (new $ctd2.SubmitterInformationView({
@@ -673,8 +674,12 @@ $ctd2.saveNewTemplate = function(sync) {
 
         var firstName = $("#first-name").val();
         var lastName = $("#last-name").val();
+        var email = $("#email").val();
+        var phone = $("#phone").val();
         var description = $("#template-submission-desc").val();
         var project = $("#template-project-title").val();
+        var tier = $("#template-tier").val();
+        var isStory = $("#template-is-story").is(':checked');
 
         if(centerId.length==0 || firstName.length == 0 || lastName.length == 0
             || submissionName.length == 0) {
@@ -694,8 +699,12 @@ $ctd2.saveNewTemplate = function(sync) {
                 name : submissionName,
                 firstName: firstName,
                 lastName: lastName,
+                email: email,
+                phone: phone,
                 description: description,
                 project: project,
+                tier: tier,
+                isStory: isStory,
                }),
             contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
             success: function(resultId) {
