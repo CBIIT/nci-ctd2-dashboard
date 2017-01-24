@@ -46,6 +46,7 @@ $ctd2.TemplateHelperView = Backbone.View.extend({
                 $("#step2").fadeOut();
                 $("#step3").fadeOut();
                 $("#step4").fadeOut();
+                $ctd2.populateTagList();
                 $("#step5").slideDown();
                 $("#step6").fadeOut();
             }).hide();
@@ -133,6 +134,7 @@ $ctd2.TemplateHelperView = Backbone.View.extend({
                 //self.addMetaColumn("observation_tier", tmplTier);
 
                 $("#step4").fadeOut();
+                $ctd2.populateTagList();
                 $("#step5").slideDown();
             });
 
@@ -159,12 +161,6 @@ $ctd2.TemplateHelperView = Backbone.View.extend({
                     model: {obvNumber: newObvNumber, obvText: null},
                 }).render();
             });
-
-            var helper = function() {
-                var input = $( "#template-obs-summary" );
-                input.val( input.val() + "<" +$(this).text() + ">" );
-            };
-            $(".helper-tag").click(helper);
 
             $("#preview-select").change(function() {
                 var selected = $(this).val();
@@ -211,6 +207,14 @@ $ctd2.TemplateHelperView = Backbone.View.extend({
 
             return this;
         } // end render function
+});
+
+$ctd2.ColumnTagView = Backbone.View.extend({
+    template: _.template($("#column-tag-item-tmpl").html()),
+    render: function() {
+        $(this.el).append(this.template(this.model));
+        return this;
+    }
 });
 
 $ctd2.TemplateHelperCenterView = Backbone.View.extend({
@@ -733,4 +737,24 @@ $ctd2.refreshTemplateList = function(centerId) {
                         });
                     }
                 });
+};
+
+$ctd2.populateTagList = function() {
+    $("#column-tag-list").empty();
+    $('#template-table').find('.subject-columntag').each( function(index, item) {
+        (new $ctd2.ColumnTagView({
+            model: { id:index, tag: $(item).val() },
+            el: $("#column-tag-list")
+        })).render();
+    });
+    $('#template-table').find('.evidence-columntag').each( function(index, item) {
+        (new $ctd2.ColumnTagView({
+            model: { id:index, tag: $(item).val() },
+            el: $("#column-tag-list")
+        })).render();
+    });
+    $(".helper-tag").click( function() {
+        var input = $( "#template-obs-summary" );
+        input.val( input.val() + "<" +$(this).text() + ">" );
+    });
 };
