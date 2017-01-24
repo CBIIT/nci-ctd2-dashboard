@@ -657,7 +657,6 @@ $ctd2.updateTemplate = function(sync) {
             contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
             success: function(data) {
                 console.log("return value: "+data);
-                $("#template-name").val("");
                 $("#save-name-description").removeAttr("disabled");
                 result = true;
            }
@@ -708,7 +707,6 @@ $ctd2.saveNewTemplate = function(sync) {
                }),
             contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
             success: function(resultId) {
-                $("#template-name").val("");
                 $("#save-name-description").removeAttr("disabled");
                 result = true;
                 $ctd2.templateId = resultId;
