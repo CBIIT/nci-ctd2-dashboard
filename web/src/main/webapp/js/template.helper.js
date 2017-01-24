@@ -275,7 +275,7 @@ $ctd2.ExistingTemplateView = Backbone.View.extend({
                             el: $("#submitter-information")
                         })).render();
                         (new $ctd2.TemplateDescriptionView({
-                            model: {name: rowModel.displayName, description:rowModel.description, projecttitle:rowModel.project, tier:1, isstory:true},
+                            model: {name: rowModel.displayName, description:rowModel.description, projecttitle:rowModel.project, tier:rowModel.tier, isstory:rowModel.isStory},
                            el: $("#template-description")
                         })).render();
 
@@ -611,7 +611,7 @@ $ctd2.updateTemplate = function(sync) {
         var description = $("#template-submission-desc").val();
         var project = $("#template-project-title").val();
         var tier = $("#template-tier").val();
-        var isStory = $("#template-is-story").val();
+        var isStory = $("#template-is-story").is(':checked');
 
         var subjects = $ctd2.getStringList('#template-table-subject input.subject-columntag');
         var subjectClasses = $ctd2.getStringList('#template-table-subject select.subject-classes');

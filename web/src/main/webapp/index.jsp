@@ -1949,7 +1949,7 @@
                 <option value=3 {{tier==3?'selected=selected':null}}>Tier 3 (in vivo validation)</option>
             </slect></td>
         </tr>
-        <tr><th>Is this submission a story?</th><td><input id="tempalte-is-story" type="checkbox" value={{isstory}} /></td></tr>
+        <tr><th>Is this submission a story?</th><td><input id="template-is-story" type="checkbox" {{isstory?'checked':''}} /></td></tr>
     </script>
 
     <script type="text/template" id="template-helper-tmpl">
