@@ -82,20 +82,7 @@ $ctd2.TemplateHelperView = Backbone.View.extend({
                 $("#step1").fadeOut();
                 $("#step2").slideDown();
                 $("span#center-name").text($("#template-submission-centers option:selected").text());
-                var storedTemplates = new $ctd2.StoredTemplates({centerId: centerId});
-                $("#existing-template-table > .stored-template-row").remove();
-                storedTemplates.fetch({
-                    success: function() {
-                        _.each(storedTemplates.models, function(oneTemplate) {
-                            var oneTemplateModel = oneTemplate.toJSON();
-
-                            (new $ctd2.ExistingTemplateView({
-                                model: oneTemplateModel,
-                                el: $("#existing-template-table")
-                            })).render();
-                        });
-                    }
-                });
+                $ctd2.refreshTemplateList(centerId);
             });
 
             $("#create-new-submission").click(function() {
@@ -266,84 +253,9 @@ $ctd2.ExistingTemplateView = Backbone.View.extend({
                 switch(action) {
                     case 'edit':
                         $ctd2.showTemplateMenu();
-                        $ctd2.templateId = rowModel.id;
-                        $("span#submission-name").text(rowModel.displayName);
+                        if($ctd2.templateId != rowModel.id) {
+                            $ctd2.populateOneTemplate(rowModel);
 
-                        $("#submitter-information").empty();
-                        $("#template-description").empty();
-                        (new $ctd2.SubmitterInformationView({
-                            model: {firstname: rowModel.firstName, lastname: rowModel.lastName, email:rowModel.email, phone:rowModel.phone},
-                            el: $("#submitter-information")
-                        })).render();
-                        (new $ctd2.TemplateDescriptionView({
-                            model: {name: rowModel.displayName, description:rowModel.description, projecttitle:rowModel.project, tier:rowModel.tier, isstory:rowModel.isStory},
-                           el: $("#template-description")
-                        })).render();
-
-                        $("#template-table-subject > .template-data-row").remove();
-                        var subjectColumns = rowModel.subjectColumns; // this is an array of strings
-                        var subjectClasses = rowModel.subjectClasses; // this is an array of strings
-                        var observations = rowModel.observations;
-                        var observationNumber = rowModel.observationNumber;
-                        var evidenceColumns = rowModel.evidenceColumns;
-
-                        // make headers for observation part
-                        $("th.observation-header").remove();
-                        for(var column=1; column<=observationNumber; column++) {
-                            var deleteButton = "delete-column-"+column;
-                            $("#template-table tr#subject-header").append("<th class=observation-header>Observation "+column+"<br>(<button class='btn btn-link' id='"+deleteButton+"'>delete</button>)</th>");
-                            $("#template-table tr#evidence-header").append("<th class=observation-header>Observation "+column+"</th>");
-                            $("#"+deleteButton).click(function() {
-                                var c = $('#template-table tr#subject-header').find('th').index($(this).parent());
-                                $('#template-table tr').find('td:eq('+c+'),th:eq('+c+')').remove();
-                            });
-                        }
-
-                        var subjectRows = subjectColumns.length;
-                        var evidenceRows = evidenceColumns.length;
-                        var totalRows = subjectRows+evidenceRows;
-                        for (var i=0; i < subjectColumns.length; i++) {
-                            var observationsPerRow = new Array(observationNumber);
-                            for(var column=0; column<observationNumber; column++) {
-                                observationsPerRow[column] = observations[totalRows*column+i];
-                            };
-
-                            (new $ctd2.TemplateSubjectDataRowView({
-                                model: {
-                                    columnTagId: i,
-                                    columnTag: subjectColumns[i],
-                                    subjectClass: subjectClasses[i],
-                                    subjectRole: rowModel.subjectRoles[i],
-                                    subjectDescription: rowModel.subjectDescriptions[i],
-                                    totalRows: totalRows, row: i, 
-                                    observationNumber: observationNumber,
-                                    observations: observationsPerRow
-                                    },
-                                el: $("#template-table-subject")
-                            })).render();
-                        }
-
-                        $("#template-table-evidence > .template-data-row").remove();
-                        var evidenceTypes = rowModel.evidenceTypes;
-                        var valueTypes = rowModel.valueTypes;
-                        var evidenceDescriptions = rowModel.evidenceDescriptions;
-                        for (var i=0; i < evidenceColumns.length; i++) {
-                            var observationsPerRow = new Array(observationNumber);
-                            for(var column=0; column<observationNumber; column++) {
-                                observationsPerRow[column] = observations[totalRows*column+i+subjectRows];
-                            };
-                            (new $ctd2.TemplateEvidenceDataRowView({
-                                model: {columnTagId: evidenceColumns[i].replace(/ /g, "-"),
-                                    columnTag: evidenceColumns[i],
-                                    evidenceType: evidenceTypes[i], 
-                                    valueType: valueTypes[i], 
-                                    evidenceDescription: evidenceDescriptions[i],
-                                    totalRows: totalRows, row: i+subjectRows,
-                                    observationNumber: observationNumber,
-                                    observations: observationsPerRow
-                                    },
-                                el: $("#template-table-evidence")
-                            })).render();
                         }
 
                         $("#step2").fadeOut();
@@ -658,6 +570,8 @@ $ctd2.updateTemplate = function(sync) {
             success: function(data) {
                 console.log("return value: "+data);
                 $("#save-name-description").removeAttr("disabled");
+                var centerId = $("#template-submission-centers").val();
+                $ctd2.refreshTemplateList(centerId);
                 result = true;
            }
          });
@@ -712,10 +626,111 @@ $ctd2.saveNewTemplate = function(sync) {
                 $ctd2.templateId = resultId;
                 $("span#submission-name").text(submissionName);
                 $ctd2.showTemplateMenu();
+                $ctd2.refreshTemplateList(centerId);
            }
          });
         if (async || result)
             return true;
         else
             return false;
+};
+
+$ctd2.populateOneTemplate = function(rowModel) {
+                        $ctd2.templateId = rowModel.id;
+
+                        $("span#submission-name").text(rowModel.displayName);
+
+                        $("#submitter-information").empty();
+                        $("#template-description").empty();
+                        (new $ctd2.SubmitterInformationView({
+                            model: {firstname: rowModel.firstName, lastname: rowModel.lastName, email:rowModel.email, phone:rowModel.phone},
+                            el: $("#submitter-information")
+                        })).render();
+                        (new $ctd2.TemplateDescriptionView({
+                            model: {name: rowModel.displayName, description:rowModel.description, projecttitle:rowModel.project, tier:rowModel.tier, isstory:rowModel.isStory},
+                           el: $("#template-description")
+                        })).render();
+
+                        $("#template-table-subject > .template-data-row").remove();
+                        var subjectColumns = rowModel.subjectColumns; // this is an array of strings
+                        var subjectClasses = rowModel.subjectClasses; // this is an array of strings
+                        var observations = rowModel.observations;
+                        var observationNumber = rowModel.observationNumber;
+                        var evidenceColumns = rowModel.evidenceColumns;
+
+                        // make headers for observation part
+                        $("th.observation-header").remove();
+                        for(var column=1; column<=observationNumber; column++) {
+                            var deleteButton = "delete-column-"+column;
+                            $("#template-table tr#subject-header").append("<th class=observation-header>Observation "+column+"<br>(<button class='btn btn-link' id='"+deleteButton+"'>delete</button>)</th>");
+                            $("#template-table tr#evidence-header").append("<th class=observation-header>Observation "+column+"</th>");
+                            $("#"+deleteButton).click(function() {
+                                var c = $('#template-table tr#subject-header').find('th').index($(this).parent());
+                                $('#template-table tr').find('td:eq('+c+'),th:eq('+c+')').remove();
+                            });
+                        }
+
+                        var subjectRows = subjectColumns.length;
+                        var evidenceRows = evidenceColumns.length;
+                        var totalRows = subjectRows+evidenceRows;
+                        for (var i=0; i < subjectColumns.length; i++) {
+                            var observationsPerRow = new Array(observationNumber);
+                            for(var column=0; column<observationNumber; column++) {
+                                observationsPerRow[column] = observations[totalRows*column+i];
+                            };
+
+                            (new $ctd2.TemplateSubjectDataRowView({
+                                model: {
+                                    columnTagId: i,
+                                    columnTag: subjectColumns[i],
+                                    subjectClass: subjectClasses[i],
+                                    subjectRole: rowModel.subjectRoles[i],
+                                    subjectDescription: rowModel.subjectDescriptions[i],
+                                    totalRows: totalRows, row: i, 
+                                    observationNumber: observationNumber,
+                                    observations: observationsPerRow
+                                    },
+                                el: $("#template-table-subject")
+                            })).render();
+                        }
+
+                        $("#template-table-evidence > .template-data-row").remove();
+                        var evidenceTypes = rowModel.evidenceTypes;
+                        var valueTypes = rowModel.valueTypes;
+                        var evidenceDescriptions = rowModel.evidenceDescriptions;
+                        for (var i=0; i < evidenceColumns.length; i++) {
+                            var observationsPerRow = new Array(observationNumber);
+                            for(var column=0; column<observationNumber; column++) {
+                                observationsPerRow[column] = observations[totalRows*column+i+subjectRows];
+                            };
+                            (new $ctd2.TemplateEvidenceDataRowView({
+                                model: {columnTagId: evidenceColumns[i].replace(/ /g, "-"),
+                                    columnTag: evidenceColumns[i],
+                                    evidenceType: evidenceTypes[i], 
+                                    valueType: valueTypes[i], 
+                                    evidenceDescription: evidenceDescriptions[i],
+                                    totalRows: totalRows, row: i+subjectRows,
+                                    observationNumber: observationNumber,
+                                    observations: observationsPerRow
+                                    },
+                                el: $("#template-table-evidence")
+                            })).render();
+                        }
+};
+
+$ctd2.refreshTemplateList = function(centerId) {
+                var storedTemplates = new $ctd2.StoredTemplates({centerId: centerId});
+                $("#existing-template-table > .stored-template-row").remove();
+                storedTemplates.fetch({
+                    success: function() {
+                        _.each(storedTemplates.models, function(oneTemplate) {
+                            var oneTemplateModel = oneTemplate.toJSON();
+
+                            (new $ctd2.ExistingTemplateView({
+                                model: oneTemplateModel,
+                                el: $("#existing-template-table")
+                            })).render();
+                        });
+                    }
+                });
 };
