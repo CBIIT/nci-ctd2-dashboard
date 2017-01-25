@@ -140,16 +140,26 @@ $ctd2.TemplateHelperView = Backbone.View.extend({
 
             $("#add-evidence").click(function() {
                 var tagid = $("#template-table-evidence tr").length;
+                var observationNumber = $(".observation-header").length/2;
                 (new $ctd2.TemplateEvidenceDataRowView({
-                    model: {columnTagId: tagid, columnTag: null, evidenceType: "background", valueType: "Document", evidenceDescription:null},
+                    model: {
+                        columnTagId: tagid, columnTag: null, evidenceType: "background", valueType: "Document", evidenceDescription:null,
+                        observationNumber: observationNumber,
+                        observations: []
+                        },
                     el: $("#template-table-evidence")
                 })).render();
             });
 
             $("#add-subject").click(function() {
                 var tagid = $("#template-table-subject tr").length;
+                var observationNumber = $(".observation-header").length/2;
                 (new $ctd2.TemplateSubjectDataRowView({
-                    model: {columnTagId: tagid, columnTag: null, subjectClass: null, subjectRole: null, subjectDescription:null},
+                    model: {
+                        columnTagId: tagid, columnTag: null, subjectClass: null, subjectRole: null, subjectDescription:null,
+                        observationNumber: observationNumber,
+                        observations: []
+                        },
                     el: $("#template-table-subject")
                 })).render();
             });
