@@ -2126,13 +2126,16 @@
                 <b>Center:</b> <span id="center-name"></span><br/>
                 <b>Submission Name:</b> <span id="submission-name"></span><br/>
                 <select id="preview-select"></select>
-                <div id=template-preview-1 style="display:block"><img src="obv1.png"></div>
-                <div id=template-preview-2 style="display:none"><img src="obv2.png"></div>
-                <div id=template-preview-3 style="display:none"><img src="obv3.png"></div>
-
             </div> <!-- end of step 6 -->
 
         </div><!-- end of template-helper-container -->
+    </script>
+
+    <script type="text/template" id="observation-preview-tmpl">
+        <div id=observation-preview-{{id}} style="display:{{display}}">This is the placeholder for the preview to be implemented.
+            <p><b>Observation #</b> {{id}}
+            <p><b>Data:</b> {{observations}}
+        </div>
     </script>
 
     <script type="text/template" id="observation-option-tmpl">

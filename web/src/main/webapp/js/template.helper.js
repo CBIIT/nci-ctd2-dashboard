@@ -166,7 +166,7 @@ $ctd2.TemplateHelperView = Backbone.View.extend({
                 var selected = $(this).val();
                 $(this).children("option").each(function() {
                     var option = $(this).val();
-                    var viewId = option.replace("observation ", "#template-preview-");
+                    var viewId = option.replace("observation ", "#observation-preview-");
                     if(option==selected) $(viewId).show();
                     else $(viewId).hide();
                 });
@@ -181,6 +181,14 @@ $ctd2.TemplateHelperView = Backbone.View.extend({
 
             return this;
         } // end render function
+});
+
+$ctd2.ObservationPreviewView = Backbone.View.extend({
+    template: _.template($("#observation-preview-tmpl").html()),
+    render: function() {
+        $(this.el).append(this.template(this.model));
+        return this;
+    }
 });
 
 $ctd2.ObservationOptionView = Backbone.View.extend({
@@ -706,10 +714,19 @@ $ctd2.populateOneTemplate = function(rowModel) {
                         }
 
                         $("#preview-select").empty();
+                        $("#step6 [id^=observation-preview-]").remove();
                         for (var i=0; i < observationNumber; i++) {
                             (new $ctd2.ObservationOptionView( {
                                 model: {observation_id: i+1}, 
                                 el: $("#preview-select")
+                            })).render();
+                            var oneColumn = new Array(subjectRows);
+                            for(var r=0; r<subjectRows; r++) {
+                                oneColumn[r] = observations[totalRows*i+r];
+                            };
+                            (new $ctd2.ObservationPreviewView( {
+                                model: {id: i+1, display: (i==0?'block':'none'), observations: oneColumn}, 
+                                el: $("#step6")
                             })).render();
                         }
 };
