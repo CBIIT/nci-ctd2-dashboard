@@ -424,6 +424,7 @@ $ctd2.OneObservationView = Backbone.View.extend({
                 $('#template-table tr').find('td:eq('+c+'),th:eq('+c+')').remove();
             });
             $ctd2.obvNumber++;
+            $(this.el).parent().scrollLeft($(this.el).width());
         }
 });
 
