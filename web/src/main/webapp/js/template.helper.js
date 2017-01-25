@@ -378,6 +378,21 @@ $ctd2.TemplateEvidenceDataRowView = Backbone.View.extend({
                 model: {columnTagId: columnTagId, observationNumber: observationNumber, observations: observations},
             }).render();
 
+            tableRow.find('.value-types').change(function() {
+                var fields = $('#template-evidence-row-columntag-'+columnTagId+" [id^=observation-]");
+                var prev_type = fields[0].type;
+                var new_type = 'text';
+                var option = $(this).val();
+                if(option=='Document' || option=='Image') {
+                    new_type = 'file';
+                }
+                if(new_type!=prev_type) {
+                    for(var i=0; i<fields.length; i++) {
+                        fields[i].type = new_type;
+                    }
+                }
+            });
+
             return this;
         }
 });
