@@ -173,34 +173,24 @@ $ctd2.TemplateHelperView = Backbone.View.extend({
             });
 
             $("#download-form").submit(function() {
-                var table2TSV = function(id) {
-                    var text = "";
+                var model = $ctd2.templateModels[$("#template-id").val()];
+                var tsv = "";
+                var n = model.subjectColumns.length;
+                for(var i=0; i<n; i++) {
+                    tsv += model.subjectColumns[i]+"\t";
+                }
+                tsv += "\n";
+                for(var i=0; i<n; i++) {
+                    tsv += model.subjectClasses[i]+"\t";
+                }
+                tsv += "\n";
+                for(var i=0; i<n; i++) {
+                    tsv += model.subjectRoles[i]+"\t";
+                }
+                tsv += "\n";
 
-                    $(id).find("tr").each(function(i, aRow) {
-                        var cells = $(aRow).children();
-                        cells.each(function(j, aCell) {
-                            var input = $(aCell).find("input");
-                            if($(aCell).find("i").length > 0) {
-                                text += "";
-                            } else if(input.length == 0) {
-                                text += $(aCell).text();
-                            } else {
-                                text += $(input).val();
-                            }
-
-                            if((j+1) < cells.length) {
-                                text += "\t";
-                            }
-                        });
-
-                        text += "\n";
-                    });
-
-                    return text;
-                };
-
-                $("#template-input").val(table2TSV("#template-table"));
-                $("#filename-input").val("ctd2test"); //$("#meta-submission_name").text());
+                $("#template-input").val(tsv);
+                $("#filename-input").val(model.displayName);
 
                 return true;
             });
@@ -245,6 +235,7 @@ $ctd2.TemplateDescriptionView = Backbone.View.extend({
 });
 
 $ctd2.templateId = 0;
+$ctd2.templateModels = {};
 
 $ctd2.ExistingTemplateView = Backbone.View.extend({
         template: _.template($("#existing-template-row-tmpl").html()),
@@ -281,7 +272,7 @@ $ctd2.ExistingTemplateView = Backbone.View.extend({
                         $("#step4").slideDown();
                         break;
                     case 'download':
-                        // FIXME this does not work before the tempalte table is actually populated
+                        $("#template-id").val(rowModel.id);
                         $("#download-form").submit();
                         break;
                     default:
@@ -640,6 +631,7 @@ $ctd2.saveNewTemplate = function(sync) {
 };
 
 $ctd2.populateOneTemplate = function(rowModel) {
+                        $("#template-id").val(rowModel.id);
                         $ctd2.templateId = rowModel.id;
 
                         $("span#submission-name").text(rowModel.displayName);
@@ -723,12 +715,14 @@ $ctd2.populateOneTemplate = function(rowModel) {
 };
 
 $ctd2.refreshTemplateList = function(centerId) {
+                $ctd2.templateModels = {};
                 var storedTemplates = new $ctd2.StoredTemplates({centerId: centerId});
                 $("#existing-template-table > .stored-template-row").remove();
                 storedTemplates.fetch({
                     success: function() {
                         _.each(storedTemplates.models, function(oneTemplate) {
                             var oneTemplateModel = oneTemplate.toJSON();
+                            $ctd2.templateModels[oneTemplateModel.id] = oneTemplateModel;
 
                             (new $ctd2.ExistingTemplateView({
                                 model: oneTemplateModel,
