@@ -2125,9 +2125,7 @@
                 <h3>Observation Summary</h3>
                 <b>Center:</b> <span id="center-name"></span><br/>
                 <b>Submission Name:</b> <span id="submission-name"></span><br/>
-                <select id="preview-select">
-                    <option>observation 1</option><option>observation 2</option><option>observation 3</option>
-                </select>
+                <select id="preview-select"></select>
                 <div id=template-preview-1 style="display:block"><img src="obv1.png"></div>
                 <div id=template-preview-2 style="display:none"><img src="obv2.png"></div>
                 <div id=template-preview-3 style="display:none"><img src="obv3.png"></div>
@@ -2135,6 +2133,10 @@
             </div> <!-- end of step 6 -->
 
         </div><!-- end of template-helper-container -->
+    </script>
+
+    <script type="text/template" id="observation-option-tmpl">
+        <option>observation {{observation_id}}</option>
     </script>
 
     <script type="text/template" id="column-tag-item-tmpl">

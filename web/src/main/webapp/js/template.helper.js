@@ -183,6 +183,14 @@ $ctd2.TemplateHelperView = Backbone.View.extend({
         } // end render function
 });
 
+$ctd2.ObservationOptionView = Backbone.View.extend({
+    template: _.template($("#observation-option-tmpl").html()),
+    render: function() {
+        $(this.el).append(this.template(this.model));
+        return this;
+    }
+});
+
 $ctd2.ColumnTagView = Backbone.View.extend({
     template: _.template($("#column-tag-item-tmpl").html()),
     render: function() {
@@ -694,6 +702,14 @@ $ctd2.populateOneTemplate = function(rowModel) {
                                     observations: observationsPerRow
                                     },
                                 el: $("#template-table-evidence")
+                            })).render();
+                        }
+
+                        $("#preview-select").empty();
+                        for (var i=0; i < observationNumber; i++) {
+                            (new $ctd2.ObservationOptionView( {
+                                model: {observation_id: i+1}, 
+                                el: $("#preview-select")
                             })).render();
                         }
 };
