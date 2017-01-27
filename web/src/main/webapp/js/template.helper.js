@@ -125,17 +125,24 @@ $ctd2.TemplateHelperView = Backbone.View.extend({
             });
 
             $("#save-template-submission-data").click(function() {
-                // TODO save existing template with the updated submission data
                 console.log("saving the submission data ...");
-                $ctd2.updateTemplate();
+                $ctd2.updateTemplate(); // TODO add lock
             });
             $("#apply-template-submission-data").click(function() {
-                //var tmplTier = $("#template-tier").val();
-                //self.addMetaColumn("observation_tier", tmplTier);
-
+                $ctd2.updateTemplate();
                 $("#step4").fadeOut();
                 $ctd2.populateTagList();
                 $("#step5").slideDown();
+            });
+
+            $("#save-summary").click(function() {
+                console.log("saving the summary ...");
+                $ctd2.updateTemplate(); // TODO add lock
+            });
+            $("#continue-from-summary").click(function() {
+                $ctd2.updateTemplate();
+                $("#step5").fadeOut();
+                $("#step6").slideDown();
             });
 
             $("#add-evidence").click(function() {
@@ -558,6 +565,8 @@ $ctd2.updateTemplate = function(sync) {
         var observationNumber = $(".observation-header").length/2;
         var observations = $ctd2.getObservations();
 
+        var summary = $("#template-obs-summary").val();
+
         var async = true;
         if(sync) async = false;
         var result = false;
@@ -586,6 +595,7 @@ $ctd2.updateTemplate = function(sync) {
                 evidenceDescriptions: evidenceDescriptions,
                 observationNumber: observationNumber,
                 observations: observations,
+                summary: summary,
                }),
             contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
             success: function(data) {
@@ -738,6 +748,8 @@ $ctd2.populateOneTemplate = function(rowModel) {
                                 el: $("#template-table-evidence")
                             })).render();
                         }
+
+                        $("#template-obs-summary").val(rowModel.summary);
 
                         $("#preview-select").empty();
                         $("#step6 [id^=observation-preview-]").remove();

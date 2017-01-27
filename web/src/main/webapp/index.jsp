@@ -1972,7 +1972,6 @@
                   <a href="#" class="close" data-dismiss="alert">&times;</a>
                   <p>
                     <strong>Welcome to the submission template helper!</strong><br>
-                    ... introductory text, briefly explaining the submission process ...
                     This tool will help create a basic Dashboard submission template from scratch.
                     Once a basic template is prepared, the template can be downloaded for local use and preparation of a Dashboard submission.
                   </p>
@@ -2033,12 +2032,8 @@
                 <table class="table" id="template-description"></table>
                 <table class="table">
                     <tr>
-                        <td class="next-cell">
-                            <button id="save-name-description">Save</button>
-                        </td>
-                        <td class="next-cell">
-                            <button id="continue-to-main-data">Continue</button>
-                        </td>
+                        <td class="next-cell"><button id="save-name-description">Save</button></td>
+                        <td class="next-cell"><button id="continue-to-main-data">Continue</button></td>
                     </tr>
                 </table>
             </div>
@@ -2064,25 +2059,15 @@
                     </tbody>
                 </table>
                 </div>
-                <table  class="table">
+                <table class="table">
                     <tr>
-                    <td>
-                        <button id="add-subject" class="next-cell">Add New Subject</button>
-                    </td>
-                    <td>
-                        <button id="add-evidence" class="next-cell">Add New Evidence</button>
-                    </td>
-                    <td>
-                        <button id="add-observation" class="next-cell">Add New Observation</button>
-                    </td>
+                        <td><button id="add-subject" class="next-cell">Add New Subject</button></td>
+                        <td><button id="add-evidence" class="next-cell">Add New Evidence</button></td>
+                        <td><button id="add-observation" class="next-cell">Add New Observation</button></td>
                     </tr>
                     <tr>
-                    <td>
-                        <button id="save-template-submission-data" class="next-cell">Save</button>
-                    </td>
-                    <td>
-                        <button id="apply-template-submission-data" class="next-cell">Continue</button>
-                    </td>
+                        <td><button id="save-template-submission-data" class="next-cell">Save</button></td>
+                        <td><button id="apply-template-submission-data" class="next-cell">Continue</button></td>
                     </tr>
                 </table>
             </div>
@@ -2110,8 +2095,8 @@
                     <span class="caret"></span></button>
                     <ul class="dropdown-menu" id='column-tag-list'></ul>
                 </span> 
-                <button id="summary-save">Save</button>
-                <button id="summary-continue">Continue</button>
+                <button id="save-summary">Save</button>
+                <button id="continue-from-summary">Continue</button>
 
                 <form action="template/download" method="POST" id="download-form" style="display:inline">
                             <button id="download-template">Download template</button>
