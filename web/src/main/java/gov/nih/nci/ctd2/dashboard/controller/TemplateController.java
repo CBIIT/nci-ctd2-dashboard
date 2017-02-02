@@ -1,6 +1,9 @@
 package gov.nih.nci.ctd2.dashboard.controller;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Date;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -111,6 +114,35 @@ public class TemplateController {
         template.setValueTypes(valueTypes);
         template.setEvidenceDescriptions(evidenceDescriptions);
         template.setObservationNumber(observationNumber);
+
+        int subjectColumnCount = subjects.length;
+        int evidenceColumnCount = evidences.length;
+        int columnTagCount = subjectColumnCount + evidenceColumnCount;
+        for(int i=0; i<valueTypes.length; i++) {
+            if(valueTypes[i].equals("Document") || valueTypes[i].equals("Image")) {
+                for(int j=0; j<observationNumber; j++) {
+                    int index = columnTagCount*j + subjectColumnCount + i;
+                    String obv = observations[index];
+                    if(obv==null || obv.length()<10) {
+                        System.out.println("no observation content for i="+i+" j="+j+" observation="+obv);
+                        continue; // prevent later null pointer exception
+                    }
+                    String tmpFilename = obv.substring(0, 10)+".txt";
+                    // experimental saving on the server side
+                    try {
+                        System.out.println("tmpFilename="+tmpFilename);
+                        PrintWriter pw = new PrintWriter(new FileWriter(tmpFilename));
+                        pw.print(obv);
+                        pw.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    observations[index] = new File(tmpFilename).getAbsolutePath();
+                }
+            }
+        }
         template.setObservations(observations);
 
         template.setSummary(summary);

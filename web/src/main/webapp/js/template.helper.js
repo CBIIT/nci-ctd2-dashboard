@@ -522,23 +522,62 @@ $ctd2.getStringList = function(searchTag) {
     return s;
 };
 
+$ctd2.observationArray = [];
 $ctd2.getObservations = function() {
     var columns = $(".observation-header").length/2;
     var rows = $("#template-table tr").length-2;
-    var array = new Array(rows*columns);
+    $ctd2.observationArray = new Array(rows*columns);
     $("#template-table tr.template-data-row").each(function (i, row) {
         $(row).find("[id^=observation]").each(function(j, c){
-            array[j*rows+i] = $(c).val();
+            $ctd2.observationArray[j*rows+i] = $(c).val();
+
+            var id = $(c).attr('id');
+            var index = id.indexOf('-', 12); // skip the first dash
+            var columntag = $(c).attr('id').substring(index+1);
+            var valuetype = $("#value-type-"+columntag).val();
+            if(valuetype=='Document' || valuetype=='Image') {
+                var filename = $(c).val();
+                if(filename=='') return;
+                var p = $(c).prop('files');
+                if(p!=null && p.length>0) {
+                    var file = p[0];
+                    $ctd2.dataReady = true;
+                    var reader  = new FileReader();
+                    var savebutton = $("#save-template-submission-data");
+                    reader.addEventListener("load", function () {
+                        var filecontent = reader.result.replace("base64,", "base64|"); // comma breaks later processing
+                        $ctd2.observationArray[j*rows+i] = $(c).val()+filecontent;
+                        savebutton.removeAttr("disabled");
+                        $ctd2.dataReady = true;
+                    }, false);
+                    if (file) {
+                        $ctd2.dataReady = false;
+                        savebutton.attr("disabled", "disabled");
+                        reader.readAsDataURL(file);
+                    } else {
+                        console.log("NEVER HAPPEN. TODO: simplify this.");
+                    }
+                }
+            }
         });
     });
-    var s = "";
-    for(var i=0; i<rows*columns; i++) {
-        s += array[i]+",";
-    }
-    return s.substring(0, s.length-1);
 };
 
-$ctd2.updateTemplate = function(sync) {
+$ctd2.dataReady = true;
+$ctd2.updateTemplate = function() {
+	$ctd2.getObservations(); // this set $ctd2.dataReady to be false until the data is ready
+	$ctd2.processObservationArray();
+}
+
+$ctd2.processObservationArray = function() {
+    if ($ctd2.dataReady === true) {
+         $ctd2.updateTemplate_1();
+         return;
+    }
+    setTimeout($ctd2.processObservationArray, 1000);
+}
+
+$ctd2.updateTemplate_1 = function(sync) {
         if($ctd2.templateId==0) {
         	alert('error: $ctd2.templateId==0');
         	return;
@@ -563,7 +602,12 @@ $ctd2.updateTemplate = function(sync) {
         var valueTypes = $ctd2.getStringList('#template-table-evidence select.value-types');
         var evidenceDescriptions = $ctd2.getStringList('#template-table-evidence input.evidence-descriptions');
         var observationNumber = $(".observation-header").length/2;
-        var observations = $ctd2.getObservations();
+
+        var s = "";
+        for(var i=0; i<$ctd2.observationArray.length; i++) {
+            s += $ctd2.observationArray[i]+",";
+        }
+        var observations = s.substring(0, s.length-1);
 
         var summary = $("#template-obs-summary").val();
 
@@ -604,6 +648,10 @@ $ctd2.updateTemplate = function(sync) {
                 var centerId = $("#template-submission-centers").val();
                 $ctd2.refreshTemplateList(centerId);
                 result = true;
+           },
+           error: function(response, status) {
+               // response.responseText is an HTML page
+               alert(status+": "+response.responseText);
            }
          });
         if (async || result)
