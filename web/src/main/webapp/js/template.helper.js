@@ -536,8 +536,6 @@ $ctd2.getObservations = function() {
             var columntag = $(c).attr('id').substring(index+1);
             var valuetype = $("#value-type-"+columntag).val();
             if(valuetype=='Document' || valuetype=='Image') {
-                var filename = $(c).val();
-                if(filename=='') return;
                 var p = $(c).prop('files');
                 if(p!=null && p.length>0) {
                     var file = p[0];
@@ -545,8 +543,8 @@ $ctd2.getObservations = function() {
                     var reader  = new FileReader();
                     var savebutton = $("#save-template-submission-data");
                     reader.addEventListener("load", function () {
-                        var filecontent = reader.result.replace("base64,", "base64|"); // comma breaks later processing
-                        $ctd2.observationArray[j*rows+i] = $(c).val()+filecontent;
+                        var filecontent = reader.result.replace("base64,", "base64:"); // comma breaks later processing
+                        $ctd2.observationArray[j*rows+i] = file.name+":"+filecontent;
                         savebutton.removeAttr("disabled");
                         $ctd2.dataReady = true;
                     }, false);

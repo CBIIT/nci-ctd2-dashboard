@@ -1,14 +1,14 @@
 package gov.nih.nci.ctd2.dashboard.controller;
 
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Date;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.bind.DatatypeConverter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -127,19 +127,24 @@ public class TemplateController {
                         System.out.println("no observation content for i="+i+" j="+j+" observation="+obv);
                         continue; // prevent later null pointer exception
                     }
-                    String tmpFilename = obv.substring(0, 10)+".txt";
-                    // experimental saving on the server side
+                    String filename = obv.substring(0, obv.indexOf(":"));
+                    FileOutputStream stream = null;
                     try {
-                        System.out.println("tmpFilename="+tmpFilename);
-                        PrintWriter pw = new PrintWriter(new FileWriter(tmpFilename));
-                        pw.print(obv);
-                        pw.close();
+                        byte[] bytes = DatatypeConverter.parseBase64Binary(obv.substring( obv.indexOf("base64:")+7 ));
+                        stream = new FileOutputStream(filename);
+                        stream.write(bytes);
                     } catch (IOException e) {
                         e.printStackTrace();
                     } catch (Exception e) {
                         e.printStackTrace();
+                    } finally {
+                        if(stream!=null)
+                            try {
+                                stream.close();
+                            } catch (IOException e) {
+                            }
                     }
-                    observations[index] = new File(tmpFilename).getAbsolutePath();
+                    observations[index] = new File(filename).getAbsolutePath();
                 }
             }
         }
