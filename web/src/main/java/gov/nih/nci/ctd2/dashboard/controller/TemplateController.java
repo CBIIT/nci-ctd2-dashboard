@@ -1,15 +1,23 @@
 package gov.nih.nci.ctd2.dashboard.controller;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Date;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.Path;
+
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.DatatypeConverter;
 
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -173,11 +181,52 @@ public class TemplateController {
     @Transactional
     @RequestMapping(value="download", method = {RequestMethod.POST})
     public void downloadTemplate(
+            @RequestParam("template-id") Integer templateId,
             @RequestParam("filename") String filename,
-            @RequestParam("template") String template,
+            @RequestParam("template") String templateTsv,
             HttpServletResponse response)
     {
-        System.out.println("... ... download controller is called:"+filename+"..."+template);
+        SubmissionTemplate template = dashboardDao.getEntityById(SubmissionTemplate.class, templateId);
+        String xlsFile = "excelFile.xls" ;
+        HSSFWorkbook workbook = new HSSFWorkbook();
+        HSSFSheet sheet = workbook.createSheet("FirstSheet");  
+
+        HSSFRow rowhead = sheet.createRow((short)0);
+        //rowhead.createCell(0).setCellValue(""); // TODO check if default is the same as empty
+        rowhead.createCell(1).setCellValue("submission_name");
+        rowhead.createCell(2).setCellValue("submission_date");
+        rowhead.createCell(3).setCellValue("template_name");
+        String[] subjects = template.getSubjectColumns();
+        for(int i=0; i<subjects.length; i++) {
+            rowhead.createCell(i+3).setCellValue(subjects[i]);
+        }
+
+        HSSFRow row = sheet.createRow((short)1);
+        for(int i=0; i<3; i++) row.createCell(i).setCellValue("");
+        String[] classes = template.getSubjectClasses();
+        for(int i=0; i<classes.length; i++) { // classes should have the same length as subject column
+            row.createCell(i+3).setCellValue(classes[i]);
+        }
+
+        HSSFRow lastrow = sheet.createRow((short)2);
+        lastrow.createCell(0).setCellValue("");
+        lastrow.createCell(1).setCellValue(template.getDisplayName());
+        lastrow.createCell(2).setCellValue(new Date());
+        lastrow.createCell(3).setCellValue(template.getDisplayName());
+
+        FileOutputStream fileOut;
+        try {
+            fileOut = new FileOutputStream(xlsFile);
+            workbook.write(fileOut);
+            fileOut.close();
+            workbook.close();
+        } catch (FileNotFoundException e1) {
+            e1.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("... ... download controller is called: zip file name="+filename+", tempalte Id="+templateId);
         
         response.setContentType("application/zip");
         response.addHeader("Content-Disposition", "attachment; filename=\"" + filename + ".zip\"");
@@ -186,7 +235,9 @@ public class TemplateController {
         try {
             ZipOutputStream zipOutputStream = new ZipOutputStream(response.getOutputStream());
             zipOutputStream.putNextEntry(new ZipEntry(filename + ".tsv"));
-            zipOutputStream.write(template.getBytes());
+            zipOutputStream.write(templateTsv.getBytes());
+            zipOutputStream.putNextEntry(new ZipEntry(xlsFile));
+            zipOutputStream.write(Files.readAllBytes( Paths.get(xlsFile) ));
             zipOutputStream.closeEntry();
             zipOutputStream.close();
         } catch (IOException e) {
