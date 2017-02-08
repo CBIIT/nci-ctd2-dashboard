@@ -191,7 +191,6 @@ $ctd2.TemplateHelperView = Backbone.View.extend({
 
             $("#download-form").submit(function() {
                 var model = $ctd2.templateModels[$("#template-id").val()];
-                $("#template-input").val( $ctd2.createSpreadsheet(model) );
                 $("#filename-input").val(model.displayName);
                 return true;
             });
@@ -852,31 +851,4 @@ $ctd2.populateTagList = function() {
         var input = $( "#template-obs-summary" );
         input.val( input.val() + "<" +$(this).text() + ">" );
     });
-};
-
-$ctd2.createSpreadsheet = function (model) {
-    var tsv = "\tsubmission_name\tsubmission_date\ttemplate_name";
-    var n = model.subjectColumns.length;
-    for (var i = 0; i < n; i++) {
-        tsv += '\t'+ model.subjectColumns[i];
-    }
-    var n2 = model.evidenceColumns.length;
-    for (var i = 0; i < n2; i++) {
-        tsv += '\t'+ model.evidenceColumns[i];
-    }
-    tsv += "\n";
-
-    tsv += 'subject\t\t\t';
-    for (var i = 0; i < n; i++) {
-        tsv += '\t' + model.subjectClasses[i];
-    }
-    tsv += "\n";
-    tsv += 'role\t\t\t';
-    for (var i = 0; i < n; i++) {
-        tsv += '\t'+ model.subjectRoles[i];
-    }
-    tsv += "\n";
-
-    tsv += '\tsubmission_name\t'+model.dateLastModified+'\t'+model.displayName;
-    return tsv;
 };

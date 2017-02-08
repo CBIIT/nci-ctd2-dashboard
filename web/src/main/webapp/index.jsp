@@ -2101,7 +2101,6 @@
                 <form action="template/download" method="POST" id="download-form" style="display:inline">
                             <button id="download-template">Download template</button>
                             <input type="hidden" name="template-id" id="template-id">
-                            <input type="hidden" name="template" id="template-input">
                             <input type="hidden" name="filename" id="filename-input">
                 </form>
             </div> <!-- end of step 5 -->

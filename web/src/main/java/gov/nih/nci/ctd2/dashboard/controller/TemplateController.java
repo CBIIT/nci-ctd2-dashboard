@@ -183,7 +183,6 @@ public class TemplateController {
     public void downloadTemplate(
             @RequestParam("template-id") Integer templateId,
             @RequestParam("filename") String filename,
-            @RequestParam("template") String templateTsv,
             HttpServletResponse response)
     {
         SubmissionTemplate template = dashboardDao.getEntityById(SubmissionTemplate.class, templateId);
@@ -234,11 +233,15 @@ public class TemplateController {
 
         try {
             ZipOutputStream zipOutputStream = new ZipOutputStream(response.getOutputStream());
-            zipOutputStream.putNextEntry(new ZipEntry(filename + ".tsv"));
-            zipOutputStream.write(templateTsv.getBytes());
             zipOutputStream.putNextEntry(new ZipEntry(xlsFile));
             zipOutputStream.write(Files.readAllBytes( Paths.get(xlsFile) ));
             zipOutputStream.closeEntry();
+
+            String attached = "blue-jay.jpg"; // TODO placeholder
+            zipOutputStream.putNextEntry(new ZipEntry(attached));
+            zipOutputStream.write(Files.readAllBytes( Paths.get(attached) ));
+            zipOutputStream.closeEntry();
+
             zipOutputStream.close();
         } catch (IOException e) {
             e.printStackTrace();
