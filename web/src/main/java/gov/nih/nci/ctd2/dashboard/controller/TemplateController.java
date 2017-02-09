@@ -1,8 +1,8 @@
 package gov.nih.nci.ctd2.dashboard.controller;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -211,18 +211,21 @@ public class TemplateController {
             HttpServletResponse response)
     {
         SubmissionTemplate template = dashboardDao.getEntityById(SubmissionTemplate.class, templateId);
-        String xlsFile = "excelFile.xls" ;
         HSSFWorkbook workbook = new HSSFWorkbook();
         HSSFSheet sheet = workbook.createSheet("FirstSheet");  
 
         HSSFRow rowhead = sheet.createRow((short)0);
-        //rowhead.createCell(0).setCellValue(""); // TODO check if default is the same as empty
+        //rowhead.createCell(0).setCellValue(""); // default is the same as empty
         rowhead.createCell(1).setCellValue("submission_name");
         rowhead.createCell(2).setCellValue("submission_date");
         rowhead.createCell(3).setCellValue("template_name");
         String[] subjects = template.getSubjectColumns();
         for(int i=0; i<subjects.length; i++) {
             rowhead.createCell(i+3).setCellValue(subjects[i]);
+        }
+        String[] evd = template.getEvidenceColumns();
+        for(int i=0; i<evd.length; i++) {
+            rowhead.createCell(i+3+subjects.length).setCellValue(evd[i]);
         }
 
         HSSFRow row = sheet.createRow((short)1);
@@ -235,20 +238,8 @@ public class TemplateController {
         HSSFRow lastrow = sheet.createRow((short)2);
         lastrow.createCell(0).setCellValue("");
         lastrow.createCell(1).setCellValue(template.getDisplayName());
-        lastrow.createCell(2).setCellValue(new Date());
+        lastrow.createCell(2).setCellValue(template.getDateLastModified().toString());
         lastrow.createCell(3).setCellValue(template.getDisplayName());
-
-        FileOutputStream fileOut;
-        try {
-            fileOut = new FileOutputStream(xlsFile);
-            workbook.write(fileOut);
-            fileOut.close();
-            workbook.close();
-        } catch (FileNotFoundException e1) {
-            e1.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
         System.out.println("... ... download controller is called: zip file name="+filename+", tempalte Id="+templateId);
         
@@ -257,9 +248,13 @@ public class TemplateController {
         response.addHeader("Content-Transfer-Encoding", "binary");
 
         try {
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            workbook.write(outputStream);
+            workbook.close();
+
             ZipOutputStream zipOutputStream = new ZipOutputStream(response.getOutputStream());
-            zipOutputStream.putNextEntry(new ZipEntry(xlsFile));
-            zipOutputStream.write(Files.readAllBytes( Paths.get(xlsFile) ));
+            zipOutputStream.putNextEntry(new ZipEntry("template"+templateId+".xls"));
+            zipOutputStream.write(outputStream.toByteArray());
             zipOutputStream.closeEntry();
 
             String[] files = uploadedFiles(templateId);
