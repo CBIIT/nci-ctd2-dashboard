@@ -4,13 +4,14 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Date;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.nio.file.Path;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.DatatypeConverter;
@@ -131,7 +132,7 @@ public class TemplateController {
                 for(int j=0; j<observationNumber; j++) {
                     int index = columnTagCount*j + subjectColumnCount + i;
                     String obv = observations[index];
-                    if(obv==null || obv.length()<10) {
+                    if(obv==null || obv.indexOf(":")<=0) {
                         System.out.println("no observation content for i="+i+" j="+j+" observation="+obv);
                         continue; // prevent later null pointer exception
                     }
@@ -163,6 +164,30 @@ public class TemplateController {
         dashboardDao.update(template);
 
         return new ResponseEntity<String>("SubmissionTemplate " + templateId + " UPDATED", HttpStatus.OK);
+    }
+
+    private String[] uploadedFiles(Integer templateId) {
+        SubmissionTemplate template = dashboardDao.getEntityById(SubmissionTemplate.class, templateId);
+        String[] valueTypes = template.getValueTypes();
+        Integer observationNumber = template.getObservationNumber();
+        int subjectColumnCount = template.getSubjectColumns().length;
+        int evidenceColumnCount = template.getEvidenceColumns().length;
+        int columnTagCount = subjectColumnCount + evidenceColumnCount;
+        String[] observations = template.getObservations();
+        List<String> files = new ArrayList<String>();
+        for(int i=0; i<valueTypes.length; i++) {
+            if(valueTypes[i].equals("Document") || valueTypes[i].equals("Image")) {
+                for(int j=0; j<observationNumber; j++) {
+                    int index = columnTagCount*j + subjectColumnCount + i;
+                    String obv = observations[index];
+                    if(obv==null || obv.trim().length()==0) {
+                        continue;
+                    }
+                    files.add(obv);
+                }
+            }
+        }
+        return files.toArray(new String[0]);
     }
 
     @Transactional
@@ -237,10 +262,12 @@ public class TemplateController {
             zipOutputStream.write(Files.readAllBytes( Paths.get(xlsFile) ));
             zipOutputStream.closeEntry();
 
-            String attached = "blue-jay.jpg"; // TODO placeholder
-            zipOutputStream.putNextEntry(new ZipEntry(attached));
-            zipOutputStream.write(Files.readAllBytes( Paths.get(attached) ));
-            zipOutputStream.closeEntry();
+            String[] files = uploadedFiles(templateId);
+            for(String f : files) {
+                zipOutputStream.putNextEntry(new ZipEntry(f));
+                zipOutputStream.write(Files.readAllBytes( Paths.get(f) ));
+                zipOutputStream.closeEntry();
+            }
 
             zipOutputStream.close();
         } catch (IOException e) {
