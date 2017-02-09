@@ -2078,8 +2078,8 @@
                 <b>Submission Name:</b> <span id="submission-name"></span><br/>
                 <ul>
                     <li>Please write/update a summary of the observations, using any or all of the "tags" pre-entred in the text box.</li>
-                    <li>On the dashboard, the tag will be replaced with the actual values you submit. (Q: this does not make sense if this is the actual submission instead of a template.)</li>
-                    <li>Delate tags you do not need.</li>
+                    <li>On the dashboard, the tag will be replaced with the actual values you submit.</li>
+                    <li>Delete tags you do not need.</li>
                     <li>Use the Helper to see all available tags.</li>
                 </ul>
                 <table class="table">
