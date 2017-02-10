@@ -1897,6 +1897,10 @@
         </tr>
     </script>
 
+    <script type="text/template" id="evidence-type-dropdown-tmpl">
+        <option {{ selected?'selected=selected':'' }} >{{evidenceType}}</option>
+    </script>
+
     <script type="text/template" id="template-evidence-data-row-tmpl">
         <tr id="template-evidence-row-columntag-{{columnTagId}}" class="template-data-row">
             <td style="text-align:center;"><img src="img/icons/remove.png" style="width:20px;height:20px;" id="delete-evidence-{{columnTagId}}" /></td>
@@ -1909,15 +1913,7 @@
                 <option {{ valueType=='URL'?'selected=selected':'' }} >URL</option>
                 <option {{ valueType=='Internal dashboard link'?'selected=selected':'' }} >Internal dashboard link</option>
             </select></td>
-            <td><select id="evidence-type-{{columnTagId}}" class='evidence-types'>
-                <option {{ evidenceType=='background'?'selected=selected':'' }} >background</option>
-                <option {{ evidenceType=='computed'?'selected=selected':'' }} >computed</option>
-                <option {{ evidenceType=='link'?'selected=selected':'' }} >link</option>
-                <option {{ evidenceType=='literature'?'selected=selected':'' }} >literature</option>
-                <option {{ evidenceType=='measured'?'selected=selected':'' }} >measured</option>
-                <option {{ evidenceType=='observed'?'selected=selected':'' }} >observed</option>
-                <option {{ evidenceType=='reference'?'selected=selected':'' }} >reference</option>
-            </select></td>
+            <td><select id="evidence-type-{{columnTagId}}" class='evidence-types'></select></td>
             <td><input type="text" class="form-control evidence-descriptions" id="description-{{columnTagId}}" placeholder="evidence description" value={{evidenceDescription}}></td>
         </tr>
     </script>

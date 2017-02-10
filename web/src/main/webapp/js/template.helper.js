@@ -373,6 +373,31 @@ $ctd2.TemplateEvidenceDataRowView = Backbone.View.extend({
                 $("#confirmation-modal").modal('show'); // TODO: the text needs to be customized
             });
 
+            var valueType = this.model.valueType;
+            var evidenceTypeOptions = $ctd2.evidenceTypes[valueType];
+            if(evidenceTypeOptions===undefined) { // exceptional case
+                alert('incorrect value type: '+this.model.valueType);
+                return;
+            }
+
+            for (var i = 0; i <evidenceTypeOptions.length; i++) {
+                new $ctd2.EvidenceTypeDropdownView( {
+                    el: $('#evidence-type-'+columnTagId),
+                    model: { evidenceType:evidenceTypeOptions[i], selected:evidenceTypeOptions[i]==this.model.evidenceType }
+                } ).render();
+            }
+            $('#value-type-'+columnTagId).change(function() {
+                console.log("DEBUG CHANGED valueType="+valueType+" "+$(this).val());
+                evidenceTypeOptions = $ctd2.evidenceTypes[$(this).val()];
+                $('#evidence-type-'+columnTagId).empty();
+                for (var i = 0; i < evidenceTypeOptions.length; i++) {
+                    new $ctd2.EvidenceTypeDropdownView( {
+                        el: $('#evidence-type-'+columnTagId),
+                        model: { evidenceType:evidenceTypeOptions[i], selected:false }
+                    } ).render();
+                }
+            });
+
             // render observation cells for one row (evidence column tag)
             var tableRow = $('#template-evidence-row-columntag-'+columnTagId);
             var totalRows = this.model.totalRows;
@@ -415,6 +440,13 @@ $ctd2.SubjectRoleDropdownRowView = Backbone.View.extend({
             // the template expects roleName, selected, cName from the model
             $(this.el).append(this.template(this.model));
         }
+});
+
+$ctd2.EvidenceTypeDropdownView = Backbone.View.extend({
+    template: _.template($('#evidence-type-dropdown-tmpl').html()),
+    render: function() {
+        $(this.el).append(this.template(this.model));
+    }
 });
 
 /* This view's model covers observation data of one row (i.e. subject column tag),
@@ -479,14 +511,20 @@ $ctd2.StoredTemplates = Backbone.Collection.extend({
         }
 });
 
-//$ctd2.subjectRoles = new SubjectRoles();
-//subjectRoles.fetch( {async:false} ); // TODO hard-coded for now
 $ctd2.subjectRoles = {'Compound':['Candidate drug', 'Control compound', 'Perturbagen'],
         'Gene': ['Background', 'Biomarker', 'Condidate master regulator', 'Interactor', 'Master regultor', 'Oncogone', 'Perturbagen', 'Target'],
         'RNA': ['Perturbagen'],
         'Tissue': ['Disease', 'Metastasis', 'Tissue'],
         'Cell': ['Cell line'],
         'Animal': ['Strain'],
+};
+$ctd2.evidenceTypes = {
+    'Number': ['measured','observed','computed','background'],
+    'Text': ['measured','observed','computed','species','background'],
+    'Document': ['literature','measured','observed','computed','written','background'],
+    'Image': ['literature','measured','observed','computed','written','background'],
+    'URL': ['measured','computed','reference','resource','link'],
+    'Internal dashboard link': ['measured','computed','reference','resource','link'],
 };
 
 $ctd2.showTemplateMenu = function() {
@@ -787,7 +825,8 @@ $ctd2.populateOneTemplate = function(rowModel) {
                                 observationsPerRow[column] = observations[totalRows*column+i+subjectRows];
                             };
                             (new $ctd2.TemplateEvidenceDataRowView({
-                                model: {columnTagId: evidenceColumns[i].replace(/ /g, "-"),
+                                model: {
+                                    columnTagId: i,
                                     columnTag: evidenceColumns[i],
                                     evidenceType: evidenceTypes[i], 
                                     valueType: valueTypes[i], 
