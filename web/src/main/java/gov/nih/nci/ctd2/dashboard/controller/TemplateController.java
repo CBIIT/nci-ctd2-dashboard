@@ -241,7 +241,10 @@ public class TemplateController {
         lastrow.createCell(2).setCellValue(template.getDateLastModified().toString());
         lastrow.createCell(3).setCellValue(template.getDisplayName());
 
-        System.out.println("... ... download controller is called: zip file name="+filename+", tempalte Id="+templateId);
+        int totalColumn = 4+subjects.length+evd.length;
+        for(int i=0; i<totalColumn; i++) {
+            sheet.autoSizeColumn(i);
+        }
         
         response.setContentType("application/zip");
         response.addHeader("Content-Disposition", "attachment; filename=\"" + filename + ".zip\"");
