@@ -1901,6 +1901,14 @@
         <tr id="template-evidence-row-columntag-{{columnTagId}}" class="template-data-row">
             <td style="text-align:center;"><img src="img/icons/remove.png" style="width:20px;height:20px;" id="delete-evidence-{{columnTagId}}" /></td>
             <td><input type="text" class="form-control evidence-columntag" value="{{columnTag}}" placeholder="column tag"></td>
+            <td><select id="value-type-{{columnTagId}}" class='value-types'>
+                <option {{ valueType=='Document'?'selected=selected':'' }} >Document</option>
+                <option {{ valueType=='Image'?'selected=selected':'' }} >Image</option>
+                <option {{ valueType=='Number'?'selected=selected':'' }} >Number</option>
+                <option {{ valueType=='Text'?'selected=selected':'' }} >Text</option>
+                <option {{ valueType=='URL'?'selected=selected':'' }} >URL</option>
+                <option {{ valueType=='Internal dashboard link'?'selected=selected':'' }} >Internal dashboard link</option>
+            </select></td>
             <td><select id="evidence-type-{{columnTagId}}" class='evidence-types'>
                 <option {{ evidenceType=='background'?'selected=selected':'' }} >background</option>
                 <option {{ evidenceType=='computed'?'selected=selected':'' }} >computed</option>
@@ -1909,14 +1917,6 @@
                 <option {{ evidenceType=='measured'?'selected=selected':'' }} >measured</option>
                 <option {{ evidenceType=='observed'?'selected=selected':'' }} >observed</option>
                 <option {{ evidenceType=='reference'?'selected=selected':'' }} >reference</option>
-            </select></td>
-            <td><select id="value-type-{{columnTagId}}" class='value-types'>
-                <option {{ valueType=='Document'?'selected=selected':'' }} >Document</option>
-                <option {{ valueType=='Image'?'selected=selected':'' }} >Image</option>
-                <option {{ valueType=='Number'?'selected=selected':'' }} >Number</option>
-                <option {{ valueType=='Text'?'selected=selected':'' }} >Text</option>
-                <option {{ valueType=='URL'?'selected=selected':'' }} >URL</option>
-                <option {{ valueType=='Internal dashboard link'?'selected=selected':'' }} >Internal dashboard link</option>
             </select></td>
             <td><input type="text" class="form-control evidence-descriptions" id="description-{{columnTagId}}" placeholder="evidence description" value={{evidenceDescription}}></td>
         </tr>
@@ -2053,7 +2053,7 @@
                     </tbody>
                     <tbody id="template-table-evidence">
                         <tr id="evidence-header">
-                            <th>Delete Row</th><th>Column Tag</th><th>Evidence Type</th><th>Value Type</th><th>Description</th>
+                            <th>Delete Row</th><th>Column Tag</th><th>Value Type</th><th>Evidence Type</th><th>Description</th>
                         </tr>
                         <!-- here goes the rows for evidence columns -->
                     </tbody>
