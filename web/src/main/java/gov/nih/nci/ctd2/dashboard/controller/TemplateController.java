@@ -19,6 +19,10 @@ import javax.xml.bind.DatatypeConverter;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.FillPatternType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -212,7 +216,23 @@ public class TemplateController {
     {
         SubmissionTemplate template = dashboardDao.getEntityById(SubmissionTemplate.class, templateId);
         HSSFWorkbook workbook = new HSSFWorkbook();
-        HSSFSheet sheet = workbook.createSheet("FirstSheet");  
+        HSSFSheet sheet = workbook.createSheet("FirstSheet");
+
+        CellStyle blue = workbook.createCellStyle();
+        blue.setFillForegroundColor(HSSFColor.LIGHT_TURQUOISE.index);
+        blue.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
+        CellStyle green = workbook.createCellStyle();
+        green.setFillForegroundColor(HSSFColor.LIGHT_GREEN.index);
+        green.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
+        CellStyle yellow = workbook.createCellStyle();
+        yellow.setFillForegroundColor(HSSFColor.LIGHT_YELLOW.index);
+        yellow.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
+        CellStyle tan = workbook.createCellStyle();
+        tan.setFillForegroundColor(HSSFColor.TAN.index);
+        tan.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 
         HSSFRow rowhead = sheet.createRow((short)0);
         //rowhead.createCell(0).setCellValue(""); // default is the same as empty
@@ -221,31 +241,90 @@ public class TemplateController {
         rowhead.createCell(3).setCellValue("template_name");
         String[] subjects = template.getSubjectColumns();
         for(int i=0; i<subjects.length; i++) {
-            rowhead.createCell(i+3).setCellValue(subjects[i]);
+            rowhead.createCell(i+4).setCellValue(subjects[i]);
         }
         String[] evd = template.getEvidenceColumns();
         for(int i=0; i<evd.length; i++) {
-            rowhead.createCell(i+3+subjects.length).setCellValue(evd[i]);
+            rowhead.createCell(i+4+subjects.length).setCellValue(evd[i]);
         }
 
         HSSFRow row = sheet.createRow((short)1);
-        for(int i=0; i<3; i++) row.createCell(i).setCellValue("");
+        row.setRowStyle(blue);
+        Cell cell = row.createCell(0);
+        cell.setCellValue("subject");
+        cell.setCellStyle(blue);
         String[] classes = template.getSubjectClasses();
         for(int i=0; i<classes.length; i++) { // classes should have the same length as subject column
-            row.createCell(i+3).setCellValue(classes[i]);
+            cell = row.createCell(i+4);
+            cell.setCellValue(classes[i]);
+            cell.setCellStyle(blue);
         }
 
-        HSSFRow lastrow = sheet.createRow((short)2);
-        lastrow.createCell(0).setCellValue("");
-        lastrow.createCell(1).setCellValue(template.getDisplayName());
-        lastrow.createCell(2).setCellValue(template.getDateLastModified().toString());
-        lastrow.createCell(3).setCellValue(template.getDisplayName());
+        row = sheet.createRow((short)2);
+        row.setRowStyle(green);
+        cell = row.createCell(0);
+        cell.setCellValue("evidence");
+        cell.setCellStyle(green);
+        String[] valueType = template.getValueTypes();
+        for(int i=0; i<valueType.length; i++) { // value types should have the same length as evidence column
+            cell = row.createCell(i+4+subjects.length);
+            cell.setCellValue(valueType[i]);
+            cell.setCellStyle(green);
+        }
+
+        row = sheet.createRow((short)3);
+        row.setRowStyle(yellow);
+        cell = row.createCell(0);
+        cell.setCellValue("role");
+        cell.setCellStyle(yellow);
+        String[] roles = template.getSubjectRoles();
+        for(int i=0; i<roles.length; i++) {
+            cell = row.createCell(i+4);
+            cell.setCellValue(roles[i]);
+            cell.setCellStyle(yellow);
+        }
+
+        row = sheet.createRow((short)4);
+        row.setRowStyle(yellow);
+        cell = row.createCell(0);
+        cell.setCellValue("mime_types");
+        cell.setCellStyle(yellow);
+
+        row = sheet.createRow((short)5);
+        row.setRowStyle(yellow);
+        cell = row.createCell(0);
+        cell.setCellValue("numeric_units");
+        cell.setCellStyle(yellow);
+
+        row = sheet.createRow((short)6);
+        row.setRowStyle(yellow);
+        cell = row.createCell(0);
+        cell.setCellValue("display_text");
+        cell.setCellStyle(yellow);
+        String[] displayTexts = template.getSubjectDescriptions();
+        for(int i=0; i<displayTexts.length; i++) {
+            cell = row.createCell(i+4);
+            cell.setCellValue(displayTexts[i]);
+            cell.setCellStyle(yellow);
+        }
+
+        HSSFRow lastrow = sheet.createRow((short)7);
+        lastrow.setRowStyle(tan);
+        cell = lastrow.createCell(1);
+        cell.setCellValue(template.getDisplayName());
+        cell.setCellStyle(tan);
+        cell = lastrow.createCell(2);
+        cell.setCellValue(template.getDateLastModified().toString());
+        cell.setCellStyle(tan);
+        cell = lastrow.createCell(3);
+        cell.setCellValue(template.getDisplayName());
+        cell.setCellStyle(tan);
 
         int totalColumn = 4+subjects.length+evd.length;
         for(int i=0; i<totalColumn; i++) {
             sheet.autoSizeColumn(i);
         }
-        
+
         response.setContentType("application/zip");
         response.addHeader("Content-Disposition", "attachment; filename=\"" + filename + ".zip\"");
         response.addHeader("Content-Transfer-Encoding", "binary");
