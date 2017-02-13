@@ -12,6 +12,7 @@ import java.util.zip.ZipOutputStream;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.nio.file.Path;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.DatatypeConverter;
@@ -382,8 +383,9 @@ public class TemplateController {
 
             String[] files = uploadedFiles(templateId);
             for(String f : files) {
-                zipOutputStream.putNextEntry(new ZipEntry(f));
-                zipOutputStream.write(Files.readAllBytes( Paths.get(f) ));
+                Path path = Paths.get(f);
+                zipOutputStream.putNextEntry(new ZipEntry( path.toFile().getName() ));
+                zipOutputStream.write(Files.readAllBytes( path ));
                 zipOutputStream.closeEntry();
             }
 
