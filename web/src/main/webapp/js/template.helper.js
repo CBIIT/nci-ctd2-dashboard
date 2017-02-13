@@ -281,7 +281,7 @@ $ctd2.ExistingTemplateView = Backbone.View.extend({
                         $("#step6").slideDown();
                         break;
                     case 'clone':
-                        $ctd2.clone(rowModel);
+                        $ctd2.clone(rowModel.id);
                         break;
                     case 'download':
                         $("#template-id").val(rowModel.id);
@@ -751,67 +751,25 @@ $ctd2.saveNewTemplate = function(sync) {
             return false;
 };
 
-$ctd2.clone = function(tmpltModel) {
+$ctd2.clone = function(templateId) {
     var centerId = $("#template-submission-centers").val(); // TODO why is this not part of the model?
-    var submissionName = tmpltModel.displayName+" - clone";
-    var firstName = tmpltModel.firstName;
-    var lastName = tmpltModel.lastName;
-    var email = tmpltModel.email;
-    var phone = tmpltModel.phone;
-    var description = tmpltModel.description;
-    var project = tmpltModel.project;
-    var tier = tmpltModel.tier;
-    var isStory = tmpltModel.isStory;
-
-    var subjects = tmpltModel.subjectColumns;
-    var subjectClasses = tmpltModel.subjectClasses;
-    var subjectRoles = tmpltModel.subjectRoles;
-    var subjectDescriptions = tmpltModel.subjectDescriptions;
-    var evidences = tmpltModel.evidenceColumns;
-    var valueTypes = tmpltModel.valueTypes;
-    var evidenceTypes = tmpltModel.evidenceTypes;
-    var evidenceDescriptions = tmpltModel.evidenceDescriptions;
-    var observationNumber = 0; // do NOT clone observations
-    var observations = "";
-    var summary = tmpltModel.summary;
-
-    $("#template-table-row-"+tmpltModel.id).attr("disabled", "disabled");
+    $("#template-table-row-"+templateId).attr("disabled", "disabled");
     var result = false;
     $.ajax({
-        url: "template/create",
+        url: "template/clone",
         type: "POST",
         data: jQuery.param({
                 centerId: centerId,
-                name : submissionName,
-                firstName: firstName,
-                lastName: lastName,
-                email: email,
-                phone: phone,
-                description: description,
-                project: project,
-                tier: tier,
-                isStory: isStory,
-                subjects: subjects,
-                subjectClasses: subjectClasses,
-                subjectRoles: subjectRoles,
-                subjectDescriptions: subjectDescriptions,
-                evidences: evidences,
-                evidenceTypes: evidenceTypes,
-                valueTypes: valueTypes,
-                evidenceDescriptions: evidenceDescriptions,
-                observationNumber: observationNumber,
-                observations: observations,
-                summary: summary,
+                templateId: templateId
                }),
         contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
         success: function(resultId) {
-                $("#template-table-row-"+tmpltModel.id).removeAttr("disabled");
+                $("#template-table-row-"+templateId).removeAttr("disabled");
                 result = true;
-                $ctd2.templateId = resultId;
-                $("span#submission-name").text(submissionName);
+                $ctd2.templateId = 0;
                 $ctd2.showTemplateMenu();
                 $ctd2.refreshTemplateList(centerId);
-                console.log('clone succeeded '+tmpltModel.id+' -> '+resultId);
+                console.log('clone succeeded '+templateId+' -> '+resultId);
            },
         error: function(response, status) {
                alert("clone failed\n"+status+": "+response.responseText);

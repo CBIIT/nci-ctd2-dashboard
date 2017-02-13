@@ -79,6 +79,47 @@ public class TemplateController {
     }
 
     @Transactional
+    @RequestMapping(value="clone", method = {RequestMethod.POST}, headers = "Accept=application/text")
+    public 
+    ResponseEntity<String>
+    cloneSubmissionTemplate(
+            @RequestParam("centerId") Integer centerId,
+            @RequestParam("templateId") Integer templateId
+            )
+    {
+        SubmissionTemplate existing = dashboardDao.getEntityById(SubmissionTemplate.class, templateId);
+    	SubmissionTemplate template = new SubmissionTemplateImpl();
+    	template.setDisplayName(existing.getDisplayName()+" - clone");
+    	template.setDateLastModified(new Date());
+    	SubmissionCenter submissionCenter = dashboardDao.getEntityById(SubmissionCenter.class, centerId);
+    	template.setSubmissionCenter(submissionCenter);
+    	template.setDescription(existing.getDescription());
+    	template.setProject(existing.getProject());
+        template.setTier(existing.getTier());
+        template.setIsStory(existing.getIsStory());
+    	template.setFirstName(existing.getFirstName());
+    	template.setLastName(existing.getLastName());
+        template.setEmail(existing.getEmail());
+        template.setPhone(existing.getPhone());
+
+        template.setSubjectColumns(existing.getSubjectColumns());
+        template.setSubjectClasses(existing.getSubjectClasses());
+        template.setSubjectRoles(existing.getSubjectRoles());
+        template.setSubjectDescriptions(existing.getSubjectDescriptions());
+        template.setEvidenceColumns(existing.getEvidenceColumns());
+        template.setValueTypes(existing.getValueTypes());
+        template.setEvidenceTypes(existing.getEvidenceTypes());
+        template.setEvidenceDescriptions(existing.getEvidenceDescriptions());
+        template.setObservationNumber(0);
+        template.setObservations(new String[0]);
+        template.setSummary(existing.getSummary());
+
+    	dashboardDao.save(template);
+
+    	return new ResponseEntity<String>(template.getId().toString(), HttpStatus.OK);
+    }
+
+    @Transactional
     @RequestMapping(value="update", method = {RequestMethod.POST}, headers = "Accept=application/text")
     public 
     ResponseEntity<String>
