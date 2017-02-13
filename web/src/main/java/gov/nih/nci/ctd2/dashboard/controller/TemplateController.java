@@ -170,6 +170,8 @@ public class TemplateController {
         template.setEvidenceDescriptions(evidenceDescriptions);
         template.setObservationNumber(observationNumber);
 
+        String[] previousObservations = template.getObservations();
+
         int subjectColumnCount = subjects.length;
         int evidenceColumnCount = evidences.length;
         int columnTagCount = subjectColumnCount + evidenceColumnCount;
@@ -179,7 +181,8 @@ public class TemplateController {
                     int index = columnTagCount*j + subjectColumnCount + i;
                     String obv = observations[index];
                     if(obv==null || obv.indexOf(":")<=0) {
-                        System.out.println("no observation content for i="+i+" j="+j+" observation="+obv);
+                        System.out.println("no new observation content for i="+i+" j="+j+" observation="+obv);
+                        observations[index] = previousObservations[index];
                         continue; // prevent later null pointer exception
                     }
                     String filename = obv.substring(0, obv.indexOf(":"));
@@ -199,6 +202,7 @@ public class TemplateController {
                             } catch (IOException e) {
                             }
                     }
+                    new File(previousObservations[index]).delete(); // remove the previous upload
                     observations[index] = new File(filename).getAbsolutePath();
                 }
             }
