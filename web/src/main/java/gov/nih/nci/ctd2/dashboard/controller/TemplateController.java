@@ -354,17 +354,33 @@ public class TemplateController {
             cell.setCellStyle(yellow);
         }
 
-        HSSFRow lastrow = sheet.createRow((short)7);
-        lastrow.setRowStyle(tan);
-        cell = lastrow.createCell(1);
-        cell.setCellValue(template.getDisplayName());
-        cell.setCellStyle(tan);
-        cell = lastrow.createCell(2);
-        cell.setCellValue(template.getDateLastModified().toString());
-        cell.setCellStyle(tan);
-        cell = lastrow.createCell(3);
-        cell.setCellValue(template.getDisplayName());
-        cell.setCellStyle(tan);
+        String[] obv = template.getObservations();
+        int index = 0;
+        for(int i=0; i<template.getObservationNumber(); i++) {
+            row = sheet.createRow((short)(7+i));
+            row.setRowStyle(tan);
+            cell = row.createCell(1);
+            cell.setCellValue("observation "+(i+1));
+            cell.setCellStyle(tan);
+            cell = row.createCell(2);
+            cell.setCellValue(template.getDateLastModified().toString());
+            cell.setCellStyle(tan);
+            cell = row.createCell(3);
+            cell.setCellValue(template.getDisplayName());
+            cell.setCellStyle(tan);
+            for(int j=0; j<subjects.length; j++) {
+                cell = row.createCell(j+4);
+                cell.setCellValue( obv[index] );
+                index++;
+                cell.setCellStyle(tan);
+            }
+            for(int j=0; j<evd.length; j++) {
+                cell = row.createCell(subjects.length+j+4);
+                cell.setCellValue( obv[index] );
+                index++;
+                cell.setCellStyle(tan);
+            }
+        }
 
         int totalColumn = 4+subjects.length+evd.length;
         for(int i=0; i<totalColumn; i++) {
@@ -388,6 +404,7 @@ public class TemplateController {
             String[] files = uploadedFiles(templateId);
             for(String f : files) {
                 Path path = Paths.get(f);
+                if(!path.toFile().exists()) continue; // this should not happen, but be cautious anyway
                 zipOutputStream.putNextEntry(new ZipEntry( path.toFile().getName() ));
                 zipOutputStream.write(Files.readAllBytes( path ));
                 zipOutputStream.closeEntry();
