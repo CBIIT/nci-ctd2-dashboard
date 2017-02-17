@@ -12,6 +12,8 @@
 %><!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/html">
   <head>
+    <!-- X-UA-Compatible meta tag to disable IE compatibility view must always be first -->
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>CTD² Dashboard</title>
     <meta name="description" content="" />
