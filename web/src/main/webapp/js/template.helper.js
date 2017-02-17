@@ -172,10 +172,8 @@ $ctd2.TemplateHelperView = Backbone.View.extend({
             });
 
             $("#add-observation").click(function() {
-                var newObvNumber = 1; // TODO a smart serial number
-                new $ctd2.OneObservationView({
+                new $ctd2.NewObservationView({
                     el: $("#template-table"),
-                    model: {obvNumber: newObvNumber, obvText: null},
                 }).render();
             });
 
@@ -350,7 +348,7 @@ $ctd2.TemplateSubjectDataRowView = Backbone.View.extend({
             var observations = this.model.observations;
             new $ctd2.TempObservationView({
                 el: tableRow,
-                model: {columnTagId: columnTagId, observationNumber: observationNumber, observations: observations},
+                model: {columnTagId: columnTagId, observationNumber: observationNumber, observations: observations, obvsType: 'text'},
             }).render();
 
             return this;
@@ -400,16 +398,14 @@ $ctd2.TemplateEvidenceDataRowView = Backbone.View.extend({
             var row = this.model.row;
             var observationNumber = this.model.observationNumber;
             var observations = this.model.observations;
+            var obsvType = 'text';
+            if(this.model.valueType=='Document' || this.model.valueType=='Image') {
+                obsvType = 'file';
+            };
             new $ctd2.TempObservationView({
                 el: tableRow,
-                model: {columnTagId: columnTagId, observationNumber: observationNumber, observations: observations},
+                model: {columnTagId: columnTagId, observationNumber: observationNumber, observations: observations, obvsType: obsvType},
             }).render();
-
-            if(this.model.valueType=='Document' || this.model.valueType=='Image') {
-                $('#template-evidence-row-columntag-'+columnTagId+" [id^=observation-]").each(function() {
-                    this.type = 'file';
-                });
-            }
 
             tableRow.find('.value-types').change(function() {
                 var fields = $('#template-evidence-row-columntag-'+columnTagId+" [id^=observation-]");
@@ -460,7 +456,8 @@ $ctd2.TempObservationView = Backbone.View.extend({
                 var cellModel = {
                     obvNumber: column, 
                     obvColumn: obvModel.columnTagId,
-                    obvText: obvContent, };
+                    obvText: obvContent, 
+                    type: obvModel.obvsType};
                 var obvTemp = this.template(cellModel);
                 $(this.el).append(obvTemp);
             }
@@ -468,19 +465,24 @@ $ctd2.TempObservationView = Backbone.View.extend({
         }
 });
 
-// this is one column in the data table
-$ctd2.OneObservationView = Backbone.View.extend({
+/* this is one NEW column in the observation data table. because it is new, it is meant to be empty */
+$ctd2.NewObservationView = Backbone.View.extend({
         template: _.template($("#temp-observation-tmpl").html()),
         render: function() {
             var tmplt = this.template;
-            var columnModel = this.model;
+            var obvNumber = $('#template-table tr#subject-header').find('th').length-4;
+            var columnTagId = 0;
             $(this.el).find("tr.template-data-row").each( function() {
-                columnModel.obvColumn = $(this).attr('id');
-                var obvTemp = tmplt(columnModel);
+                var obvTemp = tmplt({
+                    obvNumber: obvNumber,
+                    obvColumn: columnTagId,
+                    obvText: null,
+                    type: 'text', // FIXME this should depend on $(this)'s 'value type' column
+                });
                 $(this).append(obvTemp);
+                columnTagId++;
             }
             );
-            var obvNumber = $('#template-table tr#subject-header').find('th').length-4;
             var deleteButton = "delete-column-"+obvNumber;
             $(this.el).find("tr#subject-header").append("<th class=observation-header>Observation "+obvNumber+"<br>(<button class='btn btn-link' id='"+deleteButton+"'>delete</button>)</th>");
             $(this.el).find("tr#evidence-header").append("<th class=observation-header>Observation "+obvNumber+"</th>");
