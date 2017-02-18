@@ -182,7 +182,7 @@ public class TemplateController {
                     String obv = observations[index];
                     if(obv==null || obv.indexOf(":")<=0) {
                         System.out.println("no new observation content for i="+i+" j="+j+" observation="+obv);
-                        observations[index] = previousObservations[index];
+                        if(index<previousObservations.length)observations[index] = previousObservations[index];
                         continue; // prevent later null pointer exception
                     }
                     String filename = obv.substring(0, obv.indexOf(":"));

@@ -473,11 +473,14 @@ $ctd2.NewObservationView = Backbone.View.extend({
             var obvNumber = $('#template-table tr#subject-header').find('th').length-4;
             var columnTagId = 0;
             $(this.el).find("tr.template-data-row").each( function() {
+                var value_type = $(this).find(".value-types").val();
+                var input_type = 'text';
+                if(value_type=='Image' || value_type=='Document') input_type = 'file';
                 var obvTemp = tmplt({
                     obvNumber: obvNumber,
                     obvColumn: columnTagId,
                     obvText: null,
-                    type: 'text', // FIXME this should depend on $(this)'s 'value type' column
+                    type: input_type
                 });
                 $(this).append(obvTemp);
                 columnTagId++;
