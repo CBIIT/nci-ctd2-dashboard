@@ -643,9 +643,24 @@
                 <batch:chunk reader="emoryOncoppiTier2Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
         </batch:step>
-        <batch:step id="utswSW044248Step" parent="observationDataStep">
+        <batch:step id="utswSW044248Step" parent="observationDataStep" next="emoryNanoPcaTier1Step">
             <batch:tasklet>
                 <batch:chunk reader="utswSW044248Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
+            </batch:tasklet>
+        </batch:step>
+        <batch:step id="emoryNanoPcaTier1Step" parent="observationDataStep" next="emoryNanoPcaTier2Step">
+            <batch:tasklet>
+                <batch:chunk reader="emoryNanoPcaTier1Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
+            </batch:tasklet>
+        </batch:step>
+        <batch:step id="emoryNanoPcaTier2Step" parent="observationDataStep" next="utswSmarca4Step">
+            <batch:tasklet>
+                <batch:chunk reader="emoryNanoPcaTier2Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
+            </batch:tasklet>
+        </batch:step>
+        <batch:step id="utswSmarca4Step" parent="observationDataStep">
+            <batch:tasklet>
+                <batch:chunk reader="utswSmarca4Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
         </batch:step>
     </batch:job>
@@ -1806,6 +1821,33 @@
     <bean name="utswSW044248LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
         <property name="delimiter" value="\u0009"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,compound_name,cell_line,gene_symbol_1,gene_symbol_2,disease_condition,nci_portal,publication_url_1,publication_url_2"/>
+    </bean>
+    
+    <bean name="emoryNanoPcaTier1LineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="emoryNanoPcaTier1LineTokenizer" />
+    </bean>
+    <bean name="emoryNanoPcaTier1LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="\u0009"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,cell_line,gene_symbol_1,gene_symbol_2,assay_type,number_of_measurements,average_fold_over_control_value,p_value,nci_portal,publication_url"/>
+    </bean>
+    
+    <bean name="emoryNanoPcaTier2LineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="emoryNanoPcaTier2LineTokenizer" />
+    </bean>
+    <bean name="emoryNanoPcaTier2LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="\u0009"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,cell_line,gene_symbol_1,gene_symbol_2,assay_type,number_of_measurements,average_fold_over_control_value,p_value,nci_portal,publication_url"/>
+    </bean>
+    
+    <bean name="utswSmarca4LineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="utswSmarca4LineTokenizer" />
+    </bean>
+    <bean name="utswSmarca4LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="\u0009"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,compound_name_1,compound_name_2,cell_line,gene_symbol_1,gene_symbol_2,gene_symbol_3,disease_condition,nci_portal,publication_url"/>
     </bean>
 
     <!-- shared helper beans -->
@@ -3115,6 +3157,33 @@
                 <entry key="utsw_SW044248:nci_portal" value="evidence:readString:createObservedUrlEvidence" />
                 <entry key="utsw_SW044248:publication_url_1" value="evidence:readString:createObservedUrlEvidence" />
                 <entry key="utsw_SW044248:publication_url_2" value="evidence:readString:createObservedUrlEvidence" />
+                <entry key="emory_NanoPCA_tier1:cell_line" value="subject:findCellLineByName" />
+                <entry key="emory_NanoPCA_tier1:gene_symbol_1" value="subject:findGenesBySymbol" />
+                <entry key="emory_NanoPCA_tier1:gene_symbol_2" value="subject:findGenesBySymbol" />
+                <entry key="emory_NanoPCA_tier1:assay_type" value="evidence:readString:createObservedLabelEvidence" />
+                <entry key="emory_NanoPCA_tier1:number_of_measurements" value="evidence:readInt:createObservedNumericEvidence" />
+                <entry key="emory_NanoPCA_tier1:average_fold_over_control_value" value="evidence:readDouble:createObservedNumericEvidence" />
+                <entry key="emory_NanoPCA_tier1:p_value" value="evidence:readDouble:createObservedNumericEvidence" />
+                <entry key="emory_NanoPCA_tier1:nci_portal" value="evidence:readString:createObservedUrlEvidence" />
+                <entry key="emory_NanoPCA_tier1:publication_url" value="evidence:readString:createObservedUrlEvidence" />
+                <entry key="emory_NanoPCA_tier2:cell_line" value="subject:findCellLineByName" />
+                <entry key="emory_NanoPCA_tier2:gene_symbol_1" value="subject:findGenesBySymbol" />
+                <entry key="emory_NanoPCA_tier2:gene_symbol_2" value="subject:findGenesBySymbol" />
+                <entry key="emory_NanoPCA_tier2:assay_type" value="evidence:readString:createObservedLabelEvidence" />
+                <entry key="emory_NanoPCA_tier2:number_of_measurements" value="evidence:readInt:createObservedNumericEvidence" />
+                <entry key="emory_NanoPCA_tier2:average_fold_over_control_value" value="evidence:readDouble:createObservedNumericEvidence" />
+                <entry key="emory_NanoPCA_tier2:p_value" value="evidence:readDouble:createObservedNumericEvidence" />
+                <entry key="emory_NanoPCA_tier2:nci_portal" value="evidence:readString:createObservedUrlEvidence" />
+                <entry key="emory_NanoPCA_tier2:publication_url" value="evidence:readString:createObservedUrlEvidence" />
+                <entry key="utsw_smarca4:compound_name_1" value="subject:findCompoundsByName" />
+                <entry key="utsw_smarca4:compound_name_2" value="subject:findCompoundsByName" />
+                <entry key="utsw_smarca4:cell_line" value="subject:findCellLineByName" />
+                <entry key="utsw_smarca4:gene_symbol_1" value="subject:findGenesBySymbol" />
+                <entry key="utsw_smarca4:gene_symbol_2" value="subject:findGenesBySymbol" />
+                <entry key="utsw_smarca4:gene_symbol_3" value="subject:findGenesBySymbol" />
+                <entry key="utsw_smarca4:disease_condition" value="subject:findTissueSampleByName" />
+                <entry key="utsw_smarca4:nci_portal" value="evidence:readString:createObservedUrlEvidence" />
+                <entry key="utsw_smarca4:publication_url" value="evidence:readString:createObservedUrlEvidence" />
             </map>
         </constructor-arg>
     </bean>

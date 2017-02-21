@@ -434,4 +434,13 @@
     <bean name="utswSW044248Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
         <property name="lineMapper" ref="utswSW044248LineMapper" />
     </bean>
+    <bean name="emoryNanoPcaTier1Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="emoryNanoPcaTier1LineMapper" />
+    </bean>
+    <bean name="emoryNanoPcaTier2Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="emoryNanoPcaTier2LineMapper" />
+    </bean>
+    <bean name="utswSmarca4Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="utswSmarca4LineMapper" />
+    </bean>
 </beans>

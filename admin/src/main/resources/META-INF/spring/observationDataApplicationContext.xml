@@ -1162,4 +1162,31 @@
             </bean>
         </property>
     </bean>
+    <bean name="emoryNanoPcaTier1Reader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${emory.nanopca.tier1.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="emoryNanoPcaTier1LineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="emoryNanoPcaTier2Reader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${emory.nanopca.tier2.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="emoryNanoPcaTier2LineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="utswSmarca4Reader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${utsw.smarca4.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="utswSmarca4LineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
 </beans>
