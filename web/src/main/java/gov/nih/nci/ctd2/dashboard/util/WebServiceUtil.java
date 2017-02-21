@@ -191,21 +191,18 @@ public class WebServiceUtil {
             observationNumber = 0;
             submissionTemplate.setObservationNumber(observationNumber);
         }
-        String[] observations = submissionTemplate.getObservations();
-        if(observations==null) {
-            observations = new String[0];
+        String[] observations = new String[0];
+        if(submissionTemplate.getObservations()!=null) {
+            observations = submissionTemplate.getObservations().split(",", -1);
         }
         int t = observationNumber*(subjectColumns.length+evidenceColumns.length);
-        if(observations.length<t) {
-            String[] x = new String[t];
-            for(int i=0; i<observations.length; i++) {
-                x[i] = observations[i];
-            }
-            for(int i=observations.length; i<t; i++) {
-                x[i] = "";
-            }
-            observations = x;
-            submissionTemplate.setObservations(observations);
+        StringBuilder sb = new StringBuilder();
+        for(int i=0; i<observations.length; i++) {
+            sb.append( observations[i] ).append(",");
         }
+        for(int i=observations.length; i<t; i++) { // in case we need more commas
+            sb.append(",");
+        }
+        submissionTemplate.setObservations(sb.toString());
     }
 }

@@ -1,18 +1,17 @@
 package gov.nih.nci.ctd2.dashboard.controller;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
-
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.Path;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.DatatypeConverter;
@@ -20,9 +19,9 @@ import javax.xml.bind.DatatypeConverter;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -112,7 +111,7 @@ public class TemplateController {
         template.setEvidenceTypes(existing.getEvidenceTypes());
         template.setEvidenceDescriptions(existing.getEvidenceDescriptions());
         template.setObservationNumber(0);
-        template.setObservations(new String[0]);
+        template.setObservations("");
         template.setSummary(existing.getSummary());
 
     	dashboardDao.save(template);
@@ -144,7 +143,7 @@ public class TemplateController {
             @RequestParam("valueTypes") String[] valueTypes,
             @RequestParam("evidenceDescriptions") String[] evidenceDescriptions,
             @RequestParam("observationNumber") Integer observationNumber,
-            @RequestParam("observations") String[] observations,
+            @RequestParam("observations") String allObservations,
             @RequestParam("summary") String summary
             )
     {
@@ -170,7 +169,8 @@ public class TemplateController {
         template.setEvidenceDescriptions(evidenceDescriptions);
         template.setObservationNumber(observationNumber);
 
-        String[] previousObservations = template.getObservations();
+        String[] observations = allObservations.split(",", -1);
+        String[] previousObservations = template.getObservations().split(",", -1);
 
         int subjectColumnCount = subjects.length;
         int evidenceColumnCount = evidences.length;
@@ -179,6 +179,10 @@ public class TemplateController {
             if(valueTypes[i].equals("Document") || valueTypes[i].equals("Image")) {
                 for(int j=0; j<observationNumber; j++) {
                     int index = columnTagCount*j + subjectColumnCount + i;
+                    if(index>=observations.length) {
+                        System.out.println("ERROR: observation index="+index+">= observation length="+observations.length);
+                        continue;
+                    }
                     String obv = observations[index];
                     if(obv==null || obv.indexOf(":")<=0) {
                         System.out.println("no new observation content for i="+i+" j="+j+" observation="+obv);
@@ -207,7 +211,13 @@ public class TemplateController {
                 }
             }
         }
-        template.setObservations(observations);
+        StringBuilder sb = new StringBuilder();
+        for(int i=0; i<observations.length-1; i++){
+            sb.append(observations[i]).append(",");
+        }
+        if(observations.length>1);
+            sb.append(observations[observations.length-1]);
+        template.setObservations(sb.toString());
 
         template.setSummary(summary);
 
@@ -223,8 +233,8 @@ public class TemplateController {
         int subjectColumnCount = template.getSubjectColumns().length;
         int evidenceColumnCount = template.getEvidenceColumns().length;
         int columnTagCount = subjectColumnCount + evidenceColumnCount;
-        String[] observations = template.getObservations();
-        List<String> files = new ArrayList<String>();
+        String[] observations = template.getObservations().split(",", -1);
+        Set<String> files = new HashSet<String>(); // duplicate entry not allowed in ZIP
         for(int i=0; i<valueTypes.length; i++) {
             if(valueTypes[i].equals("Document") || valueTypes[i].equals("Image")) {
                 for(int j=0; j<observationNumber; j++) {
@@ -354,7 +364,7 @@ public class TemplateController {
             cell.setCellStyle(yellow);
         }
 
-        String[] obv = template.getObservations();
+        String[] obv = template.getObservations().split(",", -1);
         int index = 0;
         for(int i=0; i<template.getObservationNumber(); i++) {
             row = sheet.createRow((short)(7+i));
@@ -404,7 +414,10 @@ public class TemplateController {
             String[] files = uploadedFiles(templateId);
             for(String f : files) {
                 Path path = Paths.get(f);
-                if(!path.toFile().exists()) continue; // this should not happen, but be cautious anyway
+                if(!path.toFile().exists()) { // this should not happen, but be cautious anyway
+                    System.out.println("ERROR: uploaded file "+path.toFile()+" not found");
+                    continue; 
+                }
                 zipOutputStream.putNextEntry(new ZipEntry( path.toFile().getName() ));
                 zipOutputStream.write(Files.readAllBytes( path ));
                 zipOutputStream.closeEntry();

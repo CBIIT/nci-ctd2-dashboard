@@ -748,7 +748,10 @@ $ctd2.saveNewTemplate = function(sync) {
                 $("span#submission-name").text(submissionName);
                 $ctd2.showTemplateMenu();
                 $ctd2.refreshTemplateList(centerId);
-           }
+                },
+            error: function(response, status) {
+                alert("create failed\n"+status+": "+response.responseText);
+                }
          });
         if (async || result)
             return true;
@@ -803,7 +806,7 @@ $ctd2.populateOneTemplate = function(rowModel) {
                         $("#template-table-subject > .template-data-row").remove();
                         var subjectColumns = rowModel.subjectColumns; // this is an array of strings
                         var subjectClasses = rowModel.subjectClasses; // this is an array of strings
-                        var observations = rowModel.observations;
+                        var observations = rowModel.observations.split(",");
                         var observationNumber = rowModel.observationNumber;
                         var evidenceColumns = rowModel.evidenceColumns;
 
