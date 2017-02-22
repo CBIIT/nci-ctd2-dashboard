@@ -189,7 +189,7 @@ public class TemplateController {
                         if(index<previousObservations.length)observations[index] = previousObservations[index];
                         continue; // prevent later null pointer exception
                     }
-                    String filename = obv.substring(0, obv.indexOf(":"));
+                    String filename = uploadLocation + obv.substring(0, obv.indexOf(":"));
                     FileOutputStream stream = null;
                     try {
                         byte[] bytes = DatatypeConverter.parseBase64Binary(obv.substring( obv.indexOf("base64:")+7 ));
@@ -206,7 +206,7 @@ public class TemplateController {
                             } catch (IOException e) {
                             }
                     }
-                    new File(previousObservations[index]).delete(); // remove the previous upload
+                    //new File(previousObservations[index]).delete(); // TODO cannot remove the previous upload safely. it may be used for a different observation
                     observations[index] = new File(filename).getAbsolutePath();
                 }
             }
@@ -428,4 +428,6 @@ public class TemplateController {
             e.printStackTrace();
         }
     }
+
+    private static String uploadLocation = System.getProperty("user.home") + File.separator + "ctd2upload" + File.separator;
 }
