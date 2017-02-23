@@ -557,12 +557,29 @@ $ctd2.deleteTemplate = function(tobeDeleted) {
         $("#confirmation-modal").modal('show');
 };
 
+$ctd2.getArray = function(searchTag) {
+    var s = [];
+    $(searchTag).each(function (i, row) {
+        s.push( $(row).val() );
+    });
+    return s;
+};
+
 $ctd2.getStringList = function(searchTag) {
     var s = "";
     $(searchTag).each(function (i, row) {
         if(i>0) s += ","
         s += $(row).val();
     });
+    return s;
+};
+
+$ctd2.array2StringList = function(a) {
+    var s = "";
+    for(var i=0; i<a.length; i++) {
+        if(i>0) s += ","
+        s += a[i];
+    }
     return s;
 };
 
@@ -619,11 +636,28 @@ $ctd2.processObservationArray = function() {
     setTimeout($ctd2.processObservationArray, 1000);
 }
 
-$ctd2.updateTemplate_1 = function(sync) {
+$ctd2.updateTemplate_1 = function() {
+    $ctd2.validate = function() {
         if($ctd2.templateId==0) {
-        	alert('error: $ctd2.templateId==0');
-        	return;
+        	return 'error: $ctd2.templateId==0';
         }
+        var message = '';
+        for(var i=0; i<subjects.length; i++) {
+            if(subjects[i]==null || subjects[i]=="") {
+                subjects[i] = "MISSING_TAG"; // double safe-guard the list itself not be mis-interpreted as empty
+                message += "\nsubject column tag cannot be empty";
+            }
+        }
+        subjects = $ctd2.array2StringList(subjects);
+        for(var i=0; i<evidences.length; i++) {
+            if(evidences[i]==null || evidences[i]=="") {
+                evidences[i] = "MISSING_TAG"; // double safe-guard the list itself not be mis-interpreted as empty
+                message += "\nevidence column tag cannot be empty";
+            }
+        }
+        evidences = $ctd2.array2StringList(evidences);
+        return message;
+    }
 
         var firstName = $("#first-name").val();
         var lastName = $("#last-name").val();
@@ -635,11 +669,11 @@ $ctd2.updateTemplate_1 = function(sync) {
         var tier = $("#template-tier").val();
         var isStory = $("#template-is-story").is(':checked');
 
-        var subjects = $ctd2.getStringList('#template-table-subject input.subject-columntag');
+        var subjects = $ctd2.getArray('#template-table-subject input.subject-columntag');
         var subjectClasses = $ctd2.getStringList('#template-table-subject select.subject-classes');
         var subjectRoles = $ctd2.getStringList('#template-table-subject select.subject-roles');
         var subjectDescriptions = $ctd2.getStringList('#template-table-subject input.subject-descriptions');
-        var evidences = $ctd2.getStringList('#template-table-evidence input.evidence-columntag');
+        var evidences = $ctd2.getArray('#template-table-evidence input.evidence-columntag');
         var evidenceTypes = $ctd2.getStringList('#template-table-evidence select.evidence-types');
         var valueTypes = $ctd2.getStringList('#template-table-evidence select.value-types');
         var evidenceDescriptions = $ctd2.getStringList('#template-table-evidence input.evidence-descriptions');
@@ -653,11 +687,13 @@ $ctd2.updateTemplate_1 = function(sync) {
 
         var summary = $("#template-obs-summary").val();
 
-        var async = true;
-        if(sync) async = false;
-        var result = false;
+    var x = $ctd2.validate(); // some arrays are converted to string after validation
+    if(x!=null && x.length>0) {
+        alert(x);
+        return;
+    }
+
         $.ajax({
-            async: async,
             url: "template/update",
             type: "POST",
             data: jQuery.param({
@@ -689,17 +725,13 @@ $ctd2.updateTemplate_1 = function(sync) {
                 $("#save-name-description").removeAttr("disabled");
                 var centerId = $("#template-submission-centers").val();
                 $ctd2.refreshTemplateList(centerId);
-                result = true;
            },
            error: function(response, status) {
+               $("#save-name-description").removeAttr("disabled");
                // response.responseText is an HTML page
                alert(status+": "+response.responseText);
            }
          });
-        if (async || result)
-            return true;
-        else
-            return false;
 };
 
 $ctd2.saveNewTemplate = function(sync) {
@@ -750,6 +782,7 @@ $ctd2.saveNewTemplate = function(sync) {
                 $ctd2.refreshTemplateList(centerId);
                 },
             error: function(response, status) {
+                $("#save-name-description").removeAttr("disabled");
                 alert("create failed\n"+status+": "+response.responseText);
                 }
          });

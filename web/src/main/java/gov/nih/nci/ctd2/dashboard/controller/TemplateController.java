@@ -185,7 +185,7 @@ public class TemplateController {
                     }
                     String obv = observations[index];
                     if(obv==null || obv.indexOf(":")<=0) {
-                        System.out.println("no new observation content for i="+i+" j="+j+" observation="+obv);
+                        System.out.println("no new observation content for column#="+i+" observation#="+j+" observation="+obv);
                         if(index<previousObservations.length)observations[index] = previousObservations[index];
                         continue; // prevent later null pointer exception
                     }
@@ -241,6 +241,10 @@ public class TemplateController {
                     int index = columnTagCount*j + subjectColumnCount + i;
                     String obv = observations[index];
                     if(obv==null || obv.trim().length()==0) {
+                        continue;
+                    }
+                    if(!new File(obv).exists()) {
+                        System.out.println(obv+" not existing. evidence#="+i+" observation#="+j+" index="+index);
                         continue;
                     }
                     files.add(obv);
