@@ -453,11 +453,21 @@ $ctd2.TempObservationView = Backbone.View.extend({
             var obvModel = this.model;
             for(var column=0; column<obvModel.observationNumber; column++) {
                 var obvContent = obvModel.observations[column];
+                var u = '';
+                if(obvModel.obvsType=='file') {
+                    if(obvContent===undefined || obvContent==null || obvContent=="undefined") {
+                    } else {
+                        var i = obvContent.lastIndexOf('\\');
+                        if(i<0)i = obvContent.lastIndexOf('/');
+                        if(i>0)u = obvContent.substring(i+1);
+                    }
+                }
                 var cellModel = {
                     obvNumber: column, 
                     obvColumn: obvModel.columnTagId,
                     obvText: obvContent, 
-                    type: obvModel.obvsType};
+                    type: obvModel.obvsType,
+                    uploaded: u};
                 var obvTemp = this.template(cellModel);
                 $(this.el).append(obvTemp);
             }
