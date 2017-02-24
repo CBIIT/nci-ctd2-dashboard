@@ -646,6 +646,22 @@ $ctd2.processObservationArray = function() {
     setTimeout($ctd2.processObservationArray, 1000);
 }
 
+$ctd2.hasDuplicate = function(a) {
+    if(!Array.isArray(a)) {
+        console.log("ERROR: duplicate checking for an object that is not an array");
+        return false;
+    }
+    var tmp = [];
+    for(var i=0; i<a.length; i++) {
+        if(tmp.indexOf(a[i])>=0) {
+            console.log("duplicate item: "+a[i]);
+            return true;
+        }
+        tmp.push(a[i]);
+    }
+    return false;
+}
+
 $ctd2.updateTemplate_1 = function() {
     $ctd2.validate = function() {
         if($ctd2.templateId==0) {
@@ -658,12 +674,18 @@ $ctd2.updateTemplate_1 = function() {
                 message += "\nsubject column tag cannot be empty";
             }
         }
+        if($ctd2.hasDuplicate(subjects)) {
+            return "There is duplicate in subject column tags. This is not allowed.";
+        }
         subjects = $ctd2.array2StringList(subjects);
         for(var i=0; i<evidences.length; i++) {
             if(evidences[i]==null || evidences[i]=="") {
                 evidences[i] = "MISSING_TAG"; // double safe-guard the list itself not be mis-interpreted as empty
                 message += "\nevidence column tag cannot be empty";
             }
+        }
+        if($ctd2.hasDuplicate(evidences)) {
+            return "There is duplicate in evidence column tags. This is not allowed.";
         }
         evidences = $ctd2.array2StringList(evidences);
         return message;
