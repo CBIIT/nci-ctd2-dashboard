@@ -570,7 +570,7 @@ $ctd2.deleteTemplate = function(tobeDeleted) {
 $ctd2.getArray = function(searchTag) {
     var s = [];
     $(searchTag).each(function (i, row) {
-        s.push( $(row).val() );
+        s.push( $(row).val().trim() );
     });
     return s;
 };
@@ -691,33 +691,33 @@ $ctd2.updateTemplate_1 = function() {
         return message;
     }
 
-        var firstName = $("#first-name").val();
-        var lastName = $("#last-name").val();
-        var email = $("#email").val();
-        var phone = $("#phone").val();
-        var submissionName = $("#template-name").val();
-        var description = $("#template-submission-desc").val();
-        var project = $("#template-project-title").val();
-        var tier = $("#template-tier").val();
-        var isStory = $("#template-is-story").is(':checked');
+    var firstName = $("#first-name").val();
+    var lastName = $("#last-name").val();
+    var email = $("#email").val();
+    var phone = $("#phone").val();
+    var submissionName = $("#template-name").val();
+    var description = $("#template-submission-desc").val();
+    var project = $("#template-project-title").val();
+    var tier = $("#template-tier").val();
+    var isStory = $("#template-is-story").is(':checked');
 
-        var subjects = $ctd2.getArray('#template-table-subject input.subject-columntag');
-        var subjectClasses = $ctd2.getStringList('#template-table-subject select.subject-classes');
-        var subjectRoles = $ctd2.getStringList('#template-table-subject select.subject-roles');
-        var subjectDescriptions = $ctd2.getStringList('#template-table-subject input.subject-descriptions');
-        var evidences = $ctd2.getArray('#template-table-evidence input.evidence-columntag');
-        var evidenceTypes = $ctd2.getStringList('#template-table-evidence select.evidence-types');
-        var valueTypes = $ctd2.getStringList('#template-table-evidence select.value-types');
-        var evidenceDescriptions = $ctd2.getStringList('#template-table-evidence input.evidence-descriptions');
-        var observationNumber = $(".observation-header").length/2;
+    var subjects = $ctd2.getArray('#template-table-subject input.subject-columntag');
+    var subjectClasses = $ctd2.getStringList('#template-table-subject select.subject-classes');
+    var subjectRoles = $ctd2.getStringList('#template-table-subject select.subject-roles');
+    var subjectDescriptions = $ctd2.getStringList('#template-table-subject input.subject-descriptions');
+    var evidences = $ctd2.getArray('#template-table-evidence input.evidence-columntag');
+    var evidenceTypes = $ctd2.getStringList('#template-table-evidence select.evidence-types');
+    var valueTypes = $ctd2.getStringList('#template-table-evidence select.value-types');
+    var evidenceDescriptions = $ctd2.getStringList('#template-table-evidence input.evidence-descriptions');
+    var observationNumber = $(".observation-header").length/2;
 
-        var s = "";
-        for(var i=0; i<$ctd2.observationArray.length; i++) {
+    var s = "";
+    for(var i=0; i<$ctd2.observationArray.length; i++) {
             s += $ctd2.observationArray[i]+",";
-        }
-        var observations = s.substring(0, s.length-1);
+    }
+    var observations = s.substring(0, s.length-1);
 
-        var summary = $("#template-obs-summary").val();
+    var summary = $("#template-obs-summary").val();
 
     var x = $ctd2.validate(); // some arrays are converted to string after validation
     if(x!=null && x.length>0) {
@@ -725,7 +725,7 @@ $ctd2.updateTemplate_1 = function() {
         return;
     }
 
-        $.ajax({
+    $.ajax({
             url: "template/update",
             type: "POST",
             data: jQuery.param({
@@ -763,7 +763,7 @@ $ctd2.updateTemplate_1 = function() {
                // response.responseText is an HTML page
                alert(status+": "+response.responseText);
            }
-         });
+    });
 };
 
 $ctd2.saveNewTemplate = function(sync) {
