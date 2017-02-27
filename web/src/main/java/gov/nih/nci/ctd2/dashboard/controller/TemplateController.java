@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -278,8 +279,19 @@ public class TemplateController {
             HttpServletResponse response)
     {
         SubmissionTemplate template = dashboardDao.getEntityById(SubmissionTemplate.class, templateId);
+        String templateName = template.getDisplayName();
+
         HSSFWorkbook workbook = new HSSFWorkbook();
-        HSSFSheet sheet = workbook.createSheet("FirstSheet");
+        HSSFSheet sheet0 = workbook.createSheet("dashboard-CV-per-template");
+        HSSFRow rowhead0 = sheet0.createRow((short)0);
+        rowhead0.createCell(0).setCellValue("observation_tier");
+        rowhead0.createCell(1).setCellValue("template_name");
+        rowhead0.createCell(2).setCellValue("observation_summary");
+        HSSFRow row0 = sheet0.createRow((short)1);
+        row0.createCell(1).setCellValue(templateName);
+        row0.createCell(2).setCellValue(template.getSummary());
+
+        HSSFSheet sheet = workbook.createSheet(templateName);
 
         CellStyle blue = workbook.createCellStyle();
         blue.setFillForegroundColor(HSSFColor.LIGHT_TURQUOISE.index);
@@ -371,19 +383,21 @@ public class TemplateController {
             cell.setCellStyle(yellow);
         }
 
+        Date date = template.getDateLastModified();
+
         String[] obv = template.getObservations().split(",", -1);
         int index = 0;
         for(int i=0; i<template.getObservationNumber(); i++) {
             row = sheet.createRow((short)(7+i));
             row.setRowStyle(tan);
             cell = row.createCell(1);
-            cell.setCellValue("observation "+(i+1));
+            cell.setCellValue(new SimpleDateFormat("yyyyMMdd-").format(date)+templateName);
             cell.setCellStyle(tan);
             cell = row.createCell(2);
-            cell.setCellValue(template.getDateLastModified().toString());
+            cell.setCellValue(date.toString());
             cell.setCellStyle(tan);
             cell = row.createCell(3);
-            cell.setCellValue(template.getDisplayName());
+            cell.setCellValue(templateName);
             cell.setCellStyle(tan);
             for(int j=0; j<subjects.length; j++) {
                 cell = row.createCell(j+4);
