@@ -170,7 +170,10 @@ public class TemplateController {
         template.setObservationNumber(observationNumber);
 
         String[] observations = allObservations.split(",", -1);
-        String[] previousObservations = template.getObservations().split(",", -1);
+        String[] previousObservations = new String[0];
+        String p = template.getObservations();
+        if(p!=null)
+            previousObservations = p.split(",", -1);
 
         int subjectColumnCount = subjects.length;
         int evidenceColumnCount = evidences.length;
