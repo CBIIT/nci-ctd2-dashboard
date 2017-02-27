@@ -2102,7 +2102,7 @@
             </div> <!-- end of step 5 -->
 
             <div id="step6" class="hide">
-                <h3>Observation Summary</h3>
+                <h3>Preview</h3>
                 <b>Center:</b> <span id="center-name"></span><br/>
                 <b>Submission Name:</b> <span id="submission-name"></span><br/>
                 <select id="preview-select"></select>

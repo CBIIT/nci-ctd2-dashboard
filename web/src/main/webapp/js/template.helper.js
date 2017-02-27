@@ -490,7 +490,8 @@ $ctd2.NewObservationView = Backbone.View.extend({
                     obvNumber: obvNumber,
                     obvColumn: columnTagId,
                     obvText: null,
-                    type: input_type
+                    type: input_type,
+                    uploaded: ""
                 });
                 $(this).append(obvTemp);
                 columnTagId++;
