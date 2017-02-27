@@ -271,6 +271,40 @@ public class TemplateController {
         return new ResponseEntity<String>("SubmissionTemplate " + templateId + " DELETED", HttpStatus.OK);
     }
 
+    static private void createMetaDataSheet(HSSFWorkbook workbook, SubmissionTemplate template) {
+        HSSFSheet sheet = workbook.createSheet("dashboard-CV-per-template");
+        HSSFRow rowhead0 = sheet.createRow((short)0);
+        rowhead0.createCell(0).setCellValue("observation_tier");
+        rowhead0.createCell(1).setCellValue("template_name");
+        rowhead0.createCell(2).setCellValue("observation_summary");
+        rowhead0.createCell(3).setCellValue("template_description");
+        rowhead0.createCell(4).setCellValue("submission_name");
+        rowhead0.createCell(5).setCellValue("project");
+        rowhead0.createCell(6).setCellValue("submission_story");
+        rowhead0.createCell(7).setCellValue("submission_story_rank");
+        rowhead0.createCell(8).setCellValue("submission_center");
+        rowhead0.createCell(9).setCellValue("principal_investigator");
+
+        String templateName = template.getDisplayName();
+        Date date = template.getDateLastModified();
+
+        HSSFRow row0 = sheet.createRow((short)1);
+        row0.createCell(0).setCellValue(template.getTier());
+        row0.createCell(1).setCellValue(templateName);
+        row0.createCell(2).setCellValue(template.getSummary());
+        row0.createCell(3).setCellValue(template.getDescription());
+        row0.createCell(4).setCellValue(new SimpleDateFormat("yyyyMMdd-").format(date)+templateName);
+        row0.createCell(5).setCellValue(template.getProject());
+        row0.createCell(6).setCellValue(template.getIsStory());
+        row0.createCell(7).setCellValue(0);
+        row0.createCell(8).setCellValue(template.getSubmissionCenter().getDisplayName());
+        row0.createCell(9).setCellValue("");
+
+        for(int i=0; i<9; i++) {
+            sheet.autoSizeColumn(i);
+        }
+    }
+
     @Transactional
     @RequestMapping(value="download", method = {RequestMethod.POST})
     public void downloadTemplate(
@@ -282,14 +316,7 @@ public class TemplateController {
         String templateName = template.getDisplayName();
 
         HSSFWorkbook workbook = new HSSFWorkbook();
-        HSSFSheet sheet0 = workbook.createSheet("dashboard-CV-per-template");
-        HSSFRow rowhead0 = sheet0.createRow((short)0);
-        rowhead0.createCell(0).setCellValue("observation_tier");
-        rowhead0.createCell(1).setCellValue("template_name");
-        rowhead0.createCell(2).setCellValue("observation_summary");
-        HSSFRow row0 = sheet0.createRow((short)1);
-        row0.createCell(1).setCellValue(templateName);
-        row0.createCell(2).setCellValue(template.getSummary());
+        createMetaDataSheet(workbook, template);
 
         HSSFSheet sheet = workbook.createSheet(templateName);
 
