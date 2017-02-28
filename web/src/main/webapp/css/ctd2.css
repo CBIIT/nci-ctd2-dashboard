@@ -8,6 +8,9 @@ body {
   background-image: url("../img/bg-gray.png");
 }
 
+.current-page {
+  color: black,
+}
 
 /* CUSTOMIZE THE NAVBAR
 -------------------------------------------------- */

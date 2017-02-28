@@ -24,6 +24,7 @@ $ctd2.TemplateHelperView = Backbone.View.extend({
                 $("#step4").fadeOut();
                 $("#step5").fadeOut();
                 $("#step6").fadeOut();
+                $ctd2.clearCurrentPageIndicator();
             }).hide();
             $("#menu_description").click(function() {
                 $("#step1").fadeOut();
@@ -32,6 +33,8 @@ $ctd2.TemplateHelperView = Backbone.View.extend({
                 $("#step4").fadeOut();
                 $("#step5").fadeOut();
                 $("#step6").fadeOut();
+                $ctd2.clearCurrentPageIndicator();
+                $(this).addClass('current-page');
             }).hide();
             $("#menu_data").click(function() {
                 $("#step1").fadeOut();
@@ -40,6 +43,8 @@ $ctd2.TemplateHelperView = Backbone.View.extend({
                 $("#step4").slideDown();
                 $("#step5").fadeOut();
                 $("#step6").fadeOut();
+                $ctd2.clearCurrentPageIndicator();
+                $(this).addClass('current-page');
             }).hide();
             $("#menu_summary").click(function() {
                 $("#step1").fadeOut();
@@ -49,6 +54,8 @@ $ctd2.TemplateHelperView = Backbone.View.extend({
                 $ctd2.populateTagList();
                 $("#step5").slideDown();
                 $("#step6").fadeOut();
+                $ctd2.clearCurrentPageIndicator();
+                $(this).addClass('current-page');
             }).hide();
             $("#menu_preview").click(function() {
                 $("#step1").fadeOut();
@@ -57,6 +64,8 @@ $ctd2.TemplateHelperView = Backbone.View.extend({
                 $("#step4").fadeOut();
                 $("#step5").fadeOut();
                 $("#step6").slideDown();
+                $ctd2.clearCurrentPageIndicator();
+                $(this).addClass('current-page');
             }).hide();
 
             var submissionCenters = new $ctd2.SubmissionCenters();
@@ -121,6 +130,8 @@ $ctd2.TemplateHelperView = Backbone.View.extend({
                 if(ret) {
                     $("#step3").fadeOut();
                     $("#step4").slideDown();
+                    $("#menu_description").removeClass("current-page");
+                    $("#menu_data").addClass("current-page");
                 }
             });
 
@@ -133,6 +144,8 @@ $ctd2.TemplateHelperView = Backbone.View.extend({
                 $("#step4").fadeOut();
                 $ctd2.populateTagList();
                 $("#step5").slideDown();
+                $("#menu_data").removeClass("current-page");
+                $("#menu_summary").addClass("current-page");
             });
 
             $("#save-summary").click(function() {
@@ -143,6 +156,8 @@ $ctd2.TemplateHelperView = Backbone.View.extend({
                 $ctd2.updateTemplate();
                 $("#step5").fadeOut();
                 $("#step6").slideDown();
+                $("#menu_summary").removeClass("current-page");
+                $("#menu_preview").addClass("current-page");
             });
 
             $("#add-evidence").click(function() {
@@ -196,6 +211,13 @@ $ctd2.TemplateHelperView = Backbone.View.extend({
             return this;
         } // end render function
 });
+
+$ctd2.clearCurrentPageIndicator = function() {
+    $("#menu_description").removeClass('current-page');
+    $("#menu_data").removeClass('current-page');
+    $("#menu_summary").removeClass('current-page');
+    $("#menu_preview").removeClass('current-page');
+};
 
 $ctd2.ObservationPreviewView = Backbone.View.extend({
     template: _.template($("#observation-preview-tmpl").html()),
@@ -268,6 +290,8 @@ $ctd2.ExistingTemplateView = Backbone.View.extend({
 
                         $("#step2").fadeOut();
                         $("#step4").slideDown();
+                        $ctd2.clearCurrentPageIndicator();
+                        $("#menu_data").addClass("current-page");
                         break;
                     case 'delete':
                         $ctd2.deleteTemplate(rowModel.id);
@@ -277,6 +301,8 @@ $ctd2.ExistingTemplateView = Backbone.View.extend({
                         $ctd2.showTemplateMenu();
                         $("#step2").fadeOut();
                         $("#step6").slideDown();
+                        $ctd2.clearCurrentPageIndicator();
+                        $("#menu_preview").addClass("current-page");
                         break;
                     case 'clone':
                         $ctd2.clone(rowModel.id);
