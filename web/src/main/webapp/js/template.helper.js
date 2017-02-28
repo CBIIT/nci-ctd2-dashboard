@@ -116,7 +116,7 @@ $ctd2.TemplateHelperView = Backbone.View.extend({
                 if($ctd2.templateId==0) {
                     ret = $ctd2.saveNewTemplate(true);
                 } else {
-                    ret = $ctd2.updateTemplate();
+                    $ctd2.updateTemplate();
                 }
                 if(ret) {
                     $("#step3").fadeOut();

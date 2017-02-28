@@ -2029,7 +2029,7 @@
                 <table class="table">
                     <tr>
                         <td class="next-cell"><button id="save-name-description">Save</button></td>
-                        <td class="next-cell"><button id="continue-to-main-data">Continue</button></td>
+                        <td class="next-cell"><button id="continue-to-main-data">Save and Continue</button></td>
                     </tr>
                 </table>
             </div>
@@ -2063,7 +2063,7 @@
                     </tr>
                     <tr>
                         <td><button id="save-template-submission-data" class="next-cell">Save</button></td>
-                        <td><button id="apply-template-submission-data" class="next-cell">Continue</button></td>
+                        <td><button id="apply-template-submission-data" class="next-cell">Save and Continue</button></td>
                     </tr>
                 </table>
             </div>
@@ -2092,7 +2092,7 @@
                     <ul class="dropdown-menu" id='column-tag-list'></ul>
                 </span> 
                 <button id="save-summary">Save</button>
-                <button id="continue-from-summary">Continue</button>
+                <button id="continue-from-summary">Save and Continue</button>
 
                 <form action="template/download" method="POST" id="download-form" style="display:inline">
                             <button id="download-template">Download template</button>
