@@ -2043,7 +2043,7 @@
                 <table class="table table-bordered table-striped" id="template-table">
                     <tbody id="template-table-subject">
                         <tr id="subject-header">
-                            <th>Delete Row</th><th>Column Tag</th><th>Subject Classs</th><th>Subject Role</th><th>Description</th>
+                            <th>Delete Row</th><th>Column Tag</th><th>Subject Class</th><th>Subject Role</th><th>Description</th>
                         </tr>
                         <!-- here goes rows for subject columns -->
                     </tbody>
@@ -2419,6 +2419,26 @@
             <br>
             <hr>
             <br>
+        </div>
+    </script>
+
+    <script type="text/template" id="delete-confirmation-tmpl">
+        <div class="modal fade" tabindex="-1" role="dialog" id="delete-confirmation-"+{{id}}}>
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Delete Confirmation</h4>
+                </div>
+                <div class="modal-body">
+                    <p id="confirmation-message">Are you sure you want to delete this {{message}}?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="confirmed-delete-"+{{id}}>Yes, delete it.</button>
+                </div>
+            </div>
+        </div>
         </div>
     </script>
 
