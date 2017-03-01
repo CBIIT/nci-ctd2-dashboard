@@ -2056,9 +2056,9 @@
                 </div>
                 <table class="table">
                     <tr>
-                        <td><button id="add-subject" class="next-cell">Add New Subject</button></td>
-                        <td><button id="add-evidence" class="next-cell">Add New Evidence</button></td>
-                        <td><button id="add-observation" class="next-cell">Add New Observation</button></td>
+                        <td><button id="add-subject" class="next-cell">New Subject Row</button></td>
+                        <td><button id="add-evidence" class="next-cell">New Evidence Row</button></td>
+                        <td><button id="add-observation" class="next-cell">New Observation Column</button></td>
                     </tr>
                     <tr>
                         <td><button id="save-template-submission-data" class="next-cell">Save</button></td>
