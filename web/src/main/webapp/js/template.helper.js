@@ -320,16 +320,27 @@ $ctd2.ExistingTemplateView = Backbone.View.extend({
         }
 });
 
+$ctd2.DeleteConfirmationView =  Backbone.View.extend({
+    template: _.template($("#delete-confirmation-tmpl").html()),
+    render: function() { $(this.el).append(this.template(this.model)); }
+});
+
 $ctd2.TemplateSubjectDataRowView = Backbone.View.extend({
         template: _.template($("#template-subject-data-row-tmpl").html()),
         render: function() {
             $(this.el).append(this.template(this.model));
             var columnTagId = this.model.columnTagId;
+            var customized_message = 'subject';
             $("#delete-subject-"+columnTagId).click(function()  {
-                $("#confirmed-delete").unbind('click').click(function(){
+                new $ctd2.DeleteConfirmationView({ el: $('body'), model: {id: columnTagId, message: customized_message} }).render();
+                $("#confirmed-delete-"+columnTagId).click(function(){
                     $('tr#template-subject-row-columntag-'+columnTagId).remove();
+                    //$('#delete-confirmation-'+columnTagId).remove(); // removal will affect the fading-out behavior
                 });
-                $("#confirmation-modal").modal('show'); // TODO: the text needs to be cutomized
+                $("#cancelled-delete-"+columnTagId).click(function(){
+                    //$('#delete-confirmation-'+columnTagId).remove(); // removal will affect the fading-out behavior
+                });
+                $("#delete-confirmation-"+columnTagId).modal('show');
             });
 
             var role = this.model.subjectRole;
