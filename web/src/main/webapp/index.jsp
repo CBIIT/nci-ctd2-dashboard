@@ -1882,7 +1882,6 @@
     <script type="text/template" id="template-subject-data-row-tmpl">
         <tr id="template-subject-row-columntag-{{columnTagId}}" class="template-data-row">
             <td style="text-align:center;"><img src="img/icons/remove.png" style="width:20px;height:20px;" id="delete-subject-{{columnTagId}}" /></td>
-            <td><input type="text" class="form-control subject-columntag" value="{{columnTag}}" placeholder="column tag"></td>
             <td><select id="subject-class-dropdown-{{columnTagId}}" class='subject-classes'>
                 <option {{ subjectClass=='Compound'?'selected=selected':'' }}>Compound</option>
                 <option {{ subjectClass=='Gene'?'selected=selected':'' }}>Gene</option>
@@ -1892,6 +1891,7 @@
                 <option {{ subjectClass=='Animal'?'selected=selected':'' }} value='Animal'>Animal Model</option>
             </select></td>
             <td><select id="role-dropdown-{{columnTagId}}" class='subject-roles'></select></td>
+            <td><input type="text" class="form-control subject-columntag" value="{{columnTag}}" placeholder="column tag"></td>
             <td><input type="text" class="form-control subject-descriptions" id="description-{{columnTagId}}" placeholder="subject description" value="{{subjectDescription}}"></td>
         </tr>
     </script>
@@ -1903,7 +1903,6 @@
     <script type="text/template" id="template-evidence-data-row-tmpl">
         <tr id="template-evidence-row-columntag-{{columnTagId}}" class="template-data-row">
             <td style="text-align:center;"><img src="img/icons/remove.png" style="width:20px;height:20px;" id="delete-evidence-{{columnTagId}}" /></td>
-            <td><input type="text" class="form-control evidence-columntag" value="{{columnTag}}" placeholder="column tag"></td>
             <td><select id="value-type-{{columnTagId}}" class='value-types'>
                 <option {{ valueType=='Document'?'selected=selected':'' }} >Document</option>
                 <option {{ valueType=='Image'?'selected=selected':'' }} >Image</option>
@@ -1913,6 +1912,7 @@
                 <option {{ valueType=='Internal dashboard link'?'selected=selected':'' }} >Internal dashboard link</option>
             </select></td>
             <td><select id="evidence-type-{{columnTagId}}" class='evidence-types'></select></td>
+            <td><input type="text" class="form-control evidence-columntag" value="{{columnTag}}" placeholder="column tag"></td>
             <td><input type="text" class="form-control evidence-descriptions" id="description-{{columnTagId}}" placeholder="evidence description" value={{evidenceDescription}}></td>
         </tr>
     </script>
@@ -2042,13 +2042,13 @@
                 <table class="table table-bordered table-striped" id="template-table">
                     <tbody id="template-table-subject">
                         <tr id="subject-header">
-                            <th>Delete Row</th><th>Column Tag</th><th>Subject Class</th><th>Subject Role</th><th>Description</th>
+                            <th>Delete Row</th><th>Subject Class</th><th>Subject Role</th><th>Column Tag</th><th>Description</th>
                         </tr>
                         <!-- here goes rows for subject columns -->
                     </tbody>
                     <tbody id="template-table-evidence">
                         <tr id="evidence-header">
-                            <th>Delete Row</th><th>Column Tag</th><th>Value Type</th><th>Evidence Type</th><th>Description</th>
+                            <th>Delete Row</th><th>Value Type</th><th>Evidence Type</th><th>Column Tag</th><th>Description</th>
                         </tr>
                         <!-- here goes the rows for evidence columns -->
                     </tbody>
