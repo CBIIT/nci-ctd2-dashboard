@@ -277,13 +277,14 @@ public class TemplateController {
         rowhead0.createCell(0).setCellValue("observation_tier");
         rowhead0.createCell(1).setCellValue("template_name");
         rowhead0.createCell(2).setCellValue("observation_summary");
-        rowhead0.createCell(3).setCellValue("template_description");
+        rowhead0.createCell(3).setCellValue("story_title");
         rowhead0.createCell(4).setCellValue("submission_name");
-        rowhead0.createCell(5).setCellValue("project");
-        rowhead0.createCell(6).setCellValue("submission_story");
-        rowhead0.createCell(7).setCellValue("submission_story_rank");
-        rowhead0.createCell(8).setCellValue("submission_center");
-        rowhead0.createCell(9).setCellValue("principal_investigator");
+        rowhead0.createCell(5).setCellValue("submission_description");
+        rowhead0.createCell(6).setCellValue("project");
+        rowhead0.createCell(7).setCellValue("submission_story");
+        rowhead0.createCell(8).setCellValue("submission_story_rank");
+        rowhead0.createCell(9).setCellValue("submission_center");
+        rowhead0.createCell(10).setCellValue("principal_investigator");
 
         String templateName = template.getDisplayName();
         Date date = template.getDateLastModified();
@@ -292,13 +293,14 @@ public class TemplateController {
         row0.createCell(0).setCellValue(template.getTier());
         row0.createCell(1).setCellValue(templateName);
         row0.createCell(2).setCellValue(template.getSummary());
-        row0.createCell(3).setCellValue(template.getDescription());
+        row0.createCell(3).setCellValue("");
         row0.createCell(4).setCellValue(new SimpleDateFormat("yyyyMMdd-").format(date)+templateName);
-        row0.createCell(5).setCellValue(template.getProject());
-        row0.createCell(6).setCellValue(template.getIsStory());
-        row0.createCell(7).setCellValue(0);
-        row0.createCell(8).setCellValue(template.getSubmissionCenter().getDisplayName());
-        row0.createCell(9).setCellValue("");
+        row0.createCell(5).setCellValue(template.getDescription());
+        row0.createCell(6).setCellValue(template.getProject());
+        row0.createCell(7).setCellValue(template.getIsStory());
+        row0.createCell(8).setCellValue(0);
+        row0.createCell(9).setCellValue(template.getSubmissionCenter().getDisplayName());
+        row0.createCell(10).setCellValue("");
 
         for(int i=0; i<9; i++) {
             sheet.autoSizeColumn(i);
