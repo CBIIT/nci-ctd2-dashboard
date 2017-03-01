@@ -391,7 +391,8 @@ $ctd2.TemplateEvidenceDataRowView = Backbone.View.extend({
                 $("#confirmed-delete").unbind('click').click(function(){
                     $('tr#template-evidence-row-columntag-'+columnTagId).remove();
                 });
-                $("#confirmation-modal").modal('show'); // TODO: the text needs to be customized
+                $('#confirmation-message').text("Are you sure you want to delete this evidence column?");
+                $("#confirmation-modal").modal('show');
             });
 
             var valueType = this.model.valueType;
