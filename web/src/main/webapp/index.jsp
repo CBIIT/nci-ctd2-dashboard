@@ -2041,12 +2041,14 @@
                 <div style="overflow-x:auto;">
                 <table class="table table-bordered table-striped" id="template-table">
                     <tbody id="template-table-subject">
+                        <tr><th colspan=5>Subject</tr>
                         <tr id="subject-header">
                             <th>Delete Row</th><th>Subject Class</th><th>Subject Role</th><th>Column Tag</th><th>Description</th>
                         </tr>
                         <!-- here goes rows for subject columns -->
                     </tbody>
                     <tbody id="template-table-evidence">
+                        <tr><th colspan=5>Evidence</tr>
                         <tr id="evidence-header">
                             <th>Delete Row</th><th>Value Type</th><th>Evidence Type</th><th>Column Tag</th><th>Description</th>
                         </tr>
