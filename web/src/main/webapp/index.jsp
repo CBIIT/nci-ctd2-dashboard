@@ -127,13 +127,12 @@
     </div>
      
     <div class="modal hide fade" id="alert-message-modal">  <!-- a hidden div for showing alert message -->          
-                <div class="modal-body" >                        
-                    <br>                    
-                    <medium id="alertMessage"></medium>
-                </div>
-                <div class="modal-footer">                     
-                    <button class="btn btn-primary" data-dismiss="modal">Close</button>
-                </div>
+        <div class="modal-body" >
+            <br><medium id="alertMessage"></medium>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" data-dismiss="modal">Close</button>
+        </div>
     </div>
 
     <div class="modal fade" tabindex="-1" role="dialog" id="confirmation-modal">
@@ -144,7 +143,7 @@
                     <h4 class="modal-title">Delete Confirmation</h4>
                 </div>
                 <div class="modal-body">
-                    <p id="confirmation-message">Are you sure you want to delete this submission template?</p>
+                    <p id="confirmation-message">Are you sure you want to delete this?</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
@@ -2419,26 +2418,6 @@
             <br>
             <hr>
             <br>
-        </div>
-    </script>
-
-    <script type="text/template" id="delete-confirmation-tmpl">
-        <div class="modal fade" tabindex="-1" role="dialog" id="delete-confirmation-{{id}}">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">Delete Confirmation</h4>
-                </div>
-                <div class="modal-body">
-                    <p id="confirmation-message">Are you sure you want to delete this {{message}}?</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal" id="cancelled-delete-{{id}}">Cancel</button>
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="confirmed-delete-{{id}}">Yes, delete it.</button>
-                </div>
-            </div>
-        </div>
         </div>
     </script>
 
