@@ -329,7 +329,7 @@ $ctd2.TemplateSubjectDataRowView = Backbone.View.extend({
                 $("#confirmed-delete").unbind('click').click(function(){
                     $('tr#template-subject-row-columntag-'+columnTagId).remove();
                 });
-                $('#confirmation-message').text("Are you sure you want to delete this subject column?");
+                $('#confirmation-message').text("Are you sure you want to delete this subject row?");
                 $("#confirmation-modal").modal('show');
             });
 
@@ -391,7 +391,7 @@ $ctd2.TemplateEvidenceDataRowView = Backbone.View.extend({
                 $("#confirmed-delete").unbind('click').click(function(){
                     $('tr#template-evidence-row-columntag-'+columnTagId).remove();
                 });
-                $('#confirmation-message').text("Are you sure you want to delete this evidence column?");
+                $('#confirmation-message').text("Are you sure you want to delete this evidence row?");
                 $("#confirmation-modal").modal('show');
             });
 
