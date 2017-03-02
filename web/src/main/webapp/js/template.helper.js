@@ -96,6 +96,7 @@ $ctd2.TemplateHelperView = Backbone.View.extend({
             });
 
             $("#create-new-submission").click(function() {
+                $ctd2.hideTemplateMenu();
                 $ctd2.templateId = 0;
                 $("#submitter-information").empty();
                 $("#template-description").empty();
@@ -107,6 +108,19 @@ $ctd2.TemplateHelperView = Backbone.View.extend({
                     model: {name:null, description:null, projecttitle:null, tier:null, isstory:null},
                     el: $("#template-description")
                 })).render();
+
+                // empty the data page and the summary page
+                $ctd2.populateOneTemplate({
+                    id: 0, // this is kind of important becasue it will reset $ctd2.templateId
+                    subjectColumns: [],
+                    subjectClasses: [],
+                    evidenceColumns: [],
+                    evidenceTypes: [],
+                    valueTypes: [],
+                    observationNumber: 0,
+                    observations: "",
+                });
+
                 $("#step2").fadeOut();
                 $("#step3").slideDown();
             });
@@ -572,6 +586,13 @@ $ctd2.showTemplateMenu = function() {
         $("#menu_data").show();
         $("#menu_summary").show();
         $("#menu_preview").show();
+};
+
+$ctd2.hideTemplateMenu = function() {
+    $("#menu_description").hide();
+    $("#menu_data").hide();
+    $("#menu_summary").hide();
+    $("#menu_preview").hide();
 };
 
 $ctd2.deleteTemplate = function(tobeDeleted) {
