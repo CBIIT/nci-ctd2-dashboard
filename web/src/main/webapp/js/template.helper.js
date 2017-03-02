@@ -832,6 +832,8 @@ $ctd2.saveNewTemplate = function(sync) {
         if(centerId.length==0 || firstName.length == 0 || lastName.length == 0
             || submissionName.length == 0) {
             console.log("not saved due to incomplete information");
+            $("#save-name-description").removeAttr("disabled");
+            alert("not saved due to incomplete information");
             return false; // error control
         }
 
