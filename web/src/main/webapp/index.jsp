@@ -2047,7 +2047,7 @@
                         </tr>
                         <!-- here goes rows for subject columns -->
                     </tbody>
-                    <tbody id="template-table-evidence">
+                    <tbody id="template-table-evidence" class="evidence">
                         <tr><th colspan=5>Evidence</tr>
                         <tr id="evidence-header">
                             <th>Delete Row</th><th>Value Type</th><th>Evidence Type</th><th>Column Tag</th><th>Description</th>
