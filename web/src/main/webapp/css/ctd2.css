@@ -12,14 +12,6 @@ body {
   color: black;
 }
 
-/*
-.table-striped > tbody.evidence > tr:nth-child(2n+1) > td, .table-striped > tbody.evidence > tr:nth-child(2n+1) > th {
-   background-color: #d4e6f1;
-}*//* do single color for now */
-.table-striped > tbody.evidence > tr > td, .table-striped > tbody.evidence > tr > th {
-   background-color: #e6f6ff;
-}
-
 /* CUSTOMIZE THE NAVBAR
 -------------------------------------------------- */
 
