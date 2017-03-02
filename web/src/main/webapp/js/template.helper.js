@@ -880,6 +880,32 @@ $ctd2.clone = function(templateId) {
     });
 }
 
+$ctd2.addNewSubject = function() {
+    var tagid = $("#template-table-subject tr").length;
+    var observationNumber = $(".observation-header").length/2;
+    (new $ctd2.TemplateSubjectDataRowView({
+        model: {
+            columnTagId: tagid, columnTag: null, subjectClass: null, subjectRole: null, subjectDescription:null,
+            observationNumber: observationNumber,
+            observations: []
+            },
+        el: $("#template-table-subject")
+    })).render();
+};
+
+$ctd2.addNewEvidence = function() {
+    var tagid = $("#template-table-evidence tr").length;
+    var observationNumber = $(".observation-header").length/2;
+    (new $ctd2.TemplateEvidenceDataRowView({
+        model: {
+            columnTagId: tagid, columnTag: null, evidenceType: "background", valueType: "Document", evidenceDescription:null,
+            observationNumber: observationNumber,
+            observations: []
+            },
+        el: $("#template-table-evidence")
+    })).render();
+};
+
 $ctd2.populateOneTemplate = function(rowModel) {
                         $("#template-id").val(rowModel.id);
                         $ctd2.templateId = rowModel.id;
@@ -939,6 +965,7 @@ $ctd2.populateOneTemplate = function(rowModel) {
                                 el: $("#template-table-subject")
                             })).render();
                         }
+                        if(subjectRows==0) $ctd2.addNewSubject();
 
                         $("#template-table-evidence > .template-data-row").remove();
                         var evidenceTypes = rowModel.evidenceTypes;
@@ -963,6 +990,7 @@ $ctd2.populateOneTemplate = function(rowModel) {
                                 el: $("#template-table-evidence")
                             })).render();
                         }
+                        if(evidenceColumns.length==0) $ctd2.addNewEvidence();
 
                         $("#template-obs-summary").val(rowModel.summary);
 
