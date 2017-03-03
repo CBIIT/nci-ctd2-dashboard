@@ -1135,20 +1135,20 @@
             </bean>
         </property>
     </bean>
-    <bean name="emoryOncoppiTier1Reader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+    <bean name="emoryOncoPpiTier1Reader" class="org.springframework.batch.item.file.MultiResourceItemReader">
         <property name="resources" value="${emory.oncoppi.tier1.data.location}" />
         <property name="delegate">
             <bean class="org.springframework.batch.item.file.FlatFileItemReader">
-                <property name="lineMapper" ref="emoryOncoppiTier1LineMapper" />
+                <property name="lineMapper" ref="emoryOncoPpiTier1LineMapper" />
                 <property name="linesToSkip" value="7" />
             </bean>
         </property>
     </bean>
-    <bean name="emoryOncoppiTier2Reader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+    <bean name="emoryOncoPpiTier2Reader" class="org.springframework.batch.item.file.MultiResourceItemReader">
         <property name="resources" value="${emory.oncoppi.tier2.data.location}" />
         <property name="delegate">
             <bean class="org.springframework.batch.item.file.FlatFileItemReader">
-                <property name="lineMapper" ref="emoryOncoppiTier2LineMapper" />
+                <property name="lineMapper" ref="emoryOncoPpiTier2LineMapper" />
                 <property name="linesToSkip" value="7" />
             </bean>
         </property>
@@ -1185,6 +1185,15 @@
         <property name="delegate">
             <bean class="org.springframework.batch.item.file.FlatFileItemReader">
                 <property name="lineMapper" ref="utswSmarca4LineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="emoryOncoPpiStoryReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${emory.oncoppi.story.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="emoryOncoPpiStoryLineMapper" />
                 <property name="linesToSkip" value="7" />
             </bean>
         </property>

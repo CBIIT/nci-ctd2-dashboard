@@ -425,11 +425,11 @@
     <bean name="utswKrasXpo1Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
         <property name="lineMapper" ref="utswKrasXpo1LineMapper" />
     </bean>
-    <bean name="emoryOncoppiTier1Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
-        <property name="lineMapper" ref="emoryOncoppiTier1LineMapper" />
+    <bean name="emoryOncoPpiTier1Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="emoryOncoPpiTier1LineMapper" />
     </bean>
-    <bean name="emoryOncoppiTier2Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
-        <property name="lineMapper" ref="emoryOncoppiTier2LineMapper" />
+    <bean name="emoryOncoPpiTier2Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="emoryOncoPpiTier2LineMapper" />
     </bean>
     <bean name="utswSW044248Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
         <property name="lineMapper" ref="utswSW044248LineMapper" />
@@ -442,5 +442,8 @@
     </bean>
     <bean name="utswSmarca4Reader" class="org.springframework.batch.item.file.FlatFileItemReader">
         <property name="lineMapper" ref="utswSmarca4LineMapper" />
+    </bean>
+    <bean name="emoryOncoPpiStoryReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="emoryOncoPpiStoryLineMapper" />
     </bean>
 </beans>

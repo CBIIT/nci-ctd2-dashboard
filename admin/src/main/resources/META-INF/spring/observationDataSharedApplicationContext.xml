@@ -628,19 +628,19 @@
                 <batch:chunk reader="emoryPras40Rpl11TruncationsReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
         </batch:step>
-        <batch:step id="utswKrasXpo1Step" parent="observationDataStep" next="emoryOncoppiTier1Step">
+        <batch:step id="utswKrasXpo1Step" parent="observationDataStep" next="emoryOncoPpiTier1Step">
             <batch:tasklet>
                 <batch:chunk reader="utswKrasXpo1Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
         </batch:step>
-        <batch:step id="emoryOncoppiTier1Step" parent="observationDataStep" next="emoryOncoppiTier2Step">
+        <batch:step id="emoryOncoPpiTier1Step" parent="observationDataStep" next="emoryOncoPpiTier2Step">
             <batch:tasklet>
-                <batch:chunk reader="emoryOncoppiTier1Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
+                <batch:chunk reader="emoryOncoPpiTier1Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
         </batch:step>
-        <batch:step id="emoryOncoppiTier2Step" parent="observationDataStep" next="utswSW044248Step">
+        <batch:step id="emoryOncoPpiTier2Step" parent="observationDataStep" next="utswSW044248Step">
             <batch:tasklet>
-                <batch:chunk reader="emoryOncoppiTier2Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
+                <batch:chunk reader="emoryOncoPpiTier2Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
         </batch:step>
         <batch:step id="utswSW044248Step" parent="observationDataStep" next="emoryNanoPcaTier1Step">
@@ -658,9 +658,14 @@
                 <batch:chunk reader="emoryNanoPcaTier2Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
         </batch:step>
-        <batch:step id="utswSmarca4Step" parent="observationDataStep">
+        <batch:step id="utswSmarca4Step" parent="observationDataStep" next="emoryOncoPpiStoryStep">
             <batch:tasklet>
                 <batch:chunk reader="utswSmarca4Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
+            </batch:tasklet>
+        </batch:step>
+        <batch:step id="emoryOncoPpiStoryStep" parent="observationDataStep">
+            <batch:tasklet>
+                <batch:chunk reader="emoryOncoPpiStoryReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
         </batch:step>
     </batch:job>
@@ -1796,20 +1801,20 @@
         <property name="names" value="dummy,submission_name,submission_date,template_name,compound_name,gene_symbol_1,gene_symbol_2,disease_condition,figure_1,figure_2,figure_3,figure_4,publication_url"/>
     </bean>
     
-    <bean name="emoryOncoppiTier1LineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+    <bean name="emoryOncoPpiTier1LineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
         <property name="fieldSetMapper" ref="observationDataMapper" />
-        <property name="lineTokenizer" ref="emoryOncoppiTier1LineTokenizer" />
+        <property name="lineTokenizer" ref="emoryOncoPpiTier1LineTokenizer" />
     </bean>
-    <bean name="emoryOncoppiTier1LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+    <bean name="emoryOncoPpiTier1LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
         <property name="delimiter" value="\u0009"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,disease_condition,cell_line,gene_symbol_1,gene_symbol_2,assay_type,number_of_measurements,average_fold_over_control_value,p_value,q_value,nci_portal,publication_url"/>
     </bean>
     
-    <bean name="emoryOncoppiTier2LineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+    <bean name="emoryOncoPpiTier2LineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
         <property name="fieldSetMapper" ref="observationDataMapper" />
-        <property name="lineTokenizer" ref="emoryOncoppiTier2LineTokenizer" />
+        <property name="lineTokenizer" ref="emoryOncoPpiTier2LineTokenizer" />
     </bean>
-    <bean name="emoryOncoppiTier2LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+    <bean name="emoryOncoPpiTier2LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
         <property name="delimiter" value="\u0009"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,disease_condition,cell_line,gene_symbol_1,gene_symbol_2,assay_type,number_of_measurements,average_fold_over_control_value,p_value,q_value,nci_portal,publication_url"/>
     </bean>
@@ -1848,6 +1853,15 @@
     <bean name="utswSmarca4LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
         <property name="delimiter" value="\u0009"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,compound_name_1,compound_name_2,cell_line,gene_symbol_1,gene_symbol_2,gene_symbol_3,disease_condition,nci_portal,publication_url"/>
+    </bean>
+    
+    <bean name="emoryOncoPpiStoryLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="emoryOncoPpiStoryLineTokenizer" />
+    </bean>
+    <bean name="emoryOncoPpiStoryLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="\u0009"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,gene_symbol_3,gene_symbol_4,gene_symbol_5,gene_symbol_6,gene_symbol_7,gene_symbol_8,gene_symbol_9,compound_name,cell_line_1,cell_line_2,cell_line_3,tissue_sample,nci_portal,publication_reference_1,publication_reference_2,publication_reference_3,story_location"/>
     </bean>
 
     <!-- shared helper beans -->
@@ -3137,7 +3151,7 @@
                 <entry key="emory_OncoPPi_tier1:p_value" value="evidence:readDouble:createObservedNumericEvidence" />
                 <entry key="emory_OncoPPi_tier1:q_value" value="evidence:readDouble:createObservedNumericEvidence" />
                 <entry key="emory_OncoPPi_tier1:nci_portal" value="evidence:readString:createObservedUrlEvidence" />
-                <entry key="emory_OncoPPi_tier1:publication_url" value="evidence:readString:createObservedLabelEvidence" />
+                <entry key="emory_OncoPPi_tier1:publication_url" value="evidence:readString:createObservedUrlEvidence" />
                 <entry key="emory_OncoPPi_tier2:disease_condition" value="subject:findTissueSampleByName" />
                 <entry key="emory_OncoPPi_tier2:cell_line" value="subject:findCellLineByName" />
                 <entry key="emory_OncoPPi_tier2:gene_symbol_1" value="subject:findGenesBySymbol" />
@@ -3148,7 +3162,7 @@
                 <entry key="emory_OncoPPi_tier2:p_value" value="evidence:readDouble:createObservedNumericEvidence" />
                 <entry key="emory_OncoPPi_tier2:q_value" value="evidence:readDouble:createObservedNumericEvidence" />
                 <entry key="emory_OncoPPi_tier2:nci_portal" value="evidence:readString:createObservedUrlEvidence" />
-                <entry key="emory_OncoPPi_tier2:publication_url" value="evidence:readString:createObservedLabelEvidence" />
+                <entry key="emory_OncoPPi_tier2:publication_url" value="evidence:readString:createObservedUrlEvidence" />
                 <entry key="utsw_SW044248:compound_name" value="subject:findCompoundsByName" />
                 <entry key="utsw_SW044248:cell_line" value="subject:findCellLineByName" />
                 <entry key="utsw_SW044248:gene_symbol_1" value="subject:findGenesBySymbol" />
@@ -3184,6 +3198,25 @@
                 <entry key="utsw_smarca4:disease_condition" value="subject:findTissueSampleByName" />
                 <entry key="utsw_smarca4:nci_portal" value="evidence:readString:createObservedUrlEvidence" />
                 <entry key="utsw_smarca4:publication_url" value="evidence:readString:createObservedUrlEvidence" />
+                <entry key="emory_oncoppi_story:gene_symbol_1" value="subject:findGenesBySymbol" />
+                <entry key="emory_oncoppi_story:gene_symbol_2" value="subject:findGenesBySymbol" />
+                <entry key="emory_oncoppi_story:gene_symbol_3" value="subject:findGenesBySymbol" />
+                <entry key="emory_oncoppi_story:gene_symbol_4" value="subject:findGenesBySymbol" />
+                <entry key="emory_oncoppi_story:gene_symbol_5" value="subject:findGenesBySymbol" />
+                <entry key="emory_oncoppi_story:gene_symbol_6" value="subject:findGenesBySymbol" />
+                <entry key="emory_oncoppi_story:gene_symbol_7" value="subject:findGenesBySymbol" />
+                <entry key="emory_oncoppi_story:gene_symbol_8" value="subject:findGenesBySymbol" />
+                <entry key="emory_oncoppi_story:gene_symbol_9" value="subject:findGenesBySymbol" />
+                <entry key="emory_oncoppi_story:compound_name" value="subject:findCompoundsByName" />
+                <entry key="emory_oncoppi_story:cell_line_1" value="subject:findCellLineByName" />
+                <entry key="emory_oncoppi_story:cell_line_2" value="subject:findCellLineByName" />
+                <entry key="emory_oncoppi_story:cell_line_3" value="subject:findCellLineByName" />
+                <entry key="emory_oncoppi_story:tissue_sample" value="subject:findTissueSampleByName" />
+                <entry key="emory_oncoppi_story:nci_portal" value="evidence:readString:createObservedUrlEvidence" />
+                <entry key="emory_oncoppi_story:publication_reference_1" value="evidence:readString:createObservedUrlEvidence" />
+                <entry key="emory_oncoppi_story:publication_reference_2" value="evidence:readString:createObservedUrlEvidence" />
+                <entry key="emory_oncoppi_story:publication_reference_3" value="evidence:readString:createObservedUrlEvidence" />
+                <entry key="emory_oncoppi_story:story_location" value="evidence:readString:createObservedFileEvidence" />
             </map>
         </constructor-arg>
     </bean>
