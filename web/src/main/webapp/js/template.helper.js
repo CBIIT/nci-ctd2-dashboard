@@ -14,31 +14,28 @@ $ctd2.TemplateHelperView = Backbone.View.extend({
             // top menu
             $("#menu_home").click(function() {
                 $ctd2.showPage("#step1");
+                $ctd2.setCurrentPageIndicator();
             });
             $("#menu_manage").click(function() {
                 $ctd2.showPage("#step2");
-                $ctd2.clearCurrentPageIndicator();
+                $ctd2.setCurrentPageIndicator();
             }).hide();
             $("#menu_description").click(function() {
                 $ctd2.showPage("#step3");
-                $ctd2.clearCurrentPageIndicator();
-                $(this).addClass('current-page');
+                $ctd2.setCurrentPageIndicator(this);
             }).hide();
             $("#menu_data").click(function() {
                 $ctd2.showPage("#step4");
-                $ctd2.clearCurrentPageIndicator();
-                $(this).addClass('current-page');
+                $ctd2.setCurrentPageIndicator(this);
             }).hide();
             $("#menu_summary").click(function() {
                 $ctd2.populateTagList();
                 $ctd2.showPage("#step5");
-                $ctd2.clearCurrentPageIndicator();
-                $(this).addClass('current-page');
+                $ctd2.setCurrentPageIndicator(this);
             }).hide();
             $("#menu_preview").click(function() {
                 $ctd2.showPage("#step6");
-                $ctd2.clearCurrentPageIndicator();
-                $(this).addClass('current-page');
+                $ctd2.setCurrentPageIndicator(this);
             }).hide();
 
             var submissionCenters = new $ctd2.SubmissionCenters();
@@ -191,11 +188,12 @@ $ctd2.TemplateHelperView = Backbone.View.extend({
     } // end render function
 }); // end of TemplateHelperView
 
-$ctd2.clearCurrentPageIndicator = function() {
+$ctd2.setCurrentPageIndicator = function(currentPage) {
     $("#menu_description").removeClass('current-page');
     $("#menu_data").removeClass('current-page');
     $("#menu_summary").removeClass('current-page');
     $("#menu_preview").removeClass('current-page');
+    $(currentPage).addClass("current-page"); // if currentPage is null, it is OK
 };
 
 $ctd2.ObservationPreviewView = Backbone.View.extend({
@@ -266,8 +264,7 @@ $ctd2.ExistingTemplateView = Backbone.View.extend({
 
                         $("#step2").fadeOut();
                         $("#step4").slideDown();
-                        $ctd2.clearCurrentPageIndicator();
-                        $("#menu_data").addClass("current-page");
+                        $ctd2.setCurrentPageIndicator("#menu_data");
                         break;
                     case 'delete':
                         $ctd2.deleteTemplate(rowModel.id);
@@ -277,8 +274,7 @@ $ctd2.ExistingTemplateView = Backbone.View.extend({
                         $ctd2.showTemplateMenu();
                         $("#step2").fadeOut();
                         $("#step6").slideDown();
-                        $ctd2.clearCurrentPageIndicator();
-                        $("#menu_preview").addClass("current-page");
+                        $ctd2.setCurrentPageIndicator("#menu_preview");
                         break;
                     case 'clone':
                         $ctd2.clone(rowModel.id);
