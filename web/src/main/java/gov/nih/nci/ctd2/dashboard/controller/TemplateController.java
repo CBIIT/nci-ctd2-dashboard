@@ -302,7 +302,7 @@ public class TemplateController {
         row0.createCell(9).setCellValue(template.getSubmissionCenter().getDisplayName());
         row0.createCell(10).setCellValue("");
 
-        for(int i=0; i<9; i++) {
+        for(int i=0; i<11; i++) {
             sheet.autoSizeColumn(i);
         }
     }

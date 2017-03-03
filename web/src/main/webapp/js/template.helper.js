@@ -1,69 +1,42 @@
-$ctd2 = {}; /* the supporting module of ctd2-dashboard app ctd2.js */
+$ctd2 = {
+    templateId: 0, // currently selected submission template ID, or 0 meaning no template selected
+    templateModels: {}, // data of all templates, keyed by their ID's
+    saveSuccess: true,
+}; /* the supporting module of ctd2-dashboard app ctd2.js */
 
-// following code used to be in ctd2.js
 $ctd2.TemplateHelperView = Backbone.View.extend({
-        template: _.template($("#template-helper-tmpl").html()),
-        el: $("#main-container"),
+    template: _.template($("#template-helper-tmpl").html()),
+    el: $("#main-container"),
 
-        render: function() {
+    render: function() {
             $(this.el).html(this.template(this.model));
 
             // top menu
             $("#menu_home").click(function() {
-                $("#step1").slideDown();
-                $("#step2").fadeOut();
-                $("#step3").fadeOut();
-                $("#step4").fadeOut();
-                $("#step5").fadeOut();
-                $("#step6").fadeOut();
+                $ctd2.showPage("#step1");
             });
             $("#menu_manage").click(function() {
-                $("#step1").fadeOut();
-                $("#step2").slideDown();
-                $("#step3").fadeOut();
-                $("#step4").fadeOut();
-                $("#step5").fadeOut();
-                $("#step6").fadeOut();
+                $ctd2.showPage("#step2");
                 $ctd2.clearCurrentPageIndicator();
             }).hide();
             $("#menu_description").click(function() {
-                $("#step1").fadeOut();
-                $("#step2").fadeOut();
-                $("#step3").slideDown();
-                $("#step4").fadeOut();
-                $("#step5").fadeOut();
-                $("#step6").fadeOut();
+                $ctd2.showPage("#step3");
                 $ctd2.clearCurrentPageIndicator();
                 $(this).addClass('current-page');
             }).hide();
             $("#menu_data").click(function() {
-                $("#step1").fadeOut();
-                $("#step2").fadeOut();
-                $("#step3").fadeOut();
-                $("#step4").slideDown();
-                $("#step5").fadeOut();
-                $("#step6").fadeOut();
+                $ctd2.showPage("#step4");
                 $ctd2.clearCurrentPageIndicator();
                 $(this).addClass('current-page');
             }).hide();
             $("#menu_summary").click(function() {
-                $("#step1").fadeOut();
-                $("#step2").fadeOut();
-                $("#step3").fadeOut();
-                $("#step4").fadeOut();
                 $ctd2.populateTagList();
-                $("#step5").slideDown();
-                $("#step6").fadeOut();
+                $ctd2.showPage("#step5");
                 $ctd2.clearCurrentPageIndicator();
                 $(this).addClass('current-page');
             }).hide();
             $("#menu_preview").click(function() {
-                $("#step1").fadeOut();
-                $("#step2").fadeOut();
-                $("#step3").fadeOut();
-                $("#step4").fadeOut();
-                $("#step5").fadeOut();
-                $("#step6").slideDown();
+                $ctd2.showPage("#step6");
                 $ctd2.clearCurrentPageIndicator();
                 $(this).addClass('current-page');
             }).hide();
@@ -127,11 +100,11 @@ $ctd2.TemplateHelperView = Backbone.View.extend({
 
             // although the other button is called #create-new-submission, this is where it is really created back-end
             $("#save-name-description").click(function() {
-                $("#save-name-description").attr("disabled", "disabled");
                 if($ctd2.templateId==0) {
+                    $(this).attr("disabled", "disabled");
                     $ctd2.saveNewTemplate();
                 } else {
-                    $ctd2.updateTemplate();
+                    $ctd2.updateTemplate($(this));
                 }
             });
             $("#continue-to-main-data").click(function() { // similar to save, additionally moving to the next
@@ -139,65 +112,57 @@ $ctd2.TemplateHelperView = Backbone.View.extend({
                 if($ctd2.templateId==0) {
                     ret = $ctd2.saveNewTemplate(true);
                 } else {
-                    $ctd2.updateTemplate();
+                    $ctd2.updateTemplate($(this));
                 }
-                if(ret) {
+                if(ret && $ctd2.saveSuccess) {
                     $("#step3").fadeOut();
                     $("#step4").slideDown();
                     $("#menu_description").removeClass("current-page");
                     $("#menu_data").addClass("current-page");
+                } else {
+                    $ctd2.saveSuccess  = true; // reset the flag
                 }
             });
 
             $("#save-template-submission-data").click(function() {
                 console.log("saving the submission data ...");
-                $ctd2.updateTemplate(); // TODO add lock
+                $ctd2.updateTemplate($(this));
             });
             $("#apply-template-submission-data").click(function() {
-                $ctd2.updateTemplate();
-                $("#step4").fadeOut();
-                $ctd2.populateTagList();
-                $("#step5").slideDown();
-                $("#menu_data").removeClass("current-page");
-                $("#menu_summary").addClass("current-page");
+                $ctd2.updateTemplate($(this));
+                if($ctd2.saveSuccess) {
+                    $("#step4").fadeOut();
+                    $ctd2.populateTagList();
+                    $("#step5").slideDown();
+                    $("#menu_data").removeClass("current-page");
+                    $("#menu_summary").addClass("current-page");
+                } else {
+                    $ctd2.saveSuccess  = true; // reset the flag
+                }
             });
 
             $("#save-summary").click(function() {
                 console.log("saving the summary ...");
-                $ctd2.updateTemplate(); // TODO add lock
+                $ctd2.updateTemplate($(this)); // TODO add lock
             });
             $("#continue-from-summary").click(function() {
-                $ctd2.updateTemplate();
-                $("#step5").fadeOut();
-                $("#step6").slideDown();
-                $("#menu_summary").removeClass("current-page");
-                $("#menu_preview").addClass("current-page");
+                $ctd2.updateTemplate($(this));
+                if($ctd2.saveSuccess) {
+                    $("#step5").fadeOut();
+                    $("#step6").slideDown();
+                    $("#menu_summary").removeClass("current-page");
+                    $("#menu_preview").addClass("current-page");
+                } else {
+                    $ctd2.saveSuccess  = true; // reset the flag
+                }
             });
 
             $("#add-evidence").click(function() {
-                var tagid = $("#template-table-evidence tr").length;
-                var observationNumber = $(".observation-header").length/2;
-                (new $ctd2.TemplateEvidenceDataRowView({
-                    model: {
-                        columnTagId: tagid, columnTag: null, evidenceType: "background", valueType: "Document", evidenceDescription:null,
-                        observationNumber: observationNumber,
-                        observations: []
-                        },
-                    el: $("#template-table-evidence")
-                })).render();
+                $ctd2.addNewEvidence();
             });
 
             $("#add-subject").click(function() {
-                var tagid = $("#template-table-subject tr").length;
-                var observationNumber = $(".observation-header").length/2;
-                (new $ctd2.TemplateSubjectDataRowView({
-                    model: {
-                        columnTagId: tagid, columnTag: null, subjectClass: null, subjectRole: null, subjectDescription:null,
-                        observationNumber: observationNumber,
-                        observations: []
-                        },
-                    el: $("#template-table-subject")
-                })).render();
+                $ctd2.addNewSubject();
             });
 
             $("#add-observation").click(function() {
@@ -223,8 +188,8 @@ $ctd2.TemplateHelperView = Backbone.View.extend({
             });
 
             return this;
-        } // end render function
-});
+    } // end render function
+}); // end of TemplateHelperView
 
 $ctd2.clearCurrentPageIndicator = function() {
     $("#menu_description").removeClass('current-page');
@@ -283,9 +248,6 @@ $ctd2.TemplateDescriptionView = Backbone.View.extend({
             return this;
         }
 });
-
-$ctd2.templateId = 0;
-$ctd2.templateModels = {};
 
 $ctd2.ExistingTemplateView = Backbone.View.extend({
         template: _.template($("#existing-template-row-tmpl").html()),
@@ -581,6 +543,16 @@ $ctd2.evidenceTypes = {
     'Internal dashboard link': ['measured','computed','reference','resource','link'],
 };
 
+$ctd2.showPage = function(page_name) {
+    $("#step1").fadeOut();
+    $("#step2").fadeOut();
+    $("#step3").fadeOut();
+    $("#step4").fadeOut();
+    $("#step5").fadeOut();
+    $("#step6").fadeOut();
+    $(page_name).slideDown();
+};
+
 $ctd2.showTemplateMenu = function() {
         $("#menu_description").show();
         $("#menu_data").show();
@@ -683,17 +655,17 @@ $ctd2.getObservations = function() {
 };
 
 $ctd2.dataReady = true;
-$ctd2.updateTemplate = function() {
+$ctd2.updateTemplate = function(triggeringButton) {
 	$ctd2.getObservations(); // this set $ctd2.dataReady to be false until the data is ready
-	$ctd2.processObservationArray();
+	$ctd2.processObservationArray(triggeringButton);
 }
 
-$ctd2.processObservationArray = function() {
+$ctd2.processObservationArray = function(triggeringButton) {
     if ($ctd2.dataReady === true) {
-         $ctd2.updateTemplate_1();
+         $ctd2.updateTemplate_1(triggeringButton);
          return;
     }
-    setTimeout($ctd2.processObservationArray, 1000);
+    setTimeout($ctd2.processObservationArray, 1000, triggeringButton);
 }
 
 $ctd2.hasDuplicate = function(a) {
@@ -712,7 +684,7 @@ $ctd2.hasDuplicate = function(a) {
     return false;
 }
 
-$ctd2.updateTemplate_1 = function() {
+$ctd2.updateTemplate_1 = function(triggeringButton) {
     $ctd2.validate = function() {
         if($ctd2.templateId==0) {
         	return 'error: $ctd2.templateId==0';
@@ -772,9 +744,11 @@ $ctd2.updateTemplate_1 = function() {
     var x = $ctd2.validate(); // some arrays are converted to string after validation
     if(x!=null && x.length>0) {
         alert(x);
+        $ctd2.saveSuccess = false;
         return;
     }
 
+    triggeringButton.attr("disabled", "disabled");
     $.ajax({
             url: "template/update",
             type: "POST",
@@ -804,12 +778,12 @@ $ctd2.updateTemplate_1 = function() {
             contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
             success: function(data) {
                 console.log("return value: "+data);
-                $("#save-name-description").removeAttr("disabled");
+                triggeringButton.removeAttr("disabled");
                 var centerId = $("#template-submission-centers").val();
                 $ctd2.refreshTemplateList(centerId);
            },
            error: function(response, status) {
-               $("#save-name-description").removeAttr("disabled");
+               triggeringButton.removeAttr("disabled");
                // response.responseText is an HTML page
                alert(status+": "+response.responseText);
            }
@@ -903,12 +877,12 @@ $ctd2.clone = function(templateId) {
     });
 }
 
-$ctd2.addNewSubject = function() {
+$ctd2.addNewSubject = function(tag) {
     var tagid = $("#template-table-subject tr").length;
     var observationNumber = $(".observation-header").length/2;
     (new $ctd2.TemplateSubjectDataRowView({
         model: {
-            columnTagId: tagid, columnTag: null, subjectClass: null, subjectRole: null, subjectDescription:null,
+            columnTagId: tagid, columnTag: tag, subjectClass: null, subjectRole: null, subjectDescription:null,
             observationNumber: observationNumber,
             observations: []
             },
@@ -916,12 +890,12 @@ $ctd2.addNewSubject = function() {
     })).render();
 };
 
-$ctd2.addNewEvidence = function() {
+$ctd2.addNewEvidence = function(tag) {
     var tagid = $("#template-table-evidence tr").length;
     var observationNumber = $(".observation-header").length/2;
     (new $ctd2.TemplateEvidenceDataRowView({
         model: {
-            columnTagId: tagid, columnTag: null, evidenceType: "background", valueType: "Document", evidenceDescription:null,
+            columnTagId: tagid, columnTag: tag, evidenceType: "background", valueType: "Document", evidenceDescription:null,
             observationNumber: observationNumber,
             observations: []
             },
@@ -988,7 +962,7 @@ $ctd2.populateOneTemplate = function(rowModel) {
                                 el: $("#template-table-subject")
                             })).render();
                         }
-                        if(subjectRows==0) $ctd2.addNewSubject();
+                        if(subjectRows==0) $ctd2.addNewSubject('subject 1');
 
                         $("#template-table-evidence > .template-data-row").remove();
                         var evidenceTypes = rowModel.evidenceTypes;
@@ -1013,7 +987,7 @@ $ctd2.populateOneTemplate = function(rowModel) {
                                 el: $("#template-table-evidence")
                             })).render();
                         }
-                        if(evidenceColumns.length==0) $ctd2.addNewEvidence();
+                        if(evidenceColumns.length==0) $ctd2.addNewEvidence('evidence 1');
 
                         $("#template-obs-summary").val(rowModel.summary);
 
