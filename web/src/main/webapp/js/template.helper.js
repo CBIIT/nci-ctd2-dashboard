@@ -254,6 +254,9 @@ $ctd2.ExistingTemplateView = Backbone.View.extend({
                     break;
                 case 'preview':
                     $ctd2.showTemplateMenu();
+                    if ($ctd2.templateId != rowModel.id) {
+                        $ctd2.populateOneTemplate(rowModel);
+                    }
                     $ctd2.showPage("#step6", "#menu_preview");
                     break;
                 case 'clone':
