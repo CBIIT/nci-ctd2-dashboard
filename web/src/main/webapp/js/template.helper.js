@@ -285,28 +285,15 @@ $ctd2.TemplateSubjectDataRowView = Backbone.View.extend({
             $("#confirmation-modal").modal('show');
         });
 
-        var role = this.model.subjectRole;
         var subjectClass = this.model.subjectClass;
         if (subjectClass === undefined || subjectClass == null) subjectClass = "Compound"; // simple default value
 
-        // the list of role depends on subject class; 'selected' is row-specific
-        var roleOptions = $ctd2.subjectRoles[subjectClass];
-
-        if (roleOptions === undefined) { // exceptional case
-            return;
-        }
-
-        for (var i = 0; i < roleOptions.length; i++) {
-            var roleName = roleOptions[i]; //.toJSON().displayName; // TODO temparily using hard-coded values
-            var cName = roleName.charAt(0).toUpperCase() + roleName.slice(1);
-            new $ctd2.SubjectRoleDropdownRowView(
-                {
-                    el: $('#role-dropdown-' + columnTagId),
-                    model: { roleName: roleName, cName: cName, selected: roleName == role ? 'selected' : null }
-                }).render();
-        }
-        $('#subject-class-dropdown-' + columnTagId).change(function () {
-            roleOptions = $ctd2.subjectRoles[$(this).val()];
+        var resetRoleDropdown = function (sc, sr) {
+            roleOptions = $ctd2.subjectRoles[sc];
+            if (roleOptions === undefined) { // exceptional case
+                console.log("error: roleOption is undefined for subject class "+sc);
+                return;
+            }
             $('#role-dropdown-' + columnTagId).empty();
             for (var i = 0; i < roleOptions.length; i++) {
                 var roleName = roleOptions[i];
@@ -314,9 +301,13 @@ $ctd2.TemplateSubjectDataRowView = Backbone.View.extend({
                 new $ctd2.SubjectRoleDropdownRowView(
                     {
                         el: $('#role-dropdown-' + columnTagId),
-                        model: { roleName: roleName, cName: cName, selected: null }
+                        model: { roleName: roleName, cName: cName, selected: roleName == sr ? 'selected' : null }
                     }).render();
             }
+        };
+        resetRoleDropdown(subjectClass, this.model.subjectRole);
+        $('#subject-class-dropdown-' + columnTagId).change(function () {
+            resetRoleDropdown($(this).val(), null);
         });
 
         // render observation cells for one row (subject or evidence column tag)
@@ -347,29 +338,23 @@ $ctd2.TemplateEvidenceDataRowView = Backbone.View.extend({
             $("#confirmation-modal").modal('show');
         });
 
-        var valueType = this.model.valueType;
-        var evidenceTypeOptions = $ctd2.evidenceTypes[valueType];
-        if (evidenceTypeOptions === undefined) { // exceptional case
-            alert('incorrect value type: ' + this.model.valueType);
-            return;
-        }
-
-        for (var i = 0; i < evidenceTypeOptions.length; i++) {
-            new $ctd2.EvidenceTypeDropdownView({
-                el: $('#evidence-type-' + columnTagId),
-                model: { evidenceType: evidenceTypeOptions[i], selected: evidenceTypeOptions[i] == this.model.evidenceType }
-            }).render();
-        }
-        $('#value-type-' + columnTagId).change(function () {
-            console.log("DEBUG CHANGED valueType=" + valueType + " " + $(this).val());
-            evidenceTypeOptions = $ctd2.evidenceTypes[$(this).val()];
+        var resetEvidenceTypeDropdown = function (vt, et) {
+            var evidenceTypeOptions = $ctd2.evidenceTypes[vt];
+            if (evidenceTypeOptions === undefined) { // exceptional case
+                console('incorrect value type: ' + vt);
+                return;
+            }
             $('#evidence-type-' + columnTagId).empty();
             for (var i = 0; i < evidenceTypeOptions.length; i++) {
                 new $ctd2.EvidenceTypeDropdownView({
                     el: $('#evidence-type-' + columnTagId),
-                    model: { evidenceType: evidenceTypeOptions[i], selected: false }
+                    model: { evidenceType: evidenceTypeOptions[i], selected: evidenceTypeOptions[i] == et }
                 }).render();
             }
+        };
+        resetEvidenceTypeDropdown(this.model.valueType, this.model.evidenceType);
+        $('#value-type-' + columnTagId).change(function () {
+            resetEvidenceTypeDropdown($(this).val(), null);
         });
 
         // render observation cells for one row (evidence column tag)
