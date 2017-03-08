@@ -218,24 +218,22 @@ $ctd2.ObservationPreviewView = Backbone.View.extend({
                 _.template($("#summary-subject-replacement-tmpl").html(), observedSubject.subject)
             );
         });
-        $("#" + observationId + " #observation-summary").html(summary);
 
         // Load evidences
-        var thatEl2 = $("#observed-evidences-grid");
+        var thatEl2 = $("#" + observationId + " #observed-evidences-grid");
         _.each(thisModel.observedEvidences, function (observedEvidence) {
-            var observedEvidenceRowView = new ObservedEvidenceRowView({
+            var observedEvidenceRowView = new $ctd2.ObservedEvidenceRowView({
                 el: $(thatEl2).find("tbody"),
                 model: observedEvidence
             });
 
             observedEvidenceRowView.render();
             summary = summary.replace(
-                new RegExp(leftSep + observedEvidence.observedEvidenceRole.columnName + rightSep, "g"),
+                new RegExp("<" + observedEvidence.observedEvidenceRole.columnName + ">", "g"),
                 _.template($("#summary-evidence-replacement-tmpl").html(), observedEvidence.evidence)
             );
-
-            $("#observation-summary").html(summary);
         });
+        $("#" + observationId + " #observation-summary").html(summary);
 
         var tableLength = (this.model.observedEvidences.length > 25 ? 10 : 25);
         /*        var oTable = $('#observed-evidences-grid').dataTable({
@@ -310,6 +308,65 @@ $ctd2.ObservedSubjectSummaryRowView = Backbone.View.extend({
             });  //end addGene
         }
 
+        return this;
+    }
+});
+
+// this is the same as the one in ctd2.js for now
+$ctd2.ObservedEvidenceRowView = Backbone.View.extend({
+    render: function () {
+        var result = this.model;
+        var type = result.evidence.class;
+        result.evidence["type"] = type;
+
+        if (result.observedEvidenceRole == null) {
+            result.observedEvidenceRole = {
+                displayText: "-",
+                evidenceRole: { displayName: "unknown" }
+            };
+        }
+
+        var templateId = "#observedevidence-row-tmpl";
+        var isHtmlStory = false;
+        if (type == "FileEvidence") {
+            result.evidence.filePath = result.evidence.filePath.replace(/\\/g, "/");
+            if (result.evidence.mimeType.toLowerCase().search("image") > -1) {
+                templateId = "#observedimageevidence-row-tmpl";
+            } else if (result.evidence.mimeType.toLowerCase().search("gct") > -1) {
+                templateId = "#observedgctfileevidence-row-tmpl";
+            } else if (result.evidence.mimeType.toLowerCase().search("pdf") > -1) {
+                templateId = "#observedpdffileevidence-row-tmpl";
+            } else if (result.evidence.mimeType.toLowerCase().search("sif") > -1) {
+                templateId = "#observedsiffileevidence-row-tmpl";
+            } else if (result.evidence.mimeType.toLowerCase().search("mra") > -1) {
+                templateId = "#observedmrafileevidence-row-tmpl";
+            } else if (result.evidence.mimeType.toLowerCase().search("html") > -1) {
+                templateId = "#observedhtmlfileevidence-row-tmpl";
+                isHtmlStory = true;
+            } else {
+                templateId = "#observedfileevidence-row-tmpl";
+            }
+        } else if (type == "UrlEvidence") {
+            templateId = "#observedurlevidence-row-tmpl";
+        } else if (type == "LabelEvidence") {
+            templateId = "#observedlabelevidence-row-tmpl";
+        } else if (type == "DataNumericValue") {
+            templateId = "#observeddatanumericevidence-row-tmpl";
+        }
+
+        this.template = _.template($(templateId).html());
+        var thatEl = $(this.el);
+        $(this.el).append(this.template(result));
+
+        if (isHtmlStory) {
+            thatEl.find(".html-story-link").on("click", function (e) {
+                e.preventDefault();
+                var url = $(this).attr("href");
+                (new HtmlStoryView({ model: { observation: result.observation, url: url } })).render();
+            });
+        }
+
+        $(".img-rounded").tooltip({ placement: "left" });
         return this;
     }
 });
@@ -1107,6 +1164,24 @@ $ctd2.populateOneTemplate = function (rowModel) {
             }
         });
     }
+    var observedEvidences = [];
+    for (var i = 0; i < evidenceColumns.length; i++) {
+        observedEvidences.push({
+            evidence: {
+                id: 0, // TODO usage?
+                class: valueTypes[i]+'Evidence', // FIXME this will NOT work, very inconsistent
+                displayName: 'EVIDENCE_NAME',// TODO this is required by the tempalte, but what is this for?
+            },
+            id: i, // TODO usage?
+            observedEvidenceRole: {
+                evidenceRole: {
+                    displayName: evidenceTypes[i],
+                },
+                displayText: evidenceDescriptions[i],
+            },
+            displayName: 'OBSERVATION_DATA', // to be replaced with different data for each observation. This is put in the Details column in the preview.
+        });
+    }
 
     var observationTemplate = {
         tier: rowModel.tier,
@@ -1126,6 +1201,9 @@ $ctd2.populateOneTemplate = function (rowModel) {
         for (var r = 0; r < subjectRows; r++) {
             observedSubjects[r].subject.displayName = observations[totalRows * i + r];
         };
+        for (var r = 0; r < evidenceColumns.length; r++) {
+            observedEvidences[r].displayName = observations[totalRows * i + subjectRows + r];
+        };
         (new $ctd2.ObservationPreviewView({
             model: {
                 id: i + 1,
@@ -1136,7 +1214,7 @@ $ctd2.populateOneTemplate = function (rowModel) {
                     displayName: rowModel.name,
                 },
                 observedSubjects: observedSubjects,
-                observedEvidences: [],
+                observedEvidences: observedEvidences,
             },
             el: $("#step6")
         })).render();
