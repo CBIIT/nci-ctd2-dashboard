@@ -2112,13 +2112,6 @@
         </div><!-- end of template-helper-container -->
     </script>
 
-    <script type="text/template" id="observation-preview-tmpl">
-        <div id=observation-preview-{{id}} style="display:{{display}}">This is the placeholder for the preview to be implemented.
-            <p><b>Observation #</b> {{id}}
-            <p><b>Data:</b> {{observations}}
-        </div>
-    </script>
-
     <script type="text/template" id="observation-option-tmpl">
         <option>observation {{observation_id}}</option>
     </script>

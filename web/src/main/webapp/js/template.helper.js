@@ -182,9 +182,134 @@ $ctd2.TemplateHelperView = Backbone.View.extend({
 }); // end of TemplateHelperView
 
 $ctd2.ObservationPreviewView = Backbone.View.extend({
-    template: _.template($("#observation-preview-tmpl").html()),
+    template: _.template($("#observation-tmpl").html()),
     render: function () {
-        $(this.el).append(this.template(this.model));
+        var thisModel = this.model;
+        var observationId = 'observation-preview-' + thisModel.id;
+        var observation_preview = this.template(thisModel)
+            .replace('id="observation-container"', 'id="' + observationId + '"')
+            .replace('<h2>Observation', '<h2>Observation ' + thisModel.id);
+        $(this.el).append(observation_preview);
+        $('#' + observationId).css('display', thisModel.display);
+
+        // We will replace the values in this summary
+        var summary = thisModel.submission.observationTemplate.observationSummary;
+
+        // Load Subjects
+        var thatEl = $("#" + observationId + " #observed-subjects-grid");
+        _.each(thisModel.observedSubjects, function (observedSubject) {
+            var observedSubjectRowView
+                = new $ctd2.ObservedSubjectSummaryRowView({
+                    el: $(thatEl).find("tbody"),
+                    model: observedSubject
+                });
+            observedSubjectRowView.render();
+
+            var subject = observedSubject.subject;
+            var thatEl2 = $("#" + observationId + " #subject-image-" + observedSubject.id);
+            var imgTemplate = $("#search-results-unknown-image-tmpl");
+            thatEl2.append(_.template(imgTemplate.html(), subject));
+
+            if (observedSubject.observedSubjectRole == null || observedSubject.subject == null)
+                return;
+
+            summary = summary.replace(
+                new RegExp("<" + observedSubject.observedSubjectRole.columnName + ">", "g"),
+                _.template($("#summary-subject-replacement-tmpl").html(), observedSubject.subject)
+            );
+        });
+        $("#" + observationId + " #observation-summary").html(summary);
+
+        // Load evidences
+        var thatEl2 = $("#observed-evidences-grid");
+        _.each(thisModel.observedEvidences, function (observedEvidence) {
+            var observedEvidenceRowView = new ObservedEvidenceRowView({
+                el: $(thatEl2).find("tbody"),
+                model: observedEvidence
+            });
+
+            observedEvidenceRowView.render();
+            summary = summary.replace(
+                new RegExp(leftSep + observedEvidence.observedEvidenceRole.columnName + rightSep, "g"),
+                _.template($("#summary-evidence-replacement-tmpl").html(), observedEvidence.evidence)
+            );
+
+            $("#observation-summary").html(summary);
+        });
+
+        var tableLength = (this.model.observedEvidences.length > 25 ? 10 : 25);
+        /*        var oTable = $('#observed-evidences-grid').dataTable({
+                    "iDisplayLength": tableLength
+                });
+        
+                oTable.fnSort([[1, 'asc'], [2, 'asc']]);
+        */
+        $('.desc-tooltip').tooltip({ placement: "left" });
+        $("div.expandable").expander({
+            slicePoint: 50,
+            expandText: '[...]',
+            expandPrefix: ' ',
+            userCollapseText: '[^]'
+        });
+
+        $(".numeric-value").each(function (idx) {
+            var val = $(this).html();
+            var vals = val.split("e"); // capture scientific notation
+            if (vals.length > 1) {
+                $(this).html(_.template($("#observeddatanumericevidence-val-tmpl").html(), {
+                    firstPart: vals[0],
+                    secondPart: vals[1].replace("+", "")
+                }));
+            }
+        });
+
+        $("#small-show-sub-details").click(function (event) {
+            event.preventDefault();
+            $("#obs-submission-details").slideDown();
+            $("#small-show-sub-details").hide();
+            $("#small-hide-sub-details").show();
+        });
+
+        $("#small-hide-sub-details").click(function (event) {
+            event.preventDefault();
+            $("#obs-submission-details").slideUp();
+            $("#small-hide-sub-details").hide();
+            $("#small-show-sub-details").show();
+        });
+
+        if (thisModel.submission.observationTemplate.submissionDescription == "") {
+            $("#obs-submission-summary").hide();
+        }
+
+        return this;
+    }
+});
+
+// this is the same as the one in ctd2.js for now
+$ctd2.ObservedSubjectSummaryRowView = Backbone.View.extend({
+    template: _.template($("#observedsubject-summary-row-tmpl").html()),
+    render: function () {
+        var result = this.model;
+        if (result.subject == null) return;
+        if (result.subject.type == undefined) {
+            result.subject["type"] = result.subject.class;
+        }
+
+        if (result.subject.class != "Gene") {
+            this.template = _.template($("#observedsubject-summary-row-tmpl").html());
+            $(this.el).append(this.template(result));
+        } else {
+            this.template = _.template($("#observedsubject-gene-summary-row-tmpl").html());
+            $(this.el).append(this.template(result));
+            var currentGene = result.subject["displayName"];
+
+            $(".addGene-" + currentGene).click(function (e) {
+                e.preventDefault();
+                updateGeneList(currentGene);
+                return this;
+            });  //end addGene
+        }
+
         return this;
     }
 });
@@ -294,7 +419,7 @@ $ctd2.TemplateSubjectDataRowView = Backbone.View.extend({
         var resetRoleDropdown = function (sc, sr) {
             roleOptions = $ctd2.subjectRoles[sc];
             if (roleOptions === undefined) { // exceptional case
-                console.log("error: roleOption is undefined for subject class "+sc);
+                console.log("error: roleOption is undefined for subject class " + sc);
                 return;
             }
             $('#role-dropdown-' + columnTagId).empty();
@@ -963,6 +1088,26 @@ $ctd2.populateOneTemplate = function (rowModel) {
 
     $("#template-obs-summary").val(rowModel.summary);
 
+    // re-structure the data for the preview, required by the original observation template
+    var observedSubjects = [];
+    for (var i = 0; i < subjectColumns.length; i++) {
+        observedSubjects.push({
+            subject: {
+                id: 0, // TODO proper value needed for the correct image? 
+                class: subjectClasses[i],
+                displayName: 'OBSERVED SUBJECT placeholder'+i,
+            },
+            id: i, //'SUBJECT ID placeholder', // depend on the man dashboard. for image?
+            observedSubjectRole: { 
+                columnName: subjectColumns[i],
+                subjectRole: {
+                    displayName: rowModel.subjectRoles[i],
+                },
+                displayText: rowModel.subjectDescriptions[i],
+            }
+        });
+    }
+
     $("#preview-select").empty();
     $("#step6 [id^=observation-preview-]").remove();
     for (var i = 0; i < observationNumber; i++) {
@@ -975,7 +1120,27 @@ $ctd2.populateOneTemplate = function (rowModel) {
             oneColumn[r] = observations[totalRows * i + r];
         };
         (new $ctd2.ObservationPreviewView({
-            model: { id: i + 1, display: (i == 0 ? 'block' : 'none'), observations: oneColumn },
+            model: {
+                id: i + 1,
+                display: (i == 0 ? 'block' : 'none'),
+                submission: {
+                    observationTemplate: {
+                        tier: rowModel.tier,
+                        submissionCenter: {
+                            id: 101,
+                            displayname: 'CENTER NAME placeholder',
+                        },
+                        project: 'PROJECT NAME placeholder',
+                        description: 'DESCRIPTION placeholder',
+                        submissionDescription: 'SUBMISSION DESCRPTION or SUMMARY placeholder',
+                        observationSummary: rowModel.summary,
+                    },
+                    submissionDate: '2012-12-12',
+                    displayName: 'SUBMISSION NAME placeholder',
+                },
+                observedSubjects: observedSubjects,
+                observedEvidences: [],
+            },
             el: $("#step6")
         })).render();
     }
