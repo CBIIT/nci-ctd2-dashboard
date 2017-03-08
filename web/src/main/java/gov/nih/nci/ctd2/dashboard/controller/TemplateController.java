@@ -24,6 +24,7 @@ import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.BorderStyle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -325,18 +326,17 @@ public class TemplateController {
         CellStyle blue = workbook.createCellStyle();
         blue.setFillForegroundColor(HSSFColor.LIGHT_TURQUOISE.index);
         blue.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        blue.setBorderBottom(BorderStyle.HAIR);
 
         CellStyle green = workbook.createCellStyle();
         green.setFillForegroundColor(HSSFColor.LIGHT_GREEN.index);
         green.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        green.setBorderBottom(BorderStyle.HAIR);
 
         CellStyle yellow = workbook.createCellStyle();
         yellow.setFillForegroundColor(HSSFColor.LIGHT_YELLOW.index);
         yellow.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-
-        CellStyle tan = workbook.createCellStyle();
-        tan.setFillForegroundColor(HSSFColor.TAN.index);
-        tan.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        yellow.setBorderBottom(BorderStyle.HAIR);
 
         HSSFRow rowhead = sheet.createRow((short)0);
         //rowhead.createCell(0).setCellValue(""); // default is the same as empty
@@ -418,27 +418,21 @@ public class TemplateController {
         int index = 0;
         for(int i=0; i<template.getObservationNumber(); i++) {
             row = sheet.createRow((short)(7+i));
-            row.setRowStyle(tan);
             cell = row.createCell(1);
             cell.setCellValue(new SimpleDateFormat("yyyyMMdd-").format(date)+templateName);
-            cell.setCellStyle(tan);
             cell = row.createCell(2);
-            cell.setCellValue(date.toString());
-            cell.setCellStyle(tan);
+            cell.setCellValue(new SimpleDateFormat("yyyy.MM.dd").format(date));
             cell = row.createCell(3);
             cell.setCellValue(templateName);
-            cell.setCellStyle(tan);
             for(int j=0; j<subjects.length; j++) {
                 cell = row.createCell(j+4);
                 cell.setCellValue( obv[index] );
                 index++;
-                cell.setCellStyle(tan);
             }
             for(int j=0; j<evd.length; j++) {
                 cell = row.createCell(subjects.length+j+4);
                 cell.setCellValue( obv[index] );
                 index++;
-                cell.setCellStyle(tan);
             }
         }
 
