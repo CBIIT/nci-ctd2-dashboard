@@ -1095,10 +1095,10 @@ $ctd2.populateOneTemplate = function (rowModel) {
             subject: {
                 id: 0, // TODO proper value needed for the correct image? 
                 class: subjectClasses[i],
-                displayName: 'OBSERVED SUBJECT placeholder'+i,
+                displayName: 'OBSERVATION_DATA', // to be replaced with different data for each observation
             },
             id: i, //'SUBJECT ID placeholder', // depend on the man dashboard. for image?
-            observedSubjectRole: { 
+            observedSubjectRole: {
                 columnName: subjectColumns[i],
                 subjectRole: {
                     displayName: rowModel.subjectRoles[i],
@@ -1108,6 +1108,14 @@ $ctd2.populateOneTemplate = function (rowModel) {
         });
     }
 
+    var observationTemplate = {
+        tier: rowModel.tier,
+        submissionCenter: rowModel.submissionCenter,
+        project: rowModel.project,
+        submissionDescription: rowModel.description,
+        observationSummary: rowModel.summary,
+    }
+
     $("#preview-select").empty();
     $("#step6 [id^=observation-preview-]").remove();
     for (var i = 0; i < observationNumber; i++) {
@@ -1115,28 +1123,17 @@ $ctd2.populateOneTemplate = function (rowModel) {
             model: { observation_id: i + 1 },
             el: $("#preview-select")
         })).render();
-        var oneColumn = new Array(subjectRows);
         for (var r = 0; r < subjectRows; r++) {
-            oneColumn[r] = observations[totalRows * i + r];
+            observedSubjects[r].subject.displayName = observations[totalRows * i + r];
         };
         (new $ctd2.ObservationPreviewView({
             model: {
                 id: i + 1,
                 display: (i == 0 ? 'block' : 'none'),
                 submission: {
-                    observationTemplate: {
-                        tier: rowModel.tier,
-                        submissionCenter: {
-                            id: 101,
-                            displayname: 'CENTER NAME placeholder',
-                        },
-                        project: 'PROJECT NAME placeholder',
-                        description: 'DESCRIPTION placeholder',
-                        submissionDescription: 'SUBMISSION DESCRPTION or SUMMARY placeholder',
-                        observationSummary: rowModel.summary,
-                    },
-                    submissionDate: '2012-12-12',
-                    displayName: 'SUBMISSION NAME placeholder',
+                    observationTemplate: observationTemplate,
+                    submissionDate: rowModel.dateLastModified,
+                    displayName: rowModel.name,
                 },
                 observedSubjects: observedSubjects,
                 observedEvidences: [],
