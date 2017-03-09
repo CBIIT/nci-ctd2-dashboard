@@ -323,6 +323,9 @@ public class TemplateController {
 
         HSSFSheet sheet = workbook.createSheet(templateName);
 
+        CellStyle header = workbook.createCellStyle();
+        header.setBorderBottom(BorderStyle.THIN);
+
         CellStyle blue = workbook.createCellStyle();
         blue.setFillForegroundColor(HSSFColor.LIGHT_TURQUOISE.index);
         blue.setFillPattern(FillPatternType.SOLID_FOREGROUND);
@@ -339,17 +342,27 @@ public class TemplateController {
         yellow.setBorderBottom(BorderStyle.HAIR);
 
         HSSFRow rowhead = sheet.createRow((short)0);
-        //rowhead.createCell(0).setCellValue(""); // default is the same as empty
-        rowhead.createCell(1).setCellValue("submission_name");
-        rowhead.createCell(2).setCellValue("submission_date");
-        rowhead.createCell(3).setCellValue("template_name");
+        rowhead.setRowStyle(header);
+        Cell c = rowhead.createCell(1);
+        c.setCellValue("submission_name");
+        c.setCellStyle(header);
+        c = rowhead.createCell(2);
+        c.setCellValue("submission_date");
+        c.setCellStyle(header);
+        c = rowhead.createCell(3);
+        c.setCellValue("template_name");
+        c.setCellStyle(header);
         String[] subjects = template.getSubjectColumns();
         for(int i=0; i<subjects.length; i++) {
-            rowhead.createCell(i+4).setCellValue(subjects[i]);
+            c = rowhead.createCell(i+4);
+            c.setCellValue(subjects[i]);
+            c.setCellStyle(header);
         }
         String[] evd = template.getEvidenceColumns();
         for(int i=0; i<evd.length; i++) {
-            rowhead.createCell(i+4+subjects.length).setCellValue(evd[i]);
+            c = rowhead.createCell(i+4+subjects.length);
+            c.setCellValue(evd[i]);
+            c.setCellStyle(header);
         }
 
         HSSFRow row = sheet.createRow((short)1);
@@ -360,7 +373,7 @@ public class TemplateController {
         String[] classes = template.getSubjectClasses();
         for(int i=0; i<classes.length; i++) { // classes should have the same length as subject column
             cell = row.createCell(i+4);
-            cell.setCellValue(classes[i]);
+            cell.setCellValue(classes[i].toLowerCase());
             cell.setCellStyle(blue);
         }
 
@@ -372,7 +385,7 @@ public class TemplateController {
         String[] valueType = template.getValueTypes();
         for(int i=0; i<valueType.length; i++) { // value types should have the same length as evidence column
             cell = row.createCell(i+4+subjects.length);
-            cell.setCellValue(valueType[i]);
+            cell.setCellValue(valueType[i].toLowerCase());
             cell.setCellStyle(green);
         }
 
@@ -384,7 +397,7 @@ public class TemplateController {
         String[] roles = template.getSubjectRoles();
         for(int i=0; i<roles.length; i++) {
             cell = row.createCell(i+4);
-            cell.setCellValue(roles[i]);
+            cell.setCellValue(roles[i].toLowerCase());
             cell.setCellStyle(yellow);
         }
 
