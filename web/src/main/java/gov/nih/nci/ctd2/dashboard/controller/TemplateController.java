@@ -308,19 +308,8 @@ public class TemplateController {
         }
     }
 
-    @Transactional
-    @RequestMapping(value="download", method = {RequestMethod.POST})
-    public void downloadTemplate(
-            @RequestParam("template-id") Integer templateId,
-            @RequestParam("filename") String filename,
-            HttpServletResponse response)
-    {
-        SubmissionTemplate template = dashboardDao.getEntityById(SubmissionTemplate.class, templateId);
+    static private void createDataSheet(HSSFWorkbook workbook, SubmissionTemplate template) {
         String templateName = template.getDisplayName();
-
-        HSSFWorkbook workbook = new HSSFWorkbook();
-        createMetaDataSheet(workbook, template);
-
         HSSFSheet sheet = workbook.createSheet(templateName);
 
         CellStyle header = workbook.createCellStyle();
@@ -400,6 +389,12 @@ public class TemplateController {
             cell.setCellValue(roles[i].toLowerCase());
             cell.setCellStyle(yellow);
         }
+        String[] evidenceRoles = template.getEvidenceTypes();
+        for(int i=0; i<evidenceRoles.length; i++) {
+            cell = row.createCell(i+4+roles.length);
+            cell.setCellValue(evidenceRoles[i].toLowerCase());
+            cell.setCellStyle(yellow);
+        }
 
         row = sheet.createRow((short)4);
         row.setRowStyle(yellow);
@@ -422,6 +417,12 @@ public class TemplateController {
         for(int i=0; i<displayTexts.length; i++) {
             cell = row.createCell(i+4);
             cell.setCellValue(displayTexts[i]);
+            cell.setCellStyle(yellow);
+        }
+        String[] evidenceDescriptions = template.getEvidenceDescriptions();
+        for(int i=0; i<evidenceDescriptions.length; i++) {
+            cell = row.createCell(i+4+displayTexts.length);
+            cell.setCellValue(evidenceDescriptions[i].toLowerCase());
             cell.setCellStyle(yellow);
         }
 
@@ -453,6 +454,20 @@ public class TemplateController {
         for(int i=0; i<totalColumn; i++) {
             sheet.autoSizeColumn(i);
         }
+    }
+
+    @Transactional
+    @RequestMapping(value="download", method = {RequestMethod.POST})
+    public void downloadTemplate(
+            @RequestParam("template-id") Integer templateId,
+            @RequestParam("filename") String filename,
+            HttpServletResponse response)
+    {
+        SubmissionTemplate template = dashboardDao.getEntityById(SubmissionTemplate.class, templateId);
+
+        HSSFWorkbook workbook = new HSSFWorkbook();
+        createMetaDataSheet(workbook, template);
+        createDataSheet(workbook, template);
 
         response.setContentType("application/zip");
         response.addHeader("Content-Disposition", "attachment; filename=\"" + filename + ".zip\"");
