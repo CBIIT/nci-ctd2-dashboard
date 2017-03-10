@@ -235,13 +235,6 @@ $ctd2.ObservationPreviewView = Backbone.View.extend({
         });
         $("#" + observationId + " #observation-summary").html(summary);
 
-        var tableLength = (this.model.observedEvidences.length > 25 ? 10 : 25);
-        /*        var oTable = $('#observed-evidences-grid').dataTable({
-                    "iDisplayLength": tableLength
-                });
-        
-                oTable.fnSort([[1, 'asc'], [2, 'asc']]);
-        */
         $('.desc-tooltip').tooltip({ placement: "left" });
         $("div.expandable").expander({
             slicePoint: 50,
