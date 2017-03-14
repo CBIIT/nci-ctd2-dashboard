@@ -2084,15 +2084,17 @@
                     <tr>
                         <th>Observation summary</th>
                         <td>
-                            <input id="template-obs-summary" placeholder="e.g. <gene_column> is down-regulated in <label_evidence> cells" class="input-xxxlarge">
+                            <textarea id="template-obs-summary" placeholder="e.g. <gene_column> is down-regulated in <label_evidence> cells" class="input-xxxlarge"></textarea>
+                        </td>
+                        <td>
+                        <span class="dropdown">
+                            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Helper
+                            <span class="caret"></span></button>
+                            <ul class="dropdown-menu" id='column-tag-list'></ul>
+                        </span> 
                         </td>
                     </tr>
                 </table>
-                <span class="dropdown">
-                    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Helper
-                    <span class="caret"></span></button>
-                    <ul class="dropdown-menu" id='column-tag-list'></ul>
-                </span> 
                 <button id="save-summary">Save</button>
                 <button id="continue-from-summary">Save and Continue</button>
 
