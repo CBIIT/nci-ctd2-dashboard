@@ -1931,7 +1931,7 @@
         <tr><th>Submission Name *</th>
             <td><input id="template-name" placeholder="e.g. centername_your_description" class="input-xxlarge" value="{{name}}"></td></tr>
         <tr><th>Submission Description</th>
-            <td><input id="template-submission-desc" placeholder="e.g. Down-regulated genes in PTEN-null cell lines" class="input-xxxlarge" value="{{description}}"></td>
+            <td><textarea id="template-submission-desc" placeholder="e.g. Down-regulated genes in PTEN-null cell lines" class="input-xxxlarge">{{description}}</textarea></td>
         </tr>
         <tr><th>Project Title</th>
             <td><input id="template-project-title" placeholder="Please enter a title for this or a collection of related subissions (correponds e.g. to an entire paper)" class="input-xxxlarge" value="{{projecttitle}}">
@@ -1945,7 +1945,7 @@
             </slect></td>
         </tr>
         <tr><th>Is this submission a story?</th><td><input id="template-is-story" type="checkbox" {{isstory?'checked':''}} /></td></tr>
-        <tr id='story-title-row'><th>Story Title</th><td><input id='story-title' /></td></tr>
+        <tr id='story-title-row'><th>Story Title</th><td><input id='story-title' class="input-xxlarge"/></td></tr>
     </script>
 
     <script type="text/template" id="template-helper-tmpl">
