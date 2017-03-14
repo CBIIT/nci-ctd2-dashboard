@@ -403,6 +403,13 @@ $ctd2.TemplateDescriptionView = Backbone.View.extend({
 
     render: function () {
         $(this.el).append(this.template(this.model));
+        if($("#template-is-story").is(':checked'))$('#story-title-row').show();
+        else $('#story-title-row').hide();
+        $("#template-is-story").change(function() {
+            if($(this).is(':checked'))$('#story-title-row').show();
+            else $('#story-title-row').hide();
+        });
+
         return this;
     }
 });
