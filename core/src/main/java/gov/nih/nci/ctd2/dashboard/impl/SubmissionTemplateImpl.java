@@ -41,6 +41,7 @@ public class SubmissionTemplateImpl extends DashboardEntityImpl implements Submi
     private Integer observationNumber;
     private String observations;
     private String summary;
+    private String storyTitle;
 
     public String getDescription() {
         return description;
@@ -235,5 +236,15 @@ public class SubmissionTemplateImpl extends DashboardEntityImpl implements Submi
     @Override
     public void setSummary(String s) {
         summary = s;
+    }
+
+    @Override
+    public String getStoryTitle() {
+        return storyTitle;
+    }
+
+    @Override
+    public void setStoryTitle(String s) {
+        storyTitle = s;
     }
 }

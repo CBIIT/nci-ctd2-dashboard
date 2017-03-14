@@ -59,7 +59,8 @@ public class TemplateController {
             @RequestParam("description") String description,
             @RequestParam("project") String project,
             @RequestParam("tier") Integer tier,
-            @RequestParam("isStory") Boolean isStory
+            @RequestParam("isStory") Boolean isStory,
+            @RequestParam("storyTitle") String storyTitle
             )
     {
     	SubmissionTemplate template = new SubmissionTemplateImpl();
@@ -71,6 +72,7 @@ public class TemplateController {
     	template.setProject(project);
         template.setTier(tier);
         template.setIsStory(isStory);
+        template.setStoryTitle(storyTitle);
     	template.setFirstName(firstName);
     	template.setLastName(lastName);
         template.setEmail(email);
@@ -99,6 +101,7 @@ public class TemplateController {
     	template.setProject(existing.getProject());
         template.setTier(existing.getTier());
         template.setIsStory(existing.getIsStory());
+        template.setStoryTitle(existing.getStoryTitle());
     	template.setFirstName(existing.getFirstName());
     	template.setLastName(existing.getLastName());
         template.setEmail(existing.getEmail());
@@ -136,6 +139,7 @@ public class TemplateController {
             @RequestParam("project") String project,
             @RequestParam("tier") Integer tier,
             @RequestParam("isStory") Boolean isStory,
+            @RequestParam("storyTitle") String storyTitle,
             @RequestParam("subjects") String[] subjects,
             @RequestParam("subjectClasses") String[] subjectClasses,
             @RequestParam("subjectRoles") String[] subjectRoles,
@@ -156,6 +160,7 @@ public class TemplateController {
     	template.setProject(project);
     	template.setTier(tier);
         template.setIsStory(isStory);
+        template.setStoryTitle(storyTitle);
     	template.setFirstName(firstName);
     	template.setLastName(lastName);
         template.setEmail(email);

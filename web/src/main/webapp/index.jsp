@@ -1945,7 +1945,7 @@
             </slect></td>
         </tr>
         <tr><th>Is this submission a story?</th><td><input id="template-is-story" type="checkbox" {{isstory?'checked':''}} /></td></tr>
-        <tr id='story-title-row'><th>Story Title</th><td><input id='story-title' class="input-xxlarge"/></td></tr>
+        <tr id='story-title-row'><th>Story Title</th><td><input id='story-title' class="input-xxlarge" value='{{storyTitle}}' /></td></tr>
     </script>
 
     <script type="text/template" id="template-helper-tmpl">

@@ -2,7 +2,7 @@ package gov.nih.nci.ctd2.dashboard.importer.internal;
 
 import gov.nih.nci.ctd2.dashboard.model.*;
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
-import gov.nih.nci.ctd2.dashboard.ObservationDataFactory;
+import gov.nih.nci.ctd2.dashboard.importer.ObservationDataFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

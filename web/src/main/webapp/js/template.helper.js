@@ -876,6 +876,7 @@ $ctd2.updateTemplate_1 = function (triggeringButton) {
     var project = $("#template-project-title").val();
     var tier = $("#template-tier").val();
     var isStory = $("#template-is-story").is(':checked');
+    var storyTitle = $('#story-title').val();
 
     var subjects = $ctd2.getArray('#template-table-subject input.subject-columntag');
     var subjectClasses = $ctd2.getStringList('#template-table-subject select.subject-classes');
@@ -917,6 +918,7 @@ $ctd2.updateTemplate_1 = function (triggeringButton) {
             project: project,
             tier: tier,
             isStory: isStory,
+            storyTitle: storyTitle,
             subjects: subjects,
             subjectClasses: subjectClasses,
             subjectRoles: subjectRoles,
@@ -956,6 +958,7 @@ $ctd2.saveNewTemplate = function (sync) {
     var project = $("#template-project-title").val();
     var tier = $("#template-tier").val();
     var isStory = $("#template-is-story").is(':checked');
+    var storyTitle = $('#story-title').val();
 
     if (centerId.length == 0 || firstName.length == 0 || lastName.length == 0
         || submissionName.length == 0) {
@@ -983,6 +986,7 @@ $ctd2.saveNewTemplate = function (sync) {
             project: project,
             tier: tier,
             isStory: isStory,
+            storyTitle: storyTitle,
         }),
         contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
         success: function (resultId) {
@@ -1070,7 +1074,8 @@ $ctd2.populateOneTemplate = function (rowModel) {
         el: $("#submitter-information")
     })).render();
     (new $ctd2.TemplateDescriptionView({
-        model: { name: rowModel.displayName, description: rowModel.description, projecttitle: rowModel.project, tier: rowModel.tier, isstory: rowModel.isStory },
+        model: { name: rowModel.displayName, description: rowModel.description, projecttitle: rowModel.project, tier: rowModel.tier, isstory: rowModel.isStory,
+        storyTitle: rowModel.storyTitle },
         el: $("#template-description")
     })).render();
 
