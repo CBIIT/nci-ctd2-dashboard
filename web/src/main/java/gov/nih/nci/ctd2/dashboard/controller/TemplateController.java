@@ -26,6 +26,7 @@ import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -123,6 +124,10 @@ public class TemplateController {
 
     	return new ResponseEntity<String>(template.getId().toString(), HttpStatus.OK);
     }
+
+    @Autowired
+    @Qualifier("uploadLocation")
+    private String uploadLocation = "";
 
     @Transactional
     @RequestMapping(value="update", method = {RequestMethod.POST}, headers = "Accept=application/text")
@@ -505,6 +510,4 @@ public class TemplateController {
             e.printStackTrace();
         }
     }
-
-    private static String uploadLocation = System.getProperty("user.home") + File.separator + "ctd2upload" + File.separator;
 }
