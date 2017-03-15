@@ -660,14 +660,10 @@ $ctd2.NewObservationView = Backbone.View.extend({
     }
 });
 
-$ctd2.CORE_API_URL = "./";
-
-$ctd2.SubmissionTemplate = Backbone.Model.extend({
-    urlRoot: $ctd2.CORE_API_URL + "get/template"
-});
+$ctd2.SubmissionTemplate = Backbone.Model.extend();
 
 $ctd2.StoredTemplates = Backbone.Collection.extend({
-    url: $ctd2.CORE_API_URL + "list/template/?filterBy=",
+    url: "list/template/?filterBy=",
     model: $ctd2.SubmissionTemplate,
     initialize: function (attributes) {
         this.url += attributes.centerId;
@@ -772,7 +768,7 @@ $ctd2.array2StringList = function (a) {
 $ctd2.observationArray = [];
 $ctd2.getObservations = function () {
     var columns = $(".observation-header").length / 2;
-    var rows = $("#template-table tr").length - 2;
+    var rows = $("#template-table tr").length - 4; // two rows for subject/evidence headers, two rows for the headers of each section
     $ctd2.observationArray = new Array(rows * columns);
     $("#template-table tr.template-data-row").each(function (i, row) {
         $(row).find("[id^=observation]").each(function (j, c) {
@@ -1036,7 +1032,7 @@ $ctd2.clone = function (templateId) {
 }
 
 $ctd2.addNewSubject = function (tag) {
-    var tagid = $("#template-table-subject tr").length;
+    var tagid = $("#template-table-subject tr").length - 1;
     var observationNumber = $(".observation-header").length / 2;
     (new $ctd2.TemplateSubjectDataRowView({
         model: {
@@ -1049,7 +1045,7 @@ $ctd2.addNewSubject = function (tag) {
 };
 
 $ctd2.addNewEvidence = function (tag) {
-    var tagid = $("#template-table-evidence tr").length;
+    var tagid = $("#template-table-evidence tr").length - 1;
     var observationNumber = $(".observation-header").length / 2;
     (new $ctd2.TemplateEvidenceDataRowView({
         model: {

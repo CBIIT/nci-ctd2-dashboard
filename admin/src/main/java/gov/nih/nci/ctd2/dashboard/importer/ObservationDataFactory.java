@@ -1,7 +1,6 @@
-package gov.nih.nci.ctd2.dashboard;
+package gov.nih.nci.ctd2.dashboard.importer;
 
 import gov.nih.nci.ctd2.dashboard.model.*;
-import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
 import java.util.Date;
 
 public interface ObservationDataFactory {

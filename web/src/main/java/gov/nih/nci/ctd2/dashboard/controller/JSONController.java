@@ -2,7 +2,6 @@ package gov.nih.nci.ctd2.dashboard.controller;
 
 import flexjson.JSONSerializer;
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
-import gov.nih.nci.ctd2.dashboard.model.SubmissionTemplate;
 import gov.nih.nci.ctd2.dashboard.model.*;
 import gov.nih.nci.ctd2.dashboard.util.DateTransformer;
 import gov.nih.nci.ctd2.dashboard.util.ImplTransformer;
@@ -42,8 +41,6 @@ public class JSONController {
             clazz = ObservedSubject.class;
         } else if(type.equals("observedevidence")) {
             clazz = ObservedEvidence.class;
-        } else if(type.equals("template")) {
-            clazz = SubmissionTemplate.class;
         }
 
         HttpHeaders headers = new HttpHeaders();
