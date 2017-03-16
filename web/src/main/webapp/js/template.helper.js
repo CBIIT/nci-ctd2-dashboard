@@ -371,7 +371,7 @@ $ctd2.SubmitterInformationView = Backbone.View.extend({
     template: _.template($("#submitter-information-tmpl").html()),
 
     render: function () {
-        $(this.el).append(this.template(this.model.toJSON()));
+        $(this.el).html(this.template(this.model.toJSON()));
         return this;
     }
 });
@@ -380,7 +380,7 @@ $ctd2.TemplateDescriptionView = Backbone.View.extend({
     template: _.template($("#template-description-tmpl").html()),
 
     render: function () {
-        $(this.el).append(this.template(this.model.toJSON()));
+        $(this.el).html(this.template(this.model.toJSON()));
         if($("#template-is-story").is(':checked'))$('#story-title-row').show();
         else $('#story-title-row').hide();
         $("#template-is-story").change(function() {
@@ -1064,8 +1064,6 @@ $ctd2.populateOneTemplate = function (templateId) {
 
     $("span#submission-name").text(rowModel.displayName);
 
-    $("#submitter-information").empty();
-    $("#template-description").empty();
     (new $ctd2.SubmitterInformationView({
         model: templateModel,
         el: $("#submitter-information")
