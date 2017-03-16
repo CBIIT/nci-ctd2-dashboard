@@ -60,29 +60,7 @@ $ctd2.TemplateHelperView = Backbone.View.extend({
 
         $("#create-new-submission").click(function () {
             $ctd2.hideTemplateMenu();
-            $ctd2.templateId = 0;
-            $("#submitter-information").empty();
-            $("#template-description").empty();
-            (new $ctd2.SubmitterInformationView({
-                model: { firstname: null, lastname: null, email: null, phone: null },
-                el: $("#submitter-information")
-            })).render();
-            (new $ctd2.TemplateDescriptionView({
-                model: { name: null, description: null, projecttitle: null, tier: null, isstory: null },
-                el: $("#template-description")
-            })).render();
-
-            // empty the data page and the summary page
-            $ctd2.populateOneTemplate({
-                id: 0, // this is kind of important becasue it will reset $ctd2.templateId
-                subjectColumns: [],
-                subjectClasses: [],
-                evidenceColumns: [],
-                evidenceTypes: [],
-                valueTypes: [],
-                observationNumber: 0,
-                observations: "",
-            });
+            $ctd2.populateOneTemplate(0); // 0 is kind of important becasue it will reset $ctd2.templateId
 
             $("#step2").fadeOut();
             $("#step3").slideDown();
@@ -173,7 +151,7 @@ $ctd2.TemplateHelperView = Backbone.View.extend({
 
         $("#download-form").submit(function () {
             var model = $ctd2.templateModels[$("#template-id").val()];
-            $("#filename-input").val(model.displayName);
+            $("#filename-input").val(model.toJSON().displayName);
             return true;
         });
 
@@ -393,7 +371,7 @@ $ctd2.SubmitterInformationView = Backbone.View.extend({
     template: _.template($("#submitter-information-tmpl").html()),
 
     render: function () {
-        $(this.el).append(this.template(this.model));
+        $(this.el).append(this.template(this.model.toJSON()));
         return this;
     }
 });
@@ -402,7 +380,7 @@ $ctd2.TemplateDescriptionView = Backbone.View.extend({
     template: _.template($("#template-description-tmpl").html()),
 
     render: function () {
-        $(this.el).append(this.template(this.model));
+        $(this.el).append(this.template(this.model.toJSON()));
         if($("#template-is-story").is(':checked'))$('#story-title-row').show();
         else $('#story-title-row').hide();
         $("#template-is-story").change(function() {
@@ -418,38 +396,38 @@ $ctd2.ExistingTemplateView = Backbone.View.extend({
     template: _.template($("#existing-template-row-tmpl").html()),
 
     render: function () {
-        $(this.el).append(this.template(this.model));
-        var rowModel = this.model;
-        $("#template-action-" + rowModel.id).change(function () {
+        $(this.el).append(this.template(this.model.toJSON()));
+        var templateId = this.model.id;
+        $("#template-action-" + templateId).change(function () {
             var action = $(this).val();
             switch (action) {
                 case 'edit':
                     $ctd2.showTemplateMenu();
-                    if ($ctd2.templateId != rowModel.id) {
-                        $ctd2.populateOneTemplate(rowModel);
+                    if ($ctd2.templateId != templateId) {
+                        $ctd2.populateOneTemplate(templateId);
                     }
                     $ctd2.showPage("#step4", "#menu_data");
                     break;
                 case 'delete':
-                    $ctd2.deleteTemplate(rowModel.id);
-                    $("#template-action-" + rowModel.id).val(""); // in case not confirmed 
+                    $ctd2.deleteTemplate(templateId);
+                    $("#template-action-" + templateId).val(""); // in case not confirmed 
                     break;
                 case 'preview':
                     $ctd2.showTemplateMenu();
-                    if ($ctd2.templateId != rowModel.id) {
-                        $ctd2.populateOneTemplate(rowModel);
+                    if ($ctd2.templateId != templateId) {
+                        $ctd2.populateOneTemplate(templateId);
                     }
                     $ctd2.showPage("#step6", "#menu_preview");
                     break;
                 case 'clone':
-                    $ctd2.clone(rowModel.id);
+                    $ctd2.clone(templateId);
                     break;
                 case 'download':
-                    $("#template-id").val(rowModel.id);
+                    $("#template-id").val(templateId);
                     $("#download-form").submit();
                     break;
                 default:
-                    alert(rowModel.displayName + ' ' + action + ' clicked');
+                    alert('template #' + templateId + ': action ' + action + ' clicked');
             };
             $(this).val('');
         });
@@ -660,7 +638,27 @@ $ctd2.NewObservationView = Backbone.View.extend({
     }
 });
 
-$ctd2.SubmissionTemplate = Backbone.Model.extend();
+$ctd2.SubmissionTemplate = Backbone.Model.extend({
+    defaults : {
+        firstName: null,
+        lastName: null,
+        email: null,
+        phone: null,
+        displayName: null,
+        description: null,
+        project: null,
+        tier: null,
+        isStory: null,
+        storyTitle: null,
+        subjectColumns: [],
+        subjectClasses: [],
+        evidenceColumns: [],
+        evidenceTypes: [],
+        valueTypes: [],
+        observationNumber: 0,
+        observations: "",
+    },
+});
 
 $ctd2.StoredTemplates = Backbone.Collection.extend({
     url: "list/template/?filterBy=",
@@ -1057,21 +1055,23 @@ $ctd2.addNewEvidence = function (tag) {
     })).render();
 };
 
-$ctd2.populateOneTemplate = function (rowModel) {
-    $("#template-id").val(rowModel.id);
-    $ctd2.templateId = rowModel.id;
+$ctd2.populateOneTemplate = function (templateId) {
+    $("#template-id").val(templateId);
+    $ctd2.templateId = templateId;
+    var templateModel = $ctd2.templateModels[templateId];
+    if(templateModel===undefined) templateModel = new $ctd2.SubmissionTemplate();
+    var rowModel = templateModel.toJSON();
 
     $("span#submission-name").text(rowModel.displayName);
 
     $("#submitter-information").empty();
     $("#template-description").empty();
     (new $ctd2.SubmitterInformationView({
-        model: { firstname: rowModel.firstName, lastname: rowModel.lastName, email: rowModel.email, phone: rowModel.phone },
+        model: templateModel,
         el: $("#submitter-information")
     })).render();
     (new $ctd2.TemplateDescriptionView({
-        model: { name: rowModel.displayName, description: rowModel.description, projecttitle: rowModel.project, tier: rowModel.tier, isstory: rowModel.isStory,
-        storyTitle: rowModel.storyTitle },
+        model: templateModel,
         el: $("#template-description")
     })).render();
 
@@ -1228,8 +1228,7 @@ $ctd2.refreshTemplateList = function (centerId) {
     $("#existing-template-table > .stored-template-row").remove();
     storedTemplates.fetch({
         success: function () {
-            _.each(storedTemplates.models, function (oneTemplate) {
-                var oneTemplateModel = oneTemplate.toJSON();
+            _.each(storedTemplates.models, function (oneTemplateModel) {
                 $ctd2.templateModels[oneTemplateModel.id] = oneTemplateModel;
 
                 (new $ctd2.ExistingTemplateView({

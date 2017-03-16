@@ -1919,9 +1919,9 @@
 
     <script type="text/template" id="submitter-information-tmpl">
         <tr><th>Submitter First Name *</th>
-            <td><input id="first-name" placeholder="first name is required" class="input-xxxlarge" value="{{firstname}}"></td></tr>
+            <td><input id="first-name" placeholder="first name is required" class="input-xxxlarge" value="{{firstName}}"></td></tr>
         <tr><th>Submitter Last Name *</th><td>
-            <input id="last-name" placeholder="last name is required" class="input-xxxlarge" value="{{lastname}}"></td></tr>
+            <input id="last-name" placeholder="last name is required" class="input-xxxlarge" value="{{lastName}}"></td></tr>
         <tr><th>Contact E-mail</th><td><input id="email" placeholder="email is required" class="input-xxxlarge" value="{{email}}"></td></tr>
         <tr><th>Contact phone number</th>
             <td><input id="phone" placeholder="phone number is optional" class="input-xxxlarge" value="{{phone}}"></td></tr>
@@ -1929,12 +1929,12 @@
 
     <script type="text/template" id="template-description-tmpl">
         <tr><th>Submission Name *</th>
-            <td><input id="template-name" placeholder="e.g. centername_your_description" class="input-xxlarge" value="{{name}}"></td></tr>
+            <td><input id="template-name" placeholder="e.g. centername_your_description" class="input-xxlarge" value="{{displayName}}"></td></tr>
         <tr><th>Submission Description</th>
             <td><textarea id="template-submission-desc" placeholder="e.g. Down-regulated genes in PTEN-null cell lines" class="input-xxxlarge">{{description}}</textarea></td>
         </tr>
         <tr><th>Project Title</th>
-            <td><input id="template-project-title" placeholder="Please enter a title for this or a collection of related subissions (correponds e.g. to an entire paper)" class="input-xxxlarge" value="{{projecttitle}}">
+            <td><input id="template-project-title" placeholder="Please enter a title for this or a collection of related subissions (correponds e.g. to an entire paper)" class="input-xxxlarge" value="{{project}}">
             </td>
         </tr>
         <tr><th>Request Tier</th>
@@ -1944,7 +1944,7 @@
                 <option value=3 {{tier==3?'selected=selected':null}}>Tier 3 (in vivo validation)</option>
             </slect></td>
         </tr>
-        <tr><th>Is this submission a story?</th><td><input id="template-is-story" type="checkbox" {{isstory?'checked':''}} /></td></tr>
+        <tr><th>Is this submission a story?</th><td><input id="template-is-story" type="checkbox" {{isStory?'checked':''}} /></td></tr>
         <tr id='story-title-row'><th>Story Title</th><td><input id='story-title' class="input-xxlarge" value='{{storyTitle}}' /></td></tr>
     </script>
 
