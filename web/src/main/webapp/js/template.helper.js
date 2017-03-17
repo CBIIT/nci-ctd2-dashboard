@@ -658,6 +658,78 @@ $ctd2.SubmissionTemplate = Backbone.Model.extend({
         observationNumber: 0,
         observations: "",
     },
+    getPreviewModels: function() {
+        // re-structure the data for the preview, required by the original observation template
+        var obj = this.toJSON();
+
+        var observationTemplate = {
+            tier: obj.tier,
+            submissionCenter: obj.submissionCenter,
+            project: obj.project,
+            submissionDescription: obj.description,
+            observationSummary: obj.summary,
+        };
+
+        var subjectColumns = obj.subjectColumns;
+        var evidenceColumns = obj.evidenceColumns;
+        var observations = obj.observations.split(",");
+
+        var totalRows = subjectColumns.length + evidenceColumns.length;
+        var observationNumber = obj.observationNumber;
+
+        var models = [];
+        for (var obvIndex = 0; obvIndex< observationNumber; obvIndex++) {
+            var observedSubjects = [];
+            for (var i = 0; i < subjectColumns.length; i++) {
+                observedSubjects.push({
+                    subject: {
+                        id: 0, // TODO proper value needed for the correct image? 
+                        class: obj.subjectClasses[i],
+                        displayName: observations[totalRows * obvIndex + i],
+                    },
+                    id: i, //'SUBJECT ID placeholder', // depend on the man dashboard. for image?
+                    observedSubjectRole: {
+                        columnName: subjectColumns[i],
+                        subjectRole: {
+                            displayName: obj.subjectRoles[i],
+                        },
+                        displayText: obj.subjectDescriptions[i],
+                    }
+                });
+            }
+            var observedEvidences = [];
+            for (var i = 0; i < obj.evidenceColumns.length; i++) {
+                observedEvidences.push({
+                    evidence: {
+                        id: 0, // TODO usage?
+                        class: obj.valueTypes[i]+'Evidence', // FIXME this will NOT work, very inconsistent
+                        displayName: 'EVIDENCE_NAME',// TODO this is required by the tempalte, but what is this for?
+                    },
+                    id: i, // TODO usage?
+                    observedEvidenceRole: {
+                        evidenceRole: {
+                            displayName: obj.evidenceTypes[i],
+                        },
+                        displayText: obj.evidenceDescriptions[i],
+                    },
+                    displayName: observations[totalRows * obvIndex + subjectColumns.length + i], // This is put in the Details column in the preview.
+                });
+            }
+
+            models[obvIndex] = {
+                id: obvIndex + 1,
+                display: (obvIndex == 0 ? 'block' : 'none'),
+                submission: {
+                    observationTemplate: observationTemplate,
+                    submissionDate: obj.dateLastModified,
+                    displayName: obj.name,
+                },
+                observedSubjects: observedSubjects,
+                observedEvidences: observedEvidences,
+            };
+        }
+        return models;
+    },
 });
 
 $ctd2.StoredTemplates = Backbone.Collection.extend({
@@ -1144,51 +1216,7 @@ $ctd2.populateOneTemplate = function (templateId) {
 
     $("#template-obs-summary").val(rowModel.summary);
 
-    // re-structure the data for the preview, required by the original observation template
-    var observedSubjects = [];
-    for (var i = 0; i < subjectColumns.length; i++) {
-        observedSubjects.push({
-            subject: {
-                id: 0, // TODO proper value needed for the correct image? 
-                class: subjectClasses[i],
-                displayName: 'OBSERVATION_DATA', // to be replaced with different data for each observation
-            },
-            id: i, //'SUBJECT ID placeholder', // depend on the man dashboard. for image?
-            observedSubjectRole: {
-                columnName: subjectColumns[i],
-                subjectRole: {
-                    displayName: rowModel.subjectRoles[i],
-                },
-                displayText: rowModel.subjectDescriptions[i],
-            }
-        });
-    }
-    var observedEvidences = [];
-    for (var i = 0; i < evidenceColumns.length; i++) {
-        observedEvidences.push({
-            evidence: {
-                id: 0, // TODO usage?
-                class: valueTypes[i]+'Evidence', // FIXME this will NOT work, very inconsistent
-                displayName: 'EVIDENCE_NAME',// TODO this is required by the tempalte, but what is this for?
-            },
-            id: i, // TODO usage?
-            observedEvidenceRole: {
-                evidenceRole: {
-                    displayName: evidenceTypes[i],
-                },
-                displayText: evidenceDescriptions[i],
-            },
-            displayName: 'OBSERVATION_DATA', // to be replaced with different data for each observation. This is put in the Details column in the preview.
-        });
-    }
-
-    var observationTemplate = {
-        tier: rowModel.tier,
-        submissionCenter: rowModel.submissionCenter,
-        project: rowModel.project,
-        submissionDescription: rowModel.description,
-        observationSummary: rowModel.summary,
-    }
+    var previewModels = templateModel.getPreviewModels();
 
     $("#preview-select").empty();
     $("#step6 [id^=observation-preview-]").remove();
@@ -1197,24 +1225,8 @@ $ctd2.populateOneTemplate = function (templateId) {
             model: { observation_id: i + 1 },
             el: $("#preview-select")
         })).render();
-        for (var r = 0; r < subjectRows; r++) {
-            observedSubjects[r].subject.displayName = observations[totalRows * i + r];
-        };
-        for (var r = 0; r < evidenceColumns.length; r++) {
-            observedEvidences[r].displayName = observations[totalRows * i + subjectRows + r];
-        };
         (new $ctd2.ObservationPreviewView({
-            model: {
-                id: i + 1,
-                display: (i == 0 ? 'block' : 'none'),
-                submission: {
-                    observationTemplate: observationTemplate,
-                    submissionDate: rowModel.dateLastModified,
-                    displayName: rowModel.name,
-                },
-                observedSubjects: observedSubjects,
-                observedEvidences: observedEvidences,
-            },
+            model: previewModels[i],
             el: $("#step6")
         })).render();
     }
