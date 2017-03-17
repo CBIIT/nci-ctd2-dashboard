@@ -139,16 +139,6 @@ $ctd2.TemplateHelperView = Backbone.View.extend({
             }).render();
         });
 
-        $("#preview-select").change(function () {
-            var selected = $(this).val();
-            $(this).children("option").each(function () {
-                var option = $(this).val();
-                var viewId = option.replace("observation ", "#observation-preview-");
-                if (option == selected) $(viewId).show();
-                else $(viewId).hide();
-            });
-        });
-
         $("#download-form").submit(function () {
             var model = $ctd2.templateModels[$("#template-id").val()];
             $("#filename-input").val(model.toJSON().displayName);
@@ -167,7 +157,7 @@ $ctd2.ObservationPreviewView = Backbone.View.extend({
         var observation_preview = this.template(thisModel)
             .replace('id="observation-container"', 'id="' + observationId + '"')
             .replace('<h2>Observation', '<h2>Observation ' + thisModel.id);
-        $(this.el).append(observation_preview);
+        $(this.el).html(observation_preview);
         $('#' + observationId).css('display', thisModel.display);
 
         // We will replace the values in this summary
@@ -658,7 +648,7 @@ $ctd2.SubmissionTemplate = Backbone.Model.extend({
         observationNumber: 0,
         observations: "",
     },
-    getPreviewModels: function() {
+    getPreviewModel: function(obvIndex) {
         // re-structure the data for the preview, required by the original observation template
         var obj = this.toJSON();
 
@@ -673,14 +663,10 @@ $ctd2.SubmissionTemplate = Backbone.Model.extend({
         var subjectColumns = obj.subjectColumns;
         var evidenceColumns = obj.evidenceColumns;
         var observations = obj.observations.split(",");
-
         var totalRows = subjectColumns.length + evidenceColumns.length;
-        var observationNumber = obj.observationNumber;
 
-        var models = [];
-        for (var obvIndex = 0; obvIndex< observationNumber; obvIndex++) {
-            var observedSubjects = [];
-            for (var i = 0; i < subjectColumns.length; i++) {
+        var observedSubjects = [];
+        for (var i = 0; i < subjectColumns.length; i++) {
                 observedSubjects.push({
                     subject: {
                         id: 0, // TODO proper value needed for the correct image? 
@@ -696,9 +682,9 @@ $ctd2.SubmissionTemplate = Backbone.Model.extend({
                         displayText: obj.subjectDescriptions[i],
                     }
                 });
-            }
-            var observedEvidences = [];
-            for (var i = 0; i < obj.evidenceColumns.length; i++) {
+        }
+        var observedEvidences = [];
+        for (var i = 0; i < obj.evidenceColumns.length; i++) {
                 observedEvidences.push({
                     evidence: {
                         id: 0, // TODO usage?
@@ -714,11 +700,10 @@ $ctd2.SubmissionTemplate = Backbone.Model.extend({
                     },
                     displayName: observations[totalRows * obvIndex + subjectColumns.length + i], // This is put in the Details column in the preview.
                 });
-            }
+        }
 
-            models[obvIndex] = {
+        return {
                 id: obvIndex + 1,
-                display: (obvIndex == 0 ? 'block' : 'none'),
                 submission: {
                     observationTemplate: observationTemplate,
                     submissionDate: obj.dateLastModified,
@@ -726,9 +711,7 @@ $ctd2.SubmissionTemplate = Backbone.Model.extend({
                 },
                 observedSubjects: observedSubjects,
                 observedEvidences: observedEvidences,
-            };
-        }
-        return models;
+        };
     },
 });
 
@@ -1216,20 +1199,32 @@ $ctd2.populateOneTemplate = function (templateId) {
 
     $("#template-obs-summary").val(rowModel.summary);
 
-    var previewModels = templateModel.getPreviewModels();
-
     $("#preview-select").empty();
     $("#step6 [id^=observation-preview-]").remove();
     for (var i = 0; i < observationNumber; i++) {
         (new $ctd2.ObservationOptionView({
-            model: { observation_id: i + 1 },
+            model: { observation_id: i },
             el: $("#preview-select")
         })).render();
-        (new $ctd2.ObservationPreviewView({
-            model: previewModels[i],
-            el: $("#step6")
-        })).render();
     }
+
+    $ctd2.observationPreviewView = new $ctd2.ObservationPreviewView({
+        el: $("#preview-container")
+    });
+    if(observationNumber>0) {
+        $ctd2.observationPreviewView.model = templateModel.getPreviewModel(0);
+        $ctd2.observationPreviewView.render();
+    }
+
+    $("#preview-select").unbind('change').change(function () {
+        var selected = $(this).val();
+        if(selected<0 || selected>=observationNumber) {
+            console.log('error in preview selected '+selected);
+            return;
+        }
+        $ctd2.observationPreviewView.model = templateModel.getPreviewModel(selected);
+        $ctd2.observationPreviewView.render();
+    });
 };
 
 $ctd2.refreshTemplateList = function (centerId) {

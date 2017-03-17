@@ -2110,13 +2110,14 @@
                 <b>Center:</b> <span id="center-name"></span><br/>
                 <b>Submission Name:</b> <span id="submission-name"></span><br/>
                 <select id="preview-select"></select>
+                <div id='preview-container'></div>
             </div> <!-- end of step 6 -->
 
         </div><!-- end of template-helper-container -->
     </script>
 
     <script type="text/template" id="observation-option-tmpl">
-        <option>observation {{observation_id}}</option>
+        <option value={{observation_id}}>observation {{observation_id+1}}</option>
     </script>
 
     <script type="text/template" id="column-tag-item-tmpl">
