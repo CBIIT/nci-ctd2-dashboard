@@ -475,7 +475,12 @@ $ctd2.TemplateSubjectDataRowView = Backbone.View.extend({
         }).render();
 
         return this;
-    }
+    },
+    events : {
+        change: function() {
+            console.log('change triggered on subject view');
+        }
+    },
 });
 
 $ctd2.TemplateEvidenceDataRowView = Backbone.View.extend({
@@ -952,6 +957,9 @@ $ctd2.updateTemplate_1 = function (triggeringButton) {
         return;
     }
 
+    var model = $ctd2.templateModels[$ctd2.templateId];
+    model.set({'observations': observations});
+
     triggeringButton.attr("disabled", "disabled");
     $.ajax({
         url: "template/update",
@@ -986,6 +994,7 @@ $ctd2.updateTemplate_1 = function (triggeringButton) {
             triggeringButton.removeAttr("disabled");
             var centerId = $("#template-submission-centers").val();
             $ctd2.refreshTemplateList(centerId);
+            $ctd2.updatePreview(model);
         },
         error: function (response, status) {
             triggeringButton.removeAttr("disabled");
@@ -1198,9 +1207,13 @@ $ctd2.populateOneTemplate = function (templateId) {
     if (evidenceColumns.length == 0) $ctd2.addNewEvidence('evidence 1');
 
     $("#template-obs-summary").val(rowModel.summary);
+    $ctd2.updatePreview(templateModel);
+}
 
+$ctd2.updatePreview = function(templateModel) { // this should be called when the template data (model) changes
     $("#preview-select").empty();
     $("#step6 [id^=observation-preview-]").remove();
+    var observationNumber = templateModel.get('observationNumber');
     for (var i = 0; i < observationNumber; i++) {
         (new $ctd2.ObservationOptionView({
             model: { observation_id: i },
