@@ -528,7 +528,7 @@
                     </tr>
                     <tr>
                         <th>Source Data</th>
-                        <td><a href="<%=dataURL%>submissions/{{submission.displayName}}.zip">open link</a></td>
+                        <td><a href="<%=dataURL%>submissions/{{submission.displayName}}.zip" class=no-preview>open link</a></td>
                     </tr>
 
 

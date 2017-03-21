@@ -222,6 +222,8 @@ $ctd2.ObservationPreviewView = Backbone.View.extend({
             }
         });
 
+        $(".no-preview").removeAttr('href');
+
         $("#small-show-sub-details").click(function (event) {
             event.preventDefault();
             $("#obs-submission-details").slideDown();
@@ -710,9 +712,10 @@ $ctd2.SubmissionTemplate = Backbone.Model.extend({
         return {
                 id: obvIndex + 1,
                 submission: {
+                    id: 0, // this field is used detail-detail. 0 in effect disables it
                     observationTemplate: observationTemplate,
                     submissionDate: obj.dateLastModified,
-                    displayName: obj.name,
+                    displayName: obj.displayName,
                 },
                 observedSubjects: observedSubjects,
                 observedEvidences: observedEvidences,
@@ -1230,7 +1233,7 @@ $ctd2.updatePreview = function(templateModel) { // this should be called when th
     }
 
     $("#preview-select").unbind('change').change(function () {
-        var selected = $(this).val();
+        var selected = parseInt( $(this).val() );
         if(selected<0 || selected>=observationNumber) {
             console.log('error in preview selected '+selected);
             return;
