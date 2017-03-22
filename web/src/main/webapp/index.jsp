@@ -592,7 +592,7 @@
             <td>{{observedEvidenceRole.evidenceRole.displayName}}</td>
             <td>{{observedEvidenceRole.displayText}}</td>
             <td>(
-                <a href="<%=dataURL%>{{evidence.filePath}}" target="_blank" title="Download file ({{evidence.mimeType}})" class="desc-tooltip" title="Download File">
+                <a href="<%=dataURL%>{{evidence.filePath}}" target="_blank" title="Download file ({{evidence.mimeType}})" class="desc-tooltip  no-preview" title="Download File">
                     download file
                 </a>
             )</td>
@@ -718,7 +718,7 @@
             <td>{{observedEvidenceRole.evidenceRole.displayName}}</td>
             <td>{{observedEvidenceRole.displayText}}</td>
             <td>
-                (<a href="{{evidence.url.replace(/^\//, '')}}" target="_blank" class="desc-tooltip" title="Open link in a new window">
+                (<a href="{{evidence.url.replace(/^\//, '')}}" target="_blank" class="desc-tooltip no-preview" title="Open link in a new window">
                     open link
                 </a>)
             </td>

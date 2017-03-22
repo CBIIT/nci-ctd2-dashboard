@@ -322,7 +322,7 @@ $ctd2.ObservedEvidenceRowView = Backbone.View.extend({
 
         var templateId = "#observedevidence-row-tmpl";
         var isHtmlStory = false;
-        if (type == "FileEvidence") {
+        if (type == "file") {
             result.evidence.filePath = result.evidence.filePath.replace(/\\/g, "/");
             if (result.evidence.mimeType.toLowerCase().search("image") > -1) {
                 templateId = "#observedimageevidence-row-tmpl";
@@ -340,11 +340,11 @@ $ctd2.ObservedEvidenceRowView = Backbone.View.extend({
             } else {
                 templateId = "#observedfileevidence-row-tmpl";
             }
-        } else if (type == "UrlEvidence") {
+        } else if (type == "url") {
             templateId = "#observedurlevidence-row-tmpl";
-        } else if (type == "LabelEvidence") {
+        } else if (type == "label") {
             templateId = "#observedlabelevidence-row-tmpl";
-        } else if (type == "DataNumericValue") {
+        } else if (type == "numeric") {
             templateId = "#observeddatanumericevidence-row-tmpl";
         }
 
@@ -724,8 +724,11 @@ $ctd2.SubmissionTemplate = Backbone.Model.extend({
             observedEvidences.push({
                 evidence: {
                     id: 0, // TODO usage?
-                    class: obj.valueTypes[i] + 'Evidence', // FIXME this will NOT work, very inconsistent
+                    class: obj.valueTypes[i],
                     displayName: 'EVIDENCE_NAME',// TODO this is required by the tempalte, but what is this for?
+                    filePath: '', // TODO when needed
+                    mimeType: '', // TODO add when needed
+                    url: '', // TODO add when needed
                 },
                 id: i, // TODO usage?
                 observedEvidenceRole: {
