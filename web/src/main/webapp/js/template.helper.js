@@ -180,34 +180,34 @@ $ctd2.ObservationPreviewView = Backbone.View.extend({
             var subject = observedSubject.subject;
             var thatEl2 = $("#" + observationId + " #subject-image-" + observedSubject.id);
             var imgTemplate = $("#search-results-unknown-image-tmpl");
-            if(subject.class == "Compound") {
-                var compound = new $ctd2.Subject({id: subject.id });
+            if (subject.class == "compound") {
+                var compound = new $ctd2.Subject({ id: subject.id });
                 compound.fetch({ // TODO this does not work because subject.id is not real
-                    success: function() {
+                    success: function () {
                         compound = compound.toJSON();
-                        _.each(compound.xrefs, function(xref) {
-                            if(xref.databaseName == "IMAGE") {
-                               compound["imageFile"] = xref.databaseId;
-                           }
+                        _.each(compound.xrefs, function (xref) {
+                            if (xref.databaseName == "IMAGE") {
+                                compound["imageFile"] = xref.databaseId;
+                            }
                         });
 
                         imgTemplate = $("#search-results-compund-image-tmpl");
                         thatEl2.append(_.template(imgTemplate.html(), compound));
-                   }
+                    }
                 });
-            } else if( subject.class == "Gene" ) {
+            } else if (subject.class == "gene") {
                 imgTemplate = $("#search-results-gene-image-tmpl");
-            } else if( subject.class == "RNA" ) {
+            } else if (subject.class == "shrna") {
                 imgTemplate = $("#search-results-shrna-image-tmpl");
-            } else if( subject.class == "Tissue" ) {
+            } else if (subject.class == "tissue_sample") {
                 imgTemplate = $("#search-results-tissuesample-image-tmpl");
-            } else if( subject.class == "Cell" ) {
+            } else if (subject.class == "cell_sample") {
                 imgTemplate = $("#search-results-cellsample-image-tmpl");
-            } else if( subject.class == "Animal" ) {
+            } else if (subject.class == "animal_model") {
                 imgTemplate = $("#search-results-animalmodel-image-tmpl");
             }
-            if(subject.class != "Compound") // for Compound, this would be set asynchronously and use compound instead of subject
-                thatEl2.append(_.template(imgTemplate.html(), subject)); 
+            if (subject.class != "compound") // for Compound, this would be set asynchronously and use compound instead of subject
+                thatEl2.append(_.template(imgTemplate.html(), subject));
 
             if (observedSubject.observedSubjectRole == null || observedSubject.subject == null)
                 return;
@@ -404,10 +404,10 @@ $ctd2.TemplateDescriptionView = Backbone.View.extend({
 
     render: function () {
         $(this.el).html(this.template(this.model.toJSON()));
-        if($("#template-is-story").is(':checked'))$('#story-title-row').show();
+        if ($("#template-is-story").is(':checked')) $('#story-title-row').show();
         else $('#story-title-row').hide();
-        $("#template-is-story").change(function() {
-            if($(this).is(':checked'))$('#story-title-row').show();
+        $("#template-is-story").change(function () {
+            if ($(this).is(':checked')) $('#story-title-row').show();
             else $('#story-title-row').hide();
         });
 
@@ -472,22 +472,23 @@ $ctd2.TemplateSubjectDataRowView = Backbone.View.extend({
         });
 
         var subjectClass = this.model.subjectClass;
-        if (subjectClass === undefined || subjectClass == null) subjectClass = "Compound"; // simple default value
+        if (subjectClass === undefined || subjectClass == null) subjectClass = "gene"; // simple default value
 
         var resetRoleDropdown = function (sc, sr) {
             roleOptions = $ctd2.subjectRoles[sc];
             if (roleOptions === undefined) { // exceptional case
                 console.log("error: roleOption is undefined for subject class " + sc);
-                return;
+                // because this happens for previous stored data, let's allow this
+                //return;
+                roleOptions = $ctd2.subjectRoles['gene'];
             }
             $('#role-dropdown-' + columnTagId).empty();
             for (var i = 0; i < roleOptions.length; i++) {
                 var roleName = roleOptions[i];
-                var cName = roleName.charAt(0).toUpperCase() + roleName.slice(1);
                 new $ctd2.SubjectRoleDropdownRowView(
                     {
                         el: $('#role-dropdown-' + columnTagId),
-                        model: { roleName: roleName, cName: cName, selected: roleName == sr ? 'selected' : null }
+                        model: { roleName: roleName, selected: roleName == sr ? 'selected' : null }
                     }).render();
             }
         };
@@ -509,9 +510,9 @@ $ctd2.TemplateSubjectDataRowView = Backbone.View.extend({
 
         return this;
     },
-    events : {
-        change: function() {
-            console.log('change triggered on subject view');
+    events: {
+        change: function () {
+            console.log('change triggered on subject data');
         }
     },
 });
@@ -532,8 +533,9 @@ $ctd2.TemplateEvidenceDataRowView = Backbone.View.extend({
         var resetEvidenceTypeDropdown = function (vt, et) {
             var evidenceTypeOptions = $ctd2.evidenceTypes[vt];
             if (evidenceTypeOptions === undefined) { // exceptional case
-                console('incorrect value type: ' + vt);
-                return;
+                console.log('incorrect value type: ' + vt);
+                //return;
+                evidenceTypeOptions = $ctd2.evidenceTypes['numeric'];
             }
             $('#evidence-type-' + columnTagId).empty();
             for (var i = 0; i < evidenceTypeOptions.length; i++) {
@@ -554,10 +556,7 @@ $ctd2.TemplateEvidenceDataRowView = Backbone.View.extend({
         var row = this.model.row;
         var observationNumber = this.model.observationNumber;
         var observations = this.model.observations;
-        var obsvType = 'text';
-        if (this.model.valueType == 'Document' || this.model.valueType == 'Image') {
-            obsvType = 'file';
-        };
+        var obsvType = this.model.valueType;
         new $ctd2.TempObservationView({
             el: tableRow,
             model: { columnTagId: columnTagId, observationNumber: observationNumber, observations: observations, obvsType: obsvType },
@@ -566,11 +565,7 @@ $ctd2.TemplateEvidenceDataRowView = Backbone.View.extend({
         tableRow.find('.value-types').change(function () {
             var fields = $('#template-evidence-row-columntag-' + columnTagId + " [id^=observation-]");
             var prev_type = fields[0].type;
-            var new_type = 'text';
-            var option = $(this).val();
-            if (option == 'Document' || option == 'Image') {
-                new_type = 'file';
-            }
+            var new_type = $(this).val();
             if (new_type != prev_type) {
                 for (var i = 0; i < fields.length; i++) {
                     fields[i].type = new_type;
@@ -579,7 +574,12 @@ $ctd2.TemplateEvidenceDataRowView = Backbone.View.extend({
         });
 
         return this;
-    }
+    },
+    events: {
+        change: function () {
+            console.log('change triggered on evidence data');
+        }
+    },
 });
 
 $ctd2.SubjectRoleDropdownRowView = Backbone.View.extend({
@@ -641,13 +641,11 @@ $ctd2.NewObservationView = Backbone.View.extend({
         var columnTagId = 0;
         $(this.el).find("tr.template-data-row").each(function () {
             var value_type = $(this).find(".value-types").val();
-            var input_type = 'text';
-            if (value_type == 'Image' || value_type == 'Document') input_type = 'file';
             var obvTemp = tmplt({
                 obvNumber: obvNumber,
                 obvColumn: columnTagId,
                 obvText: null,
-                type: input_type,
+                type: value_type,
                 uploaded: ""
             });
             $(this).append(obvTemp);
@@ -667,7 +665,7 @@ $ctd2.NewObservationView = Backbone.View.extend({
 });
 
 $ctd2.SubmissionTemplate = Backbone.Model.extend({
-    defaults : {
+    defaults: {
         firstName: null,
         lastName: null,
         email: null,
@@ -686,7 +684,7 @@ $ctd2.SubmissionTemplate = Backbone.Model.extend({
         observationNumber: 0,
         observations: "",
     },
-    getPreviewModel: function(obvIndex) {
+    getPreviewModel: function (obvIndex) {
         // re-structure the data for the preview, required by the original observation template
         var obj = this.toJSON();
 
@@ -705,51 +703,51 @@ $ctd2.SubmissionTemplate = Backbone.Model.extend({
 
         var observedSubjects = [];
         for (var i = 0; i < subjectColumns.length; i++) {
-                observedSubjects.push({
-                    subject: {
-                        id: 0, // TODO proper value needed for the correct image? 
-                        class: obj.subjectClasses[i],
-                        displayName: observations[totalRows * obvIndex + i],
+            observedSubjects.push({
+                subject: {
+                    id: 0, // TODO proper value needed for the correct image? 
+                    class: obj.subjectClasses[i],
+                    displayName: observations[totalRows * obvIndex + i],
+                },
+                id: i, //'SUBJECT ID placeholder', // depend on the man dashboard. for image?
+                observedSubjectRole: {
+                    columnName: subjectColumns[i],
+                    subjectRole: {
+                        displayName: obj.subjectRoles[i],
                     },
-                    id: i, //'SUBJECT ID placeholder', // depend on the man dashboard. for image?
-                    observedSubjectRole: {
-                        columnName: subjectColumns[i],
-                        subjectRole: {
-                            displayName: obj.subjectRoles[i],
-                        },
-                        displayText: obj.subjectDescriptions[i],
-                    }
-                });
+                    displayText: obj.subjectDescriptions[i],
+                }
+            });
         }
         var observedEvidences = [];
         for (var i = 0; i < obj.evidenceColumns.length; i++) {
-                observedEvidences.push({
-                    evidence: {
-                        id: 0, // TODO usage?
-                        class: obj.valueTypes[i]+'Evidence', // FIXME this will NOT work, very inconsistent
-                        displayName: 'EVIDENCE_NAME',// TODO this is required by the tempalte, but what is this for?
+            observedEvidences.push({
+                evidence: {
+                    id: 0, // TODO usage?
+                    class: obj.valueTypes[i] + 'Evidence', // FIXME this will NOT work, very inconsistent
+                    displayName: 'EVIDENCE_NAME',// TODO this is required by the tempalte, but what is this for?
+                },
+                id: i, // TODO usage?
+                observedEvidenceRole: {
+                    evidenceRole: {
+                        displayName: obj.evidenceTypes[i],
                     },
-                    id: i, // TODO usage?
-                    observedEvidenceRole: {
-                        evidenceRole: {
-                            displayName: obj.evidenceTypes[i],
-                        },
-                        displayText: obj.evidenceDescriptions[i],
-                    },
-                    displayName: observations[totalRows * obvIndex + subjectColumns.length + i], // This is put in the Details column in the preview.
-                });
+                    displayText: obj.evidenceDescriptions[i],
+                },
+                displayName: observations[totalRows * obvIndex + subjectColumns.length + i], // This is put in the Details column in the preview.
+            });
         }
 
         return {
-                id: obvIndex + 1,
-                submission: {
-                    id: 0, // this field is used detail-detail. 0 in effect disables it
-                    observationTemplate: observationTemplate,
-                    submissionDate: obj.dateLastModified,
-                    displayName: obj.displayName,
-                },
-                observedSubjects: observedSubjects,
-                observedEvidences: observedEvidences,
+            id: obvIndex + 1,
+            submission: {
+                id: 0, // this field is used detail-detail. 0 in effect disables it
+                observationTemplate: observationTemplate,
+                submissionDate: obj.dateLastModified,
+                displayName: obj.displayName,
+            },
+            observedSubjects: observedSubjects,
+            observedEvidences: observedEvidences,
         };
     },
 });
@@ -763,20 +761,18 @@ $ctd2.StoredTemplates = Backbone.Collection.extend({
 });
 
 $ctd2.subjectRoles = {
-    'Compound': ['Candidate drug', 'Control compound', 'Perturbagen'],
-    'Gene': ['Background', 'Biomarker', 'Condidate master regulator', 'Interactor', 'Master regultor', 'Oncogone', 'Perturbagen', 'Target'],
-    'RNA': ['Perturbagen'],
-    'Tissue': ['Disease', 'Metastasis', 'Tissue'],
-    'Cell': ['Cell line'],
-    'Animal': ['Strain'],
+    'gene': ['target', 'biomarker', 'oncogene', 'perturbagen', 'master regulator', 'candidate master regulator', 'interactor', 'background'],
+    'shrna': ['perturbagen'],
+    'tissue_sample': ['metastasis', 'disease', 'tissue'],
+    'cell_sample': ['cell line'],
+    'compound': ['candidate drug', 'perturbagen', 'metabolite', 'control compound'],
+    'animal_model': ['strain'],
 };
 $ctd2.evidenceTypes = {
-    'Number': ['measured', 'observed', 'computed', 'background'],
-    'Text': ['measured', 'observed', 'computed', 'species', 'background'],
-    'Document': ['literature', 'measured', 'observed', 'computed', 'written', 'background'],
-    'Image': ['literature', 'measured', 'observed', 'computed', 'written', 'background'],
-    'URL': ['measured', 'computed', 'reference', 'resource', 'link'],
-    'Internal dashboard link': ['measured', 'computed', 'reference', 'resource', 'link'],
+    'numeric': ['measured', 'observed', 'computed', 'background'],
+    'label': ['measured', 'observed', 'computed', 'species', 'background'],
+    'file': ['literature', 'measured', 'observed', 'computed', 'written', 'background'],
+    'url': ['measured', 'computed', 'reference', 'resource', 'link'],
 };
 
 $ctd2.showPage = function (page_name, menu_item) {
@@ -870,7 +866,7 @@ $ctd2.getObservations = function () {
             var index = id.indexOf('-', 12); // skip the first dash
             var columntag = $(c).attr('id').substring(index + 1);
             var valuetype = $("#value-type-" + columntag).val();
-            if (valuetype == 'Document' || valuetype == 'Image') {
+            if (valuetype == 'file') {
                 var p = $(c).prop('files');
                 if (p != null && p.length > 0) {
                     var file = p[0];
@@ -992,7 +988,7 @@ $ctd2.updateTemplate_1 = function (triggeringButton) {
     }
 
     var model = $ctd2.templateModels[$ctd2.templateId];
-    model.set({'observations': observations});
+    model.set({ 'observations': observations });
 
     triggeringButton.attr("disabled", "disabled");
     $.ajax({
@@ -1145,7 +1141,7 @@ $ctd2.addNewEvidence = function (tag) {
     var observationNumber = $(".observation-header").length / 2;
     (new $ctd2.TemplateEvidenceDataRowView({
         model: {
-            columnTagId: tagid, columnTag: tag, evidenceType: "background", valueType: "Document", evidenceDescription: null,
+            columnTagId: tagid, columnTag: tag, evidenceType: null, valueType: null, evidenceDescription: null,
             observationNumber: observationNumber,
             observations: []
         },
@@ -1157,7 +1153,7 @@ $ctd2.populateOneTemplate = function (templateId) {
     $("#template-id").val(templateId);
     $ctd2.templateId = templateId;
     var templateModel = $ctd2.templateModels[templateId];
-    if(templateModel===undefined) templateModel = new $ctd2.SubmissionTemplate();
+    if (templateModel === undefined) templateModel = new $ctd2.SubmissionTemplate();
     var rowModel = templateModel.toJSON();
 
     $("span#submission-name").text(rowModel.displayName);
@@ -1244,7 +1240,7 @@ $ctd2.populateOneTemplate = function (templateId) {
     $ctd2.updatePreview(templateModel);
 }
 
-$ctd2.updatePreview = function(templateModel) { // this should be called when the template data (model) changes
+$ctd2.updatePreview = function (templateModel) { // this should be called when the template data (model) changes
     $("#preview-select").empty();
     $("#step6 [id^=observation-preview-]").remove();
     var observationNumber = templateModel.get('observationNumber');
@@ -1258,15 +1254,15 @@ $ctd2.updatePreview = function(templateModel) { // this should be called when th
     $ctd2.observationPreviewView = new $ctd2.ObservationPreviewView({
         el: $("#preview-container")
     });
-    if(observationNumber>0) {
+    if (observationNumber > 0) {
         $ctd2.observationPreviewView.model = templateModel.getPreviewModel(0);
         $ctd2.observationPreviewView.render();
     }
 
     $("#preview-select").unbind('change').change(function () {
-        var selected = parseInt( $(this).val() );
-        if(selected<0 || selected>=observationNumber) {
-            console.log('error in preview selected '+selected);
+        var selected = parseInt($(this).val());
+        if (selected < 0 || selected >= observationNumber) {
+            console.log('error in preview selected ' + selected);
             return;
         }
         $ctd2.observationPreviewView.model = templateModel.getPreviewModel(selected);

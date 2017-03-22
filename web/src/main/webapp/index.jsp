@@ -1876,19 +1876,19 @@
     </script>
 
     <script type="text/template" id="role-dropdown-row-tmpl">
-        <option value="{{roleName}}" {{selected}}>{{cName}}</option>
+        <option {{selected}}>{{roleName}}</option>
     </script>
 
     <script type="text/template" id="template-subject-data-row-tmpl">
         <tr id="template-subject-row-columntag-{{columnTagId}}" class="template-data-row">
             <td style="text-align:center;"><img src="img/icons/remove.png" style="width:20px;height:20px;" id="delete-subject-{{columnTagId}}" /></td>
             <td><select id="subject-class-dropdown-{{columnTagId}}" class='subject-classes'>
-                <option {{ subjectClass=='Compound'?'selected=selected':'' }}>Compound</option>
-                <option {{ subjectClass=='Gene'?'selected=selected':'' }}>Gene</option>
-                <option {{ subjectClass=='RNA'?'selected=selected':'' }} value='RNA'>RNA-based reagent</option>
-                <option {{ subjectClass=='Tissue'?'selected=selected':'' }} value='Tissue'>Tissue Sample (disease context)</option>
-                <option {{ subjectClass=='Cell'?'selected=selected':'' }} value='Cell'>Cell Sample (cell line)</option>
-                <option {{ subjectClass=='Animal'?'selected=selected':'' }} value='Animal'>Animal Model</option>
+                <option {{ subjectClass=='gene'?'selected=selected':'' }} >gene</option>
+                <option {{ subjectClass=='shrna'?'selected=selected':'' }} >shrna</option>
+                <option {{ subjectClass=='tissue_sample'?'selected=selected':'' }} >tissue_sample</option>
+                <option {{ subjectClass=='cell_sample'?'selected=selected':'' }} >cell_sample</option>
+                <option {{ subjectClass=='compound'?'selected=selected':'' }}>compound</option>
+                <option {{ subjectClass=='animal_model'?'selected=selected':'' }} >animal_model</option>
             </select></td>
             <td><select id="role-dropdown-{{columnTagId}}" class='subject-roles'></select></td>
             <td><input type="text" class="form-control subject-columntag" value="{{columnTag}}" placeholder="column tag"></td>
@@ -1904,12 +1904,10 @@
         <tr id="template-evidence-row-columntag-{{columnTagId}}" class="template-data-row">
             <td style="text-align:center;"><img src="img/icons/remove.png" style="width:20px;height:20px;" id="delete-evidence-{{columnTagId}}" /></td>
             <td><select id="value-type-{{columnTagId}}" class='value-types'>
-                <option {{ valueType=='Document'?'selected=selected':'' }} >Document</option>
-                <option {{ valueType=='Image'?'selected=selected':'' }} >Image</option>
-                <option {{ valueType=='Number'?'selected=selected':'' }} >Number</option>
-                <option {{ valueType=='Text'?'selected=selected':'' }} >Text</option>
-                <option {{ valueType=='URL'?'selected=selected':'' }} >URL</option>
-                <option {{ valueType=='Internal dashboard link'?'selected=selected':'' }} >Internal dashboard link</option>
+                <option {{ valueType=='numeric'?'selected=selected':'' }} >numeric</option>
+                <option {{ valueType=='label'?'selected=selected':'' }} >label</option>
+                <option {{ valueType=='file'?'selected=selected':'' }} >file</option>
+                <option {{ valueType=='url'?'selected=selected':'' }} >url</option>
             </select></td>
             <td><select id="evidence-type-{{columnTagId}}" class='evidence-types'></select></td>
             <td><input type="text" class="form-control evidence-columntag" value="{{columnTag}}" placeholder="column tag"></td>
