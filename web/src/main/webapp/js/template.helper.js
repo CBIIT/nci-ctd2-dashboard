@@ -149,6 +149,10 @@ $ctd2.TemplateHelperView = Backbone.View.extend({
     } // end render function
 }); // end of TemplateHelperView
 
+$ctd2.Subject = Backbone.Model.extend({
+    urlRoot: "./get/subject"
+});
+
 $ctd2.ObservationPreviewView = Backbone.View.extend({
     template: _.template($("#observation-tmpl").html()),
     render: function () {
@@ -176,7 +180,34 @@ $ctd2.ObservationPreviewView = Backbone.View.extend({
             var subject = observedSubject.subject;
             var thatEl2 = $("#" + observationId + " #subject-image-" + observedSubject.id);
             var imgTemplate = $("#search-results-unknown-image-tmpl");
-            thatEl2.append(_.template(imgTemplate.html(), subject));
+            if(subject.class == "Compound") {
+                var compound = new $ctd2.Subject({id: subject.id });
+                compound.fetch({ // TODO this does not work because subject.id is not real
+                    success: function() {
+                        compound = compound.toJSON();
+                        _.each(compound.xrefs, function(xref) {
+                            if(xref.databaseName == "IMAGE") {
+                               compound["imageFile"] = xref.databaseId;
+                           }
+                        });
+
+                        imgTemplate = $("#search-results-compund-image-tmpl");
+                        thatEl2.append(_.template(imgTemplate.html(), compound));
+                   }
+                });
+            } else if( subject.class == "Gene" ) {
+                imgTemplate = $("#search-results-gene-image-tmpl");
+            } else if( subject.class == "RNA" ) {
+                imgTemplate = $("#search-results-shrna-image-tmpl");
+            } else if( subject.class == "Tissue" ) {
+                imgTemplate = $("#search-results-tissuesample-image-tmpl");
+            } else if( subject.class == "Cell" ) {
+                imgTemplate = $("#search-results-cellsample-image-tmpl");
+            } else if( subject.class == "Animal" ) {
+                imgTemplate = $("#search-results-animalmodel-image-tmpl");
+            }
+            if(subject.class != "Compound") // for Compound, this would be set asynchronously and use compound instead of subject
+                thatEl2.append(_.template(imgTemplate.html(), subject)); 
 
             if (observedSubject.observedSubjectRole == null || observedSubject.subject == null)
                 return;
