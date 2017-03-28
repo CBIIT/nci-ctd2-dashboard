@@ -72,6 +72,7 @@ $ctd2.TemplateHelperView = Backbone.View.extend({
                 $(this).attr("disabled", "disabled");
                 $ctd2.saveNewTemplate();
             } else {
+                $ctd2.updateModel_1();
                 $ctd2.updateTemplate($(this));
             }
         });
@@ -80,6 +81,7 @@ $ctd2.TemplateHelperView = Backbone.View.extend({
             if ($ctd2.templateId == 0) {
                 ret = $ctd2.saveNewTemplate(true);
             } else {
+                $ctd2.updateModel_1();
                 $ctd2.updateTemplate($(this));
             }
             if (ret && $ctd2.saveSuccess) {
@@ -94,9 +96,11 @@ $ctd2.TemplateHelperView = Backbone.View.extend({
 
         $("#save-template-submission-data").click(function () {
             console.log("saving the submission data ...");
+            $ctd2.updateModel_2_sync();
             $ctd2.updateTemplate($(this));
         });
         $("#apply-template-submission-data").click(function () {
+            $ctd2.updateModel_2_sync();
             $ctd2.updateTemplate($(this));
             if ($ctd2.saveSuccess) {
                 $("#step4").fadeOut();
@@ -109,11 +113,16 @@ $ctd2.TemplateHelperView = Backbone.View.extend({
             }
         });
 
+        $("#template-obs-summary").change(function () {
+            console.log('change triggered on summary');
+        });
         $("#save-summary").click(function () {
             console.log("saving the summary ...");
+            $ctd2.updateModel_3();
             $ctd2.updateTemplate($(this)); // TODO add lock
         });
         $("#continue-from-summary").click(function () {
+            $ctd2.updateModel_3();
             $ctd2.updateTemplate($(this));
             if ($ctd2.saveSuccess) {
                 $("#step5").fadeOut();
@@ -148,6 +157,159 @@ $ctd2.TemplateHelperView = Backbone.View.extend({
         return this;
     } // end render function
 }); // end of TemplateHelperView
+
+// this is a temporary fix. should be cleaned up TODO
+$ctd2.array2list = function(model) {
+    var subjects = model.get('subjectColumns');
+    if(!(subjects instanceof Array)) return;
+    var subjectClasses = model.get('subjectClasses');
+    var subjectRoles = model.get('subjectRoles');
+    var subjectDescriptions = model.get('subjectDescriptions');
+    var evidenceColumns = model.get('evidenceColumns');
+    var evidenceTypes = model.get('evidenceTypes');
+    var valueTypes = model.get('valueTypes');
+    var evidenceDescriptions = model.get('evidenceDescriptions');
+
+    var subjects = $ctd2.array2StringList(subjects);
+    var subjectClasses = $ctd2.array2StringList(subjectClasses);
+    var subjectRoles = $ctd2.array2StringList(subjectRoles);
+    var subjectDescriptions = $ctd2.array2StringList(subjectDescriptions);
+    var evidences = $ctd2.array2StringList(evidenceColumns);
+    var evidenceTypes = $ctd2.array2StringList(evidenceTypes);
+    var valueTypes = $ctd2.array2StringList(valueTypes);
+    var evidenceDescriptions = $ctd2.array2StringList(evidenceDescriptions);
+
+    model.set({
+        subjectColumns: subjects,
+        subjectClasses: subjectClasses,
+        subjectRoles: subjectRoles,
+        subjectDescriptions: subjectDescriptions,
+        evidenceColumns: evidences,
+        evidenceTypes: evidenceTypes,
+        valueTypes: valueTypes,
+        evidenceDescriptions: evidenceDescriptions,
+    });
+}
+
+$ctd2.updateModel_1 = function () {
+    var model = $ctd2.templateModels[$ctd2.templateId];
+    if(model===undefined || model==null) {
+        console.log('invalid model for templateId='+$ctd2.templateId);
+        return;
+    }
+
+    var firstName = $("#first-name").val();
+    var lastName = $("#last-name").val();
+    var email = $("#email").val();
+    var phone = $("#phone").val();
+    var submissionName = $("#template-name").val();
+    var description = $("#template-submission-desc").val();
+    var project = $("#template-project-title").val();
+    var tier = $("#template-tier").val();
+    var isStory = $("#template-is-story").is(':checked');
+    var storyTitle = $('#story-title').val();
+
+    model.set({
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        phone: phone,
+        name: submissionName,
+        description: description,
+        project: project,
+        tier: tier,
+        isStory: isStory,
+        storyTitle: storyTitle,
+    });
+    $ctd2.array2list(model);
+};
+
+$ctd2.updateModel_2 = function () {
+    var model = $ctd2.templateModels[$ctd2.templateId];
+    if(model===undefined || model==null) {
+        console.log('invalid model for templateId='+$ctd2.templateId);
+        return;
+    }
+
+    $ctd2.validate = function () {
+        if ($ctd2.templateId == 0) {
+            return 'error: $ctd2.templateId==0';
+        }
+        var message = '';
+        for (var i = 0; i < subjects.length; i++) {
+            if (subjects[i] == null || subjects[i] == "") {
+                subjects[i] = "MISSING_TAG"; // double safe-guard the list itself not be mis-interpreted as empty
+                message += "\nsubject column tag cannot be empty";
+            }
+        }
+        if ($ctd2.hasDuplicate(subjects)) {
+            return "There is duplicate in subject column tags. This is not allowed.";
+        }
+        subjects = $ctd2.array2StringList(subjects);
+        for (var i = 0; i < evidences.length; i++) {
+            if (evidences[i] == null || evidences[i] == "") {
+                evidences[i] = "MISSING_TAG"; // double safe-guard the list itself not be mis-interpreted as empty
+                message += "\nevidence column tag cannot be empty";
+            }
+        }
+        if ($ctd2.hasDuplicate(evidences)) {
+            return "There is duplicate in evidence column tags. This is not allowed.";
+        }
+        evidences = $ctd2.array2StringList(evidences);
+        return message;
+    }
+
+    var subjects = $ctd2.getArray('#template-table-subject input.subject-columntag');
+    var subjectClasses = $ctd2.getStringList('#template-table-subject select.subject-classes');
+    var subjectRoles = $ctd2.getStringList('#template-table-subject select.subject-roles');
+    var subjectDescriptions = $ctd2.getStringList('#template-table-subject input.subject-descriptions');
+    var evidences = $ctd2.getArray('#template-table-evidence input.evidence-columntag');
+    var evidenceTypes = $ctd2.getStringList('#template-table-evidence select.evidence-types');
+    var valueTypes = $ctd2.getStringList('#template-table-evidence select.value-types');
+    var evidenceDescriptions = $ctd2.getStringList('#template-table-evidence input.evidence-descriptions');
+    var observationNumber = $(".observation-header").length / 2;
+
+    var s = "";
+    for (var i = 0; i < $ctd2.observationArray.length; i++) {
+        s += $ctd2.observationArray[i] + ",";
+    }
+    var observations = s.substring(0, s.length - 1);
+
+
+    var x = $ctd2.validate(); // some arrays are converted to string after validation
+    if (x != null && x.length > 0) {
+        alert(x);
+        $ctd2.saveSuccess = false;
+        return;
+    }
+
+    var model = $ctd2.templateModels[$ctd2.templateId];
+    model.set({
+        subjectColumns: subjects,
+        subjectClasses: subjectClasses,
+        subjectRoles: subjectRoles,
+        subjectDescriptions: subjectDescriptions,
+        evidenceColumns: evidences,
+        evidenceTypes: evidenceTypes,
+        valueTypes: valueTypes,
+        evidenceDescriptions: evidenceDescriptions,
+        observationNumber: observationNumber,
+        observations: observations,
+    });
+};
+
+$ctd2.updateModel_3 = function () {
+    var model = $ctd2.templateModels[$ctd2.templateId];
+    if(model===undefined || model==null) {
+        console.log('invalid model for templateId='+$ctd2.templateId);
+        return;
+    }
+    var summary = $("#template-obs-summary").val();
+    model.set({
+        summary: summary,
+    });
+    $ctd2.array2list(model);
+};
 
 $ctd2.Subject = Backbone.Model.extend({
     urlRoot: "./get/subject"
@@ -396,7 +558,12 @@ $ctd2.SubmitterInformationView = Backbone.View.extend({
     render: function () {
         $(this.el).html(this.template(this.model.toJSON()));
         return this;
-    }
+    },
+    events: {
+        change: function () {
+            console.log('change triggered on submitter information');
+        }
+    },
 });
 
 $ctd2.TemplateDescriptionView = Backbone.View.extend({
@@ -412,7 +579,12 @@ $ctd2.TemplateDescriptionView = Backbone.View.extend({
         });
 
         return this;
-    }
+    },
+    events: {
+        change: function () {
+            console.log('change triggered on template description');
+        }
+    },
 });
 
 $ctd2.ExistingTemplateView = Backbone.View.extend({
@@ -896,14 +1068,14 @@ $ctd2.getObservations = function () {
 };
 
 $ctd2.dataReady = true;
-$ctd2.updateTemplate = function (triggeringButton) {
+$ctd2.updateModel_2_sync = function (triggeringButton) {
     $ctd2.getObservations(); // this set $ctd2.dataReady to be false until the data is ready
     $ctd2.processObservationArray(triggeringButton);
 }
 
 $ctd2.processObservationArray = function (triggeringButton) {
     if ($ctd2.dataReady === true) {
-        $ctd2.updateTemplate_1(triggeringButton);
+        $ctd2.updateModel_2(triggeringButton);
         return;
     }
     setTimeout($ctd2.processObservationArray, 1000, triggeringButton);
@@ -925,102 +1097,18 @@ $ctd2.hasDuplicate = function (a) {
     return false;
 }
 
-$ctd2.updateTemplate_1 = function (triggeringButton) {
-    $ctd2.validate = function () {
-        if ($ctd2.templateId == 0) {
-            return 'error: $ctd2.templateId==0';
-        }
-        var message = '';
-        for (var i = 0; i < subjects.length; i++) {
-            if (subjects[i] == null || subjects[i] == "") {
-                subjects[i] = "MISSING_TAG"; // double safe-guard the list itself not be mis-interpreted as empty
-                message += "\nsubject column tag cannot be empty";
-            }
-        }
-        if ($ctd2.hasDuplicate(subjects)) {
-            return "There is duplicate in subject column tags. This is not allowed.";
-        }
-        subjects = $ctd2.array2StringList(subjects);
-        for (var i = 0; i < evidences.length; i++) {
-            if (evidences[i] == null || evidences[i] == "") {
-                evidences[i] = "MISSING_TAG"; // double safe-guard the list itself not be mis-interpreted as empty
-                message += "\nevidence column tag cannot be empty";
-            }
-        }
-        if ($ctd2.hasDuplicate(evidences)) {
-            return "There is duplicate in evidence column tags. This is not allowed.";
-        }
-        evidences = $ctd2.array2StringList(evidences);
-        return message;
-    }
-
-    var firstName = $("#first-name").val();
-    var lastName = $("#last-name").val();
-    var email = $("#email").val();
-    var phone = $("#phone").val();
-    var submissionName = $("#template-name").val();
-    var description = $("#template-submission-desc").val();
-    var project = $("#template-project-title").val();
-    var tier = $("#template-tier").val();
-    var isStory = $("#template-is-story").is(':checked');
-    var storyTitle = $('#story-title').val();
-
-    var subjects = $ctd2.getArray('#template-table-subject input.subject-columntag');
-    var subjectClasses = $ctd2.getStringList('#template-table-subject select.subject-classes');
-    var subjectRoles = $ctd2.getStringList('#template-table-subject select.subject-roles');
-    var subjectDescriptions = $ctd2.getStringList('#template-table-subject input.subject-descriptions');
-    var evidences = $ctd2.getArray('#template-table-evidence input.evidence-columntag');
-    var evidenceTypes = $ctd2.getStringList('#template-table-evidence select.evidence-types');
-    var valueTypes = $ctd2.getStringList('#template-table-evidence select.value-types');
-    var evidenceDescriptions = $ctd2.getStringList('#template-table-evidence input.evidence-descriptions');
-    var observationNumber = $(".observation-header").length / 2;
-
-    var s = "";
-    for (var i = 0; i < $ctd2.observationArray.length; i++) {
-        s += $ctd2.observationArray[i] + ",";
-    }
-    var observations = s.substring(0, s.length - 1);
-
-    var summary = $("#template-obs-summary").val();
-
-    var x = $ctd2.validate(); // some arrays are converted to string after validation
-    if (x != null && x.length > 0) {
-        alert(x);
-        $ctd2.saveSuccess = false;
+$ctd2.updateTemplate = function (triggeringButton) {
+    var model = $ctd2.templateModels[$ctd2.templateId];
+    if(model===undefined || model==null) {
+        console.log('invalid model for templateId='+$ctd2.templateId);
         return;
     }
-
-    var model = $ctd2.templateModels[$ctd2.templateId];
-    model.set({ 'observations': observations });
 
     triggeringButton.attr("disabled", "disabled");
     $.ajax({
         url: "template/update",
         type: "POST",
-        data: jQuery.param({
-            templateId: $ctd2.templateId,
-            firstName: firstName,
-            lastName: lastName,
-            email: email,
-            phone: phone,
-            name: submissionName,
-            description: description,
-            project: project,
-            tier: tier,
-            isStory: isStory,
-            storyTitle: storyTitle,
-            subjects: subjects,
-            subjectClasses: subjectClasses,
-            subjectRoles: subjectRoles,
-            subjectDescriptions: subjectDescriptions,
-            evidences: evidences,
-            evidenceTypes: evidenceTypes,
-            valueTypes: valueTypes,
-            evidenceDescriptions: evidenceDescriptions,
-            observationNumber: observationNumber,
-            observations: observations,
-            summary: summary,
-        }),
+        data: jQuery.param(model.toJSON()),
         contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
         success: function (data) {
             console.log("return value: " + data);

@@ -134,22 +134,22 @@ public class TemplateController {
     public 
     ResponseEntity<String>
     updateSubmissionTemplate(
-            @RequestParam("templateId") Integer templateId,
+            @RequestParam("id") Integer templateId,
             @RequestParam("firstName") String firstName,
             @RequestParam("lastName") String lastName,
             @RequestParam("email") String email,
             @RequestParam("phone") String phone,
-            @RequestParam("name") String name,
+            @RequestParam("displayName") String name,
             @RequestParam("description") String description,
             @RequestParam("project") String project,
             @RequestParam("tier") Integer tier,
             @RequestParam("isStory") Boolean isStory,
             @RequestParam("storyTitle") String storyTitle,
-            @RequestParam("subjects") String[] subjects,
+            @RequestParam("subjectColumns") String[] subjects,
             @RequestParam("subjectClasses") String[] subjectClasses,
             @RequestParam("subjectRoles") String[] subjectRoles,
             @RequestParam("subjectDescriptions") String[] subjectDescriptions,
-            @RequestParam("evidences") String[] evidences,
+            @RequestParam("evidenceColumns") String[] evidences,
             @RequestParam("evidenceTypes") String[] evidenceTypes,
             @RequestParam("valueTypes") String[] valueTypes,
             @RequestParam("evidenceDescriptions") String[] evidenceDescriptions,
@@ -191,7 +191,7 @@ public class TemplateController {
         int evidenceColumnCount = evidences.length;
         int columnTagCount = subjectColumnCount + evidenceColumnCount;
         for(int i=0; i<valueTypes.length; i++) {
-            if(valueTypes[i].equals("Document") || valueTypes[i].equals("Image")) {
+            if(valueTypes[i].equals("file")) {
                 for(int j=0; j<observationNumber; j++) {
                     int index = columnTagCount*j + subjectColumnCount + i;
                     if(index>=observations.length) {
@@ -251,7 +251,7 @@ public class TemplateController {
         String[] observations = template.getObservations().split(",", -1);
         Set<String> files = new HashSet<String>(); // duplicate entry not allowed in ZIP
         for(int i=0; i<valueTypes.length; i++) {
-            if(valueTypes[i].equals("Document") || valueTypes[i].equals("Image")) {
+            if(valueTypes[i].equals("file")) {
                 for(int j=0; j<observationNumber; j++) {
                     int index = columnTagCount*j + subjectColumnCount + i;
                     String obv = observations[index];
