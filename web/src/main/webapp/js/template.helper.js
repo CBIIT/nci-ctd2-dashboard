@@ -1,6 +1,8 @@
 $ctd2 = {
+    centerId: 0,
+    templateModels: null, // data of all templates, keyed by their ID's
     templateId: 0, // currently selected submission template ID, or 0 meaning no template selected
-    templateModels: {}, // data of all templates, keyed by their ID's
+    currentModel: null,
     saveSuccess: true,
 }; /* the supporting module of ctd2-dashboard app ctd2.js */
 
@@ -13,6 +15,12 @@ $ctd2.TemplateHelperView = Backbone.View.extend({
 
         // top menu
         $("#menu_home").click(function () {
+            $ctd2.centerId = 0;
+            $ctd2.templateId = 0;
+            $ctd2.templateModels = null;
+            $ctd2.currentModel = null;
+            $("#menu_manage").hide();
+            $ctd2.hideTemplateMenu();
             $ctd2.showPage("#step1");
         });
         $("#menu_manage").click(function () {
@@ -45,17 +53,18 @@ $ctd2.TemplateHelperView = Backbone.View.extend({
         });
 
         $("#apply-submission-center").click(function () {
-            var centerId = $("#template-submission-centers").val();
-            if (centerId.length == 0) {
-                console.log("centerId is empty");
+            var centerId_selected = $("#template-submission-centers").val();
+            if (centerId_selected.length == 0) {
+                console.log("centerId_selected is empty");
                 return; // error control
             }
+            $ctd2.centerId = centerId_selected;
 
             $("#menu_manage").show();
             $("#step1").fadeOut();
             $("#step2").slideDown();
             $("span#center-name").text($("#template-submission-centers option:selected").text());
-            $ctd2.refreshTemplateList(centerId);
+            $ctd2.refreshTemplateList();
         });
 
         $("#create-new-submission").click(function () {
@@ -1059,8 +1068,7 @@ $ctd2.updateTemplate = function (triggeringButton) {
         success: function (data) {
             console.log("return value: " + data);
             triggeringButton.removeAttr("disabled");
-            var centerId = $("#template-submission-centers").val();
-            $ctd2.refreshTemplateList(centerId);
+            $ctd2.refreshTemplateList();
             $ctd2.updatePreview(model);
         },
         error: function (response, status) {
@@ -1072,7 +1080,10 @@ $ctd2.updateTemplate = function (triggeringButton) {
 };
 
 $ctd2.saveNewTemplate = function (sync) {
-    var centerId = $("#template-submission-centers").val();
+    if($ctd2.centerId==0) {
+        console.log('error: unexpected $cdt2.centerId==0');
+        return;
+    }
     var submissionName = $("#template-name").val();
 
     var firstName = $("#first-name").val();
@@ -1085,7 +1096,7 @@ $ctd2.saveNewTemplate = function (sync) {
     var isStory = $("#template-is-story").is(':checked');
     var storyTitle = $('#story-title').val();
 
-    if (centerId.length == 0 || firstName.length == 0 || lastName.length == 0
+    if (firstName.length == 0 || lastName.length == 0
         || submissionName.length == 0) {
         console.log("not saved due to incomplete information");
         $("#save-name-description").removeAttr("disabled");
@@ -1101,7 +1112,7 @@ $ctd2.saveNewTemplate = function (sync) {
         url: "template/create",
         type: "POST",
         data: jQuery.param({
-            centerId: centerId,
+            centerId: $ctd2.centerId,
             name: submissionName,
             firstName: firstName,
             lastName: lastName,
@@ -1120,7 +1131,7 @@ $ctd2.saveNewTemplate = function (sync) {
             $ctd2.templateId = resultId;
             $("span#submission-name").text(submissionName);
             $ctd2.showTemplateMenu();
-            $ctd2.refreshTemplateList(centerId);
+            $ctd2.refreshTemplateList();
         },
         error: function (response, status) {
             $("#save-name-description").removeAttr("disabled");
@@ -1134,14 +1145,17 @@ $ctd2.saveNewTemplate = function (sync) {
 };
 
 $ctd2.clone = function (templateId) {
-    var centerId = $("#template-submission-centers").val(); // TODO why is this not part of the model?
+    if($ctd2.centerId==0) {
+        console.log('error: unexpected $cdt2.centerId==0');
+        return;
+    }
     $("#template-table-row-" + templateId).attr("disabled", "disabled");
     var result = false;
     $.ajax({
         url: "template/clone",
         type: "POST",
         data: jQuery.param({
-            centerId: centerId,
+            centerId: $ctd2.centerId,
             templateId: templateId
         }),
         contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -1150,7 +1164,7 @@ $ctd2.clone = function (templateId) {
             result = true;
             $ctd2.templateId = 0;
             $ctd2.showTemplateMenu();
-            $ctd2.refreshTemplateList(centerId);
+            $ctd2.refreshTemplateList();
             console.log('clone succeeded ' + templateId + ' -> ' + resultId);
         },
         error: function (response, status) {
@@ -1307,9 +1321,13 @@ $ctd2.updatePreview = function (templateModel) { // this should be called when t
     });
 };
 
-$ctd2.refreshTemplateList = function (centerId) {
+$ctd2.refreshTemplateList = function () {
+    if($ctd2.centerId==0) {
+        console.log('error: unexpected $ctd2.centerId==0');
+        return;
+    }
     $ctd2.templateModels = {};
-    var storedTemplates = new $ctd2.StoredTemplates({ centerId: centerId });
+    var storedTemplates = new $ctd2.StoredTemplates({ centerId: $ctd2.centerId });
     $("#existing-template-table > .stored-template-row").remove();
     storedTemplates.fetch({
         success: function () {
