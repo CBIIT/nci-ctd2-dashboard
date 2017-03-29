@@ -24,6 +24,9 @@ $ctd2.TemplateHelperView = Backbone.View.extend({
             $ctd2.showPage("#step1");
         });
         $("#menu_manage").click(function () {
+            $ctd2.templateId = 0;
+            $ctd2.currentModel = null;
+            $ctd2.hideTemplateMenu();
             $ctd2.showPage("#step2");
         }).hide();
         $("#menu_description").click(function () {
@@ -69,7 +72,11 @@ $ctd2.TemplateHelperView = Backbone.View.extend({
 
         $("#create-new-submission").click(function () {
             $ctd2.hideTemplateMenu();
-            $ctd2.populateOneTemplate(0); // 0 is kind of important becasue it will reset $ctd2.templateId
+            if($ctd2.templateId!=0) {
+                console.log('error: unexpected non-zero templateId '+$ctd2.templateId);
+                return;
+            }
+            $ctd2.populateOneTemplate(); // TODO maybe use a separate method for the case of new template
 
             $("#step2").fadeOut();
             $("#step3").slideDown();
@@ -168,12 +175,6 @@ $ctd2.TemplateHelperView = Backbone.View.extend({
 }); // end of TemplateHelperView
 
 $ctd2.updateModel_1 = function () {
-    var model = $ctd2.templateModels[$ctd2.templateId];
-    if(model===undefined || model==null) {
-        console.log('invalid model for templateId='+$ctd2.templateId);
-        return;
-    }
-
     var firstName = $("#first-name").val();
     var lastName = $("#last-name").val();
     var email = $("#email").val();
@@ -185,7 +186,7 @@ $ctd2.updateModel_1 = function () {
     var isStory = $("#template-is-story").is(':checked');
     var storyTitle = $('#story-title').val();
 
-    model.set({
+    $ctd2.currentModel.set({
         firstName: firstName,
         lastName: lastName,
         email: email,
@@ -200,11 +201,6 @@ $ctd2.updateModel_1 = function () {
 };
 
 $ctd2.updateModel_2 = function (triggeringButton) {
-    var model = $ctd2.templateModels[$ctd2.templateId];
-    if(model===undefined || model==null) {
-        console.log('invalid model for templateId='+$ctd2.templateId);
-        return;
-    }
 
     $ctd2.validate = function () {
         if ($ctd2.templateId == 0) {
@@ -256,8 +252,7 @@ $ctd2.updateModel_2 = function (triggeringButton) {
         return;
     }
 
-    var model = $ctd2.templateModels[$ctd2.templateId];
-    model.set({
+    $ctd2.currentModel.set({
         subjectColumns: subjects,
         subjectClasses: subjectClasses,
         subjectRoles: subjectRoles,
@@ -273,13 +268,8 @@ $ctd2.updateModel_2 = function (triggeringButton) {
 };
 
 $ctd2.updateModel_3 = function () {
-    var model = $ctd2.templateModels[$ctd2.templateId];
-    if(model===undefined || model==null) {
-        console.log('invalid model for templateId='+$ctd2.templateId);
-        return;
-    }
     var summary = $("#template-obs-summary").val();
-    model.set({
+    $ctd2.currentModel.set({
         summary: summary,
     });
 };
@@ -571,9 +561,9 @@ $ctd2.ExistingTemplateView = Backbone.View.extend({
             switch (action) {
                 case 'edit':
                     $ctd2.showTemplateMenu();
-                    if ($ctd2.templateId != templateId) {
-                        $ctd2.populateOneTemplate(templateId);
-                    }
+                    $ctd2.templateId = templateId;
+                    $ctd2.currentModel = $ctd2.templateModels[templateId];
+                    $ctd2.populateOneTemplate();
                     $ctd2.showPage("#step4", "#menu_data");
                     break;
                 case 'delete':
@@ -582,9 +572,9 @@ $ctd2.ExistingTemplateView = Backbone.View.extend({
                     break;
                 case 'preview':
                     $ctd2.showTemplateMenu();
-                    if ($ctd2.templateId != templateId) {
-                        $ctd2.populateOneTemplate(templateId);
-                    }
+                    $ctd2.templateId = templateId;
+                    $ctd2.currentModel = $ctd2.templateModels[templateId];
+                    $ctd2.populateOneTemplate();
                     $ctd2.showPage("#step6", "#menu_preview");
                     break;
                 case 'clone':
@@ -1053,23 +1043,18 @@ $ctd2.hasDuplicate = function (a) {
 }
 
 $ctd2.updateTemplate = function (triggeringButton) {
-    var model = $ctd2.templateModels[$ctd2.templateId];
-    if(model===undefined || model==null) {
-        console.log('invalid model for templateId='+$ctd2.templateId);
-        return;
-    }
 
     triggeringButton.attr("disabled", "disabled");
     $.ajax({
         url: "template/update",
         type: "POST",
-        data: jQuery.param(model.toJSON()),
+        data: jQuery.param($ctd2.currentModel.toJSON()),
         contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
         success: function (data) {
             console.log("return value: " + data);
             triggeringButton.removeAttr("disabled");
             $ctd2.refreshTemplateList();
-            $ctd2.updatePreview(model);
+            $ctd2.updatePreview();
         },
         error: function (response, status) {
             triggeringButton.removeAttr("disabled");
@@ -1129,6 +1114,7 @@ $ctd2.saveNewTemplate = function (sync) {
             $("#save-name-description").removeAttr("disabled");
             result = true;
             $ctd2.templateId = resultId;
+            $ctd2.currentModel = $ctd2.templateModels[$ctd2.templateId];
             $("span#submission-name").text(submissionName);
             $ctd2.showTemplateMenu();
             $ctd2.refreshTemplateList();
@@ -1163,6 +1149,7 @@ $ctd2.clone = function (templateId) {
             $("#template-table-row-" + templateId).removeAttr("disabled");
             result = true;
             $ctd2.templateId = 0;
+            $ctd2.currentModel = null;
             $ctd2.showTemplateMenu();
             $ctd2.refreshTemplateList();
             console.log('clone succeeded ' + templateId + ' -> ' + resultId);
@@ -1200,21 +1187,20 @@ $ctd2.addNewEvidence = function (tag) {
     })).render();
 };
 
-$ctd2.populateOneTemplate = function (templateId) {
-    $("#template-id").val(templateId);
-    $ctd2.templateId = templateId;
-    var templateModel = $ctd2.templateModels[templateId];
-    if (templateModel === undefined) templateModel = new $ctd2.SubmissionTemplate();
-    var rowModel = templateModel.toJSON();
+$ctd2.populateOneTemplate = function () {
+    $("#template-id").val($ctd2.templateId);
+    if ($ctd2.currentModel==null || $ctd2.currentModel === undefined) /* case of new template */
+        $ctd2.currentModel = new $ctd2.SubmissionTemplate();
+    var rowModel = $ctd2.currentModel.toJSON();
 
     $("span#submission-name").text(rowModel.displayName);
 
     (new $ctd2.SubmitterInformationView({
-        model: templateModel,
+        model: $ctd2.currentModel,
         el: $("#submitter-information")
     })).render();
     (new $ctd2.TemplateDescriptionView({
-        model: templateModel,
+        model: $ctd2.currentModel,
         el: $("#template-description")
     })).render();
 
@@ -1288,13 +1274,13 @@ $ctd2.populateOneTemplate = function (templateId) {
     if (evidenceColumns.length == 0) $ctd2.addNewEvidence('evidence 1');
 
     $("#template-obs-summary").val(rowModel.summary);
-    $ctd2.updatePreview(templateModel);
+    $ctd2.updatePreview();
 }
 
-$ctd2.updatePreview = function (templateModel) { // this should be called when the template data (model) changes
+$ctd2.updatePreview = function () { // this should be called when the template data (model) changes
     $("#preview-select").empty();
     $("#step6 [id^=observation-preview-]").remove();
-    var observationNumber = templateModel.get('observationNumber');
+    var observationNumber = $ctd2.currentModel.get('observationNumber');
     for (var i = 0; i < observationNumber; i++) {
         (new $ctd2.ObservationOptionView({
             model: { observation_id: i },
@@ -1306,7 +1292,7 @@ $ctd2.updatePreview = function (templateModel) { // this should be called when t
         el: $("#preview-container")
     });
     if (observationNumber > 0) {
-        $ctd2.observationPreviewView.model = templateModel.getPreviewModel(0);
+        $ctd2.observationPreviewView.model = $ctd2.currentModel.getPreviewModel(0);
         $ctd2.observationPreviewView.render();
     }
 
@@ -1316,7 +1302,7 @@ $ctd2.updatePreview = function (templateModel) { // this should be called when t
             console.log('error in preview selected ' + selected);
             return;
         }
-        $ctd2.observationPreviewView.model = templateModel.getPreviewModel(selected);
+        $ctd2.observationPreviewView.model = $ctd2.currentModel.getPreviewModel(selected);
         $ctd2.observationPreviewView.render();
     });
 };
