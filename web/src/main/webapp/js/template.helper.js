@@ -96,12 +96,12 @@ $ctd2.TemplateHelperView = Backbone.View.extend({
 
         $("#save-template-submission-data").click(function () {
             console.log("saving the submission data ...");
-            $ctd2.updateModel_2_sync();
-            $ctd2.updateTemplate($(this));
+            $ctd2.updateModel_2_sync($(this));
+            //$ctd2.updateTemplate($(this));
         });
         $("#apply-template-submission-data").click(function () {
-            $ctd2.updateModel_2_sync();
-            $ctd2.updateTemplate($(this));
+            $ctd2.updateModel_2_sync($(this));
+            //$ctd2.updateTemplate($(this));
             if ($ctd2.saveSuccess) {
                 $("#step4").fadeOut();
                 $ctd2.populateTagList();
@@ -158,39 +158,6 @@ $ctd2.TemplateHelperView = Backbone.View.extend({
     } // end render function
 }); // end of TemplateHelperView
 
-// this is a temporary fix. should be cleaned up TODO
-$ctd2.array2list = function(model) {
-    var subjects = model.get('subjectColumns');
-    if(!(subjects instanceof Array)) return;
-    var subjectClasses = model.get('subjectClasses');
-    var subjectRoles = model.get('subjectRoles');
-    var subjectDescriptions = model.get('subjectDescriptions');
-    var evidenceColumns = model.get('evidenceColumns');
-    var evidenceTypes = model.get('evidenceTypes');
-    var valueTypes = model.get('valueTypes');
-    var evidenceDescriptions = model.get('evidenceDescriptions');
-
-    var subjects = $ctd2.array2StringList(subjects);
-    var subjectClasses = $ctd2.array2StringList(subjectClasses);
-    var subjectRoles = $ctd2.array2StringList(subjectRoles);
-    var subjectDescriptions = $ctd2.array2StringList(subjectDescriptions);
-    var evidences = $ctd2.array2StringList(evidenceColumns);
-    var evidenceTypes = $ctd2.array2StringList(evidenceTypes);
-    var valueTypes = $ctd2.array2StringList(valueTypes);
-    var evidenceDescriptions = $ctd2.array2StringList(evidenceDescriptions);
-
-    model.set({
-        subjectColumns: subjects,
-        subjectClasses: subjectClasses,
-        subjectRoles: subjectRoles,
-        subjectDescriptions: subjectDescriptions,
-        evidenceColumns: evidences,
-        evidenceTypes: evidenceTypes,
-        valueTypes: valueTypes,
-        evidenceDescriptions: evidenceDescriptions,
-    });
-}
-
 $ctd2.updateModel_1 = function () {
     var model = $ctd2.templateModels[$ctd2.templateId];
     if(model===undefined || model==null) {
@@ -221,10 +188,9 @@ $ctd2.updateModel_1 = function () {
         isStory: isStory,
         storyTitle: storyTitle,
     });
-    $ctd2.array2list(model);
 };
 
-$ctd2.updateModel_2 = function () {
+$ctd2.updateModel_2 = function (triggeringButton) {
     var model = $ctd2.templateModels[$ctd2.templateId];
     if(model===undefined || model==null) {
         console.log('invalid model for templateId='+$ctd2.templateId);
@@ -245,7 +211,6 @@ $ctd2.updateModel_2 = function () {
         if ($ctd2.hasDuplicate(subjects)) {
             return "There is duplicate in subject column tags. This is not allowed.";
         }
-        subjects = $ctd2.array2StringList(subjects);
         for (var i = 0; i < evidences.length; i++) {
             if (evidences[i] == null || evidences[i] == "") {
                 evidences[i] = "MISSING_TAG"; // double safe-guard the list itself not be mis-interpreted as empty
@@ -255,18 +220,17 @@ $ctd2.updateModel_2 = function () {
         if ($ctd2.hasDuplicate(evidences)) {
             return "There is duplicate in evidence column tags. This is not allowed.";
         }
-        evidences = $ctd2.array2StringList(evidences);
         return message;
     }
 
     var subjects = $ctd2.getArray('#template-table-subject input.subject-columntag');
-    var subjectClasses = $ctd2.getStringList('#template-table-subject select.subject-classes');
-    var subjectRoles = $ctd2.getStringList('#template-table-subject select.subject-roles');
-    var subjectDescriptions = $ctd2.getStringList('#template-table-subject input.subject-descriptions');
+    var subjectClasses = $ctd2.getArray('#template-table-subject select.subject-classes');
+    var subjectRoles = $ctd2.getArray('#template-table-subject select.subject-roles');
+    var subjectDescriptions = $ctd2.getArray('#template-table-subject input.subject-descriptions');
     var evidences = $ctd2.getArray('#template-table-evidence input.evidence-columntag');
-    var evidenceTypes = $ctd2.getStringList('#template-table-evidence select.evidence-types');
-    var valueTypes = $ctd2.getStringList('#template-table-evidence select.value-types');
-    var evidenceDescriptions = $ctd2.getStringList('#template-table-evidence input.evidence-descriptions');
+    var evidenceTypes = $ctd2.getArray('#template-table-evidence select.evidence-types');
+    var valueTypes = $ctd2.getArray('#template-table-evidence select.value-types');
+    var evidenceDescriptions = $ctd2.getArray('#template-table-evidence input.evidence-descriptions');
     var observationNumber = $(".observation-header").length / 2;
 
     var s = "";
@@ -296,6 +260,7 @@ $ctd2.updateModel_2 = function () {
         observationNumber: observationNumber,
         observations: observations,
     });
+    $ctd2.updateTemplate(triggeringButton);
 };
 
 $ctd2.updateModel_3 = function () {
@@ -308,7 +273,6 @@ $ctd2.updateModel_3 = function () {
     model.set({
         summary: summary,
     });
-    $ctd2.array2list(model);
 };
 
 $ctd2.Subject = Backbone.Model.extend({
@@ -1010,24 +974,6 @@ $ctd2.getArray = function (searchTag) {
     return s;
 };
 
-$ctd2.getStringList = function (searchTag) {
-    var s = "";
-    $(searchTag).each(function (i, row) {
-        if (i > 0) s += ","
-        s += $(row).val();
-    });
-    return s;
-};
-
-$ctd2.array2StringList = function (a) {
-    var s = "";
-    for (var i = 0; i < a.length; i++) {
-        if (i > 0) s += ","
-        s += a[i];
-    }
-    return s;
-};
-
 $ctd2.observationArray = [];
 $ctd2.getObservations = function () {
     var columns = $(".observation-header").length / 2;
@@ -1050,7 +996,7 @@ $ctd2.getObservations = function () {
                     var savebutton = $("#save-template-submission-data");
                     reader.addEventListener("load", function () {
                         var filecontent = reader.result.replace("base64,", "base64:"); // comma breaks later processing
-                        $ctd2.observationArray[j * rows + i] = file.name + ":" + filecontent;
+                        $ctd2.observationArray[j * rows + i] = file.name + "::" + filecontent;
                         savebutton.removeAttr("disabled");
                         $ctd2.dataReady = true;
                     }, false);

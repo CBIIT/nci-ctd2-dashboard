@@ -145,14 +145,14 @@ public class TemplateController {
             @RequestParam("tier") Integer tier,
             @RequestParam("isStory") Boolean isStory,
             @RequestParam("storyTitle") String storyTitle,
-            @RequestParam("subjectColumns") String[] subjects,
-            @RequestParam("subjectClasses") String[] subjectClasses,
-            @RequestParam("subjectRoles") String[] subjectRoles,
-            @RequestParam("subjectDescriptions") String[] subjectDescriptions,
-            @RequestParam("evidenceColumns") String[] evidences,
-            @RequestParam("evidenceTypes") String[] evidenceTypes,
-            @RequestParam("valueTypes") String[] valueTypes,
-            @RequestParam("evidenceDescriptions") String[] evidenceDescriptions,
+            @RequestParam("subjectColumns[]") String[] subjects,
+            @RequestParam("subjectClasses[]") String[] subjectClasses,
+            @RequestParam("subjectRoles[]") String[] subjectRoles,
+            @RequestParam("subjectDescriptions[]") String[] subjectDescriptions,
+            @RequestParam("evidenceColumns[]") String[] evidences,
+            @RequestParam("evidenceTypes[]") String[] evidenceTypes,
+            @RequestParam("valueTypes[]") String[] valueTypes,
+            @RequestParam("evidenceDescriptions[]") String[] evidenceDescriptions,
             @RequestParam("observationNumber") Integer observationNumber,
             @RequestParam("observations") String allObservations,
             @RequestParam("summary") String summary
@@ -199,7 +199,7 @@ public class TemplateController {
                         continue;
                     }
                     String obv = observations[index];
-                    if(obv==null || obv.indexOf(":")<=0) {
+                    if(obv==null || obv.indexOf("::")<=0) {
                         System.out.println("no new observation content for column#="+i+" observation#="+j+" observation="+obv);
                         if(index<previousObservations.length)observations[index] = previousObservations[index];
                         continue; // prevent later null pointer exception
