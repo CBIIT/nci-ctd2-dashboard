@@ -191,7 +191,7 @@ $ctd2.updateModel_1 = function () {
         lastName: lastName,
         email: email,
         phone: phone,
-        name: submissionName,
+        displayName: submissionName,
         description: description,
         project: project,
         tier: tier,
@@ -1098,7 +1098,7 @@ $ctd2.saveNewTemplate = function (sync) {
         type: "POST",
         data: jQuery.param({
             centerId: $ctd2.centerId,
-            name: submissionName,
+            displayName: submissionName,
             firstName: firstName,
             lastName: lastName,
             email: email,
@@ -1114,11 +1114,11 @@ $ctd2.saveNewTemplate = function (sync) {
             $("#save-name-description").removeAttr("disabled");
             result = true;
             $ctd2.templateId = resultId;
-            $ctd2.currentModel = $ctd2.templateModels[$ctd2.templateId];
             $("span#submission-name").text(submissionName);
             $ctd2.showTemplateMenu();
             $ctd2.refreshTemplateList();
-        },
+            $ctd2.currentModel = $ctd2.templateModels[$ctd2.templateId];
+       },
         error: function (response, status) {
             $("#save-name-description").removeAttr("disabled");
             alert("create failed\n" + status + ": " + response.responseText);
@@ -1316,6 +1316,7 @@ $ctd2.refreshTemplateList = function () {
     var storedTemplates = new $ctd2.StoredTemplates({ centerId: $ctd2.centerId });
     $("#existing-template-table > .stored-template-row").remove();
     storedTemplates.fetch({
+        async: false,
         success: function () {
             _.each(storedTemplates.models, function (oneTemplateModel) {
                 $ctd2.templateModels[oneTemplateModel.id] = oneTemplateModel;
