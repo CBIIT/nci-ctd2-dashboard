@@ -52,7 +52,7 @@ public class TemplateController {
     ResponseEntity<String>
     createNewSubmissionTemplate( /* the method name has no effect, @RequestMapping value binds this method */
             @RequestParam("centerId") Integer centerId,
-            @RequestParam("name") String name,
+            @RequestParam("displayName") String name,
             @RequestParam("firstName") String firstName,
             @RequestParam("lastName") String lastName,
             @RequestParam("email") String email,
@@ -78,7 +78,17 @@ public class TemplateController {
     	template.setLastName(lastName);
         template.setEmail(email);
         template.setPhone(phone);
-    	dashboardDao.save(template);
+
+        template.setSubjectColumns(new String[]{""});
+        template.setSubjectClasses(new String[]{""});
+        template.setSubjectRoles(new String[]{""});
+        template.setSubjectDescriptions(new String[]{""});
+        template.setEvidenceColumns(new String[]{""});
+        template.setEvidenceTypes(new String[]{""});
+        template.setValueTypes(new String[]{""});
+        template.setEvidenceDescriptions(new String[]{""});
+
+        dashboardDao.save(template);
 
     	return new ResponseEntity<String>(template.getId().toString(), HttpStatus.OK);
     }
