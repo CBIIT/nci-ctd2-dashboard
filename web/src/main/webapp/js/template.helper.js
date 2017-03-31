@@ -1,8 +1,7 @@
 $ctd2 = {
     centerId: 0,
     templateModels: null, // data of all templates, keyed by their ID's
-    templateId: 0, // currently selected submission template ID, or 0 meaning no template selected
-    currentModel: null,
+    currentModel: null, // currently selected submission template, or null meaning no template selected
     saveSuccess: true,
 }; /* the supporting module of ctd2-dashboard app ctd2.js */
 
@@ -16,7 +15,6 @@ $ctd2.TemplateHelperView = Backbone.View.extend({
         // top menu
         $("#menu_home").click(function () {
             $ctd2.centerId = 0;
-            $ctd2.templateId = 0;
             $ctd2.templateModels = null;
             $ctd2.currentModel = null;
             $("#menu_manage").hide();
@@ -24,7 +22,6 @@ $ctd2.TemplateHelperView = Backbone.View.extend({
             $ctd2.showPage("#step1");
         });
         $("#menu_manage").click(function () {
-            $ctd2.templateId = 0;
             $ctd2.currentModel = null;
             $ctd2.hideTemplateMenu();
             $ctd2.showPage("#step2");
@@ -72,8 +69,8 @@ $ctd2.TemplateHelperView = Backbone.View.extend({
 
         $("#create-new-submission").click(function () {
             $ctd2.hideTemplateMenu();
-            if($ctd2.templateId!=0) {
-                console.log('error: unexpected non-zero templateId '+$ctd2.templateId);
+            if($ctd2.currentModel!=null) {
+                console.log('error: unexpected non-null currentModel');
                 return;
             }
             $ctd2.populateOneTemplate(); // TODO maybe use a separate method for the case of new template
@@ -84,7 +81,7 @@ $ctd2.TemplateHelperView = Backbone.View.extend({
 
         // although the other button is called #create-new-submission, this is where it is really created back-end
         $("#save-name-description").click(function () {
-            if ($ctd2.templateId == 0) {
+            if ($ctd2.currentModel.id == 0) {
                 $(this).attr("disabled", "disabled");
                 $ctd2.saveNewTemplate();
             } else {
@@ -94,7 +91,7 @@ $ctd2.TemplateHelperView = Backbone.View.extend({
         });
         $("#continue-to-main-data").click(function () { // similar to save, additionally moving to the next
             var ret = true;
-            if ($ctd2.templateId == 0) {
+            if ($ctd2.currentModel.id == 0) {
                 ret = $ctd2.saveNewTemplate(true);
             } else {
                 $ctd2.updateModel_1();
@@ -203,9 +200,6 @@ $ctd2.updateModel_1 = function () {
 $ctd2.updateModel_2 = function (triggeringButton) {
 
     $ctd2.validate = function () {
-        if ($ctd2.templateId == 0) {
-            return 'error: $ctd2.templateId==0';
-        }
         var message = '';
         for (var i = 0; i < subjects.length; i++) {
             if (subjects[i] == null || subjects[i] == "") {
@@ -561,7 +555,6 @@ $ctd2.ExistingTemplateView = Backbone.View.extend({
             switch (action) {
                 case 'edit':
                     $ctd2.showTemplateMenu();
-                    $ctd2.templateId = templateId;
                     $ctd2.currentModel = $ctd2.templateModels[templateId];
                     $ctd2.populateOneTemplate();
                     $ctd2.showPage("#step4", "#menu_data");
@@ -572,7 +565,6 @@ $ctd2.ExistingTemplateView = Backbone.View.extend({
                     break;
                 case 'preview':
                     $ctd2.showTemplateMenu();
-                    $ctd2.templateId = templateId;
                     $ctd2.currentModel = $ctd2.templateModels[templateId];
                     $ctd2.populateOneTemplate();
                     $ctd2.showPage("#step6", "#menu_preview");
@@ -801,6 +793,7 @@ $ctd2.NewObservationView = Backbone.View.extend({
 
 $ctd2.SubmissionTemplate = Backbone.Model.extend({
     defaults: {
+        id: 0,
         firstName: null,
         lastName: null,
         email: null,
@@ -818,6 +811,7 @@ $ctd2.SubmissionTemplate = Backbone.Model.extend({
         valueTypes: [],
         observationNumber: 0,
         observations: "",
+        summary: "",
     },
     getPreviewModel: function (obvIndex) {
         // re-structure the data for the preview, required by the original observation template
@@ -1113,11 +1107,10 @@ $ctd2.saveNewTemplate = function (sync) {
         success: function (resultId) {
             $("#save-name-description").removeAttr("disabled");
             result = true;
-            $ctd2.templateId = resultId;
             $("span#submission-name").text(submissionName);
             $ctd2.showTemplateMenu();
             $ctd2.refreshTemplateList();
-            $ctd2.currentModel = $ctd2.templateModels[$ctd2.templateId];
+            $ctd2.currentModel = $ctd2.templateModels[resultId];
        },
         error: function (response, status) {
             $("#save-name-description").removeAttr("disabled");
@@ -1148,7 +1141,6 @@ $ctd2.clone = function (templateId) {
         success: function (resultId) {
             $("#template-table-row-" + templateId).removeAttr("disabled");
             result = true;
-            $ctd2.templateId = 0;
             $ctd2.currentModel = null;
             $ctd2.showTemplateMenu();
             $ctd2.refreshTemplateList();
@@ -1188,9 +1180,9 @@ $ctd2.addNewEvidence = function (tag) {
 };
 
 $ctd2.populateOneTemplate = function () {
-    $("#template-id").val($ctd2.templateId);
     if ($ctd2.currentModel==null || $ctd2.currentModel === undefined) /* case of new template */
         $ctd2.currentModel = new $ctd2.SubmissionTemplate();
+    $("#template-id").val($ctd2.currentModel.id); /* used by download form only */
     var rowModel = $ctd2.currentModel.toJSON();
 
     $("span#submission-name").text(rowModel.displayName);
