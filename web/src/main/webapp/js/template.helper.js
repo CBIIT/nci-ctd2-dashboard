@@ -200,26 +200,26 @@ $ctd2.updateModel_1 = function () {
 $ctd2.updateModel_2 = function (triggeringButton) {
 
     $ctd2.validate = function () {
-        var message = '';
+        var message = '<ul>';
         for (var i = 0; i < subjects.length; i++) {
             if (subjects[i] == null || subjects[i] == "") {
                 subjects[i] = "MISSING_TAG"; // double safe-guard the list itself not be mis-interpreted as empty
-                message += "\nsubject column tag cannot be empty";
+                message += "<li>subject column tag cannot be empty";
             }
         }
         if ($ctd2.hasDuplicate(subjects)) {
-            return "There is duplicate in subject column tags. This is not allowed.";
+            message += "<li>There is duplicate in subject column tags. This is not allowed.";
         }
         for (var i = 0; i < evidences.length; i++) {
             if (evidences[i] == null || evidences[i] == "") {
                 evidences[i] = "MISSING_TAG"; // double safe-guard the list itself not be mis-interpreted as empty
-                message += "\nevidence column tag cannot be empty";
+                message += "<li>evidence column tag cannot be empty";
             }
         }
         if ($ctd2.hasDuplicate(evidences)) {
-            return "There is duplicate in evidence column tags. This is not allowed.";
+            message += "<li>There is duplicate in evidence column tags. This is not allowed.";
         }
-        return message;
+        return message+"</ul>";
     }
 
     var subjects = $ctd2.getArray('#template-table-subject input.subject-columntag');
@@ -241,7 +241,7 @@ $ctd2.updateModel_2 = function (triggeringButton) {
 
     var x = $ctd2.validate(); // some arrays are converted to string after validation
     if (x != null && x.length > 0) {
-        alert(x);
+        $ctd2.showAlertMessage(x);
         $ctd2.saveSuccess = false;
         return;
     }
@@ -576,7 +576,7 @@ $ctd2.ExistingTemplateView = Backbone.View.extend({
                     $("#template-id").val(templateId);
                     $("#download-form").submit();
                     break;
-                default:
+                default: /* this should never happen */
                     alert('template #' + templateId + ': action ' + action + ' clicked');
             };
             $(this).val('');
@@ -1053,7 +1053,7 @@ $ctd2.updateTemplate = function (triggeringButton) {
         error: function (response, status) {
             triggeringButton.removeAttr("disabled");
             // response.responseText is an HTML page
-            alert(status + ": " + response.responseText);
+            $ctd2.showInvalidMessage(status + ": " + response.responseText);
         }
     });
 };
@@ -1079,7 +1079,7 @@ $ctd2.saveNewTemplate = function (sync) {
         || submissionName.length == 0) {
         console.log("not saved due to incomplete information");
         $("#save-name-description").removeAttr("disabled");
-        alert("not saved due to incomplete information");
+        $ctd2.showAlertMessage("new template cannot be created withnot required information: first name, last name, and a submission name");
         return false; // error control
     }
 
@@ -1114,7 +1114,7 @@ $ctd2.saveNewTemplate = function (sync) {
        },
         error: function (response, status) {
             $("#save-name-description").removeAttr("disabled");
-            alert("create failed\n" + status + ": " + response.responseText);
+            $ctd2.showInvalidMessage("create failed\n" + status + ": " + response.responseText);
         }
     });
     if (async || result)
@@ -1147,7 +1147,7 @@ $ctd2.clone = function (templateId) {
             console.log('clone succeeded ' + templateId + ' -> ' + resultId);
         },
         error: function (response, status) {
-            alert("clone failed\n" + status + ": " + response.responseText);
+            $ctd2.showInvalidMessage("clone failed\n" + status + ": " + response.responseText);
             $("#template-table-row-" + tmpltModel.id).removeAttr("disabled");
         }
     });
@@ -1341,3 +1341,14 @@ $ctd2.populateTagList = function () {
         input.val(input.val() + "<" + $(this).text() + ">");
     });
 };
+
+$ctd2.showAlertMessage = function(message) {
+    $("#alertMessage").html(message);
+    $("#alertMessage").css('color', '#5a5a5a');   
+    $("#alert-message-modal").modal('show');
+}
+$ctd2.showInvalidMessage = function(message) {
+    $("#alertMessage").text(message);
+    $("#alertMessage").css('color', 'red');
+    $("#alert-message-modal").modal('show');
+}
