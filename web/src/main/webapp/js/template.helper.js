@@ -200,7 +200,7 @@ $ctd2.updateModel_1 = function () {
 $ctd2.updateModel_2 = function (triggeringButton) {
 
     $ctd2.validate = function () {
-        var message = '<ul>';
+        var message = '';
         for (var i = 0; i < subjects.length; i++) {
             if (subjects[i] == null || subjects[i] == "") {
                 subjects[i] = "MISSING_TAG"; // double safe-guard the list itself not be mis-interpreted as empty
@@ -219,7 +219,7 @@ $ctd2.updateModel_2 = function (triggeringButton) {
         if ($ctd2.hasDuplicate(evidences)) {
             message += "<li>There is duplicate in evidence column tags. This is not allowed.";
         }
-        return message+"</ul>";
+        return message;
     }
 
     var subjects = $ctd2.getArray('#template-table-subject input.subject-columntag');
@@ -241,7 +241,7 @@ $ctd2.updateModel_2 = function (triggeringButton) {
 
     var x = $ctd2.validate(); // some arrays are converted to string after validation
     if (x != null && x.length > 0) {
-        $ctd2.showAlertMessage(x);
+        $ctd2.showAlertMessage("<ul>"+x+"</ul>");
         $ctd2.saveSuccess = false;
         return;
     }
@@ -585,6 +585,17 @@ $ctd2.ExistingTemplateView = Backbone.View.extend({
     }
 });
 
+$ctd2.popupLargeTextfield = function() {
+    $("#invoker-id").text( $(this).attr('id') );
+    $("#temporary-text").val( $(this).val() );
+    $("#popup-textarea-modal").modal('show');
+}
+
+$ctd2.closeLargeTextfield = function() {
+    var invoker_id = $("#invoker-id").text();
+    $('#'+invoker_id).val( $("#temporary-text").val() );
+}
+
 $ctd2.TemplateSubjectDataRowView = Backbone.View.extend({
     template: _.template($("#template-subject-data-row-tmpl").html()),
     render: function () {
@@ -634,6 +645,9 @@ $ctd2.TemplateSubjectDataRowView = Backbone.View.extend({
             el: tableRow,
             model: { columnTagId: columnTagId, observationNumber: observationNumber, observations: observations, obvsType: 'text' },
         }).render();
+
+        $(".collapsed-textarea").click($ctd2.popupLargeTextfield);
+        $("#close-tempoary-text").unbind('click').click($ctd2.closeLargeTextfield);
 
         return this;
     },
@@ -699,6 +713,9 @@ $ctd2.TemplateEvidenceDataRowView = Backbone.View.extend({
                 }
             }
         });
+
+        $(".collapsed-textarea").click($ctd2.popupLargeTextfield);
+        $("#close-tempoary-text").unbind('click').click($ctd2.closeLargeTextfield);
 
         return this;
     },

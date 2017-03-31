@@ -135,6 +135,16 @@
         </div>
     </div>
 
+    <div class="modal hide fade" id="popup-textarea-modal">
+        <div class="modal-body" >
+            <textarea id="temporary-text" style='width:95%' rows='10' cols='100'></textarea>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" data-dismiss="modal" id="close-tempoary-text">Close</button>
+        </div>
+        <span id='invoker-id' style='display:none'></span>
+    </div>
+
     <div class="modal fade" tabindex="-1" role="dialog" id="confirmation-modal">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -1892,7 +1902,7 @@
             </select></td>
             <td><select id="role-dropdown-{{columnTagId}}" class='subject-roles'></select></td>
             <td><input type="text" class="form-control subject-columntag" value="{{columnTag}}" placeholder="column tag"></td>
-            <td><input type="text" class="form-control subject-descriptions" id="description-{{columnTagId}}" placeholder="subject description" value="{{subjectDescription}}"></td>
+            <td><input type="text" class="form-control subject-descriptions collapsed-textarea" id="description-{{columnTagId}}" placeholder="subject description" value="{{subjectDescription}}"></td>
         </tr>
     </script>
 
@@ -1911,7 +1921,7 @@
             </select></td>
             <td><select id="evidence-type-{{columnTagId}}" class='evidence-types'></select></td>
             <td><input type="text" class="form-control evidence-columntag" value="{{columnTag}}" placeholder="column tag"></td>
-            <td><input type="text" class="form-control evidence-descriptions" id="description-{{columnTagId}}" placeholder="evidence description" value={{evidenceDescription}}></td>
+            <td><input type="text" class="form-control evidence-descriptions collapsed-textarea" id="evd-descr-{{columnTagId}}" placeholder="evidence description" value="{{evidenceDescription}}"></td>
         </tr>
     </script>
 
