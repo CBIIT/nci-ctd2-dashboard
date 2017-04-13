@@ -473,7 +473,7 @@
                         </tr>
                         <tr>
                             <th>Source Data</th>
-                            <td><a href="<%=dataURL%>submissions/{{displayName}}.zip">open link</a></td>
+                            <td><a href="<%=dataURL%>submissions/{{displayName}}.zip">download</a></td>
                         </tr>
                     </table>
                 </div>
@@ -580,7 +580,7 @@
                     </tr>
                     <tr>
                         <th>Source Data</th>
-                        <td><a href="<%=dataURL%>submissions/{{submission.displayName}}.zip">open link</a></td>
+                        <td><a href="<%=dataURL%>submissions/{{submission.displayName}}.zip">download</a></td>
                     </tr>
 
 
