@@ -22,6 +22,7 @@
     <link rel="shortcut icon" href="img/favicon.ico" type="image/vnd.microsoft.icon" />
     <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" />
     <link rel="stylesheet" href="css/jquery.dataTables.css" type="text/css" />
+    <link rel="stylesheet" href="css/buttons.dataTables.min.css" type="text/css" />
     <link rel="stylesheet" href="css/jquery.fancybox-1.3.4.css" type="text/css" media="screen" />
     <link rel="stylesheet" href="css/jquery.contextMenu.css" type="text/css" />
     <link rel="stylesheet" href="css/ctd2.css" type="text/css" />
@@ -429,6 +430,7 @@
             <td><small>{{submissionDate}}</small></td>
             <td width=150>
                 <a href="#submission/{{id}}" class="obs-count" id="observation-count-{{id}}">{{details}}</a>
+                <div style="font-size:70%">[<a href="<%=dataURL%>submissions/{{displayName}}.zip">Download</a>]</div>
             </td>
         </tr>
     </script>
@@ -2760,6 +2762,9 @@
     <!-- end of templates -->
     
     <script src="js/jquery.dataTables.min.js"></script>
+    <script src="js/dataTables.buttons.min.js"></script>
+    <script src="js/buttons.html5.min.js"></script>
+    <script src="js/jszip.min.js"></script>
     <script src="js/paging.js"></script>
     <script src="js/holder.js"></script>
     <script src="js/underscore.js"></script>

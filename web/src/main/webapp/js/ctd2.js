@@ -1074,13 +1074,19 @@
                         });
 
                         var oTable = $(thatEl).dataTable({
+                            'dom': 'iBfrtlp',
                             "sPaginationType": "bootstrap",
                             "columns": [
                                       { "orderDataType": "dashboard-date" },
                                       null,
                                       null,
                                       null
-                                  ]
+                                  ],
+                            'buttons': [{
+                                extend: 'excelHtml5',
+                                text: 'Export as Spreadsheet',
+                                className: "extra-margin",
+                            }],
                         });
 
                         oTable.fnSort([
@@ -2828,6 +2834,7 @@
                             table_data.push( [reformatted, nameLink, role, n3link, n2link, n1link] );
                     });
                     $("#explore-table").dataTable( {
+                        'dom': 'iBfrtlp',
                         'data': table_data,
                         "deferRender": true,
                         "columns": [
@@ -2840,7 +2847,12 @@
                                 ],
                         "drawCallback": function( settings ) {
                             $("a.compound-image").fancybox({titlePosition: 'inside'});
-                        }
+                        },
+                        'buttons': [{
+                            extend: 'excelHtml5',
+                            text: 'Export as Spreadsheet',
+                            className: "extra-margin",
+                        }],
                     });
 
                     $(".explore-thumbnail h4").tooltip();
