@@ -1086,6 +1086,15 @@
                                 extend: 'excelHtml5',
                                 text: 'Export as Spreadsheet',
                                 className: "extra-margin",
+                                customizeData: function ( data ) {
+                                    var body = data.body;
+                                    for(var i=0; i<body.length; i++) {
+                                        var raw_content = body[i][1].split(/ +/);
+                                        raw_content.pop();
+                                        raw_content.pop();
+                                        body[i][1] = raw_content.join(' ');
+                                    }
+                                },
                             }],
                         });
 
