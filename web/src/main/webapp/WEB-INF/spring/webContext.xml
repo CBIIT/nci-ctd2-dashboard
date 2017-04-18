@@ -27,4 +27,8 @@
         <constructor-arg type="int" value="${list.max.observations}"/>
     </bean>
 
+    <bean id="uploadLocation" class="java.lang.String">
+        <constructor-arg type="String" value="${upload.location}"/>
+    </bean>
+
 </beans>
