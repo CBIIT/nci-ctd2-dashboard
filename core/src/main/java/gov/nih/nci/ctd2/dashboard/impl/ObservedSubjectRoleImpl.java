@@ -16,7 +16,7 @@ public class ObservedSubjectRoleImpl extends DashboardEntityImpl implements Obse
     private SubjectRole subjectRole;
     private ObservationTemplate observationTemplate;
 
-    @Column(length = 1024)
+    @Column(length = 10240)
     public String getDisplayText() {
         return displayText;
     }

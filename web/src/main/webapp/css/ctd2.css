@@ -12,6 +12,9 @@ body {
   color: black;
 }
 
+.extra-margin {
+    margin-left: 20px;
+}
 /* CUSTOMIZE THE NAVBAR
 -------------------------------------------------- */
 
@@ -56,13 +59,17 @@ body {
 }
 
 .navbar-inner {
-    min-height: 0px;
+  min-height: 0px;
 }
 
+.navbar .nav > li > a.navlink {
+  color: white;
+}
 
-
-/* CUSTOMIZE THE NAVBAR
--------------------------------------------------- */
+.navbar .nav > li > a.navlink:hover,
+.navbar .nav > li > a.navlink-current {
+  color: #FE5A07;
+}
 
 /* Carousel base class */
 .carousel {
@@ -109,6 +116,7 @@ body {
 
 .marketing .span4 {
   text-align: center;
+  width: 34%;
 }
 .marketing h2 {
   font-weight: normal;
@@ -470,8 +478,8 @@ img.fancy-story-img {
 }
 
 .footer-container {
-    margin-top: 30px;
-    border: 1px solid #a70001;
+    margin-top: 10px;
+    border: 1px solid #FE5A07;
     border-top-width: 10px;
     border-radius: 10px;
     background-color: #ffffff;
@@ -644,14 +652,10 @@ blockquote p {
     color: #81632f;
 }
 
-#myCarousel {
-    min-width: 950px;
-}
-
 .firstlead {
     padding-top: 10px;
 }
- 
+
 .greenColor
 {
 	color: green

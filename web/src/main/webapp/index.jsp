@@ -8,9 +8,12 @@
             .getWebApplicationContext(application);
     String dataURL = (String) context.getBean("dataURL");
     Integer maxNumOfObservations = (Integer) context.getBean("maxNumberOfEntities");
+    String dashboardReleaseVersion = (String) context.getBean("dashboardReleaseVersion");
 %><!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/html">
   <head>
+    <!-- X-UA-Compatible meta tag to disable IE compatibility view must always be first -->
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>CTD² Dashboard</title>
     <meta name="description" content="" />
@@ -19,6 +22,7 @@
     <link rel="shortcut icon" href="img/favicon.ico" type="image/vnd.microsoft.icon" />
     <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" />
     <link rel="stylesheet" href="css/jquery.dataTables.css" type="text/css" />
+    <link rel="stylesheet" href="css/buttons.dataTables.min.css" type="text/css" />
     <link rel="stylesheet" href="css/jquery.fancybox-1.3.4.css" type="text/css" media="screen" />
     <link rel="stylesheet" href="css/jquery.contextMenu.css" type="text/css" />
     <link rel="stylesheet" href="css/ctd2.css" type="text/css" />
@@ -33,9 +37,59 @@
   </head>
 
   <body>
-
     <!-- NAVBAR
     ================================================== -->
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery.ba-hashchange.min.js"></script>
+    <script>
+    $(function() {
+        // Bind an event to window.onhashchange that, when the hash changes, 
+        // gets the hash and alters class of desired navlinks
+        $(window).hashchange(function() {
+            var hash = location.hash || '#';
+            $('[id^="navlink-"]').each(function() {
+                // navbar regular items
+                if (
+                    $(this).attr('id') == 'navlink-dashboard' ||
+                    $(this).attr('id') == 'navlink-centers'
+                ) {
+                    if ($(this).attr('href') === decodeURIComponent(hash)) {
+                        $(this).removeClass('navlink');
+                        $(this).addClass('navlink-current');
+                    }
+                    else {
+                        $(this).removeClass('navlink-current');
+                        $(this).addClass('navlink');
+                    }
+                }
+                // navbar dropdown menu items
+                else if (
+                    $(this).attr('id') == 'navlink-browse' ||
+                    $(this).attr('id') == 'navlink-genecart'
+                ) {
+                    var id = $(this).attr('id') == 'navlink-browse'
+                           ? 'dropdown-menu-browse'
+                           : 'dropdown-menu-genecart';
+                    var dropdownLink = $(this);
+                    $('#' + id + ' li a').each(function() {
+                        if ($(this).attr('href') === decodeURIComponent(hash)) {
+                            dropdownLink.removeClass('navlink');
+                            dropdownLink.addClass('navlink-current');
+                            return false;
+                        }
+                        else {
+                            dropdownLink.removeClass('navlink-current');
+                            dropdownLink.addClass('navlink');
+                        }
+                    });
+                }
+            });
+        });
+        // Since the event is only triggered when the hash changes, we need to trigger
+        // the event now, to handle the hash the page may have been loaded with.
+        $(window).hashchange();
+    });
+    </script>
     <div class="navbar-wrapper">
       <!-- Wrap the .navbar in .container to center it within the absolutely positioned parent. -->
       <div class="container">
@@ -49,25 +103,38 @@
               <span class="icon-bar"></span>
             </a>
             <div class="nav-collapse collapse">
-              <ul class="nav topmenu">
-                <li class="active"><a href="#">CTD<sup>2</sup> Dashboard</a></li>
-                <li><a href="#centers">Centers</a></li>
+              <ul id="nav" class="nav">
+                <li><a id="navlink-dashboard" class="navlink" href="#">CTD<sup>2</sup> Dashboard</a></li>
+                <li><a id="navlink-centers" class="navlink" href="#centers">Centers</a></li>
                 <li class="dropdown">
-                      <a href="#" class="dropdown-toggle" data-toggle="dropdown">Resources <b class="caret"></b></a>
+                      <a class="dropdown-toggle navlink" href="#" data-toggle="dropdown">Resources <b class="caret"></b></a>
                       <ul class="dropdown-menu">
-                          <li><a target="_blank" href="http://ocg.cancer.gov/programs/ctd2">CTD<sup>2</sup> Home page</a></li>
-                          <li><a target="_blank" href="http://ocg.cancer.gov/programs/ctd2/publications">Publications</a></li>
-                          <li><a target="_blank" href="https://ctd2.nci.nih.gov/dataPortal/">Data Portal - Downloads</a></li>
-                          <li><a target="_blank" href="http://ocg.cancer.gov/about-ocg/rss-feeds">RSS feed</a></li>
+                          <li><a target="_blank" href="https://ocg.cancer.gov/programs/ctd2">CTD<sup>2</sup> Home Page</a></li>
+                          <li><a target="_blank" href="https://ocg.cancer.gov/programs/ctd2/publications">Publications</a></li>
+                          <li><a target="_blank" href="https://ocg.cancer.gov/programs/ctd2/data-portal">Data Portal - Downloads</a></li>
                           <li><a target="_blank" href="https://ocg.cancer.gov/programs/ctd2/analytical-tools">Analytical Tools</a></li>
-                          <li><a target="_blank" href="https://ocg.cancer.gov/programs/ctd2/resources/ocg-supported-resources">OCG-Supported Resources</a></li>
+                          <li><a target="_blank" href="https://ocg.cancer.gov/programs/ctd2/supported-reagents">Supported Reagents</a></li>
+                          <li class="dropdown-submenu"><a tabindex="-1" href="#">Outside Resources</a>
+                                <ul class="dropdown-menu">
+                                    <li><a target="_blank" href="http://www.lincsproject.org/">LINCS</a></li>
+                                </ul>
+                           </li>
                       </ul>
-                  </li>                 
-                   <li class="dropdown">
-                      <a href="#" class="dropdown-toggle" data-toggle="dropdown">Gene Cart <b class="caret"></b></a>
-                      <ul class="dropdown-menu">
+                  </li>
+                  <li class="dropdown">
+                      <a id="navlink-browse" class="dropdown-toggle navlink" href="#" data-toggle="dropdown">Browse <b class="caret"></b></a>
+                      <ul id="dropdown-menu-browse" class="dropdown-menu">
+                          <li><a href="#stories">Stories</a></li>
+                          <li><a href="#explore/target/Biomarker,Target">Genes (Biomarkers, Targets, etc.)</a></li>
+                          <li><a href="#explore/compound/Perturbagen,Candidate Drug">Compounds and Perturbagens</a></li>
+                          <li><a href="#explore/context/Disease">Disease Contexts</a></li>
+                      </ul>
+                  </li>
+                  <li class="dropdown">
+                      <a id="navlink-genecart" class="dropdown-toggle navlink" href="#" data-toggle="dropdown">Gene Cart <b class="caret"></b></a>
+                      <ul id="dropdown-menu-genecart" class="dropdown-menu">
                           <li><a href="#genes">Go To Cart</a></li> 
-                          <li><a href="#gene-cart-help">Help</a></li>                          
+                          <li><a href="#gene-cart-help">Help</a></li>
                       </ul>
                   </li>
               </ul>
@@ -104,6 +171,7 @@
     <div class="container footer-container">
         <!-- FOOTER -->
        <footer>
+        <p><small>Dashboard Release <%=dashboardReleaseVersion%></small></p>
      	<p>
             <small>
                 <p>
@@ -174,16 +242,17 @@
                             <img class="img-polaroid pull-left" src="img/logos/ctd2_overall.png" alt="CTD2 general image" title="CTD2 general image">
                             </a>
                             <p class="lead firstlead">
-                                <b>The CTD<sup>2</sup> Dashboard</b> hosts analyzed data and other evidence generated by the <a href="https://ocg.cancer.gov/programs/ctd2"><b>CTD<sup>2</sup> Network</b></a>.
-                                It is a web interface for the research community to browse and search for CTD<sup>2</sup> Network data related to genes, proteins, and compounds, or read stories that summarize key findings from completed projects associated with publications.
-                                For more information about the contents and organization of the Dashboard, visit <a id="homepage-help-navigate" href="#help-navigate">Navigating and Understanding Dashboard Content</a>.
-								To understand more about the Dashboard functions, please read <a href="https://ocg.cancer.gov/news-publications/e-newsletter-issue/issue-14#1721">CTD<sup>2</sup> Dashboard: A Platform to Explore Evidence-based Observations</a>.
+                                <a href="https://ocg.cancer.gov/programs/ctd2"><b>The Cancer Target Discovery and Development (CTD<sup>2</sup>) Network</b></a> mines and functionally validates data from large-scale adult and pediatric cancer genome characterization initiatives and advances them toward use in precision oncology.
+                                The Network developed the open-access “CTD<sup>2</sup> Dashboard,” a web interface that compiles Network-generated summaries about key cancer biology findings and cancer-relevant results related to genes, proteins, and compounds.
+                                Submissions are “ranked” with the validation “<a href="http://www.ncbi.nlm.nih.gov/pubmed/27401613" target="_blank">Tier</a>” system to indicate strength of evidence.
+                                To learn how the Dashboard is organized, visit <a id="homepage-help-navigate" href="#help-navigate">Navigating and Understanding Dashboard Content</a>.
+                                To understand more about the Dashboard functions, please read <a href="https://ocg.cancer.gov/news-publications/e-newsletter-issue/issue-14#1721">CTD<sup>2</sup> Dashboard: A Platform to Explore Evidence-based Observations</a>.
                             </p>
                         </div>
                     </div>
                     <div class="span3">
                         <br><br>
-                        <a href="https://ctd2.nci.nih.gov/dataPortal/" style="vertical-align: middle">
+                        <a href="https://ocg.cancer.gov/programs/ctd2/data-portal" style="vertical-align: middle">
                           <img src="img/logos/image001.png" onmouseover="this.src='img/logos/image002.png'" onmouseout="this.src='img/logos/image001.png'" alt="CTD2 general image" title="CTD2 Data Portal image" style="vertical-align: middle">
                         </a>
                         <div>
@@ -193,41 +262,8 @@
 
         <div class="dark-separator"></div>
 
-        <!-- Carousel
-        ================================================== -->
-        <div id="myCarousel" class="carousel slide">
-          <div class="carousel-inner">
-            <div class="item active">
-              <img src="img/bg-red.png" alt="Red background image" title="red background image" class="cimg">
-              <div class="container">
-                  <div class="carousel-caption">
-                        <h3 class="homepage-stories-title">Recent Stories</h3>
-                        <div class="well carousel-well">
-                            <div class="tab-content stories-tabs">
-                                <div class="container tab-pane active fade in" id="story-1"></div>
-                                <div class="container tab-pane fade" id="story-2"></div>
-                                <div class="container tab-pane fade" id="story-3"></div>
-                                <div class="container tab-pane fade" id="story-4"></div>
-                            </div>
-                            <div class="pagination pagination-centered stories-pagination">
-                                <ul class="nav">
-                                    <li class="active"><a href="#story-1" class="story-link">&bull;</a></li>
-                                    <li><a href="#story-2" class="story-link">&bull;</a></li>
-                                    <li><a href="#story-3" class="story-link">&bull;</a></li>
-                                    <li><a href="#story-4" class="story-link">&bull;</a></li>
-                                    <li><a href="#stories">More stories &raquo;</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                  </div>
-              </div>
-            </div>
-          </div>
-
-        </div><!-- /.carousel -->
-
         <div class="container marketing ctd2-boxes">
-          <div class="row" style="display:table">
+          <div style="display:table">
               <!--
             <div class="span3 stories" data-order="0">
               <h4>Stories</h4>
@@ -260,6 +296,40 @@
 
           </div><!-- /.row -->
         </div><!-- /.container -->
+
+        <!-- Carousel
+        ================================================== -->
+        <div class="carousel slide">
+          <div class="carousel-inner">
+            <div class="item active">
+              <img src="img/bg-red.png" alt="Red background image" title="red background image" class="cimg">
+              <div class="container">
+                  <div class="carousel-caption">
+                        <h3 class="homepage-stories-title">Recent Stories</h3>
+                        <div class="well carousel-well">
+                            <div class="tab-content stories-tabs">
+                                <div class="container tab-pane active fade in" id="story-1"></div>
+                                <div class="container tab-pane fade" id="story-2"></div>
+                                <div class="container tab-pane fade" id="story-3"></div>
+                                <div class="container tab-pane fade" id="story-4"></div>
+                            </div>
+                            <div class="pagination pagination-centered stories-pagination">
+                                <ul class="nav">
+                                    <li class="active"><a href="#story-1" class="story-link">&bull;</a></li>
+                                    <li><a href="#story-2" class="story-link">&bull;</a></li>
+                                    <li><a href="#story-3" class="story-link">&bull;</a></li>
+                                    <li><a href="#story-4" class="story-link">&bull;</a></li>
+                                    <li><a href="#stories">More stories &raquo;</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                  </div>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /.carousel -->
+
     </script>
 
     <script type="text/template" id="centers-tmpl">
@@ -305,7 +375,7 @@
         <tr>
             <td class="center-image-column">
                 <a href="#center/{{submission.observationTemplate.submissionCenter.id}}">
-                    <img src="img/slogos/{{submission.observationTemplate.submissionCenter.displayName}}.png" alt="{{submission.observationTemplate.submissionCenter.displayName}}" title="{{displayName}}" class="img-circle">
+                    <img src="img/slogos/{{submission.observationTemplate.submissionCenter.displayName}}.png" alt="{{submission.observationTemplate.submissionCenter.displayName}}" title="{{submission.observationTemplate.submissionCenter.displayName}}" class="img-circle">
                 </a>
             </td>
             <td>
@@ -387,6 +457,7 @@
             <td><small>{{submissionDate}}</small></td>
             <td width=150>
                 <a href="#submission/{{id}}" class="obs-count" id="observation-count-{{id}}">{{details}}</a>
+                <div style="font-size:70%">[<a href="<%=dataURL%>submissions/{{displayName}}.zip">Download</a>]</div>
             </td>
         </tr>
     </script>
@@ -431,7 +502,7 @@
                         </tr>
                         <tr>
                             <th>Source Data</th>
-                            <td><a href="<%=dataURL%>submissions/{{displayName}}.zip">open link</a></td>
+                            <td><a href="<%=dataURL%>submissions/{{displayName}}.zip">download</a></td>
                         </tr>
                     </table>
                 </div>
@@ -538,7 +609,7 @@
                     </tr>
                     <tr>
                         <th>Source Data</th>
-                        <td><a href="<%=dataURL%>submissions/{{submission.displayName}}.zip" class=no-preview>open link</a></td>
+                        <td><a href="<%=dataURL%>submissions/{{submission.displayName}}.zip" class=no-preview>download</a></td>
                     </tr>
 
 
@@ -764,13 +835,13 @@
                  <div class="span9">
                      <table id="gene-details-grid" class="table table-bordered table-striped">
                          <tr>
-                             <th>Gene symbol</th>
+                             <th>Gene symbol<div style="font-size:10px; font-style:italic">(from HGNC)</div></th>
                              <td>{{displayName}}&nbsp;&nbsp;
                                   <a href="#" class="addGene-{{displayName}} greenColor" title="Add gene to cart">+</a>  
                              </td>
                          </tr>
                          <tr>
-                             <th>Synonyms</th>
+                             <th>Synonyms/Related terms<div style="font-size:10px; font-style:italic">(from Entrez)</div></th>
                              <td>
                                  <ul class="synonyms"></ul>
                              </td>
@@ -839,11 +910,11 @@
                 <div class="span9">
                     <table id="protein-details-grid" class="table table-bordered table-striped">
                         <tr>
-                            <th>Gene symbol</th>
+                            <th>Gene symbol<div style="font-size:10px; font-style:italic">(from HGNC)</div></th>
                             <td>{{displayName}}</td>
                         </tr>
                         <tr>
-                            <th>Synonyms</th>
+                            <th>Synonyms/Related terms<div style="font-size:10px; font-style:italic">(from Entrez)</div></th>
                             <td>
                                 <ul class="synonyms"></ul>
                             </td>
@@ -1664,7 +1735,9 @@
         <div class="alert alert-warning">
             <button type="button" class="close" data-dismiss="alert">&times;</button>
             <p>
-                Entries listed below are ordered by relevance, based on the number of observations and Tier evidence level (must be at least Tier 2). 
+                Entries listed below are ordered by relevance, based on the number of Centers providing observations and Tier evidence level.
+                For each Center, only its highest Tier of evidence counts toward the score.
+                Entries must have Tier 2 evidence or higher to be in the list.
                 Currently displaying observations involving {{subject_type}} that have been assigned one of the following roles:
                 {{ decodeURIComponent(roles).split(",").join(", ") }}
                 (see <a class="blurb-help" href="#help-navigate">background information</a> for the meaning of observations, roles, and Tiers).
@@ -2379,6 +2452,10 @@
         <option value="{{displayItem}}">{{displayItem}}</option>
      </script>
 
+     <script type="text/template" id="gene-cart-option-tmpl-preselected">
+        <option value="{{displayItem}}" selected>{{displayItem}}</option>
+     </script>
+
     <script type="text/template" id="help-navigate-tmpl">
         <div class="help-navigate-text-container">
             <h3>Navigating and Understanding Dashboard Content</h3>
@@ -2408,7 +2485,7 @@
 
                 <li><i>Observation</i>: A <b>Center</b>-determined conclusion that is submitted as a connection between <b>subjects</b> and <b>evidence</b>; the "fundamental unit" of the Dashboard.</li>
 
-                <li><i>Tier</i>: A CTD<sup>2</sup> Network-defined ranking system for <b>evidence</b> that is based on the extent of characterization associated with a particular study.
+                <li><i><a href="http://www.ncbi.nlm.nih.gov/pubmed/27401613" target="_blank">Tier</a></i>: A CTD<sup>2</sup> Network-defined ranking system for <b>evidence</b> that is based on the extent of characterization associated with a particular study.
                     <ul>
                         <li><i>Tier 1</i>: Preliminary positive observations.</li>
                         <li><i>Tier 2</i>: Confirmation of primary results <i>in vitro</i>.</li>
@@ -2449,9 +2526,11 @@
     </script>
 
     <!-- end of templates -->
-
-    <script src="js/jquery.min.js"></script>
+    
     <script src="js/jquery.dataTables.min.js"></script>
+    <script src="js/dataTables.buttons.min.js"></script>
+    <script src="js/buttons.html5.min.js"></script>
+    <script src="js/jszip.min.js"></script>
     <script src="js/paging.js"></script>
     <script src="js/holder.js"></script>
     <script src="js/underscore.js"></script>

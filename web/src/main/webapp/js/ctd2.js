@@ -972,13 +972,28 @@
                         });
 
                         var oTable = $(thatEl).dataTable({
+                            'dom': 'iBfrtlp',
                             "sPaginationType": "bootstrap",
                             "columns": [
                                       { "orderDataType": "dashboard-date" },
                                       null,
                                       null,
                                       null
-                                  ]
+                                  ],
+                            'buttons': [{
+                                extend: 'excelHtml5',
+                                text: 'Export as Spreadsheet',
+                                className: "extra-margin",
+                                customizeData: function ( data ) {
+                                    var body = data.body;
+                                    for(var i=0; i<body.length; i++) {
+                                        var raw_content = body[i][1].split(/ +/);
+                                        raw_content.pop();
+                                        raw_content.pop();
+                                        body[i][1] = raw_content.join(' ');
+                                    }
+                                },
+                            }],
                         });
 
                         oTable.fnSort([
@@ -2256,6 +2271,7 @@
                             table_data.push( [reformatted, nameLink, role, n3link, n2link, n1link] );
                     });
                     $("#explore-table").dataTable( {
+                        'dom': 'iBfrtlp',
                         'data': table_data,
                         "deferRender": true,
                         "columns": [
@@ -2268,7 +2284,12 @@
                                 ],
                         "drawCallback": function( settings ) {
                             $("a.compound-image").fancybox({titlePosition: 'inside'});
-                        }
+                        },
+                        'buttons': [{
+                            extend: 'excelHtml5',
+                            text: 'Export as Spreadsheet',
+                            className: "extra-margin",
+                        }],
                     });
 
                     $(".explore-thumbnail h4").tooltip();
@@ -2596,12 +2617,33 @@
                 	      throttle : ""},
                    dataType: "json",
                    contentType: "json",                   
-                   success: function(data) {                	 
-                	   var list = data.interactomeList;                	   
-                       _.each(list, function(aData){              		       
-               		       $("#interactomeList").append(_.template($("#gene-cart-option-tmpl").html(), {displayItem: aData})); 
-                       });          
-                       $('#interactomeVersionList').disabled = true;                      
+                   success: function(data) {
+                       var list = data.interactomeList;
+                       _.each(list, function(aData){
+                           if(aData.toLowerCase().startsWith("preppi")) {
+                               $("#interactomeList").prepend(_.template($("#gene-cart-option-tmpl-preselected").html(), {displayItem: aData}));
+                               var interactome = aData.split("(")[0].trim();
+                               $.ajax({ // query the description
+                                   url: "cnkb/query",
+                                   data: {dataType : "interactome-version", interactome: interactome, version: "", selectedGenes: "", interactionLimit: 0, throttle: ""},
+                                   dataType: "json",
+                                   contentType: "json",
+                                   success: function(data) {
+                                       $('#interactomeDescription').html("");
+                                       $('#interactomeDescription').html(convertUrl(data.description));
+                                       $('#interactomeVersionList').html("");
+                                       _.each(data.versionDescriptorList, function(aData){
+                                              $("#interactomeVersionList").append(_.template($("#gene-cart-option-tmpl").html(), {displayItem: aData.version})); 
+                                       }); 
+                                       $('#interactomeVersionList').disabled = false;
+                                       $('#selectVersion').css('color', '#5a5a5a');
+                                       $('#versionDescription').html("");
+                                   }
+                               });  //ajax
+                           } else
+                               $("#interactomeList").append(_.template($("#gene-cart-option-tmpl").html(), {displayItem: aData}));
+                       });
+                       $('#interactomeVersionList').disabled = true;
                   }
             });  //ajax   
         	
