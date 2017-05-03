@@ -11,18 +11,18 @@
                         http://www.springframework.org/schema/cache/spring-cache.xsd">
 
     <cache:annotation-driven cache-manager="cacheManager"/>
-
+    
     <bean id="ehcache" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
         <property name="configLocation" value="/WEB-INF/ehcache.xml"/>
         <property name="shared" value="true"/>
     </bean>
-
+    
     <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
         <property name="cacheManager" ref="ehcache"/>
     </bean>
-
+    
     <bean id="webServiceUtil" class="gov.nih.nci.ctd2.dashboard.util.WebServiceUtil"/>
-
+    
     <bean id="maxNumberOfEntities" class="java.lang.Integer">
         <constructor-arg type="int" value="${list.max.observations}"/>
     </bean>
