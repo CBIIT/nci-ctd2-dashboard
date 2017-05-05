@@ -44,7 +44,7 @@ import gov.nih.nci.ctd2.dashboard.model.SubmissionTemplate;
 @RequestMapping("/template")
 public class TemplateController {
     @Autowired
-    private DashboardDao dashboardDao;
+    private DashboardDao dashboardDao2;
 
     @Transactional
     @RequestMapping(value="create", method = {RequestMethod.POST}, headers = "Accept=application/text")
@@ -67,7 +67,7 @@ public class TemplateController {
     	SubmissionTemplate template = new SubmissionTemplateImpl();
     	template.setDisplayName(name);
     	template.setDateLastModified(new Date());
-    	SubmissionCenter submissionCenter = dashboardDao.getEntityById(SubmissionCenter.class, centerId);
+    	SubmissionCenter submissionCenter = dashboardDao2.getEntityById(SubmissionCenter.class, centerId);
     	template.setSubmissionCenter(submissionCenter);
     	template.setDescription(description);
     	template.setProject(project);
@@ -88,7 +88,7 @@ public class TemplateController {
         template.setValueTypes(new String[]{""});
         template.setEvidenceDescriptions(new String[]{""});
 
-        dashboardDao.save(template);
+        dashboardDao2.save(template);
 
     	return new ResponseEntity<String>(template.getId().toString(), HttpStatus.OK);
     }
@@ -102,11 +102,11 @@ public class TemplateController {
             @RequestParam("templateId") Integer templateId
             )
     {
-        SubmissionTemplate existing = dashboardDao.getEntityById(SubmissionTemplate.class, templateId);
+        SubmissionTemplate existing = dashboardDao2.getEntityById(SubmissionTemplate.class, templateId);
     	SubmissionTemplate template = new SubmissionTemplateImpl();
     	template.setDisplayName(existing.getDisplayName()+" - clone");
     	template.setDateLastModified(new Date());
-    	SubmissionCenter submissionCenter = dashboardDao.getEntityById(SubmissionCenter.class, centerId);
+    	SubmissionCenter submissionCenter = dashboardDao2.getEntityById(SubmissionCenter.class, centerId);
     	template.setSubmissionCenter(submissionCenter);
     	template.setDescription(existing.getDescription());
     	template.setProject(existing.getProject());
@@ -130,7 +130,7 @@ public class TemplateController {
         template.setObservations("");
         template.setSummary(existing.getSummary());
 
-    	dashboardDao.save(template);
+    	dashboardDao2.save(template);
 
     	return new ResponseEntity<String>(template.getId().toString(), HttpStatus.OK);
     }
@@ -168,7 +168,7 @@ public class TemplateController {
             @RequestParam("summary") String summary
             )
     {
-        SubmissionTemplate template = dashboardDao.getEntityById(SubmissionTemplate.class, templateId);
+        SubmissionTemplate template = dashboardDao2.getEntityById(SubmissionTemplate.class, templateId);
     	template.setDisplayName(name);
     	template.setDateLastModified(new Date());
     	template.setDescription(description);
@@ -246,13 +246,13 @@ public class TemplateController {
 
         template.setSummary(summary);
 
-        dashboardDao.update(template);
+        dashboardDao2.update(template);
 
         return new ResponseEntity<String>("SubmissionTemplate " + templateId + " UPDATED", HttpStatus.OK);
     }
 
     private String[] uploadedFiles(Integer templateId) {
-        SubmissionTemplate template = dashboardDao.getEntityById(SubmissionTemplate.class, templateId);
+        SubmissionTemplate template = dashboardDao2.getEntityById(SubmissionTemplate.class, templateId);
         String[] valueTypes = template.getValueTypes();
         Integer observationNumber = template.getObservationNumber();
         int subjectColumnCount = template.getSubjectColumns().length;
@@ -287,8 +287,8 @@ public class TemplateController {
             @RequestParam("templateId") Integer templateId
             )
     {
-        SubmissionTemplate template = dashboardDao.getEntityById(SubmissionTemplate.class, templateId);
-        dashboardDao.delete(template);
+        SubmissionTemplate template = dashboardDao2.getEntityById(SubmissionTemplate.class, templateId);
+        dashboardDao2.delete(template);
         return new ResponseEntity<String>("SubmissionTemplate " + templateId + " DELETED", HttpStatus.OK);
     }
 
@@ -483,7 +483,7 @@ public class TemplateController {
             @RequestParam("filename") String filename,
             HttpServletResponse response)
     {
-        SubmissionTemplate template = dashboardDao.getEntityById(SubmissionTemplate.class, templateId);
+        SubmissionTemplate template = dashboardDao2.getEntityById(SubmissionTemplate.class, templateId);
 
         HSSFWorkbook workbook = new HSSFWorkbook();
         createMetaDataSheet(workbook, template);

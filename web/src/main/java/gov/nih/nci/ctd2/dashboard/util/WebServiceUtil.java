@@ -12,6 +12,9 @@ public class WebServiceUtil {
     @Autowired
     private DashboardDao dashboardDao;
 
+    @Autowired
+    private DashboardDao dashboardDao2;
+
     @Transactional
     @Cacheable(value = "entityCache")
     public List<? extends DashboardEntity> getDashboardEntities(String type, Integer filterBy) {
@@ -151,8 +154,8 @@ public class WebServiceUtil {
 
     public List<? extends DashboardEntity> getTemplates(Integer centerId) {
         List<SubmissionTemplate> list = new ArrayList<SubmissionTemplate>();
-        SubmissionCenter submissionCenter = dashboardDao.getEntityById(SubmissionCenter.class, centerId);
-        for (SubmissionTemplate submissionTemplate : dashboardDao.findEntities(SubmissionTemplate.class)) {
+        SubmissionCenter submissionCenter = dashboardDao2.getEntityById(SubmissionCenter.class, centerId);
+        for (SubmissionTemplate submissionTemplate : dashboardDao2.findEntities(SubmissionTemplate.class)) {
             if (submissionTemplate.getSubmissionCenter().equals(submissionCenter)) {
                 forceConsistency(submissionTemplate);
                 list.add(submissionTemplate);
