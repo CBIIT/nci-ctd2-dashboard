@@ -163,37 +163,38 @@
 
       </div> <!-- /.container -->
     </div><!-- /.navbar-wrapper -->
-
-
+    
     <!-- all the backbone magic will happen here, right in this div -->
     <div id="main-container"></div>
-
+    
     <div class="container footer-container">
         <!-- FOOTER -->
-       <footer>
-        <p><small>Dashboard Release <%=dashboardReleaseVersion%></small></p>
-     	<p>
-            <small>
-                <p>
-                    As the CTD<sup>2</sup> Network continues to refine the Dashboard, input from the research community is highly valued to help improve usability.<br>
-                    <b>Note</b>: Data users must acknowledge CTD<sup>2</sup> Network and visit <a href="http://ocg.cancer.gov/programs/ctd%C2%B2/ctd%C2%B2-publication-guidelines">CTD<sup>2</sup> publication guidelines</a> for more information.<br>
-                    To provide feedback, please send comments to <a href="mailto:ocg@mail.nih.gov?subject=CTD2 Dashboard Feedback">ocg@mail.nih.gov</a>.
-                </p>
-           </small>
-        </p>
-         <p>
-             <a href="http://cancer.gov"><img src="img/logos/footer_logo_nci.jpg" alt="NCI logo" title="NCI logo"></a><a href="http://www.dhhs.gov/"><img src="img/logos/footer_logo_hhs.jpg" title="HHS logo" alt="HHS logo"></a><a href="http://www.nih.gov/"><img src="img/logos/footer_logo_nih.jpg" title="NIH logo" alt="NIH logo"></a><a href="http://www.firstgov.gov/"><img src="img/logos/footer_logo_firstgov.jpg" title="First Gov logo" alt="First Gov logo"></a>
-         </p>
-           <p>
-               <a class="help-navigate" href="#help-navigate">Glossary</a> &middot;
-               <a href="http://www.cancer.gov/global/web/policies" target="_blank">Policies</a> &middot;
-               <a href="http://www.cancer.gov/global/web/policies/accessibility" target="_blank">Accessibility</a> &middot;
-               <a href="http://www.cancer.gov/global/web/policies/foia" target="_blank">FOIA</a>
-           </p>
-
-       </footer>
+        <footer>
+            <div style="font-size:14px; font-weight:bold; margin-bottom:10px;">
+                Dashboard Release <%=dashboardReleaseVersion%>
+            </div>
+            <div style="font-size:14px; margin-bottom:10px;">
+                The CTD<sup>2</sup> Dashboard was created and developed by the CTD<sup>2</sup> Network Centers at the Broad Institute (Paul A. Clemons, Vlado Dančik, Stuart L. Schreiber),
+                Cold Spring Harbor Laboratories/Memorial Sloan Kettering Cancer Center (Arman B. Aksoy, Benjamin Gross, Chris Sander), Columbia University
+                (Andrea Califano, Aris Floratos, Zhou Ji, Kenneth Smith), and NCI (Daniela S. Gerhard, Leandro C. Hermida, Subhashini Jagu)
+            </div>
+            <div style="font-size:14px; margin-bottom:10px;">
+                As the CTD<sup>2</sup> Network continues to refine the Dashboard, input from the research community is highly valued to help improve usability.<br>
+                <b>Note</b>: Data users must acknowledge CTD<sup>2</sup> Network and visit <a href="http://ocg.cancer.gov/programs/ctd%C2%B2/ctd%C2%B2-publication-guidelines">CTD<sup>2</sup> publication guidelines</a> for more information.<br>
+                To provide feedback, please send comments to <a href="mailto:ocg@mail.nih.gov?subject=CTD2 Dashboard Feedback">ocg@mail.nih.gov</a>.
+            </div>
+            <div style="font-size:14px; margin-bottom:10px;">
+                <a href="http://cancer.gov"><img src="img/logos/footer_logo_nci.jpg" alt="NCI logo" title="NCI logo"></a><a href="http://www.dhhs.gov/"><img src="img/logos/footer_logo_hhs.jpg" title="HHS logo" alt="HHS logo"></a><a href="http://www.nih.gov/"><img src="img/logos/footer_logo_nih.jpg" title="NIH logo" alt="NIH logo"></a><a href="http://www.firstgov.gov/"><img src="img/logos/footer_logo_firstgov.jpg" title="First Gov logo" alt="First Gov logo"></a>
+            </div>
+            <div style="font-size:14px; margin-bottom:10px;">
+                <a class="help-navigate" href="#help-navigate">Glossary</a> &middot;
+                <a href="http://www.cancer.gov/global/web/policies" target="_blank">Policies</a> &middot;
+                <a href="http://www.cancer.gov/global/web/policies/accessibility" target="_blank">Accessibility</a> &middot;
+                <a href="http://www.cancer.gov/global/web/policies/foia" target="_blank">FOIA</a>
+            </div>
+        </footer>
     </div>
-     
+    
     <div class="modal hide fade" id="alert-message-modal">  <!-- a hidden div for showing alert message -->          
                 <div class="modal-body" >                        
                     <br>                    
