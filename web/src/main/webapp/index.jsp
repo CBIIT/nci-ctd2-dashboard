@@ -1747,10 +1747,13 @@
 
     <script type="text/template" id="explore-tmpl" data-url="<%=dataURL%>">
         <div class="container common-container" id="explore-container">
-            <h2>Explore: <i>{{_.map(decodeURIComponent(roles).split(","), function(o) { return o + "s"; }, []).join(", ")}}</i> <small><a href="#" id="customize-roles" class="customize-{{type}}">({{customized ? "customized" : "select roles"}})</a></small></h2>
+            <h2>Explore: <i>{{_.map(decodeURIComponent(roles).split(","), function(o) { return o + "s"; }, []).join(", ")}}</i></h2>
 
             <div id="explore-blurb"></div>
+            <div class="container" style="padding-bottom:5px;">
             <button type="button" class="btn btn-default" id="reset-ordering">Reset initial ordering</button>
+            <button type="button" class="btn btn-default" id="customize-roles">Select Roles</button>
+            </div>
 
             <table class="table table-bordered table-striped observations" id="explore-table">
                 <thead>
