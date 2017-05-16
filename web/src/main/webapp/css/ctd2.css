@@ -732,3 +732,18 @@ div.center-link-container {
 .story-details, .center-image-column {
     text-align: center !important;
 }
+
+.rss-feed {
+    clear: both;
+    padding-top: 20px;
+    text-align: center;
+    font-size: smaller;
+}
+
+.td-no-break {
+    text-wrap: avoid;
+}
+
+.evidences tbody tr td:nth-child(2) {
+    white-space: nowrap;
+}

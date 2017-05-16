@@ -478,6 +478,125 @@
         }
     });
 
+
+    /// TODO: encode these into the DB instead
+    var ecoMappings = [
+        {
+            "evidence": "file",
+            "role": "background",
+            "eco_term": "inference from background scientific knowledge",
+            "eco_id": "ECO:0000001"
+        },
+        {
+            "evidence": "file",
+            "role": "computed",
+            "eco_term": "computational combinatorial evidence",
+            "eco_id": "ECO:0000053"
+        },
+        {
+            "evidence": "file",
+            "role": "literature",
+            "eco_term": "traceable author statement",
+            "eco_id": "ECO:0000033"
+        },
+        {
+            "evidence": "file",
+            "role": "measured",
+            "eco_term": "direct assay evidence",
+            "eco_id": "ECO:0000002"
+        },
+        {
+            "evidence": "file",
+            "role": "observed",
+            "eco_term": "experimental phenotypic evidence",
+            "eco_id": "ECO:0000059"
+        },
+        {
+            "evidence": "file",
+            "role": "written",
+            "eco_term": "author statement",
+            "eco_id": "ECO:0000204"
+        },
+        {
+            "evidence": "label",
+            "role": "background",
+            "eco_term": "inference from background scientific knowledge",
+            "eco_id": "ECO:0000001"
+        },
+        {
+            "evidence": "label",
+            "role": "computed",
+            "eco_term": "computational combinatorial evidence",
+            "eco_id": "ECO:0000053"
+        },
+        {
+            "evidence": "label",
+            "role": "observed",
+            "eco_term": "ad-hoc qualitative phenotype observation evidence",
+            "eco_id": "ECO:0005673"
+        },
+        {
+            "evidence": "label",
+            "role": "species",
+            "eco_term": "biological system reconstruction evidence by experimental evidence from single species",
+            "eco_id": "ECO:0005553"
+        },
+        {
+            "evidence": "numeric",
+            "role": "background",
+            "eco_term": "inference from background scientific knowledge",
+            "eco_id": "ECO:0000001"
+        },
+        {
+            "evidence": "numeric",
+            "role": "computed",
+            "eco_term": "computational combinatorial evidence",
+            "eco_id": "ECO:0000053"
+        },
+        {
+            "evidence": "numeric",
+            "role": "measured",
+            "eco_term": "experimental phenotypic evidence",
+            "eco_id": "ECO:0000059"
+        },
+        {
+            "evidence": "numeric",
+            "role": "observed",
+            "eco_term": "ad-hoc quantitative phenotype observation evidence",
+            "eco_id": "ECO:0005675"
+        },
+        {
+            "evidence": "url",
+            "role": "computed",
+            "eco_term": "computational combinatorial evidence",
+            "eco_id": "ECO:0000053"
+        },
+        {
+            "evidence": "url",
+            "role": "link",
+            "eco_term": "combinatorial evidence",
+            "eco_id": "ECO:0000212"
+        },
+        {
+            "evidence": "url",
+            "role": "measured",
+            "eco_term": "experimental phenotypic evidence",
+            "eco_id": "ECO:0000059"
+        },
+        {
+            "evidence": "url",
+            "role": "reference",
+            "eco_term": "traceable author statement",
+            "eco_id": "ECO:0000033"
+        },
+        {
+            "evidence": "url",
+            "role": "resource",
+            "eco_term": "imported information",
+            "eco_id": "ECO:0000311"
+        }
+    ];
+
     var ObservationView = Backbone.View.extend({
         el: $("#main-container"),
         template: _.template($("#observation-tmpl").html()),
@@ -843,6 +962,8 @@
 
             var templateId = "#observedevidence-row-tmpl";
             var isHtmlStory = false;
+            var mEvidence = "";
+
             if(type == "FileEvidence") {
                 result.evidence.filePath = result.evidence.filePath.replace(/\\/g, "/");
                 if(result.evidence.mimeType.toLowerCase().search("image") > -1) {
@@ -861,13 +982,25 @@
                 } else {
                     templateId = "#observedfileevidence-row-tmpl";
                 }
+
+                mEvidence = "file";
             } else if(type == "UrlEvidence") {
                 templateId = "#observedurlevidence-row-tmpl";
+                mEvidence = "url";
             } else if(type == "LabelEvidence") {
                 templateId = "#observedlabelevidence-row-tmpl";
+                mEvidence = "label";
             } else if(type == "DataNumericValue") {
                 templateId = "#observeddatanumericevidence-row-tmpl";
+                mEvidence = "numeric";
             }
+
+            var mRole = result.observedEvidenceRole.evidenceRole.displayName;
+            result["eco"] =
+                _.chain(ecoMappings)
+                    .filter(function(m) { return m.evidence == mEvidence && m.role == mRole })
+                    .first()
+                    .value();
 
             this.template = _.template($(templateId).html());
             var thatEl = $(this.el);
