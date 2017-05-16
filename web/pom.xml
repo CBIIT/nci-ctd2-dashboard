@@ -84,7 +84,7 @@
     </dependencies>
     
     <build>
-        <finalName>ctd2-dashboard</finalName>
+        <finalName>dashboard</finalName>
     </build>
     
 </project>

@@ -7,7 +7,6 @@
     WebApplicationContext context = WebApplicationContextUtils
             .getWebApplicationContext(application);
     String dataURL = (String) context.getBean("dataURL");
-    String dashboardURL = (String) context.getBean("dashboardURL");
     Integer maxNumOfObservations = (Integer) context.getBean("maxNumberOfEntities");
     String dashboardReleaseVersion = (String) context.getBean("dashboardReleaseVersion");
 %><!DOCTYPE html>
@@ -326,7 +325,7 @@
 
             <div class="rss-feed">
                 Subscribe to the
-                <a href="<%=dashboardURL%>feed/submissions">
+                <a href="feed/submissions">
                     Submissions RSS feed
                 </a>
                 to receive alerts when new content is posted to the site.
@@ -355,7 +354,7 @@
 
             <div class="rss-feed">
                 Subscribe to the
-                <a href="<%=dashboardURL%>feed/stories">
+                <a href="feed/stories">
                     Stories RSS feed
                 </a>
                 to receive alerts when new content is posted to the site.
@@ -927,7 +926,7 @@
 
              <div class="rss-feed">
                  Subscribe to the
-                 <a href="<%=dashboardURL%>feed/search/{{displayName}}">
+                 <a href="feed/search/{{displayName}}">
                      '{{displayName}}' RSS feed
                  </a>
                  to receive alerts when new observations are posted to the site.
@@ -1004,7 +1003,7 @@
 
             <div class="rss-feed">
                 Subscribe to the
-                <a href="<%=dashboardURL%>feed/search/{{displayName}}">
+                <a href="feed/search/{{displayName}}">
                     '{{displayName}}' RSS feed
                 </a>
                 to receive alerts when new observations are posted to the site.
@@ -1076,7 +1075,7 @@
 
             <div class="rss-feed">
                 Subscribe to the
-                <a href="<%=dashboardURL%>feed/search/{{displayName}}">
+                <a href="feed/search/{{displayName}}">
                     '{{displayName}}' RSS feed
                 </a>
                 to receive alerts when new observations are posted to the site.
@@ -1148,7 +1147,7 @@
 
             <div class="rss-feed">
                 Subscribe to the
-                <a href="<%=dashboardURL%>feed/search/{{displayName}}">
+                <a href="feed/search/{{displayName}}">
                     '{{displayName}}' RSS feed
                 </a>
                 to receive alerts when new observations are posted to the site.
@@ -1217,7 +1216,7 @@
 
             <div class="rss-feed">
                 Subscribe to the
-                <a href="<%=dashboardURL%>feed/search/{{displayName}}">
+                <a href="feed/search/{{displayName}}">
                     '{{displayName}}' RSS feed
                 </a>
                 to receive alerts when new observations are posted to the site.
@@ -1354,7 +1353,7 @@
 
             <div class="rss-feed">
                 Subscribe to the
-                <a href="<%=dashboardURL%>feed/search/{{displayName}}">
+                <a href="feed/search/{{displayName}}">
                     '{{displayName}}' RSS feed
                 </a>
                 to receive alerts when new observations are posted to the site.
@@ -1419,7 +1418,7 @@
 
             <div class="rss-feed">
                 Subscribe to the
-                <a href="<%=dashboardURL%>feed/search/{{displayName}}">
+                <a href="feed/search/{{displayName}}">
                     '{{displayName}}' RSS feed
                 </a>
                 to receive alerts when new observations are posted to the site.
@@ -1498,7 +1497,7 @@
 
               <div class="rss-feed">
                   Subscribe to the
-                  <a href="<%=dashboardURL%>feed/search/{{displayName}}">
+                  <a href="feed/search/{{displayName}}">
                       '{{displayName}}' RSS feed
                   </a>
                   to receive alerts when new observations are posted to the site.
@@ -1760,7 +1759,7 @@
 
             <div class="rss-feed">
                 Subscribe to
-                <a href="<%=dashboardURL%>feed/search/{{decodeURIComponent(term)}}">
+                <a href="feed/search/{{decodeURIComponent(term)}}">
                     '{{decodeURIComponent(term)}}' RSS feed
                 </a>
                 to receive alerts when new content is posted to the site.

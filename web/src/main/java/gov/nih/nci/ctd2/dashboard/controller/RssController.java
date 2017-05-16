@@ -1,4 +1,5 @@
 package gov.nih.nci.ctd2.dashboard.controller;
+
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.util.*;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 
 @Controller
@@ -30,9 +32,8 @@ public class RssController {
     private DashboardDao dashboardDao;
 
     @Autowired
-    @Qualifier("dashboardURL")
-    private String dashboardURL = "";
-
+    private HttpServletRequest context;
+    
     @Transactional
     @RequestMapping(value="submissions", method = {RequestMethod.GET, RequestMethod.POST})
     public ResponseEntity<String> submissionRSS() {
@@ -43,7 +44,8 @@ public class RssController {
 
         String titlePostfix = "Submissions";
         String rssDescription = "Lates submissions on the CTD^2 Dashboard.";
-        String rssLink = dashboardURL + "#/centers";
+        String dashboardUrl = context.getScheme() + "://" + context.getServerName() + context.getContextPath() + "/";
+        String rssLink = dashboardUrl + "#centers";
         String feedStr = generateFeed(submissions, titlePostfix, rssDescription, rssLink);
 
         return new ResponseEntity<String>(
@@ -70,7 +72,8 @@ public class RssController {
 
         String titlePostfix = "Stories";
         String rssDescription = "Latest stories on the CTD^2 Dashboard.";
-        String rssLink = dashboardURL + "#/centers";
+        String dashboardUrl = context.getScheme() + "://" + context.getServerName() + context.getContextPath() + "/";
+        String rssLink = dashboardUrl + "#centers";
         String feedStr = generateFeed(stories, titlePostfix, rssDescription, rssLink);
 
         return new ResponseEntity<String>(
@@ -105,7 +108,8 @@ public class RssController {
 
         String titlePostfix = keyword;
         String rssDescription = "Latest observations and submission related to '" + keyword + "'";
-        String rssLink = dashboardURL + "#/search/" + keyword;
+        String dashboardUrl = context.getScheme() + "://" + context.getServerName() + context.getContextPath() + "/";
+        String rssLink = dashboardUrl + "#search/" + keyword;
         String feedStr = generateFeed(searchEntities, titlePostfix, rssDescription, rssLink);
 
         return new ResponseEntity<String>(
@@ -119,6 +123,9 @@ public class RssController {
                                 String rssTitlePostfix,
                                 String rssDescription,
                                 String rssLink) {
+        
+        String dashboardUrl = context.getScheme() + "://" + context.getServerName() + context.getContextPath() + "/";
+        
         // Set the stage and define metadata on the RSS feed
         SyndFeed feed = new SyndFeedImpl();
         feed.setFeedType("rss_2.0");
@@ -144,8 +151,8 @@ public class RssController {
 
         SyndImage feedImg = new SyndImageImpl();
         feedImg.setTitle("CTD^2 Logo");
-        feedImg.setUrl(dashboardURL + "img/logos/ctd2_overall.png");
-        feedImg.setLink(dashboardURL);
+        feedImg.setUrl(dashboardUrl + "img/logos/ctd2_overall.png");
+        feedImg.setLink(dashboardUrl);
         feed.setImage(feedImg);
 
         // And prepare the items to be put into the RSS
@@ -237,7 +244,7 @@ public class RssController {
                     item.setDescription(itemDesc);
 
                     // Create a link to the subject page with filters enabled
-                    item.setLink(dashboardURL + "#subject/" + subject.getId() + "/" + combinedRoles + "/" + tier);
+                    item.setLink(dashboardUrl + "#subject/" + subject.getId() + "/" + combinedRoles + "/" + tier);
                     item.setUri(
                         String.format(
                             "#ctd2#subject#%s#%d",
@@ -288,7 +295,7 @@ public class RssController {
                 String centerName = observationTemplate.getSubmissionCenter().getDisplayName();
                 item.setAuthor(centerName);
 
-                item.setLink(dashboardURL + "#/submission/" + submission.getId());
+                item.setLink(dashboardUrl + "#submission/" + submission.getId());
                 item.setUri(
                     String.format(
                             "ctd2#submission#%d",
