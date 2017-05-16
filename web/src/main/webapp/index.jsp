@@ -7,6 +7,7 @@
     WebApplicationContext context = WebApplicationContextUtils
             .getWebApplicationContext(application);
     String dataURL = (String) context.getBean("dataURL");
+    String dashboardURL = (String) context.getBean("dashboardURL");
     Integer maxNumOfObservations = (Integer) context.getBean("maxNumberOfEntities");
     String dashboardReleaseVersion = (String) context.getBean("dashboardReleaseVersion");
 %><!DOCTYPE html>
@@ -322,6 +323,15 @@
                 <!-- here will come the centers... -->
                 </tbody>
             </table>
+
+            <div class="rss-feed">
+                Subscribe to the
+                <a href="<%=dashboardURL%>feed/submissions">
+                    Submissions RSS feed
+                </a>
+                to receive alerts when new content is posted to the site.
+            <div/>
+
         </div>
     </script>
 
@@ -341,6 +351,16 @@
                 <!-- here will come the stories... -->
                 </tbody>
             </table>
+
+
+            <div class="rss-feed">
+                Subscribe to the
+                <a href="<%=dashboardURL%>feed/stories">
+                    Stories RSS feed
+                </a>
+                to receive alerts when new content is posted to the site.
+            <div/>
+
         </div>
     </script>
 
@@ -873,6 +893,14 @@
                  </tr>
                  </tbody>
              </table>
+
+             <div class="rss-feed">
+                 Subscribe to the
+                 <a href="<%=dashboardURL%>feed/search/{{displayName}}">
+                     '{{displayName}}' RSS feed
+                 </a>
+                 to receive alerts when new observations are posted to the site.
+             <div/>
          </div>        
     </script>
 
@@ -942,6 +970,15 @@
                 </tr>
                 </tbody>
             </table>
+
+            <div class="rss-feed">
+                Subscribe to the
+                <a href="<%=dashboardURL%>feed/search/{{displayName}}">
+                    '{{displayName}}' RSS feed
+                </a>
+                to receive alerts when new observations are posted to the site.
+            <div/>
+
         </div>
     </script>
 
@@ -1005,6 +1042,15 @@
                 </tr>
                 </tbody>
             </table>
+
+            <div class="rss-feed">
+                Subscribe to the
+                <a href="<%=dashboardURL%>feed/search/{{displayName}}">
+                    '{{displayName}}' RSS feed
+                </a>
+                to receive alerts when new observations are posted to the site.
+            <div/>
+
         </div>
     </script>
 
@@ -1068,6 +1114,15 @@
                 </tr>
                 </tbody>
             </table>
+
+            <div class="rss-feed">
+                Subscribe to the
+                <a href="<%=dashboardURL%>feed/search/{{displayName}}">
+                    '{{displayName}}' RSS feed
+                </a>
+                to receive alerts when new observations are posted to the site.
+            <div/>
+
         </div>
     </script>
 
@@ -1128,6 +1183,15 @@
                 </tr>
                 </tbody>
             </table>
+
+            <div class="rss-feed">
+                Subscribe to the
+                <a href="<%=dashboardURL%>feed/search/{{displayName}}">
+                    '{{displayName}}' RSS feed
+                </a>
+                to receive alerts when new observations are posted to the site.
+            <div/>
+
         </div>
     </script>
 
@@ -1187,6 +1251,7 @@
                 </tr>
                 </tbody>
             </table>
+
 
         </div>
     </script>
@@ -1256,6 +1321,14 @@
                 </tbody>
             </table>
 
+            <div class="rss-feed">
+                Subscribe to the
+                <a href="<%=dashboardURL%>feed/search/{{displayName}}">
+                    '{{displayName}}' RSS feed
+                </a>
+                to receive alerts when new observations are posted to the site.
+            <div/>
+
         </div>
     </script>
 
@@ -1311,6 +1384,15 @@
                 </tr>
                 </tbody>
             </table>
+
+
+            <div class="rss-feed">
+                Subscribe to the
+                <a href="<%=dashboardURL%>feed/search/{{displayName}}">
+                    '{{displayName}}' RSS feed
+                </a>
+                to receive alerts when new observations are posted to the site.
+            <div/>
 
         </div>
     </script>
@@ -1381,6 +1463,15 @@
                   </tr>
                   </tbody>
               </table>
+
+
+              <div class="rss-feed">
+                  Subscribe to the
+                  <a href="<%=dashboardURL%>feed/search/{{displayName}}">
+                      '{{displayName}}' RSS feed
+                  </a>
+                  to receive alerts when new observations are posted to the site.
+              <div/>
 
           </div>
      </script>
@@ -1635,7 +1726,16 @@
                     </tbody>
                 </table>
             </div>
-        </div>
+
+            <div class="rss-feed">
+                Subscribe to
+                <a href="<%=dashboardURL%>feed/search/{{decodeURIComponent(term)}}">
+                    '{{decodeURIComponent(term)}}' RSS feed
+                </a>
+                to receive alerts when new content is posted to the site.
+            <div/>
+
+            </div>
     </script>
 
     <script type="text/template" id="search-submission-tbl-row-tmpl">
