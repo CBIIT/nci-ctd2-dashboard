@@ -739,3 +739,11 @@ div.center-link-container {
     text-align: center;
     font-size: smaller;
 }
+
+.td-no-break {
+    text-wrap: avoid;
+}
+
+.evidences tbody tr td:nth-child(2) {
+    white-space: nowrap;
+}
