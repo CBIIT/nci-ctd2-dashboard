@@ -1,5 +1,4 @@
-#Updated at Mon Mar 26 21:58:21 EDT 2012
-#Mon Mar 26 21:58:21 EDT 2012
+# database
 database.driverClassName=com.mysql.jdbc.Driver
 database.url=jdbc\:mysql\://localhost\:3306/ctd2_dashboard
 database.test.url=jdbc\:mysql\://localhost\:3306/ctd2_test
@@ -18,7 +17,7 @@ hibernate.connection.charSet=UTF-8
 search.indexDir=/tmp/dashboard-index
 search.test.indexDir=/tmp/dashboard-index-test
 # Set the following to <= 0 to disable the cap
-search.max.number.results=50
+search.max.number.results=200
 
 # when proxying files through dashboard, these hosts will be allowed to serve resource
 allowed.hosts=http://cbio.mskcc.org,http://localhost
@@ -34,4 +33,3 @@ list.max.observations=100
 cnkb.data.url=http://cagridnode.c2b2.columbia.edu:8080/cknb/InteractionsServlet_new/InteractionsServlet
 
 dashboard.release.version=v201705
-dashboard.url=https://ctd2-dashboard.nci.nih.gov/
