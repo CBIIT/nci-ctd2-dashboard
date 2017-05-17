@@ -100,23 +100,32 @@
                 </exclusion>
             </exclusions>
         </dependency>
-
         <dependency>
             <groupId>org.apache.lucene</groupId>
             <artifactId>lucene-core</artifactId>
             <version>3.6.2</version>
         </dependency>
-
         <dependency>
             <groupId>org.apache.lucene</groupId>
             <artifactId>lucene-analyzers</artifactId>
             <version>3.6.2</version>
         </dependency>
-
         <dependency>
             <groupId>org.apache.lucene</groupId>
             <artifactId>lucene-queryparser</artifactId>
             <version>3.6.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>sql-maven-plugin</artifactId>
+            <version>1.5</version>
+            <type>maven-plugin</type>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>properties-maven-plugin</artifactId>
+            <version>1.0.0</version>
+            <type>maven-plugin</type>
         </dependency>
     </dependencies>
 
@@ -131,6 +140,77 @@
                         <goals>
                             <goal>test-jar</goal>
                         </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>properties-maven-plugin</artifactId>
+                <version>1.0.0</version>
+                <executions>
+                    <execution>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>read-project-properties</goal>
+                        </goals>
+                        <configuration>
+                            <files>
+                                <file>src/main/resources/META-INF/spring/dashboard.properties</file>
+                            </files>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>sql-maven-plugin</artifactId>
+                <version>1.5</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>mysql</groupId>
+                        <artifactId>mysql-connector-java</artifactId>
+                        <version>5.1.38</version>
+                    </dependency>
+                </dependencies>
+                <configuration>
+                    <driver>com.mysql.jdbc.Driver</driver>
+                    <url>${database.test.url}</url>
+                    <username>${database.username}</username>
+                    <password>${database.password}</password>
+                    <!--
+                    You can comment out username/password configurations and
+                    have maven to look them up in your settings.xml using ${settingsKey}
+                    -->
+                    <!-- <settingsKey>sensibleKey</settingsKey> -->
+                    <!--all executions are ignored if -Ddatabase.test.clean.skip=true-->
+                    <skip>${database.test.clean.skip}</skip>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>drop-test-db</id>
+                        <phase>process-test-resources</phase>
+                        <goals>
+                            <goal>execute</goal>
+                        </goals>
+                        <configuration>
+                            <!-- need to connect to another database to drop targeted one -->
+                            <url>${database.url}</url>
+                            <autocommit>true</autocommit>
+                            <sqlCommand>drop database if exists ${database.test.name}</sqlCommand>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>create-test-db</id>
+                        <phase>process-test-resources</phase>
+                        <goals>
+                            <goal>execute</goal>
+                        </goals>
+                        <configuration>
+                            <!-- need to connect to another database to create targeted one -->
+                            <url>${database.url}</url>
+                            <autocommit>true</autocommit>
+                            <sqlCommand>create database ${database.test.name} default character set 'utf8'</sqlCommand>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
