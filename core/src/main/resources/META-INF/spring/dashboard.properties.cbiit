@@ -1,0 +1,22 @@
+# database
+database.driverClassName=com.mysql.jdbc.Driver
+
+# hibernate
+hibernate.dialect=org.hibernate.dialect.MySQL5InnoDBDialect
+hibernate.hbm2ddl.auto=update
+# clean test database before every test
+hibernate.hbm2ddl.auto.test=create-drop
+hibernate.ejb.naming_strategy=org.hibernate.cfg.ImprovedNamingStrategy
+hibernate.connection.charSet=UTF-8
+
+# lucene
+search.test.indexDir=/tmp/ctd2-dashboard-index-test
+# Set the following to <= 0 to disable the cap
+search.max.number.results=200
+
+# this is to cap the number obs/results we want to show on a subject/submission page
+# If you make this too high and the client will suffer a lot to load details for each observation
+list.max.observations=100
+
+# this is the URL for CNKB query
+cnkb.data.url=http://cagridnode.c2b2.columbia.edu:8080/cknb/InteractionsServlet_new/InteractionsServlet
