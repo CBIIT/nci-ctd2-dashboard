@@ -2,3 +2,5 @@ target/
 .DS_Store
 .svn
 .git
+core/src/main/resources/META-INF/spring/dashboard.properties
+core/src/main/resources/log4j.properties
