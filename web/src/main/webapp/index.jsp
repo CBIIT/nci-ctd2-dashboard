@@ -861,7 +861,7 @@
                          <tr>
                              <th>Gene symbol<div style="font-size:10px; font-style:italic">(from HGNC)</div></th>
                              <td>{{displayName}}&nbsp;&nbsp;
-                                  <a href="#" class="addGene-{{displayName}} greenColor" title="Add gene to cart">+</a>  
+                                  <a href="#" class="addGene-{{displayName}} cartAddPlus" title="Add gene to cart">+</a>
                              </td>
                          </tr>
                          <tr>
@@ -1527,7 +1527,7 @@
                 <a href="#/subject/{{subject.id}}">
                     {{subject.displayName}}
                 </a>  &nbsp;
-                <a href="#" class="addGene-{{subject.displayName}} greenColor" title="Add gene to cart" >+</a>			  				 
+                <a href="#" class="addGene-{{subject.displayName}} cartAddPlus" title="Add gene to cart" >+</a>
             </td>
             <td>{{subject.type}}</td>
             <td>{{observedSubjectRole.subjectRole.displayName}}</td>
@@ -1689,7 +1689,7 @@
             <td id="search-image-{{dashboardEntity.id}}"></td>
             <td>
                 <a href="#subject/{{dashboardEntity.id}}">{{dashboardEntity.displayName}}</a>
-                <a href="#" class="addGene-{{dashboardEntity.displayName}} greenColor" title="Add gene to cart" >+</a>
+                <a href="#" class="addGene-{{dashboardEntity.displayName}} cartAddPlus" title="Add gene to cart" >+</a>
                 <br>
                 <i>{{dashboardEntity.organism.displayName != '-' ? "(" + dashboardEntity.organism.displayName + ")" : ""}}</i>
             </td>

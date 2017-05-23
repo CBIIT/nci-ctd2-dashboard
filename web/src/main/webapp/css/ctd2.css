@@ -652,9 +652,11 @@ blockquote p {
     padding-top: 10px;
 }
 
-.greenColor
+.cartAddPlus
 {
-	color: green
+    color: green;
+    font-size: 24px;
+    font-weight: bold;
 }
 
 .labelDisable
