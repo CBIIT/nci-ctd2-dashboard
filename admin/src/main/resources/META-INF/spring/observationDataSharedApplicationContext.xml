@@ -1465,7 +1465,7 @@
     </bean>
     <bean name="broadKrasDecitabineLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
         <property name="delimiter" value="\u0009"/>
-        <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol,cell_line,compound_name,disease,figure_1a,figure_2a,figure_2b,figure_2c,publication_reference"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol,cell_line,compound_name,disease,figure_1a,figure_2a,figure_2b,figure_2c,publication_reference,evidence_ontology_term"/>
     </bean>
     
     <bean name="broadKrasDecitabineMekLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
@@ -1474,7 +1474,7 @@
     </bean>
     <bean name="broadKrasDecitabineMekLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
         <property name="delimiter" value="\u0009"/>
-        <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,cell_line_1,cell_line_2,compound_name_1,compound_name_2,disease,figure_5a,figure_5b,figure_5c,tier1_evidence,publication_reference"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,cell_line_1,cell_line_2,compound_name_1,compound_name_2,disease,figure_5a,figure_5b,figure_5c,tier1_evidence,publication_reference,evidence_ontology_term"/>
     </bean>
     
     <bean name="broadKrasDecitabineNavitoclaxLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
@@ -1483,7 +1483,7 @@
     </bean>
     <bean name="broadKrasDecitabineNavitoclaxLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
         <property name="delimiter" value="\u0009"/>
-        <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol,cell_line_1,cell_line_2,cell_line_3,compound_name_1,compound_name_2,disease,figure_6a,figure_6b,figure_6c,figure_6d,tier1_evidence,publication_reference"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol,cell_line_1,cell_line_2,cell_line_3,compound_name_1,compound_name_2,disease,figure_6a,figure_6b,figure_6c,figure_6d,tier1_evidence,publication_reference,evidence_ontology_term"/>
     </bean>
     
     <bean name="broadKrasXenograftLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
@@ -1492,7 +1492,7 @@
     </bean>
     <bean name="broadKrasXenograftLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
         <property name="delimiter" value="\u0009"/>
-        <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol,cell_line,compound_name_1,compound_name_2,disease,figure_7a,figure_7b,tier2_evidence,publication_reference"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol,cell_line,compound_name_1,compound_name_2,disease,figure_7a,figure_7b,tier2_evidence,publication_reference,evidence_ontology_term"/>
     </bean>
     
     <bean name="dfciSwisnfLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
@@ -2798,6 +2798,7 @@
                 <entry key="broad_kras_decitabine:figure_2b" value="evidence:readString:createObservedFileEvidence" />
                 <entry key="broad_kras_decitabine:figure_2c" value="evidence:readString:createObservedFileEvidence" />
                 <entry key="broad_kras_decitabine:publication_reference" value="evidence:readString:createObservedUrlEvidence" />
+                <entry key="broad_kras_decitabine:evidence_ontology_term" value="evidence:readString:createObservedUrlEvidence" />
                 <entry key="broad_kras_decitabine_mek:gene_symbol_1" value="subject:findGenesBySymbol" />
                 <entry key="broad_kras_decitabine_mek:gene_symbol_2" value="subject:findGenesBySymbol" />
                 <entry key="broad_kras_decitabine_mek:cell_line_1" value="subject:findCellLineByName" />
@@ -2810,6 +2811,7 @@
                 <entry key="broad_kras_decitabine_mek:figure_5c" value="evidence:readString:createObservedFileEvidence" />
                 <entry key="broad_kras_decitabine_mek:tier1_evidence" value="evidence:readString:createObservedUrlEvidence" />
                 <entry key="broad_kras_decitabine_mek:publication_reference" value="evidence:readString:createObservedUrlEvidence" />
+                <entry key="broad_kras_decitabine_mek:evidence_ontology_term" value="evidence:readString:createObservedUrlEvidence" />
                 <entry key="broad_kras_decitabine_navitoclax:gene_symbol" value="subject:findGenesBySymbol" />
                 <entry key="broad_kras_decitabine_navitoclax:cell_line_1" value="subject:findCellLineByName" />
                 <entry key="broad_kras_decitabine_navitoclax:cell_line_2" value="subject:findCellLineByName" />
@@ -2823,6 +2825,7 @@
                 <entry key="broad_kras_decitabine_navitoclax:figure_6d" value="evidence:readString:createObservedFileEvidence" />
                 <entry key="broad_kras_decitabine_navitoclax:tier1_evidence" value="evidence:readString:createObservedUrlEvidence" />
                 <entry key="broad_kras_decitabine_navitoclax:publication_reference" value="evidence:readString:createObservedUrlEvidence" />
+                <entry key="broad_kras_decitabine_navitoclax:evidence_ontology_term" value="evidence:readString:createObservedUrlEvidence" />
                 <entry key="broad_kras_xenograft:gene_symbol" value="subject:findGenesBySymbol" />
                 <entry key="broad_kras_xenograft:cell_line" value="subject:findCellLineByName" />
                 <entry key="broad_kras_xenograft:compound_name_1" value="subject:findCompoundsByName" />
@@ -2832,6 +2835,7 @@
                 <entry key="broad_kras_xenograft:figure_7b" value="evidence:readString:createObservedFileEvidence" />
                 <entry key="broad_kras_xenograft:tier2_evidence" value="evidence:readString:createObservedUrlEvidence" />
                 <entry key="broad_kras_xenograft:publication_reference" value="evidence:readString:createObservedUrlEvidence" />
+                <entry key="broad_kras_xenograft:evidence_ontology_term" value="evidence:readString:createObservedUrlEvidence" />
                 <entry key="dfci_swisnf:gene_symbol_1" value="subject:findGenesBySymbol" />
                 <entry key="dfci_swisnf:gene_symbol_2" value="subject:findGenesBySymbol" />
                 <entry key="dfci_swisnf:gene_symbol_3" value="subject:findGenesBySymbol" />
