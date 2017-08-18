@@ -2,7 +2,7 @@
 This project encapsulates three modules representing the whole CTD^2 Dashboard project:
 
 * **Core**: contains the main data structures and basic DAO methods.
-* **Admin**: contains importers/normalizers/converters for populating the database (depends on _core_)
+* **Admin**: contains importers/normalizers/converters for populating the database (depends on _core_).
 * **Web**: provides a Web-based API for querying the database; also contains a thin-client (known as _Dashboard Web UI_) that helps with basic navigation
 
 # UPDATED 20150924 -- Process to manage and track issues of the Dashboard
