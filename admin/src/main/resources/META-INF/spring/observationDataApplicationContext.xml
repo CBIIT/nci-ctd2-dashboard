@@ -1198,4 +1198,49 @@
             </bean>
         </property>
     </bean>
+    <bean name="emoryMkk3BindingPartnersReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${emory.mkk3.binding.partners.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="emoryMkk3BindingPartnersLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="emoryMkk3MycCoIPReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${emory.mkk3.myc.coIP.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="emoryMkk3MycCoIPLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="emoryMkk3MycLiveCellsReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${emory.mkk3.myc.live.cells.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="emoryMkk3MycLiveCellsLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="emoryMkk3MycProteinStabilityReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${emory.mkk3.myc.protein.stability.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="emoryMkk3MycProteinStabilityLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="emoryMkk3MycReporterAssayReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${emory.mkk3.myc.reporter.assay.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="emoryMkk3MycReporterAssayLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
 </beans>

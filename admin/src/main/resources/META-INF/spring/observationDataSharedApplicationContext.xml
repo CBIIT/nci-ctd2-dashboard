@@ -663,9 +663,34 @@
                 <batch:chunk reader="utswSmarca4Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
         </batch:step>
-        <batch:step id="emoryOncoPpiStoryStep" parent="observationDataStep">
+        <batch:step id="emoryOncoPpiStoryStep" parent="observationDataStep" next="emoryMkk3BindingPartnersStep">
             <batch:tasklet>
                 <batch:chunk reader="emoryOncoPpiStoryReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+            </batch:tasklet>
+        </batch:step>
+        <batch:step id="emoryMkk3BindingPartnersStep" parent="observationDataStep" next="emoryMkk3MycCoIPStep">
+            <batch:tasklet>
+                <batch:chunk reader="emoryMkk3BindingPartnersReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+            </batch:tasklet>
+        </batch:step>
+        <batch:step id="emoryMkk3MycCoIPStep" parent="observationDataStep" next="emoryMkk3MycLiveCellsStep">
+            <batch:tasklet>
+                <batch:chunk reader="emoryMkk3MycCoIPReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+            </batch:tasklet>
+        </batch:step>
+        <batch:step id="emoryMkk3MycLiveCellsStep" parent="observationDataStep" next="emoryMkk3MycProteinStabilityStep">
+            <batch:tasklet>
+                <batch:chunk reader="emoryMkk3MycLiveCellsReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+            </batch:tasklet>
+        </batch:step>
+        <batch:step id="emoryMkk3MycProteinStabilityStep" parent="observationDataStep" next="emoryMkk3MycReporterAssayStep">
+            <batch:tasklet>
+                <batch:chunk reader="emoryMkk3MycProteinStabilityReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+            </batch:tasklet>
+        </batch:step>
+        <batch:step id="emoryMkk3MycReporterAssayStep" parent="observationDataStep">
+            <batch:tasklet>
+                <batch:chunk reader="emoryMkk3MycReporterAssayReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
         </batch:step>
     </batch:job>
@@ -1863,6 +1888,52 @@
         <property name="delimiter" value="\u0009"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,gene_symbol_3,gene_symbol_4,gene_symbol_5,gene_symbol_6,gene_symbol_7,gene_symbol_8,gene_symbol_9,compound_name,cell_line_1,cell_line_2,cell_line_3,tissue_sample,nci_portal,publication_reference_1,publication_reference_2,publication_reference_3,story_location"/>
     </bean>
+
+    <bean name="emoryMkk3BindingPartnersLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="emoryMkk3BindingPartnersLineTokenizer" />
+    </bean>
+    <bean name="emoryMkk3BindingPartnersLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="\u0009"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,interactor_1,interactor_2,cell_line,figure_1,reference,evidence_ontology_term"/>
+    </bean>
+
+    <bean name="emoryMkk3MycCoIPLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="emoryMkk3MycCoIPLineTokenizer" />
+    </bean>
+    <bean name="emoryMkk3MycCoIPLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="\u0009"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,interactor_1,interactor_2,cell_line,figure_1,reference,evidence_ontology_term"/>
+    </bean>
+
+    <bean name="emoryMkk3MycLiveCellsLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="emoryMkk3MycLiveCellsLineTokenizer" />
+    </bean>
+    <bean name="emoryMkk3MycLiveCellsLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="\u0009"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,interactor_1,interactor_2,cell_line,figure_1,reference,evidence_ontology_term"/>
+    </bean>
+
+    <bean name="emoryMkk3MycProteinStabilityLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="emoryMkk3MycProteinStabilityLineTokenizer" />
+    </bean>
+    <bean name="emoryMkk3MycProteinStabilityLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="\u0009"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,interactor_1,mutation_1,interactor_2,cell_line,figure_1,reference,evidence_ontology_term"/>
+    </bean>
+
+    <bean name="emoryMkk3MycReporterAssayLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="emoryMkk3MycReporterAssayLineTokenizer" />
+    </bean>
+    <bean name="emoryMkk3MycReporterAssayLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="\u0009"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,interactor_1,mutation_1,interactor_2,cell_line,figure_1,reference,evidence_ontology_term"/>
+    </bean>
+
 
     <!-- shared helper beans -->
     <bean name="observationTemplateMap" class="java.util.HashMap">
@@ -3221,6 +3292,38 @@
                 <entry key="emory_oncoppi_story:publication_reference_2" value="evidence:readString:createObservedUrlEvidence" />
                 <entry key="emory_oncoppi_story:publication_reference_3" value="evidence:readString:createObservedUrlEvidence" />
                 <entry key="emory_oncoppi_story:story_location" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="emory_mkk3_binding_partners:interactor_1" value="subject:findGenesBySymbol" />
+		<entry key="emory_mkk3_binding_partners:interactor_2" value="subject:findGenesBySymbol" />
+		<entry key="emory_mkk3_binding_partners:cell_line" value="subject:findCellLineByName" />
+		<entry key="emory_mkk3_binding_partners:figure_1" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="emory_mkk3_binding_partners:reference" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="emory_mkk3_binding_partners:evidence_ontology_term" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="emory_mkk3_myc_coIP:interactor_1" value="subject:findGenesBySymbol" />
+		<entry key="emory_mkk3_myc_coIP:interactor_2" value="subject:findGenesBySymbol" />
+		<entry key="emory_mkk3_myc_coIP:cell_line" value="subject:findCellLineByName" />
+		<entry key="emory_mkk3_myc_coIP:figure_1" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="emory_mkk3_myc_coIP:reference" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="emory_mkk3_myc_coIP:evidence_ontology_term" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="emory_mkk3_myc_live_cells:interactor_1" value="subject:findGenesBySymbol" />
+		<entry key="emory_mkk3_myc_live_cells:interactor_2" value="subject:findGenesBySymbol" />
+		<entry key="emory_mkk3_myc_live_cells:cell_line" value="subject:findCellLineByName" />
+		<entry key="emory_mkk3_myc_live_cells:figure_1" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="emory_mkk3_myc_live_cells:reference" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="emory_mkk3_myc_live_cells:evidence_ontology_term" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="emory_mkk3_myc_protein_stability:interactor_1" value="subject:findGenesBySymbol" />
+		<entry key="emory_mkk3_myc_protein_stability:mutation_1" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="emory_mkk3_myc_protein_stability:interactor_2" value="subject:findGenesBySymbol" />
+		<entry key="emory_mkk3_myc_protein_stability:cell_line" value="subject:findCellLineByName" />
+		<entry key="emory_mkk3_myc_protein_stability:figure_1" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="emory_mkk3_myc_protein_stability:reference" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="emory_mkk3_myc_protein_stability:evidence_ontology_term" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="emory_mkk3_myc_reporter_assay:interactor_1" value="subject:findGenesBySymbol" />
+		<entry key="emory_mkk3_myc_reporter_assay:mutation_1" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="emory_mkk3_myc_reporter_assay:interactor_2" value="subject:findGenesBySymbol" />
+		<entry key="emory_mkk3_myc_reporter_assay:cell_line" value="subject:findCellLineByName" />
+		<entry key="emory_mkk3_myc_reporter_assay:figure_1" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="emory_mkk3_myc_reporter_assay:reference" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="emory_mkk3_myc_reporter_assay:evidence_ontology_term" value="evidence:readString:createObservedUrlEvidence" />
             </map>
         </constructor-arg>
     </bean>

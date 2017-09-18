@@ -446,4 +446,19 @@
     <bean name="emoryOncoPpiStoryReader" class="org.springframework.batch.item.file.FlatFileItemReader">
         <property name="lineMapper" ref="emoryOncoPpiStoryLineMapper" />
     </bean>
+    <bean name="emoryMkk3BindingPartnersReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="emoryMkk3BindingPartnersLineMapper" />
+    </bean>
+    <bean name="emoryMkk3MycCoIPReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="emoryMkk3MycCoIPLineMapper" />
+    </bean>
+    <bean name="emoryMkk3MycLiveCellsReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="emoryMkk3MycLiveCellsLineMapper" />
+    </bean>
+    <bean name="emoryMkk3MycProteinStabilityReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="emoryMkk3MycProteinStabilityLineMapper" />
+    </bean>
+    <bean name="emoryMkk3MycReporterAssayReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="emoryMkk3MycReporterAssayLineMapper" />
+    </bean>
 </beans>
