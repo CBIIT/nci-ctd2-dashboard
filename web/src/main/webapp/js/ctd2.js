@@ -2162,17 +2162,17 @@
         render: function() { 
         	var result = this.model.toJSON();         
         	var mra_data_url = $("#mra-view-tmpl").attr("mra-data-url")  + result.evidence.filePath;
-            $(this.el).html(this.template(result));            
+            $(this.el).html(this.template(result));
             $.ajax({
                url: "mra/",
                data: {url : mra_data_url, dataType : "mra", filterBy: "none", nodeNumLimit: 0, throttle : ""},
                dataType: "json",
                contentType: "json",
                
-               success: function(data) {            	      
+               success: function(data) {
             	   var thatEl = $("#master-regulator-grid");   
             	   var thatE2 = $("#mra-barcode-grid");   
-                   _.each(data, function(aData){                   	 
+                   _.each(data, function(aData){
                    	    var mraViewRowView = new MraViewRowView({
                            el: $(thatEl).find("tbody"),
                             model: aData
@@ -2183,14 +2183,14 @@
                             el: $(thatE2).find("tbody"),
                             model: aData
                         });
-                        mraBarcodeRowView.render();                   
+                        mraBarcodeRowView.render();
                       
                    });            
                  
                    var oTable1 = $('#master-regulator-grid').dataTable({
                 	 "sDom": "<'row'<'span5'i><'span5'f>r>t<'row'<'span5'l><'span5'p>>",
                 	 "sScrollY": "200px",
-                     "bPaginate": false           		 
+                     "bPaginate": false
              	   });
                  
                  
@@ -2199,16 +2199,16 @@
            });  //ajax 
        
          
-           $(".mra-cytoscape-view").click(function(event) {            	
-                event.preventDefault();               
+           $(".mra-cytoscape-view").click(function(event) {
+                event.preventDefault();
                 var mraDesc = $(this).attr("data-description");
-                var throttle = $("#throttle-input").text();               
+                var throttle = $("#throttle-input").text();
                 var layoutName = $("#cytoscape-layouts").val();
                 var nodeLimit = $("#cytoscape-node-limit").val();
               
-                var filters = "";              
-                $('input[type="checkbox"]:checked').each(function() {                 
-                	    filters = filters + ($(this).val() + ',');                 	   
+                var filters = "";
+                $('input[type="checkbox"]:checked').each(function() {
+                	    filters = filters + ($(this).val() + ',');
                 });   
                 
                
@@ -2241,14 +2241,14 @@
                             }
                         );
  
-                        var container = $('#cytoscape');                        
+                        var container = $('#cytoscape');
                         
-                        var cyOptions = {                        	             	 
+                        var cyOptions = {
                             layout: {
                             	 name: layoutName,
-                            	 fit: true,                                                  	 
-                            	 liveUpdate: false,                       
-                            	 maxSimulationTime: 8000, // max length in ms to run the layout                        
+                            	 fit: true,
+                            	 liveUpdate: false,
+                            	 maxSimulationTime: 8000, // max length in ms to run the layout
                             	 stop: function(){
                             		 $("#mra_progress_indicator").hide();
                             		 this.stop();
@@ -2260,12 +2260,12 @@
                                 .selector("node")
                                 .css({
                                     "content": "data(id)",
-                                    "shape": "data(shape)",                                  
+                                    "shape": "data(shape)",
                                     "border-width": 2,
                                     "labelValign": "middle",
-                                    "font-size": 10,                                                                  
+                                    "font-size": 10,
                                     "width": "25px",
-                                    "height": "25px",                                   
+                                    "height": "25px",
                                     "background-color": "data(color)",
                                     "border-color": "#555"
                                 })
@@ -2312,42 +2312,42 @@
                         container.cy(cyOptions); 
                   
                     }
-                });  //end ajax              
+                });  //end ajax
               
 
-            });  //end .cytoscape-view         
+            });  //end .cytoscape-view
            
-            $("#master-regulator-grid").on("change", ":checkbox", function() {           	 
+            $("#master-regulator-grid").on("change", ":checkbox", function() {
             	 var nodeLimit = $("#cytoscape-node-limit").val();
             	 var filters = "";
-                 $('input[type="checkbox"]:checked').each(function() {                 
-             	    filters = filters + ($(this).val() + ',');             	    
-                 });             
+                 $('input[type="checkbox"]:checked').each(function() {
+             	    filters = filters + ($(this).val() + ',');
+                 });
              
                  $.ajax({
                  	url: "mra/",
                      data: {url : mra_data_url, dataType : "throttle", filterBy: filters, nodeNumLimit: nodeLimit, throttle : ""},
                      dataType: "json",
                      contentType: "json",
-                     success: function(data) {                     	 
-                         if (data != null)                                	 
-                            $("#throttle-input").text(data);                      
+                     success: function(data) {
+                         if (data != null)
+                            $("#throttle-input").text(data);
                          else
                             $("#throttle-input").text("e.g. 0.01");
-                         $("#throttle-input").css('color', 'grey');                          
+                         $("#throttle-input").css('color', 'grey');
                      }
                  });
                 
 
             });  //end mra-checked  
             
-            $("#cytoscape-node-limit").change(function(evt) {            	 
+            $("#cytoscape-node-limit").change(function(evt) {
             	//the following block code is same as above, shall make it as function,
             	//but for somehow the function call does not work here for me. 
             	 var nodeLimit = $("#cytoscape-node-limit").val();
             	 var filters = "";
-                 $('input[type="checkbox"]:checked').each(function() {                 
-             	    filters = filters + ($(this).val() + ',');             	    
+                 $('input[type="checkbox"]:checked').each(function() {
+             	    filters = filters + ($(this).val() + ',');
                  });             
              
                  $.ajax({
@@ -2355,12 +2355,12 @@
                      data: {url : mra_data_url, dataType : "throttle", filterBy: filters, nodeNumLimit: nodeLimit, throttle : ""},
                      dataType: "json",
                      contentType: "json",
-                     success: function(data) {                     	 
-                         if (data != null)                                	 
-                            $("#throttle-input").text(data);                      
+                     success: function(data) {
+                         if (data != null)
+                            $("#throttle-input").text(data);
                          else
                             $("#throttle-input").text("e.g. 0.01");
-                         $("#throttle-input").css('color', 'grey');                          
+                         $("#throttle-input").css('color', 'grey');
                      }
                  });
                 
@@ -2375,7 +2375,7 @@
         render: function() {
             var result = this.model;
             
-            var templateId = "#mra-view-row-tmpl";     
+            var templateId = "#mra-view-row-tmpl";
 
             this.template = _.template($(templateId).html());
             $(this.el).append(this.template(result));
@@ -2390,10 +2390,10 @@
         render: function() {
             var result = this.model;
             
-            var templateId = "#mra-barcode-view-row-tmpl";     
+            var templateId = "#mra-barcode-view-row-tmpl";
 
             this.template = _.template($(templateId).html());
-            $(this.el).append(this.template(result));            
+            $(this.el).append(this.template(result));
           
             if (result.daColor != null)
                 $(".da-color-" + result.entrezId).css({"background-color": result.daColor});           
@@ -2407,7 +2407,7 @@
             
             _.each(result.mraTargets, function(mraTarget){
             	
-            	var colorIndex = 255 - mraTarget.colorIndex;             
+            	var colorIndex = 255 - mraTarget.colorIndex;
             	if (mraTarget.arrayIndex == 0)
             	{            		
             		ctx.fillStyle = 'rgb(255,'+colorIndex+','+colorIndex+')';
@@ -2597,11 +2597,11 @@
     //Gene List View
     var GeneListView = Backbone.View.extend({
     	el: $("#main-container"),
-        template: _.template($("#genelist-view-tmpl").html()),      
+        template: _.template($("#genelist-view-tmpl").html()),
         render: function() { 
         	
         	var geneList = JSON.parse(localStorage.getItem("genelist")); 
-        	 if (geneList == null)                       
+        	 if (geneList == null)
         		 geneList = [];
         	 else if (geneList.length > numOfCartGene)
         	 {
@@ -2611,14 +2611,14 @@
         	 }
                  
         	var html = "";
-        	$(this.el).html(this.template({}));   
+        	$(this.el).html(this.template({}));
         	$.each(geneList, function (aData) {
-        		var value = Encoder.htmlEncode(this.toString());                   	    
+        		var value = Encoder.htmlEncode(this.toString());
         	    $("#geneNames").append(_.template($("#gene-cart-option-tmpl").html(), {displayItem: value})); 
             });        	
         	 
-            $("#addGene").click(function(e) {        		 
-       		   e.preventDefault();        		 
+            $("#addGene").click(function(e) {
+       		   e.preventDefault();
        		    
        		   $("#gene-symbols").val("");
                $("#addgene-modal").modal('show');
@@ -2626,17 +2626,17 @@
             });  
             
             $("#add-gene-symbols").click(function() {
-            	var inputGenes = $("#gene-symbols").val();                
-            	var genes = Encoder.htmlEncode(inputGenes).split(/[\s,]+/);            	 
+            	var inputGenes = $("#gene-symbols").val();
+            	var genes = Encoder.htmlEncode(inputGenes).split(/[\s,]+/);
             	
-        		processInputGenes(genes);              
+        		processInputGenes(genes);
         		
             });
             
      
-            $("#deleteGene").click(function(e) {        		 
+            $("#deleteGene").click(function(e) {
        		    e.preventDefault(); 
-       		    var selectedGenes = [];       		    
+       		    var selectedGenes = [];
        		    $('#geneNames :selected').each(function(i, selected) {
        			     selectedGenes[i] = $(selected).text();
        		    });
@@ -2645,14 +2645,14 @@
        		    {
        		    	showAlertMessage("You haven't select any gene!");
        		   	   return;
-       		    }      		 
+       		    }
        		   
        		  
        		    $.each(selectedGenes, function () {    
        		    	 
-      		       var gene = $.trim(this.toString()).toUpperCase();      		 
-      		       var index = $.inArray(gene, geneList);      		  
-      		       if (index>=0) geneList.splice(index, 1);     
+      		       var gene = $.trim(this.toString()).toUpperCase();
+      		       var index = $.inArray(gene, geneList);
+      		       if (index>=0) geneList.splice(index, 1);
       		        
                 });   
        		    localStorage["genelist"] = JSON.stringify(geneList);
@@ -2663,9 +2663,9 @@
              });  
        		 
              
-            $("#clearList").click(function(e) {        		 
-       		    e.preventDefault();        		    
-       		    $('#geneNames').html('');       		     
+            $("#clearList").click(function(e) {
+       		    e.preventDefault();
+       		    $('#geneNames').html('');
        		    localStorage.removeItem("genelist");
        		    sessionStorage.removeItem("selectedGenes");
        		    
@@ -2674,21 +2674,21 @@
        		    
             });  
             
-            $("#loadGenes").click(function(e) {        		 
-       		    e.preventDefault();        		    
-       		    $('#geneFileInput').click();       		  
+            $("#loadGenes").click(function(e) {
+       		    e.preventDefault();
+       		    $('#geneFileInput').click();
        		   
              });
             
             if (window.FileReader) {
-                 $('#geneFileInput').on('change', function (e) {                    
-                     var file = e.target.files[0];                    
+                 $('#geneFileInput').on('change', function (e) {
+                     var file = e.target.files[0];
                      if (file.size > 1000)
                      {                    	 
               	    	showAlertMessage("Gene Cart can only contains " + numOfCartGene + " genes.");
                         return;
                      }
-                     var reader = new FileReader();                   
+                     var reader = new FileReader();
                      reader.onload = function (e) {
                          var genes = reader.result.split(/[\s,]+/);  
                         
@@ -2699,13 +2699,13 @@
                          $(this).after($(this).clone(true)).remove();
                         });
                  });
-            } else {             
+            } else {
      	    	showAlertMessage("Load Genes from file is not supported.");
-            }            
+            }
             
-            $("#cnkb-query").click(function(e) {        		 
+            $("#cnkb-query").click(function(e) {
        		   
-       		   var selectedGenes = [];       		    
+       		   var selectedGenes = [];
        		   $('#geneNames :selected').each(function(i, selected) {
        			     selectedGenes[i] = $(selected).text();
        		   });
@@ -2714,9 +2714,9 @@
        		    {
        		    	sessionStorage["selectedGenes"] = JSON.stringify(geneList); 
        		     
-       		    }      		 
+       		    }
        		    else
-       		    {       		       
+       		    {
        		    	sessionStorage["selectedGenes"] = JSON.stringify(selectedGenes);       		     
        		    } 
        		    
@@ -2726,11 +2726,11 @@
             var processInputGenes = function(genes)
             {
             	var geneNames = JSON.parse(localStorage.getItem("genelist"));
-                if (geneNames == null)                       
+                if (geneNames == null)
               	   geneNames = [];
-                var num = genes.length + geneNames.length                        
+                var num = genes.length + geneNames.length
                 if ( num > numOfCartGene)
-                {                	 
+                {
          	    	showAlertMessage("Gene Cart can only contains " + numOfCartGene + " genes.");
                     return;
                 }
@@ -2742,10 +2742,10 @@
                     	     geneSymbols: JSON.stringify(genes) 
                  	      },
                     dataType: "json",
-                    contentType: "json",                   
-                    success: function(data) {                    	 
+                    contentType: "json",
+                    success: function(data) {
                     	var invalidGenes = "";
-                        _.each(data, function(aData){      
+                        _.each(data, function(aData){
                         	 if ( invalidGenes.length > 0)
                         	    invalidGenes = aData;
                         	 else
@@ -2762,7 +2762,7 @@
                     		showInvalidMessage("\"" + data + "\" is invalid and not added to the cart.")
                     	}
                     	else 
-                    	{                    		 
+                    	{
                     		$("#addgene-modal").modal('hide');
                     		 
                     	}
@@ -2783,7 +2783,7 @@
                  	 if (geneList.indexOf(eachGene) > -1)
                  		 alreadyHave.push(eachGene);
                  	 else if (newGenes.indexOf(eachGene.toUpperCase()) == -1 && eachGene != "") 
-                 	 {                       		
+                 	 {
                  		 newGenes.push(eachGene);  
                  		 geneList.push(eachGene);
                  	 }
@@ -2791,11 +2791,11 @@
             	  
          		  if (newGenes.length > 0)
  		          {        			 
- 			           localStorage["genelist"] = JSON.stringify(geneList);        		             
+ 			           localStorage["genelist"] = JSON.stringify(geneList);
  		               $.each(newGenes, function () {
-     		                 var value = this.toString();    		                     
+     		                 var value = this.toString();
      		                 $("#geneNames").append(_.template($("#gene-cart-option-tmpl").html(), {displayItem: value})); 
-                        });        	
+                        });
      	                
  		           }
             }
@@ -2811,20 +2811,20 @@
     
     var CnkbQueryView = Backbone.View.extend({
     	el: $("#main-container"),
-        template: _.template($("#cnkb-query-tmpl").html()),      
+        template: _.template($("#cnkb-query-tmpl").html()),
         render: function() {        	 
         	var selectedGenes = JSON.parse(sessionStorage.getItem("selectedGenes"));    
         	var count = 0;
         	if (selectedGenes != null)
-        		count = selectedGenes.length;        	
+        		count = selectedGenes.length;
         	var description;
         	if (count == 0 || count == 1)
-        		description = "Query with " + count + " gene from cart";        	
+        		description = "Query with " + count + " gene from cart";
         	else
         		description = "Query with " + count + " genes from cart";  
         	
-        	$(this.el).html(this.template({}));   
-        	$('#queryDescription').html("");                     
+        	$(this.el).html(this.template({}));
+        	$('#queryDescription').html("");
             $('#queryDescription').html(description);
         	$.ajax({
                    url: "cnkb/query",
@@ -2835,7 +2835,7 @@
                 	      interactionLimit: 0, 
                 	      throttle : ""},
                    dataType: "json",
-                   contentType: "json",                   
+                   contentType: "json",
                    success: function(data) {
                        var list = data.interactomeList;
                        _.each(list, function(aData){
@@ -2867,8 +2867,8 @@
             });  //ajax   
         	
         	var versionDescriptors;
-        	$('#interactomeList').change(function(){         		
-        		var selectedInteractome = $('#interactomeList option:selected').text().split("(")[0].trim();            		 
+        	$('#interactomeList').change(function(){
+        		var selectedInteractome = $('#interactomeList option:selected').text().split("(")[0].trim();
         	    $.ajax({
                     url: "cnkb/query",
                     data: {dataType : "interactome-version", interactome: selectedInteractome, version: "", selectedGenes: "", interactionLimit: 0, throttle: ""},
@@ -2876,12 +2876,12 @@
                     contentType: "json",                   
                     success: function(data) {  
                     	versionDescriptors = data.versionDescriptorList;
-                        var description = data.description;                      
-                        $('#interactomeDescription').html("");                     
-                        $('#interactomeDescription').html(convertUrl(description));                        
+                        var description = data.description;
+                        $('#interactomeDescription').html("");
+                        $('#interactomeDescription').html(convertUrl(description));
                  	    var list = data.versionDescriptorList; 
-                 	   $('#interactomeVersionList').html("");                 	 
-                        _.each(list, function(aData){               		        
+                 	   $('#interactomeVersionList').html("");
+                        _.each(list, function(aData){
                 		       $("#interactomeVersionList").append(_.template($("#gene-cart-option-tmpl").html(), {displayItem: aData.version})); 
                         }); 
                         $('#interactomeVersionList').disabled = false;
@@ -2889,16 +2889,16 @@
                         $('#versionDescription').html("");  
                        
                      }
-                 });  //ajax        	    
+                 });  //ajax
         	  
         	 });  //end $('#interactomeList').change()
             
-        	 $('#interactomeVersionList').change(function(){         		  
-        		   var selectedVersion = $('#interactomeVersionList option:selected').text().trim();        		  
-        	       _.each(versionDescriptors, function(aData){         	    	 
+        	 $('#interactomeVersionList').change(function(){
+        		   var selectedVersion = $('#interactomeVersionList option:selected').text().trim();
+        	       _.each(versionDescriptors, function(aData){
                 		if (aData.version === selectedVersion)
                 		{               		 
-                			$('#versionDescription').html("");                     
+                			$('#versionDescription').html("");
                             $('#versionDescription').html(aData.versionDesc);
                 		}	
                    }); 
@@ -2907,7 +2907,7 @@
         	  
         	  });  //end $('#interactomeList').change()
         	
-        	  $("#cnkb-result").click(function(e) {        		 
+        	  $("#cnkb-result").click(function(e) {
          		   
         		   var selectedInteractome = $('#interactomeList option:selected').text().split("(")[0].trim(); 
                    var selectedVersion = $('#interactomeVersionList option:selected').text().trim(); 
@@ -2951,7 +2951,7 @@
        		    sessionStorage["selectedGenes"] = JSON.stringify(selectedgenes);
        	    }
         	
-        	$(this.el).html(this.template({}));        	
+        	$(this.el).html(this.template({}));
         	$.ajax({       		 
         		   url: "cnkb/query",
                    data: {dataType : "interaction-result", 
@@ -2961,23 +2961,23 @@
                 	      interactionLimit: 0, 
                 	      throttle: ""},
                    dataType: "json",
-                   contentType: "json",                                
-                   success: function(data) {    
+                   contentType: "json",
+                   success: function(data) {
                 	   $("#cnkb_data_progress").hide();
                 	   var cnkbElementList = data.cnkbElementList; 
-                	   var interactionTypes = data.interactionTypeList;               	   
+                	   var interactionTypes = data.interactionTypeList;
                        _.each(interactionTypes, function(aData){  
                            var type = aData.toUpperCase();
-               		       $('#cnkb-result-grid thead tr').append('<th>' +type + '</th>');                          
+               		       $('#cnkb-result-grid thead tr').append('<th>' +type + '</th>');
                        });  
                        
                        var thatEl = $("#cnkb-result-grid");   
-                	   _.each(cnkbElementList, function(aData){                		  
+                	   _.each(cnkbElementList, function(aData){
                 		   var cnkbResultRowView = new CnkbResultRowView({
                                 el: $(thatEl).find("tbody"),
-                                model: aData                               
+                                model: aData
                             });
-                		   cnkbResultRowView.render();                		    
+                		   cnkbResultRowView.render();
                           
                        });   
                 	   
@@ -2993,10 +2993,10 @@
             });  //ajax  
         	
         	
-        	$('#cnkbExport').click(function(e) {         		
+        	$('#cnkbExport').click(function(e) {
        		    e.preventDefault();     
        	        var filters = "";
-                $('input[type="checkbox"]:checked').each(function() {                 
+                $('input[type="checkbox"]:checked').each(function() {
                 	filters = filters + ($(this).val() + ',');    
                 });  
                 if (filters.length == 0 || $.trim(filters) === 'on,') {
@@ -3006,7 +3006,7 @@
                 
                 $("#interactome").val(selectedInteractome);
                 $("#version").val(selectedVersion);
-                $("#selectedGenes").val(filters);                 
+                $("#selectedGenes").val(filters);
                 $("#interactionLimit").val("0");
                 $("#throttle").val("");
                 $('#cnkbExport-form').submit() 
@@ -3017,9 +3017,9 @@
         			 
         		     var interactionLimit = $("#cytoscape-node-limit").val();
         		     var filters = "";
-        	        $('input[type="checkbox"]:checked').each(function() {                 
-        	        	filters = filters + ($(this).val() + ',');             	    
-        	        });             
+        	        $('input[type="checkbox"]:checked').each(function() {
+        	        	filters = filters + ($(this).val() + ',');
+        	        });
         	    
         	        $.ajax({
         	     	    url: "cnkb/query",
@@ -3031,7 +3031,7 @@
         	   	           throttle : ""},
         	           dataType: "json",
         	           contentType: "json",
-        	           success: function(data) {                     	 
+        	           success: function(data) {
         	              if (data != null && data.threshold != -1)   
         	              {
         	           	   if (data.threshold == 0)
@@ -3041,30 +3041,30 @@
         	              } 
         	              else
         	                 $("#throttle-input").text("e.g. 0.01");
-        	              $("#throttle-input").css('color', 'grey');                          
+        	              $("#throttle-input").css('color', 'grey');
         	           }
         	       });
         	   	
         	   };
         	
-        	 $("#cnkb-result-grid").on("change", ":checkbox", function() {        		 
+        	 $("#cnkb-result-grid").on("change", ":checkbox", function() {
         		 getThrottleValue();  
-             });  //end cnkb-checked         	    
+             });  //end cnkb-checked
         	 
-             $("#cytoscape-node-limit").change(function(evt) {             
-            	 getThrottleValue();                 
+             $("#cytoscape-node-limit").change(function(evt) {
+            	 getThrottleValue();
              }); 
             
               
              $('#checkbox_selectall').click(function(event) {  //on click
                    if(this.checked) { // check select status
                         $('.cnkb_checkbox').each(function() { //loop through each checkbox
-                            this.checked = true;  //select all checkboxes with class "checkbox1"              
+                            this.checked = true;  //select all checkboxes with class "checkbox1"
             	        });
                         getThrottleValue();  
                     }else{
                         $('.cnkb_checkbox').each(function() { //loop through each checkbox
-                            this.checked = false; //deselect all checkboxes with class "checkbox1"                      
+                            this.checked = false; //deselect all checkboxes with class "checkbox1"
                         });   
                         $("#throttle-input").text("e.g. 0.01");
                         $("#throttle-input").css('color', 'grey');   
@@ -3072,16 +3072,16 @@
              });  
              
 
-             $('#createnetwork').click(function(event) {            	
-                      event.preventDefault();                   
-                      var throttle = $("#throttle-input").text();               
+             $('#createnetwork').click(function(event) {
+                      event.preventDefault();
+                      var throttle = $("#throttle-input").text();
                       var layoutName = $("#cytoscape-layouts").val();
                       var interactionLimit = $("#cytoscape-node-limit").val();
                     
                       var n = $( "input:checked" ).length;
                    
-                      var filters = "";              
-                      $('input[type="checkbox"]:checked').each(function() {                 
+                      var filters = "";
+                      $('input[type="checkbox"]:checked').each(function() {
                       	    filters = filters + ($(this).val() + ',');  
                       	  
                       });   
@@ -3091,7 +3091,7 @@
                     	  showAlertMessage("Please select at least one row to create a network.");
                            return;
                       }
-                      $('#createnw_progress_indicator').show();               
+                      $('#createnw_progress_indicator').show();
                       $.ajax({
                       	 url: "cnkb/network",
                           data: { interactome: selectedInteractome, 
@@ -3101,21 +3101,21 @@
          	   	                 throttle : throttle },
                           dataType: "json",
                           contentType: "json",
-                          success: function(data) {   
+                          success: function(data) {
                               $('#createnw_progress_indicator').hide();
                           	  if (data == null)
                               {
                           		showAlertMessage("The network is empty.");
                           		 return;
-                              }                          	  
+                              }
                           	  var cnkbDescription = selectedInteractome + " (v" + selectedVersion + ")";
                               drawCNKBCytoscape(data, Encoder.htmlEncode(cnkbDescription));
                         
                           }//end success
-                      });  //end ajax              
+                      });  //end ajax
                     
 
-                  });  //end createnetwork              
+                  });  //end createnetwork
              
         	return this;
         }       
@@ -3126,28 +3126,28 @@
      var CnkbResultRowView = Backbone.View.extend({
         render: function() {
             var result = this.model;
-            
+
             var templateId = "#cnkb-result-row-tmpl";     
 
             this.template = _.template($(templateId).html());
             $(this.el).append(this.template(result));            
             var geneName = Encoder.htmlEncode(result.geneName);
- 	      
+
 		    var numList = result.interactionNumlist
 		       _.each(numList, function(aData){ 
 		    	   $("#tr_" + geneName).append('<td>' + aData + '</td>');
 		    });
 		  
-		       
+
             return this;
         }
      });    
      
      var GeneCartHelpView = Backbone.View.extend({
     	 el: $("#main-container"),
-         template: _.template($("#gene-cart-help-tmpl").html()),      
-         render: function() {        	 
-             $(this.el).html(this.template({}));               
+         template: _.template($("#gene-cart-help-tmpl").html()),
+         render: function() {
+             $(this.el).html(this.template({}));
              return this;
          }
       });    
@@ -3156,7 +3156,7 @@
      var updateGeneList = function(addedGene)
      {
     	   var geneNames = JSON.parse(localStorage.getItem("genelist"));
-           if (geneNames == null)                       
+           if (geneNames == null)
         	   geneNames = [];
                     
            if (geneNames.length >= numOfCartGene)
@@ -3168,7 +3168,7 @@
            if (geneNames.indexOf(addedGene) > -1) {       	   
         	   showAlertMessage(addedGene + " is already in the Gene Cart.")        	  
         	} else {
-        	    //Not in the array            	
+        	    //Not in the array
         		geneNames.push(addedGene);
         		localStorage["genelist"] = JSON.stringify(geneNames);        		
         		showAlertMessage(addedGene + " added to the Gene Cart.")
@@ -3200,7 +3200,7 @@
     	    	   temp = temp.substring(0, temp.length-1);
     	       temp = $.trim(temp);
     	       var link = "<a target=\"_blank\" href=\"" + temp +"\">" + temp + "</a>";  
-    	       return word[0] + link;     	        
+    	       return word[0] + link;
     	   }
     	   else    	   
     		   return description;
@@ -3212,7 +3212,7 @@
     		  var svgHtml = "";
         	  var interactions = data.interactions; 
         	  var x1 =20+90*(3-interactions.length),  x2=53+90*(3-interactions.length);
-            _.each(interactions, function(aData){                  	                           	 
+            _.each(interactions, function(aData){
             	svgHtml = svgHtml + '<rect x="' + x1 + '" y="15" width="30" height="2" fill="' + aData.color +'" stroke="grey" stroke-width="0"/><text x="' + x2 + '" y="20" fill="grey">' + aData.type + '</text>';    
                 x1 = x1 + aData.type.length * 11;
                 x2 = x2 + aData.type.length * 11;
@@ -3229,7 +3229,7 @@
                 }
             );                   
          
-            var container = $('#cytoscape');                        
+            var container = $('#cytoscape');
             var layoutName = $("#cytoscape-layouts").val();
              
             var cy = cytoscape ({
@@ -3237,12 +3237,12 @@
             	container: document.getElementById("cytoscape"),
                 layout: {
                 	 name: layoutName,
-                	 fit: true,                                                  	 
-                	 liveUpdate: false,                       
-                	 maxSimulationTime: 4000, // max length in ms to run the layout                        
+                	 fit: true,
+                	 liveUpdate: false,
+                	 maxSimulationTime: 4000, // max length in ms to run the layout
                 	 stop: function(){
                 		 $("#cnkb_cytoscape_progress").remove();
-                		 this.stop();                		
+                		 this.stop();
                 		 
                 	 } // callback on layoutstop 
                 	
@@ -3251,12 +3251,12 @@
                 style: cytoscape.stylesheet()
                     .selector("node")
                     .css({
-                        "content": "data(id)",                                              
+                        "content": "data(id)",
                         "border-width": 2,
                         "labelValign": "middle",
-                        "font-size": 10,                                                                  
+                        "font-size": 10,
                         "width": "25px",
-                        "height": "25px",                                   
+                        "height": "25px",
                         "background-color": "data(color)",
                         "border-color": "#555"
                     })
@@ -3295,8 +3295,8 @@
                     })
                 ,
 
-                ready: function(){                    	 
-                    window.cy = this; // for debugging             
+                ready: function(){
+                    window.cy = this; // for debugging
                   
                 }
             });   
@@ -3316,31 +3316,31 @@
                                 	  return;
                                   }	
                                   
-                                  var linkUrl = "";                                 
+                                  var linkUrl = "";
                                   switch(key) {
                                       case 'gene': 
-                                    	  linkUrl = "http://www.ncbi.nlm.nih.gov/gene?cmd=Search&term="+sym;                                    	  
+                                    	  linkUrl = "http://www.ncbi.nlm.nih.gov/gene?cmd=Search&term="+sym;
                                     	  break;
                                       case 'protein':
-                                    	  linkUrl = "http://www.ncbi.nlm.nih.gov/protein?cmd=Search&term=" + sym + "&doptcmdl=GenPept";                                    	  
+                                    	  linkUrl = "http://www.ncbi.nlm.nih.gov/protein?cmd=Search&term=" + sym + "&doptcmdl=GenPept";
                                     	  break;
                                       case 'pubmed':
-                                    	  linkUrl = "http://www.ncbi.nlm.nih.gov/pubmed?cmd=Search&term=" + sym + "&doptcmdl=Abstract";                                    	  
+                                    	  linkUrl = "http://www.ncbi.nlm.nih.gov/pubmed?cmd=Search&term=" + sym + "&doptcmdl=Abstract";
                                     	  break;
                                       case 'nucleotide':
-                                    	  linkUrl = "http://www.ncbi.nlm.nih.gov/nucleotide?cmd=Search&term=" + sym + "&doptcmdl=GenBank";                                    	  
+                                    	  linkUrl = "http://www.ncbi.nlm.nih.gov/nucleotide?cmd=Search&term=" + sym + "&doptcmdl=GenBank";
                                     	  break;
                                       case 'alldatabases':
-                                    	  linkUrl = "http://www.ncbi.nlm.nih.gov/gquery/?term="+sym;                                    	  
+                                    	  linkUrl = "http://www.ncbi.nlm.nih.gov/gquery/?term="+sym;
                                     	  break;
                                       case 'structure':
-                                    	  linkUrl = "http://www.ncbi.nlm.nih.gov/structure?cmd=Search&term=" + sym + "&doptcmdl=Brief";                                    	  
+                                    	  linkUrl = "http://www.ncbi.nlm.nih.gov/structure?cmd=Search&term=" + sym + "&doptcmdl=Brief";
                                     	  break;
                                       case 'omim':
-                                    	  linkUrl = "http://www.ncbi.nlm.nih.gov/omim?cmd=Search&term=" + sym + "&doptcmdl=Synopsis";                                    	  
+                                    	  linkUrl = "http://www.ncbi.nlm.nih.gov/omim?cmd=Search&term=" + sym + "&doptcmdl=Synopsis";
                                     	  break;
                                       case 'genecards':
-                                    	  linkUrl = "http://www.genecards.org/cgi-bin/carddisp.pl?gene=" + sym + "&alias=yes";                                    	  
+                                    	  linkUrl = "http://www.genecards.org/cgi-bin/carddisp.pl?gene=" + sym + "&alias=yes";
                                     	  break;
                                       case 'ctd2-dashboard' : 
                                     	  linkUrl = CORE_API_URL + "#search/" + sym;

@@ -1950,7 +1950,7 @@
                             <th width="20">&nbsp;</th>
                             <th>Master Regulator</th>
                             <th>Score</th>
-                            <th>Markers in regulon</th>                             
+                            <th>Markers in regulon</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -1958,36 +1958,36 @@
                         </tbody>
                      </table>  
                  </div>
-                 <div class="span1">                                   
+                 <div class="span1">
                     <a href="javascript:history.back()">Back</a>
-                 </div>              
+                 </div>
              </div>
                    <br/>
                    <br/>
-                   <div>                     
+                   <div>
 					  <b>Nodes Limit:</b>	
                       <select id="cytoscape-node-limit">
                            <option value="25">25</option>
-                           <option value="50">50</option>                        
-                           <option value="100" selected="selected">100</option>                                             
+                           <option value="50">50</option>
+                           <option value="100" selected="selected">100</option>
                            <option value="200">200</option>
                            <option value="300">300</option>
                            <option value="400">400</option>
-                           <option value="500">500</option>                                                     
-                      </select>					
+                           <option value="500">500</option>
+                      </select>
 				      <b>&nbsp;&nbsp;&nbsp;</b>  
                       <b>Layout:</b>	
                       <select id="cytoscape-layouts">
-                           <option value="arbor" selected="selected">Arbor</option>                         
-                           <option value="grid">Grid</option>                           
+                           <option value="arbor" selected="selected">Arbor</option>
+                           <option value="grid">Grid</option>
                            <option value="random">Random</option>
                            <option value="circle">Circle</option>
                       </select>
-                      <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b> 					
+                      <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
                       <a href="#" id="createnetwork" data-description="{{observedEvidenceRole.displayText}}" target="_blank" title="please select master regulator to create network" class="mra-cytoscape-view">Create Network</a>   				 
-                      <br/>	                    
+                      <br/>
 			          <small><font color="grey">Threshold: </font></small>
-                      <small id="throttle-input"><font color="grey">e.g. 0.01 </font></small>		 
+                      <small id="throttle-input"><font color="grey">e.g. 0.01 </font></small>
                   </div>         
                   <br/>	
                   <table id="mra-barcode-grid" class="table table-bordered table-striped">
@@ -2049,546 +2049,6 @@
         </div>
     </script>
 
-    <script type="text/template" id="template-helper-tmpl">
-        <div class="container common-container" id="template-helper-container">
-            <h2>Submission Template Helper</h2>
-
-            <div class="alert alert-warning alert-block">
-                <a href="#" class="close" data-dismiss="alert">&times;</a>
-                <p>
-                    <strong>Welcome to the submission template helper!</strong><br>
-                    This tool will help create a basic Dashboard submission template from scratch.
-                    Once a basic template is prepared, the template can be downloaded for local use and preparation of a Dashboard submission.
-                </p>
-            </div>
-
-            <div id="step1">
-                <h3>Step 1: Select submission center</h3>
-                <table class="table">
-                    <tr>
-                        <th>Select a center</th>
-                        <td>
-                            <select id="template-submission-centers" class="input-xxlarge">
-                                <option value="">-</option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            ... or enter a new one:
-                        </th>
-                        <td>
-                            <input id="template-submission-centers-custom" placeholder="e.g. National Cancer Institute" class="input-xxlarge">
-                        </td>
-                        </tr>
-                    <tr>
-                        <td colspan=2 class="next-cell">
-                            <button id="apply-submission-center" class="btn">Next</button>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-
-            <div id="step2" class="hide">
-                <h3>Step 2: Enter a template name</h3>
-                <table  class="table">
-                    <tr>
-                        <td>
-                            <input id="template-name" placeholder="e.g. centername_your_description" class="input-xxlarge">
-                            <button id="apply-template-name" class="btn">Next</button>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-
-            <div id="step3" class="hide">
-                <h3>Step 3: Enter a template/submission description</h3>
-                <table  class="table">
-                    <tr>
-                        <th>
-                            Template description
-                        </th>
-                        <td>
-                            <input id="template-desc" placeholder="e.g. Analysis of differentially expressed transcripts in some condition" class="input-xxxlarge">
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Submission description</th>
-                        <td>
-                            <input id="template-submission-desc" placeholder="e.g. Down-regulated genes in PTEN-null cell lines" class="input-xxxlarge">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan=2 class="next-cell">
-                            <button id="apply-template-desc" class="btn">Next</button>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-
-            <div id="step4" class="hide">
-                <h3>Step 4: Select a tier</h3>
-                <table  class="table">
-                    <tr>
-                        <td>
-                            <select id="template-tier">
-                                <option selected="selected" value="1">Tier 1</option>
-                                <option value="2">Tier 2</option>
-                                <option value="3">Tier 3</option>
-                                <option value="4">Tier 4</option>
-                            </select>
-                            <button id="apply-template-tier" class="btn">Next</button>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-
-            <div id="step5" class="hide">
-                <h3>Step 5: Add subjects/evidence</h3>
-                <table class="table">
-                    <tr>
-                        <td>
-                            <button class="btn" id="add-subject">Subject <i class="icon-plus"></i></button>
-                            <button class="btn" id="add-evidence">Evidence <i class="icon-plus"></i></button>
-                        </td>
-                    </tr>
-                </table>
-
-                <hr>
-                <h3>Step 6: Create an observation summary</h3>
-                <table class="table">
-                    <tr>
-                        <th>Observation summary</th>
-                        <td>
-                            <input id="template-obs-summary" placeholder="e.g. <gene_column> is down-regulated in <label_evidence> cells" class="input-xxxlarge">
-                        </td>
-                    </tr>
-                </table>
-            </div>
-
-            <div class="modal hide fade" id="subject-modal">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h3>Add a subject</h3>
-                </div>
-                <div class="modal-body">
-                    <div id="subject-step1">
-                        <h4>Step #1: Subject type</h4>
-                        <table class="table">
-                            <tr>
-                                <th>Select a type</th>
-                                <td>
-                                    <select id="subject-type">
-                                        <option value="">-</option>
-                                        <option value="Animal Model">Animal Model</option>
-                                        <option value="CellSample">Cell Sample</option>
-                                        <option value="Compound">Compound</option>
-                                        <option value="Gene">Gene</option>
-                                        <option value="ShRna">shRNA</option>
-                                        <option value="TissueSample">Tissue Sample</option>
-                                    </select>
-                                    <button id="apply-subject-type" class="btn">Next</button>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-
-                    <div id="subject-step2" class="hide">
-                        <h4>Step #2: Subject column name</h4>
-                        <table class="table">
-                            <tr>
-                                <th>Select a column name</th>
-                                <td>
-                                    <select id="subject-cname">
-                                        <option value="">-</option>
-                                        <option value='cell_line_1'>cell_line_1</option>
-                                        <option value='cell_line_2'>cell_line_2</option>
-                                        <option value='cell_lineage'>cell_lineage</option>
-                                        <option value='column_name'>column_name</option>
-                                        <option value='compound_name'>compound_name</option>
-                                        <option value='disease_condition'>disease_condition</option>
-                                        <option value='disease_condition_1'>disease_condition_1</option>
-                                        <option value='disease_condition_2'>disease_condition_2</option>
-                                        <option value='drug_candidate'>drug_candidate</option>
-                                        <option value='entrez_gene_id'>entrez_gene_id</option>
-                                        <option value='gene_symbol'>gene_symbol</option>
-                                        <option value='gene_symbol_1'>gene_symbol_1</option>
-                                        <option value='gene_symbol_2'>gene_symbol_2</option>
-                                        <option value='gene_symbol_3'>gene_symbol_3</option>
-                                        <option value='gene_symbol_4'>gene_symbol_4</option>
-                                        <option value='gene_symbol_5'>gene_symbol_5</option>
-                                        <option value='shRNA_id'>shRNA_id</option>
-                                        <option value='target_group'>target_group</option>
-                                        <option value='tissue_sample'>tissue_sample</option>
-                                        <option value='tissue_sample_1'>tissue_sample_1</option>
-                                        <option value='tissue_sample_2'>tissue_sample_2</option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    or enter new one:
-                                </th>
-                                <td>
-                                    <input id="subject-cname-custom" placeholder="e.g. gene_symbol" class="input-large">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan=2 class="next-cell">
-                                    <button id="apply-subject-cname" class="btn">Next</button>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-
-                    <div id="subject-step3" class="hide">
-                        <h4>Step #3: Select a role</h4>
-                        <table class="table">
-                            <tr>
-                                <th>Select a role </th>
-                                <td>
-                                    <select id="subject-role">
-                                        <option value="">-</option>
-                                        <option value='drug candidate'>drug candidate</option>
-                                        <option value='enriched feature'>enriched feature</option>
-                                        <option value='enriched regulon'>enriched regulon</option>
-                                        <option value='histology type'>histology type</option>
-                                        <option value='master regulator'>master regulator</option>
-                                        <option value='modulator'>modulator</option>
-                                        <option value='oncogene'>oncogene</option>
-                                        <option value='perturbagen'>perturbagen</option>
-                                        <option value='primary site'>primary site</option>
-                                        <option value='regulator'>regulator</option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    ... or enter new one:
-                                </th>
-                                <td>
-                                    <input id="subject-role-custom" placeholder="e.g. perturbagen" class="input-large">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan=2 class="next-cell">
-                                    <button id="apply-subject-role" class="btn">Next</button>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-
-                    <div id="subject-step4" class="hide">
-                        <h4>Step #4: Enter description</h4>
-                        <table class="table">
-                            <tr>
-                                <td>
-                                    <input id="subject-desc" placeholder="e.g. mutated gene" class="input-xlarge">
-                                    <button id="apply-subject-desc" class="btn">Next</button>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-primary" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-
-            <div class="modal hide fade" id="evidence-modal">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h3>Add an evidence</h3>
-                </div>
-                <div class="modal-body">
-                    <div id="evidence-step1">
-                        <h4>Step #1: Evidence type</h4>
-                        <table class="table">
-                            <tr>
-                                <td>
-                                    <select id="evidence-type">
-                                        <option value="">Select a type</option>
-                                        <option value="File">File</option>
-                                        <option value="Label">Label</option>
-                                        <option value="Label">Numeric</option>
-                                        <option value="URL">URL</option>
-                                    </select>
-                                    <button id="apply-evidence-type" class="btn">Next</button>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-
-                    <div id="evidence-step1-mime" class="hide">
-                        <h4>Step #1 cont.: File (MIME) type</h4>
-                        <table class="table">
-                            <tr>
-                                <th>Select a file type</th>
-                                <td>
-                                    <select id="evidence-mime-type">
-                                        <option value="">-</option>
-                                        <option value="application/pdf">PDF (application/pdf)</option>
-                                        <option value="image/png">PNG (image/png)</option>
-                                        <option value="text/gct">GCT (text/gct)</option>
-                                        <option value="text/sif">SIF (text/sif)</option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>... or enter new one</th>
-                                <td>
-                                    <input id="evidence-mime-type-custom" placeholder="e.g. image/gif" class="input-large">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan=2 class="next-cell">
-                                    <button id="apply-evidence-mime-type" class="btn">Next</button>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-
-                    <div id="evidence-step1-unit" class="hide">
-                        <h4>Step #1 cont.: Numeric unit</h4>
-                        <table class="table">
-                            <tr>
-                                <th>Numeric unit (optional)</th>
-                                <td>
-                                    <input id="evidence-numeric-unit" placeholder="e.g. pL" class="input-large">
-                                    <button id="apply-evidence-numeric-unit" class="btn">Next</button>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-
-                    <div id="evidence-step2" class="hide">
-                        <h4>Step #2: Subject column name</h4>
-                        <table class="table">
-                            <tr>
-                                <th>Select a column name</th>
-                                <td>
-                                    <select id="evidence-cname">
-                                        <option value="">-</option>
-                                        <option value='additional_evidence'>additional_evidence</option>
-                                        <option value='c_score'>c_score</option>
-                                        <option value='cell_line_exclusion'>cell_line_exclusion</option>
-                                        <option value='cell_line_subset'>cell_line_subset</option>
-                                        <option value='cell_type'>cell_type</option>
-                                        <option value='column_name'>column_name</option>
-                                        <option value='drug_candidate_class'>drug_candidate_class</option>
-                                        <option value='enrichment_direction'>enrichment_direction</option>
-                                        <option value='fdr'>fdr</option>
-                                        <option value='feature_data_set'>feature_data_set</option>
-                                        <option value='feature_image_path'>feature_image_path</option>
-                                        <option value='figure_1'>figure_1</option>
-                                        <option value='figure_2'>figure_2</option>
-                                        <option value='figure_3'>figure_3</option>
-                                        <option value='figure_4'>figure_4</option>
-                                        <option value='figure_5'>figure_5</option>
-                                        <option value='figure_6'>figure_6</option>
-                                        <option value='func_type'>func_type</option>
-                                        <option value='gct_path'>gct_path</option>
-                                        <option value='gene_scoring'>gene_scoring</option>
-                                        <option value='log_fdr'>log_fdr</option>
-                                        <option value='mr_gsea_es'>mr_gsea_es</option>
-                                        <option value='mr_gsea_fdr'>mr_gsea_fdr</option>
-                                        <option value='mr_gsea_p_value'>mr_gsea_p_value</option>
-                                        <option value='mr_regulon_set_size'>mr_regulon_set_size</option>
-                                        <option value='mra_fet_p_value'>mra_fet_p_value</option>
-                                        <option value='mra_overlap_rank'>mra_overlap_rank</option>
-                                        <option value='mra_regulon_signature_overlap'>mra_regulon_signature_overlap</option>
-                                        <option value='nci_portal'>nci_portal</option>
-                                        <option value='network_1'>network_1</option>
-                                        <option value='num_shRNAs'>num_shRNAs</option>
-                                        <option value='number_of_cell_lines'>number_of_cell_lines</option>
-                                        <option value='number_of_cell_lines_in_target_group'>number_of_cell_lines_in_target_group</option>
-                                        <option value='number_of_example_cell_lines'>number_of_example_cell_lines</option>
-                                        <option value='number_of_mutant_cell_lines'>number_of_mutant_cell_lines</option>
-                                        <option value='p_value'>p_value</option>
-                                        <option value='probeset_id'>probeset_id</option>
-                                        <option value='publication_reference'>publication_reference</option>
-                                        <option value='publication_url'>publication_url</option>
-                                        <option value='response_image_path'>response_image_path</option>
-                                        <option value='shrna_diff_rep_fdr_combined'>shrna_diff_rep_fdr_combined</option>
-                                        <option value='shrna_diff_rep_net_direction_combined'>shrna_diff_rep_net_direction_combined</option>
-                                        <option value='shrna_diff_rep_p_value_combined'>shrna_diff_rep_p_value_combined</option>
-                                        <option value='shrna_diff_rep_z_score_combined'>shrna_diff_rep_z_score_combined</option>
-                                        <option value='solution_name'>solution_name</option>
-                                        <option value='story_location'>story_location</option>
-                                        <option value='target_group'>target_group</option>
-                                        <option value='tier1_evidence'>tier1_evidence</option>
-                                        <option value='tissue'>tissue</option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>... or enter new one</th>
-                                <td>
-                                    <input id="evidence-cname-custom" placeholder="e.g. feature_image_path" class="input-xlarge">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2" class="next-cell">
-                                    <button id="apply-evidence-cname" class="btn">Next</button>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-
-                    <div id="evidence-step3" class="hide">
-                        <h4>Step #3: Select a role</h4>
-                        <table class="table">
-                            <tr>
-                                <th>Select a role</th>
-                                <td>
-                                    <select id="evidence-role">
-                                        <option value="">-</option>
-                                        <option value='computed'>computed</option>
-                                        <option value='context'>context</option>
-                                        <option value='literature'>literature</option>
-                                        <option value='modulator'>modulator</option>
-                                        <option value='oncogene'>oncogene</option>
-                                        <option value='perturbagen'>perturbagen</option>
-                                        <option value='primary site'>primary site</option>
-                                        <option value='regulator'>regulator</option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>... or enter new one</th>
-                                <td>
-                                    <input id="evidence-role-custom" placeholder="e.g. enriched feature" class="input-xlarge">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2" class="next-cell">
-                                    <button id="apply-evidence-role" class="btn">Next</button>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-
-                    <div id="evidence-step4" class="hide">
-                        <h4>Step #4: Enter description</h4>
-                        <table class="table">
-                            <tr>
-                                <td>
-                                    <input id="evidence-desc" placeholder="e.g. heatmap image" class="input-xlarge">
-                                    <button id="apply-evidence-desc" class="btn">Next</button>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-primary" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-
-            <div class="row hide" id="template-preview">
-                <hr>
-                <div class="template-preview-wrapper span12">
-                    <h2>Template Preview</h2>
-                    <table class="table table-bordered table-striped" id="template-table">
-                        <tr id="template-header">
-                            <td><!--intentionally left blank--></td>
-                        </tr>
-                        <tr id="template-subject">
-                            <th>subject</th>
-                        </tr>
-                        <tr id="template-evidence">
-                            <th>evidence</th>
-                        </tr>
-                        <tr id="template-role">
-                            <th>role</th>
-                        </tr>
-                        <tr id="template-mime_type">
-                            <th>mime_type</th>
-                        </tr>
-                        <tr id="template-numeric_units">
-                            <th>numeric_units</th>
-                        </tr>
-                        <tr id="template-display_text">
-                            <th>display_text</th>
-                        </tr>
-                        <tr id="template-sample-data1" class="sample-data">
-                            <td><i>sample data row #1</i></td>
-                        </tr>
-                        <tr id="template-sample-data2" class="sample-data">
-                            <td><i>sample data row #2</i></td>
-                        </tr>
-                    </table>
-                </div>
-
-                <div class="template-preview-wrapper span12">
-                    <h2>Template Meta-Data Preview</h2>
-                    <table class="table table-bordered table-striped" id="template-meta-table">
-                        <tr>
-                            <th>observation_tier</th>
-                            <th>template_name</th>
-                            <th>observation_summary</th>
-                            <th>template_description</th>
-                            <th>submission_name</th>
-                            <th>submission_description</th>
-                        </tr>
-                        <tr>
-                            <td id="meta-observation_tier"></td>
-                            <td id="meta-template_name"></td>
-                            <td id="meta-observation_summary"></td>
-                            <td id="meta-template_description"></td>
-                            <td id="meta-submission_name"></td>
-                            <td id="meta-submission_description"></td>
-                        </tr>
-                    </table>
-                </div>
-
-                <div class="span8 offset2 template-download">
-                    <button class="btn btn-large" id="preview-template">Preview template</button>
-                    <div class="span4">
-                        <form action="download/template" method="POST" id="download-form">
-                            <button class="btn btn-warning btn-large" id="download-template">Download template</button>
-                            <input type="hidden" name="template" id="template-input">
-                            <input type="hidden" name="metatemplate" id="template-meta-input">
-                            <input type="hidden" name="filename" id="filename-input">
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </script>
-
-    <script type="text/template" id="template-helper-center-tmpl">
-        <option value="{{displayName}}">{{displayName}}</option>
-    </script>
-
-    <script type="text/template" id="template-header-col-tmpl">
-        <td class="{{id}}" data-type="{{columnType}}"></td>
-    </script>
-
-    <script type="text/template" id="template-sample-data-tmpl">
-        <input placeholder="enter data" class="sample-data-input">
-    </script>
-
-    <script type="text/template" id="preview-tmpl">
-        <div id="preview-container" class="container">
-            <h2>Template preview</h2>
-            <ul class="nav nav-tabs" id="preview-tabs">
-                <li class="active"><a href="#submission-preview">Submission</a></li>
-                <li><a href="#obs1-preview">Observation</a></li>
-            </ul>
-
-            <div class="tab-content">
-                <div class="tab-pane active" id="submission-preview">
-                    <h2>Here will come the submission</h2>
-                </div>
-                <div class="tab-pane" id="obs1-preview">
-                    <h2>Here will come the observation #1</h2>
-                </div>
-            </div>
-        </div>
-    </script>
-
     <script type="text/template" id="more-observations-tmpl">
         <div class="alert alert-warning">
             <button type="button" class="close" data-dismiss="alert">&times;</button>
@@ -2630,7 +2090,7 @@
     <script type="text/template" id="genelist-view-tmpl" >
          <div class="container common-container" id="genelist-container" > 
              
-                 <div class="span10" align="center">                   
+                 <div class="span10" align="center">
                     <h4>  Gene List</h4>
 
                      <div class="alert alert-warning">
@@ -2645,27 +2105,27 @@
                     <select id="geneNames" class="geneSelectList" size="6" 
 								multiple></select>
                     </br></br>
-                    <a href="#" id="addGene">Add Gene</a>                         
-                    <a href="#" id="deleteGene">Delete Gene</a>                   
+                    <a href="#" id="addGene">Add Gene</a>
+                    <a href="#" id="deleteGene">Delete Gene</a>
                     </br></br>               
-                    <a href="#" id="clearList">Clear List</a>                    
-                    <a href="#" id="loadGenes">Load Genes from File</a>                                
+                    <a href="#" id="clearList">Clear List</a>
+                    <a href="#" id="loadGenes">Load Genes from File</a>
                     </br><input id="geneFileInput" type="file" style="visibility:hidden" /> 
-                    </br>                  	   	   
-                    <a href="#cnkb-query" id="cnkb-query">Find Gene Interactions in  Networks (CNKB)</a>                      
+                    </br>
+                    <a href="#cnkb-query" id="cnkb-query">Find Gene Interactions in  Networks (CNKB)</a>
                  </div>
 
-                 <div class="span1">                                   
+                 <div class="span1">
                     <a href="javascript:history.back()">Back</a>
-                 </div>              
+                 </div>
              </div>
 
-            <div class="modal hide fade" id="addgene-modal">             
-                <div class="modal-body">                        
+            <div class="modal hide fade" id="addgene-modal">
+                <div class="modal-body">
                     <br>
-                    Add gene symbols                         
-                    <input id="gene-symbols" placeholder="e.g. CTNNB1" class="input-xlarge">                              
-                    <button id="add-gene-symbols" class="btn">Submit</button><br><br>                    
+                    Add gene symbols
+                    <input id="gene-symbols" placeholder="e.g. CTNNB1" class="input-xlarge">
+                    <button id="add-gene-symbols" class="btn">Submit</button><br><br>
                 </div>
                 <div class="modal-footer">
                      
@@ -2677,36 +2137,36 @@
       <script type="text/template" id="cnkb-query-tmpl" >
          <div class="container common-container" id="cnkbquery-container" > 
                     
-                    <div class="span10">                       
+                    <div class="span10">
                        <h3>Cellular Network Knowledge Base</h3>
 
-                       <medium>Select Interactome:</medium>                  
+                       <medium>Select Interactome:</medium>
                        <small id="queryDescription" class="cnkbDescription"></small> 
-                       </br>                  
+                       </br>
                        <select id="interactomeList" name="interactomes"
 						    class="cnkbSelectList" size="4"></select>
                        </br>
                        <small id="interactomeDescription" class="cnkbDescription">
                         &nbsp;&nbsp;
-                       </small>             
+                       </small>
                      </br></br>
                       
                     <medium class="labelDisable" id="selectVersion"> Select Version: </medium>
-                    </br>                
+                    </br>
                     <select id="interactomeVersionList" name="interactomeVersions"
 						 class="cnkbSelectList" size="4"></select>
                      </br>
                     <small id="versionDescription" class="cnkbDescription">
                         &nbsp;&nbsp;
-                    </small>             
+                    </small>
                      </br>
 		             </br>
                      <a href="#cnkb-result" id="cnkb-result">Submit</a>
                  </div>
 
-                 <div class="span1">                                   
+                 <div class="span1">
                     <a href="javascript:history.back()">Back</a>
-                 </div>              
+                 </div>
              </div>
       </script>
       
@@ -2714,64 +2174,64 @@
          <div class="container common-container" id="cnkbresult-container" > 
                <div class="row">
                   <div class="span10">
-                     <h3>Cellular Network Knowledge Base</h2>                                  			                    
+                     <h3>Cellular Network Knowledge Base</h2>
                      <a href="#" id="cnkbExport"  target="_blank" title="Export all selected interaction to a SIF file."> Export </a>
                      <br>
-                     <form method="POST" action="cnkb/download" id="cnkbExport-form" style="display: none;">                           
+                     <form method="POST" action="cnkb/download" id="cnkbExport-form" style="display: none;">
                              <input type="hidden" name="interactome" id="interactome">
                              <input type="hidden" name="version" id="version">
                              <input type="hidden" name="selectedGenes" id="selectedGenes">  
                              <input type="hidden" name="interactionLimit" id="interactionLimit">
-                             <input type="hidden" name="throttle" id="throttle">                             
-                     </form>                    
+                             <input type="hidden" name="throttle" id="throttle">
+                     </form>
                      <table id="cnkb-result-grid" class="table table-bordered table-striped ">
                         <thead> 
-                            <tr>                       
+                            <tr>
                             <th><input type="checkbox" id="checkbox_selectall" title="select or deselect all checkboxs"></th>
                             <th>GENE</th>
                             </tr>
                          </thead>
-                         <tbody>                            
+                         <tbody>
                          </tbody>
                       </table>  
                    </div>
-                   <div class="span1">                                   
+                   <div class="span1">
                       <a href="javascript:history.back()">Back</a>
-                   </div>              
-                </div>                  
+                   </div>
+                </div>
                 <br/>
 
                 <div id="cnkb_data_progress" align="center">data is loading ......
                     <img id="cnkb_data_progress_indicator" src="img/progress_indicator.gif" width="20" height="20" alt="Please wait ......"><br>
                     <br/><br/><br/>
                 </div>
-                <div>         
+                <div>
 					<b>Interactions Limit:</b>	
                     <select id="cytoscape-node-limit">
                            <option value="25">25</option>
-                           <option value="50">50</option>                        
-                           <option value="100" selected="selected">100</option>                                             
+                           <option value="50">50</option>
+                           <option value="100" selected="selected">100</option>
                            <option value="200">200</option>
                            <option value="300">300</option>
-                           <option value="400">400</option>                                                                        
+                           <option value="400">400</option>
                      </select>					
 				  
                      <b>Layout:</b>	
                      <select id="cytoscape-layouts">
-                           <option value="arbor" selected="selected">Arbor</option>                         
-                           <option value="grid">Grid</option>                           
+                           <option value="arbor" selected="selected">Arbor</option>
+                           <option value="grid">Grid</option>
                            <option value="random">Random</option>
                            <option value="circle">Circle</option>
                      </select>
                      
                      <a href="#" id="createnetwork"  target="_blank" title="please select cnkb interactions to create network">Create Network</a>   				 
-                     <br/>	                    
+                     <br/>
 			         <small><font color="grey">Confidence threshold: </font></small>
-                     <small id="throttle-input"><font color="grey">e.g. 0.01 </font></small>	
+                     <small id="throttle-input"><font color="grey">e.g. 0.01 </font></small>
 				   	 <div id="createnw_progress_indicator" align="center" style="display: none;">data is loading ......
                          <img id="cnkb_data_progress_indicator" src="img/progress_indicator.gif" width="20" height="20" alt="Please wait ......"><br>
                      </div>
-                  </div>         
+                  </div>
                   <br/>	
              </div>
       </script>
@@ -2788,14 +2248,14 @@
         <div id="cnkb_cytoscape_progress">
             <img id="cnkb_cytoscape_progress_indicator" class="centeredImage" src="img/progress_indicator.gif" width="30" height="30" alt="Please wait ......">
         </div>
-        <div id="cytoscape">            
+        <div id="cytoscape">
         </div>
-        <div id="cnkb-cytoscape-legend" class="well cytoscape-legend">       
-            <svg  width="500" height="30"xmlns="http://www.w3.org/2000/svg">            
+        <div id="cnkb-cytoscape-legend" class="well cytoscape-legend">
+            <svg  width="500" height="30"xmlns="http://www.w3.org/2000/svg">
                {{svgHtml}}
             </svg>
             <br/>
-            {{description}}  
+            {{description}}
         </div>
       </script>
      
@@ -2810,9 +2270,9 @@
                     <p>Several layout options are available for Cytoscape and can be selected using the "Layout" pulldown.</p>
                     <p>In Cytoscape.js, several common interaction types have been assigned specific colors used for the lines representing them, and these will be shown on the legend of the graph.  The genes used in the CNKB query (hub genes) will be highlighted in yellow.</p>
                 </div>
-                <div class="span1">                                   
+                <div class="span1">
                    <a href="javascript:history.back()">Back</a>
-                </div>              
+                </div>
          </div>
      </script>
      
