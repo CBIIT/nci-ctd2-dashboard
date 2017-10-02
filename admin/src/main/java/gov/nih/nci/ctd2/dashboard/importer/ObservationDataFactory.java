@@ -1,4 +1,4 @@
-package gov.nih.nci.ctd2.dashboard;
+package gov.nih.nci.ctd2.dashboard.importer;
 
 import gov.nih.nci.ctd2.dashboard.model.*;
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;

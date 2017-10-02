@@ -1,7 +1,7 @@
 package gov.nih.nci.ctd2.dashboard.importer.internal;
 
 import gov.nih.nci.ctd2.dashboard.model.*;
-import gov.nih.nci.ctd2.dashboard.ObservationDataFactory;
+import gov.nih.nci.ctd2.dashboard.importer.ObservationDataFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindException;
 import org.springframework.batch.item.file.transform.FieldSet;
