@@ -174,14 +174,19 @@
                 Dashboard Release <%=dashboardReleaseVersion%>
             </div>
             <div style="font-size:14px; margin-bottom:10px;">
-                The CTD<sup>2</sup> Dashboard was created and developed by the CTD<sup>2</sup> Network Centers at the Broad Institute (Paul A. Clemons, Vlado Dančik, Stuart L. Schreiber),
-                Cold Spring Harbor Laboratories/Memorial Sloan Kettering Cancer Center (Arman B. Aksoy, Benjamin Gross, Chris Sander), Columbia University
-                (Andrea Califano, Aris Floratos, Zhou Ji, Kenneth Smith), and NCI (Daniela S. Gerhard, Leandro C. Hermida, Subhashini Jagu)
+                Data users must acknowledge and cite the manuscript <a href="https://academic.oup.com/database/article/4079798" target="_blank">Aksoy, Dančík, Smith et al.</a>, Database 2017;1-10 and provide the URL <a href="https://ctd2-dashboard.nci.nih.gov/dashboard/">https://ctd2-dashboard.nci.nih.gov/dashboard/</a>.
             </div>
             <div style="font-size:14px; margin-bottom:10px;">
-                As the CTD<sup>2</sup> Network continues to refine the Dashboard, input from the research community is highly valued to help improve usability.<br>
-                <b>Note</b>: Data users must acknowledge CTD<sup>2</sup> Network and visit <a href="http://ocg.cancer.gov/programs/ctd%C2%B2/ctd%C2%B2-publication-guidelines">CTD<sup>2</sup> publication guidelines</a> for more information.<br>
-                To provide feedback, please send comments to <a href="mailto:ocg@mail.nih.gov?subject=CTD2 Dashboard Feedback">ocg@mail.nih.gov</a>.
+                As the CTD<sup>2</sup> Network continues to refine the Dashboard, input from the research community is highly valued to help improve usability.
+                Please send your feedback and comments to <a href="mailto:ocg@mail.nih.gov?subject=CTD2 Dashboard Feedback">ocg@mail.nih.gov</a>.
+            </div>
+            <div style="font-size:14px; margin-bottom:10px;">
+                    Google Chrome is the preferred browser, Internet Explorer requires “Compatibility View” turned off (select the Tools menu and then click on Compatibility View settings).
+            </div>
+            <div style="font-size:14px; margin-bottom:10px;">
+                The CTD<sup>2</sup> Dashboard was created and developed by the CTD<sup>2</sup> Network Centers at the Broad Institute (Paul A. Clemons, Vlado Dančik, Stuart L. Schreiber),
+                Cold Spring Harbor Laboratories/Memorial Sloan Kettering Cancer Center (Arman B. Aksoy, Benjamin Gross, Chris Sander), Columbia University
+                (Andrea Califano, Aris Floratos, Zhou Ji, Kenneth Smith), and National Cancer Institute (Daniela S. Gerhard, Leandro C. Hermida, Subhashini Jagu)
             </div>
             <div style="font-size:14px; margin-bottom:10px;">
                 <a href="http://cancer.gov"><img src="img/logos/footer_logo_nci.jpg" alt="NCI logo" title="NCI logo"></a><a href="http://www.dhhs.gov/"><img src="img/logos/footer_logo_hhs.jpg" title="HHS logo" alt="HHS logo"></a><a href="http://www.nih.gov/"><img src="img/logos/footer_logo_nih.jpg" title="NIH logo" alt="NIH logo"></a><a href="http://www.firstgov.gov/"><img src="img/logos/footer_logo_firstgov.jpg" title="First Gov logo" alt="First Gov logo"></a>
