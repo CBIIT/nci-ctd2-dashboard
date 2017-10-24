@@ -852,108 +852,6 @@
         }
     });
 
-
-    var ObservationPreviewView = Backbone.View.extend({
-        template: _.template($("#observation-tmpl").html()),
-        render: function() {
-            var result = this.model.observation;
-            $(this.el).html(this.template(result));
-
-            // We will replace the values in this summary
-            var summary = result.submission.observationTemplate.observationSummary;
-
-            // Load Subjects
-            var thatEl = $("#observed-subjects-grid");
-            _.each(this.model.observedSubjects, function(observedSubject) {
-                var observedSubjectRowView
-                    = new ObservedSubjectSummaryRowView({
-                    el: $(thatEl).find("tbody"),
-                    model: observedSubject
-                });
-                observedSubjectRowView.render();
-
-                var subject = observedSubject.subject;
-                var thatEl2 = $("#subject-image-" + observedSubject.id);
-                var imgTemplate = $("#search-results-unknown-image-tmpl");
-                thatEl2.append(_.template(imgTemplate.html(), subject));
-
-                if(observedSubject.observedSubjectRole == null || observedSubject.subject == null)
-                    return;
-
-                summary = summary.replace(
-                    new RegExp(leftSep + observedSubject.observedSubjectRole.columnName + rightSep, "g"),
-                    _.template($("#summary-subject-replacement-tmpl").html(), observedSubject.subject)
-                );
-
-                $("#observation-summary").html(summary);
-            });
-
-            // Load evidences
-            var thatEl2 = $("#observed-evidences-grid");
-            _.each(this.model.observedEvidences, function(observedEvidence) {
-                var observedEvidenceRowView = new ObservedEvidenceRowView({
-                    el: $(thatEl2).find("tbody"),
-                    model: observedEvidence
-                });
-
-                observedEvidenceRowView.render();
-                summary = summary.replace(
-                    new RegExp(leftSep + observedEvidence.observedEvidenceRole.columnName + rightSep, "g"),
-                    _.template($("#summary-evidence-replacement-tmpl").html(), observedEvidence.evidence)
-                );
-
-                $("#observation-summary").html(summary);
-            });
-
-            var tableLength = (this.model.observedEvidences.length > 25 ? 10 : 25);
-            var oTable = $('#observed-evidences-grid').dataTable({
-                "iDisplayLength": tableLength
-            });
-
-            oTable.fnSort( [ [1, 'asc'], [2, 'asc'] ] );
-
-            $('.desc-tooltip').tooltip({ placement: "left" });
-            $("div.expandable").expander({
-                slicePoint: 50,
-                expandText:       '[...]',
-                expandPrefix:     ' ',
-                userCollapseText: '[^]'
-            });
-
-            $(".numeric-value").each(function(idx) {
-                var val = $(this).html();
-                var vals = val.split("e"); // capture scientific notation
-                if(vals.length > 1) {
-                    $(this).html(_.template($("#observeddatanumericevidence-val-tmpl").html(), {
-                        firstPart: vals[0],
-                        secondPart: vals[1].replace("+", "")
-                    }));
-                }
-            });
-
-            $("#small-show-sub-details").click(function(event) {
-                event.preventDefault();
-                $("#obs-submission-details").slideDown();
-                $("#small-show-sub-details").hide();
-                $("#small-hide-sub-details").show();
-            });
-
-            $("#small-hide-sub-details").click(function(event) {
-                event.preventDefault();
-                $("#obs-submission-details").slideUp();
-                $("#small-hide-sub-details").hide();
-                $("#small-show-sub-details").show();
-            });
-
-            if(result.submission.observationTemplate.submissionDescription == "") {
-                $("#obs-submission-summary").hide();
-            }
-
-            return this;
-        }
-    });
-
-
     var ObservedEvidenceRowView = Backbone.View.extend({
         render: function() {
             var result = this.model;
@@ -2606,7 +2504,7 @@
     	el: $("#main-container"),
         template: _.template($("#genelist-view-tmpl").html()),
         render: function() { 
-        	
+
         	var geneList = JSON.parse(localStorage.getItem("genelist")); 
         	 if (geneList == null)
         		 geneList = [];
@@ -2616,22 +2514,22 @@
         		 geneList.slice(numOfCartGene, len-1);
         		 localStorage["genelist"] = JSON.stringify(geneList);
         	 }
-                 
+
         	var html = "";
         	$(this.el).html(this.template({}));
         	$.each(geneList, function (aData) {
         		var value = Encoder.htmlEncode(this.toString());
         	    $("#geneNames").append(_.template($("#gene-cart-option-tmpl").html(), {displayItem: value})); 
-            });        	
-        	 
+            });
+
             $("#addGene").click(function(e) {
        		   e.preventDefault();
-       		    
+
        		   $("#gene-symbols").val("");
                $("#addgene-modal").modal('show');
-             
+
             });  
-            
+
             $("#add-gene-symbols").click(function() {
             	var inputGenes = $("#gene-symbols").val();
             	var genes = Encoder.htmlEncode(inputGenes).split(/[\s,]+/);
@@ -2639,54 +2537,54 @@
         		processInputGenes(genes);
         		
             });
-            
-     
+
+
             $("#deleteGene").click(function(e) {
        		    e.preventDefault(); 
        		    var selectedGenes = [];
        		    $('#geneNames :selected').each(function(i, selected) {
        			     selectedGenes[i] = $(selected).text();
        		    });
-       		 
+
        		    if (selectedGenes == null || selectedGenes.length == 0)
        		    {
        		    	showAlertMessage("You haven't select any gene!");
        		   	   return;
        		    }
-       		   
-       		  
+
+
        		    $.each(selectedGenes, function () {    
        		    	 
       		       var gene = $.trim(this.toString()).toUpperCase();
       		       var index = $.inArray(gene, geneList);
       		       if (index>=0) geneList.splice(index, 1);
-      		        
-                });   
+
+                });
        		    localStorage["genelist"] = JSON.stringify(geneList);
        		    sessionStorage["selectedGenes"] = JSON.stringify(geneList);
        		    $("#geneNames option:selected").remove();  
-       		  
-       		
+
+
              });  
-       		 
-             
+
+
             $("#clearList").click(function(e) {
        		    e.preventDefault();
        		    $('#geneNames').html('');
        		    localStorage.removeItem("genelist");
        		    sessionStorage.removeItem("selectedGenes");
-       		    
+
        		    geneList = [];
-       		    
-       		    
-            });  
-            
+
+
+            });
+
             $("#loadGenes").click(function(e) {
        		    e.preventDefault();
        		    $('#geneFileInput').click();
        		   
              });
-            
+
             if (window.FileReader) {
                  $('#geneFileInput').on('change', function (e) {
                      var file = e.target.files[0];
@@ -2709,7 +2607,7 @@
             } else {
      	    	showAlertMessage("Load Genes from file is not supported.");
             }
-            
+
             $("#cnkb-query").click(function(e) {
        		   
        		   var selectedGenes = [];
@@ -2720,16 +2618,15 @@
        		    if (selectedGenes == null || selectedGenes.length == 0)
        		    {
        		    	sessionStorage["selectedGenes"] = JSON.stringify(geneList); 
-       		     
        		    }
        		    else
        		    {
        		    	sessionStorage["selectedGenes"] = JSON.stringify(selectedGenes);       		     
        		    } 
        		    
-             });     
-            
-            
+             });
+
+
             var processInputGenes = function(genes)
             {
             	var geneNames = JSON.parse(localStorage.getItem("genelist"));
@@ -2741,8 +2638,8 @@
          	    	showAlertMessage("Gene Cart can only contains " + numOfCartGene + " genes.");
                     return;
                 }
-                 
-            	 
+
+
             	$.ajax({
                     url: "cnkb/validation",
                     data: {  
@@ -2758,12 +2655,12 @@
                         	 else
                         		invalidGenes = invalidGenes + ", " + aData; 
                         	 genes.splice(genes.indexOf(aData),1)
-                        });   
+                        });
                  	    if (data.length > 1)
                     	{ 
                  	    	showInvalidMessage("\"" + data + "\" are invalid and not added to the cart.")
                  	    }
-                 	        
+
                     	else if (data.length == 1)
                     	{                  		 
                     		showInvalidMessage("\"" + data + "\" is invalid and not added to the cart.")
@@ -2771,16 +2668,15 @@
                     	else 
                     	{
                     		$("#addgene-modal").modal('hide');
-                    		 
                     	}
-                 	    
+
                  	    addGenes(genes);
-                 	    
+
                     }
                  });  //ajax   
             }
-            
-            
+
+
             var addGenes = function(genes)
             {
                   var alreadyHave = [];
@@ -2795,7 +2691,7 @@
                  		 geneList.push(eachGene);
                  	 }
                   });
-            	  
+
          		  if (newGenes.length > 0)
  		          {        			 
  			           localStorage["genelist"] = JSON.stringify(geneList);
@@ -2806,16 +2702,16 @@
      	                
  		           }
             }
-            
-            
+
+
         	return this;
         }
-        
-	 
+
+
     });
-    
-    
-    
+
+
+
     var CnkbQueryView = Backbone.View.extend({
     	el: $("#main-container"),
         template: _.template($("#cnkb-query-tmpl").html()),
@@ -2829,7 +2725,7 @@
         		description = "Query with " + count + " gene from cart";
         	else
         		description = "Query with " + count + " genes from cart";  
-        	
+
         	$(this.el).html(this.template({}));
         	$('#queryDescription').html("");
             $('#queryDescription').html(description);
@@ -2872,7 +2768,7 @@
                        $('#interactomeVersionList').disabled = true;
                   }
             });  //ajax   
-        	
+
         	var versionDescriptors;
         	$('#interactomeList').change(function(){
         		var selectedInteractome = $('#interactomeList option:selected').text().split("(")[0].trim();
@@ -2894,12 +2790,12 @@
                         $('#interactomeVersionList').disabled = false;
                         $('#selectVersion').css('color', '#5a5a5a');
                         $('#versionDescription').html("");  
-                       
+
                      }
                  });  //ajax
-        	  
+
         	 });  //end $('#interactomeList').change()
-            
+
         	 $('#interactomeVersionList').change(function(){
         		   var selectedVersion = $('#interactomeVersionList option:selected').text().trim();
         	       _.each(versionDescriptors, function(aData){
@@ -2909,9 +2805,8 @@
                             $('#versionDescription').html(aData.versionDesc);
                 		}	
                    }); 
-                         
-                       	    
-        	  
+
+
         	  });  //end $('#interactomeList').change()
         	
         	  $("#cnkb-result").click(function(e) {
@@ -2950,14 +2845,14 @@
         	var selectedgenes = JSON.parse(sessionStorage.getItem("selectedGenes"));        
         	var selectedInteractome = JSON.parse(sessionStorage.getItem("selectedInteractome")); 
         	var selectedVersion = JSON.parse(sessionStorage.getItem("selectedVersion"));  
-        	
+
         	if (selectedgenes.length > numOfCartGene)
        	    {
        		    var len = selectedgenes.length
        		    selectedgenes.slice(numOfCartGene, len-1);
        		    sessionStorage["selectedGenes"] = JSON.stringify(selectedgenes);
        	    }
-        	
+
         	$(this.el).html(this.template({}));
         	$.ajax({       		 
         		   url: "cnkb/query",
@@ -2977,7 +2872,7 @@
                            var type = aData.toUpperCase();
                		       $('#cnkb-result-grid thead tr').append('<th>' +type + '</th>');
                        });  
-                       
+
                        var thatEl = $("#cnkb-result-grid");   
                 	   _.each(cnkbElementList, function(aData){
                 		   var cnkbResultRowView = new CnkbResultRowView({
@@ -2985,21 +2880,20 @@
                                 model: aData
                             });
                 		   cnkbResultRowView.render();
-                          
+
                        });   
-                	   
+
                 	   var oTable1 = $('#cnkb-result-grid').dataTable({
                            "sDom": "<'row'<'span5'i><'span5'f>r>t<'row'<'span5'l><'span5'p>>",
                            "sScrollY": "200px",
                             "bPaginate": false
-                          
                    	   });
-                   
+
                   }
-                  
+
             });  //ajax  
-        	
-        	
+
+
         	$('#cnkbExport').click(function(e) {
        		    e.preventDefault();     
        	        var filters = "";
@@ -3010,16 +2904,16 @@
               	  showAlertMessage("Please select at least one row to export to a SIF file.");
                      return;
                 }
-                
+
                 $("#interactome").val(selectedInteractome);
                 $("#version").val(selectedVersion);
                 $("#selectedGenes").val(filters);
                 $("#interactionLimit").val("0");
                 $("#throttle").val("");
                 $('#cnkbExport-form').submit() 
-        	  
+
         	 });  //end $('#interactomeList').change()
-        	
+
         	 var getThrottleValue = function() {
         			 
         		     var interactionLimit = $("#cytoscape-node-limit").val();
@@ -3051,9 +2945,9 @@
         	              $("#throttle-input").css('color', 'grey');
         	           }
         	       });
-        	   	
+
         	   };
-        	
+
         	 $("#cnkb-result-grid").on("change", ":checkbox", function() {
         		 getThrottleValue();  
              });  //end cnkb-checked
@@ -3061,8 +2955,8 @@
              $("#cytoscape-node-limit").change(function(evt) {
             	 getThrottleValue();
              }); 
-            
-              
+
+
              $('#checkbox_selectall').click(function(event) {  //on click
                    if(this.checked) { // check select status
                         $('.cnkb_checkbox').each(function() { //loop through each checkbox
@@ -3077,7 +2971,7 @@
                         $("#throttle-input").css('color', 'grey');   
                     }
              });  
-             
+
 
              $('#createnetwork').click(function(event) {
                       event.preventDefault();
@@ -3125,11 +3019,11 @@
                   });  //end createnetwork
              
         	return this;
-        }       
-	 
-     });    
-   
-    
+        }
+
+     });
+
+
      var CnkbResultRowView = Backbone.View.extend({
         render: function() {
             var result = this.model;
@@ -3372,19 +3266,17 @@
                                                   "omim": {"name": "OMIM"}
                                               }
                                           },
-                                   "genecards": {"name": "GeneCards"},         
+                                   "genecards": {"name": "GeneCards"},
                                    "ctd2-dashboard": {"name": "CTD2-Dashboard"}   
                       
                       }
-                                
+
                   });  
-      			  
-      			 
-      		}); 
-            
-           
-     }   
-    
+
+                }); 
+
+     }
+
 
     /* Routers */
     AppRouter = Backbone.Router.extend({
