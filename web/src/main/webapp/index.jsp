@@ -174,7 +174,7 @@
                 Dashboard Release <%=dashboardReleaseVersion%>
             </div>
             <div style="font-size:14px; margin-bottom:10px;">
-                Data users must acknowledge and cite the manuscript <a href="https://academic.oup.com/database/article/4079798" target="_blank">Aksoy, Dančík, Smith et al.</a>, Database 2017;1-10 and provide the URL <a href="https://ctd2-dashboard.nci.nih.gov/dashboard/">https://ctd2-dashboard.nci.nih.gov/dashboard/</a>.
+                Data users must acknowledge and cite the manuscript <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5569694/" target="_blank">Aksoy, Dančík, Smith et al.</a>, Database 2017;1-10 and provide the URL <a href="https://ctd2-dashboard.nci.nih.gov/dashboard/">https://ctd2-dashboard.nci.nih.gov/dashboard/</a>.
             </div>
             <div style="font-size:14px; margin-bottom:10px;">
                 As the CTD<sup>2</sup> Network continues to refine the Dashboard, input from the research community is highly valued to help improve usability.
@@ -200,16 +200,16 @@
         </footer>
     </div>
     
-    <div class="modal hide fade" id="alert-message-modal">  <!-- a hidden div for showing alert message -->          
-                <div class="modal-body" >                        
-                    <br>                    
+    <div class="modal hide fade" id="alert-message-modal">  <!-- a hidden div for showing alert message -->
+                <div class="modal-body" >
+                    <br>
                     <medium id="alertMessage"></medium>
                 </div>
-                <div class="modal-footer">                     
+                <div class="modal-footer">
                     <button class="btn btn-primary" data-dismiss="modal">Close</button>
                 </div>
     </div>
-    
+
     <!-- these are the templates -->
     <script type="text/template" id="home-tmpl">
         <div class="overview-container">
@@ -221,11 +221,13 @@
                             <img class="img-polaroid pull-left" src="img/logos/ctd2_overall.png" alt="CTD2 general image" title="CTD2 general image">
                             </a>
                             <p class="lead firstlead">
-                                <a href="https://ocg.cancer.gov/programs/ctd2"><b>The Cancer Target Discovery and Development (CTD<sup>2</sup>) Network</b></a> mines and functionally validates data from large-scale adult and pediatric cancer genome characterization initiatives and advances them toward use in precision oncology.
-                                The Network developed the open-access “CTD<sup>2</sup> Dashboard,” a web interface that compiles Network-generated summaries about key cancer biology findings and cancer-relevant results related to genes, proteins, and compounds.
-                                Submissions are “ranked” with the validation “<a href="http://www.ncbi.nlm.nih.gov/pubmed/27401613" target="_blank">Tier</a>” system to indicate strength of evidence.
-                                To learn how the Dashboard is organized, visit <a id="homepage-help-navigate" href="#help-navigate">Navigating and Understanding Dashboard Content</a>.
-                                To understand more about the Dashboard functions, please read <a href="https://ocg.cancer.gov/news-publications/e-newsletter-issue/issue-14#1721">CTD<sup>2</sup> Dashboard: A Platform to Explore Evidence-based Observations</a>.
+                                <a href="https://ocg.cancer.gov/programs/ctd2"><b>The Cancer Target Discovery and Development (CTD<sup>2</sup>) Network</b></a> bridges the knowledge gap between cancer genomics and precision oncology by mining and functionally validating high-throughput, high-content genomic data and translating the findings to the bedside.
+                                The Network developed the open-access web interface, “CTD<sup>2</sup> Dashboard,” to address the community’s need to find data generated from multiple types of biological and analytical approaches by CTD<sup>2</sup> Centers, while adhering to the FAIR (findable, accessible, interoperable, and re-usable) principles.
+                                The CTD<sup>2</sup> Dashboard compiles the Network-generated conclusions, or “observations,” associated with a specific gene, cell line, animal model, or perturbagen.
+                                It provides supporting evidence with links to data, references, and the validation strength of evidence referred by “<a href="http://www.ncbi.nlm.nih.gov/pubmed/27401613" target="_blank">Tier</a>.”
+                                In summary, the Dashboard provides access to validated data and the ability to view a cross-section of results assembled across multiple CTD2 Center findings.
+                                To learn how the Dashboard is organized, including additional term definitions, please visit <a id="homepage-help-navigate" href="#help-navigate">Navigating and Understanding Dashboard Content</a>.
+                                To understand more about the Dashboard functions, please read the <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5569694/" target="_blank">manuscript</a> or <a href="https://ocg.cancer.gov/news-publications/e-newsletter-issue/issue-14#1721" target="_blank">e-News article</a>.
                             </p>
                         </div>
                     </div>
