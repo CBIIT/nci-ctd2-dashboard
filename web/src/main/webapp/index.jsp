@@ -1764,6 +1764,31 @@
                 </table>
             </div>
 
+            <div id="observation-search-results" class="hide">
+                <h3>Observations Matching all Search Terms</h3>
+                <table id="searched-observation-grid" class="table table-bordered table-striped observations">
+                    <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th width=500>Observation Summary</th>
+                        <th>Tier</th>
+                        <th>Center</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!-- here will go the rows -->
+                    <tr class="subject-observations-loading">
+                        <td colspan="5">
+                            <h3>Loading observations...</h3>
+                            <div class="progress progress-striped active">
+                                <div class="bar" style="width: 100%;"></div>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
             <div class="rss-feed">
                 Subscribe to
                 <a href="feed/search/{{decodeURIComponent(term)}}">

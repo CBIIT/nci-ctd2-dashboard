@@ -9,6 +9,7 @@ import org.hibernate.annotations.Proxy;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Fields;
 import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Store;
 
 import javax.persistence.*;
@@ -39,8 +40,8 @@ public class SubjectImpl extends DashboardEntityImpl implements Subject {
     }
 
     @Fields({
-            @Field(name = FIELD_SYNONYM, index = org.hibernate.search.annotations.Index.TOKENIZED, store = Store.YES),
-            @Field(name = FIELD_SYNONYM_UT, index = org.hibernate.search.annotations.Index.UN_TOKENIZED)
+            @Field(name = FIELD_SYNONYM, index = org.hibernate.search.annotations.Index.YES, store = Store.YES),
+            @Field(name = FIELD_SYNONYM_UT, index = org.hibernate.search.annotations.Index.YES, analyze=Analyze.NO)
     })
     @Transient
     public String getSynoynmStrings() {

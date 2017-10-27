@@ -16,7 +16,7 @@ public class OrganismImpl extends DashboardEntityImpl implements Organism {
 
     private String taxonomyId;
 
-    @Field(name=FIELD_TAXID, index = Index.TOKENIZED)
+    @Field(name=FIELD_TAXID, index = Index.YES)
     @Column(length = 32, nullable = false)
     public String getTaxonomyId() {
         return taxonomyId;
