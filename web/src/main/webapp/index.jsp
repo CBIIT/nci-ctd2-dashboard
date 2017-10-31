@@ -2332,7 +2332,6 @@
             <h3>Dashboard Organization</h3>
             <p>
                 The <b>subjects</b> from CTD<sup>2</sup> Network studies are ordered by relevance based on the number of different <b>Centers</b> providing <b>observations</b> about that particular <b>subject</b>, the <b>Tiers</b> of these <b>observations</b>, and, in the cases of a tie, the number of <b>observations</b>.  The actual relevance score for a <b>subject</b> is the sum of the highest <b>Tier</b> number from each Center for which there is an <b>observation</b> on that <b>subject</b>.
-.
             </p>
 
             <br>
