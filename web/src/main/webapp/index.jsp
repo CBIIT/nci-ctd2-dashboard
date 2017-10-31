@@ -150,7 +150,7 @@
                               <ul>
                                 <li><em>Gene: </em> <a href="#search/CTNNB1">CTNNB1</a> or <a href="#search/YAP*">YAP*</a></li>
                                 <li><em>Compound: </em> <a href="#search/ABT-737">ABT-737</a></li>
-                                <li><em>Cell Sample: </em> <a href="#search/HPBALL">HPBALL</a></li>
+                                <li><em>Cell Sample: </em> <a href="#search/OVCAR8">OVCAR8</a></li>
                               </ul>
                               <br>
                           </span>
