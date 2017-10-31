@@ -144,13 +144,14 @@
                           <input type="text" id="omni-input" class="span3 search-query" title="Search" placeholder="e.g. CTNNB1 or ABT-737">
                           <button type="submit" class="btn search-button">Search</button>
                           <span class="hide" id="search-help-content">
-                              <p>Please enter the keyword you would like to search on the website.</p>
-
+                              <p>Please enter the keyword(s) you would like to search on the website.  You may enter multiple search terms, but do not use "AND" or "OR". Exact matches only for multiple terms.</p>
                               <strong>Examples:</strong>
                               <ul>
-                                <li><em>Gene: </em> <a href="#search/CTNNB1">CTNNB1</a> or <a href="#search/YAP*">YAP*</a></li>
+                                <li><em>Gene: </em> <a href="#search/CTNNB1">CTNNB1</a></li>
+				<li><em>Gene: </em> <a href="#search/YAP*">YAP*</a></li>
                                 <li><em>Compound: </em> <a href="#search/ABT-737">ABT-737</a></li>
                                 <li><em>Cell Sample: </em> <a href="#search/OVCAR8">OVCAR8</a></li>
+				<li><em>Multiple: </em> <a href="#search/dexamethasone AKT1">dexamethasone AKT1</a></li>
                               </ul>
                               <br>
                           </span>
