@@ -28,12 +28,12 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
-            <version>3.6.10.Final</version>
+            <version>4.2.21.Final</version>
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-entitymanager</artifactId>
-            <version>3.6.10.Final</version>
+            <version>4.2.21.Final</version>
             <exclusions>
                 <exclusion>
                     <groupId>cglib</groupId>
@@ -48,7 +48,7 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-search</artifactId>
-            <version>3.4.0.Final</version>
+            <version>4.4.6.Final</version>
         </dependency>
         <dependency>
             <groupId>cglib</groupId>

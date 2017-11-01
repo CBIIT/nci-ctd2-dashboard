@@ -25,7 +25,7 @@ public class GeneImpl extends SubjectWithOrganismImpl implements Gene {
     private String entrezGeneId;
 	private String hgncId;
 
-    @Field(name=FIELD_ENTREZID, index = org.hibernate.search.annotations.Index.TOKENIZED)
+    @Field(name=FIELD_ENTREZID, index = org.hibernate.search.annotations.Index.YES)
     @Column(length = 32, nullable = false, unique = true)
     public String getEntrezGeneId() {
         return entrezGeneId;
@@ -35,7 +35,7 @@ public class GeneImpl extends SubjectWithOrganismImpl implements Gene {
         this.entrezGeneId = entrezGeneId;
     }
 
-    @Field(name=FIELD_HGNCID, index = org.hibernate.search.annotations.Index.TOKENIZED)
+    @Field(name=FIELD_HGNCID, index = org.hibernate.search.annotations.Index.YES)
     @Column(length = 32, nullable = true)
     public String getHGNCId() {
         return hgncId;

@@ -30,7 +30,7 @@ public class ObservationTemplateImpl extends DashboardEntityImpl implements Obse
     private SubmissionCenter submissionCenter;
     private String principalInvestigator;
 
-    @Field(name=FIELD_DESCRIPTION, index = Index.TOKENIZED)
+    @Field(name=FIELD_DESCRIPTION, index = Index.YES)
     @Column(length = 1024)
     public String getDescription() {
         return description;
@@ -57,7 +57,7 @@ public class ObservationTemplateImpl extends DashboardEntityImpl implements Obse
         this.tier = tier;
     }
 
-    @Field(name=FIELD_SUBMISSIONNAME, index = Index.TOKENIZED)
+    @Field(name=FIELD_SUBMISSIONNAME, index = Index.YES)
     @Column(length = 128)
     public String getSubmissionName() {
         return submissionName;
@@ -67,7 +67,7 @@ public class ObservationTemplateImpl extends DashboardEntityImpl implements Obse
         this.submissionName = submissionName;
     }
 
-    @Field(name=FIELD_SUBMISSIONDESC, index = Index.TOKENIZED)
+    @Field(name=FIELD_SUBMISSIONDESC, index = Index.YES)
     @Column(length = 1024)
     public String getSubmissionDescription() {
         return submissionDescription;
@@ -77,7 +77,7 @@ public class ObservationTemplateImpl extends DashboardEntityImpl implements Obse
         this.submissionDescription = submissionDescription;
     }
     
-    @Field(name=FIELD_PROJECT, index = Index.TOKENIZED)
+    @Field(name=FIELD_PROJECT, index = Index.YES)
     @Column(length = 1024)
     public String getProject() {
         return project;

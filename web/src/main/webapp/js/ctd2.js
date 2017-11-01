@@ -1968,6 +1968,20 @@
         }
     });
 
+    var tabulate_matching_observations = function(m_observations) {
+        if(m_observations.length <= 0) return;
+
+        $("#observation-search-results").fadeIn();
+        var thatEl = $("#searched-observation-grid");
+        
+        $(".subject-observations-loading", thatEl).remove();
+        _.each(m_observations, function (observation) {
+            var observationRowView
+                = new ObservationRowView({ el: $(thatEl).find("tbody"), model: observation });
+            observationRowView.render();
+        });
+    };
+
     var SearchView = Backbone.View.extend({
         el: $("#main-container"),
         template: _.template($("#search-tmpl").html()),
@@ -1988,6 +2002,7 @@
                         (new EmptyResultsView({ el: $(thatEl).find("tbody"), model: thatModel})).render();
                     } else {
                         var submissions = [];
+                        var matching_observations = [];
                         _.each(searchResults.models, function(aResult) {
                             aResult = aResult.toJSON();
                             if(aResult.dashboardEntity.organism == undefined) {
@@ -1996,6 +2011,9 @@
 
                             if(aResult.dashboardEntity.class == "Submission") {
                                 submissions.push(aResult);
+                                return;
+                            } else if (aResult.dashboardEntity.class == "Observation") {
+                                matching_observations.push(aResult.dashboardEntity);
                                 return;
                             }
 
@@ -2030,6 +2048,9 @@
                                 var searchSubmissionRowView = new SearchSubmissionRowView({ model: submission });
                                 searchSubmissionRowView.render();
 
+                                if (submission.observationTemplate===undefined) { // TODO why does this happen?
+                                    submission.observationTemplate = {}
+                                }
                                 var tmplName = submission.observationTemplate.isSubmissionStory
                                     ? "#count-story-tmpl"
                                     : "#count-observations-tmpl";
@@ -2052,6 +2073,8 @@
                             });
                             sTable.fnSort( [ [4, 'desc'], [2, 'desc'] ] );
                         }
+
+                        tabulate_matching_observations(matching_observations);
                     }
                 }
             });

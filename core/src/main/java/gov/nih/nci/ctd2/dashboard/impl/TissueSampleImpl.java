@@ -19,7 +19,7 @@ public class TissueSampleImpl extends SubjectImpl implements TissueSample {
 
     private String lineage;
 
-    @Field(name=FIELD_LINEAGE, index = Index.TOKENIZED)
+    @Field(name=FIELD_LINEAGE, index = Index.YES)
     @Column(length = 128, nullable = true)
     public String getLineage() {
         return lineage;
