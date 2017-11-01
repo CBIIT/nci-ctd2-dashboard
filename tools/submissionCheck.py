@@ -28,9 +28,9 @@ CENTERS = {
 'University of California San Francisco (2)':'William A. Weiss, M.D., Ph.D.',
 'University of Texas MD Anderson Cancer Center':'Gordon B. Mills, M.D., Ph.D.',
 'University of Texas Southwestern Medical Center':'Michael Roth, Ph.D.',
-'Johns Hopkins University':'',
-'Oregon Health and Science University':'',
-'University of California San Diego':'',
+'Johns Hopkins University':'Joel S. Bader, Ph.D.',
+'Oregon Health and Science University':'Brian J. Druker, M.D.',
+'University of California San Diego':'Pablo Tamayo, Ph.D.',
 }
 
 ROLES = {

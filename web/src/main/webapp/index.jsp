@@ -2359,9 +2359,9 @@
         <a href="https://ocg.cancer.gov/programs/ctd2/centers#university-of-california-san-francisco-2" data-center="University of California San Francisco (2)" target="_blank">view center description</a>
         <a href="https://ocg.cancer.gov/programs/ctd2/centers#university-of-texas-southwestern-medical-center" data-center="University of Texas Southwestern Medical Center" target="_blank">view center description</a>
         <a href="https://ocg.cancer.gov/programs/ctd2/centers#translational-genomics-research-institute" data-center="Translational Genomics Research Institute" target="_blank">view center description</a>
-        <a href="https://ocg.cancer.gov/programs/ctd2/centers#" data-center="Johns Hopkins University" target="_blank">view center description</a>
-        <a href="https://ocg.cancer.gov/programs/ctd2/centers#" data-center="Oregon Health and Science University" target="_blank">view center description</a>
-        <a href="https://ocg.cancer.gov/programs/ctd2/centers#" data-center="University of California San Diego" target="_blank">view center description</a>
+        <a href="https://ocg.cancer.gov/programs/ctd2/centers#johns-hopkins-university" data-center="Johns Hopkins University" target="_blank">view center description</a>
+        <a href="https://ocg.cancer.gov/programs/ctd2/centers#oregon-health-and-science-university" data-center="Oregon Health and Science University" target="_blank">view center description</a>
+        <a href="https://ocg.cancer.gov/programs/ctd2/centers#university-of-california-san-diego" data-center="University of California San Diego" target="_blank">view center description</a>
     </script>
 
     <!-- end of templates -->
