@@ -972,7 +972,7 @@
                         <tr>
                             <th>References</th>
                             <td>
-                                Uniprot ID: <a href="http://uniprot.com/{{uniprotId}}" target="_blank">{{uniprotId}} <i class="icon-share"></i></a> <br>
+			        UniProt ID: <a href="http://www.uniprot.org/uniprot/{{uniprotId}}" target="_blank">{{uniprotId}} <i class="icon-share"></i></a> <br>
                             </td>
                         </tr>
                     </table>
