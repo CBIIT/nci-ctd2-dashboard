@@ -585,7 +585,7 @@ public class DashboardDaoImpl implements DashboardDao {
 
     @Override
     public List<ObservedSubject> findObservedSubjectByRole(String role) {
-        return queryWithClass("from ObservedSubjectImpl where ozbservedSubjectRole.subjectRole.displayName = :role", "role", role);
+        return queryWithClass("from ObservedSubjectImpl where observedSubjectRole.subjectRole.displayName = :role", "role", role);
     }
 
     @Override
