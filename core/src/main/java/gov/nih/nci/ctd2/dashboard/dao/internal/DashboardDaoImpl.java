@@ -126,12 +126,16 @@ public class DashboardDaoImpl implements DashboardDao {
 
     @Override
     public void update(DashboardEntity entity) {
-        getSession().update(entity);
+        Session session = getSession();
+        session.update(entity);
+        session.close();
     }
 
     @Override
     public void merge(DashboardEntity entity) {
-        getSession().merge(entity);
+        Session session = getSession();
+        session.merge(entity);
+        session.close();
     }
 
 
