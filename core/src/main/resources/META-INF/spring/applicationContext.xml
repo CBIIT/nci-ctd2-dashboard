@@ -9,7 +9,7 @@
 
     <bean class="gov.nih.nci.ctd2.dashboard.impl.DashboardFactoryImpl" id="dashboardFactory"/>
 
-    <bean class="org.springframework.jdbc.datasource.DriverManagerDataSource" id="dataSource">
+    <bean class="org.apache.commons.dbcp.BasicDataSource" id="dataSource">
         <property name="driverClassName" value="${database.driverClassName}"/>
         <property name="url" value="${database.url}"/>
         <property name="username" value="${database.username}"/>
@@ -31,6 +31,7 @@
                 <prop key="hibernate.ejb.naming_strategy">${hibernate.ejb.naming_strategy}</prop>
                 <prop key="hibernate.connection.charSet">${hibernate.connection.charSet}</prop>
                 <prop key="hibernate.search.default.indexBase">${search.indexDir}</prop>
+                <prop key="hibernate.search.lucene_version">LUCENE_CURRENT</prop>
             </props>
         </property>
 
