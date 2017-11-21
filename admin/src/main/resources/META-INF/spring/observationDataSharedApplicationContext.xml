@@ -688,11 +688,21 @@
                 <batch:chunk reader="emoryMkk3MycProteinStabilityReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
         </batch:step>
-        <batch:step id="emoryMkk3MycReporterAssayStep" parent="observationDataStep">
+        <batch:step id="emoryMkk3MycReporterAssayStep" parent="observationDataStep" next="dfciRnaiCancerDependencyMapStep">
             <batch:tasklet>
                 <batch:chunk reader="emoryMkk3MycReporterAssayReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
         </batch:step>
+	<batch:step id="dfciRnaiCancerDependencyMapStep" parent="observationDataStep" next="ucsfGpx4PersisterCellStudyStep">
+	    <batch:tasklet>
+                <batch:chunk reader="dfciRnaiCancerDependencyMapReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	    </batch:tasklet>
+	</batch:step>
+	<batch:step id="ucsfGpx4PersisterCellStudyStep" parent="observationDataStep">
+	    <batch:tasklet>
+                <batch:chunk reader="ucsfGpx4PersisterCellStudyReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	    </batch:tasklet>
+	</batch:step>
     </batch:job>
 
     <bean id="observationDataStep" class="org.springframework.batch.core.step.item.SimpleStepFactoryBean" abstract="true">
@@ -1067,7 +1077,7 @@
     </bean>
     <bean name="cshlMouseLiversLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
         <property name="delimiter" value="\u0009"/>
-        <property name="names" value="dummy,submission_name,submission_date,template_name,tumor_type,gene_symbol,figure1,figure2"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,tumor_type,gene_symbol,figure1,figure2,publication_url"/>
     </bean>
     
     <bean name="cshlCoExpLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
@@ -1076,7 +1086,7 @@
     </bean>
     <bean name="cshlCoExpLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
         <property name="delimiter" value="\u0009"/>
-        <property name="names" value="dummy,submission_name,submission_date,template_name,tumor_type,gene_symbol1,gene_symbol2,figure1,figure2"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,tumor_type,gene_symbol1,gene_symbol2,figure1,figure2,publication_url"/>
     </bean>
     
     <bean name="dfciArid1aMutAnalysisLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
@@ -1934,6 +1944,24 @@
         <property name="names" value="dummy,submission_name,submission_date,template_name,interactor_1,mutation_1,interactor_2,cell_line,figure_1,reference,evidence_ontology_term"/>
     </bean>
 
+    <bean name="dfciRnaiCancerDependencyMapLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="dfciRnaiCancerDependencyMapLineTokenizer" />
+    </bean>
+    <bean name="dfciRnaiCancerDependencyMapLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="\u0009"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,data_portal,depmap_rnai_site,project_achilles,tier1_evidence,publication_reference_1,publication_reference_2,story_location"/>
+    </bean>
+
+    <bean name="ucsfGpx4PersisterCellStudyLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="ucsfGpx4PersisterCellStudyLineTokenizer" />
+    </bean>
+    <bean name="ucsfGpx4PersisterCellStudyLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="\u0009"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,target,story_location,publication_reference_1,publication_reference_2"/>
+    </bean>
+
 
     <!-- shared helper beans -->
     <bean name="observationTemplateMap" class="java.util.HashMap">
@@ -2350,11 +2378,13 @@
                 <entry key="cshl_mouselivers:gene_symbol" value="subject:findGenesBySymbol" />
                 <entry key="cshl_mouselivers:figure1" value="evidence:readString:createObservedFileEvidence" />
                 <entry key="cshl_mouselivers:figure2" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="cshl_mouselivers:publication_url" value="evidence:readString:createObservedUrlEvidence"/>
                 <entry key="cshl_coexpr:tumor_type" value="subject:findTissueSampleByName" />
                 <entry key="cshl_coexpr:gene_symbol1" value="subject:findGenesBySymbol" />
                 <entry key="cshl_coexpr:gene_symbol2" value="subject:findGenesBySymbol" />
                 <entry key="cshl_coexpr:figure1" value="evidence:readString:createObservedFileEvidence" />
                 <entry key="cshl_coexpr:figure2" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="cshl_coexpr:publication_url" value="evidence:readString:createObservedUrlEvidence"/>
                 <entry key="dfci_arid1a_mut_analysis:gene_symbol" value="subject:findGenesBySymbol" />
                 <entry key="dfci_arid1a_mut_analysis:gene_summarization_method" value="evidence:readString:createObservedLabelEvidence" />
                 <entry key="dfci_arid1a_mut_analysis:target_group" value="evidence:readString:createObservedLabelEvidence" />
@@ -3324,6 +3354,19 @@
 		<entry key="emory_mkk3_myc_reporter_assay:figure_1" value="evidence:readString:createObservedFileEvidence" />
 		<entry key="emory_mkk3_myc_reporter_assay:reference" value="evidence:readString:createObservedUrlEvidence" />
 		<entry key="emory_mkk3_myc_reporter_assay:evidence_ontology_term" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="dfci_rnai_cancer_dependency_map:gene_symbol_1" value="subject:findGenesBySymbol"/>
+		<entry key="dfci_rnai_cancer_dependency_map:gene_symbol_2" value="subject:findGenesBySymbol"/>
+		<entry key="dfci_rnai_cancer_dependency_map:data_portal" value="evidence:readString:createObservedUrlEvidence"/>
+		<entry key="dfci_rnai_cancer_dependency_map:depmap_rnai_site" value="evidence:readString:createObservedUrlEvidence"/>
+		<entry key="dfci_rnai_cancer_dependency_map:project_achilles" value="evidence:readString:createObservedUrlEvidence"/>
+		<entry key="dfci_rnai_cancer_dependency_map:tier1_evidence" value="evidence:readString:createObservedUrlEvidence"/>
+		<entry key="dfci_rnai_cancer_dependency_map:publication_reference_1" value="evidence:readString:createObservedUrlEvidence"/>
+		<entry key="dfci_rnai_cancer_dependency_map:publication_reference_2" value="evidence:readString:createObservedUrlEvidence"/>
+		<entry key="dfci_rnai_cancer_dependency_map:story_location" value="evidence:readString:createObservedFileEvidence"/>
+		<entry key="ucsf_gpx4_persister_cell_study:target" value="subject:findGenesBySymbol"/>
+		<entry key="ucsf_gpx4_persister_cell_study:story_location" value="evidence:readString:createObservedFileEvidence"/>
+		<entry key="ucsf_gpx4_persister_cell_study:publication_reference_1" value="evidence:readString:createObservedUrlEvidence"/>
+		<entry key="ucsf_gpx4_persister_cell_study:publication_reference_2" value="evidence:readString:createObservedUrlEvidence"/>
             </map>
         </constructor-arg>
     </bean>

@@ -1243,4 +1243,22 @@
             </bean>
         </property>
     </bean>
+    <bean name="dfciRnaiCancerDependencyMapReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+      <property name="resources" value="${dfci.rnai.cancer.dependency.map.data.location}" />
+      <property name="delegate">
+        <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+          <property name="lineMapper" ref="dfciRnaiCancerDependencyMapLineMapper" />
+          <property name="linesToSkip" value="7" />
+        </bean>
+      </property>
+    </bean>
+    <bean name="ucsfGpx4PersisterCellStudyReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+      <property name="resources" value="${ucsf.gpx4.persister.cell.study.data.location}" />
+      <property name="delegate">
+        <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+          <property name="lineMapper" ref="ucsfGpx4PersisterCellStudyLineMapper" />
+          <property name="linesToSkip" value="7" />
+        </bean>
+      </property>
+    </bean>
 </beans>

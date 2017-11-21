@@ -461,4 +461,10 @@
     <bean name="emoryMkk3MycReporterAssayReader" class="org.springframework.batch.item.file.FlatFileItemReader">
         <property name="lineMapper" ref="emoryMkk3MycReporterAssayLineMapper" />
     </bean>
+    <bean name="dfciRnaiCancerDependencyMapReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="dfciRnaiCancerDependencyMapLineMapper" />
+    </bean>
+    <bean name="ucsfGpx4PersisterCellStudyReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="ucsfGpx4PersisterCellStudyLineMapper" />
+    </bean>
 </beans>
