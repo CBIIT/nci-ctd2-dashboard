@@ -272,17 +272,17 @@ public class DashboardDaoImpl implements DashboardDao {
 
     @Override
     public List<ShRna> findSiRNAByReagentName(String reagent) {
-        throw new java.lang.UnsupportedOperationException("not implemented");
+        return queryWithClass("from ShRnaImpl where reagentName = :reagentName", "reagentName", reagent);
     }
     
     @Override
     public List<ShRna> findSiRNAByTargetSequence(String targetSequence) {
-        throw new java.lang.UnsupportedOperationException("not implemented");
+        return queryWithClass("from ShRnaImpl where targetSequence = :targetSequence", "targetSequence", targetSequence);
     }
 
 	@Override
     public List<Compound> findCompoundsByName(String compoundName) {
-		throw new java.lang.UnsupportedOperationException("not implemented");
+        return queryWithClass("from CompoundImpl where displayName = :displayName", "displayName", compoundName);
 	}
 
     @Override
