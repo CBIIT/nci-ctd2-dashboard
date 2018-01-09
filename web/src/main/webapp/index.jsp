@@ -175,7 +175,7 @@
                 Dashboard Release <%=dashboardReleaseVersion%>
             </div>
             <div style="font-size:14px; margin-bottom:10px;">
-                Data users must acknowledge and cite the manuscript <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5569694/" target="_blank">Aksoy, Dančík, Smith et al.</a>, Database 2017;1-10 and provide the URL <a href="https://ctd2-dashboard.nci.nih.gov/dashboard/">https://ctd2-dashboard.nci.nih.gov/dashboard/</a>.
+                Data users must acknowledge and cite the manuscript <a href="https://www.ncbi.nlm.nih.gov/pubmed/29220450" target="_blank">Aksoy, Dančík, Smith et al.</a>, Database 2017;1-10 and provide the URL <a href="https://ctd2-dashboard.nci.nih.gov/dashboard/">https://ctd2-dashboard.nci.nih.gov/dashboard/</a>.
             </div>
             <div style="font-size:14px; margin-bottom:10px;">
                 As the CTD<sup>2</sup> Network continues to refine the Dashboard, input from the research community is highly valued to help improve usability.
