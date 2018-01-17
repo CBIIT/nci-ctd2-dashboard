@@ -476,11 +476,11 @@ public class DashboardDaoImpl implements DashboardDao {
         }
     }
 
-    private static String getMatchedTerm(String[] allTerms, String context) {
-        for(String t: allTerms) {
-            if( context.toLowerCase().contains(t.toLowerCase()) ) return t;
-        }
-        return null; // intentionally to return null if no match
+    /* defination of 'term': the complete exact entity name that is also a substring of the original query string */
+    private static String getMatchedTerm(String queryString, String entityName) {
+        String name = entityName.toLowerCase();
+        if( queryString.toLowerCase().contains(name) ) return name;
+        else return null; // intentionally to return null if it is not a 'term' as defined above
     }
 
     @Override
@@ -501,8 +501,6 @@ public class DashboardDaoImpl implements DashboardDao {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        String[] allTerms = keyword.toLowerCase().split("\\s+");
-        int total = allTerms.length;
 
         Class[] classes = searchableClasses;
         FullTextQuery fullTextQuery = fullTextSession.createFullTextQuery(luceneQuery, classes);
@@ -547,7 +545,7 @@ public class DashboardDaoImpl implements DashboardDao {
                 HashSet<String> roles = new HashSet<String>();
                 for (ObservedSubject observedSubject : findObservedSubjectBySubject((Subject) entity)) {
                     Observation observation = observedSubject.getObservation();
-                    String term = getMatchedTerm(allTerms, entity.getDisplayName());
+                    String term = getMatchedTerm(keyword, entity.getDisplayName());
                     if(term!=null) {
                         Set<String> terms = matchingObservations.get(observation);
                         if(terms==null) {
@@ -576,12 +574,32 @@ public class DashboardDaoImpl implements DashboardDao {
         }
 
         // add observations
+        Set<String> allTerms = new HashSet<String>();
         for(Observation ob: matchingObservations.keySet()) {
-            Set<String> terms = matchingObservations.get(ob);
-            if(total<=1 || terms.size()<total) continue;
-            DashboardEntityWithCounts oneObservationResult = new DashboardEntityWithCounts();
-            oneObservationResult.setDashboardEntity(ob);
-            entitiesWithCounts.add(oneObservationResult);
+            for(String newTerm: matchingObservations.get(ob)) {
+                Boolean add = true;
+                Set<String> toBeRemoved = new HashSet<String>();
+                for(String existingTerms: allTerms) {
+                    if(existingTerms.contains(newTerm)) {
+                        add = false;
+                        break; // ignore this new term. no more comparison.
+                    } else if(newTerm.contains(existingTerms)) {
+                        toBeRemoved.add(existingTerms); // remove this existing term
+                    }
+                }
+                if(add)allTerms.add(newTerm);
+                allTerms.removeAll(toBeRemoved);
+            }
+            // allTerms.addAll(matchingObservations.get(ob)); // too imple that we have to give up this approach
+        }
+        if(allTerms.size()>1) { // do not find 'intersection' if there is only one term
+            for(Observation ob: matchingObservations.keySet()) {
+                Set<String> terms = matchingObservations.get(ob);
+                if(!terms.containsAll(allTerms)) continue;
+                DashboardEntityWithCounts oneObservationResult = new DashboardEntityWithCounts();
+                oneObservationResult.setDashboardEntity(ob);
+                entitiesWithCounts.add(oneObservationResult);
+            }
         }
 
         return entitiesWithCounts;
