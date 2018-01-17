@@ -256,6 +256,41 @@
                 (new HelpNavigateView()).render();
             });
 
+            $("#video-link1").click(function(e) {
+                e.preventDefault();
+                (new VideoPopupView({ model: {videoid:"UD40bbg2ISU"} })).render();
+            });
+            $("#video-link2").click(function(e) {
+                console.log("debug..................");
+                e.preventDefault();
+                (new VideoPopupView({ model: {videoid:"_hpDlXMAYMs"} })).render();
+            });
+            $("#video-link3").click(function(e) {
+                e.preventDefault();
+                (new VideoPopupView({ model: {videoid:"RsHTBX_CeNw"} })).render();
+            });
+
+            return this;
+        }
+    });
+
+    var VideoPopupView = Backbone.View.extend({
+        template: _.template($("#video-popup-tmpl").html()),
+        render: function() {
+            var content = this.template(this.model);
+
+            $.fancybox(
+                content,
+                {
+                    'autoDimensions' : false,
+                    'width': '75%',
+                    'height': '99%',
+                    'centerOnScroll': true,
+                    'transitionIn' : 'none',
+                    'transitionOut' : 'none'
+                }
+            );
+
             return this;
         }
     });

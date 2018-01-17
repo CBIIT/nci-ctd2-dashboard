@@ -234,9 +234,20 @@
                     </div>
                     <div class="span3">
                         <br><br>
-                        <a href="https://ocg.cancer.gov/programs/ctd2/data-portal" style="vertical-align: middle">
-                          <img src="img/logos/image001.png" onmouseover="this.src='img/logos/image002.png'" onmouseout="this.src='img/logos/image001.png'" alt="CTD2 general image" title="CTD2 Data Portal image" style="vertical-align: middle">
-                        </a>
+                        <a id="video-link1" style="vertical-align: middle">
+                            <img src="img/logos/video1_icon.png" style="vertical-align: middle">
+                            <small>Understanding CTD2 Dashboard Organization and Terminology</small>
+                          </a>
+                          <br>
+                          <a id="video-link2" style="vertical-align: middle">
+                            <img src="img/logos/video2_icon.png" style="vertical-align: middle">
+                            <small>Searching and Browsing the CTD2 Dashboard</small>
+                          </a>
+                          <br>
+                          <a id="video-link3" style="vertical-align: middle">
+                            <img src="img/logos/video3_icon.png" style="vertical-align: middle">
+                            <small>Identifying Molecular Interactions with the CTD2 Dashboard Gene Cart</small>
+                          </a>
                         <div>
                 </div>
             </div>
@@ -2316,6 +2327,15 @@
      <script type="text/template" id="gene-cart-option-tmpl-preselected">
         <option value="{{displayItem}}" selected>{{displayItem}}</option>
      </script>
+
+    <script type="text/template" id="video-popup-tmpl">
+        <div id="ytplayer-{{videoid}}" class="flex-video widescreen" data-video-id="{{videoid}}" data-video-title="Understanding CTD<sup>2</sup> Dashboard Organization and Terminology" align="center" style="padding: 70px 0;height:400px;">
+            <noscript><p><a href="https://www.youtube.com/watch?v={{videoid}}" target="_blank" title="Understanding CTD<sup>2</sup> Dashboard Organization and Terminology">
+                View this video on YouTube.</a></p>
+            </noscript>
+            <iframe width="560" height="315" src="//www.youtube-nocookie.com/embed/{{videoid}}?wmode=opaque&amp;rel=0&amp;hl=en" frameborder="0" allowfullscreen="" title="Understanding CTD<sup>2</sup> Dashboard Organization and Terminology" alt="Understanding CTD<sup>2</sup> Dashboard Organization and Terminology">Youtube embedded video: https://www.youtube.com/watch?v={{videoid}}</iframe>
+        </div>
+    </script>
 
     <script type="text/template" id="help-navigate-tmpl">
         <div class="help-navigate-text-container">
