@@ -234,24 +234,63 @@
                     </div>
                     <div class="span3">
                         <br><br>
-                        <a id="video-link1" style="vertical-align: middle">
-                            <img src="img/logos/video1_icon.png" style="vertical-align: middle">
-                            <small>Understanding CTD2 Dashboard Organization and Terminology</small>
-                          </a>
-                          <br>
-                          <a id="video-link2" style="vertical-align: middle">
-                            <img src="img/logos/video2_icon.png" style="vertical-align: middle">
-                            <small>Searching and Browsing the CTD2 Dashboard</small>
-                          </a>
-                          <br>
-                          <a id="video-link3" style="vertical-align: middle">
-                            <img src="img/logos/video3_icon.png" style="vertical-align: middle">
-                            <small>Identifying Molecular Interactions with the CTD2 Dashboard Gene Cart</small>
-                          </a>
-                        <div>
-                </div>
-            </div>
-        </div>
+                        <div style='background: linear-gradient(to bottom,#f5c900 0%,#fef6d5 80%,#faf4bf 100%) repeat scroll 0% 0% transparent;
+                            padding: 15px;
+                            overflow: hidden;margin-bottom: 1.5em;word-wrap: break-word;
+                            color: #323232; font-weight: normal; 
+                            font-family: Helvetica,Arial,"Nimbus Sans L",sans-serif; font-size: 81.25%; line-height: 1.5em;'>
+
+                            <h2 style='color: #774928;
+                                    font-size: 15.6px;
+                                    padding-bottom: 10px;
+                                    text-align: center;
+                                    font-weight: bold;
+                                    font-family: "Arial Narrow",Arial,sans-serif;
+                                    margin: 0;
+                                    line-height: 1.25em;
+                                    text-transform: uppercase !important;'>CTD² Dashboard Tutorial Videos
+                            </h2>
+                            <div><div style="overflow: hidden;"><div><div>
+                                <style>
+                                    li.video-popup-link { line-height: normal; padding-bottom: 5px;}
+                                    a.video-popup-link { color: #323232; cursor: pointer; }
+                                </style>
+                                <ul style="margin: 0;list-style-type: none;list-style-image: url(./images/play-button.png);padding: 0 0 0 30px;">
+
+                                    <li class="video-popup-link">
+                                    <div style="vertical-align: top; display: inline-block; font-weight: bold;">
+                                        <span>
+                                            <a id="video-link1" class='video-popup-link'
+                                                title='This video introduces and defines common terminology used throughout the Dashboard.'>
+                                                Organization and Terminology</a>
+                                        </span>
+                                    </div>
+                                    </li>
+                            
+                                    <li class="video-popup-link">
+                                    <div style="vertical-align: top;display: inline-block;font-weight: bold;">
+                                        <span>
+                                            <a id="video-link2" style='color: #323232; cursor: pointer;'
+                                                title='This video explains how users can search and browse the Dashboard through gene-centric, compound/perturbation-centric, or disease-relevant keywords.'>
+                                                Search and Browse</a>
+                                        </span>
+                                    </div>
+                                    </li>
+
+                                    <li class="video-popup-link">
+                                    <div style="vertical-align: top; display: inline-block; font-weight: bold;">
+                                        <span>
+                                            <a id="video-link3" class='video-popup-link'
+                                                title='This video shows how the Dashboard Gene Cart can predict or verify molecular interactions using a subset of publicly available tissue- and disease-specific interactomes.'>
+                                                Gene Cart</a>
+                                        </span>  
+                                    </div>
+                                    </li>
+                                </ul>
+                            </div></div></div></div>
+                        </div><!-- end of the video link block -->
+                    </div>
+                </div><!-- row -->
 
         <div class="dark-separator"></div>
 
@@ -322,6 +361,9 @@
           </div>
 
         </div><!-- /.carousel -->
+
+        </div><!-- container overview-box -->
+        </div><!-- overview-container -->
 
     </script>
 
@@ -2329,11 +2371,16 @@
      </script>
 
     <script type="text/template" id="video-popup-tmpl">
-        <div id="ytplayer-{{videoid}}" class="flex-video widescreen" data-video-id="{{videoid}}" data-video-title="Understanding CTD<sup>2</sup> Dashboard Organization and Terminology" align="center" style="padding: 70px 0;height:400px;">
-            <noscript><p><a href="https://www.youtube.com/watch?v={{videoid}}" target="_blank" title="Understanding CTD<sup>2</sup> Dashboard Organization and Terminology">
+        <div id="ytplayer-{{videoid}}" class="flex-video widescreen" data-video-id="{{videoid}}" align="center" style="padding: 70px 0;height:400px;">
+            <noscript><p><a href="https://www.youtube.com/watch?v={{videoid}}" target="_blank" >
                 View this video on YouTube.</a></p>
             </noscript>
-            <iframe width="560" height="315" src="//www.youtube-nocookie.com/embed/{{videoid}}?wmode=opaque&amp;rel=0&amp;hl=en" frameborder="0" allowfullscreen="" title="Understanding CTD<sup>2</sup> Dashboard Organization and Terminology" alt="Understanding CTD<sup>2</sup> Dashboard Organization and Terminology">Youtube embedded video: https://www.youtube.com/watch?v={{videoid}}</iframe>
+            <iframe width="640" height="360" src="//www.youtube.com/embed/{{videoid}}?feature=oembed" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+            <div style='width:640px;'>
+                <span style='color: rgb(0, 0, 0);font: bold 10px Verdana,Helvetica,sans-serif;line-height: 1.4em;'>
+                    {{description}}
+                </span>
+            </div>
         </div>
     </script>
 
@@ -2429,7 +2476,7 @@
     <script src="js/encoder.js"></script>
     <script src="js/jquery.contextMenu.js"></script>   
     <script src="js/jquery.ui.position.js"></script>    
-    <script src="js/ctd2.js"></script>
+    <script src="js/ctd2.js?ts=2018"></script>
 
   </body>
 </html>

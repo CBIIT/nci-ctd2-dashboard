@@ -258,16 +258,16 @@
 
             $("#video-link1").click(function(e) {
                 e.preventDefault();
-                (new VideoPopupView({ model: {videoid:"UD40bbg2ISU"} })).render();
+                (new VideoPopupView({ model: {videoid:"UD40bbg2ISU", description:this.title} })).render();
             });
             $("#video-link2").click(function(e) {
                 console.log("debug..................");
                 e.preventDefault();
-                (new VideoPopupView({ model: {videoid:"_hpDlXMAYMs"} })).render();
+                (new VideoPopupView({ model: {videoid:"_hpDlXMAYMs", description:this.title} })).render();
             });
             $("#video-link3").click(function(e) {
                 e.preventDefault();
-                (new VideoPopupView({ model: {videoid:"RsHTBX_CeNw"} })).render();
+                (new VideoPopupView({ model: {videoid:"RsHTBX_CeNw", description:this.title} })).render();
             });
 
             return this;
@@ -283,8 +283,8 @@
                 content,
                 {
                     'autoDimensions' : false,
-                    'width': '75%',
-                    'height': '99%',
+                    'width': '820px',
+                    'height': '420px',
                     'centerOnScroll': true,
                     'transitionIn' : 'none',
                     'transitionOut' : 'none'
