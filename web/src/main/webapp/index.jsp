@@ -216,11 +216,68 @@
         <div class="overview-container">
             <div class="container overview-box">
                 <div class="row">
-                    <div class="span9">
+                    <div class="span12">
                         <div class="featurette" id="overview-text">
                             <a href="https://ocg.cancer.gov/programs/ctd2">
                             <img class="img-polaroid pull-left" src="img/logos/ctd2_overall.png" alt="CTD2 general image" title="CTD2 general image">
                             </a>
+                            <div class="span3" style='float: right; margin-top: 1em;'>
+                                <div style='background: linear-gradient(to bottom,#f5c900 0%,#fef6d5 80%,#faf4bf 100%) repeat scroll 0% 0% transparent;
+                                    padding: 15px;
+                                    overflow: hidden;margin-bottom: 1.5em;word-wrap: break-word;
+                                    color: #323232; font-weight: normal; 
+                                    font-family: Helvetica,Arial,"Nimbus Sans L",sans-serif; font-size: 81.25%; line-height: 1.5em;'>
+
+                                    <h2 style='color: #774928;
+                                        font-size: 15.6px;
+                                        padding-bottom: 10px;
+                                        text-align: center;
+                                        font-weight: bold;
+                                        font-family: "Arial Narrow",Arial,sans-serif;
+                                        margin: 0;
+                                        line-height: 1.25em;
+                                        text-transform: uppercase !important;'>CTD² Dashboard Tutorial Videos
+                                    </h2>
+                                    <div><div style="overflow: hidden;"><div><div>
+                                        <style>
+                                            li.video-popup-link { line-height: normal; padding-bottom: 5px;}
+                                            a.video-popup-link { color: #323232; cursor: pointer; }
+                                        </style>
+                                        <ul style="margin: 0;list-style-type: none;list-style-image: url(./images/play-button.png);padding: 0 0 0 30px;">
+
+                                            <li class="video-popup-link">
+                                                <div style="vertical-align: top; display: inline-block; font-weight: bold;">
+                                                    <span>
+                                                        <a id="video-link1" class='video-popup-link'
+                                                            title='This video introduces and defines common terminology used throughout the Dashboard.'>
+                                                            Organization and Terminology</a>
+                                                    </span>
+                                                </div>
+                                            </li>
+                                        
+                                            <li class="video-popup-link">
+                                            <div style="vertical-align: top;display: inline-block;font-weight: bold;">
+                                            <span>
+                                            <a id="video-link2" style='color: #323232; cursor: pointer;'
+                                                title='This video explains how users can search and browse the Dashboard through gene-centric, compound/perturbation-centric, or disease-relevant keywords.'>
+                                                Search and Browse</a>
+                                            </span>
+                                            </div>
+                                            </li>
+            
+                                            <li class="video-popup-link">
+                                            <div style="vertical-align: top; display: inline-block; font-weight: bold;">
+                                            <span>
+                                            <a id="video-link3" class='video-popup-link'
+                                                title='This video shows how the Dashboard Gene Cart can predict or verify molecular interactions using a subset of publicly available tissue- and disease-specific interactomes.'>
+                                                Gene Cart</a>
+                                            </span>  
+                                            </div>
+                                            </li>
+                                        </ul>
+                                    </div></div></div></div>
+                                </div><!-- end of the video link block -->
+                            </div><!-- span3 -->
                             <p class="lead firstlead">
                                 <a href="https://ocg.cancer.gov/programs/ctd2"><b>The Cancer Target Discovery and Development (CTD<sup>2</sup>) Network</b></a> bridges the knowledge gap between cancer genomics and precision oncology by mining and functionally validating high-throughput, high-content genomic data and translating the findings to the bedside.
                                 The Network developed the open-access web interface, “CTD<sup>2</sup> Dashboard,” to address the community’s need to find data generated from multiple types of biological and analytical approaches by CTD<sup>2</sup> Centers, while adhering to the FAIR (findable, accessible, interoperable, and re-usable) principles.
@@ -230,66 +287,8 @@
                                 To learn how the Dashboard is organized, including additional term definitions, please visit <a id="homepage-help-navigate" href="#help-navigate">Navigating and Understanding Dashboard Content</a>.
                                 To understand more about the Dashboard functions, please read the <a href="https://www.ncbi.nlm.nih.gov/pubmed/29220450" target="_blank">manuscript</a> or <a href="https://ocg.cancer.gov/news-publications/e-newsletter-issue/issue-14#1721" target="_blank">e-News article</a>.
                             </p>
-                        </div>
-                    </div>
-                    <div class="span3">
-                        <br><br>
-                        <div style='background: linear-gradient(to bottom,#f5c900 0%,#fef6d5 80%,#faf4bf 100%) repeat scroll 0% 0% transparent;
-                            padding: 15px;
-                            overflow: hidden;margin-bottom: 1.5em;word-wrap: break-word;
-                            color: #323232; font-weight: normal; 
-                            font-family: Helvetica,Arial,"Nimbus Sans L",sans-serif; font-size: 81.25%; line-height: 1.5em;'>
-
-                            <h2 style='color: #774928;
-                                    font-size: 15.6px;
-                                    padding-bottom: 10px;
-                                    text-align: center;
-                                    font-weight: bold;
-                                    font-family: "Arial Narrow",Arial,sans-serif;
-                                    margin: 0;
-                                    line-height: 1.25em;
-                                    text-transform: uppercase !important;'>CTD² Dashboard Tutorial Videos
-                            </h2>
-                            <div><div style="overflow: hidden;"><div><div>
-                                <style>
-                                    li.video-popup-link { line-height: normal; padding-bottom: 5px;}
-                                    a.video-popup-link { color: #323232; cursor: pointer; }
-                                </style>
-                                <ul style="margin: 0;list-style-type: none;list-style-image: url(./images/play-button.png);padding: 0 0 0 30px;">
-
-                                    <li class="video-popup-link">
-                                    <div style="vertical-align: top; display: inline-block; font-weight: bold;">
-                                        <span>
-                                            <a id="video-link1" class='video-popup-link'
-                                                title='This video introduces and defines common terminology used throughout the Dashboard.'>
-                                                Organization and Terminology</a>
-                                        </span>
-                                    </div>
-                                    </li>
-                            
-                                    <li class="video-popup-link">
-                                    <div style="vertical-align: top;display: inline-block;font-weight: bold;">
-                                        <span>
-                                            <a id="video-link2" style='color: #323232; cursor: pointer;'
-                                                title='This video explains how users can search and browse the Dashboard through gene-centric, compound/perturbation-centric, or disease-relevant keywords.'>
-                                                Search and Browse</a>
-                                        </span>
-                                    </div>
-                                    </li>
-
-                                    <li class="video-popup-link">
-                                    <div style="vertical-align: top; display: inline-block; font-weight: bold;">
-                                        <span>
-                                            <a id="video-link3" class='video-popup-link'
-                                                title='This video shows how the Dashboard Gene Cart can predict or verify molecular interactions using a subset of publicly available tissue- and disease-specific interactomes.'>
-                                                Gene Cart</a>
-                                        </span>  
-                                    </div>
-                                    </li>
-                                </ul>
-                            </div></div></div></div>
-                        </div><!-- end of the video link block -->
-                    </div>
+                        </div><!-- overview-text -->
+                    </div><!-- span12 -->
                 </div><!-- row -->
 
         <div class="dark-separator"></div>
