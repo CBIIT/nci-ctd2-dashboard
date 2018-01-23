@@ -193,7 +193,7 @@
                 <a href="http://cancer.gov"><img src="img/logos/footer_logo_nci.jpg" alt="NCI logo" title="NCI logo"></a><a href="http://www.dhhs.gov/"><img src="img/logos/footer_logo_hhs.jpg" title="HHS logo" alt="HHS logo"></a><a href="http://www.nih.gov/"><img src="img/logos/footer_logo_nih.jpg" title="NIH logo" alt="NIH logo"></a><a href="http://www.firstgov.gov/"><img src="img/logos/footer_logo_firstgov.jpg" title="First Gov logo" alt="First Gov logo"></a>
             </div>
             <div style="font-size:14px; margin-bottom:10px;">
-                <a class="help-navigate" href="#help-navigate">Glossary</a> &middot;
+                <a class="help-navigate">Glossary</a> &middot;
                 <a href="http://www.cancer.gov/global/web/policies" target="_blank">Policies</a> &middot;
                 <a href="http://www.cancer.gov/global/web/policies/accessibility" target="_blank">Accessibility</a> &middot;
                 <a href="http://www.cancer.gov/global/web/policies/foia" target="_blank">FOIA</a>
@@ -284,7 +284,7 @@
                                 The CTD<sup>2</sup> Dashboard compiles the Network-generated conclusions, or “observations,” associated with a specific gene, cell line, animal model, or perturbagen.
                                 It provides supporting evidence with links to data, references, and to the validation strength of the evidence as indicated by its “<a href="http://www.ncbi.nlm.nih.gov/pubmed/27401613" target="_blank" data-toggle="tooltip" id="tierTooltip">Tier</a>.”
                                 In summary, the Dashboard provides access to validated data and the ability to view a cross-section of results assembled across multiple CTD<sup>2</sup> Center findings.
-                                To learn how the Dashboard is organized, including additional term definitions, please visit <a id="homepage-help-navigate" href="#help-navigate">Navigating and Understanding Dashboard Content</a>.
+                                To learn how the Dashboard is organized, including additional term definitions, please visit <a id="homepage-help-navigate">Navigating and Understanding Dashboard Content</a>.
                                 To understand more about the Dashboard functions, please read the <a href="https://www.ncbi.nlm.nih.gov/pubmed/29220450" target="_blank">manuscript</a> or <a href="https://ocg.cancer.gov/news-publications/e-newsletter-issue/issue-14#1721" target="_blank">e-News article</a>.
                             </p>
                         </div><!-- overview-text -->
@@ -1929,7 +1929,7 @@
                 Entries must have Tier 2 evidence or higher to be in the list.
                 Currently displaying observations involving {{subject_type}} that have been assigned one of the following roles:
                 {{ decodeURIComponent(roles).split(",").join(", ") }}
-                (see <a class="blurb-help" href="#help-navigate">background information</a> for the meaning of observations, roles, and Tiers).
+                (see <a class="blurb-help">background information</a> for the meaning of observations, roles, and Tiers).
             </p>
         </div>
     </script>

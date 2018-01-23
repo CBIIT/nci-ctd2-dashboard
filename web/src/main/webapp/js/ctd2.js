@@ -261,7 +261,6 @@
                 (new VideoPopupView({ model: {videoid:"UD40bbg2ISU", description:this.title} })).render();
             });
             $("#video-link2").click(function(e) {
-                console.log("debug..................");
                 e.preventDefault();
                 (new VideoPopupView({ model: {videoid:"_hpDlXMAYMs", description:this.title} })).render();
             });
