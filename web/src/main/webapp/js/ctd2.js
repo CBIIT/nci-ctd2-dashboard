@@ -3538,7 +3538,7 @@
 
         $("#omni-input").popover({
            placement: "bottom",
-           trigger: "hover",
+           trigger: "manual",
            html: true,
            title: function() {
                 $(this).attr("title");
@@ -3546,7 +3546,19 @@
            content: function() {
                return $("#search-help-content").html();
            },
-           delay: {hide: 2000}
+        }).on("mouseenter", function () {
+            var _this = this;
+            $(this).popover("show");
+            $(".popover").on("mouseleave", function () {
+                $(_this).popover('hide');
+            });
+        }).on("mouseleave", function () {
+            var _this = this;
+            setTimeout(function () {
+                if (!$(".popover:hover").length) {
+                    $(_this).popover("hide");
+                }
+            }, 300);
         });
 
         $("a.help-navigate").click(function(e) {
