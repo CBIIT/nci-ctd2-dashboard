@@ -179,7 +179,8 @@ public class ObservationDataFactoryImpl implements ObservationDataFactory {
 		File file = new File(evidenceValue);
 
 		((FileEvidence)evidence).setFileName(file.getName());
-		((FileEvidence)evidence).setFilePath(file.getPath());
+		((FileEvidence)evidence).setFilePath(file.getPath()); /* This may result in unintended behavior on Windows platform.
+			The string filePath is meant to be part of a remote URL instead of a local path. */
 		if (observedEvidenceRole != null && observedEvidenceRole.getAttribute().length() > 0) {
 			((FileEvidence)evidence).setMimeType(observedEvidenceRole.getAttribute());
 		}

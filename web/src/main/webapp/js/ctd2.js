@@ -428,7 +428,7 @@
                                     && (observedEvidence.evidence.mimeType.toLowerCase().search("html") > -1 || observedEvidence.evidence.mimeType.toLowerCase().search("pdf") > -1)) {
                                     // If this is a summary, then it should be a pdf/html file evidence
                                     var elId = "#file-link2-" + thatModel.id;
-                                    var url = $(elId).attr("href") + observedEvidence.evidence.filePath;
+                                    var url = $(elId).attr("href") + observedEvidence.evidence.filePath.replace(/\\/g, '/');
                                     $(elId).attr("href", url);
 
                                     if(observedEvidence.evidence.mimeType.toLowerCase().search("html") > -1) {
@@ -492,7 +492,7 @@
                                     && (observedEvidence.evidence.mimeType.toLowerCase().search("html") > -1 || observedEvidence.evidence.mimeType.toLowerCase().search("pdf") > -1)) {
                                     // If this is a summary, then it should be a pdf/html file evidence
                                     var elId = "#file-link-" + thatModel.id;
-                                    var url = $(elId).attr("href") + observedEvidence.evidence.filePath;
+                                    var url = $(elId).attr("href") + observedEvidence.evidence.filePath.replace(/\\/g, '/');
                                     $(elId).attr("href", url);
 
                                     if(observedEvidence.evidence.mimeType.toLowerCase().search("html") > -1) {
@@ -726,6 +726,7 @@
             var thatEl2 = $("#observed-evidences-grid");
             observedEvidences.fetch({
                 success: function() {
+                    var storyFilePath = "";
                     _.each(observedEvidences.models, function(observedEvidence) {
                         observedEvidence = observedEvidence.toJSON();
 
@@ -741,6 +742,12 @@
                         );
 
                         $("#observation-summary").html(summary);
+                        if(observedEvidence.evidence.class=="FileEvidence") {
+                            // observedEvidence.observedEvidenceRole.attribute is always text/html in known cases
+                            if(observedEvidence.observedEvidenceRole.columnName=="story_location") {
+                                storyFilePath = observedEvidence.evidence.filePath;
+                            }
+                        }
                     });
 
                     var tableLength = (observedEvidences.models.length > 25 ? 10 : 25);
@@ -859,7 +866,18 @@
                             }
                         });
 
-                    });
+                    }); // END OF .cytoscape-view").click
+
+                    if(result.submission.observationTemplate.isSubmissionStory && storyFilePath.length>0) {
+                        var elId = "#view-full-story-link";
+                        var url = $(elId).attr("href") + storyFilePath;
+                        $(elId).on("click", function(e) {
+                            e.preventDefault();
+                            (new HtmlStoryView({ model: {observation: result, url: url }})).render();
+                        });
+                    } else  {
+                        $("#view-full-story").hide();
+                    }
                 }
             });
 

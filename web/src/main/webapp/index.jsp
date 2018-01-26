@@ -613,6 +613,7 @@
                     <blockquote>
                         <p id="observation-summary"></p>
                     </blockquote>
+                    <span id="view-full-story">(<a id="view-full-story-link" href="<%=dataURL%>">view full story</a>)</span>
 
                     <table id="observed-subjects-grid" class="table table-bordered table-striped subjects">
                         <thead>
