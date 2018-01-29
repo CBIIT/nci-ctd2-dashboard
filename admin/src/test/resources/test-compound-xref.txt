@@ -1,0 +1,6 @@
+subject_class	subject_name	database_name	database_id
+compound	zebularine	DRUG BANK	DB03068
+compound	maraviroc	DRUG BANK	DB04835
+compound	orteronel	DRUG BANK	DB12066
+compound	triptolide	DRUG BANK	DB12025
+compound	navitoclax	DRUG BANK	DB12340

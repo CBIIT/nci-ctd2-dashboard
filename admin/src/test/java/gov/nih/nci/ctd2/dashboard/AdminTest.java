@@ -37,7 +37,8 @@ public class AdminTest {
 				"classpath*:META-INF/spring/testTRCshRNADataApplicationContext.xml", // and this is for trc-shRNA data importer beans
 				"classpath*:META-INF/spring/testTissueSampleDataApplicationContext.xml", // and this is for tissue sample data importer beans
 				"classpath*:META-INF/spring/testControlledVocabularyApplicationContext.xml", // and this is for controlled vocabulary importer beans
-				"classpath*:META-INF/spring/taxonomyDataApplicationContext.xml" // and this is for taxonomy data importer beans
+				"classpath*:META-INF/spring/taxonomyDataApplicationContext.xml", // and this is for taxonomy data importer beans
+				"classpath*:META-INF/spring/testXrefApplicationContext.xml" // and this is for xref importer beans
         );
 
         this.dashboardDao = (DashboardDao) appContext.getBean("dashboardDao");
@@ -173,6 +174,21 @@ public class AdminTest {
         assertNotNull(observationTemplate);
         assertFalse(observationTemplate.getIsSubmissionStory());
         assertEquals(0, observationTemplate.getSubmissionStoryRank().intValue());
+        
+        // import xrefs
+        jobExecution = executeJob("xrefImporterJob");
+        assertEquals("COMPLETED", jobExecution.getExitStatus().getExitCode());
+        compounds = dashboardDao.findCompoundsByName("navitoclax");
+        assertEquals(1, compounds.size());
+        String drugBankId = "not found";
+        for (Xref xref: compounds.get(0).getXrefs()){
+        	if ("DRUG BANK".equals(xref.getDatabaseName())){
+        		drugBankId = xref.getDatabaseId();
+        	}
+        }
+		assertEquals("DB12340", drugBankId);
+		compoundSubjects = dashboardDao.findSubjectsByXref("DRUG BANK", "DB12025");
+		assertEquals(1, compoundSubjects.size());
     }
 
 	private JobExecution executeJob(String jobName) throws Exception {

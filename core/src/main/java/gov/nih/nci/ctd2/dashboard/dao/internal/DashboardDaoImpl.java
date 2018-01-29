@@ -128,6 +128,7 @@ public class DashboardDaoImpl implements DashboardDao {
     public void update(DashboardEntity entity) {
         Session session = getSession();
         session.update(entity);
+        session.flush();
         session.close();
     }
 
@@ -135,6 +136,7 @@ public class DashboardDaoImpl implements DashboardDao {
     public void merge(DashboardEntity entity) {
         Session session = getSession();
         session.merge(entity);
+        session.flush();
         session.close();
     }
 
