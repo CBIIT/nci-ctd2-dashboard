@@ -175,9 +175,7 @@ public class AdminTest {
         assertFalse(observationTemplate.getIsSubmissionStory());
         assertEquals(0, observationTemplate.getSubmissionStoryRank().intValue());
         
-        // import xrefs
-        jobExecution = executeJob("xrefImporterJob");
-        assertEquals("COMPLETED", jobExecution.getExitStatus().getExitCode());
+        // check compound xref import
         compounds = dashboardDao.findCompoundsByName("navitoclax");
         assertEquals(1, compounds.size());
         String drugBankId = "not found";
