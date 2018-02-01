@@ -153,6 +153,27 @@ public class AdminTest {
         assertEquals(1, tissueSample.getSynonyms().size());
         assertEquals(2, tissueSample.getXrefs().size());
 
+		// check tissue xref import
+		tissueSamples = dashboardDao.findTissueSampleByName("neoplasm");
+        assertEquals(1, tissueSamples.size());
+        String doid = "not found";
+        for (Xref xref: tissueSamples.get(0).getXrefs()){
+        	if ("DISEASE ONTOLOGY".equals(xref.getDatabaseName())){
+        		doid = xref.getDatabaseId();
+        	}
+        }
+		assertEquals("DOID:14566", doid);
+ 
+		tissueSamples = dashboardDao.findTissueSampleByName("neoplasm by morphology");
+        assertEquals(1, tissueSamples.size());
+        doid = "not found";
+        for (Xref xref: tissueSamples.get(0).getXrefs()){
+        	if ("DISEASE ONTOLOGY".equals(xref.getDatabaseName())){
+        		doid = xref.getDatabaseId();
+        	}
+        }
+		assertEquals("not found", doid);
+		
         // import controlled vocabulary
         jobExecution = executeJob("controlledVocabularyImporterJob");
         assertEquals("COMPLETED", jobExecution.getExitStatus().getExitCode());
@@ -187,7 +208,7 @@ public class AdminTest {
 		assertEquals("DB12340", drugBankId);
 		compoundSubjects = dashboardDao.findSubjectsByXref("DRUG BANK", "DB12025");
 		assertEquals(1, compoundSubjects.size());
-    }
+	}
 
 	private JobExecution executeJob(String jobName) throws Exception {
 

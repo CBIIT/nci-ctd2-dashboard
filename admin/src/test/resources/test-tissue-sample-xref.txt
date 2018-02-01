@@ -1,0 +1,2 @@
+subject_class	subject_name	database_name	database_id
+tissue_sample	neoplasm	DISEASE ONTOLOGY	DOID:14566

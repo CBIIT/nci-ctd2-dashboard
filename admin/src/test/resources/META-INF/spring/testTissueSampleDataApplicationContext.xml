@@ -21,9 +21,14 @@
 		<batch:chunk reader="tissueSampleSynonymsDataReader" writer="tissueSampleSynonymsDataWriter"/>
 	  </batch:tasklet>
 	</batch:step>
-	<batch:step id="tissueSampleWriterStep" parent="tissueSampleDataSimpleStep">
+	<batch:step id="tissueSampleWriterStep" parent="tissueSampleDataSimpleStep" next="tissueSampleXrefStep">
 	  <batch:tasklet ref="tissueSampleWriter"/>
 	</batch:step>
+    <batch:step id="tissueSampleXrefStep" parent="tissueSampleDataSimpleStep">
+      <batch:tasklet>
+        <batch:chunk reader="tissueSampleXrefReader" writer="xrefWriter"/>
+      </batch:tasklet>
+    </batch:step>  
   </batch:job>
 
   <bean id="tissueSampleDataSimpleStep" class="org.springframework.batch.core.step.item.SimpleStepFactoryBean" abstract="true">
@@ -72,5 +77,12 @@
 	  <map key-type="java.lang.String" value-type="gov.nih.nci.ctd2.dashboard.model.TissueSample"/>
 	</constructor-arg>
   </bean>
+
+  <bean name="tissueSampleXrefReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+    <property name="resource" value="classpath:test-tissue-sample-xref.txt" />
+    <property name="lineMapper" ref="xrefLineMapper" />
+    <property name="linesToSkip" value="1" />
+  </bean>
+
 
 </beans>

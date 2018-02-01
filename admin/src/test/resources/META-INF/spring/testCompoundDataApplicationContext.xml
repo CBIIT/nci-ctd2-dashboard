@@ -27,7 +27,8 @@
       <batch:tasklet>
         <batch:chunk reader="compoundXrefReader" writer="xrefWriter"/>
       </batch:tasklet>
-    </batch:step>  </batch:job>
+    </batch:step>  
+  </batch:job>
 
   <bean id="compoundDataStep" class="org.springframework.batch.core.step.item.SimpleStepFactoryBean" abstract="true">
 	<property name="transactionManager" ref="transactionManager" />
