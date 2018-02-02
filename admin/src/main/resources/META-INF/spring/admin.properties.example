@@ -11,6 +11,7 @@ cell.line.id.location=file:${CTD2_DATA_HOME}/subject_data/cell_sample/cell_sampl
 cell.line.name.location=file:${CTD2_DATA_HOME}/subject_data/cell_sample/cell_sample_name.txt
 compounds.location=file:${CTD2_DATA_HOME}/subject_data/compound/Compounds.txt
 compound.synonyms.location=file:${CTD2_DATA_HOME}/subject_data/compound/CompoundSynonyms.txt
+compound.xref.location=file:${CTD2_DATA_HOME}/subject_data/compound/CompoundXrefs.txt
 gene.data.location=file:${CTD2_DATA_HOME}/subject_data/gene/*.gene_info
 protein.data.location=file:${CTD2_DATA_HOME}/subject_data/protein/uniprot_sprot_*.dat
 trc.shrna.data.location=file:${CTD2_DATA_HOME}/subject_data/shrna/trc_public.05Apr11.txt

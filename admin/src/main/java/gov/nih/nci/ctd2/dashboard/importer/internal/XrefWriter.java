@@ -24,7 +24,6 @@ public class XrefWriter implements ItemWriter<Xref> {
     private Integer batchSize;
  
 	public void write(List<? extends Xref> items) throws Exception {
-		//log.info("write "+items.size()+" xrefs");
-        //dashboardDao.batchSave(items, batchSize);
+		// Writing to the database is done in XrefFieldSetMapper
 	}
 }

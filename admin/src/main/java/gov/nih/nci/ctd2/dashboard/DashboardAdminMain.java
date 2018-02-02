@@ -30,7 +30,8 @@ public class DashboardAdminMain {
         "classpath*:META-INF/spring/tissueSampleDataApplicationContext.xml", // This is for cell line data importer beans
         "classpath*:META-INF/spring/controlledVocabularyApplicationContext.xml", // This is for controlled vocabulary importer beans
         "classpath*:META-INF/spring/observationDataApplicationContext.xml", // This is for observation data importer beans
-        "classpath*:META-INF/spring/taxonomyDataApplicationContext.xml" // This is for taxonomy data importer beans
+        "classpath*:META-INF/spring/taxonomyDataApplicationContext.xml", // This is for taxonomy data importer beans
+        "classpath*:META-INF/spring/xrefApplicationContext.xml" // this is for xref importer beans
     );
 
     @Transactional

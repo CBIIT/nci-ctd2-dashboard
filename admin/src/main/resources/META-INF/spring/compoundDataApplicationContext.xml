@@ -20,9 +20,14 @@
 		<batch:chunk reader="compoundSynonymsReader" writer="compoundSynonymsWriter"/>
 	  </batch:tasklet>
 	</batch:step>
-	<batch:step id="compoundWriterStep" parent="compoundDataStep">
+	<batch:step id="compoundWriterStep" parent="compoundDataStep" next="compoundXrefStep">
 	  <batch:tasklet ref="compoundDataWriter"/>
 	</batch:step>
+    <batch:step id="compoundXrefStep" parent="compoundDataStep">
+      <batch:tasklet>
+        <batch:chunk reader="compoundXrefReader" writer="xrefWriter"/>
+      </batch:tasklet>
+    </batch:step>
   </batch:job>
 
   <bean id="compoundDataStep" class="org.springframework.batch.core.step.item.SimpleStepFactoryBean" abstract="true">
@@ -74,6 +79,12 @@
 	<constructor-arg index="0" type="java.util.Map">
 	  <map key-type="java.lang.String" value-type="gov.nih.nci.ctd2.dashboard.model.Compound"/>
 	</constructor-arg>
+  </bean>
+
+  <bean name="compoundXrefReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+    <property name="resource" value="${compound.xref.location}" />
+    <property name="lineMapper" ref="xrefLineMapper" />
+    <property name="linesToSkip" value="1" />
   </bean>
 
 </beans>
