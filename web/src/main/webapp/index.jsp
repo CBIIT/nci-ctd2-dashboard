@@ -1514,6 +1514,7 @@
                               <td>
                                   <ul class="compound-xrefs">
                                       {{pubchem ? "<li>PubChem: <a target='_blank' href='https://pubchem.ncbi.nlm.nih.gov/compound/" + pubchem + "'>" + pubchem + "</a> <i class='icon-share'></i></li>" : ""}}
+                                      {{drugbank ? "<li>DrugBank: <a target='_blank' href='https://www.drugbank.ca/drugs/" + drugbank + "'>" + drugbank + "</a> <i class='icon-share'></i></li>" : ""}}
                                       {{cas ? "<li>CAS: " + cas + "</li>" : ""}}
 
                                   </ul>
