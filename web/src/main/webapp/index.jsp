@@ -427,7 +427,7 @@
     <script type="text/template" id="stories-tbl-row-tmpl">
         <tr>
             <td class="center-image-column">
-                <a href="#center/{{submission.observationTemplate.submissionCenter.id}}">
+                <a href="#center/{{submission.observationTemplate.submissionCenter.displayName}}">
                     <img src="img/slogos/{{submission.observationTemplate.submissionCenter.displayName}}.png" alt="{{submission.observationTemplate.submissionCenter.displayName}}" title="{{submission.observationTemplate.submissionCenter.displayName}}" class="img-circle">
                 </a>
             </td>
@@ -449,12 +449,12 @@
     <script type="text/template" id="centers-tbl-row-tmpl">
         <tr>
             <td class="center-image-column">
-                <a href="#center/{{id}}">
+                <a href="#center/{{displayName}}">
                     <img src="img/{{displayName}}.png" alt="{{displayName}}" title="{{displayName}}" class="img-polaroid">
                 </a>
             </td>
             <td class="center-name">
-                <a href="#center/{{id}}">
+                <a href="#center/{{displayName}}">
                     {{displayName}}
                 </a>
             </td>
@@ -462,7 +462,7 @@
                 <span id="center-pi-{{id}}">loading...</span>
             </td>
             <td>
-                <a href="#center/{{id}}" id="submission-count-{{id}}">
+                <a href="#center/{{displayName}}" id="submission-count-{{id}}">
                     loading...
                 </a>
             </td>
@@ -560,7 +560,7 @@
                     </table>
                 </div>
                 <div class="span2">
-                    <a href="#/center/{{observationTemplate.submissionCenter.id}}">
+                    <a href="#/center/{{observationTemplate.submissionCenter.displayName}}">
                         <img src="img/{{observationTemplate.submissionCenter.displayName}}.png" class="img-polaroid" height=30 alt="{{observationTemplate.submissionCenter.displayName}}" title="{{observationTemplate.submissionCenter.displayName}}">
                     </a>
 
@@ -632,7 +632,7 @@
 
                 </div>
                 <div class="span2">
-                    <a href="#/center/{{submission.observationTemplate.submissionCenter.id}}"><img src="img/{{submission.observationTemplate.submissionCenter.displayName}}.png" class="img-polaroid" width="120" alt="{{submission.observationTemplate.submissionCenter.displayName}}"></a>
+                    <a href="#/center/{{submission.observationTemplate.submissionCenter.displayName}}"><img src="img/{{submission.observationTemplate.submissionCenter.displayName}}.png" class="img-polaroid" width="120" alt="{{submission.observationTemplate.submissionCenter.displayName}}"></a>
                     <br><br>
                     <img src="img/observation.png" alt="Observation" class="img-polaroid" width=120 height=120><br>
                 </div>
@@ -1609,7 +1609,7 @@
             </td>
             <td><span class="badge tier-badge">Tier {{observation.submission.observationTemplate.tier}}</span></td>
             <td>
-                <a href="#/center/{{observation.submission.observationTemplate.submissionCenter.id}}">
+                <a href="#/center/{{observation.submission.observationTemplate.submissionCenter.displayName}}">
                     <img alt="{{observation.submission.observationTemplate.submissionCenter.displayName}}" title="{{submission.observationTemplate.submissionCenter.displayName}}" width="150" src="img/{{observation.submission.submissionCenter.displayName}}.png">
                 </a>
             </td>
@@ -1628,7 +1628,7 @@
             </td>
             <td><span class="badge tier-badge">Tier {{submission.observationTemplate.tier}}</span></td>
             <td>
-                <a href="#/center/{{submission.observationTemplate.submissionCenter.id}}">
+                <a href="#/center/{{submission.observationTemplate.submissionCenter.displayName}}">
                     <img alt="{{submission.observationTemplate.submissionCenter.displayName}}" title="{{submission.observationTemplate.submissionCenter.displayName}}" width="150" src="img/{{submission.observationTemplate.submissionCenter.displayName}}.png">
                 </a>
                 <span class="hide-text">{{submission.observationTemplate.submissionCenter.displayName}}</span>

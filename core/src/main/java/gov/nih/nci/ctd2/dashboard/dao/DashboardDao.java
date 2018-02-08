@@ -14,6 +14,7 @@ public interface DashboardDao {
     void merge(DashboardEntity entity);
     void delete(DashboardEntity entity);
     <T extends DashboardEntity> T getEntityById(Class<T> entityClass, Integer id);
+    <T extends DashboardEntity> T getEntity(Class<T> entityClass, String name);
     Long countEntities(Class<? extends DashboardEntity> entityClass);
     DashboardFactory getDashboardFactory();
     void setDashboardFactory(DashboardFactory dashboardFactory);

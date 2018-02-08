@@ -25,7 +25,7 @@ public class JSONController {
 
     @Transactional
     @RequestMapping(value="{type}/{id}", method = {RequestMethod.GET, RequestMethod.POST}, headers = "Accept=application/json")
-    public ResponseEntity<String> getEntityInJson(@PathVariable String type, @PathVariable Integer id) {
+    public ResponseEntity<String> getEntityInJson(@PathVariable String type, @PathVariable String id) {
         DashboardEntity entityById = null;
 
         Class<? extends DashboardEntity> clazz = Subject.class;
@@ -46,7 +46,11 @@ public class JSONController {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json; charset=utf-8");
 
-        entityById = dashboardDao.getEntityById(clazz, id);
+        if(type.equalsIgnoreCase("center")) { // as the first step to implement stable links.
+            entityById = dashboardDao.getEntity(clazz, id);
+        } else {
+            entityById = dashboardDao.getEntityById(clazz, Integer.parseInt(id));
+        }
         if(entityById == null) {
             return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
         }

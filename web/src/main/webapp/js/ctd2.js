@@ -1,7 +1,7 @@
 !function ($) {
     // This is strictly coupled to the homepage design!
     var numOfStoriesHomePage = 4;
-    var numOfCartGene = 25    
+    var numOfCartGene = 25;
 
     // These seperators are for replacing items within the observation summary
     var leftSep = "<";
@@ -324,7 +324,7 @@
             $.post("html", {url: url}).done(function(summary) {
                 summary = summary.replace(
                     new RegExp("#submission_center", "g"),
-                    "#center/" + observation.submission.observationTemplate.submissionCenter.id
+                    "#center/" + observation.submission.observationTemplate.submissionCenter.displayName
                 );
 
                 var observedSubjects = new ObservedSubjects({ observationId: observation.id });
@@ -1635,7 +1635,7 @@
                                         $(rows)
                                             .eq(i)
                                             .before(
-                                                _.template($("#tbl-project-title-tmpl").html(), { project: group, centerId: centerModel.id })
+                                                _.template($("#tbl-project-title-tmpl").html(), { project: group, centerId: centerModel.displayName })
                                             );
 
                                         last = group;
@@ -1648,7 +1648,7 @@
                         $(tableElId).DataTable().search(filterProject).draw();
                         var mpModel = {
                             filterProject: filterProject,
-                            centerId: centerModel.id
+                            centerId: centerModel.displayName
                         };
                         var moreProjectsView = new MoreProjectsView({model: mpModel});
                         moreProjectsView.render();
@@ -3360,8 +3360,8 @@
             "stories": "listStories",
             "explore": "scrollToExplore",
             "explore/:type/:roles": "explore",
-            "center/:id/:project": "showCenterProject",
-            "center/:id": "showCenter",
+            "center/:name/:project": "showCenterProject",
+            "center/:name": "showCenter",
             "submission/:id": "showSubmission",
             "observation/:id": "showObservation",
             "search/:term": "search",
@@ -3457,8 +3457,8 @@
             });
         },
 
-        showCenter: function(id) {
-            var center = new SubmissionCenter({id: id});
+        showCenter: function(name) {
+            var center = new SubmissionCenter({id: name});
             center.fetch({
                 success: function() {
                     var centerView = new CenterView({model: center});
@@ -3467,8 +3467,8 @@
             });
         },
 
-        showCenterProject: function(id, project) {
-            var center = new SubmissionCenter({id: id});
+        showCenterProject: function(name, project) {
+            var center = new SubmissionCenter({id: name});
             center.fetch({
                 success: function() {
                     var centerView = new CenterView({model: center});

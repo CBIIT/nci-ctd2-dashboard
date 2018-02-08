@@ -13,6 +13,7 @@ import org.apache.lucene.search.Query;
 import org.apache.lucene.util.Version;
 import org.hibernate.*;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.proxy.HibernateProxy;
 import org.hibernate.search.FullTextQuery;
 import org.hibernate.search.FullTextSession;
@@ -156,6 +157,25 @@ public class DashboardDaoImpl implements DashboardDao {
         Object object = session.get(aClass, id);
         session.close();
         return (T)object;
+    }
+
+    @Override
+    public <T extends DashboardEntity> T getEntity(Class<T> entityClass, String name) {
+        String unescapedName = name.replaceAll("%20", " ");
+        Class<T> aClass = entityClass.isInterface()
+                ? dashboardFactory.getImplClass(entityClass)
+                : entityClass;
+        T t = null;
+
+        Session session = getSession();
+        Criteria criteria = session.createCriteria(aClass);  
+        criteria.add( Restrictions.eq("displayName", unescapedName) );
+        List<? extends DashboardEntity> list = criteria.list();
+        session.close();
+        if(list.size()>0) {
+            t = (T)list.get(0);
+        }
+        return t;
     }
 
     @Override
