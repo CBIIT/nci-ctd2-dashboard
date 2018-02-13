@@ -16,12 +16,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/get")
 public class JSONController {
     @Autowired
     private DashboardDao dashboardDao;
+
+    private static Map<String, Class<? extends DashboardEntity>> type2class = new HashMap<String, Class<? extends DashboardEntity>>();
+    static {
+        type2class.put("center", SubmissionCenter.class);
+        type2class.put("animal-model", AnimalModel.class);
+    }
 
     @Transactional
     @RequestMapping(value="{type}/{id}", method = {RequestMethod.GET, RequestMethod.POST}, headers = "Accept=application/json")
@@ -35,18 +43,18 @@ public class JSONController {
             clazz = Submission.class;
         } else if(type.equalsIgnoreCase("observation")) {
             clazz = Observation.class;
-        } else if(type.equalsIgnoreCase("center")) {
-            clazz = SubmissionCenter.class;
         } else if(type.equals("observedsubject")) {
             clazz = ObservedSubject.class;
         } else if(type.equals("observedevidence")) {
             clazz = ObservedEvidence.class;
+        } else {
+            clazz = type2class.get(type);
         }
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json; charset=utf-8");
 
-        if(type.equalsIgnoreCase("center")) { // as the first step to implement stable links.
+        if(type2class.keySet().contains(type)) { // as the early step to implement stable links.
             entityById = dashboardDao.getEntity(clazz, id);
         } else {
             entityById = dashboardDao.getEntityById(clazz, Integer.parseInt(id));

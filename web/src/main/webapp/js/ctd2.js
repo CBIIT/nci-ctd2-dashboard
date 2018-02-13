@@ -194,6 +194,10 @@
         }
     });
 
+    var AnimalModel = Backbone.Model.extend({
+        urlRoot: CORE_API_URL + "get/animal-model"
+    });
+
     var Subject = Backbone.Model.extend({
         urlRoot: CORE_API_URL + "get/subject"
     });
@@ -1563,6 +1567,14 @@
             if(result.subject.type == undefined) {
                 result.subject["type"] = result.subject.class;
             }
+            if(result.subject.class=="AnimalModel") { // as an early step of stable links, keep both the new style and the old style
+                result.url_type = "animal_model";
+                result.url_id = result.subject.displayName;
+            } else {
+                result.url_type = "subject";
+                result.url_id = result.subject.id;
+            }
+            console.log("DEBUG:"+result.subject.type+" "+result.subject.class+" "+result.subject.displayName);
 
             if (result.subject.class != "Gene") {
                 this.template = _.template($("#observedsubject-summary-row-tmpl").html());
@@ -1852,69 +1864,6 @@
         }
     });
 
-    var SubmissionPreviewView =  Backbone.View.extend({
-        el: "#submission-preview",
-        template: _.template($("#submission-tmpl").html()),
-        render: function() {
-            var submission = this.model.submission;
-            $(this.el).html(this.template(submission));
-            $(".submission-observations-loading").remove();
-
-            if(submission.observationTemplate.submissionDescription.length > 0) {
-                var submissionDescriptionView = new SubmissionDescriptionView({ model: submission });
-                submissionDescriptionView.render();
-            }
-            var thatEl = this.el;
-            _.each(this.model.observations, function(observation) {
-                var submissionRowView = new SubmissionRowPreviewView({
-                    el: $(thatEl).find(".observations tbody"),
-                    model: observation
-                });
-                submissionRowView.render();
-            });
-
-            $('#submission-observation-grid').dataTable();
-
-            return this;
-        }
-    });
-
-    var SubmissionRowPreviewView = Backbone.View.extend({
-        template:  _.template($("#submission-tbl-row-tmpl").html()),
-        render: function() {
-            $(this.el).append(this.template(this.model.observation));
-
-            var summary = this.model.observation.submission.observationTemplate.observationSummary;
-
-            var thatModel = this.model.observation;
-            var thatEl = $("#submission-observation-summary-" + this.model.observation.id);
-            _.each(this.model.observedSubjects, function(observedSubject) {
-                if(observedSubject.observedSubjectRole == null || observedSubject.subject == null)
-                    return;
-
-                summary = summary.replace(
-                    new RegExp(leftSep + observedSubject.observedSubjectRole.columnName + rightSep, "g"),
-                    _.template($("#summary-subject-replacement-tmpl").html(), observedSubject.subject)
-                );
-            });
-
-            _.each(this.model.observedEvidences, function(observedEvidence) {
-                if(observedEvidence.observedEvidenceRole == null || observedEvidence.evidence == null)
-                    return;
-
-                summary = summary.replace(
-                    new RegExp(leftSep + observedEvidence.observedEvidenceRole.columnName + rightSep, "g"),
-                    _.template($("#summary-evidence-replacement-tmpl").html(), observedEvidence.evidence)
-                );
-            });
-
-            summary += _.template($("#submission-obs-tbl-row-tmpl").html(), thatModel);
-            $(thatEl).html(summary);
-
-            return this;
-        }
-    });
-
     var TranscriptItemView = Backbone.View.extend({
         template: _.template($("#transcript-item-tmpl").html()),
         render: function() {
@@ -1955,6 +1904,14 @@
             var model = this.model;
             var result = model.dashboardEntity;
             result["type"] = result.class;
+
+            if(result.class=="AnimalModel") { // as an early step of stable links, keep both the new style and the old style
+                model.url_type = "animal_model";
+                model.url_id = result.displayName;
+            } else {
+                model.url_type = "subject";
+                model.url_id = result.id;
+            }
 
             if (result.class != "Gene") {
                 this.template = _.template($("#search-result-row-tmpl").html());
@@ -3365,6 +3322,7 @@
             "submission/:id": "showSubmission",
             "observation/:id": "showObservation",
             "search/:term": "search",
+            "animal_model/:name": "showAnimalModel",
             "subject/:id": "showSubject",
             "subject/:id/:role": "showSubject",
             "subject/:id/:role/:tier": "showSubject",
@@ -3420,6 +3378,16 @@
                 }
             });
             exploreView.render();
+        },
+
+        showAnimalModel: function(name, role, tier) {
+            var animalModel = new AnimalModel({ id: name });
+            animalModel.fetch({
+                success: function() {
+                    var animalModelView = new AnimalModelView({ model: {subject:animalModel, tier:tier, role:role} });
+                    animalModelView.render();
+                }
+            });
         },
 
         showSubject: function(id, role, tier) {

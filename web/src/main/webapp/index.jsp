@@ -1571,7 +1571,7 @@
         <tr>
             <td id="subject-image-{{id}}"></td>
             <td>
-                <a href="#/subject/{{subject.id}}">
+                <a href="#/{{url_type}}/{{url_id}}">
                     {{subject.displayName}}
                 </a>
             </td>
@@ -1697,7 +1697,7 @@
     </script>
 
     <script type="text/template" id="search-results-animalmodel-image-tmpl">
-        <a href="#subject/{{id}}">
+        <a href="#animal_model/{{displayName}}">
             <img src="img/animalmodel.png" title="Animal model" alt="Animal model" class="img-polaroid search-info" height="50" width="50">
         </a>
     </script>
@@ -1724,7 +1724,7 @@
         <tr>
             <td id="search-image-{{dashboardEntity.id}}"></td>
             <td>
-                <a href="#subject/{{dashboardEntity.id}}">{{dashboardEntity.displayName}}</a><br>
+                <a href="#{{url_type}}/{{url_id}}">{{dashboardEntity.displayName}}</a><br>
                 <i>{{dashboardEntity.organism.displayName != '-' ? "(" + dashboardEntity.organism.displayName + ")" : ""}}</i>
             </td>
             <td>
