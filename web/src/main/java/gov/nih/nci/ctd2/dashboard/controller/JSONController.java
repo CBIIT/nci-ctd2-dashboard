@@ -31,6 +31,17 @@ public class JSONController {
         type2class.put("animal-model", AnimalModel.class);
     }
 
+    /* gene needs a separate method because it asks for different number of parameters */
+    @Transactional
+    @RequestMapping(value="{type}/{species}/{symbol}", method = {RequestMethod.GET, RequestMethod.POST}, headers = "Accept=application/json")
+    public ResponseEntity<String> getGeneInJson(@PathVariable String type, @PathVariable String species, @PathVariable String symbol) {
+        System.out.println("DEBUG request "+type+" "+species+" "+symbol);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "application/json; charset=utf-8");
+        return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND); // FIXME for test only
+    }
+
     @Transactional
     @RequestMapping(value="{type}/{id}", method = {RequestMethod.GET, RequestMethod.POST}, headers = "Accept=application/json")
     public ResponseEntity<String> getEntityInJson(@PathVariable String type, @PathVariable String id) {

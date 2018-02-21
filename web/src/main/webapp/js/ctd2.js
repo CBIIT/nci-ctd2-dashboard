@@ -190,12 +190,20 @@
         model: SearchResult,
 
         initialize: function(attributes) {
-            this.url += encodeURIComponent(attributes.term.toLowerCase())
+            this.url += encodeURIComponent(attributes.term.toLowerCase());
         }
     });
 
     var AnimalModel = Backbone.Model.extend({
         urlRoot: CORE_API_URL + "get/animal-model"
+    });
+
+    var Gene = Backbone.Model.extend({
+        urlRoot: 'get/gene',
+
+        initialize: function(attributes) {
+            this.url = this.urlRoot + "/" + attributes.species + "/" + attributes.symbol;
+        }
     });
 
     var Subject = Backbone.Model.extend({
@@ -1580,6 +1588,7 @@
                 this.template = _.template($("#observedsubject-summary-row-tmpl").html());
                 $(this.el).append(this.template(result));
             } else {
+                result.species = result.subject.organism.displayName.charAt(0).toLowerCase();
                 this.template = _.template($("#observedsubject-gene-summary-row-tmpl").html());
                 $(this.el).append(this.template(result));
                 var currentGene = result.subject["displayName"];
@@ -3323,12 +3332,13 @@
             "observation/:id": "showObservation",
             "search/:term": "search",
             "animal_model/:name": "showAnimalModel",
+            "gene/:species/:symbol": "showGene",
             "subject/:id": "showSubject",
             "subject/:id/:role": "showSubject",
             "subject/:id/:role/:tier": "showSubject",
             "evidence/:id": "showMraView",
             "about": "helpNavigate",
-            "genes": "showGenes",
+            "genes": "showGeneList",
             "cnkb-query": "showCnkbQuery",
             "cnkb-result": "showCnkbResult", 
             "gene-cart-help": "showGeneCartHelp",
@@ -3386,6 +3396,16 @@
                 success: function() {
                     var animalModelView = new AnimalModelView({ model: {subject:animalModel, tier:tier, role:role} });
                     animalModelView.render();
+                }
+            });
+        },
+
+        showGene: function(species, symbol, role, tier) {
+            var gmodel = new Gene({ species: species, symbol: symbol });
+            gmodel.fetch({
+                success: function() {
+                    var modelView = new GeneView({ model: {subject:gmodel, tier:tier, role:role} });
+                    modelView.render();
                 }
             });
         },
@@ -3489,7 +3509,7 @@
               });
         },
 
-        showGenes: function() {
+        showGeneList: function() {
             var geneListView = new GeneListView();
             geneListView.render();
         },
