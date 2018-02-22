@@ -1,4 +1,4 @@
-!function ($) {
+(function ($) {
     // This is strictly coupled to the homepage design!
     var numOfStoriesHomePage = 4;
     var numOfCartGene = 25;
@@ -226,10 +226,10 @@
             // Load the template
             $(this.el).html(this.template({}));
             $("#tierTooltip").tooltip({
-                title: "A CTD<sup>2</sup> Network-defined ranking system for evidence that is based on the extent of characterization associated with a particular study."
-                    +"<ul><li><b><i>Tier 1</i></b>: Preliminary results of screening campaigns."
-                    +"<li><b><i>Tier 2</i></b>: Confirmation of primary results <i>in vitro</i>."
-                    +"<li><b><i>Tier 3</i></b>: Validation of results in a cancer relevant <i>in vivo</i> model.</ul>",
+                title: "A CTD<sup>2</sup> Network-defined ranking system for evidence that is based on the extent of characterization associated with a particular study." +
+                    "<ul><li><b><i>Tier 1</i></b>: Preliminary results of screening campaigns." +
+                    "<li><b><i>Tier 2</i></b>: Confirmation of primary results <i>in vitro</i>." +
+                    "<li><b><i>Tier 3</i></b>: Validation of results in a cancer relevant <i>in vivo</i> model.</ul>",
                 html: true,
             });
 
@@ -252,7 +252,7 @@
                     $('.stories-pagination a.story-link').click(function (e) {
                         e.preventDefault();
                         $(this).tab('show');
-                    })
+                    });
                 }
             });
 
@@ -360,9 +360,9 @@
                                 _.each(observedEvidences.models, function(observedEvidence) {
                                     observedEvidence = observedEvidence.toJSON();
 
-                                    if(observedEvidence.observedEvidenceRole == null
-                                        || observedEvidence.evidence == null
-                                        || observedEvidence.evidence.class != "UrlEvidence")
+                                    if(observedEvidence.observedEvidenceRole == null ||
+                                        observedEvidence.evidence == null ||
+                                        observedEvidence.evidence.class != "UrlEvidence")
                                     {
                                         return;
                                     }
@@ -436,8 +436,8 @@
                                     return;
 
                                 // If there are more than one file evidences, then we might have a problem here
-                                if(observedEvidence.evidence.class == "FileEvidence"
-                                    && (observedEvidence.evidence.mimeType.toLowerCase().search("html") > -1 || observedEvidence.evidence.mimeType.toLowerCase().search("pdf") > -1)) {
+                                if(observedEvidence.evidence.class == "FileEvidence" &&
+                                    (observedEvidence.evidence.mimeType.toLowerCase().search("html") > -1 || observedEvidence.evidence.mimeType.toLowerCase().search("pdf") > -1)) {
                                     // If this is a summary, then it should be a pdf/html file evidence
                                     var elId = "#file-link2-" + thatModel.id;
                                     var url = $(elId).attr("href") + observedEvidence.evidence.filePath.replace(/\\/g, '/');
@@ -459,7 +459,7 @@
 
                             $(thatEl).html(summary);
                         }
-                    })
+                    });
                 }
             });
 
@@ -500,8 +500,8 @@
                                     return;
 
                                 // If there are more than one file evidences, then we might have a problem here
-                                if(observedEvidence.evidence.class == "FileEvidence"
-                                    && (observedEvidence.evidence.mimeType.toLowerCase().search("html") > -1 || observedEvidence.evidence.mimeType.toLowerCase().search("pdf") > -1)) {
+                                if(observedEvidence.evidence.class == "FileEvidence" &&
+                                    (observedEvidence.evidence.mimeType.toLowerCase().search("html") > -1 || observedEvidence.evidence.mimeType.toLowerCase().search("pdf") > -1)) {
                                     // If this is a summary, then it should be a pdf/html file evidence
                                     var elId = "#file-link-" + thatModel.id;
                                     var url = $(elId).attr("href") + observedEvidence.evidence.filePath.replace(/\\/g, '/');
@@ -523,7 +523,7 @@
 
                             $(thatEl).html(summary);
                         }
-                    })
+                    });
                 }
             });
 
@@ -686,7 +686,7 @@
                                    compound = compound.toJSON();
                                    _.each(compound.xrefs, function(xref) {
                                        if(xref.databaseName == "IMAGE") {
-                                           compound["imageFile"] = xref.databaseId;
+                                           compound.imageFile = xref.databaseId;
                                        }
                                    });
 
@@ -707,7 +707,7 @@
                             imgTemplate = $("#search-results-gene-image-tmpl");
                             thatEl2.append(_.template(imgTemplate.html(), subject));
                         } else if( subject.class == "ShRna" && subject.type.toLowerCase() == "sirna") {
-                            subject.class == "SiRNA";
+                            subject.class = "SiRNA";
                             imgTemplate = $("#search-results-sirna-image-tmpl");
                             thatEl2.append(_.template(imgTemplate.html(), subject));
                         } else if( subject.class == "ShRna" ) {
@@ -865,8 +865,7 @@
                                             "shape": "rectangle",
                                             "width": 15,
                                             "height": 15
-                                        })
-                                    ,
+                                        }),
 
                                     ready: function(){
                                         window.cy = this; // for debugging
@@ -920,7 +919,7 @@
         render: function() {
             var result = this.model;
             var type = result.evidence.class;
-            result.evidence["type"] = type;
+            result.evidence.type = type;
 
             if(result.observedEvidenceRole == null) {
                 result.observedEvidenceRole = {
@@ -965,9 +964,9 @@
             }
 
             var mRole = result.observedEvidenceRole.evidenceRole.displayName;
-            result["eco"] =
+            result.eco =
                 _.chain(ecoMappings)
-                    .filter(function(m) { return m.evidence == mEvidence && m.role == mRole })
+                    .filter(function(m) { return m.evidence == mEvidence && m.role == mRole; })
                     .first()
                     .value();
 
@@ -1112,19 +1111,19 @@
              var thatModel = this.model;
              var result = thatModel.subject.toJSON();
 
-             result["pubchem"] = result["cas"] = false;
+             result.pubchem = result.cas = false;
 
              _.each(result.xrefs, function(xref) {
                  if (xref.databaseName == "IMAGE") {
-                     result["imageFile"] = xref.databaseId;
+                     result.imageFile = xref.databaseId;
                  } else if(xref.databaseName == "PUBCHEM") {
-                     result["pubchem"] = xref.databaseId;
+                     result.pubchem = xref.databaseId;
                  } else if(xref.databaseName == "CAS") {
-                     result["cas"] = xref.databaseId;
+                     result.cas = xref.databaseId;
                  }
 
              });
-             result["type"] = result.class;
+             result.type = result.class;
 
              $(this.el).html(this.template( $.extend(result, {tier:thatModel.tier?thatModel.tier:null, role:thatModel.role?thatModel.role:null}) ));
 
@@ -1240,7 +1239,7 @@
             var result = thatModel.subject.toJSON();
             // Find out the UniProt ID
 
-            result["type"] = result.class;
+            result.type = result.class;
             $(this.el).html(this.template( $.extend(result, {tier:thatModel.tier?thatModel.tier:null, role:thatModel.role?thatModel.role:null}) ));
 
             var thatEl = $("ul.synonyms");
@@ -1281,7 +1280,7 @@
         render: function() {
             var thatModel = this.model;
             var result = thatModel.subject.toJSON();
-            result["type"] = result.class;
+            result.type = result.class;
             $(this.el).html(this.template( $.extend(result, {tier:thatModel.tier?thatModel.tier:null, role:thatModel.role?thatModel.role:null}) ));
 
             var thatEl = $("ul.synonyms");
@@ -1315,7 +1314,7 @@
         render: function() {
             var thatModel = this.model;
             var result = thatModel.subject.toJSON();
-            result["type"] = result.class;
+            result.type = result.class;
             $(this.el).html(this.template( $.extend(result, {tier:thatModel.tier?thatModel.tier:null, role:thatModel.role?thatModel.role:null}) ));
 
             var subjectObservationView = new SubjectObservationsView({
@@ -1334,7 +1333,7 @@
         render: function() {
             var thatModel = this.model;
             var result = thatModel.subject.toJSON();
-            result["type"] = "sirna";
+            result.type = "sirna";
             $(this.el).html(this.template( $.extend(result, {tier:thatModel.tier?thatModel.tier:null, role:thatModel.role?thatModel.role:null}) ));
 
             var subjectObservationView = new SubjectObservationsView({
@@ -1353,7 +1352,7 @@
         render: function() {
             var thatModel = this.model;
             var result = thatModel.subject.toJSON();
-            result["type"] = result.class;
+            result.type = result.class;
             $(this.el).html(this.template( $.extend(result, {tier:thatModel.tier?thatModel.tier:null, role:thatModel.role?thatModel.role:null}) ));
 
             var subjectObservationView = new SubjectObservationsView({
@@ -1372,7 +1371,7 @@
         render: function() {
             var thatModel = this.model;
             var result = thatModel.subject.toJSON();
-            result["type"] = result.class;
+            result.type = result.class;
             $(this.el).html(this.template( $.extend(result, {tier:thatModel.tier?thatModel.tier:null, role:thatModel.role?thatModel.role:null}) ));
 
             var thatEl = this.el;
@@ -1390,11 +1389,11 @@
             });
 
             if(result.synonyms.length == 0) { $(thatEl).find("#tissue-synonyms").hide(); }
-            var thatEl = $("ul.synonyms");
+            var synonymEl = $("ul.synonyms");
             _.each(result.synonyms, function(aSynonym) {
                 if(aSynonym.displayName == result.displayName ) return;
 
-                var synonymView = new SynonymView({ model: aSynonym, el: thatEl });
+                var synonymView = new SynonymView({ model: aSynonym, el: synonymEl });
                 synonymView.render();
             });
 
@@ -1415,7 +1414,7 @@
         render: function() {
             var thatModel = this.model;
             var result = thatModel.subject.toJSON();
-            result["type"] = result.class;
+            result.type = result.class;
             $(this.el).html(this.template( $.extend(result, {tier:thatModel.tier?thatModel.tier:null, role:thatModel.role?thatModel.role:null}) ));
 
             var thatEl = $("ul.synonyms");
@@ -1457,7 +1456,7 @@
         render: function() {
             var thatModel = this.model;
             var result = thatModel.subject.toJSON();
-            result["type"] = result.class;
+            result.type = result.class;
 
             // Look for cbioPortal Id
             var cbioPortalId = null;
@@ -1467,8 +1466,8 @@
                 }
             });
 
-            result["cbioPortalId"] = cbioPortalId;
-            result["type"] = result.class;
+            result.cbioPortalId = cbioPortalId;
+            result.type = result.class;
 
             $(this.el).html(this.template( $.extend(result, {tier:thatModel.tier?thatModel.tier:null, role:thatModel.role?thatModel.role:null}) ));
 
@@ -1551,7 +1550,7 @@
                                 [1, 'asc']
                             ]).draw();
                         }
-                    })
+                    });
                 }
             });
 
@@ -1573,7 +1572,7 @@
             var result = this.model;
             if(result.subject == null) return;
             if(result.subject.type == undefined) {
-                result.subject["type"] = result.subject.class;
+                result.subject.type = result.subject.class;
             }
             if(result.subject.class=="AnimalModel") { // as an early step of stable links, keep both the new style and the old style
                 result.url_type = "animal_model";
@@ -1591,7 +1590,7 @@
                 result.species = result.subject.organism.displayName.charAt(0).toLowerCase();
                 this.template = _.template($("#observedsubject-gene-summary-row-tmpl").html());
                 $(this.el).append(this.template(result));
-                var currentGene = result.subject["displayName"];
+                var currentGene = result.subject.displayName;
 
                 $(".addGene-" + currentGene).click(function(e) {
                     e.preventDefault();                  
@@ -1623,8 +1622,8 @@
                             = new CenterSubmissionRowView({ el: $(thatEl).find("tbody"), model: submission });
 
                         $.ajax("count/observation/?filterBy=" + submission.id, {"async": false}).done(function(count) {
-                            var tmplName = submission.observationTemplate.isSubmissionStory
-                                ? "#count-story-tmpl"
+                            var tmplName = submission.observationTemplate.isSubmissionStory ?
+                                "#count-story-tmpl"
                                 : "#count-observations-tmpl";
                             submission.details = _.template(
                                 $(tmplName).html(),
@@ -1868,7 +1867,7 @@
                         });
 
                     }
-                })
+                });
             });
         }
     });
@@ -1912,7 +1911,7 @@
         render: function() {
             var model = this.model;
             var result = model.dashboardEntity;
-            result["type"] = result.class;
+            result.type = result.class;
 
             if(result.class=="AnimalModel") { // as an early step of stable links, keep both the new style and the old style
                 model.url_type = "animal_model";
@@ -1928,7 +1927,7 @@
             } else {
                 this.template = _.template($("#search-result-gene-row-tmpl").html());
                 $(this.el).append(this.template(model));
-                var currentGene = result["displayName"];
+                var currentGene = result.displayName;
 
                 $(".addGene-" + currentGene).click(function(e) {
                     e.preventDefault();                  
@@ -1943,18 +1942,18 @@
                 synonymView.render();
             });
 
-            var thatEl = $("#roles-" + result.id);
+            var roleEl = $("#roles-" + result.id);
             _.each(model.roles, function(aRole) {
-                var roleView = new RoleView({model: {role: aRole}, el: thatEl});
+                var roleView = new RoleView({model: {role: aRole}, el: roleEl});
                 roleView.render();
             });
 
-            thatEl = $("#search-image-" + result.id);
+            var searchEl = $("#search-image-" + result.id);
             var imgTemplate = $("#search-results-unknown-image-tmpl");
             if(result.class == "Compound") {
                 _.each(result.xrefs, function(xref) {
                     if(xref.databaseName == "IMAGE") {
-                        result["imageFile"] = xref.databaseId;
+                        result.imageFile = xref.databaseId;
                     }
                 });
                 imgTemplate = $("#search-results-compund-image-tmpl");
@@ -1971,7 +1970,7 @@
             } else if( result.class == "Protein" ) {
                 imgTemplate = $("#search-results-protein-image-tmpl");
             }
-            thatEl.append(_.template(imgTemplate.html(), result));
+            searchEl.append(_.template(imgTemplate.html(), result));
 
             // some of the elements will be hidden in the pagination. Use magic-scoping!
             var updateElId = "#subject-observation-count-" + result.id;
@@ -2067,10 +2066,10 @@
                                 searchSubmissionRowView.render();
 
                                 if (submission.observationTemplate===undefined) { // TODO why does this happen?
-                                    submission.observationTemplate = {}
+                                    submission.observationTemplate = {};
                                 }
-                                var tmplName = submission.observationTemplate.isSubmissionStory
-                                    ? "#count-story-tmpl"
+                                var tmplName = submission.observationTemplate.isSubmissionStory ?
+                                    "#count-story-tmpl"
                                     : "#count-observations-tmpl";
                                 var cntContent = _.template(
                                     $(tmplName).html(),
@@ -2247,8 +2246,7 @@
                                     "shape": "rectangle",
                                     "width": 15,
                                     "height": 15
-                                })
-                            ,
+                                }),
 
                             ready: function(){
                                 window.cy = this; // for debugging
@@ -2413,26 +2411,26 @@
                             var role = sModel.role;
                             var reformatted = reformattedClassName[subject.class];
                             if(subject.class == 'Compound') {
-                                reformatted += " <span style='display:inline-block;width:100px'><a href='"+data_url+"compounds/"
-                                    + subject.imageFile +"' target='_blank' class='compound-image' title='Compound: " 
-                                    + subject.displayName + "'><img class='img-polaroid' style='height:25px' src='"+data_url+"compounds/" 
-                                    + subject.imageFile + "' alt='Compound: " + subject.displayName +"'></a></span>";
+                                reformatted += " <span style='display:inline-block;width:100px'><a href='"+data_url+"compounds/" +
+                                    subject.imageFile +"' target='_blank' class='compound-image' title='Compound: " +
+                                    subject.displayName + "'><img class='img-polaroid' style='height:25px' src='"+data_url+"compounds/" +
+                                    subject.imageFile + "' alt='Compound: " + subject.displayName +"'></a></span>";
                             } else {
                                 reformatted += " <img src='img/"+ subject.class.toLowerCase() + ".png' style='height:25px' alt=''>";
                             }
                             var nameLink = "<a href='#/subject/"+subject.id+"/"+role+"'>"+subject.displayName+"</a>";
                             var n3obv = sModel.numberOfTier3Observations;
                             var n3ctr = sModel.numberOfTier3SubmissionCenters;
-                            var n3link = ( n3obv==0 ? "" : "<a href='#subject/"+subject.id+"/"+role+"/3'>"+n3obv+"</a>" )
-                                    + ( n3obv>1 ? " ("+n3ctr+" center" + (n3ctr>1?"s":"") +")":"" );
+                            var n3link = ( n3obv==0 ? "" : "<a href='#subject/"+subject.id+"/"+role+"/3'>"+n3obv+"</a>" ) +
+                                    ( n3obv>1 ? " ("+n3ctr+" center" + (n3ctr>1?"s":"") +")":"" );
                             var n2obv = sModel.numberOfTier2Observations;
                             var n2ctr = sModel.numberOfTier2SubmissionCenters;
-                            var n2link = ( n2obv==0 ? "" : "<a href='#subject/"+subject.id+"/"+role+"/2'>"+n2obv+"</a>" )
-                                    + ( n2obv>1 ? " ("+n2ctr+" center" + (n2ctr>1?"s":"") +")":"" );
+                            var n2link = ( n2obv==0 ? "" : "<a href='#subject/"+subject.id+"/"+role+"/2'>"+n2obv+"</a>" ) +
+                                    ( n2obv>1 ? " ("+n2ctr+" center" + (n2ctr>1?"s":"") +")":"" );
                             var n1obv = sModel.numberOfTier1Observations;
                             var n1ctr = sModel.numberOfTier1SubmissionCenters;
-                            var n1link = ( n1obv==0 ? "" : "<a href='#subject/"+subject.id+"/"+role+"/1'>"+n1obv+"</a>" )
-                                    + ( n1obv>1 ? " ("+n1ctr+" center" + (n1ctr>1?"s":"") +")":"" );
+                            var n1link = ( n1obv==0 ? "" : "<a href='#subject/"+subject.id+"/"+role+"/1'>"+n1obv+"</a>" ) +
+                                    ( n1obv>1 ? " ("+n1ctr+" center" + (n1ctr>1?"s":"") +")":"" );
                             table_data.push( [reformatted, nameLink, role, n3link, n2link, n1link] );
                     });
                     $("#explore-table").dataTable( {
@@ -2483,7 +2481,7 @@
                             role = role.toJSON();
                             if(browseRole[thatModel.type].indexOf(role.displayName)==-1) return;
                             var checked = currentRoles.search(role.displayName.toLowerCase()) > -1;
-                            role["checked"] = checked;
+                            role.checked = checked;
                             var roleName = role.displayName;
                             role.displayName = roleName.charAt(0).toUpperCase() + roleName.slice(1);
                             var customRoleItemView = new CustomRoleItemView({ model: role });
@@ -2551,9 +2549,9 @@
         		 geneList = [];
         	 else if (geneList.length > numOfCartGene)
         	 {
-        		 var len = geneList.length
+        		 var len = geneList.length;
         		 geneList.slice(numOfCartGene, len-1);
-        		 localStorage["genelist"] = JSON.stringify(geneList);
+        		 localStorage.genelist = JSON.stringify(geneList);
         	 }
 
         	var html = "";
@@ -2601,8 +2599,8 @@
       		       if (index>=0) geneList.splice(index, 1);
 
                 });
-       		    localStorage["genelist"] = JSON.stringify(geneList);
-       		    sessionStorage["selectedGenes"] = JSON.stringify(geneList);
+       		    localStorage.genelist = JSON.stringify(geneList);
+       		    sessionStorage.selectedGenes = JSON.stringify(geneList);
        		    $("#geneNames option:selected").remove();  
 
 
@@ -2639,7 +2637,7 @@
                          var genes = reader.result.split(/[\s,]+/);  
                         
                          processInputGenes(genes);
-                     }
+                     };
                      reader.readAsText(file);
                      $('#geneFileInput').each(function() {
                          $(this).after($(this).clone(true)).remove();
@@ -2658,11 +2656,11 @@
        		 
        		    if (selectedGenes == null || selectedGenes.length == 0)
        		    {
-       		    	sessionStorage["selectedGenes"] = JSON.stringify(geneList); 
+       		    	sessionStorage.selectedGenes = JSON.stringify(geneList); 
        		    }
        		    else
        		    {
-       		    	sessionStorage["selectedGenes"] = JSON.stringify(selectedGenes);       		     
+       		    	sessionStorage.selectedGenes = JSON.stringify(selectedGenes);       		     
        		    } 
        		    
              });
@@ -2673,7 +2671,7 @@
             	var geneNames = JSON.parse(localStorage.getItem("genelist"));
                 if (geneNames == null)
               	   geneNames = [];
-                var num = genes.length + geneNames.length
+                var num = genes.length + geneNames.length;
                 if ( num > numOfCartGene)
                 {
          	    	showAlertMessage("Gene Cart can only contains " + numOfCartGene + " genes.");
@@ -2695,16 +2693,16 @@
                         	    invalidGenes = aData;
                         	 else
                         		invalidGenes = invalidGenes + ", " + aData; 
-                        	 genes.splice(genes.indexOf(aData),1)
+                        	 genes.splice(genes.indexOf(aData),1);
                         });
                  	    if (data.length > 1)
                     	{ 
-                 	    	showInvalidMessage("\"" + data + "\" are invalid and not added to the cart.")
+                 	    	showInvalidMessage("\"" + data + "\" are invalid and not added to the cart.");
                  	    }
 
                     	else if (data.length == 1)
                     	{                  		 
-                    		showInvalidMessage("\"" + data + "\" is invalid and not added to the cart.")
+                    		showInvalidMessage("\"" + data + "\" is invalid and not added to the cart.");
                     	}
                     	else 
                     	{
@@ -2715,8 +2713,7 @@
 
                     }
                  });  //ajax   
-            }
-
+            };
 
             var addGenes = function(genes)
             {
@@ -2735,15 +2732,14 @@
 
          		  if (newGenes.length > 0)
  		          {        			 
- 			           localStorage["genelist"] = JSON.stringify(geneList);
+ 			           localStorage.genelist = JSON.stringify(geneList);
  		               $.each(newGenes, function () {
      		                 var value = this.toString();
      		                 $("#geneNames").append(_.template($("#gene-cart-option-tmpl").html(), {displayItem: value})); 
                         });
      	                
  		           }
-            }
-
+            };
 
         	return this;
         }
@@ -2867,8 +2863,8 @@
                    }
                    else
                    {
-        		       sessionStorage["selectedInteractome"] = JSON.stringify(selectedInteractome);        		    
-        		       sessionStorage["selectedVersion"] = JSON.stringify(selectedVersion);
+        		       sessionStorage.selectedInteractome = JSON.stringify(selectedInteractome);        		    
+        		       sessionStorage.selectedVersion = JSON.stringify(selectedVersion);
                    }
         		
                });  
@@ -2889,9 +2885,9 @@
 
         	if (selectedgenes.length > numOfCartGene)
        	    {
-       		    var len = selectedgenes.length
+       		    var len = selectedgenes.length;
        		    selectedgenes.slice(numOfCartGene, len-1);
-       		    sessionStorage["selectedGenes"] = JSON.stringify(selectedgenes);
+       		    sessionStorage.selectedGenes = JSON.stringify(selectedgenes);
        	    }
 
         	$(this.el).html(this.template({}));
@@ -2951,7 +2947,7 @@
                 $("#selectedGenes").val(filters);
                 $("#interactionLimit").val("0");
                 $("#throttle").val("");
-                $('#cnkbExport-form').submit() 
+                $('#cnkbExport-form').submit();
 
         	 });  //end $('#interactomeList').change()
 
@@ -3075,7 +3071,7 @@
             $(this.el).append(this.template(result));            
             var geneName = Encoder.htmlEncode(result.geneName);
 
-		    var numList = result.interactionNumlist
+		    var numList = result.interactionNumlist;
 		       _.each(numList, function(aData){ 
 		    	   $("#tr_" + geneName).append('<td>' + aData + '</td>');
 		    });
@@ -3103,19 +3099,19 @@
                     
            if (geneNames.length >= numOfCartGene)
            {
-        	   showAlertMessage("Gene Cart can only contains " + numOfCartGene + " genes.")
+        	   showAlertMessage("Gene Cart can only contains " + numOfCartGene + " genes.");
         	   return;
            }
            
            if (geneNames.indexOf(addedGene) > -1) {       	   
-        	   showAlertMessage(addedGene + " is already in the Gene Cart.")        	  
+        	   showAlertMessage(addedGene + " is already in the Gene Cart.");
         	} else {
         	    //Not in the array
         		geneNames.push(addedGene);
-        		localStorage["genelist"] = JSON.stringify(geneNames);        		
-        		showAlertMessage(addedGene + " added to the Gene Cart.")
+        		localStorage.genelist = JSON.stringify(geneNames);        		
+        		showAlertMessage(addedGene + " added to the Gene Cart.");
         	}
-       }   
+       };
      
      
        var showAlertMessage = function(message)
@@ -3123,14 +3119,14 @@
     	  $("#alertMessage").text(message);
     	  $("#alertMessage").css('color', '#5a5a5a');   
     	  $("#alert-message-modal").modal('show');
-       }   
+       };
      
        var showInvalidMessage = function(message)
        {    	 
     	  $("#alertMessage").text(message);
     	  $("#alertMessage").css('color', 'red');
     	  $("#alert-message-modal").modal('show');
-       }   
+       };
        
        var convertUrl = function(description)
        {
@@ -3147,7 +3143,7 @@
     	   else    	   
     		   return description;
     	    
-       }
+       };
        
        var drawCNKBCytoscape = function(data, description)
        {    	     
@@ -3234,8 +3230,7 @@
                         "shape": "rectangle",
                         "width": 15,
                         "height": 15
-                    })
-                ,
+                    }),
 
                 ready: function(){
                     window.cy = this; // for debugging
@@ -3316,7 +3311,7 @@
 
                 }); 
 
-     }
+     };
 
 
     /* Routers */
@@ -3582,4 +3577,4 @@
             console.log('long query pre-prepared '+performance.now());
         }
     } );
-}(window.jQuery);
+})(window.jQuery);
