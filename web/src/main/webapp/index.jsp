@@ -908,7 +908,7 @@
 
     <script type="text/template" id="gene-uniprot-tmpl">
         <li id="gene-uniprot-link">
-            UniProt: <a href="http://www.uniprot.org/uniprot/{{uniprotId}}" target="_blank">{{uniprotId}} <i class="icon-share"></i></a>
+            UniProt: <a href="https://www.uniprot.org/uniprot/{{uniprotId}}" target="_blank">{{uniprotId}} <i class="icon-share"></i></a>
         </li>
     </script>
 
