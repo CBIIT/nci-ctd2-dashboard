@@ -1703,7 +1703,7 @@
     </script>
 
     <script type="text/template" id="search-results-cellsample-image-tmpl">
-        <a href="#subject/{{id}}">
+        <a href="#{{URL}}">
             <img src="img/cellsample.png" title="Cell sample" alt="Cell sample" class="img-polaroid search-info" height="50" width="50">
         </a>
     </script>

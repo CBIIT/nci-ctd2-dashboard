@@ -70,4 +70,14 @@ public class SubjectImpl extends DashboardEntityImpl implements Subject {
     public void setScore(Integer score) {
         this.score = score;
     }
+
+    @Override
+    public String getURL() {
+        return (this.getClass().getSimpleName()+"/"+getDisplayName()).toLowerCase().replace(' ', '-');
+    }
+
+    @Override
+    public void setURL(String url) {
+        // no-op for now
+    }
 }

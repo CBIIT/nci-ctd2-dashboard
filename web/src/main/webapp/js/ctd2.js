@@ -3611,6 +3611,7 @@
             "observation/:id": "showObservation",
             "search/:term": "search",
             "animal_model/:name": "showAnimalModel",
+            "cell_sample/:name": "showCellSample",
             "gene/:species/:symbol": "showGene",
             "subject/:id": "showSubject",
             "subject/:id/:role": "showSubject",
@@ -3683,6 +3684,24 @@
                         }
                     });
                     animalModelView.render();
+                }
+            });
+        },
+
+        showCellSample: function (name, role, tier) {
+            var cellSample = new CellSample({
+                id: name
+            });
+            cellSample.fetch({
+                success: function () {
+                    var cellSampleView = new CellSampleView({
+                        model: {
+                            subject: cellSample,
+                            tier: tier,
+                            role: role
+                        }
+                    });
+                    cellSampleView.render();
                 }
             });
         },
