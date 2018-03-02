@@ -1697,13 +1697,13 @@
     </script>
 
     <script type="text/template" id="search-results-animalmodel-image-tmpl">
-        <a href="#animal_model/{{displayName}}">
+        <a href="#animal-model/{{displayName}}">
             <img src="img/animalmodel.png" title="Animal model" alt="Animal model" class="img-polaroid search-info" height="50" width="50">
         </a>
     </script>
 
     <script type="text/template" id="search-results-cellsample-image-tmpl">
-        <a href="#{{URL}}">
+        <a href="#{{stableURL}}">
             <img src="img/cellsample.png" title="Cell sample" alt="Cell sample" class="img-polaroid search-info" height="50" width="50">
         </a>
     </script>

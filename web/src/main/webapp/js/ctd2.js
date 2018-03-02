@@ -210,6 +210,10 @@
         }
     });
 
+    var CellSample = Backbone.Model.extend({
+        urlRoot: CORE_API_URL + "get/cell-sample",
+    });
+
     var Subject = Backbone.Model.extend({
         urlRoot: CORE_API_URL + "get/subject"
     });
@@ -1759,7 +1763,7 @@
                 result.subject.type = result.subject.class;
             }
             if (result.subject.class == "AnimalModel") { // as an early step of stable links, keep both the new style and the old style
-                result.url_type = "animal_model";
+                result.url_type = "animal-model";
                 result.url_id = result.subject.displayName;
             } else {
                 result.url_type = "subject";
@@ -2134,7 +2138,7 @@
             result.type = result.class;
 
             if (result.class == "AnimalModel") { // as an early step of stable links, keep both the new style and the old style
-                model.url_type = "animal_model";
+                model.url_type = "animal-model";
                 model.url_id = result.displayName;
             } else {
                 model.url_type = "subject";
@@ -3610,8 +3614,8 @@
             "submission/:id": "showSubmission",
             "observation/:id": "showObservation",
             "search/:term": "search",
-            "animal_model/:name": "showAnimalModel",
-            "cell_sample/:name": "showCellSample",
+            "animal-model/:name": "showAnimalModel",
+            "cell-sample/:name": "showCellSample",
             "gene/:species/:symbol": "showGene",
             "subject/:id": "showSubject",
             "subject/:id/:role": "showSubject",

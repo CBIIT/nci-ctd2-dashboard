@@ -15,6 +15,7 @@ public interface DashboardDao {
     void delete(DashboardEntity entity);
     <T extends DashboardEntity> T getEntityById(Class<T> entityClass, Integer id);
     <T extends DashboardEntity> T getEntity(Class<T> entityClass, String name);
+    <T extends DashboardEntity> T getEntityByStableURL(String type, String stableURL);
     Long countEntities(Class<? extends DashboardEntity> entityClass);
     DashboardFactory getDashboardFactory();
     void setDashboardFactory(DashboardFactory dashboardFactory);

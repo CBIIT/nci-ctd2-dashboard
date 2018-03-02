@@ -72,12 +72,12 @@ public class SubjectImpl extends DashboardEntityImpl implements Subject {
     }
 
     @Override
-    public String getURL() {
+    public String getStableURL() {
         return (this.getClass().getSimpleName()+"/"+getDisplayName()).toLowerCase().replace(' ', '-');
     }
 
     @Override
-    public void setURL(String url) {
+    public void setStableURL(String url) {
         // no-op for now
     }
 }

@@ -5,6 +5,8 @@ import gov.nih.nci.ctd2.dashboard.impl.*;
 import gov.nih.nci.ctd2.dashboard.model.*;
 import gov.nih.nci.ctd2.dashboard.util.DashboardEntityWithCounts;
 import gov.nih.nci.ctd2.dashboard.util.SubjectWithSummaries;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.WhitespaceAnalyzer;
 import org.apache.lucene.queryParser.MultiFieldQueryParser;
@@ -23,6 +25,8 @@ import org.springframework.cache.annotation.Cacheable;
 import java.util.*;
 
 public class DashboardDaoImpl implements DashboardDao {
+    private static final Log log = LogFactory.getLog(DashboardDaoImpl.class);
+
     private static final String[] defaultSearchFields = {
             DashboardEntityImpl.FIELD_DISPLAYNAME,
             DashboardEntityImpl.FIELD_DISPLAYNAME_UT,
@@ -176,6 +180,28 @@ public class DashboardDaoImpl implements DashboardDao {
             t = (T)list.get(0);
         }
         return t;
+    }
+
+    @Override
+    public <T extends DashboardEntity> T getEntityByStableURL(String type, String stableURL) {
+        switch(type) {
+            case "cell-sample":
+                List<T> r = queryWithClass("from CellSampleImpl where stableURL = :urlId", "urlId", stableURL);
+                if(r.size()==1) {
+                    return r.get(0);
+                } else {
+                    log.error("unexpected result number: "+r.size());
+                    if(log.isDebugEnabled()) {
+                        CellSample testItem = getEntityById(CellSample.class, 154020);
+                        if(testItem!=null) return (T)testItem;
+                    }
+                    return null;
+                }
+            default: {
+                log.error("unrecognized type: "+type);
+                return null;
+            }
+        }
     }
 
     @Override

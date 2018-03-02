@@ -19,8 +19,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/get")
@@ -33,6 +35,10 @@ public class JSONController {
     static {
         type2class.put("center", SubmissionCenter.class);
         type2class.put("animal-model", AnimalModel.class);
+    }
+    private static Set<String> typesWithStableURL = new HashSet<String>();
+    static {
+        typesWithStableURL.add("cell-sample");
     }
 
     /* gene needs a separate method because it asks for different number of parameters */
@@ -89,7 +95,9 @@ public class JSONController {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json; charset=utf-8");
 
-        if (type2class.keySet().contains(type)) { // as the early step to implement stable links.
+        if(typesWithStableURL.contains(type)) {
+            entityById = dashboardDao.getEntityByStableURL(type, id);
+        } else if (type2class.keySet().contains(type)) { // as the early step to implement stable links.
             entityById = dashboardDao.getEntity(clazz, id);
         } else {
             entityById = dashboardDao.getEntityById(clazz, Integer.parseInt(id));
