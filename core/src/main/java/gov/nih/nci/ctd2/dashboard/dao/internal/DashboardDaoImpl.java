@@ -182,21 +182,29 @@ public class DashboardDaoImpl implements DashboardDao {
         return t;
     }
 
+    final private static Map<String, String> typesWithStableURL = new HashMap<String, String>();
+    static {
+        typesWithStableURL.put("cell-sample", "CellSampleImpl");
+        typesWithStableURL.put("compound", "CompoundImpl");
+        typesWithStableURL.put("protein", "ProteinImpl");
+        typesWithStableURL.put("shrna", "ShRnaImpl");
+        typesWithStableURL.put("tissue-sample", "TissueSampleImpl");
+        typesWithStableURL.put("transcript", "TRanscriptImpl");
+    }
     @Override
     public <T extends DashboardEntity> T getEntityByStableURL(String type, String stableURL) {
-        switch(type) {
-            case "cell-sample":
-                List<T> r = queryWithClass("from CellSampleImpl where stableURL = :urlId", "urlId", stableURL);
-                if(r.size()==1) {
-                    return r.get(0);
-                } else {
-                    log.error("unexpected result number: "+r.size());
-                    return null;
-                }
-            default: {
-                log.error("unrecognized type: "+type);
+        String implementationClass = typesWithStableURL.get(type);
+        if(implementationClass!=null) {
+            List<T> r = queryWithClass("from "+implementationClass+" where stableURL = :urlId", "urlId", stableURL);
+            if(r.size()==1) {
+                return r.get(0);
+            } else {
+                log.error("unexpected result number: "+r.size());
                 return null;
             }
+        } else {
+            log.error("unrecognized type: "+type);
+            return null;
         }
     }
 

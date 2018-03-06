@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -38,7 +38,7 @@ public class JSONController {
     }
     private static Set<String> typesWithStableURL = new HashSet<String>();
     static {
-        typesWithStableURL.add("cell-sample");
+        Collections.addAll(typesWithStableURL, new String[]{"cell-sample", "compound", "protein", "shrna", "tissue-sample", "transcript"});
     }
 
     /* gene needs a separate method because it asks for different number of parameters */

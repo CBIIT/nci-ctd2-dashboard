@@ -214,6 +214,26 @@
         urlRoot: CORE_API_URL + "get/cell-sample",
     });
 
+    var Compound = Backbone.Model.extend({
+        urlRoot: CORE_API_URL + "get/compound",
+    });
+
+    var Protein = Backbone.Model.extend({
+        urlRoot: CORE_API_URL + "get/protein",
+    });
+
+    var ShRna = Backbone.Model.extend({
+        urlRoot: CORE_API_URL + "get/shrna",
+    });
+
+    var TissueSample = Backbone.Model.extend({
+        urlRoot: CORE_API_URL + "get/tissue-sample",
+    });
+
+    var Transcript = Backbone.Model.extend({
+        urlRoot: CORE_API_URL + "get/transcript",
+    });
+
     var Subject = Backbone.Model.extend({
         urlRoot: CORE_API_URL + "get/subject"
     });
@@ -3616,7 +3636,12 @@
             "search/:term": "search",
             "animal-model/:name": "showAnimalModel",
             "cell-sample/:name": "showCellSample",
+            "compound/:name": "showCompound",
             "gene/:species/:symbol": "showGene",
+            "protein/:name": "showProtein",
+            "shrna/:name": "showShRna",
+            "tissue-sample/:name": "showTissueSample",
+            "transcript/:name": "showTranscript",
             "subject/:id": "showSubject",
             "subject/:id/:role": "showSubject",
             "subject/:id/:role/:tier": "showSubject",
@@ -3706,6 +3731,96 @@
                         }
                     });
                     cellSampleView.render();
+                }
+            });
+        },
+
+        showCompound: function (name, role, tier) {
+            var compound = new Compound({
+                id: name
+            });
+            compound.fetch({
+                success: function () {
+                    var compoundView = new CompoundView({
+                        model: {
+                            subject: compound,
+                            tier: tier,
+                            role: role
+                        }
+                    });
+                    compoundView.render();
+                }
+            });
+        },
+
+        showProtein: function (name, role, tier) {
+            var protein = new Protein({
+                id: name
+            });
+            protein.fetch({
+                success: function () {
+                    var proteinView = new ProteinView({
+                        model: {
+                            subject: protein,
+                            tier: tier,
+                            role: role
+                        }
+                    });
+                    proteinView.render();
+                }
+            });
+        },
+
+        showShRna: function (name, role, tier) {
+            var shRna = new ShRna({
+                id: name
+            });
+            shRna.fetch({
+                success: function () {
+                    var shRnaView = new ShRnaView({
+                        model: {
+                            subject: shRna,
+                            tier: tier,
+                            role: role
+                        }
+                    });
+                    shRnaView.render();
+                }
+            });
+        },
+
+        showTissueSample: function (name, role, tier) {
+            var tissueSample = new TissueSample({
+                id: name
+            });
+            tissueSample.fetch({
+                success: function () {
+                    var tissueSampleView = new TissueSampleView({
+                        model: {
+                            subject: tissueSample,
+                            tier: tier,
+                            role: role
+                        }
+                    });
+                    tissueSampleView.render();
+                }
+            });
+        },
+
+        showTranscript: function (name, role, tier) {
+            var transcript = new Transcript({
+                id: name
+            });
+            transcript.fetch({
+                success: function () {
+                    var transcriptView = new TranscriptView({
+                        model: {
+                            subject: transcript,
+                            tier: tier,
+                            role: role
+                        }
+                    });
+                    transcriptView.render();
                 }
             });
         },
