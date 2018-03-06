@@ -96,7 +96,7 @@ public class JSONController {
         headers.add("Content-Type", "application/json; charset=utf-8");
 
         if(typesWithStableURL.contains(type)) {
-            entityById = dashboardDao.getEntityByStableURL(type, id);
+            entityById = dashboardDao.getEntityByStableURL(type, type+"/"+id);
         } else if (type2class.keySet().contains(type)) { // as the early step to implement stable links.
             entityById = dashboardDao.getEntity(clazz, id);
         } else {

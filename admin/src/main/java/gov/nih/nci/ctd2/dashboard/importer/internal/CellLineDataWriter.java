@@ -9,7 +9,6 @@ import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.ArrayList;
@@ -31,6 +30,7 @@ public class CellLineDataWriter implements Tasklet {
         ArrayList<DashboardEntity> entities = new ArrayList<DashboardEntity>();
         for (CellSample cellSample : cellSampleMap.values()) {
             entities.addAll(cellSample.getAnnotations());
+            cellSample.setStableURL(null); // stable URL is decided by the displayName so the parameter is ignored on purpose
             entities.add(cellSample);
         }
         dashboardDao.batchSave(entities, batchSize);

@@ -191,10 +191,6 @@ public class DashboardDaoImpl implements DashboardDao {
                     return r.get(0);
                 } else {
                     log.error("unexpected result number: "+r.size());
-                    if(log.isDebugEnabled()) {
-                        CellSample testItem = getEntityById(CellSample.class, 154020);
-                        if(testItem!=null) return (T)testItem;
-                    }
                     return null;
                 }
             default: {
