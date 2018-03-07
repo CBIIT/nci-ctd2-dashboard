@@ -79,7 +79,7 @@ public class SubjectImpl extends DashboardEntityImpl implements Subject {
     }
 
     protected void createURLWithPrefix(String prefix) {
-        this.stableURL = prefix+"/"+getDisplayName().toLowerCase().replace(' ', '-');
+        this.stableURL = prefix+"/"+getDisplayName().toLowerCase().replaceAll("[^a-zA-Z0-9]","-");
     }
 
     @Override
