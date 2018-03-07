@@ -21,8 +21,8 @@ import java.util.Set;
 @Table(name = "subject")
 @Indexed
 public class SubjectImpl extends DashboardEntityImpl implements Subject {
-	private static final long serialVersionUID = 1L;
-	public final static String FIELD_SYNONYM = "synonym";
+    private static final long serialVersionUID = 1L;
+    public final static String FIELD_SYNONYM = "synonym";
     public final static String FIELD_SYNONYM_UT = "synonymUT";
 
     private Set<Synonym> synonyms = new LinkedHashSet<Synonym>();
@@ -41,10 +41,8 @@ public class SubjectImpl extends DashboardEntityImpl implements Subject {
         this.synonyms = synonyms;
     }
 
-    @Fields({
-            @Field(name = FIELD_SYNONYM, index = org.hibernate.search.annotations.Index.YES, store = Store.YES),
-            @Field(name = FIELD_SYNONYM_UT, index = org.hibernate.search.annotations.Index.YES, analyze=Analyze.NO)
-    })
+    @Fields({ @Field(name = FIELD_SYNONYM, index = org.hibernate.search.annotations.Index.YES, store = Store.YES),
+            @Field(name = FIELD_SYNONYM_UT, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO) })
     @Transient
     public String getSynoynmStrings() {
         StringBuilder builder = new StringBuilder();
@@ -79,7 +77,17 @@ public class SubjectImpl extends DashboardEntityImpl implements Subject {
     }
 
     protected void createURLWithPrefix(String prefix) {
-        this.stableURL = prefix+"/"+getDisplayName().toLowerCase().replaceAll("[^a-zA-Z0-9]","-");
+        /* 
+        The guideline requires the complete URL to be 100 characters or less.
+        Considering the production URL starts with https://ctd2-dashboard.nci.nih.gov/dashboard/ of length 45,
+        the maximum length the unique part is set to be 50.
+        */
+        final int MAX_LENGTH = 50;
+        String stableURL = prefix + "/" + getDisplayName().toLowerCase().replaceAll("[^a-zA-Z0-9]", "-");
+        if (stableURL.length() > MAX_LENGTH) {
+            stableURL = stableURL.substring(0, MAX_LENGTH);
+        }
+        this.stableURL = stableURL;
     }
 
     @Override
