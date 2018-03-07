@@ -76,6 +76,7 @@ public class CompoundsFieldSetMapper implements FieldSetMapper<Compound> {
         }
 		// optimization - avoid persisting Compounds
 		// - place in map and pass to compoundSynonymsStep
+		compound.setStableURL(null);
 		compoundMap.put(compoundId, compound);
 		return compound;
 	}

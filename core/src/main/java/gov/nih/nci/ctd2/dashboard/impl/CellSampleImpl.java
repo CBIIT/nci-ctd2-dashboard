@@ -20,7 +20,6 @@ public class CellSampleImpl extends SubjectWithOrganismImpl implements CellSampl
     private static final long serialVersionUID = -13767944704688482L;
 	private String gender;
     private Set<Annotation> annotations = new HashSet<Annotation>();
-    private String stableURL;
 
     @Column(length = 128, nullable = true)
     public String getGender() {
@@ -43,12 +42,7 @@ public class CellSampleImpl extends SubjectWithOrganismImpl implements CellSampl
     }
 
     @Override
-    public String getStableURL() {
-        return stableURL;
-    }
-
-    @Override
     public void setStableURL(String stableURL) {
-        this.stableURL = "cell-sample/"+getDisplayName().toLowerCase().replace(' ', '-');
+        createURLWithPrefix("cell-sample");
     }
 }

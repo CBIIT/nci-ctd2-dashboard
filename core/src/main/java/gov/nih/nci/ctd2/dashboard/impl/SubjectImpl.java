@@ -21,12 +21,14 @@ import java.util.Set;
 @Table(name = "subject")
 @Indexed
 public class SubjectImpl extends DashboardEntityImpl implements Subject {
-    public final static String FIELD_SYNONYM = "synonym";
+	private static final long serialVersionUID = 1L;
+	public final static String FIELD_SYNONYM = "synonym";
     public final static String FIELD_SYNONYM_UT = "synonymUT";
 
     private Set<Synonym> synonyms = new LinkedHashSet<Synonym>();
     private Set<Xref> xrefs = new LinkedHashSet<Xref>();
     private Integer score = 0;
+    private String stableURL = "";
 
     @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(targetEntity = SynonymImpl.class, cascade = CascadeType.ALL)
@@ -73,11 +75,15 @@ public class SubjectImpl extends DashboardEntityImpl implements Subject {
 
     @Override
     public String getStableURL() {
-        return (this.getClass().getSimpleName()+"/"+getDisplayName()).toLowerCase().replace(' ', '-');
+        return stableURL;
+    }
+
+    protected void createURLWithPrefix(String prefix) {
+        this.stableURL = prefix+"/"+getDisplayName().toLowerCase().replace(' ', '-');
     }
 
     @Override
     public void setStableURL(String url) {
-        // no-op for now
+        createURLWithPrefix("subject");
     }
 }
