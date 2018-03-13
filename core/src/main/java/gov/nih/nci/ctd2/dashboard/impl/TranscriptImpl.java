@@ -12,7 +12,8 @@ import javax.persistence.*;
 @Table(name = "transcript")
 @Indexed
 public class TranscriptImpl extends SubjectWithOrganismImpl implements Transcript {
-    private String refseqId;
+    private static final long serialVersionUID = -3477770521094773090L;
+	private String refseqId;
     private Gene gene;
 
     @Column(length = 64, nullable = false, unique = true)
@@ -31,5 +32,10 @@ public class TranscriptImpl extends SubjectWithOrganismImpl implements Transcrip
 
     public void setGene(Gene gene) {
         this.gene = gene;
+    }
+
+    @Override
+    public void setStableURL(String stableURL) {
+        createURLWithPrefix("transcript", getDisplayName());
     }
 }

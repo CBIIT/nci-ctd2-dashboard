@@ -76,14 +76,14 @@ public class SubjectImpl extends DashboardEntityImpl implements Subject {
         return stableURL;
     }
 
-    protected void createURLWithPrefix(String prefix) {
+    final protected void createURLWithPrefix(String prefix, String urlProperty) {
         /* 
         The guideline requires the complete URL to be 100 characters or less.
         Considering the production URL starts with https://ctd2-dashboard.nci.nih.gov/dashboard/ of length 45,
         the maximum length the unique part is set to be 50.
         */
         final int MAX_LENGTH = 50;
-        String stableURL = prefix + "/" + getDisplayName().toLowerCase().replaceAll("[^a-zA-Z0-9]", "-");
+        String stableURL = prefix + "/" + urlProperty.toLowerCase().replaceAll("[^a-zA-Z0-9]", "-");
         if (stableURL.length() > MAX_LENGTH) {
             stableURL = stableURL.substring(0, MAX_LENGTH);
         }
@@ -92,6 +92,6 @@ public class SubjectImpl extends DashboardEntityImpl implements Subject {
 
     @Override
     public void setStableURL(String url) {
-        createURLWithPrefix("subject");
+        createURLWithPrefix("subject", getId().toString());
     }
 }

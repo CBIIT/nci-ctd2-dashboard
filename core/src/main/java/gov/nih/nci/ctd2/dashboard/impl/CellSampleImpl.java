@@ -43,6 +43,6 @@ public class CellSampleImpl extends SubjectWithOrganismImpl implements CellSampl
 
     @Override
     public void setStableURL(String stableURL) {
-        createURLWithPrefix("cell-sample");
+        createURLWithPrefix("cell-sample", getDisplayName());
     }
 }

@@ -27,6 +27,6 @@ public class CompoundImpl extends SubjectImpl implements Compound {
 
     @Override
     public void setStableURL(String stableURL) {
-        createURLWithPrefix("compound");
+        createURLWithPrefix("compound", getDisplayName());
     }
 }

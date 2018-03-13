@@ -16,7 +16,8 @@ import javax.persistence.Table;
 @Table(name = "shrna")
 @Indexed
 public class ShRnaImpl extends SubjectWithOrganismImpl implements ShRna {
-    private String targetSequence;
+    private static final long serialVersionUID = -8167563848347067927L;
+	private String targetSequence;
     private Transcript transcript;
     private String type;
     private String reagentName;
@@ -56,5 +57,11 @@ public class ShRnaImpl extends SubjectWithOrganismImpl implements ShRna {
 
     public void setReagentName(String reagentName) {
         this.reagentName = reagentName;
+    }
+
+    @Override
+    public void setStableURL(String stableURL) {
+        if(targetSequence!=null)
+            createURLWithPrefix("rna", targetSequence);
     }
 }

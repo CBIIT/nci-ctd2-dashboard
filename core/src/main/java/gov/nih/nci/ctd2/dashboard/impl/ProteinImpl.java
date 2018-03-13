@@ -2,7 +2,6 @@ package gov.nih.nci.ctd2.dashboard.impl;
 
 import gov.nih.nci.ctd2.dashboard.model.Protein;
 import gov.nih.nci.ctd2.dashboard.model.Transcript;
-import org.hibernate.annotations.CollectionId;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.Proxy;
@@ -18,7 +17,8 @@ import java.util.HashSet;
 @Table(name = "protein")
 @Indexed
 public class ProteinImpl extends SubjectWithOrganismImpl implements Protein {
-    private String uniprotId;
+    private static final long serialVersionUID = -2908682202730022719L;
+	private String uniprotId;
     private Set<Transcript> transcripts = new HashSet<Transcript>();
 
     @Column(length = 64, nullable = false, unique = true)
@@ -39,5 +39,11 @@ public class ProteinImpl extends SubjectWithOrganismImpl implements Protein {
 
     public void setTranscripts(Set<Transcript> transcripts) {
         this.transcripts = transcripts;
+    }
+
+    @Override
+    public void setStableURL(String stableURL) {
+        if(uniprotId!=null)
+            createURLWithPrefix("protein", uniprotId);
     }
 }
