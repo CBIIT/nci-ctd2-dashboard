@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.util.HashMap;
+import java.util.Map;
 
 @Component("controlledVocabularyPerTemplateMapper")
 public class ControlledVocabularyPerTemplateFieldSetMapper implements FieldSetMapper<ObservationTemplate> {
@@ -59,6 +60,8 @@ public class ControlledVocabularyPerTemplateFieldSetMapper implements FieldSetMa
 			if (submissionCenter == null) {
 				submissionCenter = dashboardFactory.create(SubmissionCenter.class);
 				submissionCenter.setDisplayName(submissionCenterName);
+				String shortCenterNames = shortCenterNameMap.get(submissionCenterName);
+				submissionCenter.setStableURL("center/"+shortCenterNames.toLowerCase());
 			}
 			submissionCenterCache.put(submissionCenterName, submissionCenter);
 		}
@@ -67,5 +70,25 @@ public class ControlledVocabularyPerTemplateFieldSetMapper implements FieldSetMa
 		observationTemplateMap.put(fieldSet.readString(TEMPLATE_NAME), observationTemplate);
 
 		return observationTemplate;
+	}
+
+	final private static Map<String, String> shortCenterNameMap = new HashMap<String, String>();
+	static {
+		shortCenterNameMap.put("Broad Institute", "Broad");
+		shortCenterNameMap.put("Cold Spring Harbor Laboratory", "CSHL");
+		shortCenterNameMap.put("Columbia University", "Columbia");
+		shortCenterNameMap.put("Dana-Farber Cancer Institute", "DFCI");
+		shortCenterNameMap.put("Emory University", "Emory");
+		shortCenterNameMap.put("Fred Hutchinson Cancer Research Center (1)", "FHCRC1");
+		shortCenterNameMap.put("Fred Hutchinson Cancer Research Center (2)", "FHCRC2");
+		shortCenterNameMap.put("Johns Hopkins University", "JHU");
+		shortCenterNameMap.put("Oregon Health and Science University", "OHSU");
+		shortCenterNameMap.put("Stanford University", "Stanford");
+		shortCenterNameMap.put("Translational Genomics Research Institute", "TGen");
+		shortCenterNameMap.put("University of California San Diego", "UCSD");
+		shortCenterNameMap.put("University of California San Francisco (1)", "UCSF1");
+		shortCenterNameMap.put("University of California San Francisco (2)", "UCSF2");
+		shortCenterNameMap.put("University of Texas MD Anderson Cancer Center", "UTMDACC");
+		shortCenterNameMap.put("University of Texas Southwestern Medical Center", "UTSW");
 	}
 }
