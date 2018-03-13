@@ -753,7 +753,7 @@
                                         }
                                     });
 
-                                    imgTemplate = $("#search-results-compund-image-tmpl");
+                                    imgTemplate = $("#search-results-compound-image-tmpl");
                                     thatEl2.append(_.template(imgTemplate.html(), compound));
                                 }
                             });
@@ -2208,7 +2208,7 @@
                         result.imageFile = xref.databaseId;
                     }
                 });
-                imgTemplate = $("#search-results-compund-image-tmpl");
+                imgTemplate = $("#search-results-compound-image-tmpl");
             } else if (result.class == "CellSample") {
                 imgTemplate = $("#search-results-cellsample-image-tmpl");
             } else if (result.class == "TissueSample") {
