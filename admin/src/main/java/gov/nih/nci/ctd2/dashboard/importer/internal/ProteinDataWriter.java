@@ -30,7 +30,8 @@ public class ProteinDataWriter implements ItemWriter<ProteinData> {
 
 		for (ProteinData proteinData : items) {
             entities.addAll(proteinData.transcripts);
-			log.info("Storing protein: " + proteinData.protein.getDisplayName());
+            log.info("Storing protein: " + proteinData.protein.getDisplayName());
+            proteinData.protein.setStableURL(null);
             entities.add(proteinData.protein);
 		}
 
