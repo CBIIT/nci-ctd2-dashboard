@@ -73,10 +73,9 @@ public class CompoundsFieldSetMapper implements FieldSetMapper<Compound> {
 		    casXref.setDatabaseId(casNumber);
 		    casXref.setDatabaseName(CAS_DATABASE);
 		    compound.getXrefs().add(casXref);
-        }
+		}
 		// optimization - avoid persisting Compounds
 		// - place in map and pass to compoundSynonymsStep
-		compound.setStableURL(null);
 		compoundMap.put(compoundId, compound);
 		return compound;
 	}

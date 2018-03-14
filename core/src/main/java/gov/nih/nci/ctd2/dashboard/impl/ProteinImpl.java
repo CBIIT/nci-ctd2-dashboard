@@ -41,9 +41,4 @@ public class ProteinImpl extends SubjectWithOrganismImpl implements Protein {
         this.transcripts = transcripts;
     }
 
-    @Override
-    public void setStableURL(String stableURL) {
-        if(uniprotId!=null)
-            createURLWithPrefix("protein", uniprotId);
-    }
 }

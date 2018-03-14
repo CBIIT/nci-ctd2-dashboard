@@ -36,24 +36,4 @@ public class TissueSampleImpl extends SubjectImpl implements TissueSample {
     public void setLineage(String lineage) {
         this.lineage = lineage;
     }
-
-    @Override
-    public void setStableURL(String stableURL) {
-        String nciThesaurusId = ""; // NCI thesaurus ID
-        Set<Xref> xrefs = this.getXrefs();
-        for(Xref xref: xrefs) {
-            if(xref.getDatabaseName().equals("NCI_THESAURUS")) {
-                String[] ids = xref.getDatabaseId().split(";");
-                if(ids.length>0) {
-                    nciThesaurusId = ids[0];
-                    break;
-                }
-            }
-        }
-        if(nciThesaurusId.length()==0) {
-            log.error("not found NCI thesaurus ID for tissue sample "+getDisplayName());
-        }
-
-        createURLWithPrefix("tissue", nciThesaurusId); 
-    }
 }

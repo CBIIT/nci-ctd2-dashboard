@@ -1,8 +1,9 @@
 package gov.nih.nci.ctd2.dashboard.importer.internal;
 
 import gov.nih.nci.ctd2.dashboard.model.DashboardEntity;
-import gov.nih.nci.ctd2.dashboard.model.Transcript;
+import gov.nih.nci.ctd2.dashboard.util.StableURL;
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -31,7 +32,8 @@ public class ProteinDataWriter implements ItemWriter<ProteinData> {
 		for (ProteinData proteinData : items) {
             entities.addAll(proteinData.transcripts);
             log.info("Storing protein: " + proteinData.protein.getDisplayName());
-            proteinData.protein.setStableURL(null);
+            String stableURL = new StableURL().createURLWithPrefix("protein", proteinData.protein.getUniprotId());
+            proteinData.protein.setStableURL(stableURL);
             entities.add(proteinData.protein);
 		}
 

@@ -25,9 +25,4 @@ public class SubjectWithOrganismImpl extends SubjectImpl implements SubjectWithO
     public void setOrganism(Organism organism) {
         this.organism = organism;
     }
-
-    @Override
-    public void setStableURL(String dummy) {
-        // this no-op method needs to exist for flexjson.JSONSerializer to do the right thing for CellSample.
-    }
 }

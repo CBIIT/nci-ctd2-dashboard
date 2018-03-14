@@ -58,10 +58,4 @@ public class ShRnaImpl extends SubjectWithOrganismImpl implements ShRna {
     public void setReagentName(String reagentName) {
         this.reagentName = reagentName;
     }
-
-    @Override
-    public void setStableURL(String stableURL) {
-        if(targetSequence!=null)
-            createURLWithPrefix("rna", targetSequence);
-    }
 }

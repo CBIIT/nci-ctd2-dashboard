@@ -24,9 +24,4 @@ public class CompoundImpl extends SubjectImpl implements Compound {
     public void setSmilesNotation(String smilesNotation) {
         this.smilesNotation = smilesNotation;
     }
-
-    @Override
-    public void setStableURL(String stableURL) {
-        createURLWithPrefix("compound", getDisplayName());
-    }
 }

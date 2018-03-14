@@ -40,9 +40,4 @@ public class CellSampleImpl extends SubjectWithOrganismImpl implements CellSampl
     public void setAnnotations(Set<Annotation> annotations) {
         this.annotations = annotations;
     }
-
-    @Override
-    public void setStableURL(String stableURL) {
-        createURLWithPrefix("cell-sample", getDisplayName());
-    }
 }

@@ -1,6 +1,7 @@
 package gov.nih.nci.ctd2.dashboard.importer.internal;
 
 import gov.nih.nci.ctd2.dashboard.model.DashboardEntity;
+import gov.nih.nci.ctd2.dashboard.util.StableURL;
 import gov.nih.nci.ctd2.dashboard.model.CellSample;
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,8 @@ public class CellLineDataWriter implements Tasklet {
         ArrayList<DashboardEntity> entities = new ArrayList<DashboardEntity>();
         for (CellSample cellSample : cellSampleMap.values()) {
             entities.addAll(cellSample.getAnnotations());
-            cellSample.setStableURL(null); // stable URL is decided by the displayName so the parameter is ignored on purpose
+            String stableURL = new StableURL().createURLWithPrefix("cell-sample", cellSample.getDisplayName());
+            cellSample.setStableURL(stableURL);
             entities.add(cellSample);
         }
         dashboardDao.batchSave(entities, batchSize);
