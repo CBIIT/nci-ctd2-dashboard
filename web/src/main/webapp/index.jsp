@@ -1684,12 +1684,6 @@
         </a>
     </script>
 
-    <script type="text/template" id="search-results-transcript-image-tmpl">
-        <a href="#subject/{{id}}">
-            <img src="img/transcript.png" class="img-polaroid search-info" title="Transcript" alt="Transcript" height="50" width="50">
-        </a>
-    </script>
-
     <script type="text/template" id="search-results-compound-image-tmpl">
         <a href="#/{{stableURL}}">
             <img class="img-polaroid search-info" title="Compound" alt="Compound" width=50 height=50 src="<%=dataURL%>compounds/{{imageFile}}">
