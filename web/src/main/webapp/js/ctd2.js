@@ -223,7 +223,7 @@
     });
 
     var ShRna = Backbone.Model.extend({
-        urlRoot: CORE_API_URL + "get/shrna",
+        urlRoot: CORE_API_URL + "get/rna",
     });
 
     var TissueSample = Backbone.Model.extend({
@@ -2155,7 +2155,6 @@
         render: function () {
             var model = this.model;
             var result = model.dashboardEntity;
-            result.type = result.class;
 
             if (result.class == "AnimalModel") { // as an early step of stable links, keep both the new style and the old style
                 model.url_type = "animal-model";
@@ -2215,9 +2214,9 @@
                 imgTemplate = $("#search-results-tissuesample-image-tmpl");
             } else if (result.class == "Gene") {
                 imgTemplate = $("#search-results-gene-image-tmpl");
-            } else if (result.class == "ShRNA" && result.type.toLowerCase() == "sirna") {
+            } else if (result.class == "ShRna" && result.type.toLowerCase() == "sirna") {
                 imgTemplate = $("#search-results-sirna-image-tmpl");
-            } else if (result.class == "ShRNA") {
+            } else if (result.class == "ShRna") {
                 imgTemplate = $("#search-results-shrna-image-tmpl");
             } else if (result.class == "Protein") {
                 imgTemplate = $("#search-results-protein-image-tmpl");
@@ -3639,7 +3638,7 @@
             "compound/:name": "showCompound",
             "gene/:species/:symbol": "showGene",
             "protein/:name": "showProtein",
-            "shrna/:name": "showShRna",
+            "rna/:name": "showShRna",
             "tissue-sample/:name": "showTissueSample",
             "transcript/:name": "showTranscript",
             "subject/:id": "showSubject",
@@ -3777,7 +3776,7 @@
             });
             shRna.fetch({
                 success: function () {
-                    var shRnaView = new ShRnaView({
+                    var shRnaView = new ShrnaView({
                         model: {
                             subject: shRna,
                             tier: tier,

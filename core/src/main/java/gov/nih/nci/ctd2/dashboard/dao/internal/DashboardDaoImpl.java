@@ -187,13 +187,14 @@ public class DashboardDaoImpl implements DashboardDao {
         typesWithStableURL.put("cell-sample", "CellSampleImpl");
         typesWithStableURL.put("compound", "CompoundImpl");
         typesWithStableURL.put("protein", "ProteinImpl");
-        typesWithStableURL.put("shrna", "ShRnaImpl");
-        typesWithStableURL.put("tissue-sample", "TissueSampleImpl");
-        typesWithStableURL.put("transcript", "TRanscriptImpl");
+        typesWithStableURL.put("rna", "ShRnaImpl");
+        typesWithStableURL.put("tissue", "TissueSampleImpl");
+        typesWithStableURL.put("transcript", "TranscriptImpl");
     }
     @Override
     public <T extends DashboardEntity> T getEntityByStableURL(String type, String stableURL) {
         String implementationClass = typesWithStableURL.get(type);
+        log.debug("getEntityByStableURL "+type+" "+stableURL+" "+implementationClass);
         if(implementationClass!=null) {
             List<T> r = queryWithClass("from "+implementationClass+" where stableURL = :urlId", "urlId", stableURL);
             if(r.size()==1) {

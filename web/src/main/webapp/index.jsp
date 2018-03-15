@@ -1679,7 +1679,7 @@
     </script>
 
     <script type="text/template" id="search-results-sirna-image-tmpl">
-        <a href="#subject/{{id}}">
+        <a href="#/{{stableURL}}">
             <img src="img/sirna.png" class="img-polaroid search-info" title="siRNA" alt="siRNA" height="50" width="50">
         </a>
     </script>

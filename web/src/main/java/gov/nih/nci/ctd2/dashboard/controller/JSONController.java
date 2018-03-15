@@ -38,7 +38,7 @@ public class JSONController {
     }
     private static Set<String> typesWithStableURL = new HashSet<String>();
     static {
-        Collections.addAll(typesWithStableURL, new String[]{"cell-sample", "compound", "protein", "shrna", "tissue-sample", "transcript"});
+        Collections.addAll(typesWithStableURL, new String[]{"cell-sample", "compound", "protein", "rna", "tissue", "transcript"});
     }
 
     /* gene needs a separate method because it asks for different number of parameters */
@@ -95,6 +95,7 @@ public class JSONController {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json; charset=utf-8");
 
+        log.debug("JSONController "+type+" "+id);
         if(typesWithStableURL.contains(type)) {
             entityById = dashboardDao.getEntityByStableURL(type, type+"/"+id);
         } else if (type2class.keySet().contains(type)) { // as the early step to implement stable links.
