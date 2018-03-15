@@ -227,7 +227,7 @@
     });
 
     var TissueSample = Backbone.Model.extend({
-        urlRoot: CORE_API_URL + "get/tissue-sample",
+        urlRoot: CORE_API_URL + "get/tissue",
     });
 
     var Transcript = Backbone.Model.extend({
@@ -3639,7 +3639,7 @@
             "gene/:species/:symbol": "showGene",
             "protein/:name": "showProtein",
             "rna/:name": "showShRna",
-            "tissue-sample/:name": "showTissueSample",
+            "tissue/:name": "showTissueSample",
             "transcript/:name": "showTranscript",
             "subject/:id": "showSubject",
             "subject/:id/:role": "showSubject",
