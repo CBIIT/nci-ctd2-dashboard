@@ -449,12 +449,12 @@
     <script type="text/template" id="centers-tbl-row-tmpl">
         <tr>
             <td class="center-image-column">
-                <a href="#center/{{displayName}}">
+                <a href="#{{stableURL}}">
                     <img src="img/{{displayName}}.png" alt="{{displayName}}" title="{{displayName}}" class="img-polaroid">
                 </a>
             </td>
             <td class="center-name">
-                <a href="#center/{{displayName}}">
+                <a href="#{{stableURL}}">
                     {{displayName}}
                 </a>
             </td>
@@ -462,7 +462,7 @@
                 <span id="center-pi-{{id}}">loading...</span>
             </td>
             <td>
-                <a href="#center/{{displayName}}" id="submission-count-{{id}}">
+                <a href="#{{stableURL}}" id="submission-count-{{id}}">
                     loading...
                 </a>
             </td>
@@ -1660,7 +1660,7 @@
     </script>
 
     <script type="text/template" id="search-results-gene-image-tmpl">
-        <a href="#subject/{{id}}">
+        <a href="#{{stableURL}}">
             <img src="img/gene.png" class="img-polaroid search-info" title="Gene" alt="Gene" height="50" width="50">
         </a>
     </script>
@@ -1691,7 +1691,7 @@
     </script>
 
     <script type="text/template" id="search-results-animalmodel-image-tmpl">
-        <a href="#animal-model/{{displayName}}">
+        <a href="#{{stableURL}}">
             <img src="img/animalmodel.png" title="Animal model" alt="Animal model" class="img-polaroid search-info" height="50" width="50">
         </a>
     </script>

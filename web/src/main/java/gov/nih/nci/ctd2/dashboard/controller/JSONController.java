@@ -18,10 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 @Controller
@@ -31,14 +29,10 @@ public class JSONController {
     @Autowired
     private DashboardDao dashboardDao;
 
-    private static Map<String, Class<? extends DashboardEntity>> type2class = new HashMap<String, Class<? extends DashboardEntity>>();
-    static {
-        type2class.put("center", SubmissionCenter.class);
-        type2class.put("animal-model", AnimalModel.class);
-    }
     private static Set<String> typesWithStableURL = new HashSet<String>();
     static {
-        Collections.addAll(typesWithStableURL, new String[]{"cell-sample", "compound", "protein", "rna", "tissue", "transcript"});
+        Collections.addAll(typesWithStableURL, new String[] { "center", "animal-model", "cell-sample", "compound",
+                "protein", "rna", "tissue", "transcript" });
     }
 
     /* gene needs a separate method because it asks for different number of parameters */
@@ -88,18 +82,14 @@ public class JSONController {
             clazz = ObservedSubject.class;
         } else if (type.equals("observedevidence")) {
             clazz = ObservedEvidence.class;
-        } else {
-            clazz = type2class.get(type);
         }
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json; charset=utf-8");
 
-        log.debug("JSONController "+type+" "+id);
-        if(typesWithStableURL.contains(type)) {
-            entityById = dashboardDao.getEntityByStableURL(type, type+"/"+id);
-        } else if (type2class.keySet().contains(type)) { // as the early step to implement stable links.
-            entityById = dashboardDao.getEntity(clazz, id);
+        log.debug("JSONController " + type + " " + id);
+        if (typesWithStableURL.contains(type)) {
+            entityById = dashboardDao.getEntityByStableURL(type, type + "/" + id);
         } else {
             entityById = dashboardDao.getEntityById(clazz, Integer.parseInt(id));
         }

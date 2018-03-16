@@ -163,27 +163,10 @@ public class DashboardDaoImpl implements DashboardDao {
         return (T)object;
     }
 
-    @Override
-    public <T extends DashboardEntity> T getEntity(Class<T> entityClass, String name) {
-        String unescapedName = name.replaceAll("%20", " ");
-        Class<T> aClass = entityClass.isInterface()
-                ? dashboardFactory.getImplClass(entityClass)
-                : entityClass;
-        T t = null;
-
-        Session session = getSession();
-        Criteria criteria = session.createCriteria(aClass);  
-        criteria.add( Restrictions.eq("displayName", unescapedName) );
-        List<? extends DashboardEntity> list = criteria.list();
-        session.close();
-        if(list.size()>0) {
-            t = (T)list.get(0);
-        }
-        return t;
-    }
-
     final private static Map<String, String> typesWithStableURL = new HashMap<String, String>();
     static {
+        typesWithStableURL.put("center", "SubmissionCenterImpl");
+        typesWithStableURL.put("animal-model", "AnimalModelImpl");
         typesWithStableURL.put("cell-sample", "CellSampleImpl");
         typesWithStableURL.put("compound", "CompoundImpl");
         typesWithStableURL.put("protein", "ProteinImpl");
