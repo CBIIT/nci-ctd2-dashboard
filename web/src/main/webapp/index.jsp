@@ -1870,7 +1870,7 @@
     </script>
 
     <script type="text/template" id="transcript-item-tmpl">
-        <li class="synonym"><a href="#subject/{{id}}">{{refseqId}}</a></li>
+        <li class="synonym"><a href="#{{stableURL}}">{{refseqId}}</a></li>
     </script>
 
     <script type="text/template" id="count-story-tmpl">
