@@ -173,6 +173,8 @@ public class DashboardDaoImpl implements DashboardDao {
         typesWithStableURL.put("rna", "ShRnaImpl");
         typesWithStableURL.put("tissue", "TissueSampleImpl");
         typesWithStableURL.put("transcript", "TranscriptImpl");
+        typesWithStableURL.put("submission", "SubmissionImpl");
+        typesWithStableURL.put("observation", "ObservationImpl");
     }
     @Override
     public <T extends DashboardEntity> T getEntityByStableURL(String type, String stableURL) {

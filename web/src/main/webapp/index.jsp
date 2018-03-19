@@ -509,7 +509,7 @@
             </td>
             <td><small>{{submissionDate}}</small></td>
             <td width=150>
-                <a href="#submission/{{id}}" class="obs-count" id="observation-count-{{id}}">{{details}}</a>
+                <a href="#{{stableURL}}" class="obs-count" id="observation-count-{{id}}">{{details}}</a>
                 <div style="font-size:70%">[<a href="<%=dataURL%>submissions/{{displayName}}.zip">Download</a>]</div>
             </td>
         </tr>
@@ -593,7 +593,7 @@
     </script>
 
     <script type="text/template" id="submission-obs-tbl-row-tmpl">
-        (<a class="button-link" href="#/observation/{{id}}">details &raquo;</a>)
+        (<a class="button-link" href="#{{stableURL}}">details &raquo;</a>)
     </script>
 
     <script type="text/template" id="submission-tbl-row-tmpl">

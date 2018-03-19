@@ -32,7 +32,7 @@ public class JSONController {
     private static Set<String> typesWithStableURL = new HashSet<String>();
     static {
         Collections.addAll(typesWithStableURL, new String[] { "center", "animal-model", "cell-sample", "compound",
-                "protein", "rna", "tissue", "transcript" });
+                "protein", "rna", "tissue", "transcript", "submission", "observation" });
     }
 
     /* gene needs a separate method because it asks for different number of parameters */
