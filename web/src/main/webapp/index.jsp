@@ -1571,7 +1571,7 @@
         <tr>
             <td id="subject-image-{{id}}"></td>
             <td>
-                <a href="#/{{url_type}}/{{url_id}}">
+                <a href="#{{subject.stableURL}}">
                     {{subject.displayName}}
                 </a>
             </td>
@@ -1718,7 +1718,7 @@
         <tr>
             <td id="search-image-{{dashboardEntity.id}}"></td>
             <td>
-                <a href="#{{url_type}}/{{url_id}}">{{dashboardEntity.displayName}}</a><br>
+                <a href="#{{dashboardEntity.stableURL}}">{{dashboardEntity.displayName}}</a><br>
                 <i>{{dashboardEntity.organism.displayName != '-' ? "(" + dashboardEntity.organism.displayName + ")" : ""}}</i>
             </td>
             <td>
@@ -1733,7 +1733,7 @@
                 </ul>
             </td>
             <td class="nonewline">
-                <a href="#subject/{{dashboardEntity.id}}" id="subject-observation-count-{{dashboardEntity.id}}">{{observationCount}}</a>
+                <a href="#{{dashboardEntity.stableURL}}" id="subject-observation-count-{{dashboardEntity.id}}">{{observationCount}}</a>
                 <i class="icon-question-sign obs-tooltip {{observationCount < 1 ? 'hide' : ''}}" title="{{observationCount}} observations from {{centerCount}} centers: Tier {{maxTier}}"></i>
             </td>
         </tr>

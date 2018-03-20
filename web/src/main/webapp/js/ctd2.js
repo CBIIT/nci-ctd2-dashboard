@@ -1782,13 +1782,6 @@
             if (result.subject.type == undefined) {
                 result.subject.type = result.subject.class;
             }
-            if (result.subject.class == "AnimalModel") { // as an early step of stable links, keep both the new style and the old style
-                result.url_type = "animal-model";
-                result.url_id = result.subject.displayName;
-            } else {
-                result.url_type = "subject";
-                result.url_id = result.subject.id;
-            }
 
             if (result.subject.class != "Gene") {
                 this.template = _.template($("#observedsubject-summary-row-tmpl").html());
@@ -2154,14 +2147,6 @@
         render: function () {
             var model = this.model;
             var result = model.dashboardEntity;
-
-            if (result.class == "AnimalModel") { // as an early step of stable links, keep both the new style and the old style
-                model.url_type = "animal-model";
-                model.url_id = result.displayName;
-            } else {
-                model.url_type = "subject";
-                model.url_id = result.id;
-            }
 
             if (result.class != "Gene") {
                 this.template = _.template($("#search-result-row-tmpl").html());
