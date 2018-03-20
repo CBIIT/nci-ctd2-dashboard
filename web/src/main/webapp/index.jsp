@@ -427,7 +427,7 @@
     <script type="text/template" id="stories-tbl-row-tmpl">
         <tr>
             <td class="center-image-column">
-                <a href="#center/{{submission.observationTemplate.submissionCenter.displayName}}">
+                <a href="#{{submission.observationTemplate.submissionCenter.stableURL}}">
                     <img src="img/slogos/{{submission.observationTemplate.submissionCenter.displayName}}.png" alt="{{submission.observationTemplate.submissionCenter.displayName}}" title="{{submission.observationTemplate.submissionCenter.displayName}}" class="img-circle">
                 </a>
             </td>
@@ -560,7 +560,7 @@
                     </table>
                 </div>
                 <div class="span2">
-                    <a href="#/center/{{observationTemplate.submissionCenter.displayName}}">
+                    <a href="#{{observationTemplate.submissionCenter.stableURL}}">
                         <img src="img/{{observationTemplate.submissionCenter.displayName}}.png" class="img-polaroid" height=30 alt="{{observationTemplate.submissionCenter.displayName}}" title="{{observationTemplate.submissionCenter.displayName}}">
                     </a>
 
@@ -632,7 +632,7 @@
 
                 </div>
                 <div class="span2">
-                    <a href="#/center/{{submission.observationTemplate.submissionCenter.displayName}}"><img src="img/{{submission.observationTemplate.submissionCenter.displayName}}.png" class="img-polaroid" width="120" alt="{{submission.observationTemplate.submissionCenter.displayName}}"></a>
+                    <a href="#{{submission.observationTemplate.submissionCenter.stableURL}}"><img src="img/{{submission.observationTemplate.submissionCenter.displayName}}.png" class="img-polaroid" width="120" alt="{{submission.observationTemplate.submissionCenter.displayName}}"></a>
                     <br><br>
                     <img src="img/observation.png" alt="Observation" class="img-polaroid" width=120 height=120><br>
                 </div>
@@ -1596,26 +1596,6 @@
         </tr>
     </script>
 
-    <script type="text/template" id="observedsubject-row-tmpl">
-        <tr>
-            <td>
-                <a href="#/observation/{{observation.id}}">
-                    {{observation.submission.submissionDate}}
-                </a>
-            </td>
-            <td>{{observedSubjectRole.subjectRole.displayName}}</td>
-            <td>
-                {{observation.submission.observationTemplate.description}}
-            </td>
-            <td><span class="badge tier-badge">Tier {{observation.submission.observationTemplate.tier}}</span></td>
-            <td>
-                <a href="#/center/{{observation.submission.observationTemplate.submissionCenter.displayName}}">
-                    <img alt="{{observation.submission.observationTemplate.submissionCenter.displayName}}" title="{{submission.observationTemplate.submissionCenter.displayName}}" width="150" src="img/{{observation.submission.submissionCenter.displayName}}.png">
-                </a>
-            </td>
-        </tr>
-    </script>
-
     <script type="text/template" id="observation-row-tmpl">
         <tr>
             <td>
@@ -2146,7 +2126,7 @@
             <p><a href="#" class="close" data-dismiss="alert">&times;</a></p>
             <p>
                 The table below lists all submissions that belong to the project "<b>{{filterProject}}</b>".
-                To view all submissions from this center, please click <a href="#center/{{centerId}}">here</a>.
+                To view all submissions from this center, please click <a href="#{{centerStableURL}}">here</a>.
             </p>
         </div>
     </script>
@@ -2428,7 +2408,7 @@
     </script>
 
     <script id="tbl-project-title-tmpl" type="text/template">
-        <tr class="group"><td colspan="5"><a href="#center/{{centerId}}/{{project}}">Project: {{project}}</a></td></tr>
+        <tr class="group"><td colspan="5"><a href="#{{centerStableURL}}/{{project}}">Project: {{project}}</a></td></tr>
     </script>
 
     <script id="center-specific-information-tmpl" type="text/template">

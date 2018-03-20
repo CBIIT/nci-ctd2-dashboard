@@ -379,7 +379,7 @@
             }).done(function (summary) {
                 summary = summary.replace(
                     new RegExp("#submission_center", "g"),
-                    "#center/" + observation.submission.observationTemplate.submissionCenter.displayName
+                    "#" + observation.submission.observationTemplate.submissionCenter.stableURL
                 );
 
                 var observedSubjects = new ObservedSubjects({
@@ -1766,14 +1766,6 @@
         }
     });
 
-    var ObservedSubjectRowView = Backbone.View.extend({
-        template: _.template($("#observedsubject-row-tmpl").html()),
-        render: function () {
-            $(this.el).append(this.template(this.model));
-            return this;
-        }
-    });
-
     var ObservedSubjectSummaryRowView = Backbone.View.extend({
         template: _.template($("#observedsubject-summary-row-tmpl").html()),
         render: function () {
@@ -1871,7 +1863,7 @@
                                             .before(
                                                 _.template($("#tbl-project-title-tmpl").html(), {
                                                     project: group,
-                                                    centerId: centerModel.displayName
+                                                    centerStableURL: centerModel.stableURL
                                                 })
                                             );
 
@@ -1887,7 +1879,7 @@
                         $(tableElId).DataTable().search(filterProject).draw();
                         var mpModel = {
                             filterProject: filterProject,
-                            centerId: centerModel.displayName
+                            centerStableURL: centerModel.stableURL
                         };
                         var moreProjectsView = new MoreProjectsView({
                             model: mpModel
