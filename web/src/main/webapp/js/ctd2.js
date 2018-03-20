@@ -395,7 +395,7 @@
 
                             summary = summary.replace(
                                 new RegExp("#" + observedSubject.observedSubjectRole.columnName, "g"),
-                                "#subject/" + observedSubject.subject.id
+                                "#" + observedSubject.subject.stableURL
                             );
                         });
 
