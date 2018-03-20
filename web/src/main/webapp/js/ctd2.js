@@ -2192,6 +2192,8 @@
                     }
                 });
                 imgTemplate = $("#search-results-compound-image-tmpl");
+            } else if (result.class == "AnimalModel") {
+                imgTemplate = $("#search-results-animalmodel-image-tmpl");
             } else if (result.class == "CellSample") {
                 imgTemplate = $("#search-results-cellsample-image-tmpl");
             } else if (result.class == "TissueSample") {
@@ -2204,6 +2206,8 @@
                 imgTemplate = $("#search-results-shrna-image-tmpl");
             } else if (result.class == "Protein") {
                 imgTemplate = $("#search-results-protein-image-tmpl");
+            } else {
+                result.subjectClass = result.class; // this is only to avoid using 'class' alone because it is a javascript keyword
             }
             searchEl.append(_.template(imgTemplate.html(), result));
 

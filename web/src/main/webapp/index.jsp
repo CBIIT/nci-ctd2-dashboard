@@ -1709,8 +1709,8 @@
     </script>
 
     <script type="text/template" id="search-results-unknown-image-tmpl">
-        <a href="#subject/{{id}}">
-            <img src="img/unknown.png" title="{{type}}" class="img-polaroid search-info" alt="{{type}}" height="50" width="50">
+        <a href="#{{stableURL}}">
+            <img src="img/unknown.png" title="{{subjectClass}}" class="img-polaroid search-info" alt="{{subjectClass}}" height="50" width="50">
         </a>
     </script>
 
@@ -1726,7 +1726,7 @@
                     <!-- here will go the synonyms -->
                 </ul>
             </td>
-            <td>{{dashboardEntity.type}}</td>
+            <td>{{dashboardEntity.class}}</td>
             <td>
                 <ul id="roles-{{dashboardEntity.id}}" data-score="{{dashboardEntity.score}}">
                     <!-- here will go the roles -->
@@ -1753,7 +1753,7 @@
                     <!-- here will go the synonyms -->
                 </ul>
             </td>
-            <td>{{dashboardEntity.type}}</td>
+            <td>{{dashboardEntity.class}}</td>
             <td>
                 <ul id="roles-{{dashboardEntity.id}}" data-score="{{dashboardEntity.score}}">
                     <!-- here will go the roles -->
