@@ -703,7 +703,7 @@
     </script>
 
     <script type="text/template" id="summary-subject-replacement-tmpl">
-        <a class="summary-replacement" href="#/subject/{{id}}">{{displayName}}</a>
+        <a class="summary-replacement" href="#{{stableURL}}">{{displayName}}</a>
     </script>
 
     <script type="text/template" id="summary-evidence-replacement-tmpl">
@@ -1585,7 +1585,7 @@
         <tr>
             <td id="subject-image-{{id}}"></td>
             <td id="subject.displayName-{{id}}">
-                <a href="#/gene/{{species}}/{{subject.displayName}}">
+                <a href="#{{stableURL}}">
                     {{subject.displayName}}
                 </a>  &nbsp;
                 <a href="#" class="addGene-{{subject.displayName}} cartAddPlus" title="Add gene to cart" >+</a>

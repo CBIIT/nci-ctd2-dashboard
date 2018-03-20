@@ -1794,7 +1794,6 @@
                 this.template = _.template($("#observedsubject-summary-row-tmpl").html());
                 $(this.el).append(this.template(result));
             } else {
-                result.species = result.subject.organism.displayName.charAt(0).toLowerCase();
                 this.template = _.template($("#observedsubject-gene-summary-row-tmpl").html());
                 $(this.el).append(this.template(result));
                 var currentGene = result.subject.displayName;
