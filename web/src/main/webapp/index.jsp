@@ -650,7 +650,7 @@
                         <th>Description</th>
                         <td>
                             {{submission.observationTemplate.description}}
-                            <small>(<a href="#submission/{{submission.id}}">details &raquo;</a>)</small>
+                            <small>(<a href="#{{submission.stableURL}}">details &raquo;</a>)</small>
                         </td>
                     </tr>
                     <tr id="obs-submission-summary">
@@ -691,7 +691,7 @@
 
     <script type="text/template" id="similar-submission-item-tmpl">
         <li>
-            <small><a href="#submission/{{id}}">{{observationTemplate.description}}</a></small>
+            <small><a href="#{{stableURL}}">{{observationTemplate.description}}</a></small>
         </li>
     </script>
 
@@ -1830,13 +1830,13 @@
 
     <script type="text/template" id="search-submission-tbl-row-tmpl">
         <tr>
-            <td><a href="#submission/{{dashboardEntity.id}}"><img src="img/submission.png" width="50" alt="Submission" title="Submission"></a></td>
-            <td><a href="#submission/{{dashboardEntity.id}}">{{dashboardEntity.submissionDate}}</a></td>
+            <td><a href="#{{dashboardEntity.stableURL}}"><img src="img/submission.png" width="50" alt="Submission" title="Submission"></a></td>
+            <td><a href="#{{dashboardEntity.stableURL}}">{{dashboardEntity.submissionDate}}</a></td>
             <td>{{dashboardEntity.observationTemplate.description}}</td>
-            <td><a href="#submission/{{dashboardEntity.id}}"><img src="img/{{dashboardEntity.observationTemplate.submissionCenter.displayName}}.png" title="{{dashboardEntity.observationTemplate.submissionCenter.displayName}}" alt="{{dashboardEntity.observationTemplate.submissionCenter.displayName}}" height="50"></a></td>
+            <td><a href="#{{dashboardEntity.stableURL}}"><img src="img/{{dashboardEntity.observationTemplate.submissionCenter.displayName}}.png" title="{{dashboardEntity.observationTemplate.submissionCenter.displayName}}" alt="{{dashboardEntity.observationTemplate.submissionCenter.displayName}}" height="50"></a></td>
             <td><span class="badge tier-badge">Tier {{dashboardEntity.observationTemplate.tier}}</span></td>
             <td width=150>
-                <a href="#submission/{{dashboardEntity.id}}" id="search-observation-count-{{dashboardEntity.id}}">{{observationCount}} observations</a>
+                <a href="#{{dashboardEntity.stableURL}}" id="search-observation-count-{{dashboardEntity.id}}">{{observationCount}} observations</a>
             </td>
         </tr>
     </script>
