@@ -1087,13 +1087,13 @@
                         <tr>
                             <th>Target Transcript</th>
                             <td>
-                                <a href="#subject/{{transcript.id}}">{{transcript.refseqId}}</a>
+                                <a href="#{{transcript.stableURL}}">{{transcript.refseqId}}</a>
                             </td>
                         </tr>
                         <tr>
                             <th>Target Gene</th>
                             <td>
-                                <a href="#subject/{{transcript.gene.id}}">{{transcript.gene.displayName}}</a>
+                                <a href="#{{transcript.gene.stableURL}}">{{transcript.gene.displayName}}</a>
                             </td>
                         </tr>
                         <tr>
@@ -1159,13 +1159,13 @@
                         <tr>
                             <th>Target Transcript</th>
                             <td>
-                                <a href="#subject/{{transcript.id}}">{{transcript.refseqId}}</a>
+                                <a href="#{{transcript.stableURL}}">{{transcript.refseqId}}</a>
                             </td>
                         </tr>
                         <tr>
                             <th>Target Gene</th>
                             <td>
-                                <a href="#subject/{{transcript.gene.id}}">{{transcript.gene.displayName}}</a>
+                                <a href="#{{transcript.gene.stableURL}}">{{transcript.gene.displayName}}</a>
                             </td>
                         </tr>
                         <tr>
