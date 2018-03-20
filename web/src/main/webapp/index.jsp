@@ -1228,7 +1228,7 @@
                         <tr>
                             <th>Gene</th>
                             <td>
-                                <a href="#subject/{{gene.id}}">{{gene.displayName}}</a>
+                                <a href="#{{gene.stableURL}}">{{gene.displayName}}</a>
                             </td>
                         </tr>
                         <tr>
