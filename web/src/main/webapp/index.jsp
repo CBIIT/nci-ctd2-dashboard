@@ -1743,7 +1743,7 @@
         <tr>
             <td id="search-image-{{dashboardEntity.id}}"></td>
             <td>
-                <a href="#subject/{{dashboardEntity.id}}">{{dashboardEntity.displayName}}</a>
+                <a href="#{{dashboardEntity.stableURL}}">{{dashboardEntity.displayName}}</a>
                 <a href="#" class="addGene-{{dashboardEntity.displayName}} cartAddPlus" title="Add gene to cart" >+</a>
                 <br>
                 <i>{{dashboardEntity.organism.displayName != '-' ? "(" + dashboardEntity.organism.displayName + ")" : ""}}</i>
@@ -1760,7 +1760,7 @@
                 </ul>
             </td>
             <td class="nonewline">
-                <a href="#subject/{{dashboardEntity.id}}" id="subject-observation-count-{{dashboardEntity.id}}">{{observationCount}}</a>
+                <a href="#{{dashboardEntity.stableURL}}" id="subject-observation-count-{{dashboardEntity.id}}">{{observationCount}}</a>
                 <i class="icon-question-sign obs-tooltip {{observationCount < 1 ? 'hide' : ''}}" title="{{observationCount}} observations from {{centerCount}} centers: Tier {{maxTier}}"></i>
             </td>
         </tr>
