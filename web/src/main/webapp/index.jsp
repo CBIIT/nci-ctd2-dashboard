@@ -1585,7 +1585,7 @@
         <tr>
             <td id="subject-image-{{id}}"></td>
             <td id="subject.displayName-{{id}}">
-                <a href="#{{stableURL}}">
+                <a href="#{{subject.stableURL}}">
                     {{subject.displayName}}
                 </a>  &nbsp;
                 <a href="#" class="addGene-{{subject.displayName}} cartAddPlus" title="Add gene to cart" >+</a>
