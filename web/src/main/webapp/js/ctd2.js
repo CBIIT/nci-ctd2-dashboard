@@ -2710,18 +2710,18 @@
                         } else {
                             reformatted += " <img src='img/" + subject.class.toLowerCase() + ".png' style='height:25px' alt=''>";
                         }
-                        var nameLink = "<a href='#/subject/" + subject.id + "/" + role + "'>" + subject.displayName + "</a>";
+                        var nameLink = "<a href='#" + subject.stableURL + "/" + role + "'>" + subject.displayName + "</a>";
                         var n3obv = sModel.numberOfTier3Observations;
                         var n3ctr = sModel.numberOfTier3SubmissionCenters;
-                        var n3link = (n3obv == 0 ? "" : "<a href='#subject/" + subject.id + "/" + role + "/3'>" + n3obv + "</a>") +
+                        var n3link = (n3obv == 0 ? "" : "<a href='#" + subject.stableURL + "/" + role + "/3'>" + n3obv + "</a>") +
                             (n3obv > 1 ? " (" + n3ctr + " center" + (n3ctr > 1 ? "s" : "") + ")" : "");
                         var n2obv = sModel.numberOfTier2Observations;
                         var n2ctr = sModel.numberOfTier2SubmissionCenters;
-                        var n2link = (n2obv == 0 ? "" : "<a href='#subject/" + subject.id + "/" + role + "/2'>" + n2obv + "</a>") +
+                        var n2link = (n2obv == 0 ? "" : "<a href='#" + subject.stableURL + "/" + role + "/2'>" + n2obv + "</a>") +
                             (n2obv > 1 ? " (" + n2ctr + " center" + (n2ctr > 1 ? "s" : "") + ")" : "");
                         var n1obv = sModel.numberOfTier1Observations;
                         var n1ctr = sModel.numberOfTier1SubmissionCenters;
-                        var n1link = (n1obv == 0 ? "" : "<a href='#subject/" + subject.id + "/" + role + "/1'>" + n1obv + "</a>") +
+                        var n1link = (n1obv == 0 ? "" : "<a href='#" + subject.stableURL + "/" + role + "/1'>" + n1obv + "</a>") +
                             (n1obv > 1 ? " (" + n1ctr + " center" + (n1ctr > 1 ? "s" : "") + ")" : "");
                         table_data.push([reformatted, nameLink, role, n3link, n2link, n1link]);
                     });
@@ -3633,16 +3633,29 @@
             "observation/:id": "showObservation",
             "search/:term": "search",
             "animal-model/:name": "showAnimalModel",
+            "animal-model/:name/:role": "showAnimalModel",
+            "animal-model/:name/:role/:tier": "showAnimalModel",
             "cell-sample/:name": "showCellSample",
+            "cell-sample/:name/:role": "showCellSample",
+            "cell-sample/:name/:role/:tier": "showCellSample",
             "compound/:name": "showCompound",
+            "compound/:name/:role": "showCompound",
+            "compound/:name/:role/:tier": "showCompound",
             "gene/:species/:symbol": "showGene",
+            "gene/:species/:symbol/:role": "showGene",
+            "gene/:species/:symbol/:role/:tier": "showGene",
             "protein/:name": "showProtein",
+            "protein/:name/:role": "showProtein",
+            "protein/:name/:role/:tier": "showProtein",
             "rna/:name": "showShRna",
+            "rna/:name/:role": "showShRna",
+            "rna/:name/:role/:tier": "showShRna",
             "tissue/:name": "showTissueSample",
+            "tissue/:name/:role": "showTissueSample",
+            "tissue/:name/:role/:tier": "showTissueSample",
             "transcript/:name": "showTranscript",
-            "subject/:id": "showSubject",
-            "subject/:id/:role": "showSubject",
-            "subject/:id/:role/:tier": "showSubject",
+            "transcript/:name/:role": "showTranscript",
+            "transcript/:name/:role/:tier": "showTranscript",
             "evidence/:id": "showMraView",
             "about": "helpNavigate",
             "genes": "showGeneList",
@@ -3775,14 +3788,26 @@
             });
             shRna.fetch({
                 success: function () {
-                    var shRnaView = new ShrnaView({
-                        model: {
-                            subject: shRna,
-                            tier: tier,
-                            role: role
-                        }
-                    });
-                    shRnaView.render();
+                    // shRna covers both siRNA and shRNA
+                    var rnaView;
+                    if (shRna.get("type").toLowerCase() == "sirna") {
+                        rnaView = new SirnaView({
+                            model: {
+                                subject: shRna,
+                                tier: tier,
+                                role: role
+                            }
+                        });
+                    } else {
+                        rnaView = new ShrnaView({
+                            model: {
+                                subject: shRna,
+                                tier: tier,
+                                role: role
+                            }
+                        });
+                    }
+                    rnaView.render();
                 }
             });
         },
@@ -3838,103 +3863,6 @@
                         }
                     });
                     modelView.render();
-                }
-            });
-        },
-
-        showSubject: function (id, role, tier) {
-            var subject = new Subject({
-                id: id
-            });
-            subject.fetch({
-                success: function () {
-                    var type = subject.get("class");
-                    var subjectView;
-                    if (type == "Gene") {
-                        subjectView = new GeneView({
-                            model: {
-                                subject: subject,
-                                tier: tier,
-                                role: role
-                            }
-                        });
-                    } else if (type == "AnimalModel") {
-                        subjectView = new AnimalModelView({
-                            model: {
-                                subject: subject,
-                                tier: tier,
-                                role: role
-                            }
-                        });
-                    } else if (type == "Compound") {
-                        subjectView = new CompoundView({
-                            model: {
-                                subject: subject,
-                                tier: tier,
-                                role: role
-                            }
-                        });
-                    } else if (type == "CellSample") {
-                        subjectView = new CellSampleView({
-                            model: {
-                                subject: subject,
-                                tier: tier,
-                                role: role
-                            }
-                        });
-                    } else if (type == "TissueSample") {
-                        subjectView = new TissueSampleView({
-                            model: {
-                                subject: subject,
-                                tier: tier,
-                                role: role
-                            }
-                        });
-                    } else if (type == "ShRna") {
-                        // shRna covers both siRNA and shRNA
-                        if (subject.get("type").toLowerCase() == "sirna") {
-                            subjectView = new SirnaView({
-                                model: {
-                                    subject: subject,
-                                    tier: tier,
-                                    role: role
-                                }
-                            });
-                        } else {
-                            subjectView = new ShrnaView({
-                                model: {
-                                    subject: subject,
-                                    tier: tier,
-                                    role: role
-                                }
-                            });
-                        }
-                    } else if (type == "Transcript") {
-                        subjectView = new TranscriptView({
-                            model: {
-                                subject: subject,
-                                tier: tier,
-                                role: role
-                            }
-                        });
-                    } else if (type == "Protein") {
-                        subjectView = new ProteinView({
-                            model: {
-                                subject: subject,
-                                tier: tier,
-                                role: role
-                            }
-                        });
-                    } else {
-                        subjectView = new GeneView({
-                            model: {
-                                subject: subject,
-                                tier: tier,
-                                role: role
-                            }
-                        });
-                    }
-                    subjectView.render();
                 }
             });
         },
