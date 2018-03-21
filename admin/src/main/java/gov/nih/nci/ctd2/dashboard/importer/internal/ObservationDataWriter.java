@@ -50,7 +50,7 @@ public class ObservationDataWriter implements ItemWriter<ObservationData> {
             }
             int index = observationIndex.get(submissionName);
             observationIndex.put(submissionName, observationIndex.get(submissionName) + 1);
-            observation.setStableURL(stableURL.createURLWithPrefix("observation", submissionName + "-" + index));
+            observation.setStableURL(stableURL.createURLWithPrefix("observation", submissionName) + "-" + index);
             entities.add(observation);
             entities.addAll(observationData.evidence);
             entities.addAll(observationData.observedEntities);
