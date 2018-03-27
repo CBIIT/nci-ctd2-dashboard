@@ -441,7 +441,7 @@
             <td class="story-details">
                 <a target="_blank" href="<%=dataURL%>" id="file-link2-{{id}}">view full story</a>
                 <br>or<br>
-                <a href="#observation/{{id}}">see observation</a>
+                <a href="#{{stableURL}}">see observation</a>
             </td>
         </tr>
     </script>
@@ -1599,7 +1599,7 @@
     <script type="text/template" id="observation-row-tmpl">
         <tr>
             <td>
-                <a href="#/observation/{{id}}">
+                <a href="#{{stableURL}}">
                     {{submission.submissionDate}}
                 </a>
             </td>
@@ -1886,7 +1886,7 @@
                         <a target="_blank" href="<%=dataURL%>" id="file-link-{{id}}">
                             view full story</a>
                     |
-                    <a href="#observation/{{id}}">see observation</a>)
+                    <a href="#{{stableURL}}">see observation</a>)
                 </p>
             </div>
             <div class="span4">
