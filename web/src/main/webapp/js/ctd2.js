@@ -2363,7 +2363,7 @@
         template: _.template($("#mra-view-tmpl").html()),
         render: function () {
             var result = this.model.toJSON();
-            var mra_data_url = $("#mra-view-tmpl").attr("mra-data-url") + result.evidence.filePath;
+            var mra_data_url = $("#mra-view-tmpl").attr("mra-data-url") + result.evidence.filePath.replace(/\\/g, '/');
             $(this.el).html(this.template(result));
             $.ajax({
                 url: "mra/",
