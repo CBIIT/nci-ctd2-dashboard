@@ -19,8 +19,7 @@ public class ObservationDataFactoryImpl implements ObservationDataFactory {
 
 	private static final Log log = LogFactory.getLog(ObservationDataFactoryImpl.class);
 
-	private static final String DASHBOARD_SUBMISSION_URL = "/#/submission/";	
-    private static final String DASHBOARD_OBSERVATION_URL = "/#/observation/";
+	private static final String DASHBOARD_SUBMISSION_URL = "/#/submission/";
     //private static final Pattern LINKBACK_URL_EVIDENCE_REGEX = Pattern.compile("tier._evidence");
     // submission_name:col_name_1=col_val_1&col_name_2=col_val_2
     private static final Pattern LINKBACK_URL_REGEX = Pattern.compile("([\\w\\-]+):([\\w\\-&=]+)");
@@ -290,7 +289,7 @@ public class ObservationDataFactoryImpl implements ObservationDataFactory {
                 }
             }
             if (match == columnValuePairs.size()) {
-                url = DASHBOARD_OBSERVATION_URL + observation.getId();
+                url = "/#" + observation.getStableURL();
                 break;
             }
         }
