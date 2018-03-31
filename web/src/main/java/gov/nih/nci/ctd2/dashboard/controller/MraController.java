@@ -34,7 +34,7 @@ import gov.nih.nci.ctd2.dashboard.util.mra.MasterRegulator;
 import gov.nih.nci.ctd2.dashboard.util.mra.MraTargetBarcode;
 
 @Controller
-@RequestMapping("/mra")
+@RequestMapping("/mra-data")
 public class MraController {
 
 	@Autowired

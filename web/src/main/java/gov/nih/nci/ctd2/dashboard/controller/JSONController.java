@@ -32,7 +32,7 @@ public class JSONController {
     private static Set<String> typesWithStableURL = new HashSet<String>();
     static {
         Collections.addAll(typesWithStableURL, new String[] { "center", "animal-model", "cell-sample", "compound",
-                "protein", "rna", "tissue", "transcript", "submission", "observation" });
+                "protein", "rna", "tissue", "transcript", "submission", "observation", "observedevidence" });
     }
 
     /* gene needs a separate method because it asks for different number of parameters */
@@ -74,14 +74,8 @@ public class JSONController {
         Class<? extends DashboardEntity> clazz = Subject.class;
         if (type.equalsIgnoreCase("subject")) {
             clazz = Subject.class;
-        } else if (type.equalsIgnoreCase("submission")) {
-            clazz = Submission.class;
-        } else if (type.equalsIgnoreCase("observation")) {
-            clazz = Observation.class;
         } else if (type.equals("observedsubject")) {
             clazz = ObservedSubject.class;
-        } else if (type.equals("observedevidence")) {
-            clazz = ObservedEvidence.class;
         }
 
         HttpHeaders headers = new HttpHeaders();
@@ -89,7 +83,9 @@ public class JSONController {
 
         log.debug("JSONController " + type + " " + id);
         if (typesWithStableURL.contains(type)) {
-            entityById = dashboardDao.getEntityByStableURL(type, type + "/" + id);
+            String stableURL = type + "/" + id;
+            if(type.equals("observedevidence")) stableURL = "mra/" + id;
+            entityById = dashboardDao.getEntityByStableURL(type, stableURL);
         } else {
             entityById = dashboardDao.getEntityById(clazz, Integer.parseInt(id));
         }

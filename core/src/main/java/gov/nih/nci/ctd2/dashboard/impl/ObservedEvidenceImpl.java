@@ -8,16 +8,17 @@ import org.hibernate.annotations.Proxy;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
 @Proxy(proxyClass = ObservedEvidence.class)
 @Table(name = "observed_evidence")
 public class ObservedEvidenceImpl extends DashboardEntityImpl implements ObservedEvidence {
-    private Evidence evidence;
+    private static final long serialVersionUID = 8028777267479337358L;
+	private Evidence evidence;
     private ObservedEvidenceRole observedEvidenceRole;
     private Observation observation;
+    private String stableURL;
 
     @ManyToOne(targetEntity = EvidenceImpl.class)
     public Evidence getEvidence() {
@@ -45,4 +46,14 @@ public class ObservedEvidenceImpl extends DashboardEntityImpl implements Observe
     public void setObservation(Observation observation) {
         this.observation = observation;
     }
+
+	@Override
+	public String getStableURL() {
+		return stableURL;
+	}
+
+	@Override
+	public void setStableURL(String stableURL) {
+		this.stableURL = stableURL;
+	}
 }

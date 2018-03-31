@@ -2366,7 +2366,7 @@
             var mra_data_url = $("#mra-view-tmpl").attr("mra-data-url") + result.evidence.filePath.replace(/\\/g, '/');
             $(this.el).html(this.template(result));
             $.ajax({
-                url: "mra/",
+                url: "mra-data/",
                 data: {
                     url: mra_data_url,
                     dataType: "mra",
@@ -2423,7 +2423,7 @@
                 }
 
                 $.ajax({
-                    url: "mra/",
+                    url: "mra-data/",
                     data: {
                         url: mra_data_url,
                         dataType: "cytoscape",
@@ -2534,7 +2534,7 @@
                 });
 
                 $.ajax({
-                    url: "mra/",
+                    url: "mra-data/",
                     data: {
                         url: mra_data_url,
                         dataType: "throttle",
@@ -2566,7 +2566,7 @@
                 });
 
                 $.ajax({
-                    url: "mra/",
+                    url: "mra-data/",
                     data: {
                         url: mra_data_url,
                         dataType: "throttle",
@@ -3637,7 +3637,7 @@
             "transcript/:name": "showTranscript",
             "transcript/:name/:role": "showTranscript",
             "transcript/:name/:role/:tier": "showTranscript",
-            "evidence/:id": "showMraView",
+            "mra/:filename": "showMraView",
             "about": "helpNavigate",
             "genes": "showGeneList",
             "cnkb-query": "showCnkbQuery",
@@ -3918,9 +3918,9 @@
             storiesListView.render();
         },
 
-        showMraView: function (id) {
+        showMraView: function (filename) {
             var observedEvidence = new ObservedEvidence({
-                id: id
+                id: filename
             });
             observedEvidence.fetch({
                 success: function () {

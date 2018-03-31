@@ -1985,7 +1985,7 @@
                     ( <a class="dropdown-toggle" data-toggle="dropdown" href="#">view mra file<b class="caret"></b></a> )
                     <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                         <li>
-                            <a href="#/evidence/{{id}}" title="Open Master Regulator View" class="desc-tooltip">
+                            <a href="#{{stableURL}}" title="Open Master Regulator View" class="desc-tooltip">
                                 mra view
                             </a>
                         </li>

@@ -15,7 +15,6 @@ import org.apache.lucene.search.Query;
 import org.apache.lucene.util.Version;
 import org.hibernate.*;
 import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
 import org.hibernate.proxy.HibernateProxy;
 import org.hibernate.search.FullTextQuery;
 import org.hibernate.search.FullTextSession;
@@ -175,6 +174,7 @@ public class DashboardDaoImpl implements DashboardDao {
         typesWithStableURL.put("transcript", "TranscriptImpl");
         typesWithStableURL.put("submission", "SubmissionImpl");
         typesWithStableURL.put("observation", "ObservationImpl");
+        typesWithStableURL.put("observedevidence", "ObservedEvidenceImpl");
     }
     @Override
     public <T extends DashboardEntity> T getEntityByStableURL(String type, String stableURL) {
@@ -183,6 +183,11 @@ public class DashboardDaoImpl implements DashboardDao {
         if(implementationClass!=null) {
             List<T> r = queryWithClass("from "+implementationClass+" where stableURL = :urlId", "urlId", stableURL);
             if(r.size()==1) {
+                return r.get(0);
+            } else if(implementationClass.equals("ObservedEvidenceImpl") && r.size()>0) {
+                /* This is to take care of a special case in the current data model implementation:
+                multiple instances of the SAME evidence are created for multiple observations that refer to that evidence.
+                */
                 return r.get(0);
             } else {
                 log.error("unexpected result number: "+r.size());
