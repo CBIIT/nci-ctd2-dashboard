@@ -24,13 +24,10 @@ CENTERS = {
 'Fred Hutchinson Cancer Research Center (2)':'Martin McIntosh, Ph.D.',
 'Stanford University':'Calvin J. Kuo, M.D., Ph.D.',
 'Translational Genomics Research Institute':'Michael E. Berens, Ph.D.',
-'University of California San Francisco (1)':'Frank P. McCormick, Ph.D.',
+'University of California San Francisco (1)':'Michael McManus, Ph.D.',
 'University of California San Francisco (2)':'William A. Weiss, M.D., Ph.D.',
 'University of Texas MD Anderson Cancer Center':'Gordon B. Mills, M.D., Ph.D.',
 'University of Texas Southwestern Medical Center':'Michael Roth, Ph.D.',
-'Johns Hopkins University':'Joel S. Bader, Ph.D.',
-'Oregon Health and Science University':'Brian J. Druker, M.D.',
-'University of California San Diego':'Pablo Tamayo, Ph.D.',
 }
 
 ROLES = {
@@ -579,6 +576,10 @@ def checkUrlValue(value, rowIndex, submissionName, columns):
     maxLen = MAX_LENGTH['url']
     if len(value) >= maxLen:
         print('ERROR: '+submissionName+' @ row ' + str(rowIndex) + ': The length of URL exceeds threshold ('+str(maxLen)+')', file=sys.stderr)
+    if value[0:6] == 'ftp://':
+        # check anonymous username in ftp links
+        if value[0:22] != 'ftp://anonymous:guest@':
+            print('WARNING: ftp link '+value+' is missing anonymous username', file=sys.stderr)
     if value[0:8] == 'https://' or value[0:7] == 'http://' or value[0:6] == 'ftp://':
         # check the site
         if CHECK_URLS and value not in CHECK_URL_CACHE:
