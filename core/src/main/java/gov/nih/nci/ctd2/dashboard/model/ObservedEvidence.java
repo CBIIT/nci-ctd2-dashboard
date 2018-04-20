@@ -1,6 +1,6 @@
 package gov.nih.nci.ctd2.dashboard.model;
 
-public interface ObservedEvidence extends DashboardEntity {
+public interface ObservedEvidence extends DashboardEntity, HasStableURL {
     public Evidence getEvidence();
     public void setEvidence(Evidence evidence);
     public ObservedEvidenceRole getObservedEvidenceRole();

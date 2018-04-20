@@ -21,12 +21,14 @@ import java.util.Set;
 @Table(name = "subject")
 @Indexed
 public class SubjectImpl extends DashboardEntityImpl implements Subject {
+    private static final long serialVersionUID = 1L;
     public final static String FIELD_SYNONYM = "synonym";
     public final static String FIELD_SYNONYM_UT = "synonymUT";
 
     private Set<Synonym> synonyms = new LinkedHashSet<Synonym>();
     private Set<Xref> xrefs = new LinkedHashSet<Xref>();
     private Integer score = 0;
+    private String stableURL = "";
 
     @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(targetEntity = SynonymImpl.class, cascade = CascadeType.ALL)
@@ -39,10 +41,8 @@ public class SubjectImpl extends DashboardEntityImpl implements Subject {
         this.synonyms = synonyms;
     }
 
-    @Fields({
-            @Field(name = FIELD_SYNONYM, index = org.hibernate.search.annotations.Index.YES, store = Store.YES),
-            @Field(name = FIELD_SYNONYM_UT, index = org.hibernate.search.annotations.Index.YES, analyze=Analyze.NO)
-    })
+    @Fields({ @Field(name = FIELD_SYNONYM, index = org.hibernate.search.annotations.Index.YES, store = Store.YES),
+            @Field(name = FIELD_SYNONYM_UT, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO) })
     @Transient
     public String getSynoynmStrings() {
         StringBuilder builder = new StringBuilder();
@@ -69,5 +69,15 @@ public class SubjectImpl extends DashboardEntityImpl implements Subject {
 
     public void setScore(Integer score) {
         this.score = score;
+    }
+
+    @Override
+    public String getStableURL() {
+        return stableURL;
+    }
+
+    @Override
+    public void setStableURL(String stableURL) {
+        this.stableURL = stableURL;
     }
 }

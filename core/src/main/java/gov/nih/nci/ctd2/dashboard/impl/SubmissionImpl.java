@@ -10,12 +10,14 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Proxy(proxyClass= Submission.class)
+@Proxy(proxyClass = Submission.class)
 @Table(name = "submission")
 @Indexed
 public class SubmissionImpl extends DashboardEntityImpl implements Submission {
-    private ObservationTemplate observationTemplate;
+    private static final long serialVersionUID = -6902361235500057743L;
+	private ObservationTemplate observationTemplate;
     private Date submissionDate;
+    private String stableURL;
 
     @ManyToOne(targetEntity = ObservationTemplateImpl.class)
     public ObservationTemplate getObservationTemplate() {
@@ -34,5 +36,15 @@ public class SubmissionImpl extends DashboardEntityImpl implements Submission {
 
     public void setSubmissionDate(Date submissionDate) {
         this.submissionDate = submissionDate;
+    }
+
+    @Override
+    public String getStableURL() {
+        return stableURL;
+    }
+
+    @Override
+    public void setStableURL(String stableURL) {
+        this.stableURL = stableURL;
     }
 }

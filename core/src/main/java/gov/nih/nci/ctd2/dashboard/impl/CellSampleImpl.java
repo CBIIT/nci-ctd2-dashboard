@@ -3,8 +3,6 @@ package gov.nih.nci.ctd2.dashboard.impl;
 import gov.nih.nci.ctd2.dashboard.model.CellSample;
 import gov.nih.nci.ctd2.dashboard.model.Annotation;
 import org.hibernate.annotations.Proxy;
-import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
@@ -19,7 +17,8 @@ import java.util.HashSet;
 @Table(name = "cell_sample")
 @Indexed
 public class CellSampleImpl extends SubjectWithOrganismImpl implements CellSample {
-    private String gender;
+    private static final long serialVersionUID = -13767944704688482L;
+	private String gender;
     private Set<Annotation> annotations = new HashSet<Annotation>();
 
     @Column(length = 128, nullable = true)

@@ -427,7 +427,7 @@
     <script type="text/template" id="stories-tbl-row-tmpl">
         <tr>
             <td class="center-image-column">
-                <a href="#center/{{submission.observationTemplate.submissionCenter.id}}">
+                <a href="#{{submission.observationTemplate.submissionCenter.stableURL}}">
                     <img src="img/slogos/{{submission.observationTemplate.submissionCenter.displayName}}.png" alt="{{submission.observationTemplate.submissionCenter.displayName}}" title="{{submission.observationTemplate.submissionCenter.displayName}}" class="img-circle">
                 </a>
             </td>
@@ -441,7 +441,7 @@
             <td class="story-details">
                 <a target="_blank" href="<%=dataURL%>" id="file-link2-{{id}}">view full story</a>
                 <br>or<br>
-                <a href="#observation/{{id}}">see observation</a>
+                <a href="#{{stableURL}}">see observation</a>
             </td>
         </tr>
     </script>
@@ -449,12 +449,12 @@
     <script type="text/template" id="centers-tbl-row-tmpl">
         <tr>
             <td class="center-image-column">
-                <a href="#center/{{id}}">
+                <a href="#{{stableURL}}">
                     <img src="img/{{displayName}}.png" alt="{{displayName}}" title="{{displayName}}" class="img-polaroid">
                 </a>
             </td>
             <td class="center-name">
-                <a href="#center/{{id}}">
+                <a href="#{{stableURL}}">
                     {{displayName}}
                 </a>
             </td>
@@ -462,7 +462,7 @@
                 <span id="center-pi-{{id}}">loading...</span>
             </td>
             <td>
-                <a href="#center/{{id}}" id="submission-count-{{id}}">
+                <a href="#{{stableURL}}" id="submission-count-{{id}}">
                     loading...
                 </a>
             </td>
@@ -509,7 +509,7 @@
             </td>
             <td><small>{{submissionDate}}</small></td>
             <td width=150>
-                <a href="#submission/{{id}}" class="obs-count" id="observation-count-{{id}}">{{details}}</a>
+                <a href="#{{stableURL}}" class="obs-count" id="observation-count-{{id}}">{{details}}</a>
                 <div style="font-size:70%">[<a href="<%=dataURL%>submissions/{{displayName}}.zip">Download</a>]</div>
             </td>
         </tr>
@@ -560,7 +560,7 @@
                     </table>
                 </div>
                 <div class="span2">
-                    <a href="#/center/{{observationTemplate.submissionCenter.id}}">
+                    <a href="#{{observationTemplate.submissionCenter.stableURL}}">
                         <img src="img/{{observationTemplate.submissionCenter.displayName}}.png" class="img-polaroid" height=30 alt="{{observationTemplate.submissionCenter.displayName}}" title="{{observationTemplate.submissionCenter.displayName}}">
                     </a>
 
@@ -593,7 +593,7 @@
     </script>
 
     <script type="text/template" id="submission-obs-tbl-row-tmpl">
-        (<a class="button-link" href="#/observation/{{id}}">details &raquo;</a>)
+        (<a class="button-link" href="#{{stableURL}}">details &raquo;</a>)
     </script>
 
     <script type="text/template" id="submission-tbl-row-tmpl">
@@ -632,7 +632,7 @@
 
                 </div>
                 <div class="span2">
-                    <a href="#/center/{{submission.observationTemplate.submissionCenter.id}}"><img src="img/{{submission.observationTemplate.submissionCenter.displayName}}.png" class="img-polaroid" width="120" alt="{{submission.observationTemplate.submissionCenter.displayName}}"></a>
+                    <a href="#{{submission.observationTemplate.submissionCenter.stableURL}}"><img src="img/{{submission.observationTemplate.submissionCenter.displayName}}.png" class="img-polaroid" width="120" alt="{{submission.observationTemplate.submissionCenter.displayName}}"></a>
                     <br><br>
                     <img src="img/observation.png" alt="Observation" class="img-polaroid" width=120 height=120><br>
                 </div>
@@ -650,7 +650,7 @@
                         <th>Description</th>
                         <td>
                             {{submission.observationTemplate.description}}
-                            <small>(<a href="#submission/{{submission.id}}">details &raquo;</a>)</small>
+                            <small>(<a href="#{{submission.stableURL}}">details &raquo;</a>)</small>
                         </td>
                     </tr>
                     <tr id="obs-submission-summary">
@@ -691,7 +691,7 @@
 
     <script type="text/template" id="similar-submission-item-tmpl">
         <li>
-            <small><a href="#submission/{{id}}">{{observationTemplate.description}}</a></small>
+            <small><a href="#{{stableURL}}">{{observationTemplate.description}}</a></small>
         </li>
     </script>
 
@@ -703,7 +703,7 @@
     </script>
 
     <script type="text/template" id="summary-subject-replacement-tmpl">
-        <a class="summary-replacement" href="#/subject/{{id}}">{{displayName}}</a>
+        <a class="summary-replacement" href="#{{stableURL}}">{{displayName}}</a>
     </script>
 
     <script type="text/template" id="summary-evidence-replacement-tmpl">
@@ -1087,13 +1087,13 @@
                         <tr>
                             <th>Target Transcript</th>
                             <td>
-                                <a href="#subject/{{transcript.id}}">{{transcript.refseqId}}</a>
+                                <a href="#{{transcript.stableURL}}">{{transcript.refseqId}}</a>
                             </td>
                         </tr>
                         <tr>
                             <th>Target Gene</th>
                             <td>
-                                <a href="#subject/{{transcript.gene.id}}">{{transcript.gene.displayName}}</a>
+                                <a href="#{{transcript.gene.stableURL}}">{{transcript.gene.displayName}}</a>
                             </td>
                         </tr>
                         <tr>
@@ -1159,13 +1159,13 @@
                         <tr>
                             <th>Target Transcript</th>
                             <td>
-                                <a href="#subject/{{transcript.id}}">{{transcript.refseqId}}</a>
+                                <a href="#{{transcript.stableURL}}">{{transcript.refseqId}}</a>
                             </td>
                         </tr>
                         <tr>
                             <th>Target Gene</th>
                             <td>
-                                <a href="#subject/{{transcript.gene.id}}">{{transcript.gene.displayName}}</a>
+                                <a href="#{{transcript.gene.stableURL}}">{{transcript.gene.displayName}}</a>
                             </td>
                         </tr>
                         <tr>
@@ -1228,7 +1228,7 @@
                         <tr>
                             <th>Gene</th>
                             <td>
-                                <a href="#subject/{{gene.id}}">{{gene.displayName}}</a>
+                                <a href="#{{gene.stableURL}}">{{gene.displayName}}</a>
                             </td>
                         </tr>
                         <tr>
@@ -1572,7 +1572,7 @@
         <tr>
             <td id="subject-image-{{id}}"></td>
             <td>
-                <a href="#/subject/{{subject.id}}">
+                <a href="#{{subject.stableURL}}">
                     {{subject.displayName}}
                 </a>
             </td>
@@ -1586,7 +1586,7 @@
         <tr>
             <td id="subject-image-{{id}}"></td>
             <td id="subject.displayName-{{id}}">
-                <a href="#/subject/{{subject.id}}">
+                <a href="#{{subject.stableURL}}">
                     {{subject.displayName}}
                 </a>  &nbsp;
                 <a href="#" class="addGene-{{subject.displayName}} cartAddPlus" title="Add gene to cart" >+</a>
@@ -1597,30 +1597,10 @@
         </tr>
     </script>
 
-    <script type="text/template" id="observedsubject-row-tmpl">
-        <tr>
-            <td>
-                <a href="#/observation/{{observation.id}}">
-                    {{observation.submission.submissionDate}}
-                </a>
-            </td>
-            <td>{{observedSubjectRole.subjectRole.displayName}}</td>
-            <td>
-                {{observation.submission.observationTemplate.description}}
-            </td>
-            <td><span class="badge tier-badge">Tier {{observation.submission.observationTemplate.tier}}</span></td>
-            <td>
-                <a href="#/center/{{observation.submission.observationTemplate.submissionCenter.id}}">
-                    <img alt="{{observation.submission.observationTemplate.submissionCenter.displayName}}" title="{{submission.observationTemplate.submissionCenter.displayName}}" width="150" src="img/{{observation.submission.submissionCenter.displayName}}.png">
-                </a>
-            </td>
-        </tr>
-    </script>
-
     <script type="text/template" id="observation-row-tmpl">
         <tr>
             <td>
-                <a href="#/observation/{{id}}">
+                <a href="#{{stableURL}}">
                     {{submission.submissionDate}}
                 </a>
             </td>
@@ -1629,7 +1609,7 @@
             </td>
             <td><span class="badge tier-badge">Tier {{submission.observationTemplate.tier}}</span></td>
             <td>
-                <a href="#/center/{{submission.observationTemplate.submissionCenter.id}}">
+                <a href="#{{submission.observationTemplate.submissionCenter.stableURL}}">
                     <img alt="{{submission.observationTemplate.submissionCenter.displayName}}" title="{{submission.observationTemplate.submissionCenter.displayName}}" width="150" src="img/{{submission.observationTemplate.submissionCenter.displayName}}.png">
                 </a>
                 <span class="hide-text">{{submission.observationTemplate.submissionCenter.displayName}}</span>
@@ -1661,63 +1641,57 @@
     </script>
 
     <script type="text/template" id="search-results-gene-image-tmpl">
-        <a href="#subject/{{id}}">
+        <a href="#{{stableURL}}">
             <img src="img/gene.png" class="img-polaroid search-info" title="Gene" alt="Gene" height="50" width="50">
         </a>
     </script>
 
     <script type="text/template" id="search-results-protein-image-tmpl">
-        <a href="#subject/{{id}}">
+        <a href="#/{{stableURL}}">
             <img src="img/protein.png" class="img-polaroid search-info" title="Protein" alt="Protein" height="50" width="50">
         </a>
     </script>
 
 
     <script type="text/template" id="search-results-shrna-image-tmpl">
-        <a href="#subject/{{id}}">
+        <a href="#/{{stableURL}}">
             <img src="img/shrna.png" class="img-polaroid search-info" title="shRNA" alt="shRNA" height="50" width="50">
         </a>
     </script>
 
     <script type="text/template" id="search-results-sirna-image-tmpl">
-        <a href="#subject/{{id}}">
+        <a href="#/{{stableURL}}">
             <img src="img/sirna.png" class="img-polaroid search-info" title="siRNA" alt="siRNA" height="50" width="50">
         </a>
     </script>
 
-    <script type="text/template" id="search-results-transcript-image-tmpl">
-        <a href="#subject/{{id}}">
-            <img src="img/transcript.png" class="img-polaroid search-info" title="Transcript" alt="Transcript" height="50" width="50">
-        </a>
-    </script>
-
-    <script type="text/template" id="search-results-compund-image-tmpl">
-        <a href="#subject/{{id}}">
+    <script type="text/template" id="search-results-compound-image-tmpl">
+        <a href="#/{{stableURL}}">
             <img class="img-polaroid search-info" title="Compound" alt="Compound" width=50 height=50 src="<%=dataURL%>compounds/{{imageFile}}">
         </a>
     </script>
 
     <script type="text/template" id="search-results-animalmodel-image-tmpl">
-        <a href="#subject/{{id}}">
+        <a href="#{{stableURL}}">
             <img src="img/animalmodel.png" title="Animal model" alt="Animal model" class="img-polaroid search-info" height="50" width="50">
         </a>
     </script>
 
     <script type="text/template" id="search-results-cellsample-image-tmpl">
-        <a href="#subject/{{id}}">
+        <a href="#{{stableURL}}">
             <img src="img/cellsample.png" title="Cell sample" alt="Cell sample" class="img-polaroid search-info" height="50" width="50">
         </a>
     </script>
 
     <script type="text/template" id="search-results-tissuesample-image-tmpl">
-        <a href="#subject/{{id}}">
+        <a href="#/{{stableURL}}">
             <img src="img/tissuesample.png" title="Tissue sample" alt="Tissue sample" class="img-polaroid search-info" height="50" width="50">
         </a>
     </script>
 
     <script type="text/template" id="search-results-unknown-image-tmpl">
-        <a href="#subject/{{id}}">
-            <img src="img/unknown.png" title="{{type}}" class="img-polaroid search-info" alt="{{type}}" height="50" width="50">
+        <a href="#{{stableURL}}">
+            <img src="img/unknown.png" title="{{subjectClass}}" class="img-polaroid search-info" alt="{{subjectClass}}" height="50" width="50">
         </a>
     </script>
 
@@ -1725,7 +1699,7 @@
         <tr>
             <td id="search-image-{{dashboardEntity.id}}"></td>
             <td>
-                <a href="#subject/{{dashboardEntity.id}}">{{dashboardEntity.displayName}}</a><br>
+                <a href="#{{dashboardEntity.stableURL}}">{{dashboardEntity.displayName}}</a><br>
                 <i>{{dashboardEntity.organism.displayName != '-' ? "(" + dashboardEntity.organism.displayName + ")" : ""}}</i>
             </td>
             <td>
@@ -1733,14 +1707,14 @@
                     <!-- here will go the synonyms -->
                 </ul>
             </td>
-            <td>{{dashboardEntity.type}}</td>
+            <td>{{dashboardEntity.class}}</td>
             <td>
                 <ul id="roles-{{dashboardEntity.id}}" data-score="{{dashboardEntity.score}}">
                     <!-- here will go the roles -->
                 </ul>
             </td>
             <td class="nonewline">
-                <a href="#subject/{{dashboardEntity.id}}" id="subject-observation-count-{{dashboardEntity.id}}">{{observationCount}}</a>
+                <a href="#{{dashboardEntity.stableURL}}" id="subject-observation-count-{{dashboardEntity.id}}">{{observationCount}}</a>
                 <i class="icon-question-sign obs-tooltip {{observationCount < 1 ? 'hide' : ''}}" title="{{observationCount}} observations from {{centerCount}} centers: Tier {{maxTier}}"></i>
             </td>
         </tr>
@@ -1750,7 +1724,7 @@
         <tr>
             <td id="search-image-{{dashboardEntity.id}}"></td>
             <td>
-                <a href="#subject/{{dashboardEntity.id}}">{{dashboardEntity.displayName}}</a>
+                <a href="#{{dashboardEntity.stableURL}}">{{dashboardEntity.displayName}}</a>
                 <a href="#" class="addGene-{{dashboardEntity.displayName}} cartAddPlus" title="Add gene to cart" >+</a>
                 <br>
                 <i>{{dashboardEntity.organism.displayName != '-' ? "(" + dashboardEntity.organism.displayName + ")" : ""}}</i>
@@ -1760,14 +1734,14 @@
                     <!-- here will go the synonyms -->
                 </ul>
             </td>
-            <td>{{dashboardEntity.type}}</td>
+            <td>{{dashboardEntity.class}}</td>
             <td>
                 <ul id="roles-{{dashboardEntity.id}}" data-score="{{dashboardEntity.score}}">
                     <!-- here will go the roles -->
                 </ul>
             </td>
             <td class="nonewline">
-                <a href="#subject/{{dashboardEntity.id}}" id="subject-observation-count-{{dashboardEntity.id}}">{{observationCount}}</a>
+                <a href="#{{dashboardEntity.stableURL}}" id="subject-observation-count-{{dashboardEntity.id}}">{{observationCount}}</a>
                 <i class="icon-question-sign obs-tooltip {{observationCount < 1 ? 'hide' : ''}}" title="{{observationCount}} observations from {{centerCount}} centers: Tier {{maxTier}}"></i>
             </td>
         </tr>
@@ -1857,13 +1831,13 @@
 
     <script type="text/template" id="search-submission-tbl-row-tmpl">
         <tr>
-            <td><a href="#submission/{{dashboardEntity.id}}"><img src="img/submission.png" width="50" alt="Submission" title="Submission"></a></td>
-            <td><a href="#submission/{{dashboardEntity.id}}">{{dashboardEntity.submissionDate}}</a></td>
+            <td><a href="#{{dashboardEntity.stableURL}}"><img src="img/submission.png" width="50" alt="Submission" title="Submission"></a></td>
+            <td><a href="#{{dashboardEntity.stableURL}}">{{dashboardEntity.submissionDate}}</a></td>
             <td>{{dashboardEntity.observationTemplate.description}}</td>
-            <td><a href="#submission/{{dashboardEntity.id}}"><img src="img/{{dashboardEntity.observationTemplate.submissionCenter.displayName}}.png" title="{{dashboardEntity.observationTemplate.submissionCenter.displayName}}" alt="{{dashboardEntity.observationTemplate.submissionCenter.displayName}}" height="50"></a></td>
+            <td><a href="#{{dashboardEntity.stableURL}}"><img src="img/{{dashboardEntity.observationTemplate.submissionCenter.displayName}}.png" title="{{dashboardEntity.observationTemplate.submissionCenter.displayName}}" alt="{{dashboardEntity.observationTemplate.submissionCenter.displayName}}" height="50"></a></td>
             <td><span class="badge tier-badge">Tier {{dashboardEntity.observationTemplate.tier}}</span></td>
             <td width=150>
-                <a href="#submission/{{dashboardEntity.id}}" id="search-observation-count-{{dashboardEntity.id}}">{{observationCount}} observations</a>
+                <a href="#{{dashboardEntity.stableURL}}" id="search-observation-count-{{dashboardEntity.id}}">{{observationCount}} observations</a>
             </td>
         </tr>
     </script>
@@ -1877,7 +1851,7 @@
     </script>
 
     <script type="text/template" id="transcript-item-tmpl">
-        <li class="synonym"><a href="#subject/{{id}}">{{refseqId}}</a></li>
+        <li class="synonym"><a href="#{{stableURL}}">{{refseqId}}</a></li>
     </script>
 
     <script type="text/template" id="count-story-tmpl">
@@ -1913,7 +1887,7 @@
                         <a target="_blank" href="<%=dataURL%>" id="file-link-{{id}}">
                             view full story</a>
                     |
-                    <a href="#observation/{{id}}">see observation</a>)
+                    <a href="#{{stableURL}}">see observation</a>)
                 </p>
             </div>
             <div class="span4">
@@ -2012,7 +1986,7 @@
                     ( <a class="dropdown-toggle" data-toggle="dropdown" href="#">view mra file<b class="caret"></b></a> )
                     <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                         <li>
-                            <a href="#/evidence/{{id}}" title="Open Master Regulator View" class="desc-tooltip">
+                            <a href="#{{stableURL}}" title="Open Master Regulator View" class="desc-tooltip">
                                 mra view
                             </a>
                         </li>
@@ -2153,7 +2127,7 @@
             <p><a href="#" class="close" data-dismiss="alert">&times;</a></p>
             <p>
                 The table below lists all submissions that belong to the project "<b>{{filterProject}}</b>".
-                To view all submissions from this center, please click <a href="#center/{{centerId}}">here</a>.
+                To view all submissions from this center, please click <a href="#{{centerStableURL}}">here</a>.
             </p>
         </div>
     </script>
@@ -2435,7 +2409,7 @@
     </script>
 
     <script id="tbl-project-title-tmpl" type="text/template">
-        <tr class="group"><td colspan="5"><a href="#center/{{centerId}}/{{project}}">Project: {{project}}</a></td></tr>
+        <tr class="group"><td colspan="5"><a href="#{{centerStableURL}}/{{project}}">Project: {{project}}</a></td></tr>
     </script>
 
     <script id="center-specific-information-tmpl" type="text/template">

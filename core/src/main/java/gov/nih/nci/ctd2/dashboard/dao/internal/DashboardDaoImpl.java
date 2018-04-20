@@ -5,6 +5,8 @@ import gov.nih.nci.ctd2.dashboard.impl.*;
 import gov.nih.nci.ctd2.dashboard.model.*;
 import gov.nih.nci.ctd2.dashboard.util.DashboardEntityWithCounts;
 import gov.nih.nci.ctd2.dashboard.util.SubjectWithSummaries;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.WhitespaceAnalyzer;
 import org.apache.lucene.queryParser.MultiFieldQueryParser;
@@ -22,6 +24,8 @@ import org.springframework.cache.annotation.Cacheable;
 import java.util.*;
 
 public class DashboardDaoImpl implements DashboardDao {
+    private static final Log log = LogFactory.getLog(DashboardDaoImpl.class);
+
     private static final String[] defaultSearchFields = {
             DashboardEntityImpl.FIELD_DISPLAYNAME,
             DashboardEntityImpl.FIELD_DISPLAYNAME_UT,
@@ -158,6 +162,43 @@ public class DashboardDaoImpl implements DashboardDao {
         Object object = session.get(aClass, id);
         session.close();
         return (T)object;
+    }
+
+    final private static Map<String, String> typesWithStableURL = new HashMap<String, String>();
+    static {
+        typesWithStableURL.put("center", "SubmissionCenterImpl");
+        typesWithStableURL.put("animal-model", "AnimalModelImpl");
+        typesWithStableURL.put("cell-sample", "CellSampleImpl");
+        typesWithStableURL.put("compound", "CompoundImpl");
+        typesWithStableURL.put("protein", "ProteinImpl");
+        typesWithStableURL.put("rna", "ShRnaImpl");
+        typesWithStableURL.put("tissue", "TissueSampleImpl");
+        typesWithStableURL.put("transcript", "TranscriptImpl");
+        typesWithStableURL.put("submission", "SubmissionImpl");
+        typesWithStableURL.put("observation", "ObservationImpl");
+        typesWithStableURL.put("observedevidence", "ObservedEvidenceImpl");
+    }
+    @Override
+    public <T extends DashboardEntity> T getEntityByStableURL(String type, String stableURL) {
+        String implementationClass = typesWithStableURL.get(type);
+        log.debug("getEntityByStableURL "+type+" "+stableURL+" "+implementationClass);
+        if(implementationClass!=null) {
+            List<T> r = queryWithClass("from "+implementationClass+" where stableURL = :urlId", "urlId", stableURL);
+            if(r.size()==1) {
+                return r.get(0);
+            } else if(implementationClass.equals("ObservedEvidenceImpl") && r.size()>0) {
+                /* This is to take care of a special case in the current data model implementation:
+                multiple instances of the SAME evidence are created for multiple observations that refer to that evidence.
+                */
+                return r.get(0);
+            } else {
+                log.error("unexpected result number: "+r.size());
+                return null;
+            }
+        } else {
+            log.error("unrecognized type: "+type);
+            return null;
+        }
     }
 
     @Override

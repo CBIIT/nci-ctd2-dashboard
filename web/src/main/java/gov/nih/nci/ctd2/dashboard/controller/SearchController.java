@@ -1,10 +1,7 @@
 package gov.nih.nci.ctd2.dashboard.controller;
 
 import flexjson.JSONSerializer;
-import flexjson.transformer.AbstractTransformer;
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
-import gov.nih.nci.ctd2.dashboard.model.DashboardEntity;
-import gov.nih.nci.ctd2.dashboard.model.Subject;
 import gov.nih.nci.ctd2.dashboard.util.DashboardEntityWithCounts;
 import gov.nih.nci.ctd2.dashboard.util.DateTransformer;
 import gov.nih.nci.ctd2.dashboard.util.ImplTransformer;
@@ -21,8 +18,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -33,14 +28,15 @@ public class SearchController {
     private DashboardDao dashboardDao;
 
     @Transactional
-    @RequestMapping(value="{keyword}", method = {RequestMethod.GET, RequestMethod.POST}, headers = "Accept=application/json")
+    @RequestMapping(value = "{keyword}", method = { RequestMethod.GET,
+            RequestMethod.POST }, headers = "Accept=application/json")
     public ResponseEntity<String> getSearchResultsInJson(@PathVariable String keyword) {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json; charset=utf-8");
 
         // Do not allow search with really genetic keywords
         // This is to prevent unnecessary server loads
-        if(keyword.length() < 2)
+        if (keyword.length() < 2)
             return new ResponseEntity<String>(headers, HttpStatus.BAD_REQUEST);
         try {
             keyword = URLDecoder.decode(keyword, Charset.defaultCharset().displayName());
@@ -49,14 +45,9 @@ public class SearchController {
         }
 
         List<DashboardEntityWithCounts> results = dashboardDao.search(keyword);
-        JSONSerializer jsonSerializer = new JSONSerializer()
-                .transform(new ImplTransformer(), Class.class)
+        JSONSerializer jsonSerializer = new JSONSerializer().transform(new ImplTransformer(), Class.class)
                 .transform(new DateTransformer(), Date.class);
-        return new ResponseEntity<String>(
-                jsonSerializer.deepSerialize(results),
-                headers,
-                HttpStatus.OK
-        );
+        return new ResponseEntity<String>(jsonSerializer.deepSerialize(results), headers, HttpStatus.OK);
     }
 
 }

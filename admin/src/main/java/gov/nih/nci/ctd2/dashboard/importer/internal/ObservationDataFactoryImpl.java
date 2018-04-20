@@ -1,6 +1,7 @@
 package gov.nih.nci.ctd2.dashboard.importer.internal;
 
 import gov.nih.nci.ctd2.dashboard.model.*;
+import gov.nih.nci.ctd2.dashboard.util.StableURL;
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
 import gov.nih.nci.ctd2.dashboard.importer.ObservationDataFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +20,7 @@ public class ObservationDataFactoryImpl implements ObservationDataFactory {
 
 	private static final Log log = LogFactory.getLog(ObservationDataFactoryImpl.class);
 
-	private static final String DASHBOARD_SUBMISSION_URL = "/#/submission/";	
-    private static final String DASHBOARD_OBSERVATION_URL = "/#/observation/";
+	private static final String DASHBOARD_SUBMISSION_URL = "/#/submission/";
     //private static final Pattern LINKBACK_URL_EVIDENCE_REGEX = Pattern.compile("tier._evidence");
     // submission_name:col_name_1=col_val_1&col_name_2=col_val_2
     private static final Pattern LINKBACK_URL_REGEX = Pattern.compile("([\\w\\-]+):([\\w\\-&=]+)");
@@ -185,6 +185,10 @@ public class ObservationDataFactoryImpl implements ObservationDataFactory {
 			((FileEvidence)evidence).setMimeType(observedEvidenceRole.getAttribute());
 		}
 		observedEvidence.setEvidence(evidence);
+		if(file.getName().endsWith(".mra")) {
+			String stableURL = new StableURL().createURLWithPrefix("mra", file.getName());
+			observedEvidence.setStableURL(stableURL);
+		}
 		return observedEvidence;
 	}
 
@@ -290,7 +294,7 @@ public class ObservationDataFactoryImpl implements ObservationDataFactory {
                 }
             }
             if (match == columnValuePairs.size()) {
-                url = DASHBOARD_OBSERVATION_URL + observation.getId();
+                url = "/#" + observation.getStableURL();
                 break;
             }
         }
