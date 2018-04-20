@@ -1,0 +1,1 @@
+java -jar admin\target\dashboard-util.jar
