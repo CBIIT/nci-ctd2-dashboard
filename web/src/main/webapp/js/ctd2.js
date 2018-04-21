@@ -394,8 +394,8 @@
                                 return;
 
                             summary = summary.replace(
-                                new RegExp("#" + observedSubject.observedSubjectRole.columnName, "g"),
-                                "#" + observedSubject.subject.stableURL
+                                new RegExp("#" + observedSubject.observedSubjectRole.columnName + "\"", "g"),
+                                "#" + observedSubject.subject.stableURL + "\""
                             );
                         });
 
