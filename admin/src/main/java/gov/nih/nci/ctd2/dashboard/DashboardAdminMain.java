@@ -157,6 +157,9 @@ public class DashboardAdminMain {
             JobLauncher jobLauncher = (JobLauncher)appContext.getBean("jobLauncher");
             JobParametersBuilder builder = new JobParametersBuilder();
             JobExecution jobExecution = jobLauncher.run(job, builder.toJobParameters());
+            while(jobExecution.isRunning()) {
+                Thread.sleep(3000);
+            }
             log.info("launchJob: exit code: " + jobExecution.getExitStatus().getExitCode());
         }
         catch (Exception e) {

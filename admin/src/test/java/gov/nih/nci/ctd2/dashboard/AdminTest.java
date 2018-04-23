@@ -179,6 +179,10 @@ public class AdminTest {
 
 		JobParametersBuilder builder = new JobParametersBuilder();
 		Job job = (Job) appContext.getBean(jobName);
-        return jobLauncher.run(job, builder.toJobParameters());
+        JobExecution je = jobLauncher.run(job, builder.toJobParameters());
+        while(je.isRunning()) {
+            Thread.sleep(3000);
+        }
+        return  je;
 	}
 }
