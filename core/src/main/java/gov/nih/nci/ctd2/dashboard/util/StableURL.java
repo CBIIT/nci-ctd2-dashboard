@@ -16,8 +16,9 @@ public class StableURL {
         final int MAX_LENGTH = 50;
         String stableURL = prefix + "/" + urlProperty.toLowerCase().replaceAll("[^a-zA-Z0-9]", "-");
         if (stableURL.length() > MAX_LENGTH) {
-            log.warn("The following string is too long for stable URL and truncated:\n" + stableURL);
+            log.info("The following string is too long for stable URL and truncated:\n" + stableURL);
             stableURL = stableURL.substring(0, MAX_LENGTH);
+            log.info("after truncating: " + stableURL);
         }
         return stableURL;
     }
