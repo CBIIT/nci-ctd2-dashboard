@@ -1801,6 +1801,7 @@
         tableEl: '#center-submission-grid',
         template: _.template($("#center-tmpl").html()),
         render: function (filterProject) {
+            var urlMap = {};
             var centerModel = this.model.toJSON();
             $(this.el).html(this.template(centerModel));
 
@@ -1859,12 +1860,15 @@
                                 })
                                 .data()
                                 .each(function (group, i) {
+                                    var project_url = group.toLowerCase().replace(/[^a-zA-Z0-9]/g, "-");
+                                    urlMap[project_url] = group;
                                     if (last != group) {
                                         $(rows)
                                             .eq(i)
                                             .before(
                                                 _.template($("#tbl-project-title-tmpl").html(), {
                                                     project: group,
+                                                    project_url: project_url,
                                                     centerStableURL: centerModel.stableURL
                                                 })
                                             );
@@ -1878,9 +1882,9 @@
                     ]);
 
                     if (filterProject != null) {
-                        $(tableElId).DataTable().search(filterProject).draw();
+                        $(tableElId).DataTable().search(urlMap[filterProject]).draw();
                         var mpModel = {
-                            filterProject: filterProject,
+                            filterProject: urlMap[filterProject],
                             centerStableURL: centerModel.stableURL
                         };
                         var moreProjectsView = new MoreProjectsView({

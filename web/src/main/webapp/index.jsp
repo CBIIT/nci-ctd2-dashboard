@@ -2409,7 +2409,7 @@
     </script>
 
     <script id="tbl-project-title-tmpl" type="text/template">
-        <tr class="group"><td colspan="5"><a href="#{{centerStableURL}}/{{project}}">Project: {{project}}</a></td></tr>
+        <tr class="group"><td colspan="5"><a href="#{{centerStableURL}}/{{project_url}}">Project: {{project}}</a></td></tr>
     </script>
 
     <script id="center-specific-information-tmpl" type="text/template">
@@ -2451,7 +2451,7 @@
     <script src="js/encoder.js"></script>
     <script src="js/jquery.contextMenu.js"></script>   
     <script src="js/jquery.ui.position.js"></script>    
-    <script src="js/ctd2.js?ts=2018"></script>
+    <script src="js/ctd2.js?ts=201804"></script>
 
   </body>
 </html>
