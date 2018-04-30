@@ -22,7 +22,7 @@ import java.util.Date;
 import java.util.List;
 
 @Controller
-@RequestMapping("/centers")
+@RequestMapping("/api/centers")
 public class APIController {
     private static final Log log = LogFactory.getLog(APIController.class);
     @Autowired
@@ -55,44 +55,50 @@ public class APIController {
         log.debug("ready to serialize");
         JSONSerializer jsonSerializer = new JSONSerializer().transform(new ImplTransformer(), Class.class)
                 .transform(new DateTransformer(), Date.class);
-        return new ResponseEntity<String>(jsonSerializer.deepSerialize(apiCenters), headers, HttpStatus.OK);
+        String json = "{}";
+        try {
+            json = jsonSerializer.exclude("class").exclude("submissions.class").deepSerialize(apiCenters);
+        } catch (Exception e) {
+            json = "{'Exception': '" + e.getMessage() + "'}";
+            e.printStackTrace();
+        }
 
+        return new ResponseEntity<String>(json, headers, HttpStatus.OK);
     }
 
-    static class APISubmission {
-        final String id, project, description, storyTitle;
-        final Date date;
-        final Integer tier;
-        final Integer observationCount;
+    public static class APISubmission {
+        public final String submission_id, project, submission_description, story_title;
+        public final Date submission_date;
+        public final Integer tier;
+        public final Integer observation_count;
 
         public APISubmission(final Submission s, int observationCount) {
             ObservationTemplate observationTemplate = s.getObservationTemplate();
             // required part
-            this.id = s.getId().toString();
-            this.date = s.getSubmissionDate();
+            this.submission_id = s.getId().toString();
+            this.submission_date = s.getSubmissionDate();
             this.tier = observationTemplate.getTier();
             this.project = observationTemplate.getProject();
-            this.description = observationTemplate.getDescription();
-            this.observationCount = new Integer(observationCount);
+            this.submission_description = observationTemplate.getDescription();
+            this.observation_count = new Integer(observationCount);
 
             // not-required
             String st = null;
             if (observationTemplate.getIsSubmissionStory())
                 st = observationTemplate.getDescription();
-            storyTitle = st;
+            story_title = st;
         }
     }
 
-    static class APICenter {
-        final String name, id, pi;
-        final APISubmission[] submissions;
+    public static class APICenter {
+        public final String center_name, center_id, principal_investigator;
+        public final APISubmission[] submissions;
 
         public APICenter(SubmissionCenter c, String pi, APISubmission[] submissions) {
-            this.name = c.getDisplayName();
-            this.id = c.getId().toString();
-            this.pi = pi;
+            this.center_name = c.getDisplayName();
+            this.center_id = c.getId().toString();
+            this.principal_investigator = pi;
             this.submissions = submissions;
-
         }
     }
 
