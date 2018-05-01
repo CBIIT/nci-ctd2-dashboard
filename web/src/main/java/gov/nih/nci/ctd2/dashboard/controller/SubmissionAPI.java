@@ -1,6 +1,8 @@
 package gov.nih.nci.ctd2.dashboard.controller;
 
 import flexjson.JSONSerializer;
+import flexjson.TypeContext;
+import flexjson.transformer.AbstractTransformer;
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
 import gov.nih.nci.ctd2.dashboard.model.*;
 import gov.nih.nci.ctd2.dashboard.util.DateTransformer;
@@ -86,7 +88,8 @@ public class SubmissionAPI {
 
         log.debug("ready to serialize");
         JSONSerializer jsonSerializer = new JSONSerializer().transform(new ImplTransformer(), Class.class)
-                .transform(new DateTransformer(), Date.class);
+                .transform(new DateTransformer(), Date.class)
+                .transform(new FieldNameTransformer("class"), "observations.evidence_list.clazz");
         String json = "{}";
         try {
             json = jsonSerializer.exclude("class").exclude("observations.class").deepSerialize(apiSubmission);
@@ -96,6 +99,47 @@ public class SubmissionAPI {
         }
 
         return new ResponseEntity<String>(json, headers, HttpStatus.OK);
+    }
+
+    private static class FieldNameTransformer extends AbstractTransformer {
+        private String transformedFieldName;
+
+        public FieldNameTransformer(String transformedFieldName) {
+            this.transformedFieldName = transformedFieldName;
+        }
+
+        public void transform(Object object) {
+            boolean setContext = false;
+
+            TypeContext typeContext = getContext().peekTypeContext();
+
+            // Write comma before starting to write field name if this
+            // isn't first property that is being transformed
+            if (!typeContext.isFirst())
+                getContext().writeComma();
+
+            typeContext.setFirst(false);
+
+            getContext().writeName(getTransformedFieldName());
+            getContext().writeQuoted(object.toString());
+
+            if (setContext) {
+                getContext().writeCloseObject();
+            }
+        }
+
+        /***
+         * TRUE tells the JSONContext that this class will be handling the writing of
+         * our property name by itself.
+         */
+        @Override
+        public Boolean isInline() {
+            return Boolean.TRUE;
+        }
+
+        public String getTransformedFieldName() {
+            return this.transformedFieldName;
+        }
     }
 
     public static class APISubmission {
@@ -153,15 +197,28 @@ public class SubmissionAPI {
     }
 
     public static class Evidence {
-        public final String type, description, value, units, mime_type;
+        public final String clazz, type, description, value, units, mime_type;
 
         public Evidence(ObservedEvidence observedEvidence) {
+            gov.nih.nci.ctd2.dashboard.model.Evidence evidence = observedEvidence.getEvidence();
+            clazz = evidence.getClass().getSimpleName().replace("Impl", "");
             this.type = observedEvidence.getObservedEvidenceRole().getEvidenceRole().getDisplayName();
-            this.description = observedEvidence.getDisplayName();
-            this.value = observedEvidence.getEvidence().getDisplayName();
-            this.units = observedEvidence.getObservedEvidenceRole().getDisplayText();
-            this.mime_type = observedEvidence.getObservedEvidenceRole().getDisplayName();
-            // TODO the field names are not matched up
+            this.description = observedEvidence.getObservedEvidenceRole().getDisplayText();
+
+            String value = null, units = null, mime_type = null;
+            if (evidence instanceof DataNumericValue) {
+                DataNumericValue dnv = (DataNumericValue) evidence;
+                value = dnv.getNumericValue().toString();
+                units = dnv.getUnit();
+            } else if (evidence instanceof FileEvidence) {
+                FileEvidence fe = (FileEvidence) evidence;
+                value = fe.getFileName();
+                mime_type = fe.getMimeType();
+            }
+
+            this.value = value;
+            this.units = units;
+            this.mime_type = mime_type;
         }
     }
 
