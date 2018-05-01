@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Date;
 import java.util.List;
@@ -34,13 +35,25 @@ public class SubmissionAPI {
 
     @Transactional
     @RequestMapping(value = "{id}", method = { RequestMethod.GET }, headers = "Accept=application/json")
-    public ResponseEntity<String> getSubmission(@PathVariable String id) {
+    public ResponseEntity<String> getSubmission(@PathVariable String id,
+            @RequestParam(value = "maximum", required = false, defaultValue = "") String maximum) {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json; charset=utf-8");
 
+        int limit = 0;
+        if (maximum != null && maximum.trim().length() > 0) {
+            try {
+                limit = Integer.parseInt(maximum.trim());
+            } catch (NumberFormatException e) {
+                // no-op
+            }
+        }
         Submission submission = dashboardDao.getEntityByStableURL("submission", "submission/" + id);
         List<? extends DashboardEntity> observations = webServiceUtil.getDashboardEntities("observation",
                 submission.getId());
+        if (limit > 0 && limit < observations.size()) {
+            observations = observations.subList(0, limit);
+        }
         APIObservation[] obvs = new APIObservation[observations.size()];
         for (int i = 0; i < observations.size(); i++) {
             List<ObservedSubject> subjects = dashboardDao
