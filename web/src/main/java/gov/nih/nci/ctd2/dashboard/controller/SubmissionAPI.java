@@ -89,6 +89,7 @@ public class SubmissionAPI {
         log.debug("ready to serialize");
         JSONSerializer jsonSerializer = new JSONSerializer().transform(new ImplTransformer(), Class.class)
                 .transform(new DateTransformer(), Date.class)
+                .transform(new FieldNameTransformer("class"), "observations.subject_list.clazz")
                 .transform(new FieldNameTransformer("class"), "observations.evidence_list.clazz");
         String json = "{}";
         try {
@@ -183,14 +184,16 @@ public class SubmissionAPI {
     }
 
     public static class Subject {
-        public final String role, description, name;
+        public final String clazz, role, description, name;
         public final String[] synonyms;
         public final APIXRef[] xref;
 
         public Subject(ObservedSubject observedSubject, String[] synonyms, APIXRef[] xref) {
+            gov.nih.nci.ctd2.dashboard.model.Subject subject = observedSubject.getSubject();
+            clazz = subject.getClass().getSimpleName().replace("Impl", "");
             this.role = observedSubject.getObservedSubjectRole().getSubjectRole().getDisplayName();
-            this.description = observedSubject.getDisplayName(); // TODO what is the 'description'?
-            this.name = observedSubject.getSubject().getDisplayName();
+            this.description = observedSubject.getObservedSubjectRole().getDisplayText();
+            this.name = subject.getDisplayName();
             this.synonyms = synonyms;
             this.xref = xref;
         }
