@@ -148,4 +148,29 @@ public class WebServiceUtil {
 
         return submissions;
     }
+
+    @Transactional
+    @Cacheable(value = "entityCache")
+    public List<Observation> getObservations(Subject subject, String role, Integer tier) {
+        List<Observation> observations = new ArrayList<Observation>();
+        for (ObservedSubject observedSubject : dashboardDao.findObservedSubjectBySubject(subject)) {
+            ObservedSubjectRole observedSubjectRole = observedSubject.getObservedSubjectRole();
+            String subjectRole = observedSubjectRole.getSubjectRole().getDisplayName();
+            Integer observationTier = observedSubject.getObservation().getSubmission().getObservationTemplate()
+                    .getTier();
+            if ((role.equals("") || role.equals(subjectRole)) && (tier == 0 || tier == observationTier)) {
+                observations.add(observedSubject.getObservation());
+            }
+        }
+        Collections.sort(observations, new Comparator<Observation>() {
+            @Override
+            public int compare(Observation o1, Observation o2) {
+                Integer tier2 = o2.getSubmission().getObservationTemplate().getTier();
+                Integer tier1 = o1.getSubmission().getObservationTemplate().getTier();
+                return tier2 - tier1;
+            }
+        });
+
+        return observations;
+    }
 }
