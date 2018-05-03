@@ -94,9 +94,13 @@ public class BrowseAPI {
 
         ObservationItem[] obvs = new ObservationItem[observations.size()];
         Set<String> roles = new TreeSet<String>();
+        int[] tierCount = new int[3];
         for (int i = 0; i < observations.size(); i++) {
             Observation observation = (Observation) observations.get(i);
             obvs[i] = new ObservationItem(observation, dashboardDao);
+            int tier = observation.getSubmission().getObservationTemplate().getTier();
+            assert tier > 0 && tier < 3;
+            tierCount[tier - 1]++;
 
             List<ObservedSubject> observedSubjects = dashboardDao.findObservedSubjectByObservation(observation);
             for (ObservedSubject os : observedSubjects) {
@@ -106,7 +110,7 @@ public class BrowseAPI {
                 }
             }
         }
-        SubjectBrowse subjectBrowse = new SubjectBrowse(subject, obvs, roles.toArray(new String[0]));
+        SubjectBrowse subjectBrowse = new SubjectBrowse(subject, obvs, roles.toArray(new String[0]), tierCount);
 
         log.debug("ready to serialize");
         JSONSerializer jsonSerializer = new JSONSerializer().transform(new ImplTransformer(), Class.class)
@@ -132,7 +136,7 @@ public class BrowseAPI {
         public final ObservationCount observation_count;
         public final ObservationItem[] observations;
 
-        public SubjectBrowse(Subject subject, ObservationItem[] observations, String[] roles) {
+        public SubjectBrowse(Subject subject, ObservationItem[] observations, String[] roles, int[] tierCount) {
             clazz = subject.getClass().getSimpleName().replace("Impl", "");
 
             this.name = subject.getDisplayName();
@@ -141,7 +145,8 @@ public class BrowseAPI {
 
             this.roles = roles;
 
-            observation_count = new ObservationCount(3, 2, 1); // TODO placeholder numbers to be replaced
+            assert tierCount.length == 3;
+            observation_count = new ObservationCount(tierCount[0], tierCount[1], tierCount[2]);
             this.observations = observations;
         }
 
