@@ -2,6 +2,8 @@ package gov.nih.nci.ctd2.dashboard.controller;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -24,7 +26,10 @@ import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
 import gov.nih.nci.ctd2.dashboard.model.DashboardEntity;
 import gov.nih.nci.ctd2.dashboard.model.Gene;
 import gov.nih.nci.ctd2.dashboard.model.Observation;
+import gov.nih.nci.ctd2.dashboard.model.ObservedSubject;
 import gov.nih.nci.ctd2.dashboard.model.Subject;
+import gov.nih.nci.ctd2.dashboard.model.Synonym;
+import gov.nih.nci.ctd2.dashboard.model.Xref;
 import gov.nih.nci.ctd2.dashboard.util.DateTransformer;
 import gov.nih.nci.ctd2.dashboard.util.ImplTransformer;
 import gov.nih.nci.ctd2.dashboard.util.WebServiceUtil;
@@ -88,10 +93,20 @@ public class BrowseAPI {
         }
 
         ObservationItem[] obvs = new ObservationItem[observations.size()];
+        Set<String> roles = new TreeSet<String>();
         for (int i = 0; i < observations.size(); i++) {
-            obvs[i] = new ObservationItem((Observation) observations.get(i), dashboardDao);
+            Observation observation = (Observation) observations.get(i);
+            obvs[i] = new ObservationItem(observation, dashboardDao);
+
+            List<ObservedSubject> observedSubjects = dashboardDao.findObservedSubjectByObservation(observation);
+            for (ObservedSubject os : observedSubjects) {
+                if (os.getSubject().equals(subject)) {
+                    String rl = os.getObservedSubjectRole().getSubjectRole().getDisplayName();
+                    roles.contains(rl);
+                }
+            }
         }
-        SubjectBrowse subjectBrowse = new SubjectBrowse(subject, obvs);
+        SubjectBrowse subjectBrowse = new SubjectBrowse(subject, obvs, roles.toArray(new String[0]));
 
         log.debug("ready to serialize");
         JSONSerializer jsonSerializer = new JSONSerializer().transform(new ImplTransformer(), Class.class)
@@ -114,17 +129,48 @@ public class BrowseAPI {
         public final String[] synonyms, roles;
         public final XRefItem[] xref;
 
+        public final ObservationCount observation_count;
         public final ObservationItem[] observations;
 
-        public SubjectBrowse(Subject subject, ObservationItem[] observations) {
+        public SubjectBrowse(Subject subject, ObservationItem[] observations, String[] roles) {
             clazz = subject.getClass().getSimpleName().replace("Impl", "");
 
             this.name = subject.getDisplayName();
-            // TODO
-            this.synonyms = null;
-            this.roles = null;
-            this.xref = null;
+            this.synonyms = getSynomyms(subject);
+            this.xref = getXRefs(subject);
+
+            this.roles = roles;
+
+            observation_count = new ObservationCount(3, 2, 1); // TODO placeholder numbers to be replaced
             this.observations = observations;
+        }
+
+        private static String[] getSynomyms(Subject subject) {
+            Synonym[] synonyms = subject.getSynonyms().toArray(new Synonym[0]);
+            String[] synms = new String[synonyms.length];
+            for (int k = 0; k < synonyms.length; k++) {
+                synms[k] = synonyms[k].getDisplayName();
+            }
+            return synms;
+        }
+
+        private static XRefItem[] getXRefs(Subject subject) {
+            Xref[] xrefs = subject.getXrefs().toArray(new Xref[0]);
+            XRefItem[] apiXrefs = new XRefItem[xrefs.length];
+            for (int k = 0; k < xrefs.length; k++) {
+                apiXrefs[k] = new XRefItem(xrefs[k].getDatabaseName(), xrefs[k].getDatabaseId());
+            }
+            return apiXrefs;
+        }
+    }
+
+    public static class ObservationCount {
+        public final int tier1, tier2, tier3;
+
+        public ObservationCount(int t1, int t2, int t3) {
+            tier1 = t1;
+            tier2 = t2;
+            tier3 = t3;
         }
     }
 }
