@@ -1,5 +1,6 @@
 package gov.nih.nci.ctd2.dashboard.controller;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -50,7 +51,7 @@ public class BrowseAPI {
     public ResponseEntity<String> getSubmission(@PathVariable String subjectClass, @PathVariable String subjectName,
             @RequestParam(value = "center", required = false, defaultValue = "") String center,
             @RequestParam(value = "role", required = false, defaultValue = "") String role,
-            @RequestParam(value = "tier", required = false, defaultValue = "0") String tiers,
+            @RequestParam(value = "tier", required = false, defaultValue = "") String tiers,
             @RequestParam(value = "maximum", required = false, defaultValue = "") String maximum) {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json; charset=utf-8");
@@ -79,14 +80,23 @@ public class BrowseAPI {
         } else {
             subject = dashboardDao.getEntityByStableURL(subjectClass, subjectClass + "/" + subjectName);
         }
-        Integer tier1 = 0;
-        try {
-            tier1 = Integer.parseInt(tiers.split(",")[0]); // TODO test for now
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
+        Integer[] tiersIncluded = { 1, 2, 3 };
+        if (tiers.trim().length() > 0) {
+            try {
+                String[] tierStrings = tiers.split(",");
+                Integer[] tt = new Integer[tierStrings.length];
+                for (int index = 0; index < tierStrings.length; index++) {
+                    tt[index] = Integer.parseInt(tierStrings[index]);
+                }
+                tiersIncluded = tt;
+            } catch (NumberFormatException e) {
+                // e.printStackTrace();
+                tiersIncluded = new Integer[0];
+            }
         }
 
-        List<? extends DashboardEntity> observations = webServiceUtil.getObservations(subject, role, tier1);
+        List<? extends DashboardEntity> observations = webServiceUtil.getObservations(subject, role,
+                Arrays.asList(tiersIncluded));
 
         if (limit > 0 && limit < observations.size()) {
             observations = observations.subList(0, limit);

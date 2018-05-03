@@ -151,14 +151,14 @@ public class WebServiceUtil {
 
     @Transactional
     @Cacheable(value = "entityCache")
-    public List<Observation> getObservations(Subject subject, String role, Integer tier) {
+    public List<Observation> getObservations(Subject subject, String role, List<Integer> tiersIncluded) {
         List<Observation> observations = new ArrayList<Observation>();
         for (ObservedSubject observedSubject : dashboardDao.findObservedSubjectBySubject(subject)) {
             ObservedSubjectRole observedSubjectRole = observedSubject.getObservedSubjectRole();
             String subjectRole = observedSubjectRole.getSubjectRole().getDisplayName();
             Integer observationTier = observedSubject.getObservation().getSubmission().getObservationTemplate()
                     .getTier();
-            if ((role.equals("") || role.equals(subjectRole)) && (tier == 0 || tier == observationTier)) {
+            if ((role.equals("") || role.equals(subjectRole)) && (tiersIncluded.contains(observationTier))) {
                 observations.add(observedSubject.getObservation());
             }
         }
