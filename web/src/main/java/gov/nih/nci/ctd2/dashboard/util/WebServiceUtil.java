@@ -151,19 +151,20 @@ public class WebServiceUtil {
 
     @Transactional
     @Cacheable(value = "entityCache")
-    public List<Observation> getObservations(Subject subject, List<String> centersIncluded, String role, 
+    public List<Observation> getObservations(Subject subject, List<String> centersIncluded, List<String> rolesIncluded, 
             List<Integer> tiersIncluded) {
         List<Observation> observations = new ArrayList<Observation>();
         for (ObservedSubject observedSubject : dashboardDao.findObservedSubjectBySubject(subject)) {
             ObservedSubjectRole observedSubjectRole = observedSubject.getObservedSubjectRole();
             String subjectRole = observedSubjectRole.getSubjectRole().getDisplayName();
+            if(rolesIncluded.size()>0 && !rolesIncluded.contains(subjectRole)) continue;
 
             ObservationTemplate observatinoTemplate = observedSubject.getObservation().getSubmission().getObservationTemplate();
             Integer observationTier = observatinoTemplate.getTier();
             String centerNameBrief = observatinoTemplate.getSubmissionCenter().getStableURL().substring(7); // remove prefix "center/"
             if(centersIncluded.size()>0 && !centersIncluded.contains(centerNameBrief)) continue;
 
-            if ((role.equals("") || role.equals(subjectRole)) && (tiersIncluded.contains(observationTier))) {
+            if ((tiersIncluded.contains(observationTier))) {
                 observations.add(observedSubject.getObservation());
             }
         }

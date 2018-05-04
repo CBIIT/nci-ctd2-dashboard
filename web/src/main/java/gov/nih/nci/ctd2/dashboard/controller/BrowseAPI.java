@@ -67,13 +67,6 @@ public class BrowseAPI {
             }
         }
 
-        log.debug("subjectClass:" + subjectClass);
-        log.debug("subjectName:" + subjectName);
-        log.debug("center:" + center);
-        log.debug("role:" + role);
-        log.debug("tiers:" + tiers);
-        log.debug("maximum:" + maximum);
-
         Subject subject = null;
         if (subjectClass.equalsIgnoreCase("gene")) {
             List<Gene> genes = dashboardDao.findGenesBySymbol(subjectName);
@@ -81,6 +74,12 @@ public class BrowseAPI {
                 subject = genes.get(0);
         } else {
             subject = dashboardDao.getEntityByStableURL(subjectClass, subjectClass + "/" + subjectName);
+        }
+
+        List<String> rolesIncluded = new ArrayList<String>();
+        if(role.trim().length() > 0) {
+            String[] rls = role.trim().toLowerCase().split(",");
+            rolesIncluded.addAll(Arrays.asList(rls));
         }
 
         List<String> centerIncluded = new ArrayList<String>();
@@ -104,7 +103,7 @@ public class BrowseAPI {
             }
         }
 
-        List<? extends DashboardEntity> observations = webServiceUtil.getObservations(subject, centerIncluded, role,
+        List<? extends DashboardEntity> observations = webServiceUtil.getObservations(subject, centerIncluded, rolesIncluded,
                 Arrays.asList(tiersIncluded));
 
         if (limit > 0 && limit < observations.size()) {
