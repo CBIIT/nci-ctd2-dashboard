@@ -1,5 +1,6 @@
 package gov.nih.nci.ctd2.dashboard.controller;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -80,6 +81,13 @@ public class BrowseAPI {
         } else {
             subject = dashboardDao.getEntityByStableURL(subjectClass, subjectClass + "/" + subjectName);
         }
+
+        List<String> centerIncluded = new ArrayList<String>();
+        if (center.trim().length() > 0) {
+            String[] ctr = center.trim().toLowerCase().split(",");
+            centerIncluded.addAll(Arrays.asList(ctr));
+        }
+
         Integer[] tiersIncluded = { 1, 2, 3 };
         if (tiers.trim().length() > 0) {
             try {
@@ -95,7 +103,7 @@ public class BrowseAPI {
             }
         }
 
-        List<? extends DashboardEntity> observations = webServiceUtil.getObservations(subject, role,
+        List<? extends DashboardEntity> observations = webServiceUtil.getObservations(subject, centerIncluded, role,
                 Arrays.asList(tiersIncluded));
 
         if (limit > 0 && limit < observations.size()) {
