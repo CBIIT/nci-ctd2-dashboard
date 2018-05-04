@@ -151,20 +151,19 @@ public class WebServiceUtil {
 
     @Transactional
     @Cacheable(value = "entityCache")
-    public List<Observation> getObservations(Subject subject, List<String> centersIncluded, List<String> rolesIncluded, 
-            List<Integer> tiersIncluded) {
+    public List<Observation> getObservations(Subject subject, final gov.nih.nci.ctd2.dashboard.api.SubjectResponse.Filter filter) {
         List<Observation> observations = new ArrayList<Observation>();
         for (ObservedSubject observedSubject : dashboardDao.findObservedSubjectBySubject(subject)) {
             ObservedSubjectRole observedSubjectRole = observedSubject.getObservedSubjectRole();
             String subjectRole = observedSubjectRole.getSubjectRole().getDisplayName();
-            if(rolesIncluded.size()>0 && !rolesIncluded.contains(subjectRole)) continue;
+            if(filter.rolesIncluded.size()>0 && !filter.rolesIncluded.contains(subjectRole)) continue;
 
             ObservationTemplate observatinoTemplate = observedSubject.getObservation().getSubmission().getObservationTemplate();
             Integer observationTier = observatinoTemplate.getTier();
             String centerNameBrief = observatinoTemplate.getSubmissionCenter().getStableURL().substring(7); // remove prefix "center/"
-            if(centersIncluded.size()>0 && !centersIncluded.contains(centerNameBrief)) continue;
+            if(filter.centerIncluded.size()>0 && !filter.centerIncluded.contains(centerNameBrief)) continue;
 
-            if ((tiersIncluded.contains(observationTier))) {
+            if ((Arrays.asList(filter.tiersIncluded).contains(observationTier))) {
                 observations.add(observedSubject.getObservation());
             }
         }
