@@ -116,7 +116,7 @@ public class BrowseAPI {
             for (ObservedSubject os : observedSubjects) {
                 if (os.getSubject().equals(subject)) {
                     String rl = os.getObservedSubjectRole().getSubjectRole().getDisplayName();
-                    roles.contains(rl);
+                    roles.add(rl);
                 }
             }
         }
