@@ -1,6 +1,7 @@
 package gov.nih.nci.ctd2.dashboard.controller;
 
 import flexjson.JSONSerializer;
+import gov.nih.nci.ctd2.dashboard.api.ExcludeTransformer;
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
 import gov.nih.nci.ctd2.dashboard.model.*;
 import gov.nih.nci.ctd2.dashboard.util.DateTransformer;
@@ -23,8 +24,8 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/api/centers")
-public class APIController {
-    private static final Log log = LogFactory.getLog(APIController.class);
+public class CentersAPI {
+    private static final Log log = LogFactory.getLog(CentersAPI.class);
     @Autowired
     private DashboardDao dashboardDao;
 
@@ -54,13 +55,13 @@ public class APIController {
 
         log.debug("ready to serialize");
         JSONSerializer jsonSerializer = new JSONSerializer().transform(new ImplTransformer(), Class.class)
-                .transform(new DateTransformer(), Date.class);
+                .transform(new DateTransformer(), Date.class).transform(new ExcludeTransformer(), void.class);
         String json = "{}";
         try {
             json = jsonSerializer.exclude("class").exclude("submissions.class").deepSerialize(apiCenters);
         } catch (Exception e) {
-            json = "{'Exception': '" + e.getMessage() + "'}";
             e.printStackTrace();
+            return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
         }
 
         return new ResponseEntity<String>(json, headers, HttpStatus.OK);
@@ -101,5 +102,4 @@ public class APIController {
             this.submissions = submissions;
         }
     }
-
 }
