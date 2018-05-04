@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import flexjson.JSONSerializer;
+import gov.nih.nci.ctd2.dashboard.api.ExcludeTransformer;
 import gov.nih.nci.ctd2.dashboard.api.FieldNameTransformer;
 import gov.nih.nci.ctd2.dashboard.api.ObservationItem;
 import gov.nih.nci.ctd2.dashboard.api.XRefItem;
@@ -134,7 +135,8 @@ public class BrowseAPI {
         JSONSerializer jsonSerializer = new JSONSerializer().transform(new ImplTransformer(), Class.class)
                 .transform(new DateTransformer(), Date.class).transform(new FieldNameTransformer("class"), "clazz")
                 .transform(new FieldNameTransformer("class"), "observations.subject_list.clazz")
-                .transform(new FieldNameTransformer("class"), "observations.evidence_list.clazz");
+                .transform(new FieldNameTransformer("class"), "observations.evidence_list.clazz")
+                .transform(new ExcludeTransformer(), void.class);
         String json = "{}";
         try {
             json = jsonSerializer.exclude("class").exclude("observations.class").deepSerialize(subjectBrowse);
