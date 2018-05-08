@@ -370,7 +370,11 @@
     });
 
     var HtmlStoryView = Backbone.View.extend({
+        el: $("#main-container"),
+        template: _.template($("#html-story-container-tmpl").html()),
         render: function () {
+            var storyView = this;
+            var thatEl = $(this.el);
             var url = this.model.url;
             var observation = this.model.observation;
 
@@ -419,21 +423,18 @@
                                     );
                                 });
 
-                                $.fancybox(
-                                    _.template(
-                                        $("#html-story-container-tmpl").html(), {
-                                            story: summary,
-                                            centerName: observation.submission.observationTemplate.submissionCenter.displayName
-                                        }
-                                    ), {
-                                        'autoDimensions': false,
-                                        'width': '99%',
-                                        'height': '99%',
-                                        'centerOnScroll': true,
-                                        'transitionIn': 'none',
-                                        'transitionOut': 'none'
-                                    }
-                                );
+                                // clean up outer html tags
+                                summary = summary.replace(new RegExp("<!DOCTYPE\\b[^>]*>\\n"), "");
+                                summary = summary.replace(new RegExp("<html>\\n"), "");
+                                summary = summary.replace(new RegExp("<head\\b[^>]*>\\n"), "");
+                                summary = summary.replace(new RegExp("<title\\b[^>]*>(.*?)</title>\\n"), ""); // remove title element
+                                summary = summary.replace(new RegExp("<meta\\b[^>]*>\\n"), ""); // remove meta tag
+                                summary = summary.replace(new RegExp("</head>\\n"), "");
+                                summary = summary.replace(new RegExp("<body>\\n"), "");
+                                summary = summary.replace(new RegExp("</body>\\n"), "");
+                                summary = summary.replace(new RegExp("</html>\\n"), "");
+
+                                $(thatEl).html(storyView.template({ story: summary, centerName: observation.submission.observationTemplate.submissionCenter.displayName}));
                             }
                         });
                     }
@@ -487,20 +488,8 @@
                                 if (observedEvidence.evidence.class == "FileEvidence" &&
                                     (observedEvidence.evidence.mimeType.toLowerCase().search("html") > -1 || observedEvidence.evidence.mimeType.toLowerCase().search("pdf") > -1)) {
                                     // If this is a summary, then it should be a pdf/html file evidence
-                                    var elId = "#file-link2-" + thatModel.id;
-                                    var url = $(elId).attr("href") + observedEvidence.evidence.filePath.replace(/\\/g, '/');
-                                    $(elId).attr("href", url);
-
-                                    if (observedEvidence.evidence.mimeType.toLowerCase().search("html") > -1) {
-                                        $(elId).on("click", function (e) {
-                                            e.preventDefault();
-                                            (new HtmlStoryView({
-                                                model: {
-                                                    observation: thatModel,
-                                                    url: url
-                                                }
-                                            })).render();
-                                        });
+                                    if (observedEvidence.evidence.mimeType.toLowerCase().search("html") < 0) {
+                                        console.log(observedEvidence.evidence.mimeType + ": pdf case, no handled. ");
                                     }
                                 }
 
@@ -560,20 +549,10 @@
                                 if (observedEvidence.evidence.class == "FileEvidence" &&
                                     (observedEvidence.evidence.mimeType.toLowerCase().search("html") > -1 || observedEvidence.evidence.mimeType.toLowerCase().search("pdf") > -1)) {
                                     // If this is a summary, then it should be a pdf/html file evidence
-                                    var elId = "#file-link-" + thatModel.id;
-                                    var url = $(elId).attr("href") + observedEvidence.evidence.filePath.replace(/\\/g, '/');
-                                    $(elId).attr("href", url);
-
                                     if (observedEvidence.evidence.mimeType.toLowerCase().search("html") > -1) {
-                                        $(elId).on("click", function (e) {
-                                            e.preventDefault();
-                                            (new HtmlStoryView({
-                                                model: {
-                                                    observation: thatModel,
-                                                    url: url
-                                                }
-                                            })).render();
-                                        });
+                                        // console.log("html case. expected");
+                                    } else {
+                                        console.log(observedEvidence.evidence.mimeType + ": pdf case, no handled. ");
                                     }
                                 }
 
@@ -955,17 +934,7 @@
                     }); // END OF .cytoscape-view").click
 
                     if (result.submission.observationTemplate.isSubmissionStory && storyFilePath.length > 0) {
-                        var elId = "#view-full-story-link";
-                        var url = $(elId).attr("href") + storyFilePath;
-                        $(elId).on("click", function (e) {
-                            e.preventDefault();
-                            (new HtmlStoryView({
-                                model: {
-                                    observation: result,
-                                    url: url
-                                }
-                            })).render();
-                        });
+                        // show the link
                     } else {
                         $("#view-full-story").hide();
                     }
@@ -1059,16 +1028,7 @@
             $(this.el).append(this.template(result));
 
             if (isHtmlStory) {
-                thatEl.find(".html-story-link").on("click", function (e) {
-                    e.preventDefault();
-                    var url = $(this).attr("href");
-                    (new HtmlStoryView({
-                        model: {
-                            observation: result.observation,
-                            url: url
-                        }
-                    })).render();
-                });
+                thatEl.find(".html-story-link").attr("href", "#"+result.observation.submission.stableURL.replace("submission", "story"));
             }
 
             $(".img-rounded").tooltip({
@@ -3619,6 +3579,7 @@
             "submission/:id": "showSubmission",
             "observation/:id": "showObservation",
             "search/:term": "search",
+            "story/:submission_name": "showStory",
             "animal-model/:name": "showAnimalModel",
             "animal-model/:name/:role": "showAnimalModel",
             "animal-model/:name/:role/:tier": "showAnimalModel",
@@ -3695,6 +3656,60 @@
                 }
             });
             exploreView.render();
+        },
+
+        showStory: function (submission_name) {
+            var storySubmissions = new StorySubmissions({
+                limit: -1
+            });
+            storySubmissions.fetch({
+                success: function () {
+                    var counter = 1;
+                    _.each(storySubmissions.models, function (aStory) {
+                        var observation = aStory.toJSON();
+                        var id = observation.submission.stableURL.replace("submission/", "");
+                        if(id!==submission_name) {
+                            //console.log("NOT MATCH"); // no-op
+                            return;
+                        }
+                        // if it is the queried submission, ...
+                        var observedEvidences = new ObservedEvidences({
+                            observationId: observation.id
+                        });
+                        observedEvidences.fetch({
+                            success: function () {
+                                var url = "";
+
+                                _.each(observedEvidences.models, function (observedEvidence) {
+                                    observedEvidence = observedEvidence.toJSON();
+    
+                                    if (observedEvidence.observedEvidenceRole == null || observedEvidence.evidence == null)
+                                        return;
+
+                                    if (observedEvidence.evidence.class == "FileEvidence" &&
+                                        (observedEvidence.evidence.mimeType.toLowerCase().search("html") > -1 || observedEvidence.evidence.mimeType.toLowerCase().search("pdf") > -1)) {
+                                        // If this is a summary, then it should be a pdf/html file evidence
+                                        if (observedEvidence.evidence.mimeType.toLowerCase().search("html") > -1) {
+                                            url = $("#explore-tmpl").attr("data-url") + observedEvidence.evidence.filePath.replace(/\\/g, '/');
+                                        } else {
+                                            console.log(observedEvidence.evidence.mimeType + ": pdf case, no handled. ");
+                                        }
+                                    }
+                                });
+
+                                var storyView = new HtmlStoryView({
+                                    model: {
+                                        observation: observation,
+                                        url: url,
+                                    }
+                                });
+                                storyView.render();
+                            }
+                        });
+                        counter++; // only one match is expected
+                    });
+                }
+            });
         },
 
         showAnimalModel: function (name, role, tier) {

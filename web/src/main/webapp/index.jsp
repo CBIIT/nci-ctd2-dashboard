@@ -439,7 +439,7 @@
                 <small>{{submission.submissionDate}}</small>
             </td>
             <td class="story-details">
-                <a target="_blank" href="<%=dataURL%>" id="file-link2-{{id}}">view full story</a>
+                <a href="#{{submission.stableURL.replace("submission", "story")}}">view full story</a>
                 <br>or<br>
                 <a href="#{{stableURL}}">see observation</a>
             </td>
@@ -613,7 +613,7 @@
                     <blockquote>
                         <p id="observation-summary"></p>
                     </blockquote>
-                    <span id="view-full-story">(<a id="view-full-story-link" href="<%=dataURL%>">view full story</a>)</span>
+                    <span id="view-full-story">(<a href="#{{submission.stableURL.replace("submission", "story")}}">view full story</a>)</span>
 
                     <table id="observed-subjects-grid" class="table table-bordered table-striped subjects">
                         <thead>
@@ -1634,7 +1634,7 @@
     </script>
 
     <script type="text/template" id="html-story-container-tmpl">
-        <div class="fancy-story-container">
+        <div class="container common-container" id="story-container">
             <img src="img/{{centerName}}.png" alt="{{centerName}}" title="{{centerName}}" height="50" class="fancy-story-img img-polaroid">
             {{story}}
         </div>
@@ -1884,8 +1884,7 @@
                 </p>
                 <p class="pull-right">
                     (
-                        <a target="_blank" href="<%=dataURL%>" id="file-link-{{id}}">
-                            view full story</a>
+                    <a href="#{{submission.stableURL.replace("submission", "story")}}">view full story</a>
                     |
                     <a href="#{{stableURL}}">see observation</a>)
                 </p>
