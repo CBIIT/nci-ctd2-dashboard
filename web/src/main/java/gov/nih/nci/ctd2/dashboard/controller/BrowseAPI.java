@@ -58,14 +58,15 @@ public class BrowseAPI {
         } else {
             subject = dashboardDao.getEntityByStableURL(subjectClass, subjectClass + "/" + subjectName);
         }
-        if(subject==null) {
+        if (subject == null) {
             return new ResponseEntity<String>("{}", headers, HttpStatus.OK);
         }
 
         SubjectResponse subjectResponse = SubjectResponse.createInstance(subject, filter, dashboardDao, webServiceUtil);
 
         log.debug("ready to serialize");
-        JSONSerializer jsonSerializer = new JSONSerializer().transform(new ImplTransformer(), Class.class)
+        JSONSerializer jsonSerializer = new JSONSerializer().exclude("observation_count.class")
+                .exclude("observations.subject_list.xref.class").transform(new ImplTransformer(), Class.class)
                 .transform(new DateTransformer(), Date.class).transform(new FieldNameTransformer("class"), "clazz")
                 .transform(new FieldNameTransformer("class"), "observations.subject_list.clazz")
                 .transform(new FieldNameTransformer("class"), "observations.evidence_list.clazz")
