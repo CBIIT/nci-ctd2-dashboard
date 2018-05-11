@@ -1,11 +1,7 @@
 package gov.nih.nci.ctd2.dashboard.controller;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -23,17 +19,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import flexjson.JSONSerializer;
 import gov.nih.nci.ctd2.dashboard.api.ExcludeTransformer;
 import gov.nih.nci.ctd2.dashboard.api.FieldNameTransformer;
-import gov.nih.nci.ctd2.dashboard.api.ObservationItem;
 import gov.nih.nci.ctd2.dashboard.api.SubjectResponse;
-import gov.nih.nci.ctd2.dashboard.api.XRefItem;
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
-import gov.nih.nci.ctd2.dashboard.model.DashboardEntity;
 import gov.nih.nci.ctd2.dashboard.model.Gene;
-import gov.nih.nci.ctd2.dashboard.model.Observation;
-import gov.nih.nci.ctd2.dashboard.model.ObservedSubject;
 import gov.nih.nci.ctd2.dashboard.model.Subject;
-import gov.nih.nci.ctd2.dashboard.model.Synonym;
-import gov.nih.nci.ctd2.dashboard.model.Xref;
 import gov.nih.nci.ctd2.dashboard.util.DateTransformer;
 import gov.nih.nci.ctd2.dashboard.util.ImplTransformer;
 import gov.nih.nci.ctd2.dashboard.util.WebServiceUtil;
@@ -68,6 +57,9 @@ public class BrowseAPI {
                 subject = genes.get(0);
         } else {
             subject = dashboardDao.getEntityByStableURL(subjectClass, subjectClass + "/" + subjectName);
+        }
+        if(subject==null) {
+            return new ResponseEntity<String>("{}", headers, HttpStatus.OK);
         }
 
         SubjectResponse subjectResponse = SubjectResponse.createInstance(subject, filter, dashboardDao, webServiceUtil);
