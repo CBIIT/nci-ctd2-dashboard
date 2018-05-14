@@ -1,7 +1,6 @@
 package gov.nih.nci.ctd2.dashboard.controller;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -18,15 +17,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import flexjson.JSONSerializer;
-import gov.nih.nci.ctd2.dashboard.api.ExcludeTransformer;
-import gov.nih.nci.ctd2.dashboard.api.FieldNameTransformer;
+import gov.nih.nci.ctd2.dashboard.api.CTD2Serializer;
 import gov.nih.nci.ctd2.dashboard.api.SubjectResponse;
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
 import gov.nih.nci.ctd2.dashboard.model.DashboardEntity;
 import gov.nih.nci.ctd2.dashboard.model.Subject;
 import gov.nih.nci.ctd2.dashboard.util.DashboardEntityWithCounts;
-import gov.nih.nci.ctd2.dashboard.util.DateTransformer;
-import gov.nih.nci.ctd2.dashboard.util.ImplTransformer;
 import gov.nih.nci.ctd2.dashboard.util.WebServiceUtil;
 
 @Controller
@@ -64,14 +60,10 @@ public class SearchAPI {
         }
 
         log.debug("ready to serialize");
-        JSONSerializer jsonSerializer = new JSONSerializer().transform(new ImplTransformer(), Class.class)
-                .transform(new DateTransformer(), Date.class).transform(new FieldNameTransformer("class"), "clazz")
-                .transform(new FieldNameTransformer("class"), "observations.subject_list.clazz")
-                .transform(new FieldNameTransformer("class"), "observations.evidence_list.clazz")
-                .transform(new ExcludeTransformer(), void.class);
+        JSONSerializer jsonSerializer = CTD2Serializer.createJSONSerializer();
         String json = "{}";
         try {
-            json = jsonSerializer.exclude("class").exclude("observations.class").deepSerialize(allSubjects);
+            json = jsonSerializer.deepSerialize(allSubjects);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);

@@ -1,12 +1,10 @@
 package gov.nih.nci.ctd2.dashboard.controller;
 
 import flexjson.JSONSerializer;
-import gov.nih.nci.ctd2.dashboard.api.FieldNameTransformer;
+import gov.nih.nci.ctd2.dashboard.api.CTD2Serializer;
 import gov.nih.nci.ctd2.dashboard.api.ObservationItem;
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
 import gov.nih.nci.ctd2.dashboard.model.*;
-import gov.nih.nci.ctd2.dashboard.util.DateTransformer;
-import gov.nih.nci.ctd2.dashboard.util.ImplTransformer;
 import gov.nih.nci.ctd2.dashboard.util.WebServiceUtil;
 
 import org.apache.commons.logging.Log;
@@ -63,13 +61,10 @@ public class SubmissionAPI {
         APISubmission apiSubmission = new APISubmission(submission, obvs);
 
         log.debug("ready to serialize");
-        JSONSerializer jsonSerializer = new JSONSerializer().transform(new ImplTransformer(), Class.class)
-                .transform(new DateTransformer(), Date.class)
-                .transform(new FieldNameTransformer("class"), "observations.subject_list.clazz")
-                .transform(new FieldNameTransformer("class"), "observations.evidence_list.clazz");
+        JSONSerializer jsonSerializer = CTD2Serializer.createJSONSerializer();
         String json = "{}";
         try {
-            json = jsonSerializer.exclude("class").exclude("observations.class").deepSerialize(apiSubmission);
+            json = jsonSerializer.deepSerialize(apiSubmission);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
