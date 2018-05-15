@@ -16,6 +16,8 @@ package io.swagger.client.api;
 import io.swagger.client.ApiException;
 import io.swagger.client.model.InlineResponse200;
 import io.swagger.client.model.InlineResponse2001;
+import io.swagger.client.model.Observation;
+import io.swagger.client.model.ObservationEvidenceList;
 import io.swagger.client.model.Subject;
 import org.junit.Test;
 import org.junit.Ignore;
@@ -25,10 +27,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 /**
  * API tests for DefaultApi
  */
-@Ignore
+
 public class DefaultApiTest {
 
     private final DefaultApi api = new DefaultApi();
@@ -44,15 +49,20 @@ public class DefaultApiTest {
      */
     @Test
     public void browseTest() throws ApiException {
-        String subjectClass = null;
-        String subjectName = null;
+        String subjectClass = "tissue";
+        String subjectName = "c43295";
         List<String> center = null;
         List<String> role = null;
         List<Integer> tier = null;
         Integer maximum = null;
         Subject response = api.browse(subjectClass, subjectName, center, role, tier, maximum);
-
-        // TODO: test validations
+        assertEquals(subjectClass,response.getPropertyClass());
+        
+        subjectClass = "gene";
+        subjectName = "TP53";
+        assertEquals(subjectName,response.getName());
+        assertEquals(subjectClass,response.getPropertyClass());
+        
     }
     
     /**
@@ -66,8 +76,8 @@ public class DefaultApiTest {
     @Test
     public void centersTest() throws ApiException {
         List<InlineResponse200> response = api.centers();
-
-        // TODO: test validations
+        
+        assertEquals(13, response.size());
     }
     
     /**
@@ -80,13 +90,14 @@ public class DefaultApiTest {
      */
     @Test
     public void searchTermGetTest() throws ApiException {
-        String term = null;
+        String term = "TP53";
         List<String> center = null;
         List<String> role = null;
         List<Integer> tier = null;
         Integer maximum = null;
         List<Subject> response = api.searchTermGet(term, center, role, tier, maximum);
 
+        //System.out.println(response);
         // TODO: test validations
     }
     
@@ -100,11 +111,17 @@ public class DefaultApiTest {
      */
     @Test
     public void submissionTest() throws ApiException {
-        String submissionId = null;
+        String submissionId = "20160306-broad-acme-lineage";
         Integer maximum = null;
         InlineResponse2001 response = api.submission(submissionId, maximum);
 
-        // TODO: test validations
+        for (Observation obs : response.getObservations()){
+        	assertEquals(submissionId, obs.getSubmissionId());
+        	for (ObservationEvidenceList ev: obs.getEvidenceList()){
+        		assertNotNull(ev.getValue());
+        	}
+        }
+
     }
     
 }

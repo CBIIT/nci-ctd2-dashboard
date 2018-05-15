@@ -52,7 +52,7 @@ import io.swagger.client.auth.OAuth;
 
 public class ApiClient {
 
-    private String basePath = "https://ctd2-dashboard.nci.nih.gov/dashboard-api";
+    private String basePath = "http://35.196.117.198:8080/dashboard/api";
     private boolean debugging = false;
     private Map<String, String> defaultHeaderMap = new HashMap<String, String>();
     private String tempFolderPath = null;
