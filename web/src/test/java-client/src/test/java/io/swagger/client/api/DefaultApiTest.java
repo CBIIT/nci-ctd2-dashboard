@@ -60,6 +60,7 @@ public class DefaultApiTest {
         
         subjectClass = "gene";
         subjectName = "TP53";
+        response = api.browse(subjectClass, subjectName, center, role, tier, maximum);
         assertEquals(subjectName,response.getName());
         assertEquals(subjectClass,response.getPropertyClass());
         
