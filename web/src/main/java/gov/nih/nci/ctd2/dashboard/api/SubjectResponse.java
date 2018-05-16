@@ -109,7 +109,7 @@ public class SubjectResponse {
     }
 
     public SubjectResponse(Subject subject, ObservationItem[] observations, String[] roles, int[] tierCount) {
-        clazz = subject.getClass().getSimpleName().replace("Impl", "");
+        clazz = SubjectItem.simpleClassName.get( subject.getClass().getSimpleName().replace("Impl", "") );
 
         this.name = subject.getDisplayName();
         this.synonyms = getSynomyms(subject);

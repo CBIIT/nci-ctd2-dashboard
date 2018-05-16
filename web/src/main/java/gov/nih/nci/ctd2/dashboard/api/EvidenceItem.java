@@ -1,5 +1,8 @@
 package gov.nih.nci.ctd2.dashboard.api;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import gov.nih.nci.ctd2.dashboard.model.DataNumericValue;
 import gov.nih.nci.ctd2.dashboard.model.FileEvidence;
 import gov.nih.nci.ctd2.dashboard.model.ObservedEvidence;
@@ -9,7 +12,7 @@ public class EvidenceItem {
 
     public EvidenceItem(ObservedEvidence observedEvidence) {
         gov.nih.nci.ctd2.dashboard.model.Evidence evidence = observedEvidence.getEvidence();
-        clazz = evidence.getClass().getSimpleName().replace("Impl", "");
+        clazz = simpleClassName.get( evidence.getClass().getSimpleName().replace("Impl", "") );
         this.type = observedEvidence.getObservedEvidenceRole().getEvidenceRole().getDisplayName();
         this.description = observedEvidence.getObservedEvidenceRole().getDisplayText();
 
@@ -27,5 +30,13 @@ public class EvidenceItem {
         this.value = value;
         this.units = units;
         this.mime_type = mime_type;
+    }
+
+    private static Map<String, String> simpleClassName = new HashMap<String, String>();
+    static {
+        simpleClassName.put("LabelEvidence", "label");
+        simpleClassName.put("UrlEvidence", "url");
+        simpleClassName.put("DataNumericValue", "numeric");
+        simpleClassName.put("FileEvidence", "file");
     }
 }
