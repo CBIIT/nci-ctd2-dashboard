@@ -76,7 +76,7 @@ public class CentersAPI {
         public APISubmission(final Submission s, int observationCount) {
             ObservationTemplate observationTemplate = s.getObservationTemplate();
             // required part
-            this.submission_id = s.getId().toString();
+            this.submission_id = s.getStableURL().substring("submission/".length());
             this.submission_date = s.getSubmissionDate();
             this.tier = observationTemplate.getTier();
             this.project = observationTemplate.getProject();

@@ -47,7 +47,7 @@ public class ObservationItem {
         }
 
         Submission submission = observation.getSubmission();
-        this.submission_id = submission.getId().toString();
+        this.submission_id = submission.getStableURL().substring("submission/".length());
         this.observation_summary = submission.getObservationTemplate().getObservationSummary();
         this.subject_list = subjs;
         this.evidence_list = evds;
