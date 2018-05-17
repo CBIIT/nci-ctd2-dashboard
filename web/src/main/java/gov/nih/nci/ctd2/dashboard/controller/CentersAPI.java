@@ -2,9 +2,9 @@ package gov.nih.nci.ctd2.dashboard.controller;
 
 import flexjson.JSONSerializer;
 import gov.nih.nci.ctd2.dashboard.api.ExcludeTransformer;
+import gov.nih.nci.ctd2.dashboard.api.SimpleDateTransformer;
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
 import gov.nih.nci.ctd2.dashboard.model.*;
-import gov.nih.nci.ctd2.dashboard.util.DateTransformer;
 import gov.nih.nci.ctd2.dashboard.util.ImplTransformer;
 import gov.nih.nci.ctd2.dashboard.util.WebServiceUtil;
 
@@ -55,7 +55,7 @@ public class CentersAPI {
 
         log.debug("ready to serialize");
         JSONSerializer jsonSerializer = new JSONSerializer().transform(new ImplTransformer(), Class.class)
-                .transform(new DateTransformer(), Date.class).transform(new ExcludeTransformer(), void.class);
+                .transform(new SimpleDateTransformer(), Date.class).transform(new ExcludeTransformer(), void.class);
         String json = "{}";
         try {
             json = jsonSerializer.exclude("class").exclude("submissions.class").deepSerialize(apiCenters);
