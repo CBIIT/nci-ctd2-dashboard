@@ -97,7 +97,7 @@ public class CentersAPI {
 
         public APICenter(SubmissionCenter c, String pi, APISubmission[] submissions) {
             this.center_name = c.getDisplayName();
-            this.center_id = c.getId().toString();
+            this.center_id = c.getStableURL().substring("center/".length());
             this.principal_investigator = pi;
             this.submissions = submissions;
         }
