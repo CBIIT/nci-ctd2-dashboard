@@ -5,7 +5,9 @@ import java.util.Map;
 
 import gov.nih.nci.ctd2.dashboard.model.DataNumericValue;
 import gov.nih.nci.ctd2.dashboard.model.FileEvidence;
+import gov.nih.nci.ctd2.dashboard.model.LabelEvidence;
 import gov.nih.nci.ctd2.dashboard.model.ObservedEvidence;
+import gov.nih.nci.ctd2.dashboard.model.UrlEvidence;
 
 public class EvidenceItem {
     public final String clazz, type, description, value, units, mime_type;
@@ -25,6 +27,12 @@ public class EvidenceItem {
             FileEvidence fe = (FileEvidence) evidence;
             value = fe.getFileName();
             mime_type = fe.getMimeType();
+        } else if (evidence instanceof LabelEvidence) {
+            LabelEvidence le = (LabelEvidence) evidence;
+            value = le.getDisplayName();
+        } else if (evidence instanceof UrlEvidence) {
+            UrlEvidence ue = (UrlEvidence) evidence;
+            value = ue.getUrl();
         }
 
         this.value = value;
