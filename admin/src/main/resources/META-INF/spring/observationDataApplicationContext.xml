@@ -1244,21 +1244,48 @@
         </property>
     </bean>
     <bean name="dfciRnaiCancerDependencyMapReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
-      <property name="resources" value="${dfci.rnai.cancer.dependency.map.data.location}" />
-      <property name="delegate">
-        <bean class="org.springframework.batch.item.file.FlatFileItemReader">
-          <property name="lineMapper" ref="dfciRnaiCancerDependencyMapLineMapper" />
-          <property name="linesToSkip" value="7" />
-        </bean>
-      </property>
+        <property name="resources" value="${dfci.rnai.cancer.dependency.map.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="dfciRnaiCancerDependencyMapLineMapper" />
+		<property name="linesToSkip" value="7" />
+            </bean>
+        </property>
     </bean>
     <bean name="ucsfGpx4PersisterCellStudyReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
-      <property name="resources" value="${ucsf.gpx4.persister.cell.study.data.location}" />
-      <property name="delegate">
-        <bean class="org.springframework.batch.item.file.FlatFileItemReader">
-          <property name="lineMapper" ref="ucsfGpx4PersisterCellStudyLineMapper" />
-          <property name="linesToSkip" value="7" />
-        </bean>
-      </property>
+        <property name="resources" value="${ucsf.gpx4.persister.cell.study.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="ucsfGpx4PersisterCellStudyLineMapper" />
+	        <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="fhcrcNovelTargetsHeadAndNeckCancerReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${fhcrc.novel.targets.head.and.neck.cancer.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="fhcrcNovelTargetsHeadAndNeckCancerLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="fhcrcWee1Phase1ClinicalTrialReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${fhcrc.wee1.phase1.clinical.trial.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="fhcrcWee1Phase1ClinicalTrialLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="broadGpx4StoryReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${broad.gpx4.story.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="broadGpx4StoryLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
     </bean>
 </beans>

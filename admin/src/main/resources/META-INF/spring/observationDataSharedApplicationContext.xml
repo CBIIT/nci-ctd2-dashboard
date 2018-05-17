@@ -698,9 +698,24 @@
                 <batch:chunk reader="dfciRnaiCancerDependencyMapReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	    </batch:tasklet>
 	</batch:step>
-	<batch:step id="ucsfGpx4PersisterCellStudyStep" parent="observationDataStep">
+	<batch:step id="ucsfGpx4PersisterCellStudyStep" parent="observationDataStep" next="fhcrcNovelTargetsHeadAndNeckCancerStep">
 	    <batch:tasklet>
                 <batch:chunk reader="ucsfGpx4PersisterCellStudyReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	    </batch:tasklet>
+	</batch:step>
+	<batch:step id="fhcrcNovelTargetsHeadAndNeckCancerStep" parent="observationDataStep" next="fhcrcWee1Phase1ClinicalTrialStep">
+	    <batch:tasklet>
+                <batch:chunk reader="fhcrcNovelTargetsHeadAndNeckCancerReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	    </batch:tasklet>
+	</batch:step>
+	<batch:step id="fhcrcWee1Phase1ClinicalTrialStep" parent="observationDataStep" next="broadGpx4StoryStep">
+	    <batch:tasklet>
+                <batch:chunk reader="fhcrcWee1Phase1ClinicalTrialReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	    </batch:tasklet>
+	</batch:step>
+	<batch:step id="broadGpx4StoryStep" parent="observationDataStep">
+	    <batch:tasklet>
+                <batch:chunk reader="broadGpx4StoryReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	    </batch:tasklet>
 	</batch:step>
     </batch:job>
@@ -1961,7 +1976,30 @@
         <property name="delimiter" value="\u0009"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,target,story_location,publication_reference_1,publication_reference_2"/>
     </bean>
-
+    <bean name="fhcrcNovelTargetsHeadAndNeckCancerLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="fhcrcNovelTargetsHeadAndNeckCancerLineTokenizer" />
+    </bean>
+    <bean name="fhcrcNovelTargetsHeadAndNeckCancerLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="\u0009"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,gene_symbol_3,gene_symbol_4,gene_symbol_5,disease_1,candidate_drug_1,candidate_drug_2,story,publication_reference_1,publication_reference_2,data_portal_link,link_to_tier1,evidence_ontology_term"/>
+    </bean>
+    <bean name="fhcrcWee1Phase1ClinicalTrialLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="fhcrcWee1Phase1ClinicalTrialLineTokenizer" />
+    </bean>
+    <bean name="fhcrcWee1Phase1ClinicalTrialLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="\u0009"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,disease,compound_1,compound_2,compound_3,publication_reference_1,publication_reference_2,publication_reference_3,link_to_tier1,story,evidence_ontology_term"/>
+    </bean>
+    <bean name="broadGpx4StoryLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="broadGpx4StoryLineTokenizer" />
+    </bean>
+    <bean name="broadGpx4StoryLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="\u0009"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,compound_1,compound_2,compound_3,compound_4,cell_line,publication_reference_1,publication_reference_2,publication_reference_3,publication_reference_4,publication_reference_5,publication_reference_6,publication_reference_7,ctrp,achilles,ccle,story_location,evidence_ontology_term"/>
+    </bean>
 
     <!-- shared helper beans -->
     <bean name="observationTemplateMap" class="java.util.HashMap">
@@ -3367,6 +3405,50 @@
 		<entry key="ucsf_gpx4_persister_cell_study:story_location" value="evidence:readString:createObservedFileEvidence"/>
 		<entry key="ucsf_gpx4_persister_cell_study:publication_reference_1" value="evidence:readString:createObservedUrlEvidence"/>
 		<entry key="ucsf_gpx4_persister_cell_study:publication_reference_2" value="evidence:readString:createObservedUrlEvidence"/>
+		<entry key="broad_gpx4_story:gene_symbol_1" value="subject:findGenesBySymbol"/>
+		<entry key="broad_gpx4_story:gene_symbol_2" value="subject:findGenesBySymbol"/>
+		<entry key="broad_gpx4_story:compound_1" value="subject:findCompoundsByName"/>
+		<entry key="broad_gpx4_story:compound_2" value="subject:findCompoundsByName"/>
+		<entry key="broad_gpx4_story:compound_3" value="subject:findCompoundsByName"/>
+		<entry key="broad_gpx4_story:compound_4" value="subject:findCompoundsByName"/>
+		<entry key="broad_gpx4_story:cell_line" value="subject:findCellLineByName"/>
+		<entry key="broad_gpx4_story:publication_reference_1" value="evidence:readString:createObservedUrlEvidence"/>
+		<entry key="broad_gpx4_story:publication_reference_2" value="evidence:readString:createObservedUrlEvidence"/>
+		<entry key="broad_gpx4_story:publication_reference_3" value="evidence:readString:createObservedUrlEvidence"/>
+		<entry key="broad_gpx4_story:publication_reference_4" value="evidence:readString:createObservedUrlEvidence"/>
+		<entry key="broad_gpx4_story:publication_reference_5" value="evidence:readString:createObservedUrlEvidence"/>
+		<entry key="broad_gpx4_story:publication_reference_6" value="evidence:readString:createObservedUrlEvidence"/>
+		<entry key="broad_gpx4_story:publication_reference_7" value="evidence:readString:createObservedUrlEvidence"/>
+		<entry key="broad_gpx4_story:ctrp" value="evidence:readString:createObservedUrlEvidence"/>
+		<entry key="broad_gpx4_story:achilles" value="evidence:readString:createObservedUrlEvidence"/>
+		<entry key="broad_gpx4_story:ccle" value="evidence:readString:createObservedUrlEvidence"/>
+		<entry key="broad_gpx4_story:story_location" value="evidence:readString:createObservedFileEvidence"/>
+		<entry key="broad_gpx4_story:evidence_ontology_term" value="evidence:readString:createObservedUrlEvidence"/>
+		<entry key="fhcrc_novel_targets_head_and_neck_cancer:gene_symbol_1" value="subject:findGenesBySymbol"/>
+		<entry key="fhcrc_novel_targets_head_and_neck_cancer:gene_symbol_2" value="subject:findGenesBySymbol"/>
+		<entry key="fhcrc_novel_targets_head_and_neck_cancer:gene_symbol_3" value="subject:findGenesBySymbol"/>
+		<entry key="fhcrc_novel_targets_head_and_neck_cancer:gene_symbol_4" value="subject:findGenesBySymbol"/>
+		<entry key="fhcrc_novel_targets_head_and_neck_cancer:gene_symbol_5" value="subject:findGenesBySymbol"/>
+		<entry key="fhcrc_novel_targets_head_and_neck_cancer:disease_1" value="subject:findTissueSampleByName"/>
+		<entry key="fhcrc_novel_targets_head_and_neck_cancer:candidate_drug_1" value="subject:findCompoundsByName"/>
+		<entry key="fhcrc_novel_targets_head_and_neck_cancer:candidate_drug_2" value="subject:findCompoundsByName"/>
+		<entry key="fhcrc_novel_targets_head_and_neck_cancer:story" value="evidence:readString:createObservedFileEvidence"/>
+		<entry key="fhcrc_novel_targets_head_and_neck_cancer:publication_reference_1" value="evidence:readString:createObservedUrlEvidence"/>
+		<entry key="fhcrc_novel_targets_head_and_neck_cancer:publication_reference_2" value="evidence:readString:createObservedLabelEvidence"/>
+		<entry key="fhcrc_novel_targets_head_and_neck_cancer:data_portal_link" value="evidence:readString:createObservedUrlEvidence"/>
+		<entry key="fhcrc_novel_targets_head_and_neck_cancer:link_to_tier1" value="evidence:readString:createObservedUrlEvidence"/>
+		<entry key="fhcrc_novel_targets_head_and_neck_cancer:evidence_ontology_term" value="evidence:readString:createObservedUrlEvidence"/>
+		<entry key="fhcrc_wee1_phase1_clinical_trial:gene_symbol_1" value="subject:findGenesBySymbol"/>
+		<entry key="fhcrc_wee1_phase1_clinical_trial:disease" value="subject:findTissueSampleByName"/>
+		<entry key="fhcrc_wee1_phase1_clinical_trial:compound_1" value="subject:findCompoundsByName"/>
+		<entry key="fhcrc_wee1_phase1_clinical_trial:compound_2" value="subject:findCompoundsByName"/>
+		<entry key="fhcrc_wee1_phase1_clinical_trial:compound_3" value="subject:findCompoundsByName"/>
+		<entry key="fhcrc_wee1_phase1_clinical_trial:publication_reference_1" value="evidence:readString:createObservedUrlEvidence"/>
+		<entry key="fhcrc_wee1_phase1_clinical_trial:publication_reference_2" value="evidence:readString:createObservedUrlEvidence"/>
+		<entry key="fhcrc_wee1_phase1_clinical_trial:publication_reference_3" value="evidence:readString:createObservedUrlEvidence"/>
+		<entry key="fhcrc_wee1_phase1_clinical_trial:link_to_tier1" value="evidence:readString:createObservedUrlEvidence"/>
+		<entry key="fhcrc_wee1_phase1_clinical_trial:story" value="evidence:readString:createObservedFileEvidence"/>
+		<entry key="fhcrc_wee1_phase1_clinical_trial:evidence_ontology_term" value="evidence:readString:createObservedUrlEvidence"/>
             </map>
         </constructor-arg>
     </bean>

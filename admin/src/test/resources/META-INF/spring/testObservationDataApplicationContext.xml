@@ -467,4 +467,13 @@
     <bean name="ucsfGpx4PersisterCellStudyReader" class="org.springframework.batch.item.file.FlatFileItemReader">
         <property name="lineMapper" ref="ucsfGpx4PersisterCellStudyLineMapper" />
     </bean>
+    <bean name="fhcrcNovelTargetsHeadAndNeckCancerReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="fhcrcNovelTargetsHeadAndNeckCancerLineMapper" />
+    </bean>
+    <bean name="fhcrcWee1Phase1ClinicalTrialReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="fhcrcWee1Phase1ClinicalTrialLineMapper" />
+    </bean>
+    <bean name="broadGpx4StoryReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="broadGpx4StoryLineMapper" />
+    </bean>
 </beans>
