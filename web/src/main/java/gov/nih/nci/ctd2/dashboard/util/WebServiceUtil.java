@@ -148,4 +148,34 @@ public class WebServiceUtil {
 
         return submissions;
     }
+
+    @Transactional
+    @Cacheable(value = "entityCache")
+    public List<Observation> getObservations(Subject subject, final gov.nih.nci.ctd2.dashboard.api.SubjectResponse.Filter filter) {
+        List<Observation> observations = new ArrayList<Observation>();
+        for (ObservedSubject observedSubject : dashboardDao.findObservedSubjectBySubject(subject)) {
+            ObservedSubjectRole observedSubjectRole = observedSubject.getObservedSubjectRole();
+            String subjectRole = observedSubjectRole.getSubjectRole().getDisplayName();
+            if(filter.rolesIncluded.size()>0 && !filter.rolesIncluded.contains(subjectRole)) continue;
+
+            ObservationTemplate observatinoTemplate = observedSubject.getObservation().getSubmission().getObservationTemplate();
+            Integer observationTier = observatinoTemplate.getTier();
+            String centerNameBrief = observatinoTemplate.getSubmissionCenter().getStableURL().substring(7); // remove prefix "center/"
+            if(filter.centerIncluded.size()>0 && !filter.centerIncluded.contains(centerNameBrief)) continue;
+
+            if ((Arrays.asList(filter.tiersIncluded).contains(observationTier))) {
+                observations.add(observedSubject.getObservation());
+            }
+        }
+        Collections.sort(observations, new Comparator<Observation>() {
+            @Override
+            public int compare(Observation o1, Observation o2) {
+                Integer tier2 = o2.getSubmission().getObservationTemplate().getTier();
+                Integer tier1 = o1.getSubmission().getObservationTemplate().getTier();
+                return tier2 - tier1;
+            }
+        });
+
+        return observations;
+    }
 }

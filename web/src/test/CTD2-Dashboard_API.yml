@@ -1,0 +1,354 @@
+swagger: "2.0"
+info:
+  description: "API access to CTD2 Dashboard"
+  version: "1.0.0"
+  title: "CTD2 Dashboard API"
+  termsOfService: ""
+  contact:
+    email: "ocg@mail.nih.gov"
+host: "ctd2-dashboard.nci.nih.gov"
+basePath: "/dashboard-api"
+
+schemes:
+  - "https"
+produces:
+  - "application/json"
+paths:
+  /centers:
+    get:
+      summary: "returns a list of centers"
+      description: "Returns a list of centers and their submissions"      
+      operationId: "centers"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                center_name:
+                  type: string
+                center_id:
+                  type: string
+                principal_investigator:
+                  type: string
+                submissions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      submission_id:
+                        type: string
+                      submission_date:
+                        type: string
+                        format: date
+                      tier:
+                        type: integer
+                        minimum: 1
+                        maximum: 3
+                      project:
+                        type: string
+                      submission_description:
+                        type: string
+                      story_title:
+                        type: string
+                      observation_count: 
+                        type: integer
+                    required:
+                      - "submission_id"
+                      - "submission_date"
+                      - "tier"
+                      - "project"
+                      - "submission_description"
+                      - "observation_count"
+                      
+  /submission/{submissionId}:
+    get:
+      summary: "returns content of a submission"
+      description: "Returns a submission description and a list observations in a submission"
+      operationId: "submission"
+      parameters:
+      - name: "submissionId"
+        in: path
+        required: true
+        type: string
+        description: "The name of the requested submission"
+      - name: "maximum"
+        in: query
+        required: false
+        type: integer
+        description: "The maximum number of observations returned by the query (if not specified, all observations are returned)"
+      responses:
+        404:
+          description: "not found"
+        200:
+          description: "successful operation"
+          schema:
+            type: object
+            properties:
+              submission_center:
+                type: string
+              submission_name:
+                type: string
+              submission_date:
+                type: string
+                format: date
+              tier:
+                type: integer
+                minimum: 1
+                maximum: 3
+              project:
+                type: string
+              submission_description:
+                type: string
+              story_title:
+                type: string
+              observation_count: 
+                type: integer
+                description: "The total number of observations in a submission"
+              observations:
+                type: array
+                items: 
+                  $ref: "#/definitions/Observation"
+                          
+  /browse/{subjectClass}/{subjectName}:
+    get:
+      summary: "returns observations for a subject"
+      description: "Returns a list observations associated with a subject"
+      operationId: "browse"
+      parameters:
+      - name: "subjectClass"
+        in: path
+        required: true
+        type: string
+        enum:
+        - "AnimalModel"
+        - "CellSample"
+        - "Compound"
+        - "Gene"
+        - "ShRna"
+        - "TissueSample"
+        description: "The subject class"
+      - name: "subjectName"
+        in: path
+        required: true
+        type: string
+        description: "The name of the subject"
+      - name: "center"
+        in: query
+        required: false
+        type: array
+        items:
+          type: string
+          enum:
+          - "Broad"
+          - "CSHL"
+          - "Columbia"
+          - "DFCI"
+          - "Emory"
+          - "FHCR1"
+          - "FHCR2"
+          - "Stanford"
+          - "TGRI"
+          - "UCSD"
+          - "UCSF1"
+          - "UCSF2"
+          - "UTMDA"
+          - "UTSW"
+        description: "Restrict returned observations by a comma-separated list of center ids"
+      - name: "role"
+        in: query
+        required: false
+        type: array
+        items:
+          type: string
+        description: "Restrict returned observations by a comma-separated list of roles"
+      - name: "tier"
+        in: query
+        required: false
+        type: array
+        items:
+          type: integer
+          minimum: 1
+          maximum: 3
+        description: "Restrict returned observations by tier(s)"
+      - name: "maximum"
+        in: query
+        required: false
+        type: integer
+        description: "The maximum number of observations returned by the query (if not specified, all observations are returned)"
+      responses:
+        404:
+          description: "not found"
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Subject"
+
+  /search/{term}:
+    get:
+      summary: "Search Dashboard"
+      parameters:
+      - name: "term"
+        in: path
+        required: true
+        type: string
+        description: "The search term"
+      - name: "center"
+        in: query
+        required: false
+        type: array
+        items:
+          type: string
+          enum:
+          - "Broad"
+          - "CSHL"
+          - "Columbia"
+          - "DFCI"
+          - "Emory"
+          - "FHCR1"
+          - "FHCR2"
+          - "Stanford"
+          - "TGRI"
+          - "UCSD"
+          - "UCSF1"
+          - "UCSF2"
+          - "UTMDA"
+          - "UTSW"
+        description: "Restrict returned observations by a comma-separated list of center ids"
+      - name: "role"
+        in: query
+        required: false
+        type: array
+        items:
+          type: string
+        description: "Restrict returned observations by a comma-separated list of roles"
+      - name: "tier"
+        in: query
+        required: false
+        type: array
+        items:
+          type: integer
+          minimum: 1
+          maximum: 3
+        description: "Restrict returned observations by tier(s)"
+      - name: "maximum"
+        in: query
+        required: false
+        type: integer
+        description: "The maximum number of observations returned by the query (if not specified, all observations are returned)"
+      responses:
+        404:
+          description: "not found"
+        200:
+          description: "successful operation"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Subject"
+                    
+definitions:
+    
+  Subject:
+    type: object
+    properties:
+      class:
+        type: string
+      name:
+        type: string
+      synonyms:
+        type: array
+        items:
+          type: string
+      xref:
+        type: array
+        items:
+          type: object
+          properties:
+            source:
+              type: string
+            id:
+              type: string
+      roles:
+        type: array
+        items:
+          type: string
+      observation_count: 
+        type: object
+        properties:
+          tier1:
+            type: integer
+          tier2:
+            type: integer
+          tier3:
+            type: integer
+      observations:
+        type: array
+        items: 
+          $ref: "#/definitions/Observation"
+    required:
+    - "class"
+    - "name"
+    - "observation_count"
+  
+  Observation:
+    type: object
+    properties:
+      submission_id:
+        type: string
+      observation_summary:
+        type: string
+      subject_list:
+        type: array
+        items:
+          type: object
+          properties:
+            class:
+              type: string
+            role:
+              type: string
+            description:
+              type: string
+            name:
+              type: string
+            synonyms:
+              type: array
+              items:
+                type: string
+            xref:
+              type: array
+              items:
+                type: object
+                properties:
+                  source:
+                    type: string
+                  id:
+                    type: string
+      evidence_list:
+        type: array
+        items:
+          type: object
+          properties:
+            class:
+              type: string
+              enum:
+                - "label"
+                - "numeric"
+                - "url"
+                - "file"
+            type:
+              type: string
+            description:
+              type: string
+            value:
+              type: string
+            units:
+              type: string
+            mime_type:
+              type: string
+          required:
+            - "class"
+            - "type"
+            - "description"
+            - "value"
