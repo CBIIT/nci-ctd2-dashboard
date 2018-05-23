@@ -651,8 +651,23 @@ public class DashboardDaoTest {
         // The following are tests for tokenization
         assertFalse(dashboardDao.search("ABT-737").isEmpty());
         assertTrue(dashboardDao.search("ABT").isEmpty());
-        //assertTrue(dashboardDao.search("737").isEmpty());
         assertFalse(dashboardDao.search("ABT*").isEmpty());
     }
-}
 
+    @Test
+    public void hyphenSearchTest() {
+        TissueSample ts = dashboardFactory.create(TissueSample.class);
+        ts.setDisplayName("diffuse large B-cell lymphoma");
+        dashboardDao.save(ts);
+
+        assertTrue(dashboardDao.search("B-CELL").isEmpty());
+        assertFalse(dashboardDao.search("b cell").isEmpty());
+        assertFalse(dashboardDao.search("b-cell").isEmpty());
+        assertFalse(dashboardDao.search("B-cell").isEmpty());
+        assertFalse(dashboardDao.search("cell").isEmpty());
+        assertFalse(dashboardDao.search("diffuse large B-cell lymphoma").isEmpty());
+        assertFalse(dashboardDao.search("diffuse large").isEmpty());
+        assertFalse(dashboardDao.search("\"diffuse large B-cell lymphoma\"").isEmpty());
+        assertFalse(dashboardDao.search("\"diffuse large\"").isEmpty());
+    }
+}

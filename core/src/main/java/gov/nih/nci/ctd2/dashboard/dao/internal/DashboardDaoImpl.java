@@ -28,6 +28,7 @@ public class DashboardDaoImpl implements DashboardDao {
 
     private static final String[] defaultSearchFields = {
             DashboardEntityImpl.FIELD_DISPLAYNAME,
+            DashboardEntityImpl.FIELD_DISPLAYNAME_WS,
             DashboardEntityImpl.FIELD_DISPLAYNAME_UT,
             SubjectImpl.FIELD_SYNONYM,
             SubjectImpl.FIELD_SYNONYM_UT,

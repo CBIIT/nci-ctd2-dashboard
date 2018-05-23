@@ -1,20 +1,40 @@
 package gov.nih.nci.ctd2.dashboard.impl;
 
 import gov.nih.nci.ctd2.dashboard.model.DashboardEntity;
+
+import org.apache.solr.analysis.LowerCaseFilterFactory;
+import org.apache.solr.analysis.StopFilterFactory;
+import org.apache.solr.analysis.WhitespaceTokenizerFactory;
+import org.hibernate.search.annotations.TokenFilterDef;
+import org.hibernate.search.annotations.Parameter;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.Index;
 import org.hibernate.annotations.Proxy;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Fields;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.Analyze;
+import org.hibernate.search.annotations.Analyzer;
+import org.hibernate.search.annotations.AnalyzerDef;
 import org.hibernate.search.annotations.Store;
+import org.hibernate.search.annotations.TokenizerDef;
 
 import javax.persistence.*;
 
+@AnalyzerDef(name="ctd2analyzer",
+  tokenizer = @TokenizerDef(factory = WhitespaceTokenizerFactory.class),
+  filters = {
+    @TokenFilterDef(factory = LowerCaseFilterFactory.class),
+    @TokenFilterDef(factory = StopFilterFactory.class, params = {
+      @Parameter(name="ignoreCase", value="true")
+    })
+})
 @Entity
 @Proxy(proxyClass= DashboardEntity.class)
 @Inheritance(strategy = InheritanceType.JOINED)
-@org.hibernate.annotations.Entity(dynamicUpdate = true, dynamicInsert = true)
+@DynamicUpdate
+@DynamicInsert
 @Table(name = "dashboard_entity")
 @org.hibernate.annotations.Table(
         appliesTo = "dashboard_entity",
@@ -22,7 +42,9 @@ import javax.persistence.*;
 })
 @Indexed
 public class DashboardEntityImpl implements DashboardEntity {
-    public final static String FIELD_DISPLAYNAME = "keyword";
+    private static final long serialVersionUID = 7796821976089294032L;
+	public final static String FIELD_DISPLAYNAME = "keyword";
+    public final static String FIELD_DISPLAYNAME_WS = "keywordWS";
     public final static String FIELD_DISPLAYNAME_UT = "keywordUT";
 
     private Integer id;
@@ -30,6 +52,7 @@ public class DashboardEntityImpl implements DashboardEntity {
 
     @Fields({
         @Field(name = FIELD_DISPLAYNAME, index = org.hibernate.search.annotations.Index.YES, store = Store.YES),
+        @Field(name = FIELD_DISPLAYNAME_WS, index = org.hibernate.search.annotations.Index.YES, store = Store.YES, analyzer = @Analyzer(definition = "ctd2analyzer")),
         @Field(name = FIELD_DISPLAYNAME_UT, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
     })
     public String getDisplayName() {
