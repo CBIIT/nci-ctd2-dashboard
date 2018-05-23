@@ -10,6 +10,7 @@ import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Fields;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.Analyze;
+import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Store;
 
 import javax.persistence.*;
@@ -23,6 +24,7 @@ import java.util.Set;
 public class SubjectImpl extends DashboardEntityImpl implements Subject {
     private static final long serialVersionUID = 1L;
     public final static String FIELD_SYNONYM = "synonym";
+    public final static String FIELD_SYNONYM_WS = "synonymWS";
     public final static String FIELD_SYNONYM_UT = "synonymUT";
 
     private Set<Synonym> synonyms = new LinkedHashSet<Synonym>();
@@ -42,6 +44,7 @@ public class SubjectImpl extends DashboardEntityImpl implements Subject {
     }
 
     @Fields({ @Field(name = FIELD_SYNONYM, index = org.hibernate.search.annotations.Index.YES, store = Store.YES),
+            @Field(name = FIELD_SYNONYM_WS, index = org.hibernate.search.annotations.Index.YES, store = Store.YES, analyzer = @Analyzer(definition = "ctd2analyzer")),
             @Field(name = FIELD_SYNONYM_UT, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO) })
     @Transient
     public String getSynoynmStrings() {
