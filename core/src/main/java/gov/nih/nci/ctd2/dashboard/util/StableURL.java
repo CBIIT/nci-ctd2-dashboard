@@ -11,9 +11,9 @@ public class StableURL {
         /* 
         The guideline requires the complete URL to be 100 characters or less.
         Considering the production URL starts with https://ctd2-dashboard.nci.nih.gov/dashboard/ of length 45,
-        the maximum length the unique part is set to be 50.
+        the maximum length the unique part is set to be 55.
         */
-        final int MAX_LENGTH = 50;
+        final int MAX_LENGTH = 55;
         String stableURL = prefix + "/" + urlProperty.toLowerCase().replaceAll("[^a-zA-Z0-9]", "-");
         if (stableURL.length() > MAX_LENGTH) {
             log.info("The following string is too long for stable URL and truncated:\n" + stableURL);
