@@ -660,14 +660,14 @@ public class DashboardDaoTest {
         ts.setDisplayName("diffuse large B-cell lymphoma");
         dashboardDao.save(ts);
 
-        assertTrue(dashboardDao.search("B-CELL").isEmpty());
-        assertFalse(dashboardDao.search("b cell").isEmpty());
-        assertFalse(dashboardDao.search("b-cell").isEmpty());
-        assertFalse(dashboardDao.search("B-cell").isEmpty());
-        assertFalse(dashboardDao.search("cell").isEmpty());
-        assertFalse(dashboardDao.search("diffuse large B-cell lymphoma").isEmpty());
-        assertFalse(dashboardDao.search("diffuse large").isEmpty());
-        assertFalse(dashboardDao.search("\"diffuse large B-cell lymphoma\"").isEmpty());
-        assertFalse(dashboardDao.search("\"diffuse large\"").isEmpty());
+        assertTrue("search B-CELL", dashboardDao.search("B-CELL").isEmpty());
+        assertFalse("search b cell", dashboardDao.search("b cell").isEmpty());
+        assertFalse("search b-cell", dashboardDao.search("b-cell").isEmpty());
+        assertTrue("search B-cell", dashboardDao.search("B-cell").isEmpty());
+        assertFalse("search cell", dashboardDao.search("cell").isEmpty());
+        assertFalse("search diffuse large B-cell lymphoma", dashboardDao.search("diffuse large B-cell lymphoma").isEmpty());
+        assertFalse("search diffuse large", dashboardDao.search("diffuse large").isEmpty());
+        assertTrue("search \"diffuse large B-cell lymphoma\"", dashboardDao.search("\"diffuse large B-cell lymphoma\"").isEmpty());
+        assertFalse("search \"diffuse large\"", dashboardDao.search("\"diffuse large\"").isEmpty());
     }
 }
