@@ -28,6 +28,9 @@ CENTERS = {
 'University of California San Francisco (2)':'William A. Weiss, M.D., Ph.D.',
 'University of Texas MD Anderson Cancer Center':'Gordon B. Mills, M.D., Ph.D.',
 'University of Texas Southwestern Medical Center':'Michael Roth, Ph.D.',
+'Johns Hopkins University':'Joel S. Bader, Ph.D.',
+'Oregon Health and Science University':'Brian J. Druker, M.D.',
+'University of California San Diego':'Pablo Tamayo, Ph.D.',
 }
 
 ROLES = {
@@ -1022,9 +1025,10 @@ class StoryParser(HTMLParser):
             else:
                 if href[0] == '#':
                     href = href[1:]
+                    self.links.append(href)
                 else:
-                    print('ERROR: Wrong format of href attribute "'+href+'" in: '+self.filename, file=sys.stderr)
-                self.links.append(href)
+                    print('WARNING: Wrong format of href attribute "'+href+'" in: '+self.filename, file=sys.stderr)
+
         if tag == 'p':
             self.pTag = True
             self.pTagCount = self.pTagCount + 1
