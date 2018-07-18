@@ -141,7 +141,7 @@
               <ul class="nav pull-right">
                   <form class="form-search" id="omnisearch">
                       <div class="input-append">
-                          <input type="text" id="omni-input" class="span3 search-query" title="Search" placeholder="e.g. CTNNB1 or dasatinib">
+                          <input type="text" id="omni-input" class="span3 search-query" title="Search" placeholder="e.g. CTNNB1 or dasatinib" aria-label="search">
                           <button type="submit" class="btn search-button">Search</button>
                           <span class="hide" id="search-help-content">
                               <p>Please enter the keyword(s) you would like to search on the website.  You may enter multiple search terms, but do not use "AND" or "OR".</p>
