@@ -151,6 +151,8 @@ body {
     color: #a70001;
 }
 
+.pagination ul>.active>a,.pagination ul>.active>span{color: #5a5a5a;cursor:default;}
+
 .target {
     border-top: 15px solid #1ea44b;
 }
