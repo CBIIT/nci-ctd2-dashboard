@@ -48,8 +48,22 @@ public class ObservationItem {
 
         Submission submission = observation.getSubmission();
         this.submission_id = submission.getStableURL().substring("submission/".length());
-        this.observation_summary = submission.getObservationTemplate().getObservationSummary();
+        this.observation_summary = replaceValues(submission.getObservationTemplate().getObservationSummary(), subjects,
+                evidences);
         this.subject_list = subjs;
         this.evidence_list = evds;
+    }
+
+    private static String replaceValues(String summary, List<ObservedSubject> subjects,
+            List<ObservedEvidence> evidences) {
+        for (ObservedSubject s : subjects) {
+            summary = summary.replace("<" + s.getObservedSubjectRole().getColumnName() + ">",
+                    s.getSubject().getDisplayName());
+        }
+        for (ObservedEvidence e : evidences) {
+            summary = summary.replace("<" + e.getObservedEvidenceRole().getColumnName() + ">",
+                    e.getEvidence().getDisplayName());
+        }
+        return summary;
     }
 }
