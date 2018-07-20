@@ -15,6 +15,8 @@ public class ObservationItem {
     public final SubjectItem[] subject_list;
     public final EvidenceItem[] evidence_list;
 
+    public static String dataURL = "";
+
     public ObservationItem(Submission submission, SubjectItem[] subject_list, EvidenceItem[] evidence_list) {
         this.submission_id = submission.getId().toString();
         this.observation_summary = submission.getObservationTemplate().getObservationSummary();

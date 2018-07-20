@@ -25,7 +25,11 @@ public class EvidenceItem {
             units = dnv.getUnit();
         } else if (evidence instanceof FileEvidence) {
             FileEvidence fe = (FileEvidence) evidence;
-            value = fe.getFileName();
+            String filePath = fe.getFilePath().replaceAll("\\\\", "/");
+            if(filePath.startsWith("./")) {
+                filePath = filePath.substring(2); // not absolutely necessary, but cleaner
+            }
+            value = ObservationItem.dataURL + filePath;
             mime_type = fe.getMimeType();
         } else if (evidence instanceof LabelEvidence) {
             LabelEvidence le = (LabelEvidence) evidence;

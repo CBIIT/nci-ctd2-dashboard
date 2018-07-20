@@ -33,6 +33,9 @@ public class SubmissionAPI {
     @Autowired
     private WebServiceUtil webServiceUtil;
 
+    @Autowired
+    private String dataURL;
+
     @Transactional
     @RequestMapping(value = "{id}", method = { RequestMethod.GET }, headers = "Accept=application/json")
     public ResponseEntity<String> getSubmission(@PathVariable String id,
@@ -54,6 +57,7 @@ public class SubmissionAPI {
         if (limit > 0 && limit < observations.size()) {
             observations = observations.subList(0, limit);
         }
+        ObservationItem.dataURL = dataURL;
         ObservationItem[] obvs = new ObservationItem[observations.size()];
         for (int i = 0; i < observations.size(); i++) {
             obvs[i] = new ObservationItem((Observation) observations.get(i), dashboardDao);
