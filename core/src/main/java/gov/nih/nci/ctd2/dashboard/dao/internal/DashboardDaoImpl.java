@@ -95,31 +95,20 @@ public class DashboardDaoImpl implements DashboardDao {
         if(entities == null || entities.isEmpty())
             return;
 
-            ArrayList<DashboardEntity> allEntities = new ArrayList<DashboardEntity>();
+        Session session = getSessionFactory().openSession();
+        session.beginTransaction(); 
+        int i = 0;
         for (DashboardEntity entity : entities) {
             if(entity instanceof Subject) {
                 Subject subject = (Subject) entity;
-                allEntities.addAll(subject.getXrefs());
-                allEntities.addAll(subject.getSynonyms());
+                for(Xref x: subject.getXrefs()) {
+                    session.save(x);
+                }
+                for(Synonym x: subject.getSynonyms()) {
+                    session.save(x);
+                }
             }
-        }
-        allEntities.addAll(entities);
-
-        // Insert new element super fast with a stateless session
-        StatelessSession statelessSession = getSessionFactory().openStatelessSession();
-        Transaction tx = statelessSession.beginTransaction();
-
-        for (DashboardEntity entity : allEntities)
-            statelessSession.insert(entity);
-
-        tx.commit();
-        statelessSession.close();
-
-        // And then update them all to create the actual mappings
-        Session session = getSessionFactory().openSession();
-        int i = 0;
-        for (DashboardEntity entity : allEntities) {
-            session.update(entity);
+            session.save(entity);
             if(++i % batchSize == 0) {
                 session.flush();
                 session.clear();
@@ -127,6 +116,7 @@ public class DashboardDaoImpl implements DashboardDao {
         }
         session.flush();
         session.clear();
+        session.getTransaction().commit();
         session.close();
     }
 

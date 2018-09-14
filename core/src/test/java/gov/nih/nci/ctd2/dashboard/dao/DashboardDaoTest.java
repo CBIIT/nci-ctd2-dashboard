@@ -79,7 +79,7 @@ public class DashboardDaoTest {
     }
 
     @Test
-    public void createAndStatelessPersistTest() {
+    public void batchSaveTest() {
         Collection<DashboardEntity> entities = new ArrayList<DashboardEntity>();
         Synonym synonym = dashboardFactory.create(Synonym.class);
         synonym.setDisplayName("S1");
@@ -149,8 +149,7 @@ public class DashboardDaoTest {
     }
 
     @Test
-    public void issue24Test() {
-        // See https://bitbucket.org/cbio_mskcc/ctd2-dashboard/issue/24/savestateless-issue
+    public void batchSaveWithXrefTest() {
         Collection<DashboardEntity> xrefEntities = new ArrayList<DashboardEntity>();
 
         // Ok let's create the xrefs
