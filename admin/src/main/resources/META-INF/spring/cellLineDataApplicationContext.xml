@@ -12,37 +12,37 @@
   <batch:job id="cellLineDataImporterJob">
 	<batch:step id="cellLineNameTypeStep" parent="cellLineDataSimpleStep" next="cellLineAnnotationTypeStep">
 	  <batch:tasklet>
-		<batch:chunk reader="cellLineNameTypeReader" writer="cellLineNameTypeWriter"/>
+		<batch:chunk reader="cellLineNameTypeReader" writer="emptyItemWriter"/>
 	  </batch:tasklet>
 	</batch:step>
 	<batch:step id="cellLineAnnotationTypeStep" parent="cellLineDataSimpleStep" next="cellLineAnnotationNameStep">
 	  <batch:tasklet>
-		<batch:chunk reader="cellLineAnnotationTypeReader" writer="cellLineAnnotationWriter"/>
+		<batch:chunk reader="cellLineAnnotationTypeReader" writer="emptyItemWriter"/>
 	  </batch:tasklet>
 	</batch:step>
 	<batch:step id="cellLineAnnotationNameStep" parent="cellLineDataSimpleStep" next="cellLineAnnotationSourceStep">
 	  <batch:tasklet>
-		<batch:chunk reader="cellLineAnnotationNameReader" writer="cellLineAnnotationWriter"/>
+		<batch:chunk reader="cellLineAnnotationNameReader" writer="emptyItemWriter"/>
 	  </batch:tasklet>
 	</batch:step>
 	<batch:step id="cellLineAnnotationSourceStep" parent="cellLineDataSimpleStep" next="cellLineAnnotationSampleStep">
 	  <batch:tasklet>
-		<batch:chunk reader="cellLineAnnotationSourceReader" writer="cellLineAnnotationWriter"/>
+		<batch:chunk reader="cellLineAnnotationSourceReader" writer="emptyItemWriter"/>
 	  </batch:tasklet>
 	</batch:step>
 	<batch:step id="cellLineAnnotationSampleStep" parent="cellLineDataSimpleStep" next="cellLineSampleStep">
 	  <batch:tasklet>
-		<batch:chunk reader="cellLineAnnotationSampleReader" writer="cellLineAnnotationWriter"/>
+		<batch:chunk reader="cellLineAnnotationSampleReader" writer="emptyItemWriter"/>
 	  </batch:tasklet>
 	</batch:step> 
 	<batch:step id="cellLineSampleStep" parent="cellLineDataSimpleStep" next="cellLineNameStep">
 	  <batch:tasklet>
-		<batch:chunk reader="cellLineSampleReader" writer="cellLineSampleWriter"/>
+		<batch:chunk reader="cellLineSampleReader" writer="emptyItemWriter"/>
 	  </batch:tasklet>
 	</batch:step>
 	<batch:step id="cellLineNameStep" parent="cellLineDataSimpleStep" next="cellLineWriterStep">
 	  <batch:tasklet>
-		<batch:chunk reader="cellLineNameReader" writer="cellLineNameWriter"/>
+		<batch:chunk reader="cellLineNameReader" writer="emptyItemWriter"/>
 	  </batch:tasklet>
 	</batch:step>
 	<batch:step id="cellLineWriterStep" parent="cellLineDataSimpleStep">

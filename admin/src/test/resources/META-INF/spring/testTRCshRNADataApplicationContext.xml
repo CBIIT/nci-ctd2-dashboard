@@ -12,7 +12,7 @@
   <batch:job id="TRCshRNADataImporterJob">
 	<batch:step id="TRCshRNAFilterStep" parent="TRCshRNADataSimpleStep" next="TRCshRNADataStep">
 	  <batch:tasklet>
-		<batch:chunk reader="TRCshRNAFilterReader" writer="TRCshRNAFilterWriter"/>
+		<batch:chunk reader="TRCshRNAFilterReader" writer="emptyItemWriter"/>
 	  </batch:tasklet>
 	</batch:step>
 	<batch:step id="TRCshRNADataStep" parent="TRCshRNADataSimpleStep">

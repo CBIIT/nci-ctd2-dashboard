@@ -13,12 +13,12 @@
   <batch:job id="tissueSampleDataImporterJob">
 	<batch:step id="tissueSampleTermsDataStep" parent="tissueSampleDataSimpleStep" next="tissueSampleSynonymsDataStep">
 	  <batch:tasklet>
-		<batch:chunk reader="tissueSampleTermsDataReader" writer="tissueSampleTermsDataWriter"/>
+		<batch:chunk reader="tissueSampleTermsDataReader" writer="emptyItemWriter"/>
 	  </batch:tasklet>
 	</batch:step>
 	<batch:step id="tissueSampleSynonymsDataStep" parent="tissueSampleDataSimpleStep" next="tissueSampleWriterStep">
 	  <batch:tasklet>
-		<batch:chunk reader="tissueSampleSynonymsDataReader" writer="tissueSampleSynonymsDataWriter"/>
+		<batch:chunk reader="tissueSampleSynonymsDataReader" writer="emptyItemWriter"/>
 	  </batch:tasklet>
 	</batch:step>
 	<batch:step id="tissueSampleWriterStep" parent="tissueSampleDataSimpleStep">

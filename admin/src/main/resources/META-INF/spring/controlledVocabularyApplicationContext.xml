@@ -13,7 +13,7 @@
   <batch:job id="controlledVocabularyImporterJob">
 	<batch:step id="controlledVocabularyPerTemplateStep" parent="controlledVocabularySimpleStep" next="controlledVocabularyPerColumnStep">
 	  <batch:tasklet>
-		<batch:chunk reader="controlledVocabularyPerTemplateReader" writer="controlledVocabularyPerTemplateWriter"/>
+		<batch:chunk reader="controlledVocabularyPerTemplateReader" writer="emptyItemWriter"/>
 	  </batch:tasklet>
 	</batch:step>
 	<batch:step id="controlledVocabularyPerColumnStep" parent="controlledVocabularySimpleStep">

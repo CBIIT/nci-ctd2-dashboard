@@ -12,12 +12,12 @@
   <batch:job id="compoundDataImporterJob">
 	<batch:step id="compoundsStep" parent="compoundDataStep" next="compoundSynonymsStep">
 	  <batch:tasklet>
-		<batch:chunk reader="compoundsReader" writer="compoundsWriter"/>
+		<batch:chunk reader="compoundsReader" writer="emptyItemWriter"/>
 	  </batch:tasklet>
 	</batch:step>
 	<batch:step id="compoundSynonymsStep" parent="compoundDataStep" next="compoundWriterStep">
 	  <batch:tasklet>
-		<batch:chunk reader="compoundSynonymsReader" writer="compoundSynonymsWriter"/>
+		<batch:chunk reader="compoundSynonymsReader" writer="emptyItemWriter"/>
 	  </batch:tasklet>
 	</batch:step>
 	<batch:step id="compoundWriterStep" parent="compoundDataStep" next="compoundXrefStep">
@@ -25,7 +25,7 @@
 	</batch:step>
     <batch:step id="compoundXrefStep" parent="compoundDataStep">
       <batch:tasklet>
-        <batch:chunk reader="compoundXrefReader" writer="xrefWriter"/>
+        <batch:chunk reader="compoundXrefReader" writer="emptyItemWriter"/>
       </batch:tasklet>
     </batch:step>
   </batch:job>
