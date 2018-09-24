@@ -45,9 +45,14 @@
 		<batch:chunk reader="cellLineNameReader" writer="emptyItemWriter"/>
 	  </batch:tasklet>
 	</batch:step>
-	<batch:step id="cellLineWriterStep" parent="cellLineDataSimpleStep">
+	<batch:step id="cellLineWriterStep" parent="cellLineDataSimpleStep" next="cellLineXrefStep">
 	  <batch:tasklet ref="cellLineWriter"/>
 	</batch:step>
+    <batch:step id="cellLineXrefStep" parent="cellLineDataSimpleStep">
+      <batch:tasklet>
+        <batch:chunk reader="cellLineXrefReader" writer="emptyItemWriter"/>
+      </batch:tasklet>
+    </batch:step>
   </batch:job>
 
   <bean id="cellLineDataSimpleStep" class="org.springframework.batch.core.step.item.SimpleStepFactoryBean" abstract="true">
@@ -166,6 +171,14 @@
   <bean name="cellLineNameTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="names" value="cell_sample_id,cell_name_type_id,cell_sample_name"/>
 	<property name="delimiter" value="\u0009"/>
+  </bean>
+
+  <!-- cell line xref bean -->
+
+  <bean name="cellLineXrefReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+    <property name="resource" value="${cell.line.xref.location}" />
+    <property name="lineMapper" ref="xrefLineMapper" />
+    <property name="linesToSkip" value="1" />
   </bean>
 
   <!-- used for cell line data writing -->
