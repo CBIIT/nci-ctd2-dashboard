@@ -1617,6 +1617,14 @@
         render: function () {
             var thatModel = this.model;
             var result = thatModel.subject.toJSON();
+
+            result["cosmic"] = false;
+            _.each(result.xrefs, function(xref) {
+                if (xref.databaseName == "COSMIC SAMPLE") {
+                     result["cosmic"] = xref.databaseId;
+                 }
+              });
+
             result.type = result.class;
 
             // Look for cbioPortal Id

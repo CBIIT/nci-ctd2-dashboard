@@ -1374,6 +1374,14 @@
                                 <ul></ul>
                             </td>
                         </tr>
+                        <tr>
+                            <th>References</th>
+                            <td>
+                                <ul class="refs">
+                                    {{cosmic ? "<li>COSMIC cell line: <a target='_blank' href='https://cancer.sanger.ac.uk/cell_lines/sample/overview?id=" + cosmic + "'>" + cosmic + " <i class='icon-share'></i></a></li>" : "" }}
+                                </ul>
+                            </td>
+                        </tr>
                         <tr id="cbiolink">
                             <th>Genomic alterations</th>
                             <td>
