@@ -1307,7 +1307,9 @@
                         <tr id="tissue-refs">
                             <th>References</th>
                             <td>
-                                <ul class="xrefs"></ul>
+                                <ul class="xrefs">
+                                      {{diseaseOntology ? "<li>Disease ontology: <a target='_blank' href='http://disease-ontology.org/term/" + diseaseOntology + "'>" + diseaseOntology + " <i class='icon-share'></i></a></li>" : ""}}
+                                </ul>
                             </td>
                         </tr>
                     </table>
@@ -2143,9 +2145,9 @@
 
     <script type="text/template" id="ncithesaurus-tmpl">
         <li>
-            <a href="http://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code={{nciId}}" target="_blank">
-                NCI Thesaurus: {{nciId}}
-            </a>
+            NCI Thesaurus: <a href="http://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code={{nciId}}" target="_blank">
+                {{nciId}}
+            <i class='icon-share'></i></a>
         </li>
     </script>
 

@@ -1510,6 +1510,14 @@
         render: function () {
             var thatModel = this.model;
             var result = thatModel.subject.toJSON();
+
+            result["diseaseOntology"] = false;
+            _.each(result.xrefs, function(xref) {
+                if (xref.databaseName == "disease-ontology") {
+                     result["diseaseOntology"] = xref.databaseId;
+                 }
+              });
+
             result.type = result.class;
             $(this.el).html(this.template($.extend(result, {
                 tier: thatModel.tier ? thatModel.tier : null,
