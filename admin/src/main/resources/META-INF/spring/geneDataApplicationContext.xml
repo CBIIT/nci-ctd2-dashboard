@@ -11,11 +11,16 @@
   <context:component-scan base-package="gov.nih.nci.ctd2.dashboard.importer.internal" />
 
   <batch:job id="geneDataImporterJob">
-	<batch:step id="geneDataStep" parent="geneDataSimpleStep">
+	<batch:step id="geneDataStep" parent="geneDataSimpleStep" next="geneXrefStep">
 	  <batch:tasklet>
 		<batch:chunk reader="geneDataReader" processor="geneDataProcessor" writer="geneDataWriter"/>
 	  </batch:tasklet>
 	</batch:step>
+    <batch:step id="geneXrefStep" parent="geneDataSimpleStep">
+      <batch:tasklet>
+        <batch:chunk reader="geneXrefReader" writer="emptyItemWriter"/>
+      </batch:tasklet>
+    </batch:step>
   </batch:job>
 
   <bean id="geneDataSimpleStep" class="org.springframework.batch.core.step.item.SimpleStepFactoryBean" abstract="true">
@@ -40,6 +45,12 @@
 
   <bean name="geneLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
 	<property name="delimiter" value="\u0009"/>
+  </bean>
+
+  <bean name="geneXrefReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+    <property name="resource" value="${gene.xref.location}" />
+    <property name="lineMapper" ref="xrefLineMapper" />
+    <property name="linesToSkip" value="1" />
   </bean>
 
 </beans>
