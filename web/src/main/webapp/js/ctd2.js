@@ -1169,6 +1169,7 @@
             var result = thatModel.subject.toJSON();
 
             result.drugbank = result.pubchem = result.cas = false;
+            result.ctrpID = result.ctrpName = false;
 
             _.each(result.xrefs, function (xref) {
                 if (xref.databaseName == "IMAGE") {
@@ -1177,6 +1178,10 @@
                     result.pubchem = xref.databaseId;
                 } else if (xref.databaseName == "DRUG BANK") {
                     result.drugbank = xref.databaseId;
+                } else if (xref.databaseName == "CTRP ID") {
+                    result.ctrpID = xref.databaseId;
+                } else if (xref.databaseName == "CTRP NAME") {
+                    result.ctrpName = xref.databaseId;
                 } else if (xref.databaseName == "CAS") {
                     result.cas = xref.databaseId;
                 }

@@ -1524,6 +1524,7 @@
                                   <ul class="compound-xrefs">
                                       {{pubchem ? "<li>PubChem: <a target='_blank' href='https://pubchem.ncbi.nlm.nih.gov/compound/" + pubchem + "'>" + pubchem + "</a> <i class='icon-share'></i></li>" : ""}}
                                       {{drugbank ? "<li>DrugBank: <a target='_blank' href='https://www.drugbank.ca/drugs/" + drugbank + "'>" + drugbank + "</a> <i class='icon-share'></i></li>" : ""}}
+                                      {{ctrpID ? (ctrpName ? "<li>CTRP: <a target='_blank' href='http://portals.broadinstitute.org/ctrp.v2.2/?compoundId="+ctrpID+"&compoundName=" + ctrpName + "'>" + ctrpName + "</a> <i class='icon-share'></i></li>" : "") : ""}}
                                       {{cas ? "<li>CAS: " + cas + "</li>" : ""}}
 
                                   </ul>
