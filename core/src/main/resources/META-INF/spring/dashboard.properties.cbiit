@@ -1,5 +1,5 @@
 # database
-database.driverClassName=com.mysql.jdbc.Driver
+database.driverClassName=com.mysql.cj.jdbc.Driver
 
 # hibernate
 hibernate.dialect=org.hibernate.dialect.MySQL5InnoDBDialect

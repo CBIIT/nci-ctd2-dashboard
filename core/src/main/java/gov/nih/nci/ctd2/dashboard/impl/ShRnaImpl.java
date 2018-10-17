@@ -2,7 +2,7 @@ package gov.nih.nci.ctd2.dashboard.impl;
 
 import gov.nih.nci.ctd2.dashboard.model.ShRna;
 import gov.nih.nci.ctd2.dashboard.model.Transcript;
-import org.hibernate.annotations.Index;
+import javax.persistence.Index;
 import org.hibernate.annotations.Proxy;
 import org.hibernate.search.annotations.Indexed;
 
@@ -13,7 +13,9 @@ import javax.persistence.Table;
 
 @Entity
 @Proxy(proxyClass = ShRna.class)
-@Table(name = "shrna")
+@Table(name = "shrna",
+        indexes = { @Index(name = "reagent_idx", columnList = "reagentName" )
+    })
 @Indexed
 public class ShRnaImpl extends SubjectWithOrganismImpl implements ShRna {
     private static final long serialVersionUID = -8167563848347067927L;
@@ -50,7 +52,6 @@ public class ShRnaImpl extends SubjectWithOrganismImpl implements ShRna {
     }
 
     @Column(length = 255, nullable = false)
-    @Index(name = "reagent_idx")
     public String getReagentName() {
         return reagentName;
     }

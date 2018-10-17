@@ -3,9 +3,9 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		xmlns:batch="http://www.springframework.org/schema/batch"
 		xmlns:context="http://www.springframework.org/schema/context"
-        xsi:schemaLocation="http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-2.1.xsd
-							http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
-							http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+        xsi:schemaLocation="http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-3.0.xsd
+							http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+							http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
 
     <batch:job id="observationDataImporterJob">
         <batch:step id="dfciAtarisAnalysisStep" parent="observationDataStep" next="broadCompoundSensitivityLineageEnrichmentStep">
@@ -731,7 +731,7 @@
         <property name="lineTokenizer" ref="broadCompoundSensitivityLineageEnrichmentLineTokenizer" />
     </bean>
     <bean name="broadCompoundSensitivityLineageEnrichmentLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,compound_name,cell_lineage,number_of_cell_lines,number_of_example_cell_lines,enrichment_direction,fdr_q_value,image_path,nci_portal,gct_path,ctrp_portal,publication_url"/>
     </bean>
     
@@ -740,7 +740,7 @@
         <property name="lineTokenizer" ref="broadCompoundSensitivityMutationEnrichmentLineTokenizer" />
     </bean>
     <bean name="broadCompoundSensitivityMutationEnrichmentLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,compound_name,entrez_gene_id,number_of_cell_lines,number_of_mutant_cell_lines,enrichment_direction,fdr_q_value,image_path,nci_portal,gct_path,ctrp_portal,publication_url"/>
     </bean>
     
@@ -749,7 +749,7 @@
         <property name="lineTokenizer" ref="broadTier3NavitoclaxStoryLineTokenizer" />
     </bean>
     <bean name="broadTier3NavitoclaxStoryLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,compound_name,gene_symbol,figure_1,figure_2,figure_3,figure_4,figure_5,figure_6,tier1_evidence,publication_url"/>
     </bean>
     
@@ -758,7 +758,7 @@
         <property name="lineTokenizer" ref="broadCompoundSensitivityCtxMutationEnrichmentLineTokenizer" />
     </bean>
     <bean name="broadCompoundSensitivityCtxMutationEnrichmentLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,cell_lineage,compound_name,entrez_gene_id,number_of_cell_lines,number_of_mutant_cell_lines,enrichment_direction,fdr_q_value,image_path,nci_portal,gct_path,ctrp_portal,publication_url"/>
     </bean>
     
@@ -767,7 +767,7 @@
         <property name="lineTokenizer" ref="broadCompoundSensitivitySublineageEnrichmentLineTokenizer" />
     </bean>
     <bean name="broadCompoundSensitivitySublineageEnrichmentLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,cell_lineage,compound_name,cell_sublineage,number_of_cell_lines,number_of_example_cell_lines,enrichment_direction,fdr_q_value,image_path,nci_portal,gct_path,ctrp_portal,publication_url"/>
     </bean>
     
@@ -776,7 +776,7 @@
         <property name="lineTokenizer" ref="columbiaMRAFetAnalysisLineTokenizer" />
     </bean>
     <bean name="columbiaMRAFetAnalysisLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,disease_condition,tissue,gene_symbol,func_type,mra_regulon_signature_overlap,mra_overlap_rank,mra_fet_p_value,figure_1,network_1,network_2,publication_url"/>
     </bean>
     
@@ -785,7 +785,7 @@
         <property name="lineTokenizer" ref="columbiaGbmMrsStoryLineTokenizer" />
     </bean>
     <bean name="columbiaGbmMrsStoryLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,disease_condition,gene_symbol_1,gene_symbol_2,gene_symbol_3,publication_reference_1,publication_reference_2,tier1_evidence,story_location"/>
     </bean>
     
@@ -794,7 +794,7 @@
         <property name="lineTokenizer" ref="columbiaPrecmedLineTokenizer" />
     </bean>
     <bean name="columbiaPrecmedLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,tissue_sample_1,tissue_sample_2,publication_reference_1,publication_reference_2,publication_reference_3,publication_reference_4,story_location"/>
     </bean>
     
@@ -803,7 +803,7 @@
         <property name="lineTokenizer" ref="cshlTier4FGF19StoryLineTokenizer" />
     </bean>
     <bean name="cshlTier4FGF19StoryLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,gene_symbol_3,compound_name,tissue_sample,publication_reference_1,publication_reference_2,story_location"/>
     </bean>
     
@@ -812,7 +812,7 @@
         <property name="lineTokenizer" ref="cshlCdk9LineTokenizer" />
     </bean>
     <bean name="cshlCdk9LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,gene_symbol_3,compound_name,disease_name,cell_line_1,cell_line_2,publication_reference,story_location"/>
     </bean>
     
@@ -821,7 +821,7 @@
         <property name="lineTokenizer" ref="dfciYapYesStoryLineTokenizer" />
     </bean>
     <bean name="dfciYapYesStoryLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,gene_symbol_3,gene_symbol_4,gene_symbol_5,gene_symbol_6,compound_name_1,resource_url_1,publication_reference_1,publication_reference_2,story_location"/>
     </bean>
     
@@ -830,7 +830,7 @@
         <property name="lineTokenizer" ref="dfciReporterAnalysisLineTokenizer" />
     </bean>
     <bean name="dfciReporterAnalysisLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,target_group,target_group_gene,target_group_alteration,number_of_cell_lines,number_of_cell_lines_in_target_group,gene_symbol,p_value,fdr,nci_portal,gct_path,publication_url"/>
     </bean>
     
@@ -839,7 +839,7 @@
         <property name="lineTokenizer" ref="dfciAtarisAnalysisLineTokenizer" />
     </bean>
     <bean name="dfciAtarisAnalysisLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,number_of_cell_lines,shRNA_id,gene_symbol,solution_name,c_score,p_value,fdr,nci_portal,shrna_gct_path,ataris_gct_path,publication_url"/>
     </bean>
     
@@ -848,7 +848,7 @@
         <property name="lineTokenizer" ref="dfciOvarianAnalysisLineTokenizer" />
     </bean>
     <bean name="dfciOvarianAnalysisLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,target_group,number_of_cell_lines,number_of_cell_lines_in_target_group,gene_symbol,gene_scoring,additional_evidence,nci_portal,gct_path,publication_url"/>
     </bean>
     
@@ -857,7 +857,7 @@
         <property name="lineTokenizer" ref="dfciPax8Tier3LineTokenizer" />
     </bean>
     <bean name="dfciPax8Tier3LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,target_group,gene_symbol,figure_1,figure_2,figure_3,figure_4,figure_5,tier2_evidence,publication_url"/>
     </bean>
     
@@ -866,7 +866,7 @@
         <property name="lineTokenizer" ref="fhcrcCstTier1LineTokenizer" />
     </bean>
     <bean name="fhcrcCstTier1LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol,splice_junction,disease_condition,number_of_tumor_samples,number_of_tumor_samples_with_junction,average_number_of_supporting_reads,number_of_samples_with_supporting_rpts,junction_type,is_observed_in_ip_tissue,has_supporting_ests,genomic_reference_assembly"/>
     </bean>
     
@@ -875,7 +875,7 @@
         <property name="lineTokenizer" ref="fhcrcCstTier1Profiling1LineTokenizer" />
     </bean>
     <bean name="fhcrcCstTier1Profiling1LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,splice_junction,disease_condition,number_of_tumor_samples,number_of_tumor_samples_with_junction,average_number_of_supporting_reads,number_of_samples_with_supporting_rpts,junction_type,is_observed_in_ip_tissue,has_supporting_ests,genomic_reference_assembly"/>
     </bean>
     
@@ -884,7 +884,7 @@
         <property name="lineTokenizer" ref="utswTier2DiscoipyrrolesStoryLineTokenizer" />
     </bean>
     <bean name="utswTier2DiscoipyrrolesStoryLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,compound_name,gene_symbol,disease_condition,target_description,figure_2,figure_3,figure_4,figure_5,figure_6,figure_7,publication_url"/>
     </bean>
     
@@ -893,7 +893,7 @@
         <property name="lineTokenizer" ref="utswTier4DiscoipyrrolesStoryLineTokenizer" />
     </bean>
     <bean name="utswTier4DiscoipyrrolesStoryLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol,compound_name_1,compound_name_2,compound_name_3,compound_name_4,compound_name_5,cell_line,tissue_sample,resource_url,publication_reference_1,publication_reference_2,story_location"/>
     </bean>
     
@@ -902,7 +902,7 @@
         <property name="lineTokenizer" ref="utswNsclcAscl1LineTokenizer" />
     </bean>
     <bean name="utswNsclcAscl1LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,compound_name,target,gene_symbol,disease_condition,positive_cell_line,negative_cell_line,target_description,figure_1,figure_2,figure_3,figure_4,figure_5,publication_url"/>
     </bean>
     
@@ -911,7 +911,7 @@
         <property name="lineTokenizer" ref="ucsfDifferentialExpressionLineTokenizer" />
     </bean>
     <bean name="ucsfDifferentialExpressionLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,probeset_id,mutated_gene_condition,mutated_gene_id,species,strain_background,tissue,gene_id,sample_group_1,sample_group_2,t_statistic,fold_change,q_value"/>
     </bean>
     
@@ -920,7 +920,7 @@
         <property name="lineTokenizer" ref="ucsfMutIsogenicScoresLineTokenizer" />
     </bean>
     <bean name="ucsfMutIsogenicScoresLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol,site,cell_type,mutation,drug,direction"/>
     </bean>
     
@@ -929,7 +929,7 @@
         <property name="lineTokenizer" ref="ucsfWtIsogenicScoresLineTokenizer" />
     </bean>
     <bean name="ucsfWtIsogenicScoresLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol,site,cell_type,drug,direction"/>
     </bean>
     
@@ -938,7 +938,7 @@
         <property name="lineTokenizer" ref="ucsfAktResistanceLineTokenizer" />
     </bean>
     <bean name="ucsfAktResistanceLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,target_group,gene_symbol,gene_target,compound_name,cell_line,interaction_type,figure_1,figure_2,figure_3,publication_url"/>
     </bean>
     
@@ -947,7 +947,7 @@
         <property name="lineTokenizer" ref="ucsfDasatinibSensitivityLineTokenizer" />
     </bean>
     <bean name="ucsfDasatinibSensitivityLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,target_group,gene_symbol,gene_target,compound_name,cell_line_1,cell_line_2,cell_line_3,interaction_type,figure_1,figure_2,figure_3,figure_4,figure_5,figure_6,figure_7,figure_8,publication_url"/>
     </bean>
     
@@ -956,7 +956,7 @@
         <property name="lineTokenizer" ref="ucsfChemgenLineTokenizer" />
     </bean>
     <bean name="ucsfChemgenLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,gene_symbol_3,gene_symbol_4,compound_name,cell_sample,tissue_sample,publication_reference,story_location"/>
     </bean>
     
@@ -965,7 +965,7 @@
         <property name="lineTokenizer" ref="ucsfKrasLineTokenizer" />
     </bean>
     <bean name="ucsfKrasLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,disease,gene_symbol,publication_reference_1,publication_reference_2,story_location"/>
     </bean>
     
@@ -974,7 +974,7 @@
         <property name="lineTokenizer" ref="ucsfSplicingGeneticsLineTokenizer" />
     </bean>
     <bean name="ucsfSplicingGeneticsLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,mutated_gene,disease,cohort_size,splicing_gv,gv_location,splicing_sm,sm_location,publication_url,nci_portal"/>
     </bean>
     
@@ -983,7 +983,7 @@
         <property name="lineTokenizer" ref="emoryPpiRaf1LineTokenizer" />
     </bean>
     <bean name="emoryPpiRaf1LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,cell_line,gene_symbol_1,gene_symbol_2,assay_type,number_of_measurements,average_fold_over_control_value,p_value,nci_portal"/>
     </bean>
     
@@ -992,7 +992,7 @@
         <property name="lineTokenizer" ref="emoryHtBretnPpiLineTokenizer" />
     </bean>
     <bean name="emoryHtBretnPpiLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,cell_line,gene_symbol_1,gene_symbol_2,assay_type,number_of_measurements,average_fold_over_control_value,p_value,nci_portal,publication_url"/>
     </bean>
     
@@ -1001,7 +1001,7 @@
         <property name="lineTokenizer" ref="mskccForetinibLineTokenizer" />
     </bean>
     <bean name="mskccForetinibLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,species,tissue,disease_condition,gene_symbol,compound,control_compound,figure_4a,figure_4b,figure_5a,publication_url1,publication_url2"/>
     </bean>
     
@@ -1010,7 +1010,7 @@
         <property name="lineTokenizer" ref="mskccFigrosLineTokenizer" />
     </bean>
     <bean name="mskccFigrosLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,species,tissue,disease_condition,strain,gene_symbol1,gene_symbol2,figure_1B,figure_2A,figure_2B,figure_3A,figure_3B,publication_url"/>
     </bean>
     
@@ -1019,7 +1019,7 @@
         <property name="lineTokenizer" ref="stanfordMethylmixTier1LineTokenizer" />
     </bean>
     <bean name="stanfordMethylmixTier1LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,disease_condition,tissue,cell_type,gene_symbol,differential_methylation_status,prevalence,differential_methylation_pvalue,proportion_variance_explained,rna_fold_change"/>
     </bean>
     
@@ -1028,7 +1028,7 @@
         <property name="lineTokenizer" ref="mdaEndoMutationBaf3LineTokenizer" />
     </bean>
     <bean name="mdaEndoMutationBaf3LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,number_of_mutations,gene_symbol,cell_line,aberration,disease_condition,cell_growth_avr,cell_growth_sd,fold_change_avr,fold_change_sd,nci_portal"/>
     </bean>
     
@@ -1037,7 +1037,7 @@
         <property name="lineTokenizer" ref="mskccBrd4amlBrd4LineTokenizer" />
     </bean>
     <bean name="mskccBrd4amlBrd4LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,cell_line,disease_condition,gene_symbol,figure_1a,figure_1b,publication_url"/>
     </bean>
     
@@ -1046,7 +1046,7 @@
         <property name="lineTokenizer" ref="mskccBrd4amlJq1LineTokenizer" />
     </bean>
     <bean name="mskccBrd4amlJq1LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,species,cell_line,disease_condition,compound,gene_symbol,gene_pathway,figure_2a,figure_2b,figure_3a,figure_3b,figure_4a,figure_4b,figure_5a,figure_5b,publication_url"/>
     </bean>
     
@@ -1055,7 +1055,7 @@
         <property name="lineTokenizer" ref="mskccPdgFrbLineTokenizer" />
     </bean>
     <bean name="mskccPdgFrbLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,species,animal_model,metastasis,disease_condition,strain,gene_symbol1,gene_symbol2,figure_1A,figure_1B,figure_2,figure_3,reference_url,publication_url"/>
     </bean>
     
@@ -1064,7 +1064,7 @@
         <property name="lineTokenizer" ref="mskccPdgFrbImatinibLineTokenizer" />
     </bean>
     <bean name="mskccPdgFrbImatinibLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,animal_model,species,disease_condition,metastasis,gene_symbol1,gene_symbol2,compound,figure_4a,figure_4b,figure_4c,publication_url"/>
     </bean>
     
@@ -1073,7 +1073,7 @@
         <property name="lineTokenizer" ref="mskccPdgFrbHumanLineTokenizer" />
     </bean>
     <bean name="mskccPdgFrbHumanLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,species,disease_condition,tissue,gene_symbol,figure_5a,figure_5b,sample_url,publication_url"/>
     </bean>
     
@@ -1082,7 +1082,7 @@
         <property name="lineTokenizer" ref="cshlAvgMeasureLineTokenizer" />
     </bean>
     <bean name="cshlAvgMeasureLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol,tumor_type,gene_type,avg_tumor_volume_day_0,avg_tumor_volume_day_7,avg_tumor_volume_day_14,avg_tumor_volume_day_21,avg_tumor_volume_day_28,avg_tumor_volume_day_35,avg_tumor_volume_day_42,injections,tumor_count,publication_url"/>
     </bean>
     
@@ -1091,7 +1091,7 @@
         <property name="lineTokenizer" ref="cshlMouseLiversLineTokenizer" />
     </bean>
     <bean name="cshlMouseLiversLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,tumor_type,gene_symbol,figure1,figure2,publication_url"/>
     </bean>
     
@@ -1100,7 +1100,7 @@
         <property name="lineTokenizer" ref="cshlCoExpLineTokenizer" />
     </bean>
     <bean name="cshlCoExpLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,tumor_type,gene_symbol1,gene_symbol2,figure1,figure2,publication_url"/>
     </bean>
     
@@ -1109,7 +1109,7 @@
         <property name="lineTokenizer" ref="dfciArid1aMutAnalysisLineTokenizer" />
     </bean>
     <bean name="dfciArid1aMutAnalysisLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol,gene_summarization_method,target_group,target_group_gene,target_group_alteration,number_of_cell_lines,number_of_cell_lines_in_target_group,RNMI_score,p_value,fdr,publication_url,nci_portal"/>
     </bean>
     
@@ -1118,7 +1118,7 @@
         <property name="lineTokenizer" ref="dfciArid1bDependencyLineTokenizer" />
     </bean>
     <bean name="dfciArid1bDependencyLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,target_group,gene_symbol,figure_1,figure_2,figure_3,figure_4,figure_5,tier2_evidence,publication_url"/>
     </bean>
     
@@ -1127,7 +1127,7 @@
         <property name="lineTokenizer" ref="dfciSmarca4MutAnalysisLineTokenizer" />
     </bean>
     <bean name="dfciSmarca4MutAnalysisLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol,gene_summarization_method,target_group,target_group_gene,target_group_alteration,number_of_cell_lines,number_of_cell_lines_in_target_group,RNMI_score,p_value,fdr,publication_url,nci_portal"/>
     </bean>
     
@@ -1136,7 +1136,7 @@
         <property name="lineTokenizer" ref="dfciSmarca2DependencyLineTokenizer" />
     </bean>
     <bean name="dfciSmarca2DependencyLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,target_group,gene_symbol,figure_1,figure_2,figure_3,figure_4,tier2_evidence,publication_url"/>
     </bean>
     
@@ -1145,7 +1145,7 @@
         <property name="lineTokenizer" ref="mskccPi3kLineTokenizer" />
     </bean>
     <bean name="mskccPi3kLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,species,animal_model,strain,disease_condition,gene_symbol1,mutation,gene_symbol2,gene_symbol3,figure_2AM,figure_3BCD,publication_url"/>
     </bean>
     
@@ -1154,7 +1154,7 @@
         <property name="lineTokenizer" ref="stanfordElasticNetLineTokenizer" />
     </bean>
     <bean name="stanfordElasticNetLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol,disease,analysis_type,supporting_genomics,elastic_net_rank,differential_status,sample_count,mse,bootstrapping,data,publication"/>
     </bean>
     
@@ -1163,7 +1163,7 @@
         <property name="lineTokenizer" ref="stanfordOrganoidsLineTokenizer" />
     </bean>
     <bean name="stanfordOrganoidsLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,gene_symbol_3,gene_symbol_4,gene_symbol_5,gene_symbol_6,tissue_sample_1,tissue_sample_2,tissue_sample_3,publication_reference_1,publication_reference_2,publication_reference_3,story_location"/>
     </bean>
     
@@ -1172,7 +1172,7 @@
         <property name="lineTokenizer" ref="fhcrcKKinomeSiRNA2LineTokenizer" />
     </bean>
     <bean name="fhcrcKKinomeSiRNA2LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,sirna_id_1,sirna_id_2,gene_symbol,cell_line,disease,tumor_suppressor,tp53_mutation,frequency,activity,significance,publication"/>
     </bean>
     
@@ -1181,7 +1181,7 @@
         <property name="lineTokenizer" ref="fhcrcKKinomeSiRNA3LineTokenizer" />
     </bean>
     <bean name="fhcrcKKinomeSiRNA3LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,sirna_id_1,sirna_id_2,sirna_id_3,gene_symbol,cell_line,disease,tumor_suppressor,tp53_mutation,frequency,activity,significance,publication"/>
     </bean>
     
@@ -1190,7 +1190,7 @@
         <property name="lineTokenizer" ref="mdaPik3r1ApoptosisEndoCellsLineTokenizer" />
     </bean>
     <bean name="mdaPik3r1ApoptosisEndoCellsLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol,cell_line,aberration,drug,fold_change,nci_portal,publication_url"/>
     </bean>
     
@@ -1199,7 +1199,7 @@
         <property name="lineTokenizer" ref="mdaPik3r1Baf3SurvivalLineTokenizer" />
     </bean>
     <bean name="mdaPik3r1Baf3SurvivalLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,number_of_mutations,gene_symbol,cell_line,aberration,fold_change_avg,fold_change_sd,nci_portal,publication_url"/>
     </bean>
     
@@ -1208,7 +1208,7 @@
         <property name="lineTokenizer" ref="mdaPik3r1BrduEndoCellsLineTokenizer" />
     </bean>
     <bean name="mdaPik3r1BrduEndoCellsLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol,cell_line,aberration,drug,fold_change,nci_portal,publication_url"/>
     </bean>
     
@@ -1217,7 +1217,7 @@
         <property name="lineTokenizer" ref="mdaPik3r1DrugCellLinesLineTokenizer" />
     </bean>
     <bean name="mdaPik3r1DrugCellLinesLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,cell_line,drug,ic25,nci_portal,publication_url"/>
     </bean>
     
@@ -1226,7 +1226,7 @@
         <property name="lineTokenizer" ref="mdaPik3r1DrugScreenBaf3LineTokenizer" />
     </bean>
     <bean name="mdaPik3r1DrugScreenBaf3LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,number_of_mutations,gene_symbol,cell_line,aberration,compound,fold_change,nci_portal,publication_url"/>
     </bean>
     
@@ -1235,7 +1235,7 @@
         <property name="lineTokenizer" ref="mdaPik3r1DrugZenograftsLineTokenizer" />
     </bean>
     <bean name="mdaPik3r1DrugZenograftsLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,cell_line,gene_symbol,aberration,drug,tgi,nci_portal,publication_url"/>
     </bean>
     
@@ -1244,7 +1244,7 @@
         <property name="lineTokenizer" ref="mdaPik3r1RppaBaf3LineTokenizer" />
     </bean>
     <bean name="mdaPik3r1RppaBaf3LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,number_of_mutations,number_of_antibodies,gene_symbol,cell_line,aberration,antibody,fold_change,nci_portal,publication_url"/>
     </bean>
     
@@ -1253,7 +1253,7 @@
         <property name="lineTokenizer" ref="utmdaPik3r1LineTokenizer" />
     </bean>
     <bean name="utmdaPik3r1LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol,cell_sample,tissue_sample_1,tissue_sample_2,publication_reference_1,publication_reference_2,publication_reference_3,story_location"/>
     </bean>
     
@@ -1262,7 +1262,7 @@
         <property name="lineTokenizer" ref="hutchCtcfLineTokenizer" />
     </bean>
     <bean name="hutchCtcfLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol,tissue_sample_1,tissue_sample_2,publication_reference,story_location"/>
     </bean>
     
@@ -1271,7 +1271,7 @@
         <property name="lineTokenizer" ref="hutchTargetsLineTokenizer" />
     </bean>
     <bean name="hutchTargetsLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,gene_symbol_3,gene_symbol_4,gene_symbol_5,gene_symbol_6,gene_symbol_7,gene_symbol_8,gene_symbol_9,tissue_sample,resource_url_1,resource_url_2,resource_url_3,story_location"/>
     </bean>
     
@@ -1280,7 +1280,7 @@
         <property name="lineTokenizer" ref="cshlBrd4LineTokenizer" />
     </bean>
     <bean name="cshlBrd4LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,gene_symbol_3,compound_name,cell_line,tissue_sample,publication_reference_1,publication_reference_2,story_location"/>
     </bean>
     
@@ -1289,7 +1289,7 @@
         <property name="lineTokenizer" ref="utswNsclcLineTokenizer" />
     </bean>
     <bean name="utswNsclcLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,gene_symbol_3,gene_symbol_4,gene_symbol_5,gene_symbol_6,compound_name_1,compound_name_2,cell_line_1,cell_line_2,tissue_sample,publication_reference_1,publication_reference_2,publication_reference_3,story_location"/>
     </bean>
     
@@ -1298,7 +1298,7 @@
         <property name="lineTokenizer" ref="tgenEddyGbmLineTokenizer" />
     </bean>
     <bean name="tgenEddyGbmLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,pathway,pathway_link,gene_symbol_1,gene_symbol_2,gene_symbol_3,gene_symbol_4,gene_symbol_5,prior_weight,number_of_genes_in_pathway,p_value,jensen_shannon_divergence,proportion_of_new_dependencies,proportion_of_condition_specific_dependencies,differential_dependency_network,program,data_source,disease,classification,publication_reference_1,publication_reference_2"/>
     </bean>
     
@@ -1307,7 +1307,7 @@
         <property name="lineTokenizer" ref="tgenEddyStoryLineTokenizer" />
     </bean>
     <bean name="tgenEddyStoryLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,compound_name,tissue_sample,resource_url,publication_reference_1,publication_reference_2,story_location"/>
     </bean>
     
@@ -1316,7 +1316,7 @@
         <property name="lineTokenizer" ref="ucsfwNbSplicingLineTokenizer" />
     </bean>
     <bean name="ucsfwNbSplicingLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,gene_symbol_3,gene_symbol_4,gene_symbol_5,gene_symbol_6,gene_symbol_7,gene_symbol_8,gene_symbol_9,gene_symbol_10,gene_symbol_11,gene_symbol_12,tissue_sample_1,tissue_sample_2,publication_reference_1,publication_reference_2,story_location"/>
     </bean>
     
@@ -1325,7 +1325,7 @@
         <property name="lineTokenizer" ref="dfciBarbieLineTokenizer" />
     </bean>
     <bean name="dfciBarbieLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,number_of_perturbagens,number_of_cell_lines,nci_portal,publication_url"/>
     </bean>
     
@@ -1334,7 +1334,7 @@
         <property name="lineTokenizer" ref="dfciKrasMetaAnalysisLineTokenizer" />
     </bean>
     <bean name="dfciKrasMetaAnalysisLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,target_group_gene,target_group_alteration,number_of_cell_lines,number_of_cell_lines_in_target_group,gene_symbol,gene_scoring,nci_portal,publication_url"/>
     </bean>
     
@@ -1343,7 +1343,7 @@
         <property name="lineTokenizer" ref="dfciKrasRigerAnalysisLineTokenizer" />
     </bean>
     <bean name="dfciKrasRigerAnalysisLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,target_group_gene,target_group_alteration,number_of_cell_lines,number_of_cell_lines_in_target_group,method,gene_symbol,score,nci_portal,publication_url"/>
     </bean>
     
@@ -1352,7 +1352,7 @@
         <property name="lineTokenizer" ref="dfciKrasTtestAnalysisLineTokenizer" />
     </bean>
     <bean name="dfciKrasTtestAnalysisLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,target_group_gene,target_group_alteration,number_of_cell_lines,number_of_cell_lines_in_target_group,method,perturbagen,gene_symbol,score,nci_portal,publication_url"/>
     </bean>
     
@@ -1361,7 +1361,7 @@
         <property name="lineTokenizer" ref="dfciTbk1AnalysisLineTokenizer" />
     </bean>
     <bean name="dfciTbk1AnalysisLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,target_group_gene,target_group_alteration,gene_symbol,figure_1,figure_2,figure_3,figure_4,tier2_evidence_1,tier2_evidence_2,tier2_evidence_3,publication_url"/>
     </bean>
     
@@ -1370,7 +1370,7 @@
         <property name="lineTokenizer" ref="hutchkKinomicsLineTokenizer" />
     </bean>
     <bean name="hutchkKinomicsLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,gene_symbol_3,gene_symbol_4,compound_name_1,compound_name_2,cell_line,tissue_sample,publication_reference,story_location"/>
     </bean>
     
@@ -1379,7 +1379,7 @@
         <property name="lineTokenizer" ref="stanfordMethylmixStoryLineTokenizer" />
     </bean>
     <bean name="stanfordMethylmixStoryLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,gene_symbol_3,gene_symbol_4,gene_symbol_5,gene_symbol_6,gene_symbol_7,gene_symbol_8,gene_symbol_9,gene_symbol_10,gene_symbol_11,tissue_sample_1,tissue_sample_2,tissue_sample_3,tissue_sample_4,tissue_sample_5,tissue_sample_6,tissue_sample_7,resource_url_1,resource_url_2,resource_url_3,resource_url_4,resource_url_5,resource_url_6,resource_url_7,resource_url_8,link_url,publication_reference_1,publication_reference_2,story_location"/>
     </bean>
     
@@ -1388,7 +1388,7 @@
         <property name="lineTokenizer" ref="cshlPdacLineTokenizer" />
     </bean>
     <bean name="cshlPdacLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,gene_symbol_3,gene_symbol_4,tissue_sample,link_url,publication_reference,story_location"/>
     </bean>
     
@@ -1397,7 +1397,7 @@
         <property name="lineTokenizer" ref="stanfordTgfbr2LineTokenizer" />
     </bean>
     <bean name="stanfordTgfbr2LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,gene_symbol_3,gene_symbol_4,tissue_sample_1,tissue_sample_2,publication_reference,story_location"/>
     </bean>
     
@@ -1406,7 +1406,7 @@
         <property name="lineTokenizer" ref="utmdaPik3caLineTokenizer" />
     </bean>
     <bean name="utmdaPik3caLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,compound_name_1,compound_name_2,compound_name_3,cell_line_1,cell_line_2,tissue_sample,resource_url,publication_reference,story_location"/>
     </bean>
     
@@ -1415,7 +1415,7 @@
         <property name="lineTokenizer" ref="emoryBretnLineTokenizer" />
     </bean>
     <bean name="emoryBretnLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,gene_symbol_3,gene_symbol_4,gene_symbol_5,gene_symbol_6,gene_symbol_7,gene_symbol_8,gene_symbol_9,gene_symbol_10,gene_symbol_11,gene_symbol_12,gene_symbol_13,compound_name,publication_reference_1,publication_reference_2,story_location"/>
     </bean>
     
@@ -1424,7 +1424,7 @@
         <property name="lineTokenizer" ref="utmdaNadkPdacLineTokenizer" />
     </bean>
     <bean name="utmdaNadkPdacLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,gene_symbol_3,gene_symbol_4,gene_symbol_5,gene_symbol_6,gene_symbol_7,gene_symbol_8,tissue_sample,resource_url_1,resource_url_2,resource_url_3,publication_reference_1,story_location"/>
     </bean>
     
@@ -1433,7 +1433,7 @@
         <property name="lineTokenizer" ref="broadCtrpv2LineTokenizer" />
     </bean>
     <bean name="broadCtrpv2LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,gene_symbol_3,gene_symbol_4,compound_name_1,compound_name_2,cell_line_1,cell_line_2,tissue_sample,resource_url,publication_reference_1,publication_reference_2,story_location"/>
     </bean>
     
@@ -1442,7 +1442,7 @@
         <property name="lineTokenizer" ref="stanfordElasticNetGeneLineTokenizer" />
     </bean>
     <bean name="stanfordElasticNetGeneLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol,disease_abbr,disease,clinical_phenotype,association_description,analysis_type,supporting_genomics,elastic_net_rank,differential_status,sample_count,mse,bootstrapping,data,publication"/>
     </bean>
     
@@ -1451,7 +1451,7 @@
         <property name="lineTokenizer" ref="stanfordElasticNetMirLineTokenizer" />
     </bean>
     <bean name="stanfordElasticNetMirLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,miR_symbol,gene_symbol,disease_abbr,disease,clinical_phenotype,association_description,analysis_type,supporting_genomics,elastic_net_rank,differential_status,sample_count,mse,bootstrapping,data,publication"/>
     </bean>
     
@@ -1460,7 +1460,7 @@
         <property name="lineTokenizer" ref="stanfordElasticNetProtLineTokenizer" />
     </bean>
     <bean name="stanfordElasticNetProtLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,protein_symbol,gene_symbol,disease_abbr,disease,clinical_phenotype,association_description,analysis_type,supporting_genomics,elastic_net_rank,differential_status,sample_count,mse,bootstrapping,data,publication"/>
     </bean>
     
@@ -1469,7 +1469,7 @@
         <property name="lineTokenizer" ref="columbiaMoaLineTokenizer" />
     </bean>
     <bean name="columbiaMoaLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,gene_symbol_3,compound_name_1,compound_name_2,compound_name_3,compound_name_4,compound_name_5,resource_url_1,resource_url_2,publication_reference,story_location"/>
     </bean>
     
@@ -1478,7 +1478,7 @@
         <property name="lineTokenizer" ref="broadAcmeLineageLineTokenizer" />
     </bean>
     <bean name="broadAcmeLineageLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,compound_name,enriched_protein_target,lineage,hotspot_q_value,hotspot_size,hotspot_log_likelihood,hotspot_median_auc,delta_auc_between_hotspot_and_null,nci_portal,AUC_matrix_path,publication_reference"/>
     </bean>
     
@@ -1487,7 +1487,7 @@
         <property name="lineTokenizer" ref="broadAcmeMutationLineTokenizer" />
     </bean>
     <bean name="broadAcmeMutationLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,compound_name,gene_symbol,enriched_cell_line_feature,gene_symbol_of_enriched_feature,hotspot_q_value,hotspot_size,hotspot_log_likelihood,hotspot_median_auc,delta_auc_between_hotspot_and_null,nci_portal,AUC_matrix_path,publication_reference"/>
     </bean>
     
@@ -1496,7 +1496,7 @@
         <property name="lineTokenizer" ref="dfciPax8LineTokenizer" />
     </bean>
     <bean name="dfciPax8LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,tissue_sample_1,resource_url_1,resource_url_2,resource_url_3,publication_reference_1,story_location"/>
     </bean>
     
@@ -1505,7 +1505,7 @@
         <property name="lineTokenizer" ref="dfciTbk1LineTokenizer" />
     </bean>
     <bean name="dfciTbk1LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,gene_symbol_3,gene_symbol_4,gene_symbol_5,gene_symbol_6,gene_symbol_7,gene_symbol_8,gene_symbol_9,gene_symbol_10,compound_name_1,compound_name_2,tissue_sample_1,tissue_sample_2,resource_url_1,resource_url_2,publication_reference_1,publication_reference_2,story_location"/>
     </bean>
     
@@ -1514,7 +1514,7 @@
         <property name="lineTokenizer" ref="broadKrasDecitabineLineTokenizer" />
     </bean>
     <bean name="broadKrasDecitabineLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol,cell_line,compound_name,disease,figure_1a,figure_2a,figure_2b,figure_2c,publication_reference,evidence_ontology_term"/>
     </bean>
     
@@ -1523,7 +1523,7 @@
         <property name="lineTokenizer" ref="broadKrasDecitabineMekLineTokenizer" />
     </bean>
     <bean name="broadKrasDecitabineMekLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,cell_line_1,cell_line_2,compound_name_1,compound_name_2,disease,figure_5a,figure_5b,figure_5c,tier1_evidence,publication_reference,evidence_ontology_term"/>
     </bean>
     
@@ -1532,7 +1532,7 @@
         <property name="lineTokenizer" ref="broadKrasDecitabineNavitoclaxLineTokenizer" />
     </bean>
     <bean name="broadKrasDecitabineNavitoclaxLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol,cell_line_1,cell_line_2,cell_line_3,compound_name_1,compound_name_2,disease,figure_6a,figure_6b,figure_6c,figure_6d,tier1_evidence,publication_reference,evidence_ontology_term"/>
     </bean>
     
@@ -1541,7 +1541,7 @@
         <property name="lineTokenizer" ref="broadKrasXenograftLineTokenizer" />
     </bean>
     <bean name="broadKrasXenograftLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol,cell_line,compound_name_1,compound_name_2,disease,figure_7a,figure_7b,tier2_evidence,publication_reference,evidence_ontology_term"/>
     </bean>
     
@@ -1550,7 +1550,7 @@
         <property name="lineTokenizer" ref="dfciSwisnfLineTokenizer" />
     </bean>
     <bean name="dfciSwisnfLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,gene_symbol_3,tissue_sample_1,tissue_sample_2,tissue_sample_3,tissue_sample_4,tissue_sample_5,tissue_sample_6,tissue_sample_7,gene_symbol_4,gene_symbol_5,tissue_sample_8,tissue_sample_9,tissue_sample_10,resource_url_1,resource_url_2,publication_reference_1,publication_reference_2,publication_reference_3,story_location"/>
     </bean>
     
@@ -1559,7 +1559,7 @@
         <property name="lineTokenizer" ref="dfciGab2LineTokenizer" />
     </bean>
     <bean name="dfciGab2LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,cell_line,gene_symbol,figure_2,figure_3,figure_4,tier2_evidence,publication_url"/>
     </bean>
     
@@ -1568,7 +1568,7 @@
         <property name="lineTokenizer" ref="dfciGab2AnalysisLineTokenizer" />
     </bean>
     <bean name="dfciGab2AnalysisLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol,pertubagen_type,cell_line,number_of_tumors,publication_url,nci_portal"/>
     </bean>
     
@@ -1577,7 +1577,7 @@
         <property name="lineTokenizer" ref="dfciYap1LineTokenizer" />
     </bean>
     <bean name="dfciYap1LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,cell_line,gene_symbol,figure_1,figure_2,figure_7,tier2_evidence,publication_url"/>
     </bean>
     
@@ -1586,7 +1586,7 @@
         <property name="lineTokenizer" ref="dfciYap1AnalysisLineTokenizer" />
     </bean>
     <bean name="dfciYap1AnalysisLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol,pertubagen_type,cell_line,kras_rescue_score,publication_url,nci_portal"/>
     </bean>
     
@@ -1595,7 +1595,7 @@
         <property name="lineTokenizer" ref="dfciCowley2014AtarisAnalysisLineTokenizer" />
     </bean>
     <bean name="dfciCowley2014AtarisAnalysisLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,number_of_cell_lines,shRNA_id,gene_symbol,solution_name,c_score,p_value,fdr,nci_portal,gct_path,publication_url"/>
     </bean>
     
@@ -1604,7 +1604,7 @@
         <property name="lineTokenizer" ref="columbiaKlhl9PrognosisLineTokenizer" />
     </bean>
     <bean name="columbiaKlhl9PrognosisLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,gene_symbol_3,disease_1,disease_2,disease_3,figure_3d,figure_3e,figure_3f,publication_reference"/>
     </bean>
     
@@ -1613,7 +1613,7 @@
         <property name="lineTokenizer" ref="columbiaKlhl9ProteasomalLineTokenizer" />
     </bean>
     <bean name="columbiaKlhl9ProteasomalLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,gene_symbol_3,disease,figure_5a,figure_5b,figure_5c,figure_5d,publication_reference"/>
     </bean>
     
@@ -1622,7 +1622,7 @@
         <property name="lineTokenizer" ref="columbiaKlhl9RescueLineTokenizer" />
     </bean>
     <bean name="columbiaKlhl9RescueLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,gene_symbol_3,disease,figure_4a,figure_4b,publication_reference"/>
     </bean>
     
@@ -1631,7 +1631,7 @@
         <property name="lineTokenizer" ref="columbiaKlhl9SphaseLineTokenizer" />
     </bean>
     <bean name="columbiaKlhl9SphaseLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,disease,figure_6cd,publication_reference"/>
     </bean>
     
@@ -1640,7 +1640,7 @@
         <property name="lineTokenizer" ref="columbiaKlhl9XenograftsLineTokenizer" />
     </bean>
     <bean name="columbiaKlhl9XenograftsLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,disease,figure_7b,publication_reference"/>
     </bean>
     
@@ -1649,7 +1649,7 @@
         <property name="lineTokenizer" ref="columbiaDemandAltretamineLineTokenizer" />
     </bean>
     <bean name="columbiaDemandAltretamineLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,sys_xc_heterodimer,gene_1,gene_2,compound_1,compound_2,compound_3,gene_3,cell_line,figure_1,figure_5a,figure_5b,figure_5c,figure_5d,publication_reference"/>
     </bean>
     
@@ -1658,7 +1658,7 @@
         <property name="lineTokenizer" ref="columbiaBisikirskaFlDlbclM1LineTokenizer" />
     </bean>
     <bean name="columbiaBisikirskaFlDlbclM1LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,cell_line_1,gene_symbol_1,disease_1,disease_2,figure_2a,figure_2c,publication_reference"/>
     </bean>
     
@@ -1667,7 +1667,7 @@
         <property name="lineTokenizer" ref="columbiaBisikirskaFlDlbclM2LineTokenizer" />
     </bean>
     <bean name="columbiaBisikirskaFlDlbclM2LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,cell_line_1,cell_line_2,cell_line_3,cell_line_4,gene_symbol_1,disease_1,disease_2,figure_4a,publication_reference"/>
     </bean>
     
@@ -1676,7 +1676,7 @@
         <property name="lineTokenizer" ref="columbiaBisikirskaFlDlbclSyLineTokenizer" />
     </bean>
     <bean name="columbiaBisikirskaFlDlbclSyLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,cell_line_1,cell_line_2,cell_line_3,cell_line_4,gene_symbol_1,gene_symbol_2,compound_1,compound_2,disease_1,disease_2,figure_5,publication_reference"/>
     </bean>
     
@@ -1685,7 +1685,7 @@
         <property name="lineTokenizer" ref="columbiaPiovanAktNr3c1ActLineTokenizer" />
     </bean>
     <bean name="columbiaPiovanAktNr3c1ActLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,gene_symbol_3,cell_line_1,cell_line_2,compound_1,figure_3a,figure_3bc,figure_3d,publication_reference"/>
     </bean>
     
@@ -1694,7 +1694,7 @@
         <property name="lineTokenizer" ref="columbiaPiovanAktNr3c1BindLineTokenizer" />
     </bean>
     <bean name="columbiaPiovanAktNr3c1BindLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,cell_line_1,cell_line_2,figure_1abc,figure_1d,figure_1e,publication_reference"/>
     </bean>
     
@@ -1703,7 +1703,7 @@
         <property name="lineTokenizer" ref="columbiaPiovanAktNr3c1Inh1LineTokenizer" />
     </bean>
     <bean name="columbiaPiovanAktNr3c1Inh1LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,cell_line_1,cell_line_2,compound_1,compound_2,animal_model_1,figure_4a,figure_4b,figure_4c,figure_4d,publication_reference"/>
     </bean>
     
@@ -1712,7 +1712,7 @@
         <property name="lineTokenizer" ref="columbiaPiovanAktNr3c1Inh2LineTokenizer" />
     </bean>
     <bean name="columbiaPiovanAktNr3c1Inh2LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,compound_1,compound_2,animal_model_1,figure_5adgjm,publication_reference"/>
     </bean>
     
@@ -1721,7 +1721,7 @@
         <property name="lineTokenizer" ref="columbiaPiovanAktNr3c1Inh3LineTokenizer" />
     </bean>
     <bean name="columbiaPiovanAktNr3c1Inh3LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,compound_1,compound_2,figure_6ab,figure_6c,figure_6de,publication_reference"/>
     </bean>
     
@@ -1730,7 +1730,7 @@
         <property name="lineTokenizer" ref="columbiaPiovanAktNr3c1PhosLineTokenizer" />
     </bean>
     <bean name="columbiaPiovanAktNr3c1PhosLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,compound_1,cell_line_1,cell_line_2,figure_1gh,figure_1k,publication_reference"/>
     </bean>
     
@@ -1739,7 +1739,7 @@
         <property name="lineTokenizer" ref="columbiaPiovanAktNr3c1SigLineTokenizer" />
     </bean>
     <bean name="columbiaPiovanAktNr3c1SigLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,cell_line_1,cell_line_2,compound_1,figure_2abcd,figure_2e,figure_2f,publication_reference"/>
     </bean>
     
@@ -1748,7 +1748,7 @@
         <property name="lineTokenizer" ref="columbiaAktTallLineTokenizer" />
     </bean>
     <bean name="columbiaAktTallLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,gene_symbol_3,gene_symbol_4,gene_symbol_5,compound_name_1,compound_name_2,cell_line_1,cell_line_2,tissue_sample,publication_reference,link_to_mouse_model,story_location"/>
     </bean>
     
@@ -1757,7 +1757,7 @@
         <property name="lineTokenizer" ref="dfciKimExpressProfileLineTokenizer" />
     </bean>
     <bean name="dfciKimExpressProfileLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,allele_1,gene_symbol_2,allele_2,correlation,publication_url,nci_portal"/>
     </bean>
     
@@ -1766,7 +1766,7 @@
         <property name="lineTokenizer" ref="dfciKimHtTransLineTokenizer" />
     </bean>
     <bean name="dfciKimHtTransLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol,allele,pools,maximum_enrichment,penetrance,number_of_tumors,publication_url,nci_portal"/>
     </bean>
     
@@ -1775,7 +1775,7 @@
         <property name="lineTokenizer" ref="dfciKimTumorAssayLineTokenizer" />
     </bean>
     <bean name="dfciKimTumorAssayLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol,allele,incidence,number_tumors_WT,number_of_sites_WT,number_tumors,number_of_sites,publication_url,nci_portal"/>
     </bean>
     
@@ -1784,7 +1784,7 @@
         <property name="lineTokenizer" ref="dfciRareLineTokenizer" />
     </bean>
     <bean name="dfciRareLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,gene_symbol_3,gene_symbol_4,resource_url,publication_reference_1,story_location"/>
     </bean>
     
@@ -1793,7 +1793,7 @@
         <property name="lineTokenizer" ref="tgenEddyCcleCtrpLineTokenizer" />
     </bean>
     <bean name="tgenEddyCcleCtrpLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,pathway,pathway_link,gene_symbol,compound_name,mediator_type,p_value,number_of_genes_in_pathway,differential_dependency_network,program,data_source_1,data_source_2,data_source_3,cell_line_subset,classification,publication_reference_1,publication_reference_2,publication_reference_3"/>
     </bean>
     
@@ -1802,7 +1802,7 @@
         <property name="lineTokenizer" ref="tgenEddyCcleCtrpCombLineTokenizer" />
     </bean>
     <bean name="tgenEddyCcleCtrpCombLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,pathway,pathway_link,gene_symbol,compound_1_name,compound_2_name,proportion,mediator_type,p_value,number_of_genes_in_pathway,differential_dependency_network,program,data_source_1,data_source_2,data_source_3,cell_line_subset,classification,publication_reference_1,publication_reference_2,publication_reference_3"/>
     </bean>
     
@@ -1811,7 +1811,7 @@
         <property name="lineTokenizer" ref="emoryPras40PpiLineTokenizer" />
     </bean>
     <bean name="emoryPras40PpiLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,cell_line,gene_symbol_1,gene_symbol_2,assay_type,figure2b,nci_portal,publication_url"/>
     </bean>
     
@@ -1820,7 +1820,7 @@
         <property name="lineTokenizer" ref="emoryPras40Rpl11CoIpLineTokenizer" />
     </bean>
     <bean name="emoryPras40Rpl11CoIpLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,cell_line,gene_symbol_1,gene_symbol_2,assay_type,figure2c,nci_portal,publication_url"/>
     </bean>
     
@@ -1829,7 +1829,7 @@
         <property name="lineTokenizer" ref="emoryPras40Rpl11CoLocLineTokenizer" />
     </bean>
     <bean name="emoryPras40Rpl11CoLocLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,cell_line,gene_symbol_1,gene_symbol_2,assay_type,figure2d,nci_portal,publication_url"/>
     </bean>
     
@@ -1838,7 +1838,7 @@
         <property name="lineTokenizer" ref="emoryPras40Rpl11TruncationsLineTokenizer" />
     </bean>
     <bean name="emoryPras40Rpl11TruncationsLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,cell_line,gene_symbol_1,gene_symbol_2,assay_type,figure3a,nci_portal,publication_url"/>
     </bean>
     
@@ -1847,7 +1847,7 @@
         <property name="lineTokenizer" ref="utswKrasXpo1LineTokenizer" />
     </bean>
     <bean name="utswKrasXpo1LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,compound_name,gene_symbol_1,gene_symbol_2,disease_condition,figure_1,figure_2,figure_3,figure_4,publication_url"/>
     </bean>
     
@@ -1856,7 +1856,7 @@
         <property name="lineTokenizer" ref="emoryOncoPpiTier1LineTokenizer" />
     </bean>
     <bean name="emoryOncoPpiTier1LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,disease_condition,cell_line,gene_symbol_1,gene_symbol_2,assay_type,number_of_measurements,average_fold_over_control_value,p_value,q_value,nci_portal,publication_url"/>
     </bean>
     
@@ -1865,7 +1865,7 @@
         <property name="lineTokenizer" ref="emoryOncoPpiTier2LineTokenizer" />
     </bean>
     <bean name="emoryOncoPpiTier2LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,disease_condition,cell_line,gene_symbol_1,gene_symbol_2,assay_type,number_of_measurements,average_fold_over_control_value,p_value,q_value,nci_portal,publication_url"/>
     </bean>
     
@@ -1874,7 +1874,7 @@
         <property name="lineTokenizer" ref="utswSW044248LineTokenizer" />
     </bean>
     <bean name="utswSW044248LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,compound_name,cell_line,gene_symbol_1,gene_symbol_2,disease_condition,nci_portal,publication_url_1,publication_url_2"/>
     </bean>
     
@@ -1883,7 +1883,7 @@
         <property name="lineTokenizer" ref="emoryNanoPcaTier1LineTokenizer" />
     </bean>
     <bean name="emoryNanoPcaTier1LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,cell_line,gene_symbol_1,gene_symbol_2,assay_type,number_of_measurements,average_fold_over_control_value,p_value,nci_portal,publication_url"/>
     </bean>
     
@@ -1892,7 +1892,7 @@
         <property name="lineTokenizer" ref="emoryNanoPcaTier2LineTokenizer" />
     </bean>
     <bean name="emoryNanoPcaTier2LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,cell_line,gene_symbol_1,gene_symbol_2,assay_type,number_of_measurements,average_fold_over_control_value,p_value,nci_portal,publication_url"/>
     </bean>
     
@@ -1901,7 +1901,7 @@
         <property name="lineTokenizer" ref="utswSmarca4LineTokenizer" />
     </bean>
     <bean name="utswSmarca4LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,compound_name_1,compound_name_2,cell_line,gene_symbol_1,gene_symbol_2,gene_symbol_3,disease_condition,nci_portal,publication_url"/>
     </bean>
     
@@ -1910,7 +1910,7 @@
         <property name="lineTokenizer" ref="emoryOncoPpiStoryLineTokenizer" />
     </bean>
     <bean name="emoryOncoPpiStoryLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,gene_symbol_3,gene_symbol_4,gene_symbol_5,gene_symbol_6,gene_symbol_7,gene_symbol_8,gene_symbol_9,compound_name,cell_line_1,cell_line_2,cell_line_3,tissue_sample,nci_portal,publication_reference_1,publication_reference_2,publication_reference_3,story_location"/>
     </bean>
 
@@ -1919,7 +1919,7 @@
         <property name="lineTokenizer" ref="emoryMkk3BindingPartnersLineTokenizer" />
     </bean>
     <bean name="emoryMkk3BindingPartnersLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,interactor_1,interactor_2,cell_line,figure_1,reference,evidence_ontology_term"/>
     </bean>
 
@@ -1928,7 +1928,7 @@
         <property name="lineTokenizer" ref="emoryMkk3MycCoIPLineTokenizer" />
     </bean>
     <bean name="emoryMkk3MycCoIPLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,interactor_1,interactor_2,cell_line,figure_1,reference,evidence_ontology_term"/>
     </bean>
 
@@ -1937,7 +1937,7 @@
         <property name="lineTokenizer" ref="emoryMkk3MycLiveCellsLineTokenizer" />
     </bean>
     <bean name="emoryMkk3MycLiveCellsLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,interactor_1,interactor_2,cell_line,figure_1,reference,evidence_ontology_term"/>
     </bean>
 
@@ -1946,7 +1946,7 @@
         <property name="lineTokenizer" ref="emoryMkk3MycProteinStabilityLineTokenizer" />
     </bean>
     <bean name="emoryMkk3MycProteinStabilityLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,interactor_1,mutation_1,interactor_2,cell_line,figure_1,reference,evidence_ontology_term"/>
     </bean>
 
@@ -1955,7 +1955,7 @@
         <property name="lineTokenizer" ref="emoryMkk3MycReporterAssayLineTokenizer" />
     </bean>
     <bean name="emoryMkk3MycReporterAssayLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,interactor_1,mutation_1,interactor_2,cell_line,figure_1,reference,evidence_ontology_term"/>
     </bean>
 
@@ -1964,7 +1964,7 @@
         <property name="lineTokenizer" ref="dfciRnaiCancerDependencyMapLineTokenizer" />
     </bean>
     <bean name="dfciRnaiCancerDependencyMapLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,data_portal,depmap_rnai_site,project_achilles,tier1_evidence,publication_reference_1,publication_reference_2,story_location"/>
     </bean>
 
@@ -1973,7 +1973,7 @@
         <property name="lineTokenizer" ref="ucsfGpx4PersisterCellStudyLineTokenizer" />
     </bean>
     <bean name="ucsfGpx4PersisterCellStudyLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,target,story_location,publication_reference_1,publication_reference_2"/>
     </bean>
     <bean name="fhcrcNovelTargetsHeadAndNeckCancerLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
@@ -1981,7 +1981,7 @@
         <property name="lineTokenizer" ref="fhcrcNovelTargetsHeadAndNeckCancerLineTokenizer" />
     </bean>
     <bean name="fhcrcNovelTargetsHeadAndNeckCancerLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,gene_symbol_3,gene_symbol_4,gene_symbol_5,disease_1,candidate_drug_1,candidate_drug_2,story,publication_reference_1,publication_reference_2,data_portal_link,link_to_tier1,evidence_ontology_term"/>
     </bean>
     <bean name="fhcrcWee1Phase1ClinicalTrialLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
@@ -1989,7 +1989,7 @@
         <property name="lineTokenizer" ref="fhcrcWee1Phase1ClinicalTrialLineTokenizer" />
     </bean>
     <bean name="fhcrcWee1Phase1ClinicalTrialLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,disease,compound_1,compound_2,compound_3,publication_reference_1,publication_reference_2,publication_reference_3,link_to_tier1,story,evidence_ontology_term"/>
     </bean>
     <bean name="broadGpx4StoryLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
@@ -1997,7 +1997,7 @@
         <property name="lineTokenizer" ref="broadGpx4StoryLineTokenizer" />
     </bean>
     <bean name="broadGpx4StoryLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-        <property name="delimiter" value="\u0009"/>
+        <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,compound_1,compound_2,compound_3,compound_4,cell_line,publication_reference_1,publication_reference_2,publication_reference_3,publication_reference_4,publication_reference_5,publication_reference_6,publication_reference_7,ctrp,achilles,ccle,story_location,evidence_ontology_term"/>
     </bean>
 

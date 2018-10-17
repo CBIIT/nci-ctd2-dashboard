@@ -3,9 +3,9 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		xmlns:batch="http://www.springframework.org/schema/batch"
 		xmlns:context="http://www.springframework.org/schema/context"
-        xsi:schemaLocation="http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-2.1.xsd
-							http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
-							http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+        xsi:schemaLocation="http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-3.0.xsd
+							http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+							http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
 
   <import resource="classpath*:META-INF/spring/adminApplicationContext.xml" />
   <context:component-scan base-package="gov.nih.nci.ctd2.dashboard.importer.internal" />
@@ -43,7 +43,7 @@
   </bean>
 
   <bean name="controlledVocabularyPerTemplateLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-	<property name="delimiter" value="\u0009"/>
+	<property name="delimiter" value="&#9;"/>
 	<property name="names" value="observation_tier,template_name,observation_summary,template_description,submission_name,submission_description,project,submission_story,submission_story_rank,submission_center,principal_investigator"/>
   </bean>
 
@@ -61,7 +61,7 @@
   </bean>
 
   <bean name="controlledVocabularyPerColumnLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-	<property name="delimiter" value="\u0009"/>
+	<property name="delimiter" value="&#9;"/>
 	<property name="names" value="id,template_name,column_name,subject,evidence,role,mime_type,numeric_units,display_text"/>
   </bean>
 

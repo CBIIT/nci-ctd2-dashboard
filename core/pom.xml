@@ -23,17 +23,17 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.38</version>
+            <version>8.0.12</version>
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
-            <version>4.2.21.Final</version>
+            <version>4.3.11.Final</version>
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-search-orm</artifactId>
-            <version>4.4.6.Final</version>
+            <version>4.5.3.Final</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -149,11 +149,11 @@
                     <dependency>
                         <groupId>mysql</groupId>
                         <artifactId>mysql-connector-java</artifactId>
-                        <version>5.1.38</version>
+                        <version>8.0.12</version>
                     </dependency>
                 </dependencies>
                 <configuration>
-                    <driver>com.mysql.jdbc.Driver</driver>
+                    <driver>com.mysql.cj.jdbc.Driver</driver>
                     <url>${database.test.url}</url>
                     <username>${database.username}</username>
                     <password>${database.password}</password>
