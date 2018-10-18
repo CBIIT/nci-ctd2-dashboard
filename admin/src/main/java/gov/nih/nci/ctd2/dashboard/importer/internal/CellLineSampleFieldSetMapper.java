@@ -32,7 +32,7 @@ public class CellLineSampleFieldSetMapper implements FieldSetMapper<CellSample> 
 
     @Autowired
 	@Qualifier("cellLineAnnotationSampleMap")
-	private HashMap<String,HashSet> cellLineAnnotationSampleMap;
+	private HashMap<String,HashSet<Annotation>> cellLineAnnotationSampleMap;
 
     @Autowired
 	@Qualifier("cellSampleMap")

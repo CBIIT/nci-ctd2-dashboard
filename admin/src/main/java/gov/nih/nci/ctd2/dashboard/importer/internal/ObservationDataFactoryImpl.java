@@ -63,6 +63,7 @@ public class ObservationDataFactoryImpl implements ObservationDataFactory {
 		return filteredList;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public ObservedSubject createObservedSubject(String subjectValue, String columnName, String templateName,
 												 Observation observation, String daoFindQueryName) throws Exception {
