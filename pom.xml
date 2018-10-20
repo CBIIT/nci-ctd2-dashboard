@@ -11,8 +11,7 @@
         <java.compiler.version>1.8</java.compiler.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <slf4j.version>1.6.4</slf4j.version>
-        <spring.version>4.0.9.RELEASE</spring.version>
-        <aspectj.version>1.6.12</aspectj.version>
+        <spring.version>4.3.19.RELEASE</spring.version>
     </properties>
     <modules>
         <module>core</module>
