@@ -9,7 +9,7 @@
 
     <bean class="gov.nih.nci.ctd2.dashboard.impl.DashboardFactoryImpl" id="dashboardFactory"/>
 
-    <bean class="org.springframework.jdbc.datasource.DriverManagerDataSource" id="dataSource">
+    <bean class="org.apache.commons.dbcp2.BasicDataSource" id="dataSource">
         <!-- With JDBC 4.0, applications no longer need to issue a Class.forName() on the driver name
         <property name="driverClassName" value="${database.driverClassName}"/>
         -->
