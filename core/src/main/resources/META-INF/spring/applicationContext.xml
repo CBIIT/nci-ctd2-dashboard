@@ -28,6 +28,7 @@
         <property name="hibernateProperties">
             <props>
                 <prop key="hibernate.dialect">${hibernate.dialect}</prop>
+                <prop key="hibernate.default_catalog">ctd2_dashboard</prop>
                 <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
                 <prop key="hibernate.ejb.naming_strategy">${hibernate.ejb.naming_strategy}</prop>
                 <prop key="hibernate.connection.charSet">${hibernate.connection.charSet}</prop>
