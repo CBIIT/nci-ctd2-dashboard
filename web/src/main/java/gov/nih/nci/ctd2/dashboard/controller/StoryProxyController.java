@@ -1,10 +1,11 @@
 package gov.nih.nci.ctd2.dashboard.controller;
 
-import flexjson.JSONSerializer;
-import gov.nih.nci.ctd2.dashboard.util.cytoscape.CyEdge;
-import gov.nih.nci.ctd2.dashboard.util.cytoscape.CyElement;
-import gov.nih.nci.ctd2.dashboard.util.cytoscape.CyNetwork;
-import gov.nih.nci.ctd2.dashboard.util.cytoscape.CyNode;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.Scanner;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
@@ -15,13 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.HashSet;
-import java.util.Scanner;
 
 @Controller
 @RequestMapping("/html")
@@ -56,8 +50,9 @@ public class StoryProxyController {
                     if(line.isEmpty()) continue;
 
                     proxiedHtml.append(line);
-		    proxiedHtml.append("\n");
+                    proxiedHtml.append("\n");
                 }
+                scanner.close();
                 inputStream.close();
 
             } catch (IOException e) {

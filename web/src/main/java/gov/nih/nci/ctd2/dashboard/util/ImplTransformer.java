@@ -6,6 +6,6 @@ public class ImplTransformer extends AbstractTransformer {
     @Override
     public void transform(Object object) {
         assert object instanceof Class;
-        getContext().writeQuoted(((Class) object).getSimpleName().replace("Impl", ""));
+        getContext().writeQuoted(((Class<?>) object).getSimpleName().replace("Impl", ""));
     }
 }

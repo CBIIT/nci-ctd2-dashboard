@@ -33,5 +33,6 @@ public class GeneDataWriter implements ItemWriter<Gene> {
             gene.setStableURL(stableURL.createURLWithPrefix("gene/" + species, gene.getDisplayName()));
         }
         dashboardDao.batchSave(items, batchSize);
+        log.debug("Gene written");
     }
 }

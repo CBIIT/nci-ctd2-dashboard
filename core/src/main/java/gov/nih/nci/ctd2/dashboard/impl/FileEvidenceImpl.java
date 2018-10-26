@@ -1,20 +1,20 @@
 package gov.nih.nci.ctd2.dashboard.impl;
 
-import gov.nih.nci.ctd2.dashboard.model.FileEvidence;
-import gov.nih.nci.ctd2.dashboard.model.Widget;
-import org.hibernate.annotations.Proxy;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import java.beans.ConstructorProperties;
 
-import javax.persistence.*;
+import org.hibernate.annotations.Proxy;
+
+import gov.nih.nci.ctd2.dashboard.model.FileEvidence;
+import gov.nih.nci.ctd2.dashboard.model.Widget;
 
 @Entity
 @Proxy(proxyClass = FileEvidence.class)
 @Table(name = "file_evidence")
 public class FileEvidenceImpl extends EvidenceImpl implements FileEvidence {
+    private static final long serialVersionUID = 93374005845035626L;
     private String filePath;
 	private String fileName;
     private String mimeType;

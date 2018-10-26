@@ -11,6 +11,7 @@ import javax.persistence.*;
 @Table(name = "annotation")
 @Indexed
 public class AnnotationImpl extends SubjectImpl implements Annotation {
+    private static final long serialVersionUID = -6638963618040537372L;
     private String source;
     private String type;
 

@@ -10,23 +10,12 @@ import javax.servlet.ServletResponse;
 
 public class CharacterEncodingFilter implements Filter {
 
-    // FilterConfig object
-    private FilterConfig filterConfig = null;
-
-    /**
-     * 
-     */
-    public CharacterEncodingFilter() {
-        // TODO Auto-generated constructor stub
-    }
-
     /* (non-Javadoc)
      * @see javax.servlet.Filter#destroy()
      */
     @Override
     public void destroy() {
-        // TODO Auto-generated method stub
-
+        // nop
     }
 
     /* (non-Javadoc)
@@ -50,8 +39,7 @@ public class CharacterEncodingFilter implements Filter {
      */
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        this.filterConfig = filterConfig;
-
+        // nop
     }
 
 }

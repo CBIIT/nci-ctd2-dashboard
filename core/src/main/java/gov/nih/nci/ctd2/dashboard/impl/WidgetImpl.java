@@ -10,4 +10,6 @@ import javax.persistence.Table;
 @Proxy(proxyClass = Widget.class)
 @Table(name = "widget")
 public class WidgetImpl extends DashboardEntityImpl implements Widget {
+
+    private static final long serialVersionUID = -7804659723494761818L;
 }

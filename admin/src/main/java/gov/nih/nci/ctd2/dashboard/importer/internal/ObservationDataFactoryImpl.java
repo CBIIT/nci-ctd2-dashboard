@@ -132,6 +132,7 @@ public class ObservationDataFactoryImpl implements ObservationDataFactory {
 			}
 		}
 		if (observedSubjectRole != null) observedSubject.setObservedSubjectRole(observedSubjectRole);
+		log.debug("ObservedSubject created");
 		return observedSubject;
 	}
 

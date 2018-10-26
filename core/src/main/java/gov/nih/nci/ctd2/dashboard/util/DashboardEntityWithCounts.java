@@ -7,6 +7,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class DashboardEntityWithCounts implements Serializable {
+    private static final long serialVersionUID = -1315522615138058767L;
+
     private DashboardEntity dashboardEntity;
     private int observationCount = 0;
     private int centerCount = 0;

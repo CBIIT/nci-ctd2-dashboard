@@ -11,6 +11,7 @@ import javax.persistence.*;
 @Table(name="observed_subject_role")
 @Proxy(proxyClass = ObservedSubjectRole.class)
 public class ObservedSubjectRoleImpl extends DashboardEntityImpl implements ObservedSubjectRole {
+    private static final long serialVersionUID = 3020147652668045420L;
     private String displayText;
     private String columnName;
     private SubjectRole subjectRole;

@@ -12,6 +12,7 @@ import javax.persistence.Table;
 @Table(name = "animal_model")
 @Indexed
 public class AnimalModelImpl extends SubjectWithOrganismImpl implements AnimalModel {
+    private static final long serialVersionUID = -8101124253748949596L;
     private String description;
 
     public String getDescription() {

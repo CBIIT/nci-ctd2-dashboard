@@ -71,6 +71,7 @@ public class SifProxyController {
                     nodeNames.add(source);
                     nodeNames.add(target);
                 }
+                scanner.close();
                 inputStream.close();
 
                 for (String nodeName : nodeNames) {

@@ -1,17 +1,17 @@
 package gov.nih.nci.ctd2.dashboard.importer.internal;
 
-import gov.nih.nci.ctd2.dashboard.model.Subject;
-import gov.nih.nci.ctd2.dashboard.model.Compound;
-import gov.nih.nci.ctd2.dashboard.model.Synonym;
-import gov.nih.nci.ctd2.dashboard.model.DashboardFactory;
-import org.springframework.stereotype.Component;
-import org.springframework.validation.BindException;
-import org.springframework.batch.item.file.transform.FieldSet;
+import java.util.HashMap;
+
 import org.springframework.batch.item.file.mapping.FieldSetMapper;
+import org.springframework.batch.item.file.transform.FieldSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import java.util.List;
-import java.util.HashMap;
+import org.springframework.stereotype.Component;
+import org.springframework.validation.BindException;
+
+import gov.nih.nci.ctd2.dashboard.model.Compound;
+import gov.nih.nci.ctd2.dashboard.model.DashboardFactory;
+import gov.nih.nci.ctd2.dashboard.model.Synonym;
 
 @Component("compoundSynonymsMapper")
 public class CompoundSynonymsFieldSetMapper implements FieldSetMapper<Compound> {

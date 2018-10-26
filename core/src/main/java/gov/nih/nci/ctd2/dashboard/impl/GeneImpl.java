@@ -17,6 +17,7 @@ import javax.persistence.Table;
         })
 @Indexed
 public class GeneImpl extends SubjectWithOrganismImpl implements Gene {
+    private static final long serialVersionUID = 3479333253065758075L;
     public final static String FIELD_ENTREZID = "entrezid";
     public final static String FIELD_HGNCID = "hgncid";
 

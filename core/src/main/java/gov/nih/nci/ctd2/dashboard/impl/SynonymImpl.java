@@ -12,4 +12,6 @@ import javax.persistence.Table;
 @Table(name = "synonym")
 @Indexed
 public class SynonymImpl extends DashboardEntityImpl implements Synonym {
+
+    private static final long serialVersionUID = -4843391059437576165L;
 }
