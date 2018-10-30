@@ -26,7 +26,7 @@
 	</batch:step>
     <batch:step id="tissueSampleXrefStep" parent="tissueSampleDataSimpleStep">
       <batch:tasklet>
-        <batch:chunk reader="tissueSampleXrefReader" writer="emptyItemWriter"/>
+        <batch:chunk reader="tissueSampleXrefReader" writer="xrefDataWriter"/>
       </batch:tasklet>
     </batch:step>
   </batch:job>

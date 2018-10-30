@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.*;
 
 @Component("xrefMapper")
-public class XrefFieldSetMapper implements FieldSetMapper<Xref> {
+public class XrefFieldSetMapper implements FieldSetMapper<XrefData> {
 
 	private static final String CLASS = "subject_class";
 	private static final String NAME = "subject_name";
@@ -29,7 +29,7 @@ public class XrefFieldSetMapper implements FieldSetMapper<Xref> {
     @Autowired
 	private DashboardDao dashboardDao;
 
-	public Xref mapFieldSet(FieldSet fieldSet) throws BindException {
+	public XrefData mapFieldSet(FieldSet fieldSet) throws BindException {
 
 		String subjectClass = fieldSet.readString(CLASS);
 		String subjectName = fieldSet.readString(NAME);
@@ -44,11 +44,7 @@ public class XrefFieldSetMapper implements FieldSetMapper<Xref> {
 		if (subjects == null || subjects.size() == 0){
 			log.warn("Subject not found: "+subjectName+" ("+subjectClass+")");
 		}
-		else for (Subject subject : subjects){
-			subject.getXrefs().add(xref);
-			dashboardDao.merge(subject);
-		}
-		return xref;
+		return new XrefData(xref, subjects);
 	}
 	
 	private List<? extends Subject> findSubject(String subjectClass, String name) {
@@ -73,4 +69,3 @@ public class XrefFieldSetMapper implements FieldSetMapper<Xref> {
 		return null;
 	}
 }
-

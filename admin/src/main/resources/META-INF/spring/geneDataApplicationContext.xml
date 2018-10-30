@@ -18,7 +18,7 @@
 	</batch:step>
     <batch:step id="geneXrefStep" parent="geneDataSimpleStep">
       <batch:tasklet>
-        <batch:chunk reader="geneXrefReader" writer="emptyItemWriter"/>
+        <batch:chunk reader="geneXrefReader" writer="xrefDataWriter"/>
       </batch:tasklet>
     </batch:step>
   </batch:job>

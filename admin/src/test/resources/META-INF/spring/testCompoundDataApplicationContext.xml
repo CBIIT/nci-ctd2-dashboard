@@ -25,7 +25,7 @@
 	</batch:step>
     <batch:step id="compoundXrefStep" parent="compoundDataStep">
       <batch:tasklet>
-        <batch:chunk reader="compoundXrefReader" writer="emptyItemWriter"/>
+        <batch:chunk reader="compoundXrefReader" writer="xrefDataWriter"/>
       </batch:tasklet>
     </batch:step>  
   </batch:job>

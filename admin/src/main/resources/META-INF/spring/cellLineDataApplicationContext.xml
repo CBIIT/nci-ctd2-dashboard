@@ -50,7 +50,7 @@
 	</batch:step>
     <batch:step id="cellLineXrefStep" parent="cellLineDataSimpleStep">
       <batch:tasklet>
-        <batch:chunk reader="cellLineXrefReader" writer="emptyItemWriter"/>
+        <batch:chunk reader="cellLineXrefReader" writer="xrefDataWriter"/>
       </batch:tasklet>
     </batch:step>
   </batch:job>
