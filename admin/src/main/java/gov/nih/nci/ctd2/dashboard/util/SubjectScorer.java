@@ -28,37 +28,27 @@ public class SubjectScorer {
 
     @Transactional
     public void score() {
-        score(true);
-    }
-
-    @Transactional
-    public void score(boolean optimized) {
         List<Subject> entities = new ArrayList<Subject>();
 
-        if(optimized) {
-            log.info("Optimized scoring: working only on the subjects that have some observation to them...");
-            HashSet<Subject> subjects = new HashSet<Subject>();
-            List<ObservedSubject> observedSubjects = dashboardDao.findEntities(ObservedSubject.class);
-            for (ObservedSubject observedSubject : observedSubjects) {
-                subjects.add(observedSubject.getSubject());
-            }
-
-            entities.addAll(subjects);
-        } else {
-            log.info("Scoring all subjects in the database -- not optimized...");
-            entities.addAll(dashboardDao.findEntities(Subject.class));
+        //Optimized scoring: working only on the subjects that have some observation to them...");
+        HashSet<Subject> subjects = new HashSet<Subject>();
+        List<ObservedSubject> observedSubjects = dashboardDao.findEntities(ObservedSubject.class);
+        for (ObservedSubject observedSubject : observedSubjects) {
+            subjects.add(observedSubject.getSubject());
         }
+
+        entities.addAll(subjects);
 
         log.info("Scoring " + entities.size() + " subjects...");
         for(int i=0; i < entities.size(); i++) {
             Subject subject = entities.get(i);
             subject.setScore(score(subject));
-            dashboardDao.merge(subject);
 
             if(i % 1000 == 0) {
                 log.info("Done with scoring " + i + "/" + entities.size());
             }
         }
+        dashboardDao.batchMerge(entities);
         log.info("Scoring is done...");
     }
 
@@ -71,7 +61,7 @@ public class SubjectScorer {
         (4) alpha by subject name
      */
     @Transactional
-    public Integer score(Subject subject) {
+    private Integer score(Subject subject) {
         List<ObservedSubject> observedSubjectBySubject = dashboardDao.findObservedSubjectBySubject(subject);
         if(observedSubjectBySubject.isEmpty()) {
             return 0;
