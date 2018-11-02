@@ -7,6 +7,4 @@ public interface Subject extends DashboardEntity, HasStableURL {
     public void setSynonyms(Set<Synonym> synonyms);
     public Set<Xref> getXrefs();
     public void setXrefs(Set<Xref> xrefs);
-    public void setScore(Integer score);
-    public Integer getScore();
 }

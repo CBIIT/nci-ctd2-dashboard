@@ -144,7 +144,6 @@ public class DashboardDaoTest {
         dashboardDao.save(gene);
 
         gene.setDisplayName("G1U");
-        gene.setScore(10);
         dashboardDao.merge(gene);
     }
 

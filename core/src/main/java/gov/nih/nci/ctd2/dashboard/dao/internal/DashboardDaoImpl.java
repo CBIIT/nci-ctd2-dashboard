@@ -109,7 +109,8 @@ public class DashboardDaoImpl implements DashboardDao {
                 }
             }
             session.save(entity);
-            if(++i % batchSize == 0) {
+            i++;
+            if(batchSize != 0 && i % batchSize == 0) {
                 session.flush();
                 session.clear();
             }
