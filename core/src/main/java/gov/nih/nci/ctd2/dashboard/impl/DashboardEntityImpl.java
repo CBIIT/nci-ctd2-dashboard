@@ -2,9 +2,9 @@ package gov.nih.nci.ctd2.dashboard.impl;
 
 import gov.nih.nci.ctd2.dashboard.model.DashboardEntity;
 
-import org.apache.solr.analysis.LowerCaseFilterFactory;
-import org.apache.solr.analysis.StopFilterFactory;
-import org.apache.solr.analysis.WhitespaceTokenizerFactory;
+import org.apache.lucene.analysis.core.LowerCaseFilterFactory;
+import org.apache.lucene.analysis.core.StopFilterFactory;
+import org.apache.lucene.analysis.core.WhitespaceTokenizerFactory;
 import org.hibernate.search.annotations.TokenFilterDef;
 import org.hibernate.search.annotations.Parameter;
 import org.hibernate.annotations.DynamicInsert;
