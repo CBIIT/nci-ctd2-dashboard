@@ -713,11 +713,46 @@
                 <batch:chunk reader="fhcrcWee1Phase1ClinicalTrialReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	    </batch:tasklet>
 	</batch:step>
-	<batch:step id="broadGpx4StoryStep" parent="observationDataStep">
-	    <batch:tasklet>
+        <batch:step id="broadGpx4StoryStep" parent="observationDataStep" next="UCSF1ChemGenScreenCombResistantStep">
+            <batch:tasklet>
                 <batch:chunk reader="broadGpx4StoryReader" processor="observationDataProcessor" writer="observationDataWriter"/>
-	    </batch:tasklet>
-	</batch:step>
+            </batch:tasklet>
+        </batch:step>
+        <batch:step id="UCSF1ChemGenScreenCombResistantStep" parent="observationDataStep" next="UCSF1ChemGenScreenCombSensitiveStep">
+            <batch:tasklet>
+                <batch:chunk reader="UCSF1ChemGenScreenCombResistantReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+            </batch:tasklet>
+        </batch:step>
+        <batch:step id="UCSF1ChemGenScreenCombSensitiveStep" parent="observationDataStep" next="UCSF1ChemGenScreenResistantStep">
+            <batch:tasklet>
+                <batch:chunk reader="UCSF1ChemGenScreenCombSensitiveReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+            </batch:tasklet>
+        </batch:step>
+        <batch:step id="UCSF1ChemGenScreenResistantStep" parent="observationDataStep" next="UCSF1ChemGenScreenSensitiveStep">
+            <batch:tasklet>
+                <batch:chunk reader="UCSF1ChemGenScreenResistantReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+            </batch:tasklet>
+        </batch:step>
+        <batch:step id="UCSF1ChemGenScreenSensitiveStep" parent="observationDataStep" next="columbiaOncotreatStoryStep">
+            <batch:tasklet>
+                <batch:chunk reader="UCSF1ChemGenScreenSensitiveReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+            </batch:tasklet>
+        </batch:step>
+        <batch:step id="columbiaOncotreatStoryStep" parent="observationDataStep" next="columbiaNetMasterRegulatorsStep">
+            <batch:tasklet>
+                <batch:chunk reader="columbiaOncotreatStoryReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+            </batch:tasklet>
+        </batch:step>
+        <batch:step id="columbiaNetMasterRegulatorsStep" parent="observationDataStep" next="columbiaNetEntinostateStep">
+            <batch:tasklet>
+                <batch:chunk reader="columbiaNetMasterRegulatorsReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+            </batch:tasklet>
+        </batch:step>
+        <batch:step id="columbiaNetEntinostateStep" parent="observationDataStep">
+            <batch:tasklet>
+                <batch:chunk reader="columbiaNetEntinostateReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+            </batch:tasklet>
+        </batch:step>
     </batch:job>
 
     <bean id="observationDataStep" class="org.springframework.batch.core.step.item.SimpleStepFactoryBean" abstract="true">
@@ -2000,6 +2035,63 @@
         <property name="delimiter" value="\u0009"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,compound_1,compound_2,compound_3,compound_4,cell_line,publication_reference_1,publication_reference_2,publication_reference_3,publication_reference_4,publication_reference_5,publication_reference_6,publication_reference_7,ctrp,achilles,ccle,story_location,evidence_ontology_term"/>
     </bean>
+    <bean name="UCSF1ChemGenScreenCombResistantLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="UCSF1ChemGenScreenCombResistantLineTokenizer" />
+    </bean>
+    <bean name="UCSF1ChemGenScreenCombResistantLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="\u0009"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,gene_name,drug_name,drug_name2,cell_lines,s_score,publication_reference,ontology,data_portal_link"/>
+    </bean>
+    <bean name="UCSF1ChemGenScreenCombSensitiveLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="UCSF1ChemGenScreenCombSensitiveLineTokenizer" />
+    </bean>
+    <bean name="UCSF1ChemGenScreenCombSensitiveLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="\u0009"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,gene_name,drug_name,drug_name2,cell_lines,s_score,publication_reference,ontology,data_portal_link"/>
+    </bean>
+    <bean name="UCSF1ChemGenScreenResistantLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="UCSF1ChemGenScreenResistantLineTokenizer" />
+    </bean>
+    <bean name="UCSF1ChemGenScreenResistantLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="\u0009"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,gene_name,drug_name,cell_lines,s_score,publication_reference,ontology,data_portal_link"/>
+    </bean>
+    <bean name="UCSF1ChemGenScreenSensitiveLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="UCSF1ChemGenScreenSensitiveLineTokenizer" />
+    </bean>
+    <bean name="UCSF1ChemGenScreenSensitiveLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="\u0009"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,gene_name,drug_name,cell_lines,s_score,publication_reference,ontology,data_portal_link"/>
+    </bean>
+    <bean name="columbiaOncotreatStoryLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="columbiaOncotreatStoryLineTokenizer" />
+    </bean>
+    <bean name="columbiaOncotreatStoryLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="\u0009"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,compound_1,tumor_type,gene_symbol_1,gene_symbol_2,story_location,dashboard_tier_2_link,dashboard_tier_3_link,publication_reference_1,publication_reference_2"/>
+    </bean>
+    <bean name="columbiaNetMasterRegulatorsLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="columbiaNetMasterRegulatorsLineTokenizer" />
+    </bean>
+    <bean name="columbiaNetMasterRegulatorsLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="\u0009"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol,cell_line,cell_line_origin,p_pvalue,publication_reference,figure_4b,evidence_ontology_term_1,evidence_ontology_term_2,data_portal_link"/>
+    </bean>
+    <bean name="columbiaNetEntinostateLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="columbiaNetEntinostateLineTokenizer" />
+    </bean>
+    <bean name="columbiaNetEntinostateLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="\u0009"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,compound_1,tissue_1,gene_1,gene_2,cell_line_1,figure_5,tissue_detail,publication_reference,tier_2_dashboard_link,data_portal_link,evidence_ontology_term_1,evidence_ontology_term_2,evidence_ontology_term_3,evidence_ontology_term_4"/>
+    </bean>
+
 
     <!-- shared helper beans -->
     <bean name="observationTemplateMap" class="java.util.HashMap">
@@ -3449,7 +3541,69 @@
 		<entry key="fhcrc_wee1_phase1_clinical_trial:link_to_tier1" value="evidence:readString:createObservedUrlEvidence"/>
 		<entry key="fhcrc_wee1_phase1_clinical_trial:story" value="evidence:readString:createObservedFileEvidence"/>
 		<entry key="fhcrc_wee1_phase1_clinical_trial:evidence_ontology_term" value="evidence:readString:createObservedUrlEvidence"/>
-            </map>
+		<entry key="UCSF1_chem_gen_screen_comb_resistant:gene_name" value="subject:findGenesBySymbol" />
+		<entry key="UCSF1_chem_gen_screen_comb_resistant:drug_name" value="subject:findCompoundsByName" />
+		<entry key="UCSF1_chem_gen_screen_comb_resistant:drug_name2" value="subject:findCompoundsByName" />
+		<entry key="UCSF1_chem_gen_screen_comb_resistant:cell_lines" value="subject:findCellLineByName" />
+		<entry key="UCSF1_chem_gen_screen_comb_resistant:s_score" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="UCSF1_chem_gen_screen_comb_resistant:publication_reference" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="UCSF1_chem_gen_screen_comb_resistant:ontology" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="UCSF1_chem_gen_screen_comb_resistant:data_portal_link" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="UCSF1_chem_gen_screen_comb_sensitive:gene_name" value="subject:findGenesBySymbol" />
+		<entry key="UCSF1_chem_gen_screen_comb_sensitive:drug_name" value="subject:findCompoundsByName" />
+		<entry key="UCSF1_chem_gen_screen_comb_sensitive:drug_name2" value="subject:findCompoundsByName" />
+		<entry key="UCSF1_chem_gen_screen_comb_sensitive:cell_lines" value="subject:findCellLineByName" />
+		<entry key="UCSF1_chem_gen_screen_comb_sensitive:s_score" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="UCSF1_chem_gen_screen_comb_sensitive:publication_reference" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="UCSF1_chem_gen_screen_comb_sensitive:ontology" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="UCSF1_chem_gen_screen_comb_sensitive:data_portal_link" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="UCSF1_chem_gen_screen_resistant:gene_name" value="subject:findGenesBySymbol" />
+		<entry key="UCSF1_chem_gen_screen_resistant:drug_name" value="subject:findCompoundsByName" />
+		<entry key="UCSF1_chem_gen_screen_resistant:cell_lines" value="subject:findCellLineByName" />
+		<entry key="UCSF1_chem_gen_screen_resistant:s_score" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="UCSF1_chem_gen_screen_resistant:publication_reference" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="UCSF1_chem_gen_screen_resistant:ontology" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="UCSF1_chem_gen_screen_resistant:data_portal_link" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="UCSF1_chem_gen_screen_sensitive:gene_name" value="subject:findGenesBySymbol" />
+		<entry key="UCSF1_chem_gen_screen_sensitive:drug_name" value="subject:findCompoundsByName" />
+		<entry key="UCSF1_chem_gen_screen_sensitive:cell_lines" value="subject:findCellLineByName" />
+		<entry key="UCSF1_chem_gen_screen_sensitive:s_score" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="UCSF1_chem_gen_screen_sensitive:publication_reference" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="UCSF1_chem_gen_screen_sensitive:ontology" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="UCSF1_chem_gen_screen_sensitive:data_portal_link" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="columbia_net_entinostate:compound_1" value="subject:findCompoundsByName" />
+		<entry key="columbia_net_entinostate:tissue_1" value="subject:findTissueSampleByName" />
+		<entry key="columbia_net_entinostate:gene_1" value="subject:findGenesBySymbol" />
+		<entry key="columbia_net_entinostate:gene_2" value="subject:findGenesBySymbol" />
+		<entry key="columbia_net_entinostate:cell_line_1" value="subject:findCellLineByName" />
+		<entry key="columbia_net_entinostate:figure_5" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="columbia_net_entinostate:tissue_detail" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="columbia_net_entinostate:publication_reference" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="columbia_net_entinostate:tier_2_dashboard_link" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="columbia_net_entinostate:data_portal_link" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="columbia_net_entinostate:evidence_ontology_term_1" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="columbia_net_entinostate:evidence_ontology_term_2" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="columbia_net_entinostate:evidence_ontology_term_3" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="columbia_net_entinostate:evidence_ontology_term_4" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="columbia_net_master_regulators:gene_symbol" value="subject:findGenesBySymbol" />
+		<entry key="columbia_net_master_regulators:cell_line" value="subject:findCellLineByName" />
+		<entry key="columbia_net_master_regulators:cell_line_origin" value="subject:findTissueSampleByName" />
+		<entry key="columbia_net_master_regulators:p_pvalue" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="columbia_net_master_regulators:publication_reference" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="columbia_net_master_regulators:figure_4b" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="columbia_net_master_regulators:evidence_ontology_term_1" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="columbia_net_master_regulators:evidence_ontology_term_2" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="columbia_net_master_regulators:data_portal_link" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="columbia_oncotreat_story:compound_1" value="subject:findCompoundsByName" />
+		<entry key="columbia_oncotreat_story:tumor_type" value="subject:findTissueSampleByName" />
+		<entry key="columbia_oncotreat_story:gene_symbol_1" value="subject:findGenesBySymbol" />
+		<entry key="columbia_oncotreat_story:gene_symbol_2" value="subject:findGenesBySymbol" />
+		<entry key="columbia_oncotreat_story:story_location" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="columbia_oncotreat_story:dashboard_tier_2_link" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="columbia_oncotreat_story:dashboard_tier_3_link" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="columbia_oncotreat_story:publication_reference_1" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="columbia_oncotreat_story:publication_reference_2" value="evidence:readString:createObservedUrlEvidence" />
+          </map>
         </constructor-arg>
     </bean>
 </beans>

@@ -476,4 +476,25 @@
     <bean name="broadGpx4StoryReader" class="org.springframework.batch.item.file.FlatFileItemReader">
         <property name="lineMapper" ref="broadGpx4StoryLineMapper" />
     </bean>
+    <bean name="UCSF1ChemGenScreenCombResistantReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="UCSF1ChemGenScreenCombResistantLineMapper" />
+    </bean>
+    <bean name="UCSF1ChemGenScreenCombSensitiveReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="UCSF1ChemGenScreenCombSensitiveLineMapper" />
+    </bean>
+    <bean name="UCSF1ChemGenScreenResistantReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="UCSF1ChemGenScreenResistantLineMapper" />
+    </bean>
+    <bean name="UCSF1ChemGenScreenSensitiveReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="UCSF1ChemGenScreenSensitiveLineMapper" />
+    </bean>
+    <bean name="columbiaOncotreatStoryReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="columbiaOncotreatStoryLineMapper" />
+    </bean>
+    <bean name="columbiaNetMasterRegulatorsReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="columbiaNetMasterRegulatorsLineMapper" />
+    </bean>
+    <bean name="columbiaNetEntinostateReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="lineMapper" ref="columbiaNetEntinostateLineMapper" />
+    </bean>
 </beans>
