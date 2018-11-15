@@ -66,7 +66,7 @@
   </bean>
 
   <!-- the following beans are shared between all the steps of the observation data importer job -->
-  <bean name="observationTemplateMap" class="java.util.HashMap">
+  <bean name="observationTemplateNameMap" class="java.util.HashMap">
 	<constructor-arg index="0" type="java.util.Map">
 	  <map key-type="java.lang.String" value-type="gov.nih.nci.ctd2.dashboard.model.ObservationTemplate"/>
 	</constructor-arg>
