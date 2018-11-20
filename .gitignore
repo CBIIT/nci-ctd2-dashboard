@@ -7,4 +7,4 @@ target/
 .project
 .classpath
 core/src/main/resources/META-INF/spring/dashboard.properties
-core/src/main/resources/log4j.properties
+core/src/main/resources/log4j2.properties
