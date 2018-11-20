@@ -87,6 +87,12 @@
             <artifactId>rome</artifactId>
             <version>1.7.2</version>
         </dependency>
+        <dependency><!-- this is only needed by RssController -->
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.8.1</version>
+        </dependency>
+
     </dependencies>
     
     <build>
