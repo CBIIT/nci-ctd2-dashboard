@@ -47,7 +47,7 @@ public class AdminTest {
     @Before
     public void initiateDao() {
         this.appContext = new ClassPathXmlApplicationContext(
-                "classpath*:META-INF/spring/adminApplicationContext.xml", // use this instead of testObservationDataApplicationContext - gets observationDataFactory bean
+                "classpath*:META-INF/spring/adminApplicationContext.xml", // gets observationDataFactory bean
                 "classpath*:META-INF/spring/testApplicationContext.xml", // this is coming from the core module
 				"classpath*:META-INF/spring/testAnimalModelApplicationContext.xml", // and this is for cell line data importer beans
 				"classpath*:META-INF/spring/testCellLineDataApplicationContext.xml", // and this is for cell line data importer beans

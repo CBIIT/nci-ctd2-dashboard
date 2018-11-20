@@ -65,7 +65,6 @@ for my $file (
     $admin_properties_file,
     $obs_data_app_context_xml_file,
     $obs_data_shared_app_context_xml_file,
-    $test_obs_data_app_context_xml_file,
     $dashboard_cv_per_template_file,
     $dashboard_cv_per_column_file,
 ) {
@@ -188,26 +187,12 @@ my $obs_data_shared_app_context_xml_data = XMLin(
     GroupTags => {
     },
 );
-# load testObservationDataApplicationContext.xml
-print "Loading $test_obs_data_app_context_xml_file\n";
-my $test_obs_data_app_context_xml_data = XMLin(
-    $test_obs_data_app_context_xml_file,
-    KeyAttr => {
-    },
-    ForceArray => [
-        'bean',
-        'property',
-    ],
-    GroupTags => {
-    },
-);
+
 if ($debug{all} or $debug{conf}) {
     print STDERR "\$obs_data_app_context_xml_data:\n", 
                  Dumper($obs_data_app_context_xml_data),
                  "\$obs_data_app_shared_context_xml_data:\n", 
-                 Dumper($obs_data_shared_app_context_xml_data),
-                 "\$test_obs_data_app_context_xml_data:\n", 
-                 Dumper($test_obs_data_app_context_xml_data);
+                 Dumper($obs_data_shared_app_context_xml_data);
 }
 # check config files
 print "[Check]";
@@ -632,69 +617,7 @@ for my $template_name (natsort keys %submission_column_info) {
     }
 }
 print '[', (-t STDOUT ? colored('OK', 'green') : 'OK'), ']' unless $obs_data_shared_app_context_xml_errors;
-# check testObservationDataApplicationContext.xml
-print "\nChecking $test_obs_data_app_context_xml_file_name", 
-      ' ' x ($ok_line_length - length("Checking $test_obs_data_app_context_xml_file_name"));
-my $test_obs_data_app_context_xml_errors = 0;
-my (
-    %test_reader_bean_names,
-    %test_line_mapper_bean_names,
-);
-for my $bean (@{$test_obs_data_app_context_xml_data->{'bean'}}) {
-    if ($bean->{class} eq 'org.springframework.batch.item.file.FlatFileItemReader') {
-        if ($bean->{name} !~ /^tier(One|Two|Three)ObservationDataReader$/i) {
-            $test_reader_bean_names{$bean->{name}}++;
-            (my $reader_bean_prefix = $bean->{name}) =~ s/Reader$//;
-            if (!exists $reader_bean_names{$bean->{name}}) {
-                print "\n", (-t STDOUT ? colored('ERROR', 'red') : 'ERROR'), 
-                      ": '$bean->{name}' not found in $obs_data_app_context_xml_file_name";
-                $test_obs_data_app_context_xml_errors++;
-            }
-            for my $property (@{$bean->{property}}) {
-                if ($property->{name} eq 'lineMapper') {
-                    $test_line_mapper_bean_names{$property->{ref}}++;
-                    if (!exists $line_mapper_bean_names{$property->{ref}}) {
-                        print "\n", (-t STDOUT ? colored('ERROR', 'red') : 'ERROR'), 
-                              ": '$property->{ref}' not found in $obs_data_app_context_xml_file_name";
-                        $test_obs_data_app_context_xml_errors++;
-                    }
-                    (my $ref_bean_prefix = $property->{ref}) =~ s/LineMapper$//;
-                    if ($ref_bean_prefix ne $reader_bean_prefix) {
-                        print "\n", (-t STDOUT ? colored('ERROR', 'red') : 'ERROR'), 
-                              ": prefixes don't match in '$bean->{name}' -> '$property->{ref}'";
-                        $test_obs_data_app_context_xml_errors++;
-                    }
-                }
-            }
-        }
-    }
-    elsif ($bean->{class} eq 'org.springframework.batch.item.file.mapping.DefaultLineMapper') {
-        # do nothing for now
-    }
-    elsif ($bean->{class} eq 'org.springframework.batch.item.file.transform.DelimitedLineTokenizer') {
-        # do nothing for now
-    }
-    else {
-        print "\n", (-t STDOUT ? colored('ERROR', 'red') : 'ERROR'), 
-              ": unrecognized class '$bean->{class}'";
-        $test_obs_data_app_context_xml_errors++;
-    }
-}
-for my $reader_bean_name (natsort keys %reader_bean_names) {
-    if (!exists $test_reader_bean_names{$reader_bean_name}) {
-        print "\n", (-t STDOUT ? colored('ERROR', 'red') : 'ERROR'),
-              ": '$reader_bean_name' is not defined";
-        $test_obs_data_app_context_xml_errors++;
-    }
-}
-for my $line_mapper_bean_name (natsort keys %line_mapper_bean_names) {
-    if (!exists $test_line_mapper_bean_names{$line_mapper_bean_name}) {
-        print "\n", (-t STDOUT ? colored('ERROR', 'red') : 'ERROR'), 
-              ": '$line_mapper_bean_name' is not defined";
-        $test_obs_data_app_context_xml_errors++;
-    }
-}
-print '[', (-t STDOUT ? colored('OK', 'green') : 'OK'), ']' unless $test_obs_data_app_context_xml_errors;
+
 print "\n";
 exit;
 
