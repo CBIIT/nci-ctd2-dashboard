@@ -42,7 +42,6 @@
   </bean>
 
   <bean name="TRCshRNAFilterTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-	<property name="delimiter" value="\u0009"/>
   </bean>
 
   <!-- trc-shrna beans -->
