@@ -13,7 +13,7 @@
   <url>http://maven.apache.org</url>
 
   <properties>
-    <spring.batch.version>3.0.9.RELEASE</spring.batch.version>
+    <spring.batch.version>4.1.0.RELEASE</spring.batch.version>
   </properties>
 
   <dependencies>
