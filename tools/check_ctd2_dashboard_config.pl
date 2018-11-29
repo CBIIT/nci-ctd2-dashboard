@@ -396,7 +396,7 @@ for my $bean (@{$obs_data_shared_app_context_xml_data->{'bean'}}) {
         (my $line_tokenizer_bean_prefix = $bean->{name}) =~ s/LineTokenizer$//;
         for my $property (@{$bean->{property}}) {
             if ($property->{name} eq 'delimiter') {
-                if ($property->{value} ne '\u0009') {
+                if ($property->{value} ne "\t") {
                     print "\n", (-t STDOUT ? colored('ERROR', 'red') : 'ERROR'), 
                           ": '$bean->{name}' has invalid delimiter '$property->{value}'";
                     $obs_data_shared_app_context_xml_errors++;

@@ -1288,4 +1288,67 @@
             </bean>
         </property>
     </bean>
+    <bean name="UCSF1ChemGenScreenCombResistantReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${UCSF1.chem.gen.screen.comb.resistant.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="UCSF1ChemGenScreenCombResistantLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="UCSF1ChemGenScreenCombSensitiveReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${UCSF1.chem.gen.screen.comb.sensitive.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="UCSF1ChemGenScreenCombSensitiveLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="UCSF1ChemGenScreenResistantReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${UCSF1.chem.gen.screen.resistant.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="UCSF1ChemGenScreenResistantLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="UCSF1ChemGenScreenSensitiveReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${UCSF1.chem.gen.screen.sensitive.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="UCSF1ChemGenScreenSensitiveLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="columbiaOncotreatStoryReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${columbia.oncotreat.story.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="columbiaOncotreatStoryLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="columbiaNetMasterRegulatorsReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${columbia.net.master.regulators.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="columbiaNetMasterRegulatorsLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="columbiaNetEntinostateReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${columbia.net.entinostate.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="columbiaNetEntinostateLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
 </beans>
