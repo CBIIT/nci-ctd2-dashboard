@@ -2449,7 +2449,6 @@
     <script src="js/buttons.html5.min.js"></script>
     <script src="js/jszip.min.js"></script>
     <script src="js/paging.js"></script>
-    <script src="js/holder.js"></script>
     <script src="js/underscore.js"></script>
     <script src="js/backbone-min.js"></script>
     <script src="js/bootstrap.min.js"></script>
