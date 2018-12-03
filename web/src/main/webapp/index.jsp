@@ -93,9 +93,9 @@
       <!-- Wrap the .navbar in .container to center it within the absolutely positioned parent. -->
       <div class="container">
 
-        <div class="navbar navbar-inverse">
+        <div class="navbar bg-dark">
           <div class="navbar-inner">
-            <div class="nav-collapse collapse show">
+            <div class="nav-collapse collapse show d-flex">
               <ul id="nav" class="nav">
                 <li><a id="navlink-dashboard" class="navlink" href="#">CTD<sup>2</sup> Dashboard</a></li>
                 <li><a id="navlink-centers" class="navlink" href="#centers">Centers</a></li>
@@ -131,7 +131,7 @@
                       </ul>
                   </li>
               </ul>
-              <ul class="nav pull-right">
+              <ul class="nav ml-auto">
                   <form class="form-search" id="omnisearch">
                       <div class="input-append">
                           <input type="text" id="omni-input" class="span3 search-query" title="Search" placeholder="e.g. CTNNB1 or dasatinib" aria-label="search">
