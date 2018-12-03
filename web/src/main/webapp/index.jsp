@@ -95,13 +95,7 @@
 
         <div class="navbar navbar-inverse">
           <div class="navbar-inner">
-            <!-- Responsive Navbar Part 1: Button for triggering responsive navbar (not covered in tutorial). Include responsive CSS to utilize. -->
-            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </a>
-            <div class="nav-collapse collapse">
+            <div class="nav-collapse collapse show">
               <ul id="nav" class="nav">
                 <li><a id="navlink-dashboard" class="navlink" href="#">CTD<sup>2</sup> Dashboard</a></li>
                 <li><a id="navlink-centers" class="navlink" href="#centers">Centers</a></li>
@@ -142,15 +136,15 @@
                       <div class="input-append">
                           <input type="text" id="omni-input" class="span3 search-query" title="Search" placeholder="e.g. CTNNB1 or dasatinib" aria-label="search">
                           <button type="submit" class="btn search-button">Search</button>
-                          <span class="hide" id="search-help-content">
+                          <span class="d-none" id="search-help-content">
                               <p>Please enter the keyword(s) you would like to search on the website.  You may enter multiple search terms, but do not use "AND" or "OR".</p>
                               <strong>Examples:</strong>
                               <ul>
                                 <li><em>Gene: </em> <a href="#search/CTNNB1">CTNNB1</a></li>
-				<li><em>Gene: </em> <a href="#search/YAP*">YAP*</a></li>
+                                <li><em>Gene: </em> <a href="#search/YAP*">YAP*</a></li>
                                 <li><em>Compound: </em> <a href="#search/dasatinib">dasatinib</a></li>
                                 <li><em>Cell Sample: </em> <a href="#search/OVCAR8">OVCAR8</a></li>
-				<li><em>Multiple: </em> <a href="#search/dexamethasone AKT1">dexamethasone AKT1</a></li>
+                                <li><em>Multiple: </em> <a href="#search/dexamethasone AKT1">dexamethasone AKT1</a></li>
                               </ul>
                               <br>
                           </span>
