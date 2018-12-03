@@ -333,7 +333,7 @@
         render: function () {
             var content = this.template(this.model);
 
-            $.fancybox(
+            $.fancybox.open(
                 content, {
                     'autoDimensions': false,
                     'width': '820px',
@@ -354,7 +354,7 @@
         render: function () {
             var content = this.template({});
 
-            $.fancybox(
+            $.fancybox.open(
                 content, {
                     'autoDimensions': false,
                     'width': '75%',
@@ -853,7 +853,7 @@
                             dataType: "json",
                             contentType: "json",
                             success: function (data) {
-                                $.fancybox(
+                                $.fancybox.open(
                                     _.template($("#cytoscape-tmpl").html(), {
                                         description: sifDesc
                                     }), {
@@ -2435,7 +2435,7 @@
                             return;
                         }
 
-                        $.fancybox(
+                        $.fancybox.open(
                             _.template($("#mra-cytoscape-tmpl").html(), {
                                 description: mraDesc
                             }), {
@@ -3419,7 +3419,7 @@
             x2 = x2 + aData.type.length * 11;
         });
 
-        $.fancybox(
+        $.fancybox.open(
             _.template($("#cnkb-cytoscape-tmpl").html(), {
                 description: description,
                 svgHtml: svgHtml

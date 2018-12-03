@@ -23,7 +23,7 @@
     <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" />
     <link rel="stylesheet" href="css/jquery.dataTables.css" type="text/css" />
     <link rel="stylesheet" href="css/buttons.dataTables.min.css" type="text/css" />
-    <link rel="stylesheet" href="css/jquery.fancybox-1.3.4.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="css/jquery.fancybox.min.css" type="text/css" media="screen" />
     <link rel="stylesheet" href="css/jquery.contextMenu.css" type="text/css" />
     <link rel="stylesheet" href="css/ctd2.css" type="text/css" />
 
@@ -39,13 +39,12 @@
   <body>
     <!-- NAVBAR
     ================================================== -->
-    <script src="js/jquery.min.js"></script>
-    <script src="js/jquery.ba-hashchange.min.js"></script>
+    <script src="js/jquery-3.3.1.min.js"></script>
     <script>
     $(function() {
         // Bind an event to window.onhashchange that, when the hash changes, 
         // gets the hash and alters class of desired navlinks
-        $(window).hashchange(function() {
+        window.onhashchange  = function() {
             var hash = location.hash || '#';
             $('[id^="navlink-"]').each(function() {
                 // navbar regular items
@@ -84,10 +83,10 @@
                     });
                 }
             });
-        });
+        };
         // Since the event is only triggered when the hash changes, we need to trigger
         // the event now, to handle the hash the page may have been loaded with.
-        $(window).hashchange();
+        window.onhashchange();
     });
     </script>
     <div class="navbar-wrapper">
@@ -164,7 +163,7 @@
 
       </div> <!-- /.container -->
     </div><!-- /.navbar-wrapper -->
-    
+
     <!-- all the backbone magic will happen here, right in this div -->
     <div id="main-container"></div>
     
@@ -2453,8 +2452,8 @@
     <script src="js/underscore.js"></script>
     <script src="js/json2.js"></script>
     <script src="js/backbone-min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/jquery.fancybox-1.3.4.pack.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/jquery.fancybox.min.js"></script>
     <script src="js/jquery.easing-1.3.pack.js"></script>
     <script src="js/jquery.expander.min.js"></script>
     <script src="js/arbor.js"></script>
