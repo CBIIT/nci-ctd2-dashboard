@@ -2451,7 +2451,6 @@
     <script src="js/paging.js"></script>
     <script src="js/holder.js"></script>
     <script src="js/underscore.js"></script>
-    <script src="js/json2.js"></script>
     <script src="js/backbone-min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/jquery.fancybox-1.3.4.pack.js"></script>
