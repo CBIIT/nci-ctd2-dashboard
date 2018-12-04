@@ -93,9 +93,9 @@
       <!-- Wrap the .navbar in .container to center it within the absolutely positioned parent. -->
       <div class="container">
 
-        <div class="navbar bg-dark">
+        <div class="navbar navbar-inverse">
           <div class="navbar-inner">
-            <div class="nav-collapse collapse show d-flex">
+            <div class="nav-collapse collapse show">
               <ul id="nav" class="nav">
                 <li><a id="navlink-dashboard" class="navlink" href="#">CTD<sup>2</sup> Dashboard</a></li>
                 <li><a id="navlink-centers" class="navlink" href="#centers">Centers</a></li>
@@ -131,7 +131,7 @@
                       </ul>
                   </li>
               </ul>
-              <ul class="nav ml-auto">
+              <ul class="nav pull-right">
                   <form class="form-search" id="omnisearch">
                       <div class="input-append">
                           <input type="text" id="omni-input" class="span3 search-query" title="Search" placeholder="e.g. CTNNB1 or dasatinib" aria-label="search">
@@ -332,7 +332,7 @@
                         <h3 class="homepage-stories-title">Recent Stories</h3>
                         <div class="well carousel-well">
                             <div class="tab-content stories-tabs">
-                                <div class="container tab-pane active fade in" id="story-1"></div>
+                                <div class="container tab-pane active fade in show" id="story-1"></div>
                                 <div class="container tab-pane fade" id="story-2"></div>
                                 <div class="container tab-pane fade" id="story-3"></div>
                                 <div class="container tab-pane fade" id="story-4"></div>

@@ -13,6 +13,21 @@ body {
 }
 /* CUSTOMIZE THE NAVBAR
 -------------------------------------------------- */
+/* styles copied from the earlier version of bootstrap to retain the basic appearance */
+[class*="span"]{float:left;min-height:1px;margin-left:20px;}
+.span12{width:940px;}
+input.search-query{padding-right:14px;padding-right:4px \9;padding-left:14px;padding-left:4px \9;margin-bottom:0;-webkit-border-radius:15px;-moz-border-radius:15px;border-radius:15px;}
+.form-search .input-append .search-query{-webkit-border-radius:14px 0 0 14px;-moz-border-radius:14px 0 0 14px;border-radius:14px 0 0 14px;}
+.form-search .input-append .btn{-webkit-border-radius:0 14px 14px 0;-moz-border-radius:0 14px 14px 0;border-radius:0 14px 14px 0;}
+.nav>li>a{display:block;}
+.navbar-inner{min-height:60px;padding-left:20px;padding-right:20px;background-color:#f6f6f6;background-image:-moz-linear-gradient(top, #f6f6f6, #f6f6f6);background-image:-webkit-gradient(linear, 0 0, 0 100%, from(#f6f6f6), to(#f6f6f6));background-image:-webkit-linear-gradient(top, #f6f6f6, #f6f6f6);background-image:-o-linear-gradient(top, #f6f6f6, #f6f6f6);background-image:linear-gradient(to bottom, #f6f6f6, #f6f6f6);background-repeat:repeat-x;filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff6f6f6', endColorstr='#fff6f6f6', GradientType=0);border:1px solid #d7d7d7;-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px;-webkit-box-shadow:0 1px 4px rgba(0, 0, 0, 0.065);-moz-box-shadow:0 1px 4px rgba(0, 0, 0, 0.065);box-shadow:0 1px 4px rgba(0, 0, 0, 0.065);*zoom:1;}.navbar-inner:before,.navbar-inner:after{display:table;content:"";line-height:0;}
+.navbar-static-top{position:static;margin-bottom:0;}.navbar-static-top .navbar-inner{-webkit-border-radius:0;-moz-border-radius:0;border-radius:0;}
+.navbar .nav{position:relative;left:0;display:block;float:left;margin:0 10px 0 0;}
+.navbar .nav>li{float:left;}
+.navbar-inverse .navbar-inner{background-color:#333333;background-image:-moz-linear-gradient(top, #333333, #333333);background-image:-webkit-gradient(linear, 0 0, 0 100%, from(#333333), to(#333333));background-image:-webkit-linear-gradient(top, #333333, #333333);background-image:-o-linear-gradient(top, #333333, #333333);background-image:linear-gradient(to bottom, #333333, #333333);background-repeat:repeat-x;filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff333333', endColorstr='#ff333333', GradientType=0);border-color:#252525;}
+.pagination ul>li>a,.pagination ul>li>span{float:left;padding:4px 12px;line-height:26px;text-decoration:none;background-color:#ffffff;border:1px solid #dddddd;border-left-width:0;}
+.pagination ul>li{display:inline;}
+.pull-left{float:left;}
 
 /* Special class on .container surrounding .navbar, used for positioning it into place. */
 .navbar-wrapper {
