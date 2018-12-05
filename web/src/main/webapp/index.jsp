@@ -134,7 +134,7 @@
               <ul class="nav pull-right">
                   <form class="form-search" id="omnisearch">
                       <div class="input-append">
-                          <input type="text" id="omni-input" class="span3 search-query" title="Search" placeholder="e.g. CTNNB1 or dasatinib" aria-label="search">
+                          <input type="text" id="omni-input" class="search-query" title="Search" placeholder="e.g. CTNNB1 or dasatinib" aria-label="search">
                           <button type="submit" class="btn search-button">Search</button>
                           <span class="d-none" id="search-help-content">
                               <p>Please enter the keyword(s) you would like to search on the website.  You may enter multiple search terms, but do not use "AND" or "OR".</p>
@@ -213,7 +213,7 @@
                             <a href="https://ocg.cancer.gov/programs/ctd2">
                             <img class="img-polaroid pull-left" src="img/logos/ctd2_overall.png" alt="CTD2 general image" title="CTD2 general image">
                             </a>
-                            <div class="span3" style='float: right; margin-top: 1em;'>
+                            <div class="col-3" style='float: right; margin-top: 1em;'>
                                 <div style='background: linear-gradient(to bottom,#f5c900 0%,#fef6d5 80%,#faf4bf 100%) repeat scroll 0% 0% transparent;
                                     padding: 15px;
                                     overflow: hidden;margin-bottom: 1.5em;word-wrap: break-word;
@@ -269,7 +269,7 @@
                                         </ul>
                                     </div></div></div></div>
                                 </div><!-- end of the video link block -->
-                            </div><!-- span3 -->
+                            </div><!-- col-3 -->
                             <p class="lead firstlead">
                                 <a href="https://ocg.cancer.gov/programs/ctd2"><b>The Cancer Target Discovery and Development (CTD<sup>2</sup>) Network</b></a> bridges the knowledge gap between cancer genomics and precision oncology by mining and functionally validating high-throughput, high-content genomic data and translating the findings to the bedside.
                                 The Network developed the open-access web interface, “CTD<sup>2</sup> Dashboard,” to address the community’s need to find data generated from multiple types of biological and analytical approaches by CTD<sup>2</sup> Centers, while adhering to the FAIR (findable, accessible, interoperable, and re-usable) principles.
@@ -286,35 +286,27 @@
 
         <div class="container marketing ctd2-boxes">
           <div style="display:table">
-              <!--
-            <div class="span3 stories" data-order="0">
-              <h4>Stories</h4>
-              <p>
-                  In each <i>story</i>, Dashboard users can find research highlights from CTD<sup>2</sup> Network projects, a link to the list of observations related to the results, and other resources relevant to the data.
-              </p>
-              <a class="btn btn-danger btn-block" href="#stories">Browse &raquo;</a>
-            </div><!-- /.span3 -->
-            <div class="span4 target" data-order="1" style="display:table-cell;float:none;position:relative;padding-bottom:25px">
+            <div class="col-4 target" data-order="1" style="display:table-cell;float:none;position:relative;padding-bottom:25px">
               <h4>Biomarkers, Targets, <br>Genes &amp; Proteins</h4>
                 <p>
                     Users can browse a list of genes and proteins that Centers have identified using analyses that generate results with low frequencies of false positives. In some cases, genes and proteins have been assigned roles as biomarkers or targets based on observations.
                 </p>
                 <a class="btn btn-success btn-block" href="#explore/target/Biomarker,Target" style="position:absolute;bottom:0;">Browse &raquo;</a>
-            </div><!-- /.span3 -->
-            <div class="span4 drug" data-order="2" style="display:table-cell;float:none;position:relative;padding-bottom:25px">
+            </div>
+            <div class="col-4 drug" data-order="2" style="display:table-cell;float:none;position:relative;padding-bottom:25px">
               <h4>Compounds &amp; Perturbagens</h4>
                 <p>
                     Users can browse compounds and perturbagens, which are modulators of cellular phenotype, genes, or proteins in cancer cell lines or tumor model systems. Some examples include small molecules, FDA approved drugs, natural products, and small regulatory RNAs.
                 </p>
                 <a class="btn btn-info btn-block" href="#explore/compound/Perturbagen,Candidate Drug" style="position:absolute;bottom:0;">Browse &raquo;</a>
-            </div><!-- /.span3 -->
-              <div class="span4 context" data-order="3" style="display:table-cell;float:none;position:relative;padding-bottom:25px">
+            </div>
+              <div class="col-4 context" data-order="3" style="display:table-cell;float:none;position:relative;padding-bottom:25px">
                   <h4 class="homepage-context">Disease <br>Context</h4>
                   <p>
                       Users can browse disease context, which groups subjects by observations pertinent to a particular disease or tumor type.
                   </p>
                   <a class="btn btn-warning btn-block" href="#explore/context/Disease" style="position:absolute;bottom:0;">Browse &raquo;</a>
-              </div><!-- /.span3 -->
+              </div>
 
           </div><!-- /.row -->
         </div><!-- /.container -->
@@ -463,11 +455,11 @@
     <script type="text/template" id="center-tmpl">
         <div class="container common-container" id="center-submission-container">
             <div class="row">
-                <div class="span9">
+                <div class="col-9">
                     <h2 class="center-title">{{displayName}} <small>submissions</small></h2>
                     <div class="center-link-container">(<span class="center-link"></span>)</div>
                 </div>
-                <div class="span3">
+                <div class="col-3">
                     <img src="img/{{displayName}}.png" title="{{displayName}}" alt="{{displayName}}" class="img-polaroid" width="200">
                 </div>
             </div>
@@ -516,7 +508,7 @@
                 </p>
             </div>
             <div class="row">
-                <div class="span10">
+                <div class="col-10">
                     <h2>
                         Submission
                         <span class="badge-tier-container">
@@ -550,7 +542,7 @@
                         </tr>
                     </table>
                 </div>
-                <div class="span2">
+                <div class="col-2">
                     <a href="#{{observationTemplate.submissionCenter.stableURL}}">
                         <img src="img/{{observationTemplate.submissionCenter.displayName}}.png" class="img-polaroid" height=30 alt="{{observationTemplate.submissionCenter.displayName}}" title="{{observationTemplate.submissionCenter.displayName}}">
                     </a>
@@ -599,7 +591,7 @@
         <div class="container common-container" id="observation-container">
 
             <div class="row">
-                <div class="span10">
+                <div class="col-10">
                     <h2>Observation <small>(Tier {{submission.observationTemplate.tier}})</small></h2>
                     <blockquote>
                         <p id="observation-summary"></p>
@@ -622,7 +614,7 @@
                     </table>
 
                 </div>
-                <div class="span2">
+                <div class="col-2">
                     <a href="#{{submission.observationTemplate.submissionCenter.stableURL}}"><img src="img/{{submission.observationTemplate.submissionCenter.displayName}}.png" class="img-polaroid" width="120" alt="{{submission.observationTemplate.submissionCenter.displayName}}"></a>
                     <br><br>
                     <img src="img/observation.png" alt="Observation" class="img-polaroid" width=120 height=120><br>
@@ -908,7 +900,7 @@
              <h2>{{displayName}}</h2>
 
              <div class="row">
-                 <div class="span9">
+                 <div class="col-9">
                      <table id="gene-details-grid" class="table table-bordered table-striped">
                          <tr>
                              <th>Gene symbol<div style="font-size:10px; font-style:italic">(from HGNC)</div></th>
@@ -945,7 +937,7 @@
                          </tr>
                      </table>
                  </div>
-                 <div class="span3">
+                 <div class="col-3">
                      <h4>Gene</h4>
                      <img src="img/gene.png" class="img-polaroid" width=175 height=175 alt="Gene">
                  </div>
@@ -992,7 +984,7 @@
             <h2>{{displayName}}</h2>
 
             <div class="row">
-                <div class="span9">
+                <div class="col-9">
                     <table id="protein-details-grid" class="table table-bordered table-striped">
                         <tr>
                             <th>Gene symbol<div style="font-size:10px; font-style:italic">(from HGNC)</div></th>
@@ -1022,7 +1014,7 @@
                         </tr>
                     </table>
                 </div>
-                <div class="span3">
+                <div class="col-3">
                     <h4>Protein</h4>
                     <img src="img/protein.png" class="img-polaroid" width=175 height=175 alt="Protein">
                 </div>
@@ -1070,7 +1062,7 @@
             <h2>{{displayName}}</h2>
 
             <div class="row">
-                <div class="span9">
+                <div class="col-9">
                     <table id="shrna-details-grid" class="table table-bordered table-striped">
                         <tr>
                             <th>Target Sequence</th>
@@ -1094,7 +1086,7 @@
                         </tr>
                     </table>
                 </div>
-                <div class="span3">
+                <div class="col-3">
                     <h4>shRNA</h4>
                     <img src="img/shrna.png" class="img-polaroid" width=175 height=175 alt="shRNA">
                 </div>
@@ -1142,7 +1134,7 @@
             <h2>{{displayName}}</h2>
 
             <div class="row">
-                <div class="span9">
+                <div class="col-9">
                     <table id="shrna-details-grid" class="table table-bordered table-striped">
                         <tr>
                             <th>Target Sequence</th>
@@ -1166,7 +1158,7 @@
                         </tr>
                     </table>
                 </div>
-                <div class="span3">
+                <div class="col-3">
                     <h4>siRNA</h4>
                     <img src="img/sirna.png" class="img-polaroid" width=175 height=175 alt="siRNA">
                 </div>
@@ -1215,7 +1207,7 @@
             <h2>{{refseqId}}</h2>
 
             <div class="row">
-                <div class="span9">
+                <div class="col-9">
                     <table id="transcript-details-grid" class="table table-bordered table-striped">
                         <tr>
                             <th>Gene</th>
@@ -1235,7 +1227,7 @@
                         </tr>
                     </table>
                 </div>
-                <div class="span3">
+                <div class="col-3">
                     <h4>Transcript</h4>
                     <img src="img/transcript.png" class="img-polaroid" width=175 height=175 alt="Transcript">
                 </div>
@@ -1283,7 +1275,7 @@
             <h2>{{displayName}}</h2>
 
             <div class="row">
-                <div class="span9">
+                <div class="col-9">
                     <table id="tissuesample-details-grid" class="table table-bordered table-striped">
                         <tr>
                             <th>Lineage</th>
@@ -1305,7 +1297,7 @@
                         </tr>
                     </table>
                 </div>
-                <div class="span3">
+                <div class="col-3">
                     <h4>Tissue Sample</h4>
                     <img src="img/tissuesample.png" class="img-polaroid" width=175 height=175 alt="Tissue sample">
                 </div>
@@ -1345,7 +1337,7 @@
         <div class="container common-container" id="cellsample-container">
             <h2>{{displayName}}</h2>
             <div class="row">
-                <div class="span9">
+                <div class="col-9">
                     <table id="cellsample-details-grid" class="table table-bordered table-striped">
                         <tr>
                             <th>Name</th>
@@ -1383,7 +1375,7 @@
                         </tr>
                     </table>
                 </div>
-                <div class="span3">
+                <div class="col-3">
                         <h4>Cell Sample</h4>
                         <img src="img/cellsample.png" class="img-polaroid" width=175 height=175 alt="Cell sample">
                 </div>
@@ -1429,7 +1421,7 @@
         <div class="container common-container" id="animalmodel-container">
             <h2>{{displayName}}</h2>
             <div class="row">
-                <div class="span9">
+                <div class="col-9">
                     <table id="animalmodel-details-grid" class="table table-bordered table-striped">
                         <tr>
                             <th>Name</th>
@@ -1447,7 +1439,7 @@
                         </tr>
                     </table>
                 </div>
-                <div class="span3">
+                <div class="col-3">
                     <h4>Animal Model</h4>
                     <img src="img/animalmodel.png" class="img-polaroid" width=175 height=175 alt="Animal model">
                 </div>
@@ -1495,7 +1487,7 @@
               <h2>{{displayName}}</h2>
 
               <div class="row">
-                  <div class="span9">
+                  <div class="col-9">
                       <table id="compund-details-grid" class="table table-bordered table-striped">
                           <tr>
                               <th>Name</th>
@@ -1525,7 +1517,7 @@
                           </tr>
                       </table>
                   </div>
-                  <div class="span3">
+                  <div class="col-3">
                       <h4>Compound</h4>
                       <a href="<%=dataURL%>compounds/{{imageFile}}" target="_blank" class="compound-image" title="Compound: {{displayName}}">
                         <img class="img-polaroid" width=200 src="<%=dataURL%>compounds/{{imageFile}}" alt="Compound: {{displayName}}">
@@ -2004,7 +1996,7 @@
     <script type="text/template" id="mra-view-tmpl" mra-data-url="<%=dataURL%>">
          <div class="container common-container" id="mra-container" > 
                <div class="row">
-                 <div class="span10">
+                 <div class="col-10">
                     <h2>Master Regulator View</h2>
                    
                     <table id="master-regulator-grid" class="table table-bordered table-striped ">
@@ -2021,14 +2013,14 @@
                         </tbody>
                      </table>  
                  </div>
-                 <div class="span1">
+                 <div class="col-1">
                     <a href="javascript:history.back()">Back</a>
                  </div>
              </div>
                    <br/>
                    <br/>
                    <div>
-					  <b>Nodes Limit:</b>	
+                      <b>Nodes Limit:</b>	
                       <select id="cytoscape-node-limit">
                            <option value="25">25</option>
                            <option value="50">50</option>
@@ -2038,7 +2030,7 @@
                            <option value="400">400</option>
                            <option value="500">500</option>
                       </select>
-				      <b>&nbsp;&nbsp;&nbsp;</b>  
+                      <b>&nbsp;&nbsp;&nbsp;</b>  
                       <b>Layout:</b>	
                       <select id="cytoscape-layouts">
                            <option value="arbor" selected="selected">Arbor</option>
@@ -2049,7 +2041,7 @@
                       <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
                       <a href="#" id="createnetwork" data-description="{{observedEvidenceRole.displayText}}" target="_blank" title="please select master regulator to create network" class="mra-cytoscape-view">Create Network</a>   				 
                       <br/>
-			          <small><font color="grey">Threshold: </font></small>
+                      <small><font color="grey">Threshold: </font></small>
                       <small id="throttle-input"><font color="grey">e.g. 0.01 </font></small>
                   </div>         
                   <br/>	
@@ -2151,9 +2143,9 @@
     </script>
     
     <script type="text/template" id="genelist-view-tmpl" >
-         <div class="container common-container" id="genelist-container" > 
-             
-                 <div class="span10" align="center">
+        <div class="container common-container" id="genelist-container" > 
+             <div class=row>
+                 <div class="col-10" align="center">
                     <h4>  Gene List</h4>
 
                      <div class="alert alert-warning">
@@ -2166,11 +2158,11 @@
                      </div>
 
                     <select id="geneNames" class="geneSelectList" size="6" 
-								multiple></select>
+                                multiple></select>
                     </br></br>
                     <a href="#" id="addGene">Add Gene</a>
                     <a href="#" id="deleteGene">Delete Gene</a>
-                    </br></br>               
+                    </br></br>
                     <a href="#" id="clearList">Clear List</a>
                     <a href="#" id="loadGenes">Load Genes from File</a>
                     </br><input id="geneFileInput" type="file" style="visibility:hidden" /> 
@@ -2178,10 +2170,11 @@
                     <a href="#cnkb-query" id="cnkb-query">Find Gene Interactions in  Networks (CNKB)</a>
                  </div>
 
-                 <div class="span1">
+                 <div class="col-1">
                     <a href="javascript:history.back()">Back</a>
                  </div>
              </div>
+        </div>
 
             <div class="modal hide fade" id="addgene-modal">
                 <div class="modal-body">
@@ -2191,23 +2184,22 @@
                     <button id="add-gene-symbols" class="btn">Submit</button><br><br>
                 </div>
                 <div class="modal-footer">
-                     
                     <button class="btn btn-primary" data-dismiss="modal">Close</button>
                 </div>
-            </div>           
-      </script>     
+            </div>
+      </script>
       
       <script type="text/template" id="cnkb-query-tmpl" >
-         <div class="container common-container" id="cnkbquery-container" > 
-                    
-                    <div class="span10">
+        <div class="container common-container" id="cnkbquery-container" > 
+            <div class=row>
+                    <div class="col-10">
                        <h3>Cellular Network Knowledge Base</h3>
 
                        <medium>Select Interactome:</medium>
                        <small id="queryDescription" class="cnkbDescription"></small> 
                        </br>
                        <select id="interactomeList" name="interactomes"
-						    class="cnkbSelectList" size="4"></select>
+                            class="cnkbSelectList" size="4"></select>
                        </br>
                        <small id="interactomeDescription" class="cnkbDescription">
                         &nbsp;&nbsp;
@@ -2217,26 +2209,27 @@
                     <medium class="labelDisable" id="selectVersion"> Select Version: </medium>
                     </br>
                     <select id="interactomeVersionList" name="interactomeVersions"
-						 class="cnkbSelectList" size="4"></select>
+                         class="cnkbSelectList" size="4"></select>
                      </br>
                     <small id="versionDescription" class="cnkbDescription">
                         &nbsp;&nbsp;
                     </small>
                      </br>
-		             </br>
+                     </br>
                      <a href="#cnkb-result" id="cnkb-result">Submit</a>
                  </div>
 
-                 <div class="span1">
+                 <div class="col-1">
                     <a href="javascript:history.back()">Back</a>
                  </div>
-             </div>
+            </div>
+        </div>
       </script>
       
       <script type="text/template" id="cnkb-result-tmpl" >
          <div class="container common-container" id="cnkbresult-container" > 
                <div class="row">
-                  <div class="span10">
+                  <div class="col-10">
                      <h3>Cellular Network Knowledge Base</h2>
                      <a href="#" id="cnkbExport"  target="_blank" title="Export all selected interaction to a SIF file."> Export </a>
                      <br>
@@ -2258,7 +2251,7 @@
                          </tbody>
                       </table>  
                    </div>
-                   <div class="span1">
+                   <div class="col-1">
                       <a href="javascript:history.back()">Back</a>
                    </div>
                 </div>
@@ -2269,7 +2262,7 @@
                     <br/><br/><br/>
                 </div>
                 <div>
-					<b>Interactions Limit:</b>	
+                    <b>Interactions Limit:</b>	
                     <select id="cytoscape-node-limit">
                            <option value="25">25</option>
                            <option value="50">50</option>
@@ -2277,8 +2270,8 @@
                            <option value="200">200</option>
                            <option value="300">300</option>
                            <option value="400">400</option>
-                     </select>					
-				  
+                     </select>
+
                      <b>Layout:</b>	
                      <select id="cytoscape-layouts">
                            <option value="arbor" selected="selected">Arbor</option>
@@ -2289,9 +2282,9 @@
                      
                      <a href="#" id="createnetwork"  target="_blank" title="please select cnkb interactions to create network">Create Network</a>   				 
                      <br/>
-			         <small><font color="grey">Confidence threshold: </font></small>
+                     <small><font color="grey">Confidence threshold: </font></small>
                      <small id="throttle-input"><font color="grey">e.g. 0.01 </font></small>
-				   	 <div id="createnw_progress_indicator" align="center" style="display: none;">data is loading ......
+                   	 <div id="createnw_progress_indicator" align="center" style="display: none;">data is loading ......
                          <img id="cnkb_data_progress_indicator" src="img/progress_indicator.gif" width="20" height="20" alt="Please wait ......"><br>
                      </div>
                   </div>
@@ -2302,7 +2295,7 @@
       <script type="text/template" id="cnkb-result-row-tmpl">
         <tr id="tr_{{geneName}}">
             <td><input type="checkbox" id="checkbox_{{geneName}}" value="{{geneName}}" class="cnkb_checkbox"></td> 
-		    <td>{{geneName}}</td>; 
+            <td>{{geneName}}</td>; 
         </tr>
       </script>
       
@@ -2324,7 +2317,8 @@
      
     <script type="text/template" id="gene-cart-help-tmpl" >
          <div class="container common-container" id="cnkbhelp-container" > 
-               <div class="span10">                       
+             <div class=row>
+               <div class="col-10">
                     <h3>Gene Cart Help</h3>
                     <p>The Gene Cart allows users to build a list of genes and query the Cellular Networks Knowledge Base (CNKB) for molecular interactions involving these genes.  The CNKB is a repository of molecular interactions networks. It contains computationally-derived networks obtained by applying state of the art Systems and Structure Biology algorithms from the laboratories of Drs. Andrea Califano and Barry Honig at Columbia University. A detailed <a target="_blank" href="http://wiki.c2b2.columbia.edu/workbench/index.php/Cellular_Networks_KnowledgeBase">description of the CNKB</a> is available which also describes how the CNKB can be accessed from within the software platform <a target="_blank" href="http://www.geworkbench.org">geWorkbench</a>.</p>
                     <p>In the Observations for a particular Dashboard submission, those entries that are genes will have a green "+" sign to right of the gene symbol. Clicking this "+" sign will add the gene to the Gene Cart. The Gene Cart is limited to 25 genes.</p>
@@ -2333,9 +2327,10 @@
                     <p>Several layout options are available for Cytoscape and can be selected using the "Layout" pulldown.</p>
                     <p>In Cytoscape.js, several common interaction types have been assigned specific colors used for the lines representing them, and these will be shown on the legend of the graph.  The genes used in the CNKB query (hub genes) will be highlighted in yellow.</p>
                 </div>
-                <div class="span1">
+                <div class="col-1">
                    <a href="javascript:history.back()">Back</a>
                 </div>
+            </div>
          </div>
      </script>
      
@@ -2453,7 +2448,7 @@
     <script src="js/encoder.js"></script>
     <script src="js/jquery.contextMenu.js"></script>   
     <script src="js/jquery.ui.position.js"></script>    
-    <script src="js/ctd2.js?ts=201804"></script>
+    <script src="js/ctd2.js?ts=20181205"></script>
 
   </body>
 </html>
