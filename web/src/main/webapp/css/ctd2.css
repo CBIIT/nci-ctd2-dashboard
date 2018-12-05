@@ -15,7 +15,6 @@ body {
 -------------------------------------------------- */
 /* styles copied from the earlier version of bootstrap to retain the basic appearance */
 [class*="span"]{float:left;min-height:1px;margin-left:20px;}
-.span12{width:940px;}
 input.search-query{padding-right:14px;padding-right:4px \9;padding-left:14px;padding-left:4px \9;margin-bottom:0;-webkit-border-radius:15px;-moz-border-radius:15px;border-radius:15px;}
 .form-search .input-append .search-query{-webkit-border-radius:14px 0 0 14px;-moz-border-radius:14px 0 0 14px;border-radius:14px 0 0 14px;}
 .form-search .input-append .btn{-webkit-border-radius:0 14px 14px 0;-moz-border-radius:0 14px 14px 0;border-radius:0 14px 14px 0;}
@@ -28,6 +27,19 @@ input.search-query{padding-right:14px;padding-right:4px \9;padding-left:14px;pad
 .pagination ul>li>a,.pagination ul>li>span{float:left;padding:4px 12px;line-height:26px;text-decoration:none;background-color:#ffffff;border:1px solid #dddddd;border-left-width:0;}
 .pagination ul>li{display:inline;}
 .pull-left{float:left;}
+
+/* fine-tune to mimic the looking of previous version */
+.container{width:940px; padding:0px}
+.navbar{padding:0px;}
+.navbar-inner{width:100%}
+.navbar-inner .pull-right{float:right}
+#omni-input{padding:4px 15px 4px 10px}
+.btn.search-button{padding:2px 15px 2px 10px}
+a{color:#9c0001}
+.homepage-stories-title{text-align:left;color:#5a5a5a}
+.row.one-story{text-align:left}
+.one-story .pull-right{float:right}
+.pagination-centered ul{margin:auto}
 
 /* Special class on .container surrounding .navbar, used for positioning it into place. */
 .navbar-wrapper {

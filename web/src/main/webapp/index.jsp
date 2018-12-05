@@ -209,7 +209,6 @@
         <div class="overview-container">
             <div class="container overview-box">
                 <div class="row">
-                    <div class="span12">
                         <div class="featurette" id="overview-text">
                             <a href="https://ocg.cancer.gov/programs/ctd2">
                             <img class="img-polaroid pull-left" src="img/logos/ctd2_overall.png" alt="CTD2 general image" title="CTD2 general image">
@@ -281,7 +280,6 @@
                                 To understand more about the Dashboard functions, please read the <a href="https://www.ncbi.nlm.nih.gov/pubmed/29220450" target="_blank">manuscript</a> or <a href="https://ocg.cancer.gov/news-publications/e-newsletter-issue/issue-14#1721" target="_blank">e-News article</a>.
                             </p>
                         </div><!-- overview-text -->
-                    </div><!-- span12 -->
                 </div><!-- row -->
 
         <div class="dark-separator"></div>
@@ -1881,7 +1879,7 @@
 
     <script type="text/template" id="story-homepage-tmpl">
         <div class="row one-story">
-            <div class="span8">
+            <div class="col-8">
                 <h4>{{submission.observationTemplate.description}}</h4>
                 <!--<p class="lead stories-lead">{{submission.observationTemplate.description}}</p>-->
                 <p id="story-summary-{{id}}" class="stories-text">
@@ -1894,7 +1892,7 @@
                     <a href="#{{stableURL}}">see observation</a>)
                 </p>
             </div>
-            <div class="span4">
+            <div class="col-4">
                 <img class="img-circle" src="img/slogos/{{submission.observationTemplate.submissionCenter.displayName}}.png" alt="{{submission.observationTemplate.submissionCenter.displayName}}" title="{{submission.observationTemplate.submissionCenter.displayName}}" height=150>
             </div>
         </div>
