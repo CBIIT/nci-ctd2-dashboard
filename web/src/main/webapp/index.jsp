@@ -195,6 +195,8 @@
     </div>
     
     <div class="modal hide fade" id="alert-message-modal">  <!-- a hidden div for showing alert message -->
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
                 <div class="modal-body" >
                     <br>
                     <medium id="alertMessage"></medium>
@@ -202,6 +204,8 @@
                 <div class="modal-footer">
                     <button class="btn btn-primary" data-dismiss="modal">Close</button>
                 </div>
+            </div>
+        </div>
     </div>
 
     <!-- these are the templates -->
@@ -2180,7 +2184,10 @@
              </div>
         </div>
 
-            <div class="modal hide fade" id="addgene-modal">
+        <div class="modal hide fade" id="addgene-modal">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+                    
                 <div class="modal-body">
                     <br>
                     Add gene symbols
@@ -2190,7 +2197,9 @@
                 <div class="modal-footer">
                     <button class="btn btn-primary" data-dismiss="modal">Close</button>
                 </div>
-            </div>
+        </div>
+        </div>
+        </div>
       </script>
       
       <script type="text/template" id="cnkb-query-tmpl" >
