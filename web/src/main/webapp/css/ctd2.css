@@ -41,6 +41,7 @@ a,a:not([href]):not([tabindex]){color:#9c0001}
 .one-story .pull-right{float:right}
 .pagination-centered ul{margin:auto}
 .hide-text{color: transparent;}
+.fancybox-image{background: #ffffff;}
 
 /* Special class on .container surrounding .navbar, used for positioning it into place. */
 .navbar-wrapper {
