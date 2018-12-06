@@ -2730,6 +2730,7 @@
                             className: "extra-margin",
                         }],
                     });
+                    $("#explore-table").width( "100%" );
 
                     $(".explore-thumbnail h4").tooltip();
                     var blurb = $("#text-blurb");
