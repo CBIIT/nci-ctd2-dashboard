@@ -2777,13 +2777,14 @@
                             var newRoles = [];
                             $("#role-modal input").each(function () {
                                 var aRole = $(this).attr("data-role");
-                                if ($(this).attr("checked")) {
+                                if ($(this).prop("checked")) {
                                     newRoles.push(aRole);
                                 }
 
                             });
 
                             $("#role-modal").modal('hide');
+                            $(".modal-backdrop").remove();
                             window.location.hash = "/explore/" + thatModel.type + "/" + newRoles.join(",");
                         });
                     }

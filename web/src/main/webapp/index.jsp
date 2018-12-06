@@ -1937,6 +1937,8 @@
         </div>
 
         <div class="modal hide fade" id="role-modal">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h3>Select roles</h3>
@@ -1958,6 +1960,8 @@
             <div class="modal-footer">
                 <button type="btn btn-block btn-info" id="select-roles-button">Select</button>
             </div>
+        </div>
+        </div>
         </div>
     </script>
 
