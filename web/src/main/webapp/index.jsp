@@ -212,133 +212,71 @@
     <script type="text/template" id="home-tmpl">
         <div class="overview-container">
             <div class="container overview-box">
-                <div class="row">
-                        <div class="featurette" id="overview-text">
-                            <a href="https://ocg.cancer.gov/programs/ctd2">
+                <div class="row" id="overview-text">
+                    <div class="col-3">
+                        <a href="https://ocg.cancer.gov/programs/ctd2">
                             <img class="img-polaroid pull-left" src="img/logos/ctd2_overall.png" alt="CTD2 general image" title="CTD2 general image">
-                            </a>
-                            <div class="col-3" style='float: right; margin-top: 1em;'>
-                                <div style='background: linear-gradient(to bottom,#f5c900 0%,#fef6d5 80%,#faf4bf 100%) repeat scroll 0% 0% transparent;
-                                    padding: 15px;
-                                    overflow: hidden;margin-bottom: 1.5em;word-wrap: break-word;
-                                    color: #323232; font-weight: normal; 
-                                    font-family: Helvetica,Arial,"Nimbus Sans L",sans-serif; font-size: 81.25%; line-height: 1.5em;'>
+                        </a>
+                    </div>
+                    <div class="col-9">
+                        <ul>
+                            <li>enables users to explore data integrated from multiple CTD2 Centers</li>
+                            <li>contains data from multiple experimental and computational approaches</li>
+                            <li>addresses key biomedical subjects (e.g., genes, compounds, disease contexts)</li>
+                            <li>explicitly captures the roles (e.g., biomarker, target, oncogene) subjects take in experiments</li>
+                            <li>provides validation strength in terms of evidence “<a href="http://www.ncbi.nlm.nih.gov/pubmed/27401613" target="_blank" data-toggle="tooltip" id="tierTooltip">Tier</a>.”</li>
+                        </ul>
+                        <ul id='video-list' class="list-inline"> <!-- TODO style this to be horizontal -->
+                            <li class="list-inline-item small">
+                                <a id="video-link1"  title='This video introduces and defines common terminology used throughout the Dashboard.'>
+                                    Understanding Dashboard
+                                </a>
+                            </li>
+                            <li class="list-inline-item small">
+                                <a id="video-link2" title='This video explains how users can search and browse the Dashboard through gene-centric, compound/perturbation-centric, or disease-relevant keywords.'>
+                                    Searching and Browsing
+                                </a>
+                            </li>
+                            <li class="list-inline-item small">
+                                <a id="video-link3" title='This video shows how the Dashboard Gene Cart can predict or verify molecular interactions using a subset of publicly available tissue- and disease-specific interactomes.'>
+                                    Identifying Molecular Interactions
+                                </a>
+                            </li>
+                        </ul>
 
-                                    <h2 style='color: #774928;
-                                        font-size: 15.6px;
-                                        padding-bottom: 10px;
-                                        text-align: center;
-                                        font-weight: bold;
-                                        font-family: "Arial Narrow",Arial,sans-serif;
-                                        margin: 0;
-                                        line-height: 1.25em;
-                                        text-transform: uppercase !important;'>CTD² Dashboard Tutorial Videos
-                                    </h2>
-                                    <div><div style="overflow: hidden;"><div><div>
-                                        <style>
-                                            li.video-popup-link { line-height: normal; padding-bottom: 5px;}
-                                            a.video-popup-link { color: #323232; cursor: pointer; }
-                                        </style>
-                                        <ul style="margin: 0;list-style-type: none;list-style-image: url(./images/play-button.png);padding: 0 0 0 30px;">
-
-                                            <li class="video-popup-link">
-                                                <div style="vertical-align: top; display: inline-block; font-weight: bold;">
-                                                    <span>
-                                                        <a id="video-link1" class='video-popup-link'
-                                                            title='This video introduces and defines common terminology used throughout the Dashboard.'>
-                                                            Organization and Terminology</a>
-                                                    </span>
-                                                </div>
-                                            </li>
-                                        
-                                            <li class="video-popup-link">
-                                            <div style="vertical-align: top;display: inline-block;font-weight: bold;">
-                                            <span>
-                                            <a id="video-link2" style='color: #323232; cursor: pointer;'
-                                                title='This video explains how users can search and browse the Dashboard through gene-centric, compound/perturbation-centric, or disease-relevant keywords.'>
-                                                Search and Browse</a>
-                                            </span>
-                                            </div>
-                                            </li>
-            
-                                            <li class="video-popup-link">
-                                            <div style="vertical-align: top; display: inline-block; font-weight: bold;">
-                                            <span>
-                                            <a id="video-link3" class='video-popup-link'
-                                                title='This video shows how the Dashboard Gene Cart can predict or verify molecular interactions using a subset of publicly available tissue- and disease-specific interactomes.'>
-                                                Gene Cart</a>
-                                            </span>  
-                                            </div>
-                                            </li>
-                                        </ul>
-                                    </div></div></div></div>
-                                </div><!-- end of the video link block -->
-                            </div><!-- col-3 -->
-                            <p class="lead firstlead">
-                                <a href="https://ocg.cancer.gov/programs/ctd2"><b>The Cancer Target Discovery and Development (CTD<sup>2</sup>) Network</b></a> bridges the knowledge gap between cancer genomics and precision oncology by mining and functionally validating high-throughput, high-content genomic data and translating the findings to the bedside.
-                                The Network developed the open-access web interface, “CTD<sup>2</sup> Dashboard,” to address the community’s need to find data generated from multiple types of biological and analytical approaches by CTD<sup>2</sup> Centers, while adhering to the FAIR (findable, accessible, interoperable, and re-usable) principles.
-                                The CTD<sup>2</sup> Dashboard compiles the Network-generated conclusions, or “observations,” associated with a specific gene, cell line, animal model, or perturbagen.
-                                It provides supporting evidence with links to data, references, and to the validation strength of the evidence as indicated by its “<a href="http://www.ncbi.nlm.nih.gov/pubmed/27401613" target="_blank" data-toggle="tooltip" id="tierTooltip">Tier</a>.”
-                                In summary, the Dashboard provides access to validated data and the ability to view a cross-section of results assembled across multiple CTD<sup>2</sup> Center findings.
-                                To learn how the Dashboard is organized, including additional term definitions, please visit <a id="homepage-help-navigate">Navigating and Understanding Dashboard Content</a>.
-                                To understand more about the Dashboard functions, please read the <a href="https://www.ncbi.nlm.nih.gov/pubmed/29220450" target="_blank">manuscript</a> or <a href="https://ocg.cancer.gov/news-publications/e-newsletter-issue/issue-14#1721" target="_blank">e-News article</a>.
-                            </p>
-                        </div><!-- overview-text -->
+                    </div> <!-- col-9 -->
                 </div><!-- row -->
 
         <div class="dark-separator"></div>
 
-        <div class="container marketing ctd2-boxes">
-          <div style="display:table">
-            <div class="col-4 target" data-order="1" style="display:table-cell;float:none;position:relative;padding-bottom:25px">
-              <h4>Biomarkers, Targets, <br>Genes &amp; Proteins</h4>
-                <p>
-                    Users can browse a list of genes and proteins that Centers have identified using analyses that generate results with low frequencies of false positives. In some cases, genes and proteins have been assigned roles as biomarkers or targets based on observations.
-                </p>
-                <a class="btn btn-success btn-block" href="#explore/target/Biomarker,Target" style="position:absolute;bottom:0;">Browse &raquo;</a>
+        <div class="container ctd2-boxes">
+            <div class=row>
+                <div class="col-4">
+                    Explore <a href="#explore/target/Biomarker,Target">genes and proteins</a> to find experimental evidence for cancer targets that are implicated in a cancer model
+                </div>
+                <div class="col-4">
+                    Explore <a href="#explore/compound/Perturbagen,Candidate Drug">compounds and perturbagens</a> to find experimental evidence for agents that show activity in a cancer model
+                </div>
+                <div class="col-4" data-order="3" style="display:table-cell;float:none;position:relative;padding-bottom:25px">
+                    Explore <a  href="#explore/context/Disease">disease context</a> to find disease-specific targets or agents
+                </div>
             </div>
-            <div class="col-4 drug" data-order="2" style="display:table-cell;float:none;position:relative;padding-bottom:25px">
-              <h4>Compounds &amp; Perturbagens</h4>
-                <p>
-                    Users can browse compounds and perturbagens, which are modulators of cellular phenotype, genes, or proteins in cancer cell lines or tumor model systems. Some examples include small molecules, FDA approved drugs, natural products, and small regulatory RNAs.
-                </p>
-                <a class="btn btn-info btn-block" href="#explore/compound/Perturbagen,Candidate Drug" style="position:absolute;bottom:0;">Browse &raquo;</a>
-            </div>
-              <div class="col-4 context" data-order="3" style="display:table-cell;float:none;position:relative;padding-bottom:25px">
-                  <h4 class="homepage-context">Disease <br>Context</h4>
-                  <p>
-                      Users can browse disease context, which groups subjects by observations pertinent to a particular disease or tumor type.
-                  </p>
-                  <a class="btn btn-warning btn-block" href="#explore/context/Disease" style="position:absolute;bottom:0;">Browse &raquo;</a>
-              </div>
+        </div>
 
-          </div><!-- /.row -->
-        </div><!-- /.container -->
-
+        <div class="dark-separator"></div>
         <!-- Carousel
         ================================================== -->
         <div class="carousel slide">
           <div class="carousel-inner">
             <div class="item active">
-              <img src="img/bg-red.png" alt="Red background image" title="red background image" class="cimg">
               <div class="container">
                   <div class="carousel-caption">
-                        <h3 class="homepage-stories-title">Recent Stories</h3>
                         <div class="well carousel-well">
                             <div class="tab-content stories-tabs">
                                 <div class="container tab-pane active fade in show" id="story-1"></div>
                                 <div class="container tab-pane fade" id="story-2"></div>
                                 <div class="container tab-pane fade" id="story-3"></div>
                                 <div class="container tab-pane fade" id="story-4"></div>
-                            </div>
-                            <div class="pagination pagination-centered stories-pagination">
-                                <ul class="nav">
-                                    <li class="active"><a href="#story-1" class="story-link">&bull;</a></li>
-                                    <li><a href="#story-2" class="story-link">&bull;</a></li>
-                                    <li><a href="#story-3" class="story-link">&bull;</a></li>
-                                    <li><a href="#story-4" class="story-link">&bull;</a></li>
-                                    <li><a href="#stories">More stories &raquo;</a></li>
-                                </ul>
                             </div>
                         </div>
                   </div>
@@ -1875,21 +1813,29 @@
 
     <script type="text/template" id="story-homepage-tmpl">
         <div class="row one-story">
-            <div class="col-8">
+            <div class="col-3">
+                <h4>Recent Stories</h4>
+                <div class="pagination pagination-centered stories-pagination">
+                        <ul class="nav">
+                            <li class="active"><a href="#story-1" class="story-link">&bull;</a></li>
+                            <li><a href="#story-2" class="story-link">&bull;</a></li>
+                            <li><a href="#story-3" class="story-link">&bull;</a></li>
+                            <li><a href="#story-4" class="story-link">&bull;</a></li>
+                        </ul>
+                    </div>
+                <img src="./img/icons/fair_icon.png" alt="FAIR" title="FAIR" height=150>
+            </div>
+            <div class="col-9">
                 <h4>{{submission.observationTemplate.description}}</h4>
                 <!--<p class="lead stories-lead">{{submission.observationTemplate.description}}</p>-->
                 <p id="story-summary-{{id}}" class="stories-text">
                     <!-- leaving this blank, we have to construct the summary from the scratch. -->
                 </p>
-                <p class="pull-right">
-                    (
+                <p>
                     <a href="#{{submission.stableURL.replace("submission", "story")}}">view full story</a>
-                    |
-                    <a href="#{{stableURL}}">see observation</a>)
+                    | <a href="#{{stableURL}}">see observation</a>
+                    | <a href="#stories">all stories</a>
                 </p>
-            </div>
-            <div class="col-4">
-                <img class="img-circle" src="img/slogos/{{submission.observationTemplate.submissionCenter.displayName}}.png" alt="{{submission.observationTemplate.submissionCenter.displayName}}" title="{{submission.observationTemplate.submissionCenter.displayName}}" height=150>
             </div>
         </div>
     </script>
