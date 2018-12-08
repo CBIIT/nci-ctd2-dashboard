@@ -166,7 +166,9 @@
         <footer>
             <div style="font-size:14px; font-weight:bold; margin-bottom:10px;">
                 Dashboard Release <%=dashboardReleaseVersion%>
+                <a href="#attribution" data-toggle="collapse">attribution</a>
             </div>
+            <div id="attribution" class="collapse">
             <div style="font-size:14px; margin-bottom:10px;">
                 Data users must acknowledge and cite the manuscript <a href="https://www.ncbi.nlm.nih.gov/pubmed/29220450" target="_blank">Aksoy, Dančík, Smith et al.</a>, Database 2017;1-10 and provide the URL <a href="https://ctd2-dashboard.nci.nih.gov/dashboard/">https://ctd2-dashboard.nci.nih.gov/dashboard/</a>.
             </div>
@@ -190,6 +192,7 @@
                 <a href="http://www.cancer.gov/global/web/policies" target="_blank">Policies</a> &middot;
                 <a href="http://www.cancer.gov/global/web/policies/accessibility" target="_blank">Accessibility</a> &middot;
                 <a href="http://www.cancer.gov/global/web/policies/foia" target="_blank">FOIA</a>
+            </div>
             </div>
         </footer>
     </div>
@@ -1827,14 +1830,13 @@
             </div>
             <div class="col-9">
                 <h4>{{submission.observationTemplate.description}}</h4>
-                <!--<p class="lead stories-lead">{{submission.observationTemplate.description}}</p>-->
-                <p id="story-summary-{{id}}" class="stories-text">
-                    <!-- leaving this blank, we have to construct the summary from the scratch. -->
-                </p>
-                <p>
-                    <a href="#{{submission.stableURL.replace("submission", "story")}}">view full story</a>
+                <p><a href="#story-summary-{{id}}" data-toggle="collapse">details</a>
+                    | <a href="#{{submission.stableURL.replace("submission", "story")}}">view full story</a>
                     | <a href="#{{stableURL}}">see observation</a>
                     | <a href="#stories">all stories</a>
+                </p>
+                <p id="story-summary-{{id}}" class="stories-text collapse">
+                    <!-- leaving this blank, we have to construct the summary from the scratch. -->
                 </p>
             </div>
         </div>
