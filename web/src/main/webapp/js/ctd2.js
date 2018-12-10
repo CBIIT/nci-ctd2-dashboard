@@ -469,7 +469,7 @@
 
                         summary = summary.replace(
                             new RegExp(leftSep + observedSubject.observedSubjectRole.columnName + rightSep, "g"),
-                            _.template($("#summary-subject-replacement-tmpl").html(), observedSubject.subject)
+                            _.template($("#summary-subject-replacement-tmpl").html()) (observedSubject.subject)
                         );
                     });
 
@@ -495,7 +495,7 @@
 
                                 summary = summary.replace(
                                     new RegExp(leftSep + observedEvidence.observedEvidenceRole.columnName + rightSep, "g"),
-                                    _.template($("#summary-evidence-replacement-tmpl").html(), observedEvidence.evidence)
+                                    _.template($("#summary-evidence-replacement-tmpl").html()) (observedEvidence.evidence)
                                 );
                             });
 
@@ -530,7 +530,7 @@
 
                         summary = summary.replace(
                             new RegExp(leftSep + observedSubject.observedSubjectRole.columnName + rightSep, "g"),
-                            _.template($("#summary-subject-replacement-tmpl").html(), observedSubject.subject)
+                            _.template($("#summary-subject-replacement-tmpl").html()) (observedSubject.subject)
                         );
                     });
 
@@ -558,7 +558,7 @@
 
                                 summary = summary.replace(
                                     new RegExp(leftSep + observedEvidence.observedEvidenceRole.columnName + rightSep, "g"),
-                                    _.template($("#summary-evidence-replacement-tmpl").html(), observedEvidence.evidence)
+                                    _.template($("#summary-evidence-replacement-tmpl").html()) (observedEvidence.evidence)
                                 );
                             });
 
@@ -733,33 +733,33 @@
                                     });
 
                                     imgTemplate = $("#search-results-compound-image-tmpl");
-                                    thatEl2.append(_.template(imgTemplate.html(), compound));
+                                    thatEl2.append(_.template(imgTemplate.html()) (compound));
                                 }
                             });
                         } else if (subject.class == "AnimalModel") {
                             imgTemplate = $("#search-results-animalmodel-image-tmpl");
-                            thatEl2.append(_.template(imgTemplate.html(), subject));
+                            thatEl2.append(_.template(imgTemplate.html()) (subject));
                         } else if (subject.class == "CellSample") {
                             imgTemplate = $("#search-results-cellsample-image-tmpl");
-                            thatEl2.append(_.template(imgTemplate.html(), subject));
+                            thatEl2.append(_.template(imgTemplate.html()) (subject));
                         } else if (subject.class == "TissueSample") {
                             imgTemplate = $("#search-results-tissuesample-image-tmpl");
-                            thatEl2.append(_.template(imgTemplate.html(), subject));
+                            thatEl2.append(_.template(imgTemplate.html()) (subject));
                         } else if (subject.class == "Gene") {
                             imgTemplate = $("#search-results-gene-image-tmpl");
-                            thatEl2.append(_.template(imgTemplate.html(), subject));
+                            thatEl2.append(_.template(imgTemplate.html()) (subject));
                         } else if (subject.class == "ShRna" && subject.type.toLowerCase() == "sirna") {
                             subject.class = "SiRNA";
                             imgTemplate = $("#search-results-sirna-image-tmpl");
-                            thatEl2.append(_.template(imgTemplate.html(), subject));
+                            thatEl2.append(_.template(imgTemplate.html()) (subject));
                         } else if (subject.class == "ShRna") {
                             imgTemplate = $("#search-results-shrna-image-tmpl");
-                            thatEl2.append(_.template(imgTemplate.html(), subject));
+                            thatEl2.append(_.template(imgTemplate.html()) (subject));
                         } else if (subject.class == "Protein") {
                             imgTemplate = $("#search-results-protein-image-tmpl");
-                            thatEl2.append(_.template(imgTemplate.html(), subject));
+                            thatEl2.append(_.template(imgTemplate.html()) (subject));
                         } else {
-                            thatEl2.append(_.template(imgTemplate.html(), subject));
+                            thatEl2.append(_.template(imgTemplate.html()) (subject));
                         }
 
                         if (observedSubject.observedSubjectRole == null || observedSubject.subject == null)
@@ -767,7 +767,7 @@
 
                         summary = summary.replace(
                             new RegExp(leftSep + observedSubject.observedSubjectRole.columnName + rightSep, "g"),
-                            _.template($("#summary-subject-replacement-tmpl").html(), observedSubject.subject)
+                            _.template($("#summary-subject-replacement-tmpl").html()) (observedSubject.subject)
                         );
 
                         $("#observation-summary").html(summary);
@@ -794,7 +794,7 @@
                         observedEvidenceRowView.render();
                         summary = summary.replace(
                             new RegExp(leftSep + observedEvidence.observedEvidenceRole.columnName + rightSep, "g"),
-                            _.template($("#summary-evidence-replacement-tmpl").html(), observedEvidence.evidence)
+                            _.template($("#summary-evidence-replacement-tmpl").html()) (observedEvidence.evidence)
                         );
 
                         $("#observation-summary").html(summary);
@@ -834,7 +834,7 @@
                         var val = $(this).html();
                         var vals = val.split("e"); // capture scientific notation
                         if (vals.length > 1) {
-                            $(this).html(_.template($("#observeddatanumericevidence-val-tmpl").html(), {
+                            $(this).html(_.template($("#observeddatanumericevidence-val-tmpl").html()) ({
                                 firstPart: vals[0],
                                 secondPart: vals[1].replace("+", "")
                             }));
@@ -854,7 +854,7 @@
                             contentType: "json",
                             success: function (data) {
                                 $.fancybox.open(
-                                    _.template($("#cytoscape-tmpl").html(), {
+                                    _.template($("#cytoscape-tmpl").html()) ({
                                         description: sifDesc
                                     }), {
                                         'autoDimensions': false,
@@ -1069,7 +1069,7 @@
 
                         $.ajax("count/submission/?filterBy=" + aCenter.id).done(function (count) {
                             var cntContent = _.template(
-                                $("#count-submission-tmpl").html(), {
+                                $("#count-submission-tmpl").html()) ( {
                                     count: count
                                 }
                             );
@@ -1352,7 +1352,7 @@
             thatEl = $("ul.refs");
             $.getJSON("findProteinFromGene/" + result.id, function (proteins) {
                 _.each(proteins, function (protein) {
-                    thatEl.append(_.template($("#gene-uniprot-tmpl").html(), {
+                    thatEl.append(_.template($("#gene-uniprot-tmpl").html()) ({
                         uniprotId: protein.uniprotId
                     }));
                 });
@@ -1534,7 +1534,7 @@
                     var ids = xref.databaseId.split(";");
                     _.each(ids, function (xrefid) {
                         $(thatEl).find("ul.xrefs").append(
-                            _.template($("#ncithesaurus-tmpl").html(), {
+                            _.template($("#ncithesaurus-tmpl").html()) ({
                                 nciId: xrefid
                             })
                         );
@@ -1718,7 +1718,7 @@
 
                         summary = summary.replace(
                             new RegExp(leftSep + observedSubject.observedSubjectRole.columnName + rightSep, "g"),
-                            _.template($("#summary-subject-replacement-tmpl").html(), observedSubject.subject)
+                            _.template($("#summary-subject-replacement-tmpl").html()) (observedSubject.subject)
                         );
                     });
 
@@ -1735,11 +1735,11 @@
 
                                 summary = summary.replace(
                                     new RegExp(leftSep + observedEvidence.observedEvidenceRole.columnName + rightSep, "g"),
-                                    _.template($("#summary-evidence-replacement-tmpl").html(), observedEvidence.evidence)
+                                    _.template($("#summary-evidence-replacement-tmpl").html()) (observedEvidence.evidence)
                                 );
                             });
 
-                            summary += _.template($("#submission-obs-tbl-row-tmpl").html(), thatModel);
+                            summary += _.template($("#submission-obs-tbl-row-tmpl").html()) (thatModel);
                             $(thatEl).html(summary);
                             var dataTable = $(tableEl).parent().DataTable();
                             dataTable.cells(cellId).invalidate();
@@ -1815,7 +1815,7 @@
                                 "#count-story-tmpl" :
                                 "#count-observations-tmpl";
                             submission.details = _.template(
-                                $(tmplName).html(), {
+                                $(tmplName).html()) ({
                                     count: count
                                 }
                             );
@@ -1855,7 +1855,7 @@
                                         $(rows)
                                             .eq(i)
                                             .before(
-                                                _.template($("#tbl-project-title-tmpl").html(), {
+                                                _.template($("#tbl-project-title-tmpl").html()) ({
                                                     project: group,
                                                     project_url: project_url,
                                                     centerStableURL: centerModel.stableURL
@@ -1928,7 +1928,7 @@
 
                         summary = summary.replace(
                             new RegExp(leftSep + observedSubject.observedSubjectRole.columnName + rightSep, "g"),
-                            _.template($("#summary-subject-replacement-tmpl").html(), observedSubject.subject)
+                            _.template($("#summary-subject-replacement-tmpl").html()) (observedSubject.subject)
                         );
                     });
 
@@ -1945,11 +1945,11 @@
 
                                 summary = summary.replace(
                                     new RegExp(leftSep + observedEvidence.observedEvidenceRole.columnName + rightSep, "g"),
-                                    _.template($("#summary-evidence-replacement-tmpl").html(), observedEvidence.evidence)
+                                    _.template($("#summary-evidence-replacement-tmpl").html()) (observedEvidence.evidence)
                                 );
                             });
 
-                            summary += _.template($("#submission-obs-tbl-row-tmpl").html(), thatModel);
+                            summary += _.template($("#submission-obs-tbl-row-tmpl").html()) (thatModel);
                             $(thatEl).html(summary);
 
                             // let the datatable know about the update
@@ -1989,7 +1989,7 @@
                     _.each(similarSubmissions, function (simSub) {
                         $(thatEl)
                             .find("ul.similar-submission-list")
-                            .append(_.template($("#similar-submission-item-tmpl").html(), simSub));
+                            .append(_.template($("#similar-submission-item-tmpl").html()) (simSub));
                     });
                 }
             });
@@ -2196,13 +2196,13 @@
             } else {
                 result.subjectClass = result.class; // this is only to avoid using 'class' alone because it is a javascript keyword
             }
-            searchEl.append(_.template(imgTemplate.html(), result));
+            searchEl.append(_.template(imgTemplate.html()) (result));
 
             // some of the elements will be hidden in the pagination. Use magic-scoping!
             var updateElId = "#subject-observation-count-" + result.id;
             var updateEl = $(updateElId);
             var cntContent = _.template(
-                $("#count-observations-tmpl").html(), {
+                $("#count-observations-tmpl").html()) ({
                     count: model.observationCount
                 }
             );
@@ -2318,7 +2318,7 @@
                                     "#count-story-tmpl" :
                                     "#count-observations-tmpl";
                                 var cntContent = _.template(
-                                    $(tmplName).html(), {
+                                    $(tmplName).html()) ({
                                         count: submission.observationCount
                                     }
                                 );
@@ -2436,7 +2436,7 @@
                         }
 
                         $.fancybox.open(
-                            _.template($("#mra-cytoscape-tmpl").html(), {
+                            _.template($("#mra-cytoscape-tmpl").html()) ({
                                 description: mraDesc
                             }), {
                                 'autoDimensions': false,
@@ -2735,7 +2735,7 @@
                     $(".explore-thumbnail h4").tooltip();
                     var blurb = $("#text-blurb");
                     if (blurb.length > 0) {
-                        $("#explore-blurb").append(_.template(blurb.html(), {
+                        $("#explore-blurb").append(_.template(blurb.html()) ({
                             subject_type: subjectType[thatModel.type],
                             roles: thatModel.roles
                         }));
@@ -2842,7 +2842,7 @@
             $(this.el).html(this.template({}));
             $.each(geneList, function (aData) {
                 var value = Encoder.htmlEncode(this.toString());
-                $("#geneNames").append(_.template($("#gene-cart-option-tmpl").html(), {
+                $("#geneNames").append(_.template($("#gene-cart-option-tmpl").html()) ({
                     displayItem: value
                 }));
             });
@@ -2996,7 +2996,7 @@
                     localStorage.genelist = JSON.stringify(geneList);
                     $.each(newGenes, function () {
                         var value = this.toString();
-                        $("#geneNames").append(_.template($("#gene-cart-option-tmpl").html(), {
+                        $("#geneNames").append(_.template($("#gene-cart-option-tmpl").html()) ({
                             displayItem: value
                         }));
                     });
@@ -3042,7 +3042,7 @@
                     var list = data.interactomeList;
                     _.each(list, function (aData) {
                         if (aData.toLowerCase().startsWith("preppi")) {
-                            $("#interactomeList").prepend(_.template($("#gene-cart-option-tmpl-preselected").html(), {
+                            $("#interactomeList").prepend(_.template($("#gene-cart-option-tmpl-preselected").html()) ({
                                 displayItem: aData
                             }));
                             var interactome = aData.split("(")[0].trim();
@@ -3063,7 +3063,7 @@
                                     $('#interactomeDescription').html(convertUrl(data.description));
                                     $('#interactomeVersionList').html("");
                                     _.each(data.versionDescriptorList, function (aData) {
-                                        $("#interactomeVersionList").append(_.template($("#gene-cart-option-tmpl").html(), {
+                                        $("#interactomeVersionList").append(_.template($("#gene-cart-option-tmpl").html()) ({
                                             displayItem: aData.version
                                         }));
                                     });
@@ -3073,7 +3073,7 @@
                                 }
                             }); //ajax
                         } else
-                            $("#interactomeList").append(_.template($("#gene-cart-option-tmpl").html(), {
+                            $("#interactomeList").append(_.template($("#gene-cart-option-tmpl").html()) ({
                                 displayItem: aData
                             }));
                     });
@@ -3104,7 +3104,7 @@
                         var list = data.versionDescriptorList;
                         $('#interactomeVersionList').html("");
                         _.each(list, function (aData) {
-                            $("#interactomeVersionList").append(_.template($("#gene-cart-option-tmpl").html(), {
+                            $("#interactomeVersionList").append(_.template($("#gene-cart-option-tmpl").html()) ({
                                 displayItem: aData.version
                             }));
                         });
@@ -3422,7 +3422,7 @@
         });
 
         $.fancybox.open(
-            _.template($("#cnkb-cytoscape-tmpl").html(), {
+            _.template($("#cnkb-cytoscape-tmpl").html()) ({
                 description: description,
                 svgHtml: svgHtml
             }), {
