@@ -275,8 +275,6 @@
                         counter++;
                     });
 
-                    Holder.run();
-
                     $('.stories-pagination a.story-link').click(function (e) {
                         e.preventDefault();
                         $(this).tab('show');
@@ -1126,8 +1124,6 @@
                         storyView.render();
                         counter++;
                     });
-
-                    Holder.run();
                 }
             });
 

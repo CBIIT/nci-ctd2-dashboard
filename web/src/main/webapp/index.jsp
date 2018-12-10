@@ -2388,12 +2388,10 @@
     <script src="js/buttons.html5.min.js"></script>
     <script src="js/jszip.min.js"></script>
     <script src="js/paging.js"></script>
-    <script src="js/holder.js"></script>
     <script src="js/underscore-min.js"></script>
     <script src="js/backbone-min.js"></script>
     <script src="js/bootstrap.bundle.min.js"></script>
     <script src="js/jquery.fancybox.min.js"></script>
-    <script src="js/jquery.easing-1.3.pack.js"></script>
     <script src="js/jquery.expander.min.js"></script>
     <script src="js/arbor.js"></script>
     <script src="js/cytoscape.min.js"></script>  
