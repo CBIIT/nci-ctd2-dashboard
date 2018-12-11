@@ -21,8 +21,7 @@
 
     <link rel="shortcut icon" href="img/favicon.ico" type="image/vnd.microsoft.icon" />
     <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" />
-    <link rel="stylesheet" href="css/jquery.dataTables.css" type="text/css" />
-    <link rel="stylesheet" href="css/buttons.dataTables.min.css" type="text/css" />
+    <link rel="stylesheet" href="css/datatables.min.css" type="text/css" />
     <link rel="stylesheet" href="css/jquery.fancybox.min.css" type="text/css" media="screen" />
     <link rel="stylesheet" href="css/jquery.contextMenu.css" type="text/css" />
     <link rel="stylesheet" href="css/ctd2.css" type="text/css" />
@@ -2383,10 +2382,7 @@
 
     <!-- end of templates -->
     
-    <script src="js/jquery.dataTables.min.js"></script>
-    <script src="js/dataTables.buttons.min.js"></script>
-    <script src="js/buttons.html5.min.js"></script>
-    <script src="js/jszip.min.js"></script>
+    <script src="js/datatables.min.js"></script>
     <script src="js/paging.js"></script>
     <script src="js/underscore-min.js"></script>
     <script src="js/backbone-min.js"></script>
