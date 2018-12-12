@@ -2227,6 +2227,7 @@
                      <b>Layout:</b>	
                      <select id="cytoscape-layouts">
                            <option value="arbor" selected="selected">Arbor</option>
+                           <option value="cose">Cose</option>
                            <option value="grid">Grid</option>
                            <option value="random">Random</option>
                            <option value="circle">Circle</option>
@@ -2391,7 +2392,8 @@
     <script src="js/jquery.fancybox.min.js"></script>
     <script src="js/jquery.expander.min.js"></script>
     <script src="js/arbor.js"></script>
-    <script src="js/cytoscape.min.js"></script>  
+    <script src="js/cytoscape.min.js"></script>
+    <script src="js/cytoscape-arbor.js"></script> <!-- cytoscape suggests not use arbor. use cose instead -->
     <script src="js/encoder.js"></script>
     <script src="js/jquery.contextMenu.min.js"></script>
     <script src="js/jquery.ui.position.min.js"></script>
