@@ -2252,7 +2252,7 @@
       </script>
       
       <script type="text/template" id="cnkb-cytoscape-tmpl">
-        
+        <div id="cytoscape-container">
         <div id="cnkb_cytoscape_progress">
             <img id="cnkb_cytoscape_progress_indicator" class="centeredImage" src="img/progress_indicator.gif" width="30" height="30" alt="Please wait ......">
         </div>
@@ -2264,6 +2264,7 @@
             </svg>
             <br/>
             {{description}}
+        </div>
         </div>
       </script>
      

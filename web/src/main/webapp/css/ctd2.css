@@ -374,6 +374,10 @@ td.next-cell {
     width: 650px;
 }
 
+#cytoscape-container {
+    width: 95%;
+    height: 90%;
+}
 #cytoscape {
     width: 93%;
     height: 70%;
