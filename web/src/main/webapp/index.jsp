@@ -23,7 +23,7 @@
     <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" />
     <link rel="stylesheet" href="css/datatables.min.css" type="text/css" />
     <link rel="stylesheet" href="css/jquery.fancybox.min.css" type="text/css" media="screen" />
-    <link rel="stylesheet" href="css/jquery.contextMenu.css" type="text/css" />
+    <link rel="stylesheet" href="css/jquery.contextMenu.min.css" type="text/css" />
     <link rel="stylesheet" href="css/ctd2.css" type="text/css" />
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -2393,8 +2393,8 @@
     <script src="js/arbor.js"></script>
     <script src="js/cytoscape.min.js"></script>  
     <script src="js/encoder.js"></script>
-    <script src="js/jquery.contextMenu.js"></script>   
-    <script src="js/jquery.ui.position.js"></script>    
+    <script src="js/jquery.contextMenu.min.js"></script>
+    <script src="js/jquery.ui.position.min.js"></script>
     <script src="js/ctd2.js?ts=20181205"></script>
 
   </body>
