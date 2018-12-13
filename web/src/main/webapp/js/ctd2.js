@@ -32,7 +32,7 @@
             "smart": false
         },
         // These are for bootstrap-styled datatables
-        "sDom": "<'row'<'span6'i><'span6'f>r>t<'row'<'span6'l><'span6'p>>",
+        "sDom": "<ifrtlp>",
         "sPaginationType": "bootstrap"
     });
 
@@ -1253,7 +1253,7 @@
                         });
 
                         var oTable = $(thatEl).dataTable({
-                            'dom': 'iBfrtlp',
+                            'dom': '<iBfrtlp>',
                             "sPaginationType": "bootstrap",
                             "columns": [{
                                     "orderDataType": "dashboard-date"
@@ -1277,6 +1277,7 @@
                                 },
                             }],
                         });
+                        $(thatEl).width( "100%" );
 
                         oTable.fnSort([
                             [2, 'desc']
@@ -2387,7 +2388,7 @@
                     });
 
                     var oTable1 = $('#master-regulator-grid').dataTable({
-                        "sDom": "<'row'<'span5'i><'span5'f>r>t<'row'<'span5'l><'span5'p>>",
+                        "sDom": "ifrtlp",
                         "sScrollY": "200px",
                         "bPaginate": false
                     });
@@ -2698,7 +2699,7 @@
                         table_data.push([reformatted, nameLink, role, n3link, n2link, n1link]);
                     });
                     $("#explore-table").dataTable({
-                        'dom': 'iBfrtlp',
+                        'dom': '<iBfrtlp>',
                         'data': table_data,
                         "deferRender": true,
                         "columns": [
@@ -2726,6 +2727,7 @@
                             className: "extra-margin",
                         }],
                     });
+                    $("#explore-table").parent().width( "100%" );
                     $("#explore-table").width( "100%" );
 
                     $(".explore-thumbnail h4").tooltip();
@@ -3195,7 +3197,7 @@
                     });
 
                     var oTable1 = $('#cnkb-result-grid').dataTable({
-                        "sDom": "<'row'<'span5'i><'span5'f>r>t<'row'<'span5'l><'span5'p>>",
+                        "sDom": "ifrtlp",
                         "sScrollY": "200px",
                         "bPaginate": false
                     });
