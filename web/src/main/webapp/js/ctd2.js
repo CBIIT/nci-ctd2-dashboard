@@ -3197,7 +3197,7 @@
                     });
 
                     var oTable1 = $('#cnkb-result-grid').dataTable({
-                        "sDom": "ifrtlp",
+                        "sDom": "<'fullwidth'ifrtlp>",
                         "sScrollY": "200px",
                         "bPaginate": false
                     });

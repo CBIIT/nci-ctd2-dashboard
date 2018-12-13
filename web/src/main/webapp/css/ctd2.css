@@ -46,6 +46,8 @@ a,a:not([href]):not([tabindex]){color:#9c0001}
 #video-list li::before{content: url(../img/icons/video.png)}
 .ctd2-boxes .row div{padding: 20px}
 
+.fullwidth{width: 100%}
+
 /* Special class on .container surrounding .navbar, used for positioning it into place. */
 .navbar-wrapper {
   position: absolute;
