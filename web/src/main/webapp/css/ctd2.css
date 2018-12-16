@@ -58,9 +58,6 @@ a,a:not([href]):not([tabindex]){color:#9c0001}
   margin-top: 10px;
   margin-bottom: -90px; /* Negative margin to pull up carousel. 90px is roughly margins and height of navbar. */
 }
-.navbar-wrapper .navbar {
-
-}
 
 /* Remove border and change up box shadow for more contrast */
 .navbar .navbar-inner {
@@ -119,9 +116,6 @@ a,a:not([href]):not([tabindex]){color:#9c0001}
   border: 0;
 }
 
-.carousel .item {
-}
-
 .carousel img.cimg {
   position: absolute;
   top: 0;
@@ -139,9 +133,6 @@ a,a:not([href]):not([tabindex]){color:#9c0001}
   padding: 0 20px;
   padding-top: 25px;
 
-}
-.carousel-caption h1,
-.carousel-caption .lead {
 }
 
 .stories {
@@ -296,9 +287,6 @@ blockquote p {
     margin: 5px 0 0 0;
 }
 
-.topmenu li {
-}
-
 .popover-content {
     font-size: 14px;
 }
@@ -415,10 +403,6 @@ td.next-cell {
 
 .center-name {
     font-weight: bold;
-}
-
-td.center-pi span {
-    /*font-weight: bold;*/
 }
 
 th.submission-count {
@@ -727,10 +711,6 @@ div.center-link-container {
     padding-top: 20px;
     text-align: center;
     font-size: smaller;
-}
-
-.td-no-break {
-    text-wrap: avoid;
 }
 
 .evidences tbody tr td:nth-child(2) {
