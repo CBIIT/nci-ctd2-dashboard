@@ -282,7 +282,6 @@
                 }
             });
 
-            $('#myCarousel').carousel('pause');
             $("#omni-search-form").submit(function () {
                 var searchTerm = $("#omni-search").val();
                 window.location.hash = "search/" + searchTerm;

@@ -457,11 +457,6 @@ footer {
     text-align: center;
 }
 
-#myCarousel .container {
-    border-left: 5px solid #f6f6f6;
-    border-right: 5px solid #f6f6f6;
-}
-
 .story-cards {
     height: 325px;
     overflow-y: auto;
