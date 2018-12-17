@@ -945,13 +945,16 @@
                 $("#small-hide-sub-details").show();
             });
 
-            $("#small-hide-sub-details").click(function (event) {
-                event.preventDefault();
+            var hide_submission_detail = function() {
                 $("#obs-submission-details").slideUp();
                 $("#small-hide-sub-details").hide();
                 $("#small-show-sub-details").show();
+            };
+            $("#small-hide-sub-details").click(function (event) {
+                event.preventDefault();
+                hide_submission_detail();
             });
-
+            hide_submission_detail();
 
             if (result.submission.observationTemplate.submissionDescription == "") {
                 $("#obs-submission-summary").hide();
