@@ -116,14 +116,6 @@ a,a:not([href]):not([tabindex]){color:#9c0001}
   border: 0;
 }
 
-.carousel img.cimg {
-  position: absolute;
-  top: 0;
-  left: 0;
-  min-width: 100%;
-  height: 450px;
-}
-
 .carousel-caption {
   background-color: #f6f6f6;
   background-image: url('../img/ctd2_bg.png');
@@ -151,14 +143,6 @@ a,a:not([href]):not([tabindex]){color:#9c0001}
 
 .target-link {
     color: #1ea44b;
-}
-
-.drug {
-    border-top: 15px solid #006bb9;
-}
-
-.drug-link {
-    color: #006bb9;
 }
 
 .context {
@@ -202,12 +186,6 @@ a,a:not([href]):not([tabindex]){color:#9c0001}
 .stories-pagination {
     margin-bottom: 5px;
     margin-top: 10px;
-}
-
-.browse-by {
-    font-size: 16px;
-    padding-left: 10px;
-    font-weight: bold;
 }
 
 .common-container {
@@ -338,30 +316,8 @@ li.browsed-item {
     margin-left: 0;
 }
 
-#template-helper-container input, #template-helper-container select {
-    margin-bottom: 0;
-}
-
-.template-preview-wrapper {
-    width: 100%;
-    overflow-x: scroll;
-    border: 1px solid gray;
-}
-
-.template-download button {
-    margin-top: 20px;
-}
-
-#template-helper-container td {
-    padding: 7px;
-}
-
 td.next-cell {
     text-align: center;
-}
-
-.input-xxxlarge {
-    width: 650px;
 }
 
 #cytoscape-container {
@@ -486,11 +442,6 @@ div.dark-separator {
     background-color: #555555;
 }
 
-.explore-thumbnail h4 {
-    white-space: nowrap;
-    overflow: hidden;
-}
-
 #explore-container .span3 {
     min-height: 500px;
 }
@@ -501,10 +452,6 @@ div.dark-separator {
 
 #explore-container .span2 {
     min-height: 360px;
-}
-
-.explore-thumbnail img {
-    background-color: white;
 }
 
 h2.target, h3.target, h4.target, h5.target {
@@ -532,31 +479,6 @@ h2.context, h3.context, h4.context, h5.context {
 
 .customize-context, .customize-context:hover {
     color: #f99a14;
-}
-
-.numbered-image {
-    background-color: white;
-    background-size: cover;
-    min-height: 120px;
-}
-
-.numbered-image b {
-    padding: 5px;
-    background-color: white;
-    color: dimgrey;
-}
-
-.explore-thumbnail .caption {
-    padding: 5px;
-}
-
-.explore-thumbnail .caption h4 {
-    margin: 5px 0px;
-}
-
-.explore-thumbnail .caption p {
-    font-size: 16px;
-    line-height: 20px;
 }
 
 .nonewline {

@@ -2729,7 +2729,6 @@
                     $("#explore-table").parent().width( "100%" );
                     $("#explore-table").width( "100%" );
 
-                    $(".explore-thumbnail h4").tooltip();
                     var blurb = $("#text-blurb");
                     if (blurb.length > 0) {
                         $("#explore-blurb").append(_.template(blurb.html()) ({
