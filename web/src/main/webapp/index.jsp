@@ -266,11 +266,25 @@
               <div class="container">
                   <div class="carousel-caption">
                         <div class="well carousel-well">
-                            <div class="tab-content stories-tabs">
-                                <div class="container tab-pane active fade in show" id="story-1"></div>
-                                <div class="container tab-pane fade" id="story-2"></div>
-                                <div class="container tab-pane fade" id="story-3"></div>
-                                <div class="container tab-pane fade" id="story-4"></div>
+                            <div class="row one-story">
+                            <div class="col-3">
+                                <h4>Recent Stories</h4>
+                                <div class="pagination pagination-centered stories-pagination">
+                                    <ul class="nav nav-tabs">
+                                        <li class="nav-item"><a href="#story-1" class="nav-link story-link active">&bull;</a></li>
+                                        <li class="nav-item"><a href="#story-2" class="nav-link story-link">&bull;</a></li>
+                                        <li class="nav-item"><a href="#story-3" class="nav-link story-link">&bull;</a></li>
+                                        <li class="nav-item"><a href="#story-4" class="nav-link story-link">&bull;</a></li>
+                                    </ul>
+                                </div>
+                                <img src="./img/icons/fair_icon.png" alt="FAIR" title="FAIR" height=150>
+                            </div>
+                            <div class="tab-content stories-tabs col-9">
+                                <div class="tab-pane active fade in show" id="story-1"></div>
+                                <div class="tab-pane fade" id="story-2"></div>
+                                <div class="tab-pane fade" id="story-3"></div>
+                                <div class="tab-pane fade" id="story-4"></div>
+                            </div>
                             </div>
                         </div>
                   </div>
@@ -1799,31 +1813,15 @@
     </script>
 
     <script type="text/template" id="story-homepage-tmpl">
-        <div class="row one-story">
-            <div class="col-3">
-                <h4>Recent Stories</h4>
-                <div class="pagination pagination-centered stories-pagination">
-                        <ul class="nav">
-                            <li class="active"><a href="#story-1" class="story-link">&bull;</a></li>
-                            <li><a href="#story-2" class="story-link">&bull;</a></li>
-                            <li><a href="#story-3" class="story-link">&bull;</a></li>
-                            <li><a href="#story-4" class="story-link">&bull;</a></li>
-                        </ul>
-                    </div>
-                <img src="./img/icons/fair_icon.png" alt="FAIR" title="FAIR" height=150>
-            </div>
-            <div class="col-9">
-                <h4>{{submission.observationTemplate.description}}</h4>
-                <p><a href="#story-summary-{{id}}" data-toggle="collapse">details</a>
-                    | <a href="#{{submission.stableURL.replace("submission", "story")}}">view full story</a>
-                    | <a href="#{{stableURL}}">see observation</a>
-                    | <a href="#stories">all stories</a>
-                </p>
-                <p id="story-summary-{{id}}" class="stories-text collapse">
-                    <!-- leaving this blank, we have to construct the summary from the scratch. -->
-                </p>
-            </div>
-        </div>
+        <h4>{{submission.observationTemplate.description}}</h4>
+        <p><a href="#story-summary-{{id}}" data-toggle="collapse">details</a>
+            | <a href="#{{submission.stableURL.replace("submission", "story")}}">view full story</a>
+            | <a href="#{{stableURL}}">see observation</a>
+            | <a href="#stories">all stories</a>
+        </p>
+        <p id="story-summary-{{id}}" class="stories-text collapse">
+            <!-- leaving this blank, we have to construct the summary from the scratch. -->
+        </p>
     </script>
 
     <script type="text/template" id="text-blurb">
