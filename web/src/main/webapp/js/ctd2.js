@@ -2014,7 +2014,9 @@
                             submissionRowView.render();
                         });
 
-                        $(sTable).dataTable();
+                        $(sTable).dataTable({
+                            dom: "<'fullwidth'ifrtlp>",
+                        });
 
                     }
                 });
