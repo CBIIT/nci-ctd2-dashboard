@@ -2288,7 +2288,7 @@
      </script>
 
     <script type="text/template" id="video-popup-tmpl">
-        <div id="ytplayer-{{videoid}}" class="flex-video widescreen" data-video-id="{{videoid}}" align="center" style="padding: 70px 0;height:400px;">
+        <div id="ytplayer-{{videoid}}" class="flex-video widescreen" data-video-id="{{videoid}}" style="padding: 70px 20px;">
             <noscript><p><a href="https://www.youtube.com/watch?v={{videoid}}" target="_blank" >
                 View this video on YouTube.</a></p>
             </noscript>

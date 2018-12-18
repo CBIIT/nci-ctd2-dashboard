@@ -333,8 +333,6 @@
             $.fancybox.open(
                 content, {
                     'autoDimensions': false,
-                    'width': '820px',
-                    'height': '420px',
                     'centerOnScroll': true,
                     'transitionIn': 'none',
                     'transitionOut': 'none'
