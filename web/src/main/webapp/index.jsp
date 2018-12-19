@@ -2387,6 +2387,8 @@
     <script src="js/arbor.js"></script>
     <script src="js/cytoscape.min.js"></script>
     <script src="js/cytoscape-arbor.js"></script> <!-- cytoscape suggests not use arbor. use cose instead -->
+    <script src="js/cola.min.js"></script>
+    <script src="js/cytoscape-cola.js"></script>
     <script src="js/encoder.js"></script>
     <script src="js/jquery.contextMenu.min.js"></script>
     <script src="js/jquery.ui.position.min.js"></script>

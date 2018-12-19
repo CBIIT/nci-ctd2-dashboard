@@ -867,7 +867,7 @@
                                     container: $('#cytoscape-sif'),
 
                                     layout: {
-                                        name: 'arbor',
+                                        name: 'cola',
                                         liveUpdate: false,
                                         maxSimulationTime: 1000,
                                         stop: function () {
@@ -885,7 +885,7 @@
                                         })
                                         .selector("edge")
                                         .css({
-                                            "width": "mapData(weight, 0, 100, 1, 4)",
+                                            "width": 1,
                                             "target-arrow-shape": "triangle",
                                             "source-arrow-shape": "circle",
                                             "line-color": "#444"
