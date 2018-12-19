@@ -333,11 +333,11 @@ td.next-cell {
     text-align: center;
 }
 
-#cytoscape-container {
+.cytoscape-container {
     width: 95%;
     height: 90%;
 }
-#cytoscape {
+#cytoscape,#mra-cytoscape {
     width: 93%;
     height: 70%;
     border: 1px solid #dddddd;

@@ -2390,7 +2390,7 @@
                     });
 
                     var oTable1 = $('#master-regulator-grid').dataTable({
-                        "sDom": "ifrtlp",
+                        "sDom": "<'fullwidth'ifrtlp>",
                         "sScrollY": "200px",
                         "bPaginate": false
                     });
@@ -2446,9 +2446,10 @@
                             }
                         );
 
-                        var container = $('#cytoscape');
+                        window.cy = this;
+                        cytoscape({
+                            container: $('#mra-cytoscape'),
 
-                        var cyOptions = {
                             layout: {
                                 name: layoutName,
                                 fit: true,
@@ -2509,11 +2510,9 @@
                                 }),
 
                             ready: function () {
-                                window.cy = this; // for debugging
+                                // for debugging
                             }
-                        };
-
-                        container.cy(cyOptions);
+                        });
 
                     }
                 }); //end ajax

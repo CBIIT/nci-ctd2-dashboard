@@ -2021,12 +2021,13 @@
     </script>   
     
     <script type="text/template" id="mra-cytoscape-tmpl">
+        <div class="cytoscape-container">
         <div id="mra_progress">
             <img id="mra_progress_indicator" class="centeredImage" src="img/progress_indicator.gif" width="30" height="30" alt="Please wait ......">
         </div>
-        <div id="cytoscape">            
+        <div id="mra-cytoscape">
         </div>
-        <div class="well cytoscape-legend">       
+        <div class="well cytoscape-legend">
             <svg width="350" height="30"xmlns="http://www.w3.org/2000/svg">
             <circle cx="20" cy="15" r="10" fill="white" stroke="grey" stroke-width="2"/>
             <text x="40" y="20" fill="grey">TF</text>
@@ -2039,6 +2040,7 @@
             </svg>
             <br/>
             {{description}}
+        </div>
         </div>
     </script>
 
@@ -2244,7 +2246,7 @@
       </script>
       
       <script type="text/template" id="cnkb-cytoscape-tmpl">
-        <div id="cytoscape-container">
+        <div class="cytoscape-container">
         <div id="cnkb_cytoscape_progress">
             <img id="cnkb_cytoscape_progress_indicator" class="centeredImage" src="img/progress_indicator.gif" width="30" height="30" alt="Please wait ......">
         </div>
