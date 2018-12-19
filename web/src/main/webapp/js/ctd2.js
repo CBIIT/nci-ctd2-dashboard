@@ -863,8 +863,9 @@
                                 // load cytoscape
                                 //var div_id = "cytoscape-sif";
 
-                                var container = $('#cytoscape-sif');
-                                var cyOptions = {
+                                cytoscape({
+                                    container: $('#cytoscape-sif'),
+
                                     layout: {
                                         name: 'arbor',
                                         liveUpdate: false,
@@ -917,11 +918,9 @@
                                         }),
 
                                     ready: function () {
-                                        window.cy = this; // for debugging
+                                        // for debugging
                                     }
-                                };
-
-                                container.cy(cyOptions);
+                                });
                                 // end load cytoscape
                             }
                         });
