@@ -1972,6 +1972,7 @@
                       <b>Layout:</b>	
                       <select id="cytoscape-layouts">
                            <option value="arbor" selected="selected">Arbor</option>
+                           <option value="cola">Cola</option>
                            <option value="grid">Grid</option>
                            <option value="random">Random</option>
                            <option value="circle">Circle</option>
@@ -2220,7 +2221,7 @@
                      <b>Layout:</b>	
                      <select id="cytoscape-layouts">
                            <option value="arbor" selected="selected">Arbor</option>
-                           <option value="cose">Cose</option>
+                           <option value="cola">Cola</option>
                            <option value="grid">Grid</option>
                            <option value="random">Random</option>
                            <option value="circle">Circle</option>
