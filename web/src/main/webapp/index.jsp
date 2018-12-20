@@ -277,7 +277,6 @@
                                         <li class="nav-item"><a href="#story-4" class="nav-link story-link">&bull;</a></li>
                                     </ul>
                                 </div>
-                                <img src="./img/icons/fair_icon.png" alt="FAIR" title="FAIR" width=100>
                             </div>
                             <div class="tab-content stories-tabs col-9">
                                 <div class="tab-pane active fade in show" id="story-1"></div>
