@@ -271,6 +271,9 @@ blockquote {
 blockquote p {
     font-size: 22px;
     font-style: italic;
+    line-height: 30px;
+    font-weight: normal;
+    padding: 0 0 0 15px
 }
 
 .img-evidence {
@@ -536,13 +539,9 @@ body {
     white-space: nowrap;
 }
 
+h3 {margin: 13px 0}
 h1 small, h2 small, h3 small, h4 small, h5 small, h6 small {
     color: #777777;
-}
-
-blockquote p {
-    line-height: 30px;
-    font-weight: normal;
 }
 
 .alert, .alert h4 {
