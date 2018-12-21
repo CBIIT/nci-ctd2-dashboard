@@ -89,6 +89,10 @@
     });
 
     /* Models */
+    var HomepageText = Backbone.Model.extend({
+        urlRoot: CORE_API_URL + "get/homepage-text"
+    });
+
     var SubmissionCenter = Backbone.Model.extend({
         urlRoot: CORE_API_URL + "get/center"
     });
@@ -252,7 +256,7 @@
         template: _.template($("#home-tmpl").html()),
         render: function () {
             // Load the template
-            $(this.el).html(this.template({}));
+            $(this.el).html(this.template(this.model));
             $("#tierTooltip").tooltip({
                 title: "A CTD<sup>2</sup> Network-defined ranking system for evidence that is based on the extent of characterization associated with a particular study." +
                     "<ul><li><b><i>Tier 1</i></b>: Preliminary results of screening campaigns." +
@@ -3600,7 +3604,6 @@
         routes: {
             "centers": "listCenters",
             "stories": "listStories",
-            "explore": "scrollToExplore",
             "explore/:type/:roles": "explore",
             "center/:name/:project": "showCenterProject",
             "center/:name": "showCenter",
@@ -3633,35 +3636,22 @@
             "transcript/:name/:role": "showTranscript",
             "transcript/:name/:role/:tier": "showTranscript",
             "mra/:filename": "showMraView",
-            "about": "helpNavigate",
             "genes": "showGeneList",
             "cnkb-query": "showCnkbQuery",
             "cnkb-result": "showCnkbResult",
             "gene-cart-help": "showGeneCartHelp",
-            "help-navigate": "helpNavigate",
             "*actions": "home"
         },
 
         home: function (actions) {
-            var homeView = new HomeView();
-            homeView.render();
-        },
-
-        helpNavigate: function () {
-            var homeView = new HomeView();
-            homeView.render();
-            var helpNavigateView = new HelpNavigateView();
-            helpNavigateView.render();
-        },
-
-        scrollToExplore: function () {
-            var homeView = new HomeView();
-            homeView.render();
-
-            var whereTo = $(".ctd2-boxes").offset().top - 5;
-            $('html, body').animate({
-                scrollTop: whereTo
-            }, 500);
+            var homepageText = new HomepageText();
+            homepageText.fetch({
+                success: function () {
+                    new HomeView({
+                        model: homepageText.toJSON(),
+                    }).render();
+                },
+            });
         },
 
         search: function (term) {

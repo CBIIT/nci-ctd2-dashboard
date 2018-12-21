@@ -213,13 +213,7 @@
                         </a>
                     </div>
                     <div class="col-9">
-                        <ul>
-                            <li>enables users to explore data integrated from multiple CTD2 Centers</li>
-                            <li>contains data from multiple experimental and computational approaches</li>
-                            <li>addresses key biomedical subjects (e.g., genes, compounds, disease contexts)</li>
-                            <li>explicitly captures the roles (e.g., biomarker, target, oncogene) subjects take in experiments</li>
-                            <li>provides validation strength in terms of evidence “<a href="http://www.ncbi.nlm.nih.gov/pubmed/27401613" target="_blank" data-toggle="tooltip" id="tierTooltip">Tier</a>.”</li>
-                        </ul>
+                        {{description}}
                         <ul id='video-list' class="list-inline"> <!-- TODO style this to be horizontal -->
                             <li class="list-inline-item small">
                                 <a id="video-link1"  title='This video introduces and defines common terminology used throughout the Dashboard.'>
