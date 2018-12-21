@@ -57,5 +57,6 @@ public class ObservationDataWriter implements ItemWriter<ObservationData> {
         }
 
         dashboardDao.batchSave(entities, batchSize);
+        log.debug("ObservationData written");
     }
 }

@@ -1,16 +1,17 @@
 package gov.nih.nci.ctd2.dashboard.importer.internal;
 
-import gov.nih.nci.ctd2.dashboard.model.*;
-import org.springframework.stereotype.Component;
-import org.springframework.validation.BindException;
-import org.springframework.batch.item.file.transform.FieldSet;
+import java.util.HashMap;
+
 import org.springframework.batch.item.file.mapping.FieldSetMapper;
+import org.springframework.batch.item.file.transform.FieldSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
+import org.springframework.validation.BindException;
 
-import java.util.Map;
-import java.util.HashMap;
-import java.util.List;
+import gov.nih.nci.ctd2.dashboard.model.DashboardFactory;
+import gov.nih.nci.ctd2.dashboard.model.Synonym;
+import gov.nih.nci.ctd2.dashboard.model.TissueSample;
 
 @Component("tissueSampleSynonymsDataMapper")
 public class TissueSampleSynonymsDataFieldSetMapper implements FieldSetMapper<TissueSample> {

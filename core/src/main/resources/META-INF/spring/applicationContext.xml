@@ -9,7 +9,7 @@
 
     <bean class="gov.nih.nci.ctd2.dashboard.impl.DashboardFactoryImpl" id="dashboardFactory"/>
 
-    <bean class="org.apache.commons.dbcp.BasicDataSource" id="dataSource">
+    <bean class="org.apache.commons.dbcp2.BasicDataSource" id="dataSource">
         <property name="driverClassName" value="${database.driverClassName}"/>
         <property name="url" value="${database.url}"/>
         <property name="username" value="${database.username}"/>
@@ -23,17 +23,17 @@
         <property name="maxNumberOfSearchResults" value="${search.max.number.results}"/>
     </bean>
 
-    <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
         <property name="hibernateProperties">
             <props>
                 <prop key="hibernate.dialect">${hibernate.dialect}</prop>
+                <prop key="hibernate.default_catalog">ctd2_dashboard</prop>
                 <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
-                <prop key="hibernate.ejb.naming_strategy">${hibernate.ejb.naming_strategy}</prop>
                 <prop key="hibernate.connection.charSet">${hibernate.connection.charSet}</prop>
                 <prop key="hibernate.search.default.indexBase">${search.indexDir}</prop>
-                <prop key="hibernate.search.lucene_version">LUCENE_36</prop>
                 <prop key="hibernate.temp.use_jdbc_metadata_defaults">false</prop>
+                <prop key="hibernate.search.lucene_version">LUCENE_CURRENT</prop>
             </props>
         </property>
 

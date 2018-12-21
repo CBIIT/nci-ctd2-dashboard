@@ -1,18 +1,32 @@
 package gov.nih.nci.ctd2.dashboard.controller;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-import com.rometools.rome.feed.synd.*;
+import javax.servlet.http.HttpServletRequest;
+
+import com.rometools.rome.feed.synd.SyndCategory;
+import com.rometools.rome.feed.synd.SyndCategoryImpl;
+import com.rometools.rome.feed.synd.SyndContent;
+import com.rometools.rome.feed.synd.SyndContentImpl;
+import com.rometools.rome.feed.synd.SyndEntry;
+import com.rometools.rome.feed.synd.SyndEntryImpl;
+import com.rometools.rome.feed.synd.SyndFeed;
+import com.rometools.rome.feed.synd.SyndFeedImpl;
+import com.rometools.rome.feed.synd.SyndImage;
+import com.rometools.rome.feed.synd.SyndImageImpl;
 import com.rometools.rome.io.FeedException;
 import com.rometools.rome.io.SyndFeedOutput;
-import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
-import gov.nih.nci.ctd2.dashboard.model.*;
-import gov.nih.nci.ctd2.dashboard.util.DashboardEntityWithCounts;
-import org.apache.commons.lang.StringUtils;
+
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,8 +36,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.servlet.http.HttpServletRequest;
-import java.io.UnsupportedEncodingException;
+import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
+import gov.nih.nci.ctd2.dashboard.model.DashboardEntity;
+import gov.nih.nci.ctd2.dashboard.model.ObservationTemplate;
+import gov.nih.nci.ctd2.dashboard.model.ObservedSubject;
+import gov.nih.nci.ctd2.dashboard.model.Subject;
+import gov.nih.nci.ctd2.dashboard.model.Submission;
+import gov.nih.nci.ctd2.dashboard.util.DashboardEntityWithCounts;
 
 @Controller
 @RequestMapping("/feed")

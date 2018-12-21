@@ -129,7 +129,6 @@ public class DashboardAdminMain {
             if(commandLine.hasOption("r")) {
                 SubjectScorer subjectScorer = (SubjectScorer) appContext.getBean("subjectScorer");
                 subjectScorer.scoreAllRoles();
-                subjectScorer.score();
             }
 
             if( commandLine.hasOption("i") ) {

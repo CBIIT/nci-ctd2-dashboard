@@ -1,12 +1,8 @@
 package gov.nih.nci.ctd2.dashboard.controller;
 
-import flexjson.JSONSerializer;
-import flexjson.transformer.AbstractTransformer;
-import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
-import gov.nih.nci.ctd2.dashboard.model.*;
-import gov.nih.nci.ctd2.dashboard.util.DateTransformer;
-import gov.nih.nci.ctd2.dashboard.util.ImplTransformer;
-import gov.nih.nci.ctd2.dashboard.util.WebServiceUtil;
+import java.util.Date;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -18,10 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
+import flexjson.JSONSerializer;
+import gov.nih.nci.ctd2.dashboard.model.DashboardEntity;
+import gov.nih.nci.ctd2.dashboard.util.DateTransformer;
+import gov.nih.nci.ctd2.dashboard.util.ImplTransformer;
+import gov.nih.nci.ctd2.dashboard.util.WebServiceUtil;
 
 @Controller
 @RequestMapping("/count")

@@ -1,19 +1,24 @@
 package gov.nih.nci.ctd2.dashboard.impl;
 
-import gov.nih.nci.ctd2.dashboard.model.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 import org.hibernate.annotations.Proxy;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
-import org.hibernate.search.annotations.Store;
 
-import javax.persistence.*;
+import gov.nih.nci.ctd2.dashboard.model.ObservationTemplate;
+import gov.nih.nci.ctd2.dashboard.model.SubmissionCenter;
 
 @Entity
 @Proxy(proxyClass= ObservationTemplate.class)
 @Table(name = "observation_template")
 @Indexed
 public class ObservationTemplateImpl extends DashboardEntityImpl implements ObservationTemplate {
+    private static final long serialVersionUID = -5431169591039311937L;
     public final static String FIELD_DESCRIPTION = "description";
     public final static String FIELD_SUBMISSIONDESC = "submissionDesc";
     public final static String FIELD_PROJECT = "project";

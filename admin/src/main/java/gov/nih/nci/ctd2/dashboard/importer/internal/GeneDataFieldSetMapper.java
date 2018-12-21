@@ -1,20 +1,20 @@
 package gov.nih.nci.ctd2.dashboard.importer.internal;
 
-import gov.nih.nci.ctd2.dashboard.model.Xref;
-import gov.nih.nci.ctd2.dashboard.model.Gene;
-import gov.nih.nci.ctd2.dashboard.model.Synonym;
-import gov.nih.nci.ctd2.dashboard.model.Organism;
-import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
-import gov.nih.nci.ctd2.dashboard.model.DashboardFactory;
-import org.springframework.stereotype.Component;
-import org.springframework.validation.BindException;
-import org.springframework.batch.item.file.transform.FieldSet;
-import org.springframework.batch.item.file.mapping.FieldSetMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
+
+import org.springframework.batch.item.file.mapping.FieldSetMapper;
+import org.springframework.batch.item.file.transform.FieldSet;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.validation.BindException;
+
+import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
+import gov.nih.nci.ctd2.dashboard.model.DashboardFactory;
+import gov.nih.nci.ctd2.dashboard.model.Gene;
+import gov.nih.nci.ctd2.dashboard.model.Organism;
+import gov.nih.nci.ctd2.dashboard.model.Synonym;
+import gov.nih.nci.ctd2.dashboard.model.Xref;
 
 @Component("geneDataMapper")
 public class GeneDataFieldSetMapper implements FieldSetMapper<Gene> {

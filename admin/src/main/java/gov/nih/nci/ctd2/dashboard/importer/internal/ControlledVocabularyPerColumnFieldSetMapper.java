@@ -31,8 +31,8 @@ public class ControlledVocabularyPerColumnFieldSetMapper implements FieldSetMapp
     private DashboardFactory dashboardFactory;
 
     @Autowired
-	@Qualifier("observationTemplateMap")
-	private HashMap<String,ObservationTemplate> observationTemplateMap;
+	@Qualifier("observationTemplateNameMap")
+	private HashMap<String,ObservationTemplate> observationTemplateNameMap;
 
 	// cache for fast lookup and prevention of duplicate role records
     private HashMap<String, SubjectRole> subjectRoleCache;
@@ -40,7 +40,7 @@ public class ControlledVocabularyPerColumnFieldSetMapper implements FieldSetMapp
 
 	public ControlledVocabulary mapFieldSet(FieldSet fieldSet) throws BindException {
 		String templateName = fieldSet.readString(TEMPLATE_NAME);
-		ObservationTemplate observationTemplate = observationTemplateMap.get(templateName);
+		ObservationTemplate observationTemplate = observationTemplateNameMap.get(templateName);
 		if (observationTemplate == null) return new ControlledVocabulary(null, null, null);
 
 		if (subjectRoleCache == null) subjectRoleCache = new HashMap<String, SubjectRole>();

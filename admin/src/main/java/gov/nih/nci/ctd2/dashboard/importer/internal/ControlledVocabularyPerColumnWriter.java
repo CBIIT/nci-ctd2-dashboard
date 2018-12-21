@@ -1,18 +1,22 @@
 package gov.nih.nci.ctd2.dashboard.importer.internal;
 
-import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
-import gov.nih.nci.ctd2.dashboard.model.*;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Component;
-import org.springframework.batch.item.ItemWriter;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.batch.item.ItemWriter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
+
+import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
+import gov.nih.nci.ctd2.dashboard.model.DashboardEntity;
+import gov.nih.nci.ctd2.dashboard.model.ObservationTemplate;
+import gov.nih.nci.ctd2.dashboard.model.ObservedEvidenceRole;
+import gov.nih.nci.ctd2.dashboard.model.ObservedSubjectRole;
+import gov.nih.nci.ctd2.dashboard.model.SubmissionCenter;
 
 @Component("controlledVocabularyPerColumnWriter")
 public class ControlledVocabularyPerColumnWriter implements ItemWriter<ControlledVocabulary> {

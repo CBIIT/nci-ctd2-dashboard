@@ -8,13 +8,11 @@ import gov.nih.nci.ctd2.dashboard.util.SubjectWithSummaries;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.WhitespaceAnalyzer;
-import org.apache.lucene.queryParser.MultiFieldQueryParser;
-import org.apache.lucene.queryParser.ParseException;
+import org.apache.lucene.analysis.core.WhitespaceAnalyzer;
+import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
+import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.search.Query;
-import org.apache.lucene.util.Version;
 import org.hibernate.*;
-import org.hibernate.criterion.Projections;
 import org.hibernate.proxy.HibernateProxy;
 import org.hibernate.search.FullTextQuery;
 import org.hibernate.search.FullTextSession;
@@ -22,6 +20,10 @@ import org.hibernate.search.Search;
 import org.springframework.cache.annotation.Cacheable;
 
 import java.util.*;
+
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 
 public class DashboardDaoImpl implements DashboardDao {
     private static final Log log = LogFactory.getLog(DashboardDaoImpl.class);
@@ -85,8 +87,10 @@ public class DashboardDaoImpl implements DashboardDao {
     @Override
     public void save(DashboardEntity entity) {
         Session session = getSession();
+        session.beginTransaction(); 
         session.save(entity);
         session.flush();
+        session.getTransaction().commit();
         session.close();
     }
 
@@ -109,7 +113,8 @@ public class DashboardDaoImpl implements DashboardDao {
                 }
             }
             session.save(entity);
-            if(++i % batchSize == 0) {
+            i++;
+            if(batchSize != 0 && i % batchSize == 0) {
                 session.flush();
                 session.clear();
             }
@@ -129,10 +134,26 @@ public class DashboardDaoImpl implements DashboardDao {
     }
 
     @Override
+    public void batchMerge(Collection<? extends Subject> subjects) {
+        if(subjects == null || subjects.isEmpty())
+            return;
+
+        Session session = getSessionFactory().openSession();
+        session.beginTransaction(); 
+        for (Subject subject : subjects) {
+            session.merge(subject);
+        }
+        session.getTransaction().commit();
+        session.close();
+    }
+
+    @Override
     public void merge(DashboardEntity entity) {
         Session session = getSession();
+        session.beginTransaction(); 
         session.merge(entity);
         session.flush();
+        session.getTransaction().commit();
         session.close();
     }
 
@@ -140,8 +161,10 @@ public class DashboardDaoImpl implements DashboardDao {
     @Override
     public void delete(DashboardEntity entity) {
         Session session = getSession();
+        session.beginTransaction(); 
         session.delete(entity);
         session.flush();
+        session.getTransaction().commit();
         session.close();
     }
 
@@ -200,23 +223,24 @@ public class DashboardDaoImpl implements DashboardDao {
     @Override
     public Long countEntities(Class<? extends DashboardEntity> entityClass) {
         Session session = getSession();
-        Criteria criteria = session.createCriteria(dashboardFactory.getImplClass(entityClass));
-        Object object = criteria.setProjection(Projections.rowCount()).uniqueResult();
+        CriteriaBuilder cb = session.getCriteriaBuilder();
+        CriteriaQuery<Long> cq = cb.createQuery(Long.class);
+        cq.select(cb.count( cq.from( dashboardFactory.getImplClass(entityClass) ) ));
+        TypedQuery<Long> typedQuery = session.createQuery(cq);
+        Long count = typedQuery.getSingleResult();
         session.close();
-        return (Long) object;
+        return count;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public <T extends DashboardEntity> List<T> findEntities(Class<T> entityClass) {
-        List<T> list = new ArrayList<T>();
         Class<T> implClass = dashboardFactory.getImplClass(entityClass);
         Session session = getSession();
-        Criteria criteria = session.createCriteria(implClass);
-        for (Object o : criteria.list()) {
-            assert implClass.isInstance(o);
-            list.add((T) o);
-        }
+        CriteriaBuilder cb = session.getCriteriaBuilder();
+        CriteriaQuery<T> cq = cb.createQuery(implClass);
+        cq.from(implClass); // ignore the return value Root<T>
+        TypedQuery<T> typedQuery = session.createQuery(cq);
+        List<T> list = typedQuery.getResultList();
         session.close();
         return list;
     }
@@ -492,7 +516,7 @@ public class DashboardDaoImpl implements DashboardDao {
     @Override
     public void createIndex(int batchSize) {
         FullTextSession fullTextSession = Search.getFullTextSession(getSession());
-        fullTextSession.setFlushMode(FlushMode.MANUAL);
+        fullTextSession.setHibernateFlushMode(FlushMode.MANUAL);
         for (Class<?> searchableClass : searchableClasses) {
             createIndexForClass(fullTextSession, (Class<? extends DashboardEntity>)searchableClass, batchSize);
         }
@@ -502,17 +526,18 @@ public class DashboardDaoImpl implements DashboardDao {
     }
 
     private void createIndexForClass(FullTextSession fullTextSession, Class<? extends DashboardEntity> clazz, int batchSize) {
-        ScrollableResults scrollableResults
-                = fullTextSession.createCriteria(clazz).scroll(ScrollMode.FORWARD_ONLY);
+        CriteriaBuilder cb = fullTextSession.getCriteriaBuilder();
+        CriteriaQuery<? extends DashboardEntity> cq = cb.createQuery(clazz);
+        cq.from(clazz);
+        TypedQuery<? extends DashboardEntity> typedQuery = fullTextSession.createQuery(cq);
+
         int cnt = 0;
-        while(scrollableResults.next()) {
-            DashboardEntity entity = (DashboardEntity) scrollableResults.get(0);
+        for (DashboardEntity entity : typedQuery.getResultList()) {
             fullTextSession.purge(DashboardEntityImpl.class, entity);
             fullTextSession.index(entity);
 
             if(++cnt % batchSize == 0) {
                 fullTextSession.flushToIndexes();
-                fullTextSession.clear();
             }
         }
     }
@@ -530,9 +555,8 @@ public class DashboardDaoImpl implements DashboardDao {
         HashSet<DashboardEntity> entitiesUnique = new HashSet<DashboardEntity>();
 
         FullTextSession fullTextSession = Search.getFullTextSession(getSession());
-        Analyzer analyzer = new WhitespaceAnalyzer(Version.LUCENE_36);
+        Analyzer analyzer = new WhitespaceAnalyzer();
         MultiFieldQueryParser multiFieldQueryParser = new MultiFieldQueryParser(
-            Version.LUCENE_36,
                 defaultSearchFields,
                 analyzer
         );
@@ -675,10 +699,10 @@ public class DashboardDaoImpl implements DashboardDao {
     private <E> List<E> queryWithClass(String queryString, String parameterName, Object valueObject) {
         assert queryString.contains(":"+parameterName);
         Session session = getSession();
-        org.hibernate.Query query = session.createQuery(queryString);
+        org.hibernate.query.Query<?> query = session.createQuery(queryString);
         query.setParameter(parameterName, valueObject);
         @SuppressWarnings("unchecked")
-        List<E> list = query.list();
+        List<E> list = (List<E>)query.list();
         session.close();
 
         return list;
@@ -689,10 +713,10 @@ public class DashboardDaoImpl implements DashboardDao {
         assert queryString.contains(":"+parameterName1);
         assert queryString.contains(":"+parameterName2);
         Session session = getSession();
-        org.hibernate.Query query = session.createQuery(queryString);
+        org.hibernate.query.Query<?> query = session.createQuery(queryString);
         query.setParameter(parameterName1, valueObject1).setParameter(parameterName2, valueObject2);
         @SuppressWarnings("unchecked")
-        List<E> list = query.list();
+        List<E> list = (List<E>)query.list();
         session.close();
 
         return list;

@@ -25,5 +25,6 @@ public class TaxonomyDataWriter implements ItemWriter<Organism> {
  
 	public void write(List<? extends Organism> items) throws Exception {
         dashboardDao.batchSave(items, batchSize);
+        log.debug("Organism written");
 	}
 }

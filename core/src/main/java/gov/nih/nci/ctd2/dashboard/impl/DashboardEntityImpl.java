@@ -2,14 +2,14 @@ package gov.nih.nci.ctd2.dashboard.impl;
 
 import gov.nih.nci.ctd2.dashboard.model.DashboardEntity;
 
-import org.apache.solr.analysis.LowerCaseFilterFactory;
-import org.apache.solr.analysis.StopFilterFactory;
-import org.apache.solr.analysis.WhitespaceTokenizerFactory;
+import org.apache.lucene.analysis.core.LowerCaseFilterFactory;
+import org.apache.lucene.analysis.core.StopFilterFactory;
+import org.apache.lucene.analysis.core.WhitespaceTokenizerFactory;
 import org.hibernate.search.annotations.TokenFilterDef;
 import org.hibernate.search.annotations.Parameter;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.Index;
+import javax.persistence.Index;
 import org.hibernate.annotations.Proxy;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Fields;
@@ -35,10 +35,8 @@ import javax.persistence.*;
 @Inheritance(strategy = InheritanceType.JOINED)
 @DynamicUpdate
 @DynamicInsert
-@Table(name = "dashboard_entity")
-@org.hibernate.annotations.Table(
-        appliesTo = "dashboard_entity",
-        indexes = { @Index(name = "entityNameIdx", columnNames = { "displayName" })
+@Table(name = "dashboard_entity",
+        indexes = { @Index(name = "entityNameIdx", columnList = "displayName" )
 })
 @Indexed
 public class DashboardEntityImpl implements DashboardEntity {
@@ -64,7 +62,7 @@ public class DashboardEntityImpl implements DashboardEntity {
     }
 
     @Id
-    @GeneratedValue(strategy=GenerationType.TABLE)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     public Integer getId() {
         return id;
     }

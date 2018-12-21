@@ -10,4 +10,6 @@ import javax.persistence.Table;
 @Proxy(proxyClass = Evidence.class)
 @Table(name = "evidence")
 public class EvidenceImpl extends DashboardEntityImpl implements Evidence {
+
+    private static final long serialVersionUID = 1026493419968058393L;
 }

@@ -16,7 +16,7 @@ public class CellLineNameTypeFieldSetMapper implements FieldSetMapper<CellSample
 
 	private static final String CELL_NAME_TYPE_ID = "cell_name_type_id";
 	private static final String CELL_NAME_TYPE = "cell_name_type";
-	private static final String CELL_NAME_TYPE_PRIORITY = "cell_name_type_priority";
+	//private static final String CELL_NAME_TYPE_PRIORITY = "cell_name_type_priority";
 
     @Autowired
     private DashboardFactory dashboardFactory;

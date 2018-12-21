@@ -1,20 +1,18 @@
 package gov.nih.nci.ctd2.dashboard.importer.internal;
 
-import gov.nih.nci.ctd2.dashboard.model.Xref;
-import gov.nih.nci.ctd2.dashboard.model.Subject;
-import gov.nih.nci.ctd2.dashboard.model.Synonym;
-import gov.nih.nci.ctd2.dashboard.model.CellSample;
-import gov.nih.nci.ctd2.dashboard.model.DashboardFactory;
-import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
-import org.springframework.stereotype.Component;
-import org.springframework.validation.BindException;
-import org.springframework.batch.item.file.transform.FieldSet;
+import java.util.HashMap;
+
 import org.springframework.batch.item.file.mapping.FieldSetMapper;
+import org.springframework.batch.item.file.transform.FieldSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
+import org.springframework.validation.BindException;
 
-import java.util.List;
-import java.util.HashMap;
+import gov.nih.nci.ctd2.dashboard.model.CellSample;
+import gov.nih.nci.ctd2.dashboard.model.DashboardFactory;
+import gov.nih.nci.ctd2.dashboard.model.Synonym;
+import gov.nih.nci.ctd2.dashboard.model.Xref;
 
 @Component("cellLineNameMapper")
 public class CellLineNameFieldSetMapper implements FieldSetMapper<CellSample> {
@@ -25,9 +23,6 @@ public class CellLineNameFieldSetMapper implements FieldSetMapper<CellSample> {
 	private static final String	CELL_SAMPLE_ID = "cell_sample_id";
 	private static final String	CELL_NAME_TYPE_ID = "cell_name_type_id";
 	private static final String	CELL_SAMPLE_NAME = "cell_sample_name";
-
-    @Autowired
-    private DashboardDao dashboardDao;
 
     @Autowired
     private DashboardFactory dashboardFactory;

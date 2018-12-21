@@ -1,24 +1,23 @@
 package gov.nih.nci.ctd2.dashboard.util;
 
-import gov.nih.nci.ctd2.dashboard.impl.DashboardEntityImpl;
-import gov.nih.nci.ctd2.dashboard.impl.GeneImpl;
-import gov.nih.nci.ctd2.dashboard.impl.SubjectImpl;
-import gov.nih.nci.ctd2.dashboard.model.DashboardEntity;
-import gov.nih.nci.ctd2.dashboard.model.ObservedSubject;
-import gov.nih.nci.ctd2.dashboard.model.Subject;
-import org.hibernate.annotations.Proxy;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import java.io.Serializable;
 
-import java.util.*;
+import gov.nih.nci.ctd2.dashboard.impl.DashboardEntityImpl;
+import gov.nih.nci.ctd2.dashboard.impl.SubjectImpl;
+import gov.nih.nci.ctd2.dashboard.model.DashboardEntity;
+import gov.nih.nci.ctd2.dashboard.model.Subject;
 
 @Entity
 @Table(name = "subject_with_summaries")
 public class SubjectWithSummaries extends DashboardEntityImpl implements DashboardEntity {
+    private static final long serialVersionUID = -2632817631463691414L;
+
     private Subject subject;
 
     private Integer numberOfSubmissions;

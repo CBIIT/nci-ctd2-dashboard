@@ -10,4 +10,6 @@ import javax.persistence.Table;
 @Proxy(proxyClass = LabelEvidence.class)
 @Table(name = "label_evidence")
 public class LabelEvidenceImpl extends EvidenceImpl implements LabelEvidence {
+
+    private static final long serialVersionUID = 8426148086071625678L;
 }

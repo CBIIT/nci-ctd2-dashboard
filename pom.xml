@@ -10,10 +10,7 @@
         <java.version>1.8</java.version>
         <java.compiler.version>1.8</java.compiler.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <slf4j.version>1.6.4</slf4j.version>
-        <spring.version>3.1.0.RELEASE</spring.version>
-        <spring.batch.version>2.1.9.RELEASE</spring.batch.version>
-        <aspectj.version>1.6.12</aspectj.version>
+        <spring.version>5.1.2.RELEASE</spring.version>
     </properties>
     <modules>
         <module>core</module>
@@ -22,30 +19,19 @@
     </modules>
     <dependencies>
         <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>1.2.16</version>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>2.11.1</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>${slf4j.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>jcl-over-slf4j</artifactId>
-            <version>${slf4j.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>${slf4j.version}</version>
-        </dependency>
-
+            <artifactId>slf4j-nop</artifactId>
+            <version>1.7.25</version>
+        </dependency> 
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.7</version>
+            <version>4.12</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -59,6 +45,7 @@
                     <compilerVersion>${java.compiler.version}</compilerVersion>
                     <source>${java.compiler.version}</source>
                     <target>${java.compiler.version}</target>
+                    <compilerArgument>-Xlint:all</compilerArgument>
                 </configuration>
             </plugin>
         </plugins>

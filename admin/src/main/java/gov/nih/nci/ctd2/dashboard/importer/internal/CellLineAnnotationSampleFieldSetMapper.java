@@ -37,7 +37,7 @@ public class CellLineAnnotationSampleFieldSetMapper implements FieldSetMapper<An
 
     @Autowired
 	@Qualifier("cellLineAnnotationSampleMap")
-	private HashMap<String,HashSet> cellLineAnnotationSampleMap;
+	private HashMap<String,HashSet<Annotation> > cellLineAnnotationSampleMap;
 
 	public Annotation mapFieldSet(FieldSet fieldSet) throws BindException {
 

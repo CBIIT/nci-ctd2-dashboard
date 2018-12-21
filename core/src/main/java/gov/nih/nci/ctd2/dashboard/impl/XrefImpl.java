@@ -11,6 +11,7 @@ import javax.persistence.Table;
 @Table(name = "xref")
 @Proxy(proxyClass = Xref.class)
 public class XrefImpl extends DashboardEntityImpl implements Xref {
+    private static final long serialVersionUID = -4725584706231465381L;
     private String databaseId;
     private String databaseName;
 

@@ -21,10 +21,9 @@
 
     <link rel="shortcut icon" href="img/favicon.ico" type="image/vnd.microsoft.icon" />
     <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" />
-    <link rel="stylesheet" href="css/jquery.dataTables.css" type="text/css" />
-    <link rel="stylesheet" href="css/buttons.dataTables.min.css" type="text/css" />
-    <link rel="stylesheet" href="css/jquery.fancybox-1.3.4.css" type="text/css" media="screen" />
-    <link rel="stylesheet" href="css/jquery.contextMenu.css" type="text/css" />
+    <link rel="stylesheet" href="css/datatables.min.css" type="text/css" />
+    <link rel="stylesheet" href="css/jquery.fancybox.min.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="css/jquery.contextMenu.min.css" type="text/css" />
     <link rel="stylesheet" href="css/ctd2.css" type="text/css" />
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -39,13 +38,12 @@
   <body>
     <!-- NAVBAR
     ================================================== -->
-    <script src="js/jquery.min.js"></script>
-    <script src="js/jquery.ba-hashchange.min.js"></script>
+    <script src="js/jquery-3.3.1.min.js"></script>
     <script>
     $(function() {
         // Bind an event to window.onhashchange that, when the hash changes, 
         // gets the hash and alters class of desired navlinks
-        $(window).hashchange(function() {
+        window.onhashchange  = function() {
             var hash = location.hash || '#';
             $('[id^="navlink-"]').each(function() {
                 // navbar regular items
@@ -84,10 +82,10 @@
                     });
                 }
             });
-        });
+        };
         // Since the event is only triggered when the hash changes, we need to trigger
         // the event now, to handle the hash the page may have been loaded with.
-        $(window).hashchange();
+        window.onhashchange();
     });
     </script>
     <div class="navbar-wrapper">
@@ -96,13 +94,7 @@
 
         <div class="navbar navbar-inverse">
           <div class="navbar-inner">
-            <!-- Responsive Navbar Part 1: Button for triggering responsive navbar (not covered in tutorial). Include responsive CSS to utilize. -->
-            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </a>
-            <div class="nav-collapse collapse">
+            <div class="nav-collapse collapse show">
               <ul id="nav" class="nav">
                 <li><a id="navlink-dashboard" class="navlink" href="#">CTD<sup>2</sup> Dashboard</a></li>
                 <li><a id="navlink-centers" class="navlink" href="#centers">Centers</a></li>
@@ -141,17 +133,17 @@
               <ul class="nav pull-right">
                   <form class="form-search" id="omnisearch">
                       <div class="input-append">
-                          <input type="text" id="omni-input" class="span3 search-query" title="Search" placeholder="e.g. CTNNB1 or dasatinib" aria-label="search">
+                          <input type="text" id="omni-input" class="search-query" title="Search" placeholder="e.g. CTNNB1 or dasatinib" aria-label="search">
                           <button type="submit" class="btn search-button">Search</button>
-                          <span class="hide" id="search-help-content">
+                          <span class="d-none" id="search-help-content">
                               <p>Please enter the keyword(s) you would like to search on the website.  You may enter multiple search terms, but do not use "AND" or "OR".</p>
                               <strong>Examples:</strong>
                               <ul>
                                 <li><em>Gene: </em> <a href="#search/CTNNB1">CTNNB1</a></li>
-				<li><em>Gene: </em> <a href="#search/YAP*">YAP*</a></li>
+                                <li><em>Gene: </em> <a href="#search/YAP*">YAP*</a></li>
                                 <li><em>Compound: </em> <a href="#search/dasatinib">dasatinib</a></li>
                                 <li><em>Cell Sample: </em> <a href="#search/OVCAR8">OVCAR8</a></li>
-				<li><em>Multiple: </em> <a href="#search/dexamethasone AKT1">dexamethasone AKT1</a></li>
+                                <li><em>Multiple: </em> <a href="#search/dexamethasone AKT1">dexamethasone AKT1</a></li>
                               </ul>
                               <br>
                           </span>
@@ -164,7 +156,7 @@
 
       </div> <!-- /.container -->
     </div><!-- /.navbar-wrapper -->
-    
+
     <!-- all the backbone magic will happen here, right in this div -->
     <div id="main-container"></div>
     
@@ -173,21 +165,15 @@
         <footer>
             <div style="font-size:14px; font-weight:bold; margin-bottom:10px;">
                 Dashboard Release <%=dashboardReleaseVersion%>
+                <a href="#attribution" data-toggle="collapse">attributions</a>
             </div>
+            <div id="attribution" class="collapse">
             <div style="font-size:14px; margin-bottom:10px;">
                 Data users must acknowledge and cite the manuscript <a href="https://www.ncbi.nlm.nih.gov/pubmed/29220450" target="_blank">Aksoy, Dančík, Smith et al.</a>, Database 2017;1-10 and provide the URL <a href="https://ctd2-dashboard.nci.nih.gov/dashboard/">https://ctd2-dashboard.nci.nih.gov/dashboard/</a>.
             </div>
             <div style="font-size:14px; margin-bottom:10px;">
                 As the CTD<sup>2</sup> Network continues to refine the Dashboard, input from the research community is highly valued to help improve usability.
                 Please send your feedback and comments to <a href="mailto:ocg@mail.nih.gov?subject=CTD2 Dashboard Feedback">ocg@mail.nih.gov</a>.
-            </div>
-            <div style="font-size:14px; margin-bottom:10px;">
-                    Google Chrome is the preferred browser, Internet Explorer requires “Compatibility View” turned off (select the Tools menu and then click on Compatibility View settings).
-            </div>
-            <div style="font-size:14px; margin-bottom:10px;">
-                The CTD<sup>2</sup> Dashboard was created and developed by the CTD<sup>2</sup> Network Centers at the Broad Institute (Paul A. Clemons, Vlado Dančik, Stuart L. Schreiber),
-                Cold Spring Harbor Laboratories/Memorial Sloan Kettering Cancer Center (Arman B. Aksoy, Benjamin Gross, Chris Sander), Columbia University
-                (Andrea Califano, Aris Floratos, Zhou Ji, Kenneth Smith), and National Cancer Institute (Daniela S. Gerhard, Leandro C. Hermida, Subhashini Jagu)
             </div>
             <div style="font-size:14px; margin-bottom:10px;">
                 <a href="http://cancer.gov"><img src="img/logos/footer_logo_nci.jpg" alt="NCI logo" title="NCI logo"></a><a href="http://www.dhhs.gov/"><img src="img/logos/footer_logo_hhs.jpg" title="HHS logo" alt="HHS logo"></a><a href="http://www.nih.gov/"><img src="img/logos/footer_logo_nih.jpg" title="NIH logo" alt="NIH logo"></a><a href="http://www.firstgov.gov/"><img src="img/logos/footer_logo_firstgov.jpg" title="First Gov logo" alt="First Gov logo"></a>
@@ -198,10 +184,13 @@
                 <a href="http://www.cancer.gov/global/web/policies/accessibility" target="_blank">Accessibility</a> &middot;
                 <a href="http://www.cancer.gov/global/web/policies/foia" target="_blank">FOIA</a>
             </div>
+            </div>
         </footer>
     </div>
     
     <div class="modal hide fade" id="alert-message-modal">  <!-- a hidden div for showing alert message -->
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
                 <div class="modal-body" >
                     <br>
                     <medium id="alertMessage"></medium>
@@ -209,149 +198,86 @@
                 <div class="modal-footer">
                     <button class="btn btn-primary" data-dismiss="modal">Close</button>
                 </div>
+            </div>
+        </div>
     </div>
 
     <!-- these are the templates -->
     <script type="text/template" id="home-tmpl">
         <div class="overview-container">
             <div class="container overview-box">
-                <div class="row">
-                    <div class="span12">
-                        <div class="featurette" id="overview-text">
-                            <a href="https://ocg.cancer.gov/programs/ctd2">
+                <div class="row" id="overview-text">
+                    <div class="col-3">
+                        <a href="https://ocg.cancer.gov/programs/ctd2">
                             <img class="img-polaroid pull-left" src="img/logos/ctd2_overall.png" alt="CTD2 general image" title="CTD2 general image">
-                            </a>
-                            <div class="span3" style='float: right; margin-top: 1em;'>
-                                <div style='background: linear-gradient(to bottom,#f5c900 0%,#fef6d5 80%,#faf4bf 100%) repeat scroll 0% 0% transparent;
-                                    padding: 15px;
-                                    overflow: hidden;margin-bottom: 1.5em;word-wrap: break-word;
-                                    color: #323232; font-weight: normal; 
-                                    font-family: Helvetica,Arial,"Nimbus Sans L",sans-serif; font-size: 81.25%; line-height: 1.5em;'>
+                        </a>
+                    </div>
+                    <div class="col-9">
+                        {{description}}
+                        <ul id='video-list' class="list-inline"> <!-- TODO style this to be horizontal -->
+                            <li class="list-inline-item small">
+                                <a id="video-link1"  title='This video introduces and defines common terminology used throughout the Dashboard.'>
+                                    Understanding Dashboard
+                                </a>
+                            </li>
+                            <li class="list-inline-item small">
+                                <a id="video-link2" title='This video explains how users can search and browse the Dashboard through gene-centric, compound/perturbation-centric, or disease-relevant keywords.'>
+                                    Searching and Browsing
+                                </a>
+                            </li>
+                            <li class="list-inline-item small">
+                                <a id="video-link3" title='This video shows how the Dashboard Gene Cart can predict or verify molecular interactions using a subset of publicly available tissue- and disease-specific interactomes.'>
+                                    Identifying Molecular Interactions
+                                </a>
+                            </li>
+                        </ul>
 
-                                    <h2 style='color: #774928;
-                                        font-size: 15.6px;
-                                        padding-bottom: 10px;
-                                        text-align: center;
-                                        font-weight: bold;
-                                        font-family: "Arial Narrow",Arial,sans-serif;
-                                        margin: 0;
-                                        line-height: 1.25em;
-                                        text-transform: uppercase !important;'>CTD² Dashboard Tutorial Videos
-                                    </h2>
-                                    <div><div style="overflow: hidden;"><div><div>
-                                        <style>
-                                            li.video-popup-link { line-height: normal; padding-bottom: 5px;}
-                                            a.video-popup-link { color: #323232; cursor: pointer; }
-                                        </style>
-                                        <ul style="margin: 0;list-style-type: none;list-style-image: url(./images/play-button.png);padding: 0 0 0 30px;">
-
-                                            <li class="video-popup-link">
-                                                <div style="vertical-align: top; display: inline-block; font-weight: bold;">
-                                                    <span>
-                                                        <a id="video-link1" class='video-popup-link'
-                                                            title='This video introduces and defines common terminology used throughout the Dashboard.'>
-                                                            Organization and Terminology</a>
-                                                    </span>
-                                                </div>
-                                            </li>
-                                        
-                                            <li class="video-popup-link">
-                                            <div style="vertical-align: top;display: inline-block;font-weight: bold;">
-                                            <span>
-                                            <a id="video-link2" style='color: #323232; cursor: pointer;'
-                                                title='This video explains how users can search and browse the Dashboard through gene-centric, compound/perturbation-centric, or disease-relevant keywords.'>
-                                                Search and Browse</a>
-                                            </span>
-                                            </div>
-                                            </li>
-            
-                                            <li class="video-popup-link">
-                                            <div style="vertical-align: top; display: inline-block; font-weight: bold;">
-                                            <span>
-                                            <a id="video-link3" class='video-popup-link'
-                                                title='This video shows how the Dashboard Gene Cart can predict or verify molecular interactions using a subset of publicly available tissue- and disease-specific interactomes.'>
-                                                Gene Cart</a>
-                                            </span>  
-                                            </div>
-                                            </li>
-                                        </ul>
-                                    </div></div></div></div>
-                                </div><!-- end of the video link block -->
-                            </div><!-- span3 -->
-                            <p class="lead firstlead">
-                                <a href="https://ocg.cancer.gov/programs/ctd2"><b>The Cancer Target Discovery and Development (CTD<sup>2</sup>) Network</b></a> bridges the knowledge gap between cancer genomics and precision oncology by mining and functionally validating high-throughput, high-content genomic data and translating the findings to the bedside.
-                                The Network developed the open-access web interface, “CTD<sup>2</sup> Dashboard,” to address the community’s need to find data generated from multiple types of biological and analytical approaches by CTD<sup>2</sup> Centers, while adhering to the FAIR (findable, accessible, interoperable, and re-usable) principles.
-                                The CTD<sup>2</sup> Dashboard compiles the Network-generated conclusions, or “observations,” associated with a specific gene, cell line, animal model, or perturbagen.
-                                It provides supporting evidence with links to data, references, and to the validation strength of the evidence as indicated by its “<a href="http://www.ncbi.nlm.nih.gov/pubmed/27401613" target="_blank" data-toggle="tooltip" id="tierTooltip">Tier</a>.”
-                                In summary, the Dashboard provides access to validated data and the ability to view a cross-section of results assembled across multiple CTD<sup>2</sup> Center findings.
-                                To learn how the Dashboard is organized, including additional term definitions, please visit <a id="homepage-help-navigate">Navigating and Understanding Dashboard Content</a>.
-                                To understand more about the Dashboard functions, please read the <a href="https://www.ncbi.nlm.nih.gov/pubmed/29220450" target="_blank">manuscript</a> or <a href="https://ocg.cancer.gov/news-publications/e-newsletter-issue/issue-14#1721" target="_blank">e-News article</a>.
-                            </p>
-                        </div><!-- overview-text -->
-                    </div><!-- span12 -->
+                    </div> <!-- col-9 -->
                 </div><!-- row -->
 
         <div class="dark-separator"></div>
 
-        <div class="container marketing ctd2-boxes">
-          <div style="display:table">
-              <!--
-            <div class="span3 stories" data-order="0">
-              <h4>Stories</h4>
-              <p>
-                  In each <i>story</i>, Dashboard users can find research highlights from CTD<sup>2</sup> Network projects, a link to the list of observations related to the results, and other resources relevant to the data.
-              </p>
-              <a class="btn btn-danger btn-block" href="#stories">Browse &raquo;</a>
-            </div><!-- /.span3 -->
-            <div class="span4 target" data-order="1" style="display:table-cell;float:none;position:relative;padding-bottom:25px">
-              <h4>Biomarkers, Targets, <br>Genes &amp; Proteins</h4>
-                <p>
-                    Users can browse a list of genes and proteins that Centers have identified using analyses that generate results with low frequencies of false positives. In some cases, genes and proteins have been assigned roles as biomarkers or targets based on observations.
-                </p>
-                <a class="btn btn-success btn-block" href="#explore/target/Biomarker,Target" style="position:absolute;bottom:0;">Browse &raquo;</a>
-            </div><!-- /.span3 -->
-            <div class="span4 drug" data-order="2" style="display:table-cell;float:none;position:relative;padding-bottom:25px">
-              <h4>Compounds &amp; Perturbagens</h4>
-                <p>
-                    Users can browse compounds and perturbagens, which are modulators of cellular phenotype, genes, or proteins in cancer cell lines or tumor model systems. Some examples include small molecules, FDA approved drugs, natural products, and small regulatory RNAs.
-                </p>
-                <a class="btn btn-info btn-block" href="#explore/compound/Perturbagen,Candidate Drug" style="position:absolute;bottom:0;">Browse &raquo;</a>
-            </div><!-- /.span3 -->
-              <div class="span4 context" data-order="3" style="display:table-cell;float:none;position:relative;padding-bottom:25px">
-                  <h4 class="homepage-context">Disease <br>Context</h4>
-                  <p>
-                      Users can browse disease context, which groups subjects by observations pertinent to a particular disease or tumor type.
-                  </p>
-                  <a class="btn btn-warning btn-block" href="#explore/context/Disease" style="position:absolute;bottom:0;">Browse &raquo;</a>
-              </div><!-- /.span3 -->
+        <div class="container ctd2-boxes">
+            <div class=row>
+                <div class="col-4">
+                    Explore <a href="#explore/target/Biomarker,Target">genes and proteins</a> to find experimental evidence for cancer targets that are implicated in a cancer model
+                </div>
+                <div class="col-4">
+                    Explore <a href="#explore/compound/Perturbagen,Candidate Drug">compounds and perturbagens</a> to find experimental evidence for agents that show activity in a cancer model
+                </div>
+                <div class="col-4" data-order="3" style="display:table-cell;float:none;position:relative;padding-bottom:25px">
+                    Explore <a  href="#explore/context/Disease">disease context</a> to find disease-specific targets or agents
+                </div>
+            </div>
+        </div>
 
-          </div><!-- /.row -->
-        </div><!-- /.container -->
-
+        <div class="dark-separator"></div>
         <!-- Carousel
         ================================================== -->
         <div class="carousel slide">
           <div class="carousel-inner">
             <div class="item active">
-              <img src="img/bg-red.png" alt="Red background image" title="red background image" class="cimg">
               <div class="container">
                   <div class="carousel-caption">
-                        <h3 class="homepage-stories-title">Recent Stories</h3>
                         <div class="well carousel-well">
-                            <div class="tab-content stories-tabs">
-                                <div class="container tab-pane active fade in" id="story-1"></div>
-                                <div class="container tab-pane fade" id="story-2"></div>
-                                <div class="container tab-pane fade" id="story-3"></div>
-                                <div class="container tab-pane fade" id="story-4"></div>
+                            <div class="row one-story">
+                            <div class="col-3" style="text-align:center">
+                                <h4>Recent Stories</h4>
+                                <div class="pagination pagination-centered stories-pagination">
+                                    <ul class="nav nav-tabs">
+                                        <li class="nav-item"><a href="#story-1" class="nav-link story-link active">&bull;</a></li>
+                                        <li class="nav-item"><a href="#story-2" class="nav-link story-link">&bull;</a></li>
+                                        <li class="nav-item"><a href="#story-3" class="nav-link story-link">&bull;</a></li>
+                                        <li class="nav-item"><a href="#story-4" class="nav-link story-link">&bull;</a></li>
+                                    </ul>
+                                </div>
                             </div>
-                            <div class="pagination pagination-centered stories-pagination">
-                                <ul class="nav">
-                                    <li class="active"><a href="#story-1" class="story-link">&bull;</a></li>
-                                    <li><a href="#story-2" class="story-link">&bull;</a></li>
-                                    <li><a href="#story-3" class="story-link">&bull;</a></li>
-                                    <li><a href="#story-4" class="story-link">&bull;</a></li>
-                                    <li><a href="#stories">More stories &raquo;</a></li>
-                                </ul>
+                            <div class="tab-content stories-tabs col-9">
+                                <div class="tab-pane active fade in show" id="story-1"></div>
+                                <div class="tab-pane fade" id="story-2"></div>
+                                <div class="tab-pane fade" id="story-3"></div>
+                                <div class="tab-pane fade" id="story-4"></div>
+                            </div>
                             </div>
                         </div>
                   </div>
@@ -472,11 +398,11 @@
     <script type="text/template" id="center-tmpl">
         <div class="container common-container" id="center-submission-container">
             <div class="row">
-                <div class="span9">
+                <div class="col-9">
                     <h2 class="center-title">{{displayName}} <small>submissions</small></h2>
                     <div class="center-link-container">(<span class="center-link"></span>)</div>
                 </div>
-                <div class="span3">
+                <div class="col-3">
                     <img src="img/{{displayName}}.png" title="{{displayName}}" alt="{{displayName}}" class="img-polaroid" width="200">
                 </div>
             </div>
@@ -517,15 +443,8 @@
 
     <script type="text/template" id="submission-tmpl">
         <div class="container common-container" id="submission-container">
-            <div class="alert alert-block hide" id="redirect-message">
-
-                <p>There is only a single observation in this submission.
-                    Redirecting to the observation page in <b id="seconds-left">10</b> seconds.
-                    <a href="#" id="cancel-redirect">(cancel)</a>
-                </p>
-            </div>
             <div class="row">
-                <div class="span10">
+                <div class="col-10">
                     <h2>
                         Submission
                         <span class="badge-tier-container">
@@ -559,7 +478,7 @@
                         </tr>
                     </table>
                 </div>
-                <div class="span2">
+                <div class="col-2">
                     <a href="#{{observationTemplate.submissionCenter.stableURL}}">
                         <img src="img/{{observationTemplate.submissionCenter.displayName}}.png" class="img-polaroid" height=30 alt="{{observationTemplate.submissionCenter.displayName}}" title="{{observationTemplate.submissionCenter.displayName}}">
                     </a>
@@ -608,7 +527,7 @@
         <div class="container common-container" id="observation-container">
 
             <div class="row">
-                <div class="span10">
+                <div class="col-10">
                     <h2>Observation <small>(Tier {{submission.observationTemplate.tier}})</small></h2>
                     <blockquote>
                         <p id="observation-summary"></p>
@@ -631,7 +550,7 @@
                     </table>
 
                 </div>
-                <div class="span2">
+                <div class="col-2">
                     <a href="#{{submission.observationTemplate.submissionCenter.stableURL}}"><img src="img/{{submission.observationTemplate.submissionCenter.displayName}}.png" class="img-polaroid" width="120" alt="{{submission.observationTemplate.submissionCenter.displayName}}"></a>
                     <br><br>
                     <img src="img/observation.png" alt="Observation" class="img-polaroid" width=120 height=120><br>
@@ -639,8 +558,8 @@
             </div>
 
 
-            <h3>Submission <small>(<a href="#" id="small-show-sub-details">show details</a><a href="#" id="small-hide-sub-details" class="hide">hide details</a>)</small></h3>
-            <div id="obs-submission-details" class="hide">
+            <h3>Submission <small>(<a href="#" id="small-show-sub-details">show details</a><a href="#" id="small-hide-sub-details">hide details</a>)</small></h3>
+            <div id="obs-submission-details">
                 <table id="obs-submission-details-grid" class="table table-bordered table-striped">
                     <tr>
                         <th>Project</th>
@@ -917,7 +836,7 @@
              <h2>{{displayName}}</h2>
 
              <div class="row">
-                 <div class="span9">
+                 <div class="col-9">
                      <table id="gene-details-grid" class="table table-bordered table-striped">
                          <tr>
                              <th>Gene symbol<div style="font-size:10px; font-style:italic">(from HGNC)</div></th>
@@ -954,7 +873,7 @@
                          </tr>
                      </table>
                  </div>
-                 <div class="span3">
+                 <div class="col-3">
                      <h4>Gene</h4>
                      <img src="img/gene.png" class="img-polaroid" width=175 height=175 alt="Gene">
                  </div>
@@ -1001,7 +920,7 @@
             <h2>{{displayName}}</h2>
 
             <div class="row">
-                <div class="span9">
+                <div class="col-9">
                     <table id="protein-details-grid" class="table table-bordered table-striped">
                         <tr>
                             <th>Gene symbol<div style="font-size:10px; font-style:italic">(from HGNC)</div></th>
@@ -1031,7 +950,7 @@
                         </tr>
                     </table>
                 </div>
-                <div class="span3">
+                <div class="col-3">
                     <h4>Protein</h4>
                     <img src="img/protein.png" class="img-polaroid" width=175 height=175 alt="Protein">
                 </div>
@@ -1079,7 +998,7 @@
             <h2>{{displayName}}</h2>
 
             <div class="row">
-                <div class="span9">
+                <div class="col-9">
                     <table id="shrna-details-grid" class="table table-bordered table-striped">
                         <tr>
                             <th>Target Sequence</th>
@@ -1103,7 +1022,7 @@
                         </tr>
                     </table>
                 </div>
-                <div class="span3">
+                <div class="col-3">
                     <h4>shRNA</h4>
                     <img src="img/shrna.png" class="img-polaroid" width=175 height=175 alt="shRNA">
                 </div>
@@ -1151,7 +1070,7 @@
             <h2>{{displayName}}</h2>
 
             <div class="row">
-                <div class="span9">
+                <div class="col-9">
                     <table id="shrna-details-grid" class="table table-bordered table-striped">
                         <tr>
                             <th>Target Sequence</th>
@@ -1175,7 +1094,7 @@
                         </tr>
                     </table>
                 </div>
-                <div class="span3">
+                <div class="col-3">
                     <h4>siRNA</h4>
                     <img src="img/sirna.png" class="img-polaroid" width=175 height=175 alt="siRNA">
                 </div>
@@ -1224,7 +1143,7 @@
             <h2>{{refseqId}}</h2>
 
             <div class="row">
-                <div class="span9">
+                <div class="col-9">
                     <table id="transcript-details-grid" class="table table-bordered table-striped">
                         <tr>
                             <th>Gene</th>
@@ -1244,7 +1163,7 @@
                         </tr>
                     </table>
                 </div>
-                <div class="span3">
+                <div class="col-3">
                     <h4>Transcript</h4>
                     <img src="img/transcript.png" class="img-polaroid" width=175 height=175 alt="Transcript">
                 </div>
@@ -1292,7 +1211,7 @@
             <h2>{{displayName}}</h2>
 
             <div class="row">
-                <div class="span9">
+                <div class="col-9">
                     <table id="tissuesample-details-grid" class="table table-bordered table-striped">
                         <tr>
                             <th>Lineage</th>
@@ -1314,7 +1233,7 @@
                         </tr>
                     </table>
                 </div>
-                <div class="span3">
+                <div class="col-3">
                     <h4>Tissue Sample</h4>
                     <img src="img/tissuesample.png" class="img-polaroid" width=175 height=175 alt="Tissue sample">
                 </div>
@@ -1354,7 +1273,7 @@
         <div class="container common-container" id="cellsample-container">
             <h2>{{displayName}}</h2>
             <div class="row">
-                <div class="span9">
+                <div class="col-9">
                     <table id="cellsample-details-grid" class="table table-bordered table-striped">
                         <tr>
                             <th>Name</th>
@@ -1392,7 +1311,7 @@
                         </tr>
                     </table>
                 </div>
-                <div class="span3">
+                <div class="col-3">
                         <h4>Cell Sample</h4>
                         <img src="img/cellsample.png" class="img-polaroid" width=175 height=175 alt="Cell sample">
                 </div>
@@ -1438,7 +1357,7 @@
         <div class="container common-container" id="animalmodel-container">
             <h2>{{displayName}}</h2>
             <div class="row">
-                <div class="span9">
+                <div class="col-9">
                     <table id="animalmodel-details-grid" class="table table-bordered table-striped">
                         <tr>
                             <th>Name</th>
@@ -1456,7 +1375,7 @@
                         </tr>
                     </table>
                 </div>
-                <div class="span3">
+                <div class="col-3">
                     <h4>Animal Model</h4>
                     <img src="img/animalmodel.png" class="img-polaroid" width=175 height=175 alt="Animal model">
                 </div>
@@ -1504,7 +1423,7 @@
               <h2>{{displayName}}</h2>
 
               <div class="row">
-                  <div class="span9">
+                  <div class="col-9">
                       <table id="compund-details-grid" class="table table-bordered table-striped">
                           <tr>
                               <th>Name</th>
@@ -1534,7 +1453,7 @@
                           </tr>
                       </table>
                   </div>
-                  <div class="span3">
+                  <div class="col-3">
                       <h4>Compound</h4>
                       <a href="<%=dataURL%>compounds/{{imageFile}}" target="_blank" class="compound-image" title="Compound: {{displayName}}">
                         <img class="img-polaroid" width=200 src="<%=dataURL%>compounds/{{imageFile}}" alt="Compound: {{displayName}}">
@@ -1805,7 +1724,7 @@
                 </table>
             </div>
 
-            <div id="observation-search-results" class="hide">
+            <div id="observation-search-results" class="d-none">
                 <h3>Observations Matching all Search Terms</h3>
                 <table id="searched-observation-grid" class="table table-bordered table-striped observations">
                     <thead>
@@ -1887,24 +1806,15 @@
     </script>
 
     <script type="text/template" id="story-homepage-tmpl">
-        <div class="row one-story">
-            <div class="span8">
-                <h4>{{submission.observationTemplate.description}}</h4>
-                <!--<p class="lead stories-lead">{{submission.observationTemplate.description}}</p>-->
-                <p id="story-summary-{{id}}" class="stories-text">
-                    <!-- leaving this blank, we have to construct the summary from the scratch. -->
-                </p>
-                <p class="pull-right">
-                    (
-                    <a href="#{{submission.stableURL.replace("submission", "story")}}">view full story</a>
-                    |
-                    <a href="#{{stableURL}}">see observation</a>)
-                </p>
-            </div>
-            <div class="span4">
-                <img class="img-circle" src="img/slogos/{{submission.observationTemplate.submissionCenter.displayName}}.png" alt="{{submission.observationTemplate.submissionCenter.displayName}}" title="{{submission.observationTemplate.submissionCenter.displayName}}" height=150>
-            </div>
-        </div>
+        <h4>{{submission.observationTemplate.description}}</h4>
+        <p><a href="#story-summary-{{id}}" data-toggle="collapse">details</a>
+            | <a href="#{{submission.stableURL.replace("submission", "story")}}">view full story</a>
+            | <a href="#{{stableURL}}">see observation</a>
+            | <a href="#stories">all stories</a>
+        </p>
+        <p id="story-summary-{{id}}" class="stories-text collapse">
+            <!-- leaving this blank, we have to construct the summary from the scratch. -->
+        </p>
     </script>
 
     <script type="text/template" id="text-blurb">
@@ -1927,8 +1837,8 @@
 
             <div id="explore-blurb"></div>
             <div class="container" style="padding-bottom:5px;">
-            <button type="button" class="btn btn-default" id="reset-ordering">Reset initial ordering</button>
-            <button type="button" class="btn btn-default" id="customize-roles">Select Roles</button>
+            <button type="button" class="btn btn-outline-dark" id="reset-ordering">Reset initial ordering</button>
+            <button type="button" class="btn btn-outline-dark" id="customize-roles">Select Roles</button>
             </div>
 
             <table class="table table-bordered table-striped observations" id="explore-table">
@@ -1954,9 +1864,11 @@
         </div>
 
         <div class="modal hide fade" id="role-modal">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h3>Select roles</h3>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             </div>
             <div class="modal-body">
                 <p>Please select roles of interest from the list below.</p>
@@ -1975,6 +1887,8 @@
             <div class="modal-footer">
                 <button type="btn btn-block btn-info" id="select-roles-button">Select</button>
             </div>
+        </div>
+        </div>
         </div>
     </script>
 
@@ -2013,7 +1927,7 @@
     <script type="text/template" id="mra-view-tmpl" mra-data-url="<%=dataURL%>">
          <div class="container common-container" id="mra-container" > 
                <div class="row">
-                 <div class="span10">
+                 <div class="col-10">
                     <h2>Master Regulator View</h2>
                    
                     <table id="master-regulator-grid" class="table table-bordered table-striped ">
@@ -2030,14 +1944,14 @@
                         </tbody>
                      </table>  
                  </div>
-                 <div class="span1">
+                 <div class="col-1">
                     <a href="javascript:history.back()">Back</a>
                  </div>
              </div>
                    <br/>
                    <br/>
                    <div>
-					  <b>Nodes Limit:</b>	
+                      <b>Nodes Limit:</b>	
                       <select id="cytoscape-node-limit">
                            <option value="25">25</option>
                            <option value="50">50</option>
@@ -2047,10 +1961,10 @@
                            <option value="400">400</option>
                            <option value="500">500</option>
                       </select>
-				      <b>&nbsp;&nbsp;&nbsp;</b>  
+                      <b>&nbsp;&nbsp;&nbsp;</b>  
                       <b>Layout:</b>	
                       <select id="cytoscape-layouts">
-                           <option value="arbor" selected="selected">Arbor</option>
+                           <option value="cola" selected="selected">Cola</option>
                            <option value="grid">Grid</option>
                            <option value="random">Random</option>
                            <option value="circle">Circle</option>
@@ -2058,7 +1972,7 @@
                       <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
                       <a href="#" id="createnetwork" data-description="{{observedEvidenceRole.displayText}}" target="_blank" title="please select master regulator to create network" class="mra-cytoscape-view">Create Network</a>   				 
                       <br/>
-			          <small><font color="grey">Threshold: </font></small>
+                      <small><font color="grey">Threshold: </font></small>
                       <small id="throttle-input"><font color="grey">e.g. 0.01 </font></small>
                   </div>         
                   <br/>	
@@ -2100,12 +2014,13 @@
     </script>   
     
     <script type="text/template" id="mra-cytoscape-tmpl">
+        <div class="cytoscape-container">
         <div id="mra_progress">
             <img id="mra_progress_indicator" class="centeredImage" src="img/progress_indicator.gif" width="30" height="30" alt="Please wait ......">
         </div>
-        <div id="cytoscape">            
+        <div id="mra-cytoscape">
         </div>
-        <div class="well cytoscape-legend">       
+        <div class="well cytoscape-legend">
             <svg width="350" height="30"xmlns="http://www.w3.org/2000/svg">
             <circle cx="20" cy="15" r="10" fill="white" stroke="grey" stroke-width="2"/>
             <text x="40" y="20" fill="grey">TF</text>
@@ -2118,6 +2033,7 @@
             </svg>
             <br/>
             {{description}}
+        </div>
         </div>
     </script>
 
@@ -2160,9 +2076,9 @@
     </script>
     
     <script type="text/template" id="genelist-view-tmpl" >
-         <div class="container common-container" id="genelist-container" > 
-             
-                 <div class="span10" align="center">
+        <div class="container common-container" id="genelist-container" > 
+             <div class=row>
+                 <div class="col-10" align="center">
                     <h4>  Gene List</h4>
 
                      <div class="alert alert-warning">
@@ -2175,11 +2091,11 @@
                      </div>
 
                     <select id="geneNames" class="geneSelectList" size="6" 
-								multiple></select>
+                                multiple></select>
                     </br></br>
                     <a href="#" id="addGene">Add Gene</a>
                     <a href="#" id="deleteGene">Delete Gene</a>
-                    </br></br>               
+                    </br></br>
                     <a href="#" id="clearList">Clear List</a>
                     <a href="#" id="loadGenes">Load Genes from File</a>
                     </br><input id="geneFileInput" type="file" style="visibility:hidden" /> 
@@ -2187,12 +2103,16 @@
                     <a href="#cnkb-query" id="cnkb-query">Find Gene Interactions in  Networks (CNKB)</a>
                  </div>
 
-                 <div class="span1">
+                 <div class="col-1">
                     <a href="javascript:history.back()">Back</a>
                  </div>
              </div>
+        </div>
 
-            <div class="modal hide fade" id="addgene-modal">
+        <div class="modal hide fade" id="addgene-modal">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+                    
                 <div class="modal-body">
                     <br>
                     Add gene symbols
@@ -2200,23 +2120,24 @@
                     <button id="add-gene-symbols" class="btn">Submit</button><br><br>
                 </div>
                 <div class="modal-footer">
-                     
                     <button class="btn btn-primary" data-dismiss="modal">Close</button>
                 </div>
-            </div>           
-      </script>     
+        </div>
+        </div>
+        </div>
+      </script>
       
       <script type="text/template" id="cnkb-query-tmpl" >
-         <div class="container common-container" id="cnkbquery-container" > 
-                    
-                    <div class="span10">
+        <div class="container common-container" id="cnkbquery-container" > 
+            <div class=row>
+                    <div class="col-10">
                        <h3>Cellular Network Knowledge Base</h3>
 
                        <medium>Select Interactome:</medium>
                        <small id="queryDescription" class="cnkbDescription"></small> 
                        </br>
                        <select id="interactomeList" name="interactomes"
-						    class="cnkbSelectList" size="4"></select>
+                            class="cnkbSelectList" size="4"></select>
                        </br>
                        <small id="interactomeDescription" class="cnkbDescription">
                         &nbsp;&nbsp;
@@ -2226,26 +2147,27 @@
                     <medium class="labelDisable" id="selectVersion"> Select Version: </medium>
                     </br>
                     <select id="interactomeVersionList" name="interactomeVersions"
-						 class="cnkbSelectList" size="4"></select>
+                         class="cnkbSelectList" size="4"></select>
                      </br>
                     <small id="versionDescription" class="cnkbDescription">
                         &nbsp;&nbsp;
                     </small>
                      </br>
-		             </br>
+                     </br>
                      <a href="#cnkb-result" id="cnkb-result">Submit</a>
                  </div>
 
-                 <div class="span1">
+                 <div class="col-1">
                     <a href="javascript:history.back()">Back</a>
                  </div>
-             </div>
+            </div>
+        </div>
       </script>
       
       <script type="text/template" id="cnkb-result-tmpl" >
          <div class="container common-container" id="cnkbresult-container" > 
                <div class="row">
-                  <div class="span10">
+                  <div class="col-10">
                      <h3>Cellular Network Knowledge Base</h2>
                      <a href="#" id="cnkbExport"  target="_blank" title="Export all selected interaction to a SIF file."> Export </a>
                      <br>
@@ -2267,7 +2189,7 @@
                          </tbody>
                       </table>  
                    </div>
-                   <div class="span1">
+                   <div class="col-1">
                       <a href="javascript:history.back()">Back</a>
                    </div>
                 </div>
@@ -2278,7 +2200,7 @@
                     <br/><br/><br/>
                 </div>
                 <div>
-					<b>Interactions Limit:</b>	
+                    <b>Interactions Limit:</b>	
                     <select id="cytoscape-node-limit">
                            <option value="25">25</option>
                            <option value="50">50</option>
@@ -2286,11 +2208,11 @@
                            <option value="200">200</option>
                            <option value="300">300</option>
                            <option value="400">400</option>
-                     </select>					
-				  
+                     </select>
+
                      <b>Layout:</b>	
                      <select id="cytoscape-layouts">
-                           <option value="arbor" selected="selected">Arbor</option>
+                           <option value="cola" selected="selected">Cola</option>
                            <option value="grid">Grid</option>
                            <option value="random">Random</option>
                            <option value="circle">Circle</option>
@@ -2298,9 +2220,9 @@
                      
                      <a href="#" id="createnetwork"  target="_blank" title="please select cnkb interactions to create network">Create Network</a>   				 
                      <br/>
-			         <small><font color="grey">Confidence threshold: </font></small>
+                     <small><font color="grey">Confidence threshold: </font></small>
                      <small id="throttle-input"><font color="grey">e.g. 0.01 </font></small>
-				   	 <div id="createnw_progress_indicator" align="center" style="display: none;">data is loading ......
+                   	 <div id="createnw_progress_indicator" align="center" style="display: none;">data is loading ......
                          <img id="cnkb_data_progress_indicator" src="img/progress_indicator.gif" width="20" height="20" alt="Please wait ......"><br>
                      </div>
                   </div>
@@ -2311,12 +2233,12 @@
       <script type="text/template" id="cnkb-result-row-tmpl">
         <tr id="tr_{{geneName}}">
             <td><input type="checkbox" id="checkbox_{{geneName}}" value="{{geneName}}" class="cnkb_checkbox"></td> 
-		    <td>{{geneName}}</td>; 
+            <td>{{geneName}}</td>; 
         </tr>
       </script>
       
       <script type="text/template" id="cnkb-cytoscape-tmpl">
-        
+        <div class="cytoscape-container">
         <div id="cnkb_cytoscape_progress">
             <img id="cnkb_cytoscape_progress_indicator" class="centeredImage" src="img/progress_indicator.gif" width="30" height="30" alt="Please wait ......">
         </div>
@@ -2329,11 +2251,13 @@
             <br/>
             {{description}}
         </div>
+        </div>
       </script>
      
     <script type="text/template" id="gene-cart-help-tmpl" >
          <div class="container common-container" id="cnkbhelp-container" > 
-               <div class="span10">                       
+             <div class=row>
+               <div class="col-10">
                     <h3>Gene Cart Help</h3>
                     <p>The Gene Cart allows users to build a list of genes and query the Cellular Networks Knowledge Base (CNKB) for molecular interactions involving these genes.  The CNKB is a repository of molecular interactions networks. It contains computationally-derived networks obtained by applying state of the art Systems and Structure Biology algorithms from the laboratories of Drs. Andrea Califano and Barry Honig at Columbia University. A detailed <a target="_blank" href="http://wiki.c2b2.columbia.edu/workbench/index.php/Cellular_Networks_KnowledgeBase">description of the CNKB</a> is available which also describes how the CNKB can be accessed from within the software platform <a target="_blank" href="http://www.geworkbench.org">geWorkbench</a>.</p>
                     <p>In the Observations for a particular Dashboard submission, those entries that are genes will have a green "+" sign to right of the gene symbol. Clicking this "+" sign will add the gene to the Gene Cart. The Gene Cart is limited to 25 genes.</p>
@@ -2342,9 +2266,10 @@
                     <p>Several layout options are available for Cytoscape and can be selected using the "Layout" pulldown.</p>
                     <p>In Cytoscape.js, several common interaction types have been assigned specific colors used for the lines representing them, and these will be shown on the legend of the graph.  The genes used in the CNKB query (hub genes) will be highlighted in yellow.</p>
                 </div>
-                <div class="span1">
+                <div class="col-1">
                    <a href="javascript:history.back()">Back</a>
                 </div>
+            </div>
          </div>
      </script>
      
@@ -2357,7 +2282,7 @@
      </script>
 
     <script type="text/template" id="video-popup-tmpl">
-        <div id="ytplayer-{{videoid}}" class="flex-video widescreen" data-video-id="{{videoid}}" align="center" style="padding: 70px 0;height:400px;">
+        <div id="ytplayer-{{videoid}}" class="flex-video widescreen" data-video-id="{{videoid}}" style="padding: 70px 20px;">
             <noscript><p><a href="https://www.youtube.com/watch?v={{videoid}}" target="_blank" >
                 View this video on YouTube.</a></p>
             </noscript>
@@ -2444,25 +2369,20 @@
 
     <!-- end of templates -->
     
-    <script src="js/jquery.dataTables.min.js"></script>
-    <script src="js/dataTables.buttons.min.js"></script>
-    <script src="js/buttons.html5.min.js"></script>
-    <script src="js/jszip.min.js"></script>
+    <script src="js/datatables.min.js"></script>
     <script src="js/paging.js"></script>
-    <script src="js/holder.js"></script>
-    <script src="js/underscore.js"></script>
-    <script src="js/json2.js"></script>
+    <script src="js/underscore-min.js"></script>
     <script src="js/backbone-min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/jquery.fancybox-1.3.4.pack.js"></script>
-    <script src="js/jquery.easing-1.3.pack.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/jquery.fancybox.min.js"></script>
     <script src="js/jquery.expander.min.js"></script>
-    <script src="js/arbor.js"></script>
-    <script src="js/cytoscape.min.js"></script>  
+    <script src="js/cytoscape.min.js"></script>
+    <script src="js/cola.min.js"></script>
+    <script src="js/cytoscape-cola.js"></script>
     <script src="js/encoder.js"></script>
-    <script src="js/jquery.contextMenu.js"></script>   
-    <script src="js/jquery.ui.position.js"></script>    
-    <script src="js/ctd2.js?ts=201804"></script>
+    <script src="js/jquery.contextMenu.min.js"></script>
+    <script src="js/jquery.ui.position.min.js"></script>
+    <script src="js/ctd2.js?ts=20181205"></script>
 
   </body>
 </html>

@@ -29,7 +29,6 @@ public class SubjectImpl extends DashboardEntityImpl implements Subject {
 
     private Set<Synonym> synonyms = new LinkedHashSet<Synonym>();
     private Set<Xref> xrefs = new LinkedHashSet<Xref>();
-    private Integer score = 0;
     private String stableURL = "";
 
     @LazyCollection(LazyCollectionOption.FALSE)
@@ -64,14 +63,6 @@ public class SubjectImpl extends DashboardEntityImpl implements Subject {
 
     public void setXrefs(Set<Xref> xrefs) {
         this.xrefs = xrefs;
-    }
-
-    public Integer getScore() {
-        return score;
-    }
-
-    public void setScore(Integer score) {
-        this.score = score;
     }
 
     @Override

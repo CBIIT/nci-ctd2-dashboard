@@ -31,5 +31,6 @@ public class AnimalModelWriter implements ItemWriter<AnimalModel> {
             animalModel.setStableURL(stableURL.createURLWithPrefix("animal-model", animalModel.getDisplayName()));
         }
         dashboardDao.batchSave(items, batchSize);
+        log.debug("AnimalModel written");
     }
 }

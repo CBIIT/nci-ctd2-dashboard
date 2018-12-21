@@ -7,6 +7,7 @@ public abstract class DashboardFactory {
     private static Log log = LogFactory.getLog(DashboardFactory.class);
     public abstract <T extends DashboardEntity> T create(Class<T> aClass);
 
+    @SuppressWarnings("unchecked")
     public <T extends DashboardEntity> Class<T> getImplClass(Class<T> aClass) {
         Class<T> implClass = null;
 

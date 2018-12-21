@@ -1,17 +1,21 @@
 package gov.nih.nci.ctd2.dashboard.impl;
 
-import gov.nih.nci.ctd2.dashboard.model.Gene;
-import gov.nih.nci.ctd2.dashboard.model.Organism;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 import org.hibernate.annotations.Proxy;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
 
-import javax.persistence.*;
+import gov.nih.nci.ctd2.dashboard.model.Organism;
 
 @Entity
 @Proxy(proxyClass = Organism.class)
 @Table(name = "organism")
 public class OrganismImpl extends DashboardEntityImpl implements Organism {
+    private static final long serialVersionUID = -3857505527383982701L;
+
     public final static String FIELD_TAXID = "taxid";
 
     private String taxonomyId;

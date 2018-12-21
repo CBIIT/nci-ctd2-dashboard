@@ -1,0 +1,19 @@
+name=PropertiesConfig
+
+appender.console.type = Console
+appender.console.name = STDOUT
+appender.console.layout.type = PatternLayout
+appender.console.layout.pattern = [%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n
+
+appender.rolling.type = RollingFile
+appender.rolling.name = LOGFILE
+appender.rolling.fileName=application.log
+appender.rolling.filePattern = logs/hipc-%d{MM-dd-yy-HH-mm-ss}-%i.log.gz
+appender.rolling.policies.type = Policies
+appender.rolling.policies.size.type = SizeBasedTriggeringPolicy
+appender.rolling.policies.size.size=100KB
+appender.rolling.layout.type=PatternLayout
+appender.rolling.layout.pattern=[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n
+
+rootLogger.level = ${log4j.logLevel}
+rootLogger.appenderRef.stdout.ref = STDOUT
