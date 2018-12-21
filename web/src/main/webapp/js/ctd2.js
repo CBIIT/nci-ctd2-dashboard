@@ -3505,7 +3505,6 @@
                 selector: '#cytoscape',
 
                 callback: function (key, options) {
-                    var m = "clicked: " + key + " on " + sym;
                     if (!key || 0 === key.length) {
                         $.contextMenu('destroy', '#cytoscape');
                         return;
@@ -3513,6 +3512,8 @@
 
                     var linkUrl = "";
                     switch (key) {
+                        case 'linkout':
+                            return;
                         case 'gene':
                             linkUrl = "http://www.ncbi.nlm.nih.gov/gene?cmd=Search&term=" + sym;
                             break;
