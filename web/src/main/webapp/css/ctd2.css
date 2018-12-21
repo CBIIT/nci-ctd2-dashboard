@@ -593,6 +593,8 @@ h1 small, h2 small, h3 small, h4 small, h5 small, h6 small {
 .help-navigate-text-container {
     padding-left: 20px;
     padding-right: 20px;
+    width: 80%;
+    height: 95%;
 }
 
 table.dataTable tr.odd {

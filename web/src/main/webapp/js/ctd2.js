@@ -356,8 +356,6 @@
             $.fancybox.open(
                 content, {
                     'autoDimensions': false,
-                    'width': '75%',
-                    'height': '99%',
                     'centerOnScroll': true,
                     'transitionIn': 'none',
                     'transitionOut': 'none'
@@ -857,8 +855,6 @@
                                         description: sifDesc
                                     }), {
                                         'autoDimensions': false,
-                                        'width': '100%',
-                                        'height': '100%',
                                         'transitionIn': 'none',
                                         'transitionOut': 'none'
                                     }
@@ -2442,8 +2438,6 @@
                                 description: mraDesc
                             }), {
                                 'autoDimensions': false,
-                                'width': '100%',
-                                'height': '85%',
                                 'transitionIn': 'none',
                                 'transitionOut': 'none'
                             }
@@ -3428,8 +3422,6 @@
                 svgHtml: svgHtml
             }), {
                 'autoDimensions': false,
-                'width': '100%',
-                'height': '85%',
                 'transitionIn': 'none',
                 'transitionOut': 'none'
             }
