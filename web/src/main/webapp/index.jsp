@@ -217,7 +217,7 @@
                         <ul id='video-list' class="list-inline"> <!-- TODO style this to be horizontal -->
                             <li class="list-inline-item small">
                                 <a id="video-link1"  title='This video introduces and defines common terminology used throughout the Dashboard.'>
-                                    Understanding Dashboard
+                                    Understanding the Dashboard
                                 </a>
                             </li>
                             <li class="list-inline-item small">
