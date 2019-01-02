@@ -854,6 +854,7 @@
                                     _.template($("#cytoscape-tmpl").html()) ({
                                         description: sifDesc
                                     }), {
+                                        touch: {vertical: false, },
                                         'autoDimensions': false,
                                         'transitionIn': 'none',
                                         'transitionOut': 'none'
@@ -2437,6 +2438,7 @@
                             _.template($("#mra-cytoscape-tmpl").html()) ({
                                 description: mraDesc
                             }), {
+                                touch: {vertical: false, },
                                 'autoDimensions': false,
                                 'transitionIn': 'none',
                                 'transitionOut': 'none'
@@ -3421,6 +3423,7 @@
                 description: description,
                 svgHtml: svgHtml
             }), {
+                touch: {vertical: false, },
                 'autoDimensions': false,
                 'transitionIn': 'none',
                 'transitionOut': 'none'
