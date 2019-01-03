@@ -814,7 +814,10 @@
                     ]);
 
                     $('.desc-tooltip').tooltip({
-                        placement: "left"
+                        placement: "left",
+                        trigger: "hover",
+                    }).on('click', function () {
+                        $(this).tooltip('hide')
                     });
 
                     $("a.evidence-images").fancybox({
