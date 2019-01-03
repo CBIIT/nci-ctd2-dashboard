@@ -1321,13 +1321,12 @@
             var result = thatModel.subject.toJSON();
             // Find out the UniProt ID
 
-            result["genecard"] = false;
+            result.genecard = false;
             _.each(result.xrefs, function(xref) {
                 if (xref.databaseName == "GeneCards") {
-                     result["genecard"] = xref.databaseId;
+                     result.genecard = xref.databaseId;
                  }
               });
-            
 
             result.type = result.class;
             $(this.el).html(this.template($.extend(result, {
@@ -1508,10 +1507,10 @@
             var thatModel = this.model;
             var result = thatModel.subject.toJSON();
 
-            result["diseaseOntology"] = false;
+            result.diseaseOntology = false;
             _.each(result.xrefs, function(xref) {
                 if (xref.databaseName == "disease-ontology") {
-                     result["diseaseOntology"] = xref.databaseId;
+                     result.diseaseOntology = xref.databaseId;
                  }
               });
 
@@ -1628,10 +1627,10 @@
             var thatModel = this.model;
             var result = thatModel.subject.toJSON();
 
-            result["cosmic"] = false;
+            result.cosmic = false;
             _.each(result.xrefs, function(xref) {
                 if (xref.databaseName == "COSMIC SAMPLE") {
-                     result["cosmic"] = xref.databaseId;
+                     result.cosmic = xref.databaseId;
                  }
               });
 
