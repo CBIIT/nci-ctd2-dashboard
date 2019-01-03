@@ -2382,7 +2382,7 @@
     <script src="js/encoder.js"></script>
     <script src="js/jquery.contextMenu.min.js"></script>
     <script src="js/jquery.ui.position.min.js"></script>
-    <script src="js/ctd2.js?ts=20181205"></script>
+    <script src="js/ctd2.js?ts=2019"></script>
 
   </body>
 </html>
