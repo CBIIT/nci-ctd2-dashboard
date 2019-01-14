@@ -2017,7 +2017,7 @@
     </bean>
     <bean name="fhcrcNovelTargetsHeadAndNeckCancerLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
         <property name="delimiter" value="&#9;"/>
-        <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,gene_symbol_3,gene_symbol_4,gene_symbol_5,disease_1,candidate_drug_1,candidate_drug_2,story,publication_reference_1,publication_reference_2,data_portal_link,link_to_tier1,evidence_ontology_term"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,gene_symbol_3,gene_symbol_4,gene_symbol_5,disease_1,candidate_drug_1,candidate_drug_2,story_location,publication_reference_1,publication_reference_2,data_portal_link,link_to_tier1,evidence_ontology_term"/>
     </bean>
     <bean name="fhcrcWee1Phase1ClinicalTrialLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
         <property name="fieldSetMapper" ref="observationDataMapper" />
@@ -2025,7 +2025,7 @@
     </bean>
     <bean name="fhcrcWee1Phase1ClinicalTrialLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
         <property name="delimiter" value="&#9;"/>
-        <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,disease,compound_1,compound_2,compound_3,publication_reference_1,publication_reference_2,publication_reference_3,link_to_tier1,story,evidence_ontology_term"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,disease,compound_1,compound_2,compound_3,publication_reference_1,publication_reference_2,publication_reference_3,link_to_tier1,story_location,evidence_ontology_term"/>
     </bean>
     <bean name="broadGpx4StoryLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
         <property name="fieldSetMapper" ref="observationDataMapper" />
@@ -3523,7 +3523,7 @@
 		<entry key="fhcrc_novel_targets_head_and_neck_cancer:disease_1" value="subject:findTissueSampleByName"/>
 		<entry key="fhcrc_novel_targets_head_and_neck_cancer:candidate_drug_1" value="subject:findCompoundsByName"/>
 		<entry key="fhcrc_novel_targets_head_and_neck_cancer:candidate_drug_2" value="subject:findCompoundsByName"/>
-		<entry key="fhcrc_novel_targets_head_and_neck_cancer:story" value="evidence:readString:createObservedFileEvidence"/>
+		<entry key="fhcrc_novel_targets_head_and_neck_cancer:story_location" value="evidence:readString:createObservedFileEvidence"/>
 		<entry key="fhcrc_novel_targets_head_and_neck_cancer:publication_reference_1" value="evidence:readString:createObservedUrlEvidence"/>
 		<entry key="fhcrc_novel_targets_head_and_neck_cancer:publication_reference_2" value="evidence:readString:createObservedLabelEvidence"/>
 		<entry key="fhcrc_novel_targets_head_and_neck_cancer:data_portal_link" value="evidence:readString:createObservedUrlEvidence"/>
@@ -3538,7 +3538,7 @@
 		<entry key="fhcrc_wee1_phase1_clinical_trial:publication_reference_2" value="evidence:readString:createObservedUrlEvidence"/>
 		<entry key="fhcrc_wee1_phase1_clinical_trial:publication_reference_3" value="evidence:readString:createObservedUrlEvidence"/>
 		<entry key="fhcrc_wee1_phase1_clinical_trial:link_to_tier1" value="evidence:readString:createObservedUrlEvidence"/>
-		<entry key="fhcrc_wee1_phase1_clinical_trial:story" value="evidence:readString:createObservedFileEvidence"/>
+		<entry key="fhcrc_wee1_phase1_clinical_trial:story_location" value="evidence:readString:createObservedFileEvidence"/>
 		<entry key="fhcrc_wee1_phase1_clinical_trial:evidence_ontology_term" value="evidence:readString:createObservedUrlEvidence"/>
         <entry key="UCSF1_chem_gen_screen_comb_resistant:gene_name" value="subject:findGenesBySymbol" />
 		<entry key="UCSF1_chem_gen_screen_comb_resistant:drug_name" value="subject:findCompoundsByName" />
