@@ -132,21 +132,30 @@
         urlRoot: CORE_API_URL + "get/observation"
     });
 
-    var Observations = Backbone.Collection.extend({
-        url: CORE_API_URL + "list/observation/?filterBy=",
+    var ObservationsBySubmission = Backbone.Collection.extend({
+        url: CORE_API_URL + "observations/bySubmission/?submissionId=",
         model: Observation,
 
         initialize: function (attributes) {
-            if (attributes.subjectId != undefined) {
-                this.url += attributes.subjectId;
-                if (attributes.role != undefined) {
-                    this.url += "&role=" + attributes.role;
-                }
-                if (attributes.tier != undefined) {
-                    this.url += "&tier=" + attributes.tier;
-                }
-            } else {
-                this.url += attributes.submissionId;
+            this.url += attributes.submissionId;
+
+            if (attributes.getAll != undefined) {
+                this.url += "&getAll=" + attributes.getAll;
+            }
+        }
+    });
+
+    var ObservationsBySubject = Backbone.Collection.extend({
+        url: CORE_API_URL + "observations/bySubject/?subjectId=",
+        model: Observation,
+
+        initialize: function (attributes) {
+            this.url += attributes.subjectId;
+            if (attributes.role != undefined) {
+                this.url += "&role=" + attributes.role;
+            }
+            if (attributes.tier != undefined) {
+                this.url += "&tier=" + attributes.tier;
             }
 
             if (attributes.getAll != undefined) {
@@ -1229,7 +1238,7 @@
             var tier = thatModel.tier; // possibly undefined
             var role = thatModel.role; // possibly undefined
 
-            var countUrl = "count/observation/?filterBy=" + subjectId;
+            var countUrl = "observations/countBySubject/?subjectId=" + subjectId;
             if (role != undefined) {
                 countUrl += "&role=" + role;
             }
@@ -1238,79 +1247,79 @@
             }
 
             $.ajax(countUrl).done(function (count) {
-                var observations = new Observations({
-                    subjectId: subjectId,
-                    role: role,
-                    tier: tier
-                });
-                observations.fetch({
-                    success: function () {
-                        $(".subject-observations-loading", thatEl).remove();
-                        _.each(observations.models, function (observation) {
-                            observation = observation.toJSON();
-                            var observationRowView = new ObservationRowView({
-                                el: $(thatEl).find("tbody"),
-                                model: observation
-                            });
-                            observationRowView.render();
+            var observations = new ObservationsBySubject({
+                subjectId: subjectId,
+                role: role,
+                tier: tier
+            });
+            observations.fetch({
+                success: function () {
+                    $(".subject-observations-loading", thatEl).remove();
+                    _.each(observations.models, function (observation) {
+                        observation = observation.toJSON();
+                        var observationRowView = new ObservationRowView({
+                            el: $(thatEl).find("tbody"),
+                            model: observation
                         });
-
-                        var oTable = $(thatEl).dataTable({
-                            'dom': '<iBfrtlp>',
-                            "sPaginationType": "bootstrap",
-                            "columns": [{
-                                    "orderDataType": "dashboard-date"
-                                },
-                                null,
-                                null,
-                                null
-                            ],
-                            'buttons': [{
-                                extend: 'excelHtml5',
-                                text: 'Export as Spreadsheet',
-                                className: "extra-margin",
-                                customizeData: function (data) {
-                                    var body = data.body;
-                                    for (var i = 0; i < body.length; i++) {
-                                        var raw_content = body[i][1].split(/ +/);
-                                        raw_content.pop();
-                                        raw_content.pop();
-                                        body[i][1] = raw_content.join(' ');
-                                    }
-                                },
-                            }],
-                        });
-                        $(thatEl).width( "100%" );
-
-                        oTable.fnSort([
-                            [2, 'desc']
-                        ]);
-
-                    }
-                });
-
-                if (count > maxNumberOfEntities) {
-                    var moreObservationView = new MoreObservationView({
-                        model: {
-                            role: role,
-                            tier: tier,
-                            numOfObservations: maxNumberOfEntities,
-                            numOfAllObservations: count,
-                            subjectId: subjectId,
-                            tableEl: thatEl,
-                            rowView: ObservationRowView,
-                            columns: [{
-                                    "orderDataType": "dashboard-date"
-                                },
-                                null,
-                                null,
-                                null
-                            ]
-                        }
+                        observationRowView.render();
                     });
-                    moreObservationView.render();
+
+                    var oTable = $(thatEl).dataTable({
+                        'dom': '<iBfrtlp>',
+                        "sPaginationType": "bootstrap",
+                        "columns": [{
+                                "orderDataType": "dashboard-date"
+                            },
+                            null,
+                            null,
+                            null
+                        ],
+                        'buttons': [{
+                            extend: 'excelHtml5',
+                            text: 'Export as Spreadsheet',
+                            className: "extra-margin",
+                            customizeData: function (data) {
+                                var body = data.body;
+                                for (var i = 0; i < body.length; i++) {
+                                    var raw_content = body[i][1].split(/ +/);
+                                    raw_content.pop();
+                                    raw_content.pop();
+                                    body[i][1] = raw_content.join(' ');
+                                }
+                            },
+                        }],
+                    });
+                    $(thatEl).width( "100%" );
+
+                    oTable.fnSort([
+                        [2, 'desc']
+                    ]);
+
                 }
             });
+
+            if (count > maxNumberOfEntities) {
+                var moreObservationView = new MoreObservationView({
+                    model: {
+                        role: role,
+                        tier: tier,
+                        numOfObservations: maxNumberOfEntities,
+                        numOfAllObservations: count,
+                        subjectId: subjectId,
+                        tableEl: thatEl,
+                        rowView: ObservationRowView,
+                        columns: [{
+                                "orderDataType": "dashboard-date"
+                            },
+                            null,
+                            null,
+                            null
+                        ]
+                    }
+                });
+                moreObservationView.render();
+            }
+        });
 
             return this;
         }
@@ -1807,7 +1816,7 @@
                             model: submission
                         });
 
-                        $.ajax("count/observation/?filterBy=" + submission.id, {
+                        $.ajax("observations/countBySubmission/?submissionId=" + submission.id, {
                             "async": false
                         }).done(function (count) {
                             var tmplName = submission.observationTemplate.isSubmissionStory ?
@@ -1993,8 +2002,8 @@
                 }
             });
 
-            $.ajax("count/observation/?filterBy=" + submissionId).done(function (count) {
-                var observations = new Observations({
+            $.ajax("observations/countBySubmission/?submissionId=" + submissionId).done(function (count) {
+                var observations = new ObservationsBySubmission({
                     submissionId: submissionId
                 });
                 observations.fetch({
@@ -2059,12 +2068,12 @@
 
                 var observations;
                 if (model.submissionId != undefined) {
-                    observations = new Observations({
+                    observations = new ObservationsBySubmission({
                         submissionId: model.submissionId,
                         getAll: true
                     });
                 } else if (model.subjectId != undefined) {
-                    observations = new Observations({
+                    observations = new ObservationsBySubject({
                         subjectId: model.subjectId,
                         getAll: true,
                         role: role,

@@ -21,7 +21,6 @@ import gov.nih.nci.ctd2.dashboard.api.SubjectResponse;
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
 import gov.nih.nci.ctd2.dashboard.model.Gene;
 import gov.nih.nci.ctd2.dashboard.model.Subject;
-import gov.nih.nci.ctd2.dashboard.util.WebServiceUtil;
 
 @Controller
 @RequestMapping("/api/browse")
@@ -29,9 +28,6 @@ public class BrowseAPI {
     private static final Log log = LogFactory.getLog(BrowseAPI.class);
     @Autowired
     private DashboardDao dashboardDao;
-
-    @Autowired
-    private WebServiceUtil webServiceUtil;
 
     @Transactional
     @RequestMapping(value = "{subjectClass}/{subjectName}", method = {
@@ -58,7 +54,7 @@ public class BrowseAPI {
             return new ResponseEntity<String>("{}", headers, HttpStatus.OK);
         }
 
-        SubjectResponse subjectResponse = SubjectResponse.createInstance(subject, filter, dashboardDao, webServiceUtil);
+        SubjectResponse subjectResponse = SubjectResponse.createInstance(subject, filter, dashboardDao);
 
         log.debug("ready to serialize");
         JSONSerializer jsonSerializer = CTD2Serializer.createJSONSerializer();

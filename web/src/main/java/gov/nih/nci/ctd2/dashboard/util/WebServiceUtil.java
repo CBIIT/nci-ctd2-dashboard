@@ -25,32 +25,6 @@ public class WebServiceUtil {
             } else {
                 entities = dashboardDao.findEntities(Submission.class);
             }
-        } else if(type.equalsIgnoreCase("observation")) {
-            if(filterBy != null) {
-                Submission submission = dashboardDao.getEntityById(Submission.class, filterBy);
-                if(submission != null) {
-                    entities = dashboardDao.findObservationsBySubmission(submission);
-                } else {
-                    Subject subject = dashboardDao.getEntityById(Subject.class, filterBy);
-                    if(subject != null) {
-                        ArrayList<Observation> observations = new ArrayList<Observation>();
-                        for (ObservedSubject observedSubject : dashboardDao.findObservedSubjectBySubject(subject)) {
-                            observations.add(observedSubject.getObservation());
-                        }
-                        Collections.sort(observations, new Comparator<Observation>() {
-                            @Override
-                            public int compare(Observation o1, Observation o2) {
-                                Integer tier2 = o2.getSubmission().getObservationTemplate().getTier();
-                                Integer tier1 = o1.getSubmission().getObservationTemplate().getTier();
-                                return tier2 - tier1;
-                            }
-                        });
-                        entities = observations;
-                    }
-                }
-            } else {
-                entities = dashboardDao.findEntities(Observation.class);
-            }
         } else if(type.equals("center")) {
             entities = dashboardDao.findEntities(SubmissionCenter.class);
         } else if(type.equals("observedsubject") && filterBy != null) {
@@ -88,44 +62,6 @@ public class WebServiceUtil {
     }
 
     @Transactional
-    @Cacheable(value = "entityCache")
-    public List<? extends DashboardEntity> getObservationsPerRoleTier(Integer filterBy, String role, Integer tier) {
-        List<? extends DashboardEntity> entities = new ArrayList<DashboardEntity>();
-        if(filterBy != null) {
-            Submission submission = dashboardDao.getEntityById(Submission.class, filterBy);
-            if(submission != null) {
-                entities = dashboardDao.findObservationsBySubmission(submission);
-            } else {
-                Subject subject = dashboardDao.getEntityById(Subject.class, filterBy);
-                if(subject != null) {
-                        ArrayList<Observation> observations = new ArrayList<Observation>();
-                        for (ObservedSubject observedSubject : dashboardDao.findObservedSubjectBySubject(subject)) {
-                            ObservedSubjectRole observedSubjectRole = observedSubject.getObservedSubjectRole();
-                            String subjectRole = observedSubjectRole.getSubjectRole().getDisplayName();
-                            Integer observationTier = observedSubject.getObservation().getSubmission().getObservationTemplate().getTier();
-                            if( (role.equals("") || role.equals(subjectRole)) && (tier==0 || tier==observationTier) ) {
-                                observations.add(observedSubject.getObservation());
-                            }
-                        }
-                        Collections.sort(observations, new Comparator<Observation>() {
-                            @Override
-                            public int compare(Observation o1, Observation o2) {
-                                Integer tier2 = o2.getSubmission().getObservationTemplate().getTier();
-                                Integer tier1 = o1.getSubmission().getObservationTemplate().getTier();
-                                return tier2 - tier1;
-                            }
-                        });
-                        entities = observations;
-                }
-            }
-        } else {
-            entities = dashboardDao.findEntities(Observation.class);
-        }
-
-        return entities;
-    }
-
-    @Transactional
     @Cacheable(value = "exploreCache")
     public List<SubjectWithSummaries> exploreSubjects(String keyword) {
         return dashboardDao.findSubjectWithSummariesByRole(keyword, 1);
@@ -147,35 +83,5 @@ public class WebServiceUtil {
         }
 
         return submissions;
-    }
-
-    @Transactional
-    @Cacheable(value = "entityCache")
-    public List<Observation> getObservations(Subject subject, final gov.nih.nci.ctd2.dashboard.api.SubjectResponse.Filter filter) {
-        List<Observation> observations = new ArrayList<Observation>();
-        for (ObservedSubject observedSubject : dashboardDao.findObservedSubjectBySubject(subject)) {
-            ObservedSubjectRole observedSubjectRole = observedSubject.getObservedSubjectRole();
-            String subjectRole = observedSubjectRole.getSubjectRole().getDisplayName();
-            if(filter.rolesIncluded.size()>0 && !filter.rolesIncluded.contains(subjectRole)) continue;
-
-            ObservationTemplate observatinoTemplate = observedSubject.getObservation().getSubmission().getObservationTemplate();
-            Integer observationTier = observatinoTemplate.getTier();
-            String centerNameBrief = observatinoTemplate.getSubmissionCenter().getStableURL().substring(7); // remove prefix "center/"
-            if(filter.centerIncluded.size()>0 && !filter.centerIncluded.contains(centerNameBrief)) continue;
-
-            if ((Arrays.asList(filter.tiersIncluded).contains(observationTier))) {
-                observations.add(observedSubject.getObservation());
-            }
-        }
-        Collections.sort(observations, new Comparator<Observation>() {
-            @Override
-            public int compare(Observation o1, Observation o2) {
-                Integer tier2 = o2.getSubmission().getObservationTemplate().getTier();
-                Integer tier1 = o1.getSubmission().getObservationTemplate().getTier();
-                return tier2 - tier1;
-            }
-        });
-
-        return observations;
     }
 }

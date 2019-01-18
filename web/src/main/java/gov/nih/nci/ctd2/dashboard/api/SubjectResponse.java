@@ -2,18 +2,19 @@ package gov.nih.nci.ctd2.dashboard.api;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
-import gov.nih.nci.ctd2.dashboard.model.DashboardEntity;
 import gov.nih.nci.ctd2.dashboard.model.Observation;
+import gov.nih.nci.ctd2.dashboard.model.ObservationTemplate;
 import gov.nih.nci.ctd2.dashboard.model.ObservedSubject;
+import gov.nih.nci.ctd2.dashboard.model.ObservedSubjectRole;
 import gov.nih.nci.ctd2.dashboard.model.Subject;
 import gov.nih.nci.ctd2.dashboard.model.Synonym;
 import gov.nih.nci.ctd2.dashboard.model.Xref;
-import gov.nih.nci.ctd2.dashboard.util.WebServiceUtil;
 
 public class SubjectResponse {
     public final String clazz, name;
@@ -77,10 +78,28 @@ public class SubjectResponse {
         return new Filter(limit, rolesIncluded, centerIncluded, tiersIncluded);
     }
 
-    public static SubjectResponse createInstance(final Subject subject, final Filter filter, DashboardDao dashboardDao,
-            WebServiceUtil webServiceUtil) {
+    private static List<Observation> getObservations(Subject subject, final Filter filter, DashboardDao dashboardDao) {
+        Set<Observation> observations = new HashSet<Observation>();
+        for (ObservedSubject observedSubject : dashboardDao.findObservedSubjectBySubject(subject)) {
+            ObservedSubjectRole observedSubjectRole = observedSubject.getObservedSubjectRole();
+            String subjectRole = observedSubjectRole.getSubjectRole().getDisplayName();
+            if(filter.rolesIncluded.size()>0 && !filter.rolesIncluded.contains(subjectRole)) continue;
 
-        List<? extends DashboardEntity> observations = webServiceUtil.getObservations(subject, filter);
+            ObservationTemplate observatinoTemplate = observedSubject.getObservation().getSubmission().getObservationTemplate();
+            Integer observationTier = observatinoTemplate.getTier();
+            String centerNameBrief = observatinoTemplate.getSubmissionCenter().getStableURL().substring(7); // remove prefix "center/"
+            if(filter.centerIncluded.size()>0 && !filter.centerIncluded.contains(centerNameBrief)) continue;
+
+            if ((Arrays.asList(filter.tiersIncluded).contains(observationTier))) {
+                observations.add(observedSubject.getObservation());
+            }
+        }
+        return new ArrayList<Observation>(observations);
+    }
+
+    public static SubjectResponse createInstance(final Subject subject, final Filter filter, DashboardDao dashboardDao) {
+
+        List<Observation> observations = getObservations(subject, filter, dashboardDao);
 
         if (filter.limit > 0 && filter.limit < observations.size()) {
             observations = observations.subList(0, filter.limit);

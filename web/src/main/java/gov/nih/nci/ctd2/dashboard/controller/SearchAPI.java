@@ -23,7 +23,6 @@ import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
 import gov.nih.nci.ctd2.dashboard.model.DashboardEntity;
 import gov.nih.nci.ctd2.dashboard.model.Subject;
 import gov.nih.nci.ctd2.dashboard.util.DashboardEntityWithCounts;
-import gov.nih.nci.ctd2.dashboard.util.WebServiceUtil;
 
 @Controller
 @RequestMapping("/api/search")
@@ -31,9 +30,6 @@ public class SearchAPI {
     private static final Log log = LogFactory.getLog(SearchAPI.class);
     @Autowired
     private DashboardDao dashboardDao;
-
-    @Autowired
-    private WebServiceUtil webServiceUtil;
 
     @Transactional
     @RequestMapping(value = "{term}", method = { RequestMethod.GET }, headers = "Accept=application/json")
@@ -54,8 +50,7 @@ public class SearchAPI {
             if (!(result instanceof Subject))
                 continue;
             Subject subject = (Subject) result;
-            SubjectResponse subjectResponse = SubjectResponse.createInstance(subject, filter, dashboardDao,
-                    webServiceUtil);
+            SubjectResponse subjectResponse = SubjectResponse.createInstance(subject, filter, dashboardDao);
             allSubjects.add(subjectResponse);
         }
 
