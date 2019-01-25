@@ -56,7 +56,7 @@
                 order: 'index'
             }).nodes().map(
                 function (td, i) {
-                    return $('ul', td).attr("data-score");
+                    return $('a', td).attr("count");
                 }
             );
         }
@@ -2299,15 +2299,15 @@
                                 null,
                                 null,
                                 null,
+                                null,
                                 {
-                                    "orderDataType": "dashboard-rank"
+                                    "orderDataType": "dashboard-rank",
+                                    "type": 'num',
                                 },
-                                null
                             ]
 
                         });
                         oTable.fnSort([
-                            [4, 'desc'],
                             [5, 'desc'],
                             [1, 'asc']
                         ]);

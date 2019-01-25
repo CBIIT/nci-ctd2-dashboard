@@ -1640,12 +1640,12 @@
             </td>
             <td>{{dashboardEntity.class}}</td>
             <td>
-                <ul id="roles-{{dashboardEntity.id}}" data-score="{{dashboardEntity.score}}">
+                <ul id="roles-{{dashboardEntity.id}}">
                     <!-- here will go the roles -->
                 </ul>
             </td>
             <td class="nonewline">
-                <a href="#{{dashboardEntity.stableURL}}" id="subject-observation-count-{{dashboardEntity.id}}">{{observationCount}}</a>
+                <a href="#{{dashboardEntity.stableURL}}" id="subject-observation-count-{{dashboardEntity.id}}" count="{{observationCount}}">{{observationCount}}</a>
                 <i class="icon-question-sign obs-tooltip {{observationCount < 1 ? 'hide' : ''}}" title="{{observationCount}} observations from {{centerCount}} centers: Tier {{maxTier}}"></i>
             </td>
         </tr>
