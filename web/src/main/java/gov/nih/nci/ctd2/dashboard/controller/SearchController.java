@@ -5,6 +5,9 @@ import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
 import gov.nih.nci.ctd2.dashboard.util.DashboardEntityWithCounts;
 import gov.nih.nci.ctd2.dashboard.util.DateTransformer;
 import gov.nih.nci.ctd2.dashboard.util.ImplTransformer;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -24,6 +27,8 @@ import java.util.List;
 @Controller
 @RequestMapping("/search")
 public class SearchController {
+    private static final Log log = LogFactory.getLog(SearchController.class);
+
     @Autowired
     private DashboardDao dashboardDao;
 
@@ -45,6 +50,7 @@ public class SearchController {
         }
 
         List<DashboardEntityWithCounts> results = dashboardDao.search(keyword);
+        log.debug("number of rearch results "+results.size());
         JSONSerializer jsonSerializer = new JSONSerializer().transform(new ImplTransformer(), Class.class)
                 .transform(new DateTransformer(), Date.class);
         return new ResponseEntity<String>(jsonSerializer.deepSerialize(results), headers, HttpStatus.OK);
