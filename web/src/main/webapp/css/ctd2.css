@@ -170,14 +170,6 @@ a,a:not([href]):not([tabindex]){color:#9c0001}
     color: #f99910;
 }
 
-.active-box {
-    border-top-width: 30px;
-}
-
-.active-box h2 {
-    font-weight: bold;
-}
-
 .carousel-well p {
     color: #5A5A5A;
 }
@@ -189,11 +181,6 @@ a,a:not([href]):not([tabindex]){color:#9c0001}
 .lead {
     font-size: 18px;
     font-weight: normal;
-}
-
-.stories-lead {
-    font-weight: bold;
-    padding-bottom: 10px;
 }
 
 .stories-text {
