@@ -542,7 +542,11 @@ public class DashboardDaoImpl implements DashboardDao {
         }
     }
 
-    /* defination of 'term': the complete exact entity name that is also a substring of the original query string */
+    /* The logic to find matching observations is both primitive and complicated at the same time.
+    It has been modified back and forth mostly based on specific rules.
+    The latest change is made following the request as described in issue #388, which makes the logic more convoluted.
+    The defination of 'term' here WAS the complete exact entity name that is also a substring of the original query string, not anymore.
+    The queryString now is one re-constructed using the tokens from the original query string. */
     private static String getMatchedTerm(String queryString, String entityName) {
         String name = entityName.toLowerCase();
         if( queryString.toLowerCase().contains(name) ) return name;
@@ -566,6 +570,11 @@ public class DashboardDaoImpl implements DashboardDao {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        /* The following two lines are part of the complicated logic to find 'matching' observations.
+        See the comment for method getMatchedTerm(String queryString, String entityName), GitHub issue #388,
+        and the part of code in this method that is commented as 'add observations' */
+        String[] tokens = keyword.toLowerCase().split("\\s+");
+        String reconstructedQueryString = String.join(" ", tokens);
 
         FullTextQuery fullTextQuery = fullTextSession.createFullTextQuery(luceneQuery, searchableClasses);
         fullTextQuery.setReadOnly(true);
@@ -609,7 +618,7 @@ public class DashboardDaoImpl implements DashboardDao {
                 HashSet<String> roles = new HashSet<String>();
                 for (ObservedSubject observedSubject : findObservedSubjectBySubject((Subject) entity)) {
                     Observation observation = observedSubject.getObservation();
-                    String term = getMatchedTerm(keyword, entity.getDisplayName());
+                    String term = getMatchedTerm(reconstructedQueryString, entity.getDisplayName());
                     if(term!=null) {
                         Set<String> terms = matchingObservations.get(observation);
                         if(terms==null) {
@@ -654,7 +663,7 @@ public class DashboardDaoImpl implements DashboardDao {
                 if(add)allTerms.add(newTerm);
                 allTerms.removeAll(toBeRemoved);
             }
-            // allTerms.addAll(matchingObservations.get(ob)); // too imple that we have to give up this approach
+            // allTerms.addAll(matchingObservations.get(ob)); // too simple that we have to give up this approach
         }
         if(allTerms.size()>1) { // do not find 'intersection' if there is only one term
             for(Observation ob: matchingObservations.keySet()) {
