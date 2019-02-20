@@ -150,6 +150,8 @@ public class JSONController {
             org.w3c.dom.Node item = nList.item(0);
             String description = item.getTextContent();
 
+            // style requirement
+            description = description.replaceAll("<ul>", "<ul style='padding-left:0'>");
             // insert attributes to create the tooltip
             description = description.replaceAll("(<a [^>]*)(>Tiers</a>)", "$1 target='_blank' data-toggle='tooltip' id='tierTooltip'$2");
             t.description = description;

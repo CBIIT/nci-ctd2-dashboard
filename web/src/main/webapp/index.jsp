@@ -92,7 +92,7 @@
       <!-- Wrap the .navbar in .container to center it within the absolutely positioned parent. -->
       <div class="container">
 
-        <div class="navbar navbar-inverse">
+        <div class="navbar">
           <div class="navbar-inner">
             <div class="nav-collapse collapse show">
               <ul id="nav" class="nav">
@@ -209,12 +209,12 @@
                 <div class="row" id="overview-text">
                     <div class="col-3">
                         <a href="https://ocg.cancer.gov/programs/ctd2">
-                            <img class="img-polaroid pull-left" src="img/logos/ctd2_overall.png" alt="CTD2 general image" title="CTD2 general image">
+                            <img class="img-polaroid pull-left" src="img/logos/ctd2_overall.png" alt="CTD2 general image" title="CTD2 general image" style="margin:0px">
                         </a>
                     </div>
                     <div class="col-9">
                         {{description}}
-                        <ul id='video-list' class="list-inline"> <!-- TODO style this to be horizontal -->
+                        <ul id='video-list' class="list-inline">
                             <li class="list-inline-item small">
                                 <a id="video-link1"  title='This video introduces and defines common terminology used throughout the Dashboard.'>
                                     Understanding the Dashboard
@@ -240,13 +240,31 @@
         <div class="container ctd2-boxes">
             <div class=row>
                 <div class="col-4">
-                    Explore <a href="#explore/target/Biomarker,Target">genes and proteins</a> to find experimental evidence for cancer targets that are implicated in a cancer model
+                    <div class="jumbotron" style="margin-bottom:0">
+                        <p>Explore</p>
+                        <p>
+                            <a class="btn btn-success btn-lg" href="#explore/target/Biomarker,Target" role="button">genes and proteins</a>
+                        </p>
+                        <p>to find experimental evidence for cancer targets that are implicated in a cancer model</p>
+                    </div>
                 </div>
                 <div class="col-4">
-                    Explore <a href="#explore/compound/Perturbagen,Candidate Drug">compounds and perturbagens</a> to find experimental evidence for agents that show activity in a cancer model
+                    <div class="jumbotron" style="margin-bottom:0">
+                        <p>Explore</p>
+                        <p>
+                            <a class="btn btn-primary btn-lg" href="#explore/compound/Perturbagen,Candidate Drug" role="button"><small>compounds and perturbagens</small></a>
+                        </p>
+                        <p>to find experimental evidence for agents that show activity in a cancer model</p>
+                    </div>
                 </div>
-                <div class="col-4" data-order="3" style="display:table-cell;float:none;position:relative;padding-bottom:25px">
-                    Explore <a  href="#explore/context/Disease">disease context</a> to find disease-specific targets or agents
+                <div class="col-4">
+                    <div class="jumbotron" style="margin-bottom:0; height:100%">
+                        <p>Explore</p>
+                        <p>
+                            <a class="btn btn-danger btn-lg" href="#explore/context/Disease" role="button">disease context</a>
+                        </p>
+                        <p>to find disease-specific targets or agents</p>
+                    </div>
                 </div>
             </div>
         </div>
