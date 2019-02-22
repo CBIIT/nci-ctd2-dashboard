@@ -449,7 +449,10 @@
                                 summary = summary.replace(new RegExp("</body>\\n"), "");
                                 summary = summary.replace(new RegExp("</html>\\n"), "");
 
-                                $(thatEl).html(storyView.template({ story: summary, centerName: observation.submission.observationTemplate.submissionCenter.displayName}));
+                                $(thatEl).html(storyView.template({
+                                    story: summary,
+                                    centerName: observation.submission.observationTemplate.submissionCenter.displayName
+                                }));
                             }
                         });
                     }
@@ -484,7 +487,7 @@
 
                         summary = summary.replace(
                             new RegExp(leftSep + observedSubject.observedSubjectRole.columnName + rightSep, "g"),
-                            _.template($("#summary-subject-replacement-tmpl").html()) (observedSubject.subject)
+                            _.template($("#summary-subject-replacement-tmpl").html())(observedSubject.subject)
                         );
                     });
 
@@ -510,7 +513,7 @@
 
                                 summary = summary.replace(
                                     new RegExp(leftSep + observedEvidence.observedEvidenceRole.columnName + rightSep, "g"),
-                                    _.template($("#summary-evidence-replacement-tmpl").html()) (observedEvidence.evidence)
+                                    _.template($("#summary-evidence-replacement-tmpl").html())(observedEvidence.evidence)
                                 );
                             });
 
@@ -545,7 +548,7 @@
 
                         summary = summary.replace(
                             new RegExp(leftSep + observedSubject.observedSubjectRole.columnName + rightSep, "g"),
-                            _.template($("#summary-subject-replacement-tmpl").html()) (observedSubject.subject)
+                            _.template($("#summary-subject-replacement-tmpl").html())(observedSubject.subject)
                         );
                     });
 
@@ -573,7 +576,7 @@
 
                                 summary = summary.replace(
                                     new RegExp(leftSep + observedEvidence.observedEvidenceRole.columnName + rightSep, "g"),
-                                    _.template($("#summary-evidence-replacement-tmpl").html()) (observedEvidence.evidence)
+                                    _.template($("#summary-evidence-replacement-tmpl").html())(observedEvidence.evidence)
                                 );
                             });
 
@@ -748,33 +751,33 @@
                                     });
 
                                     imgTemplate = $("#search-results-compound-image-tmpl");
-                                    thatEl2.append(_.template(imgTemplate.html()) (compound));
+                                    thatEl2.append(_.template(imgTemplate.html())(compound));
                                 }
                             });
                         } else if (subject.class == "AnimalModel") {
                             imgTemplate = $("#search-results-animalmodel-image-tmpl");
-                            thatEl2.append(_.template(imgTemplate.html()) (subject));
+                            thatEl2.append(_.template(imgTemplate.html())(subject));
                         } else if (subject.class == "CellSample") {
                             imgTemplate = $("#search-results-cellsample-image-tmpl");
-                            thatEl2.append(_.template(imgTemplate.html()) (subject));
+                            thatEl2.append(_.template(imgTemplate.html())(subject));
                         } else if (subject.class == "TissueSample") {
                             imgTemplate = $("#search-results-tissuesample-image-tmpl");
-                            thatEl2.append(_.template(imgTemplate.html()) (subject));
+                            thatEl2.append(_.template(imgTemplate.html())(subject));
                         } else if (subject.class == "Gene") {
                             imgTemplate = $("#search-results-gene-image-tmpl");
-                            thatEl2.append(_.template(imgTemplate.html()) (subject));
+                            thatEl2.append(_.template(imgTemplate.html())(subject));
                         } else if (subject.class == "ShRna" && subject.type.toLowerCase() == "sirna") {
                             subject.class = "SiRNA";
                             imgTemplate = $("#search-results-sirna-image-tmpl");
-                            thatEl2.append(_.template(imgTemplate.html()) (subject));
+                            thatEl2.append(_.template(imgTemplate.html())(subject));
                         } else if (subject.class == "ShRna") {
                             imgTemplate = $("#search-results-shrna-image-tmpl");
-                            thatEl2.append(_.template(imgTemplate.html()) (subject));
+                            thatEl2.append(_.template(imgTemplate.html())(subject));
                         } else if (subject.class == "Protein") {
                             imgTemplate = $("#search-results-protein-image-tmpl");
-                            thatEl2.append(_.template(imgTemplate.html()) (subject));
+                            thatEl2.append(_.template(imgTemplate.html())(subject));
                         } else {
-                            thatEl2.append(_.template(imgTemplate.html()) (subject));
+                            thatEl2.append(_.template(imgTemplate.html())(subject));
                         }
 
                         if (observedSubject.observedSubjectRole == null || observedSubject.subject == null)
@@ -782,7 +785,7 @@
 
                         summary = summary.replace(
                             new RegExp(leftSep + observedSubject.observedSubjectRole.columnName + rightSep, "g"),
-                            _.template($("#summary-subject-replacement-tmpl").html()) (observedSubject.subject)
+                            _.template($("#summary-subject-replacement-tmpl").html())(observedSubject.subject)
                         );
 
                         $("#observation-summary").html(summary);
@@ -809,7 +812,7 @@
                         observedEvidenceRowView.render();
                         summary = summary.replace(
                             new RegExp(leftSep + observedEvidence.observedEvidenceRole.columnName + rightSep, "g"),
-                            _.template($("#summary-evidence-replacement-tmpl").html()) (observedEvidence.evidence)
+                            _.template($("#summary-evidence-replacement-tmpl").html())(observedEvidence.evidence)
                         );
 
                         $("#observation-summary").html(summary);
@@ -852,7 +855,7 @@
                         var val = $(this).html();
                         var vals = val.split("e"); // capture scientific notation
                         if (vals.length > 1) {
-                            $(this).html(_.template($("#observeddatanumericevidence-val-tmpl").html()) ({
+                            $(this).html(_.template($("#observeddatanumericevidence-val-tmpl").html())({
                                 firstPart: vals[0],
                                 secondPart: vals[1].replace("+", "")
                             }));
@@ -872,7 +875,7 @@
                             contentType: "json",
                             success: function (data) {
                                 $.fancybox.open(
-                                    _.template($("#cytoscape-tmpl").html()) ({
+                                    _.template($("#cytoscape-tmpl").html())({
                                         description: sifDesc
                                     }), {
                                         touch: false,
@@ -964,7 +967,7 @@
                 $("#small-hide-sub-details").show();
             });
 
-            var hide_submission_detail = function() {
+            var hide_submission_detail = function () {
                 $("#obs-submission-details").slideUp();
                 $("#small-hide-sub-details").hide();
                 $("#small-show-sub-details").show();
@@ -1047,7 +1050,7 @@
             $(this.el).append(this.template(result));
 
             if (isHtmlStory) {
-                thatEl.find(".html-story-link").attr("href", "#"+result.observation.submission.stableURL.replace("submission", "story"));
+                thatEl.find(".html-story-link").attr("href", "#" + result.observation.submission.stableURL.replace("submission", "story"));
             }
 
             $(".img-rounded").tooltip({
@@ -1088,10 +1091,9 @@
 
                         $.ajax("count/submission/?filterBy=" + aCenter.id).done(function (count) {
                             var cntContent = _.template(
-                                $("#count-submission-tmpl").html()) ( {
-                                    count: count
-                                }
-                            );
+                                $("#count-submission-tmpl").html())({
+                                count: count
+                            });
 
                             var countCellId = "#submission-count-" + aCenter.id;
                             $(countCellId).html(cntContent);
@@ -1256,79 +1258,79 @@
             }
 
             $.ajax(countUrl).done(function (count) {
-            var observations = new ObservationsBySubject({
-                subjectId: subjectId,
-                role: role,
-                tier: tier
-            });
-            observations.fetch({
-                success: function () {
-                    $(".subject-observations-loading", thatEl).remove();
-                    _.each(observations.models, function (observation) {
-                        observation = observation.toJSON();
-                        var observationRowView = new ObservationRowView({
-                            el: $(thatEl).find("tbody"),
-                            model: observation
+                var observations = new ObservationsBySubject({
+                    subjectId: subjectId,
+                    role: role,
+                    tier: tier
+                });
+                observations.fetch({
+                    success: function () {
+                        $(".subject-observations-loading", thatEl).remove();
+                        _.each(observations.models, function (observation) {
+                            observation = observation.toJSON();
+                            var observationRowView = new ObservationRowView({
+                                el: $(thatEl).find("tbody"),
+                                model: observation
+                            });
+                            observationRowView.render();
                         });
-                        observationRowView.render();
-                    });
 
-                    var oTable = $(thatEl).dataTable({
-                        'dom': '<iBfrtlp>',
-                        "sPaginationType": "bootstrap",
-                        "columns": [{
-                                "orderDataType": "dashboard-date"
-                            },
-                            null,
-                            null,
-                            null
-                        ],
-                        'buttons': [{
-                            extend: 'excelHtml5',
-                            text: 'Export as Spreadsheet',
-                            className: "extra-margin",
-                            customizeData: function (data) {
-                                var body = data.body;
-                                for (var i = 0; i < body.length; i++) {
-                                    var raw_content = body[i][1].split(/ +/);
-                                    raw_content.pop();
-                                    raw_content.pop();
-                                    body[i][1] = raw_content.join(' ');
-                                }
-                            },
-                        }],
-                    });
-                    $(thatEl).width( "100%" );
+                        var oTable = $(thatEl).dataTable({
+                            'dom': '<iBfrtlp>',
+                            "sPaginationType": "bootstrap",
+                            "columns": [{
+                                    "orderDataType": "dashboard-date"
+                                },
+                                null,
+                                null,
+                                null
+                            ],
+                            'buttons': [{
+                                extend: 'excelHtml5',
+                                text: 'Export as Spreadsheet',
+                                className: "extra-margin",
+                                customizeData: function (data) {
+                                    var body = data.body;
+                                    for (var i = 0; i < body.length; i++) {
+                                        var raw_content = body[i][1].split(/ +/);
+                                        raw_content.pop();
+                                        raw_content.pop();
+                                        body[i][1] = raw_content.join(' ');
+                                    }
+                                },
+                            }],
+                        });
+                        $(thatEl).width("100%");
 
-                    oTable.fnSort([
-                        [2, 'desc']
-                    ]);
+                        oTable.fnSort([
+                            [2, 'desc']
+                        ]);
 
-                }
-            });
-
-            if (count > maxNumberOfEntities) {
-                var moreObservationView = new MoreObservationView({
-                    model: {
-                        role: role,
-                        tier: tier,
-                        numOfObservations: maxNumberOfEntities,
-                        numOfAllObservations: count,
-                        subjectId: subjectId,
-                        tableEl: thatEl,
-                        rowView: ObservationRowView,
-                        columns: [{
-                                "orderDataType": "dashboard-date"
-                            },
-                            null,
-                            null,
-                            null
-                        ]
                     }
                 });
-                moreObservationView.render();
-            }
-        });
+
+                if (count > maxNumberOfEntities) {
+                    var moreObservationView = new MoreObservationView({
+                        model: {
+                            role: role,
+                            tier: tier,
+                            numOfObservations: maxNumberOfEntities,
+                            numOfAllObservations: count,
+                            subjectId: subjectId,
+                            tableEl: thatEl,
+                            rowView: ObservationRowView,
+                            columns: [{
+                                    "orderDataType": "dashboard-date"
+                                },
+                                null,
+                                null,
+                                null
+                            ]
+                        }
+                    });
+                    moreObservationView.render();
+                }
+            });
 
             return this;
         }
@@ -1343,11 +1345,11 @@
             // Find out the UniProt ID
 
             result.genecard = false;
-            _.each(result.xrefs, function(xref) {
+            _.each(result.xrefs, function (xref) {
                 if (xref.databaseName == "GeneCards") {
-                     result.genecard = xref.databaseId;
-                 }
-              });
+                    result.genecard = xref.databaseId;
+                }
+            });
 
             result.type = result.class;
             $(this.el).html(this.template($.extend(result, {
@@ -1369,7 +1371,7 @@
             thatEl = $("ul.refs");
             $.getJSON("findProteinFromGene/" + result.id, function (proteins) {
                 _.each(proteins, function (protein) {
-                    thatEl.append(_.template($("#gene-uniprot-tmpl").html()) ({
+                    thatEl.append(_.template($("#gene-uniprot-tmpl").html())({
                         uniprotId: protein.uniprotId
                     }));
                 });
@@ -1529,11 +1531,11 @@
             var result = thatModel.subject.toJSON();
 
             result.diseaseOntology = false;
-            _.each(result.xrefs, function(xref) {
+            _.each(result.xrefs, function (xref) {
                 if (xref.databaseName == "disease-ontology") {
-                     result.diseaseOntology = xref.databaseId;
-                 }
-              });
+                    result.diseaseOntology = xref.databaseId;
+                }
+            });
 
             result.type = result.class;
             $(this.el).html(this.template($.extend(result, {
@@ -1551,7 +1553,7 @@
                     var ids = xref.databaseId.split(";");
                     _.each(ids, function (xrefid) {
                         $(thatEl).find("ul.xrefs").append(
-                            _.template($("#ncithesaurus-tmpl").html()) ({
+                            _.template($("#ncithesaurus-tmpl").html())({
                                 nciId: xrefid
                             })
                         );
@@ -1649,11 +1651,11 @@
             var result = thatModel.subject.toJSON();
 
             result.cosmic = false;
-            _.each(result.xrefs, function(xref) {
+            _.each(result.xrefs, function (xref) {
                 if (xref.databaseName == "COSMIC SAMPLE") {
-                     result.cosmic = xref.databaseId;
-                 }
-              });
+                    result.cosmic = xref.databaseId;
+                }
+            });
 
             result.type = result.class;
 
@@ -1735,7 +1737,7 @@
 
                         summary = summary.replace(
                             new RegExp(leftSep + observedSubject.observedSubjectRole.columnName + rightSep, "g"),
-                            _.template($("#summary-subject-replacement-tmpl").html()) (observedSubject.subject)
+                            _.template($("#summary-subject-replacement-tmpl").html())(observedSubject.subject)
                         );
                     });
 
@@ -1752,11 +1754,11 @@
 
                                 summary = summary.replace(
                                     new RegExp(leftSep + observedEvidence.observedEvidenceRole.columnName + rightSep, "g"),
-                                    _.template($("#summary-evidence-replacement-tmpl").html()) (observedEvidence.evidence)
+                                    _.template($("#summary-evidence-replacement-tmpl").html())(observedEvidence.evidence)
                                 );
                             });
 
-                            summary += _.template($("#submission-obs-tbl-row-tmpl").html()) (thatModel);
+                            summary += _.template($("#submission-obs-tbl-row-tmpl").html())(thatModel);
                             $(thatEl).html(summary);
                             var dataTable = $(tableEl).parent().DataTable();
                             dataTable.cells(cellId).invalidate();
@@ -1832,10 +1834,9 @@
                                 "#count-story-tmpl" :
                                 "#count-observations-tmpl";
                             submission.details = _.template(
-                                $(tmplName).html()) ({
-                                    count: count
-                                }
-                            );
+                                $(tmplName).html())({
+                                count: count
+                            });
                         });
 
                         centerSubmissionRowView.render();
@@ -1872,7 +1873,7 @@
                                         $(rows)
                                             .eq(i)
                                             .before(
-                                                _.template($("#tbl-project-title-tmpl").html()) ({
+                                                _.template($("#tbl-project-title-tmpl").html())({
                                                     project: group,
                                                     project_url: project_url,
                                                     centerStableURL: centerModel.stableURL
@@ -1945,7 +1946,7 @@
 
                         summary = summary.replace(
                             new RegExp(leftSep + observedSubject.observedSubjectRole.columnName + rightSep, "g"),
-                            _.template($("#summary-subject-replacement-tmpl").html()) (observedSubject.subject)
+                            _.template($("#summary-subject-replacement-tmpl").html())(observedSubject.subject)
                         );
                     });
 
@@ -1962,11 +1963,11 @@
 
                                 summary = summary.replace(
                                     new RegExp(leftSep + observedEvidence.observedEvidenceRole.columnName + rightSep, "g"),
-                                    _.template($("#summary-evidence-replacement-tmpl").html()) (observedEvidence.evidence)
+                                    _.template($("#summary-evidence-replacement-tmpl").html())(observedEvidence.evidence)
                                 );
                             });
 
-                            summary += _.template($("#submission-obs-tbl-row-tmpl").html()) (thatModel);
+                            summary += _.template($("#submission-obs-tbl-row-tmpl").html())(thatModel);
                             $(thatEl).html(summary);
 
                             // let the datatable know about the update
@@ -2006,7 +2007,7 @@
                     _.each(similarSubmissions, function (simSub) {
                         $(thatEl)
                             .find("ul.similar-submission-list")
-                            .append(_.template($("#similar-submission-item-tmpl").html()) (simSub));
+                            .append(_.template($("#similar-submission-item-tmpl").html())(simSub));
                     });
                 }
             });
@@ -2215,16 +2216,15 @@
             } else {
                 result.subjectClass = result.class; // this is only to avoid using 'class' alone because it is a javascript keyword
             }
-            searchEl.append(_.template(imgTemplate.html()) (result));
+            searchEl.append(_.template(imgTemplate.html())(result));
 
             // some of the elements will be hidden in the pagination. Use magic-scoping!
             var updateElId = "#subject-observation-count-" + result.id;
             var updateEl = $(updateElId);
             var cntContent = _.template(
-                $("#count-observations-tmpl").html()) ({
-                    count: model.observationCount
-                }
-            );
+                $("#count-observations-tmpl").html())({
+                count: model.observationCount
+            });
             updateEl.html(cntContent);
 
             return this;
@@ -2339,10 +2339,9 @@
                                     "#count-story-tmpl" :
                                     "#count-observations-tmpl";
                                 var cntContent = _.template(
-                                    $(tmplName).html()) ({
-                                        count: submission.observationCount
-                                    }
-                                );
+                                    $(tmplName).html())({
+                                    count: submission.observationCount
+                                });
                                 $("#search-observation-count-" + submission.dashboardEntity.id).html(cntContent);
                             });
 
@@ -2457,7 +2456,7 @@
                         }
 
                         $.fancybox.open(
-                            _.template($("#mra-cytoscape-tmpl").html()) ({
+                            _.template($("#mra-cytoscape-tmpl").html())({
                                 description: mraDesc
                             }), {
                                 touch: false,
@@ -2749,12 +2748,12 @@
                             className: "extra-margin",
                         }],
                     });
-                    $("#explore-table").parent().width( "100%" );
-                    $("#explore-table").width( "100%" );
+                    $("#explore-table").parent().width("100%");
+                    $("#explore-table").width("100%");
 
                     var blurb = $("#text-blurb");
                     if (blurb.length > 0) {
-                        $("#explore-blurb").append(_.template(blurb.html()) ({
+                        $("#explore-blurb").append(_.template(blurb.html())({
                             subject_type: subjectType[thatModel.type],
                             roles: thatModel.roles
                         }));
@@ -2763,12 +2762,22 @@
                             (new HelpNavigateView()).render();
                         });
                     }
+                    $("#reset-ordering").popover({
+                        placement: "top",
+                        trigger: 'hover',
+                        content: 'Initial ordering prioritizes higher tiers and number of reporting centers'
+                    });
                     $("#reset-ordering").click(function () {
                         $("#explore-table").DataTable().order.neutral().draw();
                     });
                 }
             });
 
+            $("#customize-roles").popover({
+                placement: "top",
+                trigger: 'hover',
+                content: 'Filter browse results based on gene/perturbagen/tissue-sample roles'
+            });
             $("#customize-roles").click(function (e) {
                 e.preventDefault();
 
@@ -2861,7 +2870,7 @@
             $(this.el).html(this.template({}));
             $.each(geneList, function (aData) {
                 var value = Encoder.htmlEncode(this.toString());
-                $("#geneNames").append(_.template($("#gene-cart-option-tmpl").html()) ({
+                $("#geneNames").append(_.template($("#gene-cart-option-tmpl").html())({
                     displayItem: value
                 }));
             });
@@ -3015,7 +3024,7 @@
                     localStorage.genelist = JSON.stringify(geneList);
                     $.each(newGenes, function () {
                         var value = this.toString();
-                        $("#geneNames").append(_.template($("#gene-cart-option-tmpl").html()) ({
+                        $("#geneNames").append(_.template($("#gene-cart-option-tmpl").html())({
                             displayItem: value
                         }));
                     });
@@ -3061,7 +3070,7 @@
                     var list = data.interactomeList;
                     _.each(list, function (aData) {
                         if (aData.toLowerCase().startsWith("preppi")) {
-                            $("#interactomeList").prepend(_.template($("#gene-cart-option-tmpl-preselected").html()) ({
+                            $("#interactomeList").prepend(_.template($("#gene-cart-option-tmpl-preselected").html())({
                                 displayItem: aData
                             }));
                             var interactome = aData.split("(")[0].trim();
@@ -3082,7 +3091,7 @@
                                     $('#interactomeDescription').html(convertUrl(data.description));
                                     $('#interactomeVersionList').html("");
                                     _.each(data.versionDescriptorList, function (aData) {
-                                        $("#interactomeVersionList").append(_.template($("#gene-cart-option-tmpl").html()) ({
+                                        $("#interactomeVersionList").append(_.template($("#gene-cart-option-tmpl").html())({
                                             displayItem: aData.version
                                         }));
                                     });
@@ -3092,7 +3101,7 @@
                                 }
                             }); //ajax
                         } else
-                            $("#interactomeList").append(_.template($("#gene-cart-option-tmpl").html()) ({
+                            $("#interactomeList").append(_.template($("#gene-cart-option-tmpl").html())({
                                 displayItem: aData
                             }));
                     });
@@ -3123,7 +3132,7 @@
                         var list = data.versionDescriptorList;
                         $('#interactomeVersionList').html("");
                         _.each(list, function (aData) {
-                            $("#interactomeVersionList").append(_.template($("#gene-cart-option-tmpl").html()) ({
+                            $("#interactomeVersionList").append(_.template($("#gene-cart-option-tmpl").html())({
                                 displayItem: aData.version
                             }));
                         });
@@ -3441,7 +3450,7 @@
         });
 
         $.fancybox.open(
-            _.template($("#cnkb-cytoscape-tmpl").html()) ({
+            _.template($("#cnkb-cytoscape-tmpl").html())({
                 description: description,
                 svgHtml: svgHtml
             }), {
@@ -3658,11 +3667,11 @@
             "cnkb-query": "showCnkbQuery",
             "cnkb-result": "showCnkbResult",
             "gene-cart-help": "showGeneCartHelp",
-            "cite" : "cite",
+            "cite": "cite",
             "*actions": "home",
         },
 
-        cite: function() {
+        cite: function () {
             new HowToCiteView().render();
         },
 
@@ -3709,7 +3718,7 @@
                     _.each(storySubmissions.models, function (aStory) {
                         var observation = aStory.toJSON();
                         var id = observation.submission.stableURL.replace("submission/", "");
-                        if(id!==submission_name) {
+                        if (id !== submission_name) {
                             //console.log("NOT MATCH"); // no-op
                             return;
                         }
@@ -3723,7 +3732,7 @@
 
                                 _.each(observedEvidences.models, function (observedEvidence) {
                                     observedEvidence = observedEvidence.toJSON();
-    
+
                                     if (observedEvidence.observedEvidenceRole == null || observedEvidence.evidence == null)
                                         return;
 
