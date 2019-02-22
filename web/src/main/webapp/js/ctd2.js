@@ -356,6 +356,15 @@
         }
     });
 
+    var HowToCiteView = Backbone.View.extend({
+        el: $("#main-container"),
+        template: _.template($("#how-to-cite-tmpl").html()),
+        render: function () {
+            $(this.el).html(this.template({}));
+            return this;
+        }
+    });
+
     var HelpNavigateView = Backbone.View.extend({
         template: _.template($("#help-navigate-tmpl").html()),
 
@@ -3649,7 +3658,12 @@
             "cnkb-query": "showCnkbQuery",
             "cnkb-result": "showCnkbResult",
             "gene-cart-help": "showGeneCartHelp",
-            "*actions": "home"
+            "cite" : "cite",
+            "*actions": "home",
+        },
+
+        cite: function() {
+            new HowToCiteView().render();
         },
 
         home: function (actions) {

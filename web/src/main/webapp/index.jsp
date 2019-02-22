@@ -102,6 +102,7 @@
                       <a class="dropdown-toggle navlink" href="#" data-toggle="dropdown">Resources <b class="caret"></b></a>
                       <ul class="dropdown-menu">
                           <li><a target="_blank" href="https://ocg.cancer.gov/programs/ctd2">CTD<sup>2</sup> Home Page</a></li>
+                          <li><a href="#cite">How to Cite</a></li>
                           <li><a target="_blank" href="https://ocg.cancer.gov/programs/ctd2/publications">Publications</a></li>
                           <li><a target="_blank" href="https://ocg.cancer.gov/programs/ctd2/data-portal">Data Portal - Downloads</a></li>
                           <li><a target="_blank" href="https://ocg.cancer.gov/programs/ctd2/analytical-tools">Analytical Tools</a></li>
@@ -2310,6 +2311,18 @@
                     {{description}}
                 </span>
             </div>
+        </div>
+    </script>
+
+    <script type="text/template" id="how-to-cite-tmpl">
+        <div class="container common-container">
+            <p>&nbsp;</p>
+            <h2>How to Cite</h2>
+            <p><b>Users of data from the CTD2 Dashboard must acknowledge and cite the manuscript:</b></p>
+            <p>Aksoy BA, Dančík V, Smith K, Mazerik JN, Ji Z, Gross B, Nikolova O, Jaber N, Califano A, Schreiber SL, Gerhard DS, Hermida LC, Jagu S, Sander C, Floratos A, Clemons PA. CTD2 Dashboard: a searchable web interface to connect validated results from the Cancer Target Discovery and Development Network. Database (Oxford). Volume <b>2017</b>:1-10, 1 January 2017. doi: 10.1093/database/bax054.</p>
+            <p>PubMed PMID: <a target=_blank href="https://www.ncbi.nlm.nih.gov/pubmed/29220450">29220450</a>; PubMed Central PMCID: <a target=_blank href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5569694/">PMC5569694</a>.</p>
+            <p><b>Please also provide the following CTD<sup>2</sup> Dashboard URL:</b></p>
+            <a target=_blank href="https://ctd2-dashboard.nci.nih.gov/dashboard">https://ctd2-dashboard.nci.nih.gov/dashboard</a>
         </div>
     </script>
 
