@@ -2750,6 +2750,11 @@
                     });
                     $("#explore-table").parent().width("100%");
                     $("#explore-table").width("100%");
+                    $("#explore-table").parent().find('input[type=search]').popover({
+                        placement: "top",
+                        trigger: 'hover',
+                        content: "Match text in any column"
+                    });
 
                     var blurb = $("#text-blurb");
                     if (blurb.length > 0) {
