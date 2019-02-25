@@ -1077,10 +1077,8 @@
 
             var centers = new SubmissionCenters();
             var thatEl = this.el;
-            var cTable = null;
             centers.fetch({
                 success: function () {
-                    var tableEl = $(thatEl).find("table");
 
                     _.each(centers.toJSON(), function (aCenter) {
                         var centerListRowView = new CenterListRowView({
@@ -1097,7 +1095,7 @@
 
                             var countCellId = "#submission-count-" + aCenter.id;
                             $(countCellId).html(cntContent);
-                            tableEl.DataTable().cells(countCellId).invalidate();
+                            $("#centers-list-table").DataTable().cells(countCellId).invalidate();
                         });
 
                         $.ajax("list/observationtemplate/?filterBy=" + aCenter.id).done(function (templates) {
@@ -1107,18 +1105,17 @@
                             });
                             var piCellId = "#center-pi-" + aCenter.id;
                             $(piCellId).html(_.uniq(pis).join(", "));
-                            tableEl.DataTable().cells(piCellId).invalidate();
+                            $("#centers-list-table").DataTable().cells(piCellId).invalidate();
                         });
                     });
 
-                    cTable = tableEl.dataTable({
+                    $("#centers-list-table").dataTable({
                         // might want to increase this number if we have incredible number of centers
                         "iDisplayLength": 25
-                    });
-
-                    cTable.fnSort([
+                    }).fnSort([
                         [1, 'asc']
                     ]);
+                    $("#centers-list-table").parent().find('input[type=search]').popover(table_filter_popover);
                 }
             });
             return this;
@@ -1806,7 +1803,6 @@
 
     var CenterView = Backbone.View.extend({
         el: $("#main-container"),
-        tableEl: '#center-submission-grid',
         template: _.template($("#center-tmpl").html()),
         render: function (filterProject) {
             var urlMap = {};
@@ -1814,13 +1810,11 @@
             $(this.el).html(this.template(centerModel));
 
             var thatEl = this.el;
-            var thatTableEl = this.tableEl;
             var centerSubmissions = new CenterSubmissions({
                 centerId: centerModel.id
             });
             centerSubmissions.fetch({
                 success: function () {
-                    var tableElId = thatTableEl;
                     _.each(centerSubmissions.toJSON(), function (submission) {
                         var centerSubmissionRowView = new CenterSubmissionRowView({
                             el: $(thatEl).find("tbody"),
@@ -1843,7 +1837,7 @@
                     });
 
                     $(".template-description").tooltip();
-                    $(tableElId).dataTable({
+                    $('#center-submission-grid').dataTable({
                         "columns": [
                             null,
                             {
@@ -1887,9 +1881,10 @@
                     }).fnSort([
                         [0, 'desc']
                     ]);
+                    $("#center-submission-grid").parent().find('input[type=search]').popover(table_filter_popover);
 
                     if (filterProject != null) {
-                        $(tableElId).DataTable().search(urlMap[filterProject]).draw();
+                        $('#center-submission-grid').DataTable().search(urlMap[filterProject]).draw();
                         var mpModel = {
                             filterProject: urlMap[filterProject],
                             centerStableURL: centerModel.stableURL
@@ -2320,6 +2315,8 @@
                             [5, 'desc'],
                             [1, 'asc']
                         ]);
+                        $("#search-results-grid").parent().width("100%");
+                        $("#search-results-grid").parent().find('input[type=search]').popover(table_filter_popover);
 
                         // OK done with the subjects; let's build the submissions table
                         $("#submission-search-results").hide();
@@ -2361,6 +2358,7 @@
                                 [4, 'desc'],
                                 [2, 'desc']
                             ]);
+                            $("#searched-submissions").parent().find('input[type=search]').popover(table_filter_popover);
                         }
 
                         tabulate_matching_observations(matching_observations);
@@ -2667,6 +2665,12 @@
         "Protein": "protein",
     };
 
+    const table_filter_popover = {
+        placement: "top",
+        trigger: 'hover',
+        content: "Match text in any column"
+    };
+
     var ExploreView = Backbone.View.extend({
         el: $("#main-container"),
         template: _.template($("#explore-tmpl").html()),
@@ -2750,11 +2754,7 @@
                     });
                     $("#explore-table").parent().width("100%");
                     $("#explore-table").width("100%");
-                    $("#explore-table").parent().find('input[type=search]').popover({
-                        placement: "top",
-                        trigger: 'hover',
-                        content: "Match text in any column"
-                    });
+                    $("#explore-table").parent().find('input[type=search]').popover(table_filter_popover);
 
                     var blurb = $("#text-blurb");
                     if (blurb.length > 0) {
@@ -3231,12 +3231,12 @@
 
                     });
 
-                    var oTable1 = $('#cnkb-result-grid').dataTable({
+                    $('#cnkb-result-grid').dataTable({
                         "sDom": "<'fullwidth'ifrtlp>",
                         "sScrollY": "200px",
                         "bPaginate": false
-                    });
-
+                    }); // return value ignored
+                    $("#cnkb-result-grid").parents("#cnkb-result-grid_wrapper").find('input[type=search]').popover(table_filter_popover);
                 }
 
             }); //ajax  
