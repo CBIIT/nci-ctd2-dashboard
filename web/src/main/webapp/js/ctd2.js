@@ -2671,6 +2671,15 @@
         content: "Match text in any column"
     };
 
+    const text2hover = {
+        'Class': "Subject type",
+        'Name': "Subject name",
+        'Role': "Subjects have roles which qualify how they contribute to an observation. The link “backround information” above provides more details",
+        'Tier 3': 'Observations supported by in vivo experimental results',
+        'Tier 2': 'Observations supported by in vitro experimental results',
+        'Tier 1': 'Observations supported by initial or large-scale screening',
+    };
+
     var ExploreView = Backbone.View.extend({
         el: $("#main-container"),
         template: _.template($("#explore-tmpl").html()),
@@ -2755,6 +2764,14 @@
                     $("#explore-table").parent().width("100%");
                     $("#explore-table").width("100%");
                     $("#explore-table").parent().find('input[type=search]').popover(table_filter_popover);
+
+                    $('#explore-table thead th').popover({
+                        placement: "top",
+                        trigger: 'hover',
+                        content: function () {
+                            return text2hover[$(this).text()];
+                        },
+                    });
 
                     var blurb = $("#text-blurb");
                     if (blurb.length > 0) {
