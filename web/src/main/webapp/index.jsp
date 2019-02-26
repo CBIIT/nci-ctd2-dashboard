@@ -1707,7 +1707,7 @@
                     <th>&nbsp; &nbsp;</th>
                     <th>Name</th>
                     <th>Synonyms</th>
-                    <th>Type</th>
+                    <th>Class</th>
                     <th>Roles</th>
                     <th>Observations</th>
                 </tr>

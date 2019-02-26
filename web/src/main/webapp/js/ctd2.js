@@ -2317,6 +2317,15 @@
                         ]);
                         $("#search-results-grid").parent().width("100%");
                         $("#search-results-grid").parent().find('input[type=search]').popover(table_filter_popover);
+                        $('#search-results-grid thead th').popover({
+                            placement: "top",
+                            trigger: 'hover',
+                            content: function () {
+                                const t = text2hover_search_view[$(this).text()];
+                                if (!t) return null; // only null is automatically hidden
+                                return t;
+                            },
+                        });
 
                         // OK done with the subjects; let's build the submissions table
                         $("#submission-search-results").hide();
@@ -2678,6 +2687,15 @@
         'Tier 3': 'Observations supported by in vivo experimental results',
         'Tier 2': 'Observations supported by in vitro experimental results',
         'Tier 1': 'Observations supported by initial or large-scale screening',
+    };
+
+    // unfortunately, these hover texts have some petty differences so we cannot readily reuse them
+    const text2hover_search_view = {
+        'Class': "Subject type",
+        'Name': "Subject name",
+        'Roles': "Subjects have roles which qualify how they contribute to an observation.",
+        'Synonyms': 'Known subject synonyms',
+        'Observations': 'Links to display the individual “Observations”',
     };
 
     var ExploreView = Backbone.View.extend({
