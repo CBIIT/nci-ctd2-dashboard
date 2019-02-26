@@ -1116,6 +1116,11 @@
                         [1, 'asc']
                     ]);
                     $("#centers-list-table").parent().find('input[type=search]').popover(table_filter_popover);
+                    $('th.submission-count').popover({
+                        placement: "top",
+                        trigger: 'hover',
+                        content: 'Link to all Dashboard “Submissions” attributed to a given Center',
+                    });
                 }
             });
             return this;
