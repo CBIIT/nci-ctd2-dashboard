@@ -2703,6 +2703,12 @@
         'Observations': 'Links to display the individual “Observations”',
     };
 
+    const text2hover_cnkb_result = {
+        'MODULATOR-TF': 'Interactions between transcription factors and proteins modulating their regulatory activity',
+        'PROTEIN-DNA': 'Interactions between transcription factors and their transcriptional targets',
+        'PROTEIN-PROTEIN': 'Protein-protein interactions',
+    };
+
     var ExploreView = Backbone.View.extend({
         el: $("#main-container"),
         template: _.template($("#explore-tmpl").html()),
@@ -3272,11 +3278,19 @@
                     });
 
                     $('#cnkb-result-grid').dataTable({
-                        "sDom": "<'fullwidth'ifrtlp>",
-                        "sScrollY": "200px",
-                        "bPaginate": false
+                        "dom": "<'fullwidth'ifrtlp>",
+                        "paging": false
                     }); // return value ignored
                     $("#cnkb-result-grid").parents("#cnkb-result-grid_wrapper").find('input[type=search]').popover(table_filter_popover);
+                    $('#cnkb-result-grid thead th').popover({
+                        placement: "top",
+                        trigger: 'hover',
+                        content: function () {
+                            const t = text2hover_cnkb_result[$(this).text()];
+                            if (!t) return null; // only null is automatically hidden
+                            return t;
+                        },
+                    });
                 }
 
             }); //ajax  
