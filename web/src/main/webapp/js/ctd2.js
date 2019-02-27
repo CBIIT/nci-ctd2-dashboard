@@ -3355,8 +3355,16 @@
 
             $("#cytoscape-node-limit").change(function (evt) {
                 getThrottleValue();
+            }).popover({
+                placement: "top",
+                trigger: 'hover',
+                content: 'Limit the displayed interactions to the specified number',
             });
-
+            $("#cytoscape-layouts").popover({
+                placement: "top",
+                trigger: 'hover',
+                content: 'choose from several available graphical layout options',
+            });
 
             $('#checkbox_selectall').click(function (event) { //on click
                 if (this.checked) { // check select status
