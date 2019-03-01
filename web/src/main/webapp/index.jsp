@@ -241,31 +241,13 @@
         <div class="container ctd2-boxes">
             <div class=row>
                 <div class="col-4">
-                    <div class="jumbotron" style="margin-bottom:0">
-                        <p>Explore</p>
-                        <p>
-                            <a class="btn btn-success btn-lg" href="#explore/target/Biomarker,Target" role="button">genes and proteins</a>
-                        </p>
-                        <p>to find experimental evidence for cancer targets that are implicated in a cancer model</p>
-                    </div>
+                    <a class="btn btn-success btn-block" href="#explore/target/Biomarker,Target" role="button" id="explore-gene-button">genes and proteins</a>
                 </div>
                 <div class="col-4">
-                    <div class="jumbotron" style="margin-bottom:0">
-                        <p>Explore</p>
-                        <p>
-                            <a class="btn btn-primary btn-lg" href="#explore/compound/Perturbagen,Candidate Drug" role="button"><small>compounds and perturbagens</small></a>
-                        </p>
-                        <p>to find experimental evidence for agents that show activity in a cancer model</p>
-                    </div>
+                    <a class="btn btn-primary btn-block" href="#explore/compound/Perturbagen,Candidate Drug" role="button" id="explore-compound-button">compounds and perturbagens</a>
                 </div>
                 <div class="col-4">
-                    <div class="jumbotron" style="margin-bottom:0; height:100%">
-                        <p>Explore</p>
-                        <p>
-                            <a class="btn btn-danger btn-lg" href="#explore/context/Disease" role="button">disease context</a>
-                        </p>
-                        <p>to find disease-specific targets or agents</p>
-                    </div>
+                    <a class="btn btn-danger btn-block" href="#explore/context/Disease" role="button" id="explore-disease-button">disease context</a>
                 </div>
             </div>
         </div>

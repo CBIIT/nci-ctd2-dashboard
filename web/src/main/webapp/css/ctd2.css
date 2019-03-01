@@ -637,3 +637,18 @@ div.center-link-container {
 .evidences tbody tr td:nth-child(2) {
     white-space: nowrap;
 }
+
+#explore-gene-button {
+    background-color: #FF6800;
+    color: black;
+}
+
+#explore-compound-button {
+    background-color: #FDA100;
+    color: black;
+}
+
+#explore-disease-button {
+    background-color: #FECD68;
+    color: black;
+}
