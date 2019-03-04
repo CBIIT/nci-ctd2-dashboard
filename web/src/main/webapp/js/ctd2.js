@@ -338,21 +338,21 @@
                 placement: "bottom",
                 trigger: 'hover',
                 content: 'Explore genes and proteins to find experimental evidence for cancer targets that are implicated in a cancer model',
-            }).click(function() {
+            }).click(function () {
                 $(this).popover('hide');
             });
             $('#explore-compound-button').popover({
                 placement: "bottom",
                 trigger: 'hover',
                 content: 'Explore compounds and perturgabens to find experimental evidence for agents that show activity in a cancer model',
-            }).click(function() {
+            }).click(function () {
                 $(this).popover('hide');
             });
             $('#explore-disease-button').popover({
                 placement: "bottom",
                 trigger: 'hover',
                 content: 'Explore disease context to find disease-specific targets or agents',
-            }).click(function() {
+            }).click(function () {
                 $(this).popover('hide');
             });
 
@@ -1141,7 +1141,7 @@
                     $('th.submission-count').popover({
                         placement: "top",
                         trigger: 'hover',
-                        content: 'Link to all Dashboard “Submissions” attributed to a given Center',
+                        content: __ctd2_hovertext.CENTER_LIST,
                     });
                 }
             });
@@ -2348,7 +2348,8 @@
                             placement: "top",
                             trigger: 'hover',
                             content: function () {
-                                const t = text2hover_search_view[$(this).text()];
+                                const hovertext_id = 'SEARCH_' + $(this).text().toUpperCase();
+                                const t = __ctd2_hovertext[hovertext_id];
                                 if (!t) return null; // only null is automatically hidden
                                 return t;
                             },
@@ -2704,31 +2705,7 @@
     const table_filter_popover = {
         placement: "top",
         trigger: 'hover',
-        content: "Match text in any column"
-    };
-
-    const text2hover = {
-        'Class': "Subject type",
-        'Name': "Subject name",
-        'Role': "Subjects have roles which qualify how they contribute to an observation. The link “backround information” above provides more details",
-        'Tier 3': 'Observations supported by in vivo experimental results',
-        'Tier 2': 'Observations supported by in vitro experimental results',
-        'Tier 1': 'Observations supported by initial or large-scale screening',
-    };
-
-    // unfortunately, these hover texts have some petty differences so we cannot readily reuse them
-    const text2hover_search_view = {
-        'Class': "Subject type",
-        'Name': "Subject name",
-        'Roles': "Subjects have roles which qualify how they contribute to an observation.",
-        'Synonyms': 'Known subject synonyms',
-        'Observations': 'Links to display the individual “Observations”',
-    };
-
-    const text2hover_cnkb_result = {
-        'MODULATOR-TF': 'Interactions between transcription factors and proteins modulating their regulatory activity',
-        'PROTEIN-DNA': 'Interactions between transcription factors and their transcriptional targets',
-        'PROTEIN-PROTEIN': 'Protein-protein interactions',
+        content: __ctd2_hovertext.TABLE_FILTER,
     };
 
     var ExploreView = Backbone.View.extend({
@@ -2820,7 +2797,8 @@
                         placement: "top",
                         trigger: 'hover',
                         content: function () {
-                            return text2hover[$(this).text()];
+                            const hovertext_id = 'EXPLORE_' + $(this).text().toUpperCase().replace(' ', '_');
+                            return __ctd2_hovertext[hovertext_id];
                         },
                     });
 
@@ -2838,7 +2816,7 @@
                     $("#reset-ordering").popover({
                         placement: "top",
                         trigger: 'hover',
-                        content: 'Initial ordering prioritizes higher tiers and number of reporting centers'
+                        content: __ctd2_hovertext.EXPLORE_RESET_ORDER,
                     });
                     $("#reset-ordering").click(function () {
                         $("#explore-table").DataTable().order.neutral().draw();
@@ -2849,7 +2827,7 @@
             $("#customize-roles").popover({
                 placement: "top",
                 trigger: 'hover',
-                content: 'Filter browse results based on gene/perturbagen/tissue-sample roles'
+                content: __ctd2_hovertext.EXPLORE_SELECT_ROLES,
             });
             $("#customize-roles").click(function (e) {
                 e.preventDefault();
@@ -3308,7 +3286,8 @@
                         placement: "top",
                         trigger: 'hover',
                         content: function () {
-                            const t = text2hover_cnkb_result[$(this).text()];
+                            const hovertext_id = 'CNKB_' + $(this).text().toUpperCase().replace('-', '_');
+                            const t = __ctd2_hovertext[hovertext_id];
                             if (!t) return null; // only null is automatically hidden
                             return t;
                         },
@@ -3380,12 +3359,12 @@
             }).popover({
                 placement: "top",
                 trigger: 'hover',
-                content: 'Limit the displayed interactions to the specified number',
+                content: __ctd2_hovertext.CNKB_LIMIT,
             });
             $("#cytoscape-layouts").popover({
                 placement: "top",
                 trigger: 'hover',
-                content: 'choose from several available graphical layout options',
+                content: __ctd2_hovertext.CNKB_LAYOUT,
             });
 
             $('#checkbox_selectall').click(function (event) { //on click
