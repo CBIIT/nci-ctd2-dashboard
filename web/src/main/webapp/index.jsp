@@ -2219,7 +2219,7 @@
                            <option value="circle">Circle</option>
                      </select>
                      
-                     <a href="#" id="createnetwork"  target="_blank" title="please select cnkb interactions to create network">Create Network</a>   				 
+                     <a href="#" id="createnetwork"  target="_blank">Create Network</a>
                      <br/>
                      <small><font color="grey">Confidence threshold: </font></small>
                      <small id="throttle-input"><font color="grey">e.g. 0.01 </font></small>

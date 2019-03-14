@@ -3424,7 +3424,12 @@
                     } //end success
                 }); //end ajax
 
-            }); //end createnetwork
+            }); //end createnetwork.click
+            $('#createnetwork').popover({
+                placement: 'top',
+                trigger: 'hover',
+                content: __ctd2_hovertext.CNKB_CREATE_NETWORK,
+            });
 
             return this;
         }
