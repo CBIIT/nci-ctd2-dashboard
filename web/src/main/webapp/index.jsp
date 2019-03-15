@@ -2182,7 +2182,7 @@
                      <table id="cnkb-result-grid" class="table table-bordered table-striped ">
                         <thead> 
                             <tr>
-                            <th><input type="checkbox" id="checkbox_selectall" title="select or deselect all checkboxs"></th>
+                            <th><input type="checkbox" id="checkbox_selectall" title="select or deselect all checkboxes"></th>
                             <th>GENE</th>
                             </tr>
                          </thead>
