@@ -1351,4 +1351,101 @@
             </bean>
         </property>
     </bean>
+    <bean name="columbiaNeuroblastoma1SubtypesReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${columbia.neuroblastoma.1.subtypes.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="columbiaNeuroblastoma1SubtypesLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="columbiaNeuroblastoma2MrInferenceReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${columbia.neuroblastoma.2.mr.inference.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="columbiaNeuroblastoma2MrInferenceLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="columbiaNeuroblastoma3MrValidationReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${columbia.neuroblastoma.3.mr.validation.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="columbiaNeuroblastoma3MrValidationLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="columbiaNeuroblastoma4InteractionsReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${columbia.neuroblastoma.4.interactions.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="columbiaNeuroblastoma4InteractionsLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="columbiaNeuroblastoma5TEAD4MYCNReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${columbia.neuroblastoma.5.TEAD4.MYCN.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="columbiaNeuroblastoma5TEAD4MYCNLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="columbiaNeuroblastoma6TEAD4ProliferationReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${columbia.neuroblastoma.6.TEAD4.proliferation.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="columbiaNeuroblastoma6TEAD4ProliferationLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="columbiaNeuroblastoma7TEAD4PrognosticReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${columbia.neuroblastoma.7.TEAD4.prognostic.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="columbiaNeuroblastoma7TEAD4PrognosticLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="columbiaParacne1ColonyReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${columbia.paracne.1.colony.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="columbiaParacne1ColonyLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="columbiaParacne2MttReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${columbia.paracne.2.mtt.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="columbiaParacne2MttLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="EmoryHTiPIAPAntagonistsAntitumorImmunityEnhancersReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${Emory.HTiP.IAP.antagonists.antitumor.immunity.enhancers.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="EmoryHTiPIAPAntagonistsAntitumorImmunityEnhancersLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+
+
+
+
+
+
+
 </beans>

@@ -718,41 +718,91 @@
                 <batch:chunk reader="broadGpx4StoryReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	    </batch:tasklet>
 	</batch:step>
-    <batch:step id="UCSF1ChemGenScreenCombResistantStep" parent="observationDataStep" next="UCSF1ChemGenScreenCombSensitiveStep">
-        <batch:tasklet>
-            <batch:chunk reader="UCSF1ChemGenScreenCombResistantReader" processor="observationDataProcessor" writer="observationDataWriter"/>
-        </batch:tasklet>
-    </batch:step>
-    <batch:step id="UCSF1ChemGenScreenCombSensitiveStep" parent="observationDataStep" next="UCSF1ChemGenScreenResistantStep">
-        <batch:tasklet>
-            <batch:chunk reader="UCSF1ChemGenScreenCombSensitiveReader" processor="observationDataProcessor" writer="observationDataWriter"/>
-        </batch:tasklet>
-    </batch:step>
-    <batch:step id="UCSF1ChemGenScreenResistantStep" parent="observationDataStep" next="UCSF1ChemGenScreenSensitiveStep">
-        <batch:tasklet>
-            <batch:chunk reader="UCSF1ChemGenScreenResistantReader" processor="observationDataProcessor" writer="observationDataWriter"/>
-        </batch:tasklet>
-    </batch:step>
-    <batch:step id="UCSF1ChemGenScreenSensitiveStep" parent="observationDataStep" next="columbiaOncotreatStoryStep">
-        <batch:tasklet>
-            <batch:chunk reader="UCSF1ChemGenScreenSensitiveReader" processor="observationDataProcessor" writer="observationDataWriter"/>
-        </batch:tasklet>
-    </batch:step>
-    <batch:step id="columbiaOncotreatStoryStep" parent="observationDataStep" next="columbiaNetMasterRegulatorsStep">
-        <batch:tasklet>
-            <batch:chunk reader="columbiaOncotreatStoryReader" processor="observationDataProcessor" writer="observationDataWriter"/>
-        </batch:tasklet>
-    </batch:step>
-    <batch:step id="columbiaNetMasterRegulatorsStep" parent="observationDataStep" next="columbiaNetEntinostateStep">
-        <batch:tasklet>
-            <batch:chunk reader="columbiaNetMasterRegulatorsReader" processor="observationDataProcessor" writer="observationDataWriter"/>
-        </batch:tasklet>
-    </batch:step>
-    <batch:step id="columbiaNetEntinostateStep" parent="observationDataStep">
-        <batch:tasklet>
-            <batch:chunk reader="columbiaNetEntinostateReader" processor="observationDataProcessor" writer="observationDataWriter"/>
-        </batch:tasklet>
-    </batch:step>
+	<batch:step id="UCSF1ChemGenScreenCombResistantStep" parent="observationDataStep" next="UCSF1ChemGenScreenCombSensitiveStep">
+            <batch:tasklet>
+                <batch:chunk reader="UCSF1ChemGenScreenCombResistantReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+            </batch:tasklet>
+	</batch:step>
+	<batch:step id="UCSF1ChemGenScreenCombSensitiveStep" parent="observationDataStep" next="UCSF1ChemGenScreenResistantStep">
+            <batch:tasklet>
+                <batch:chunk reader="UCSF1ChemGenScreenCombSensitiveReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+            </batch:tasklet>
+	</batch:step>
+	<batch:step id="UCSF1ChemGenScreenResistantStep" parent="observationDataStep" next="UCSF1ChemGenScreenSensitiveStep">
+            <batch:tasklet>
+                <batch:chunk reader="UCSF1ChemGenScreenResistantReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+            </batch:tasklet>
+	</batch:step>
+	<batch:step id="UCSF1ChemGenScreenSensitiveStep" parent="observationDataStep" next="columbiaOncotreatStoryStep">
+            <batch:tasklet>
+                <batch:chunk reader="UCSF1ChemGenScreenSensitiveReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+            </batch:tasklet>
+	</batch:step>
+	<batch:step id="columbiaOncotreatStoryStep" parent="observationDataStep" next="columbiaNetMasterRegulatorsStep">
+            <batch:tasklet>
+                <batch:chunk reader="columbiaOncotreatStoryReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+            </batch:tasklet>
+	</batch:step>
+	<batch:step id="columbiaNetMasterRegulatorsStep" parent="observationDataStep" next="columbiaNetEntinostateStep">
+            <batch:tasklet>
+                <batch:chunk reader="columbiaNetMasterRegulatorsReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+            </batch:tasklet>
+	</batch:step>
+	<batch:step id="columbiaNetEntinostateStep" parent="observationDataStep" next="columbiaNeuroblastoma1SubtypesStep">
+            <batch:tasklet>
+                <batch:chunk reader="columbiaNetEntinostateReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+            </batch:tasklet>
+	</batch:step>
+	<batch:step id="columbiaNeuroblastoma1SubtypesStep" parent="observationDataStep" next="columbiaNeuroblastoma2MrInferenceStep">
+	    <batch:tasklet>
+                <batch:chunk reader="columbiaNeuroblastoma1SubtypesReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	    </batch:tasklet>
+	</batch:step>
+	<batch:step id="columbiaNeuroblastoma2MrInferenceStep" parent="observationDataStep" next="columbiaNeuroblastoma3MrValidationStep">
+	    <batch:tasklet>
+                <batch:chunk reader="columbiaNeuroblastoma2MrInferenceReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	    </batch:tasklet>
+	</batch:step>
+	<batch:step id="columbiaNeuroblastoma3MrValidationStep" parent="observationDataStep" next="columbiaNeuroblastoma4InteractionsStep">
+	    <batch:tasklet>
+                <batch:chunk reader="columbiaNeuroblastoma3MrValidationReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	    </batch:tasklet>
+	</batch:step>
+	<batch:step id="columbiaNeuroblastoma4InteractionsStep" parent="observationDataStep" next="columbiaNeuroblastoma5TEAD4MYCNStep">
+	    <batch:tasklet>
+                <batch:chunk reader="columbiaNeuroblastoma4InteractionsReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	    </batch:tasklet>
+	</batch:step>
+	<batch:step id="columbiaNeuroblastoma5TEAD4MYCNStep" parent="observationDataStep" next="columbiaNeuroblastoma6TEAD4ProliferationStep">
+	    <batch:tasklet>
+                <batch:chunk reader="columbiaNeuroblastoma5TEAD4MYCNReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	    </batch:tasklet>
+	</batch:step>
+	<batch:step id="columbiaNeuroblastoma6TEAD4ProliferationStep" parent="observationDataStep" next="columbiaNeuroblastoma7TEAD4PrognosticStep">
+	    <batch:tasklet>
+                <batch:chunk reader="columbiaNeuroblastoma6TEAD4ProliferationReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	    </batch:tasklet>
+	</batch:step>
+	<batch:step id="columbiaNeuroblastoma7TEAD4PrognosticStep" parent="observationDataStep" next="columbiaParacne1ColonyStep">
+	    <batch:tasklet>
+                <batch:chunk reader="columbiaNeuroblastoma7TEAD4PrognosticReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	    </batch:tasklet>
+	</batch:step>
+	<batch:step id="columbiaParacne1ColonyStep" parent="observationDataStep" next="columbiaParacne2MttStep">
+	    <batch:tasklet>
+                <batch:chunk reader="columbiaParacne1ColonyReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	    </batch:tasklet>
+	</batch:step>
+	<batch:step id="columbiaParacne2MttStep" parent="observationDataStep" next="EmoryHTiPIAPAntagonistsAntitumorImmunityEnhancersStep">
+	    <batch:tasklet>
+                <batch:chunk reader="columbiaParacne2MttReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	    </batch:tasklet>
+	</batch:step>
+	<batch:step id="EmoryHTiPIAPAntagonistsAntitumorImmunityEnhancersStep" parent="observationDataStep">
+	    <batch:tasklet>
+                <batch:chunk reader="EmoryHTiPIAPAntagonistsAntitumorImmunityEnhancersReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	    </batch:tasklet>
+	</batch:step>
     </batch:job>
 
     <bean id="observationDataStep" class="org.springframework.batch.core.step.item.SimpleStepFactoryBean" abstract="true">
@@ -1019,7 +1069,7 @@
     </bean>
     <bean name="emoryPpiRaf1LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
         <property name="delimiter" value="&#9;"/>
-        <property name="names" value="dummy,submission_name,submission_date,template_name,cell_line,gene_symbol_1,gene_symbol_2,assay_type,number_of_measurements,average_fold_over_control_value,p_value,nci_portal"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,cell_line,gene_symbol_1,gene_symbol_2,assay_type,number_of_measurements,average_fold_over_control_value,p_value,nci_portal,oncoppi_portal"/>
     </bean>
     
     <bean name="emoryHtBretnPpiLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
@@ -1892,7 +1942,7 @@
     </bean>
     <bean name="emoryOncoPpiTier1LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
         <property name="delimiter" value="&#9;"/>
-        <property name="names" value="dummy,submission_name,submission_date,template_name,disease_condition,cell_line,gene_symbol_1,gene_symbol_2,assay_type,number_of_measurements,average_fold_over_control_value,p_value,q_value,nci_portal,publication_url"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,disease_condition,cell_line,gene_symbol_1,gene_symbol_2,assay_type,number_of_measurements,average_fold_over_control_value,p_value,q_value,nci_portal,publication_url,oncoppi_portal"/>
     </bean>
     
     <bean name="emoryOncoPpiTier2LineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
@@ -1901,7 +1951,7 @@
     </bean>
     <bean name="emoryOncoPpiTier2LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
         <property name="delimiter" value="&#9;"/>
-        <property name="names" value="dummy,submission_name,submission_date,template_name,disease_condition,cell_line,gene_symbol_1,gene_symbol_2,assay_type,number_of_measurements,average_fold_over_control_value,p_value,q_value,nci_portal,publication_url"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,disease_condition,cell_line,gene_symbol_1,gene_symbol_2,assay_type,number_of_measurements,average_fold_over_control_value,p_value,q_value,nci_portal,publication_url,oncoppi_portal"/>
     </bean>
     
     <bean name="utswSW044248LineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
@@ -1919,7 +1969,7 @@
     </bean>
     <bean name="emoryNanoPcaTier1LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
         <property name="delimiter" value="&#9;"/>
-        <property name="names" value="dummy,submission_name,submission_date,template_name,cell_line,gene_symbol_1,gene_symbol_2,assay_type,number_of_measurements,average_fold_over_control_value,p_value,nci_portal,publication_url"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,cell_line,gene_symbol_1,gene_symbol_2,assay_type,number_of_measurements,average_fold_over_control_value,p_value,nci_portal,publication_url,oncoppi_portal"/>
     </bean>
     
     <bean name="emoryNanoPcaTier2LineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
@@ -1928,7 +1978,7 @@
     </bean>
     <bean name="emoryNanoPcaTier2LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
         <property name="delimiter" value="&#9;"/>
-        <property name="names" value="dummy,submission_name,submission_date,template_name,cell_line,gene_symbol_1,gene_symbol_2,assay_type,number_of_measurements,average_fold_over_control_value,p_value,nci_portal,publication_url"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,cell_line,gene_symbol_1,gene_symbol_2,assay_type,number_of_measurements,average_fold_over_control_value,p_value,nci_portal,publication_url,oncoppi_portal"/>
     </bean>
     
     <bean name="utswSmarca4LineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
@@ -2011,6 +2061,7 @@
         <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,target,story_location,publication_reference_1,publication_reference_2"/>
     </bean>
+
     <bean name="fhcrcNovelTargetsHeadAndNeckCancerLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
         <property name="fieldSetMapper" ref="observationDataMapper" />
         <property name="lineTokenizer" ref="fhcrcNovelTargetsHeadAndNeckCancerLineTokenizer" />
@@ -2019,6 +2070,7 @@
         <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,gene_symbol_3,gene_symbol_4,gene_symbol_5,disease_1,candidate_drug_1,candidate_drug_2,story_location,publication_reference_1,publication_reference_2,data_portal_link,link_to_tier1,evidence_ontology_term"/>
     </bean>
+
     <bean name="fhcrcWee1Phase1ClinicalTrialLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
         <property name="fieldSetMapper" ref="observationDataMapper" />
         <property name="lineTokenizer" ref="fhcrcWee1Phase1ClinicalTrialLineTokenizer" />
@@ -2027,6 +2079,7 @@
         <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,disease,compound_1,compound_2,compound_3,publication_reference_1,publication_reference_2,publication_reference_3,link_to_tier1,story_location,evidence_ontology_term"/>
     </bean>
+
     <bean name="broadGpx4StoryLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
         <property name="fieldSetMapper" ref="observationDataMapper" />
         <property name="lineTokenizer" ref="broadGpx4StoryLineTokenizer" />
@@ -2035,38 +2088,43 @@
         <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,compound_1,compound_2,compound_3,compound_4,cell_line,publication_reference_1,publication_reference_2,publication_reference_3,publication_reference_4,publication_reference_5,publication_reference_6,publication_reference_7,ctrp,achilles,ccle,story_location,evidence_ontology_term"/>
     </bean>
+
     <bean name="UCSF1ChemGenScreenCombResistantLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
         <property name="fieldSetMapper" ref="observationDataMapper" />
         <property name="lineTokenizer" ref="UCSF1ChemGenScreenCombResistantLineTokenizer" />
     </bean>
     <bean name="UCSF1ChemGenScreenCombResistantLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
         <property name="delimiter" value="&#9;"/>
-        <property name="names" value="dummy,submission_name,submission_date,template_name,gene_name,drug_name,drug_name2,cell_lines,s_score,publication_reference,ontology,data_portal_link"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,gene_name,drug_name,drug_name2,cell_line,s_score,publication_reference,ontology,data_portal_link"/>
     </bean>
+
     <bean name="UCSF1ChemGenScreenCombSensitiveLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
         <property name="fieldSetMapper" ref="observationDataMapper" />
         <property name="lineTokenizer" ref="UCSF1ChemGenScreenCombSensitiveLineTokenizer" />
     </bean>
     <bean name="UCSF1ChemGenScreenCombSensitiveLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
         <property name="delimiter" value="&#9;"/>
-        <property name="names" value="dummy,submission_name,submission_date,template_name,gene_name,drug_name,drug_name2,cell_lines,s_score,publication_reference,ontology,data_portal_link"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,gene_name,drug_name,drug_name2,cell_line,s_score,publication_reference,ontology,data_portal_link"/>
     </bean>
+
     <bean name="UCSF1ChemGenScreenResistantLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
         <property name="fieldSetMapper" ref="observationDataMapper" />
         <property name="lineTokenizer" ref="UCSF1ChemGenScreenResistantLineTokenizer" />
     </bean>
     <bean name="UCSF1ChemGenScreenResistantLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
         <property name="delimiter" value="&#9;"/>
-        <property name="names" value="dummy,submission_name,submission_date,template_name,gene_name,drug_name,cell_lines,s_score,publication_reference,ontology,data_portal_link"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,gene_name,drug_name,cell_line,s_score,publication_reference,ontology,data_portal_link"/>
     </bean>
+
     <bean name="UCSF1ChemGenScreenSensitiveLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
         <property name="fieldSetMapper" ref="observationDataMapper" />
         <property name="lineTokenizer" ref="UCSF1ChemGenScreenSensitiveLineTokenizer" />
     </bean>
     <bean name="UCSF1ChemGenScreenSensitiveLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
         <property name="delimiter" value="&#9;"/>
-        <property name="names" value="dummy,submission_name,submission_date,template_name,gene_name,drug_name,cell_lines,s_score,publication_reference,ontology,data_portal_link"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,gene_name,drug_name,cell_line,s_score,publication_reference,ontology,data_portal_link"/>
     </bean>
+
     <bean name="columbiaOncotreatStoryLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
         <property name="fieldSetMapper" ref="observationDataMapper" />
         <property name="lineTokenizer" ref="columbiaOncotreatStoryLineTokenizer" />
@@ -2075,6 +2133,7 @@
         <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,compound_1,tumor_type,gene_symbol_1,gene_symbol_2,story_location,dashboard_tier_2_link,dashboard_tier_3_link,publication_reference_1,publication_reference_2"/>
     </bean>
+
     <bean name="columbiaNetMasterRegulatorsLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
         <property name="fieldSetMapper" ref="observationDataMapper" />
         <property name="lineTokenizer" ref="columbiaNetMasterRegulatorsLineTokenizer" />
@@ -2083,6 +2142,7 @@
         <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol,cell_line,cell_line_origin,p_pvalue,publication_reference,figure_4b,evidence_ontology_term_1,evidence_ontology_term_2,data_portal_link"/>
     </bean>
+
     <bean name="columbiaNetEntinostateLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
         <property name="fieldSetMapper" ref="observationDataMapper" />
         <property name="lineTokenizer" ref="columbiaNetEntinostateLineTokenizer" />
@@ -2091,6 +2151,97 @@
         <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,compound_1,tissue_1,gene_1,gene_2,cell_line_1,figure_5,tissue_detail,publication_reference,tier_2_dashboard_link,data_portal_link,evidence_ontology_term_1,evidence_ontology_term_2,evidence_ontology_term_3,evidence_ontology_term_4"/>
     </bean>
+
+    <bean name="columbiaNeuroblastoma1SubtypesLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="columbiaNeuroblastoma1SubtypesLineTokenizer" />
+    </bean>
+    <bean name="columbiaNeuroblastoma1SubtypesLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="&#9;"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,gene_1,tumor_type_1,Figure_1,evidence_ontology_term_1,evidence_ontology_term_2,data_portal_link,reference"/>
+    </bean>
+
+    <bean name="columbiaNeuroblastoma2MrInferenceLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="columbiaNeuroblastoma2MrInferenceLineTokenizer" />
+    </bean>
+    <bean name="columbiaNeuroblastoma2MrInferenceLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="&#9;"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,gene_1,tumor_type_1,gene_2,figure_1D,figure_2B,stoufer_nes,fishers_p_value,log_P_x_sign_nes,evidence_ontology_term_1,evidence_ontology_term_2,data_portal_link,reference"/>
+    </bean>
+
+    <bean name="columbiaNeuroblastoma3MrValidationLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="columbiaNeuroblastoma3MrValidationLineTokenizer" />
+    </bean>
+    <bean name="columbiaNeuroblastoma3MrValidationLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="&#9;"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,gene_1,tumor_type_1,gene_2,cell_line_1,cell_line_2,cell_line_3,cell_line_4,cell_line_5,cell_line_6,cell_line_7,cell_line_8,cell_line_9,cell_line_10,Figure_2CD,Figure_2EF,Figure_2G,evidence_ontology_term_1,reference"/>
+    </bean>
+
+    <bean name="columbiaNeuroblastoma4InteractionsLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="columbiaNeuroblastoma4InteractionsLineTokenizer" />
+    </bean>
+    <bean name="columbiaNeuroblastoma4InteractionsLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="&#9;"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,gene_1,tumor_type_1,gene_2,gene_3,cell_line_1,Figure_3AB,evidence_ontology_term_1,evidence_ontology_term_2,evidence_ontology_term_3,evidence_ontology_term_4,reference"/>
+    </bean>
+
+    <bean name="columbiaNeuroblastoma5TEAD4MYCNLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="columbiaNeuroblastoma5TEAD4MYCNLineTokenizer" />
+    </bean>
+    <bean name="columbiaNeuroblastoma5TEAD4MYCNLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="&#9;"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,gene_1,gene_2,gene_3,tumor_type_1,cell_line_1,Figure_4A,evidence_ontology_term_1,evidence_ontology_term_2,reference"/>
+    </bean>
+
+    <bean name="columbiaNeuroblastoma6TEAD4ProliferationLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="columbiaNeuroblastoma6TEAD4ProliferationLineTokenizer" />
+    </bean>
+    <bean name="columbiaNeuroblastoma6TEAD4ProliferationLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="&#9;"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,gene_1,tumor_type_1,gene_2,cell_line_1,cell_line_2,figure_5B,evidence_ontology_term_1,reference"/>
+    </bean>
+
+    <bean name="columbiaNeuroblastoma7TEAD4PrognosticLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="columbiaNeuroblastoma7TEAD4PrognosticLineTokenizer" />
+    </bean>
+    <bean name="columbiaNeuroblastoma7TEAD4PrognosticLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="&#9;"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,gene_1,tumor_type_1,gene_2,figure_6ABCD,evidence_ontology_term_1,evidence_ontology_term_2,reference"/>
+    </bean>
+
+    <bean name="columbiaParacne1ColonyLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="columbiaParacne1ColonyLineTokenizer" />
+    </bean>
+    <bean name="columbiaParacne1ColonyLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="&#9;"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,gene_1,gene_2,gene_3,gene_4,gene_5,tissue_1,cell_line_1,effect_1,egfr_genomic_mut,braf_genomic_mut,kras_genomic_mut,compound_1,compound_2,control,erlotinib,crizotinib,erlotinib_crizotinib,cell_line_type,figure_4,evidence_ontology_term_1,evidence_ontology_term_2,reference,data_portal_link"/>
+    </bean>
+
+    <bean name="columbiaParacne2MttLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="columbiaParacne2MttLineTokenizer" />
+    </bean>
+    <bean name="columbiaParacne2MttLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="&#9;"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,gene_1,gene_2,compound_1,compound_2,tissue_1,cell_line_1,erlotinib_ic50,crizotinib_ic50,erlotinib_crizotinib_ic50,combination_index,effect_1,figure_5,evidence_ontology_term_1,evidence_ontology_term_2,reference,data_portal_link"/>
+    </bean>
+
+    <bean name="EmoryHTiPIAPAntagonistsAntitumorImmunityEnhancersLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="EmoryHTiPIAPAntagonistsAntitumorImmunityEnhancersLineTokenizer" />
+    </bean>
+    <bean name="EmoryHTiPIAPAntagonistsAntitumorImmunityEnhancersLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="&#9;"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,compound_name,parent_cell_line,PBMC,cell_confluency,cell_viability,reference,data_portal_link"/>
+    </bean>
+
 
     <!-- shared helper beans -->
     <bean name="observationTemplateMap" class="java.util.HashMap">
@@ -2386,6 +2537,7 @@
                 <entry key="emory_PPI_analysis:average_fold_over_control_value" value="evidence:readDouble:createObservedNumericEvidence" />
                 <entry key="emory_PPI_analysis:p_value" value="evidence:readDouble:createObservedNumericEvidence" />
                 <entry key="emory_PPI_analysis:nci_portal" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="emory_PPI_analysis:oncoppi_portal" value="evidence:readString:createObservedUrlEvidence" />
                 <entry key="emory_ht_bretn_ppi_data:cell_line" value="subject:findCellLineByName" />
                 <entry key="emory_ht_bretn_ppi_data:gene_symbol_1" value="subject:findGenesBySymbol" />
                 <entry key="emory_ht_bretn_ppi_data:gene_symbol_2" value="subject:findGenesBySymbol" />
@@ -3386,6 +3538,7 @@
                 <entry key="emory_OncoPPi_tier1:q_value" value="evidence:readDouble:createObservedNumericEvidence" />
                 <entry key="emory_OncoPPi_tier1:nci_portal" value="evidence:readString:createObservedUrlEvidence" />
                 <entry key="emory_OncoPPi_tier1:publication_url" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="emory_OncoPPi_tier1:oncoppi_portal" value="evidence:readString:createObservedUrlEvidence" />
                 <entry key="emory_OncoPPi_tier2:disease_condition" value="subject:findTissueSampleByName" />
                 <entry key="emory_OncoPPi_tier2:cell_line" value="subject:findCellLineByName" />
                 <entry key="emory_OncoPPi_tier2:gene_symbol_1" value="subject:findGenesBySymbol" />
@@ -3397,6 +3550,7 @@
                 <entry key="emory_OncoPPi_tier2:q_value" value="evidence:readDouble:createObservedNumericEvidence" />
                 <entry key="emory_OncoPPi_tier2:nci_portal" value="evidence:readString:createObservedUrlEvidence" />
                 <entry key="emory_OncoPPi_tier2:publication_url" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="emory_OncoPPi_tier2:oncoppi_portal" value="evidence:readString:createObservedUrlEvidence" />
                 <entry key="utsw_SW044248:compound_name" value="subject:findCompoundsByName" />
                 <entry key="utsw_SW044248:cell_line" value="subject:findCellLineByName" />
                 <entry key="utsw_SW044248:gene_symbol_1" value="subject:findGenesBySymbol" />
@@ -3414,6 +3568,7 @@
                 <entry key="emory_NanoPCA_tier1:p_value" value="evidence:readDouble:createObservedNumericEvidence" />
                 <entry key="emory_NanoPCA_tier1:nci_portal" value="evidence:readString:createObservedUrlEvidence" />
                 <entry key="emory_NanoPCA_tier1:publication_url" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="emory_NanoPCA_tier1:oncoppi_portal" value="evidence:readString:createObservedUrlEvidence" />
                 <entry key="emory_NanoPCA_tier2:cell_line" value="subject:findCellLineByName" />
                 <entry key="emory_NanoPCA_tier2:gene_symbol_1" value="subject:findGenesBySymbol" />
                 <entry key="emory_NanoPCA_tier2:gene_symbol_2" value="subject:findGenesBySymbol" />
@@ -3423,6 +3578,7 @@
                 <entry key="emory_NanoPCA_tier2:p_value" value="evidence:readDouble:createObservedNumericEvidence" />
                 <entry key="emory_NanoPCA_tier2:nci_portal" value="evidence:readString:createObservedUrlEvidence" />
                 <entry key="emory_NanoPCA_tier2:publication_url" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="emory_NanoPCA_tier2:oncoppi_portal" value="evidence:readString:createObservedUrlEvidence" />
                 <entry key="utsw_smarca4:compound_name_1" value="subject:findCompoundsByName" />
                 <entry key="utsw_smarca4:compound_name_2" value="subject:findCompoundsByName" />
                 <entry key="utsw_smarca4:cell_line" value="subject:findCellLineByName" />
@@ -3525,7 +3681,7 @@
 		<entry key="fhcrc_novel_targets_head_and_neck_cancer:candidate_drug_2" value="subject:findCompoundsByName"/>
 		<entry key="fhcrc_novel_targets_head_and_neck_cancer:story_location" value="evidence:readString:createObservedFileEvidence"/>
 		<entry key="fhcrc_novel_targets_head_and_neck_cancer:publication_reference_1" value="evidence:readString:createObservedUrlEvidence"/>
-		<entry key="fhcrc_novel_targets_head_and_neck_cancer:publication_reference_2" value="evidence:readString:createObservedLabelEvidence"/>
+		<entry key="fhcrc_novel_targets_head_and_neck_cancer:publication_reference_2" value="evidence:readString:createObservedUrlEvidence"/>
 		<entry key="fhcrc_novel_targets_head_and_neck_cancer:data_portal_link" value="evidence:readString:createObservedUrlEvidence"/>
 		<entry key="fhcrc_novel_targets_head_and_neck_cancer:link_to_tier1" value="evidence:readString:createObservedUrlEvidence"/>
 		<entry key="fhcrc_novel_targets_head_and_neck_cancer:evidence_ontology_term" value="evidence:readString:createObservedUrlEvidence"/>
@@ -3540,10 +3696,10 @@
 		<entry key="fhcrc_wee1_phase1_clinical_trial:link_to_tier1" value="evidence:readString:createObservedUrlEvidence"/>
 		<entry key="fhcrc_wee1_phase1_clinical_trial:story_location" value="evidence:readString:createObservedFileEvidence"/>
 		<entry key="fhcrc_wee1_phase1_clinical_trial:evidence_ontology_term" value="evidence:readString:createObservedUrlEvidence"/>
-        <entry key="UCSF1_chem_gen_screen_comb_resistant:gene_name" value="subject:findGenesBySymbol" />
+		<entry key="UCSF1_chem_gen_screen_comb_resistant:gene_name" value="subject:findGenesBySymbol" />
 		<entry key="UCSF1_chem_gen_screen_comb_resistant:drug_name" value="subject:findCompoundsByName" />
 		<entry key="UCSF1_chem_gen_screen_comb_resistant:drug_name2" value="subject:findCompoundsByName" />
-		<entry key="UCSF1_chem_gen_screen_comb_resistant:cell_lines" value="subject:findCellLineByName" />
+		<entry key="UCSF1_chem_gen_screen_comb_resistant:cell_line" value="subject:findCellLineByName" />
 		<entry key="UCSF1_chem_gen_screen_comb_resistant:s_score" value="evidence:readDouble:createObservedNumericEvidence" />
 		<entry key="UCSF1_chem_gen_screen_comb_resistant:publication_reference" value="evidence:readString:createObservedUrlEvidence" />
 		<entry key="UCSF1_chem_gen_screen_comb_resistant:ontology" value="evidence:readString:createObservedUrlEvidence" />
@@ -3551,21 +3707,21 @@
 		<entry key="UCSF1_chem_gen_screen_comb_sensitive:gene_name" value="subject:findGenesBySymbol" />
 		<entry key="UCSF1_chem_gen_screen_comb_sensitive:drug_name" value="subject:findCompoundsByName" />
 		<entry key="UCSF1_chem_gen_screen_comb_sensitive:drug_name2" value="subject:findCompoundsByName" />
-		<entry key="UCSF1_chem_gen_screen_comb_sensitive:cell_lines" value="subject:findCellLineByName" />
+		<entry key="UCSF1_chem_gen_screen_comb_sensitive:cell_line" value="subject:findCellLineByName" />
 		<entry key="UCSF1_chem_gen_screen_comb_sensitive:s_score" value="evidence:readDouble:createObservedNumericEvidence" />
 		<entry key="UCSF1_chem_gen_screen_comb_sensitive:publication_reference" value="evidence:readString:createObservedUrlEvidence" />
 		<entry key="UCSF1_chem_gen_screen_comb_sensitive:ontology" value="evidence:readString:createObservedUrlEvidence" />
 		<entry key="UCSF1_chem_gen_screen_comb_sensitive:data_portal_link" value="evidence:readString:createObservedUrlEvidence" />
 		<entry key="UCSF1_chem_gen_screen_resistant:gene_name" value="subject:findGenesBySymbol" />
 		<entry key="UCSF1_chem_gen_screen_resistant:drug_name" value="subject:findCompoundsByName" />
-		<entry key="UCSF1_chem_gen_screen_resistant:cell_lines" value="subject:findCellLineByName" />
+		<entry key="UCSF1_chem_gen_screen_resistant:cell_line" value="subject:findCellLineByName" />
 		<entry key="UCSF1_chem_gen_screen_resistant:s_score" value="evidence:readDouble:createObservedNumericEvidence" />
 		<entry key="UCSF1_chem_gen_screen_resistant:publication_reference" value="evidence:readString:createObservedUrlEvidence" />
 		<entry key="UCSF1_chem_gen_screen_resistant:ontology" value="evidence:readString:createObservedUrlEvidence" />
 		<entry key="UCSF1_chem_gen_screen_resistant:data_portal_link" value="evidence:readString:createObservedUrlEvidence" />
 		<entry key="UCSF1_chem_gen_screen_sensitive:gene_name" value="subject:findGenesBySymbol" />
 		<entry key="UCSF1_chem_gen_screen_sensitive:drug_name" value="subject:findCompoundsByName" />
-		<entry key="UCSF1_chem_gen_screen_sensitive:cell_lines" value="subject:findCellLineByName" />
+		<entry key="UCSF1_chem_gen_screen_sensitive:cell_line" value="subject:findCellLineByName" />
 		<entry key="UCSF1_chem_gen_screen_sensitive:s_score" value="evidence:readDouble:createObservedNumericEvidence" />
 		<entry key="UCSF1_chem_gen_screen_sensitive:publication_reference" value="evidence:readString:createObservedUrlEvidence" />
 		<entry key="UCSF1_chem_gen_screen_sensitive:ontology" value="evidence:readString:createObservedUrlEvidence" />
@@ -3602,6 +3758,124 @@
 		<entry key="columbia_oncotreat_story:dashboard_tier_3_link" value="evidence:readString:createObservedUrlEvidence" />
 		<entry key="columbia_oncotreat_story:publication_reference_1" value="evidence:readString:createObservedUrlEvidence" />
 		<entry key="columbia_oncotreat_story:publication_reference_2" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="columbia_neuroblastoma_1_subtypes:gene_1" value="subject:findGenesBySymbol" />
+		<entry key="columbia_neuroblastoma_1_subtypes:tumor_type_1" value="subject:findTissueSampleByName" />
+		<entry key="columbia_neuroblastoma_1_subtypes:Figure_1" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="columbia_neuroblastoma_1_subtypes:evidence_ontology_term_1" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="columbia_neuroblastoma_1_subtypes:evidence_ontology_term_2" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="columbia_neuroblastoma_1_subtypes:data_portal_link" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="columbia_neuroblastoma_1_subtypes:reference" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="columbia_neuroblastoma_2_mr_inference:gene_1" value="subject:findGenesBySymbol" />
+		<entry key="columbia_neuroblastoma_2_mr_inference:tumor_type_1" value="subject:findTissueSampleByName" />
+		<entry key="columbia_neuroblastoma_2_mr_inference:gene_2" value="subject:findGenesBySymbol" />
+		<entry key="columbia_neuroblastoma_2_mr_inference:figure_1D" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="columbia_neuroblastoma_2_mr_inference:figure_2B" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="columbia_neuroblastoma_2_mr_inference:stoufer_nes" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="columbia_neuroblastoma_2_mr_inference:fishers_p_value" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="columbia_neuroblastoma_2_mr_inference:log_P_x_sign_nes" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="columbia_neuroblastoma_2_mr_inference:evidence_ontology_term_1" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="columbia_neuroblastoma_2_mr_inference:evidence_ontology_term_2" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="columbia_neuroblastoma_2_mr_inference:data_portal_link" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="columbia_neuroblastoma_2_mr_inference:reference" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="columbia_neuroblastoma_3_mr_validation:gene_1" value="subject:findGenesBySymbol" />
+		<entry key="columbia_neuroblastoma_3_mr_validation:tumor_type_1" value="subject:findTissueSampleByName" />
+		<entry key="columbia_neuroblastoma_3_mr_validation:gene_2" value="subject:findGenesBySymbol" />
+		<entry key="columbia_neuroblastoma_3_mr_validation:cell_line_1" value="subject:findCellLineByName" />
+		<entry key="columbia_neuroblastoma_3_mr_validation:cell_line_2" value="subject:findCellLineByName" />
+		<entry key="columbia_neuroblastoma_3_mr_validation:cell_line_3" value="subject:findCellLineByName" />
+		<entry key="columbia_neuroblastoma_3_mr_validation:cell_line_4" value="subject:findCellLineByName" />
+		<entry key="columbia_neuroblastoma_3_mr_validation:cell_line_5" value="subject:findCellLineByName" />
+		<entry key="columbia_neuroblastoma_3_mr_validation:cell_line_6" value="subject:findCellLineByName" />
+		<entry key="columbia_neuroblastoma_3_mr_validation:cell_line_7" value="subject:findCellLineByName" />
+		<entry key="columbia_neuroblastoma_3_mr_validation:cell_line_8" value="subject:findCellLineByName" />
+		<entry key="columbia_neuroblastoma_3_mr_validation:cell_line_9" value="subject:findCellLineByName" />
+		<entry key="columbia_neuroblastoma_3_mr_validation:cell_line_10" value="subject:findCellLineByName" />
+		<entry key="columbia_neuroblastoma_3_mr_validation:Figure_2CD" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="columbia_neuroblastoma_3_mr_validation:Figure_2EF" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="columbia_neuroblastoma_3_mr_validation:Figure_2G" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="columbia_neuroblastoma_3_mr_validation:evidence_ontology_term_1" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="columbia_neuroblastoma_3_mr_validation:reference" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="columbia_neuroblastoma_4_interactions:gene_1" value="subject:findGenesBySymbol" />
+		<entry key="columbia_neuroblastoma_4_interactions:tumor_type_1" value="subject:findTissueSampleByName" />
+		<entry key="columbia_neuroblastoma_4_interactions:gene_2" value="subject:findGenesBySymbol" />
+		<entry key="columbia_neuroblastoma_4_interactions:gene_3" value="subject:findGenesBySymbol" />
+		<entry key="columbia_neuroblastoma_4_interactions:cell_line_1" value="subject:findCellLineByName" />
+		<entry key="columbia_neuroblastoma_4_interactions:Figure_3AB" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="columbia_neuroblastoma_4_interactions:evidence_ontology_term_1" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="columbia_neuroblastoma_4_interactions:evidence_ontology_term_2" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="columbia_neuroblastoma_4_interactions:evidence_ontology_term_3" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="columbia_neuroblastoma_4_interactions:evidence_ontology_term_4" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="columbia_neuroblastoma_4_interactions:reference" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="columbia_neuroblastoma_5_TEAD4_MYCN:gene_1" value="subject:findGenesBySymbol" />
+		<entry key="columbia_neuroblastoma_5_TEAD4_MYCN:tumor_type_1" value="subject:findTissueSampleByName" />
+		<entry key="columbia_neuroblastoma_5_TEAD4_MYCN:gene_2" value="subject:findGenesBySymbol" />
+		<entry key="columbia_neuroblastoma_5_TEAD4_MYCN:gene_3" value="subject:findGenesBySymbol" />
+		<entry key="columbia_neuroblastoma_5_TEAD4_MYCN:cell_line_1" value="subject:findCellLineByName" />
+		<entry key="columbia_neuroblastoma_5_TEAD4_MYCN:Figure_4A" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="columbia_neuroblastoma_5_TEAD4_MYCN:evidence_ontology_term_1" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="columbia_neuroblastoma_5_TEAD4_MYCN:evidence_ontology_term_2" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="columbia_neuroblastoma_5_TEAD4_MYCN:reference" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="columbia_neuroblastoma_6_TEAD4_proliferation:gene_1" value="subject:findGenesBySymbol" />
+		<entry key="columbia_neuroblastoma_6_TEAD4_proliferation:tumor_type_1" value="subject:findTissueSampleByName" />
+		<entry key="columbia_neuroblastoma_6_TEAD4_proliferation:gene_2" value="subject:findGenesBySymbol" />
+		<entry key="columbia_neuroblastoma_6_TEAD4_proliferation:cell_line_1" value="subject:findCellLineByName" />
+		<entry key="columbia_neuroblastoma_6_TEAD4_proliferation:cell_line_2" value="subject:findCellLineByName" />
+		<entry key="columbia_neuroblastoma_6_TEAD4_proliferation:figure_5B" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="columbia_neuroblastoma_6_TEAD4_proliferation:evidence_ontology_term_1" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="columbia_neuroblastoma_6_TEAD4_proliferation:reference" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="columbia_neuroblastoma_7_TEAD4_prognostic:gene_1" value="subject:findGenesBySymbol" />
+		<entry key="columbia_neuroblastoma_7_TEAD4_prognostic:tumor_type_1" value="subject:findTissueSampleByName" />
+		<entry key="columbia_neuroblastoma_7_TEAD4_prognostic:gene_2" value="subject:findGenesBySymbol" />
+		<entry key="columbia_neuroblastoma_7_TEAD4_prognostic:figure_6ABCD" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="columbia_neuroblastoma_7_TEAD4_prognostic:evidence_ontology_term_1" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="columbia_neuroblastoma_7_TEAD4_prognostic:evidence_ontology_term_2" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="columbia_neuroblastoma_7_TEAD4_prognostic:reference" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="columbia_paracne_1_colony:gene_1" value="subject:findGenesBySymbol" />
+		<entry key="columbia_paracne_1_colony:gene_2" value="subject:findGenesBySymbol" />
+		<entry key="columbia_paracne_1_colony:gene_3" value="subject:findGenesBySymbol" />
+		<entry key="columbia_paracne_1_colony:gene_4" value="subject:findGenesBySymbol" />
+		<entry key="columbia_paracne_1_colony:gene_5" value="subject:findGenesBySymbol" />
+		<entry key="columbia_paracne_1_colony:tissue_1" value="subject:findTissueSampleByName" />
+		<entry key="columbia_paracne_1_colony:cell_line_1" value="subject:findCellLineByName" />
+		<entry key="columbia_paracne_1_colony:effect_1" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="columbia_paracne_1_colony:egfr_genomic_mut" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="columbia_paracne_1_colony:braf_genomic_mut" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="columbia_paracne_1_colony:kras_genomic_mut" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="columbia_paracne_1_colony:compound_1" value="subject:findCompoundsByName" />
+		<entry key="columbia_paracne_1_colony:compound_2" value="subject:findCompoundsByName" />
+		<entry key="columbia_paracne_1_colony:control" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="columbia_paracne_1_colony:erlotinib" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="columbia_paracne_1_colony:crizotinib" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="columbia_paracne_1_colony:erlotinib_crizotinib" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="columbia_paracne_1_colony:cell_line_type" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="columbia_paracne_1_colony:figure_4" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="columbia_paracne_1_colony:evidence_ontology_term_1" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="columbia_paracne_1_colony:evidence_ontology_term_2" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="columbia_paracne_1_colony:reference" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="columbia_paracne_1_colony:data_portal_link" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="columbia_paracne_2_mtt:gene_1" value="subject:findGenesBySymbol" />
+		<entry key="columbia_paracne_2_mtt:gene_2" value="subject:findGenesBySymbol" />
+		<entry key="columbia_paracne_2_mtt:compound_1" value="subject:findCompoundsByName" />
+		<entry key="columbia_paracne_2_mtt:compound_2" value="subject:findCompoundsByName" />
+		<entry key="columbia_paracne_2_mtt:tissue_1" value="subject:findTissueSampleByName" />
+		<entry key="columbia_paracne_2_mtt:cell_line_1" value="subject:findCellLineByName" />
+		<entry key="columbia_paracne_2_mtt:erlotinib_ic50" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="columbia_paracne_2_mtt:crizotinib_ic50" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="columbia_paracne_2_mtt:erlotinib_crizotinib_ic50" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="columbia_paracne_2_mtt:combination_index" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="columbia_paracne_2_mtt:effect_1" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="columbia_paracne_2_mtt:figure_5" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="columbia_paracne_2_mtt:evidence_ontology_term_1" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="columbia_paracne_2_mtt:evidence_ontology_term_2" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="columbia_paracne_2_mtt:reference" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="columbia_paracne_2_mtt:data_portal_link" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="Emory_HTiP_IAP_antagonists_antitumor_immunity_enhancers:compound_name" value="subject:findCompoundsByName" />
+		<entry key="Emory_HTiP_IAP_antagonists_antitumor_immunity_enhancers:parent_cell_line" value="subject:findCellLineByName" />
+		<entry key="Emory_HTiP_IAP_antagonists_antitumor_immunity_enhancers:PBMC" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="Emory_HTiP_IAP_antagonists_antitumor_immunity_enhancers:cell_confluency" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="Emory_HTiP_IAP_antagonists_antitumor_immunity_enhancers:cell_viability" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="Emory_HTiP_IAP_antagonists_antitumor_immunity_enhancers:data_portal_link" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="Emory_HTiP_IAP_antagonists_antitumor_immunity_enhancers:reference" value="evidence:readString:createObservedUrlEvidence" />
             </map>
         </constructor-arg>
     </bean>
