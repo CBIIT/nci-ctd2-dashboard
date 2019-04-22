@@ -7,7 +7,7 @@ info:
   contact:
     email: "ocg@mail.nih.gov"
 host: "ctd2-dashboard.nci.nih.gov"
-basePath: "/dashboard-api"
+basePath: "/dashboard/api"
 
 schemes:
   - "https"
