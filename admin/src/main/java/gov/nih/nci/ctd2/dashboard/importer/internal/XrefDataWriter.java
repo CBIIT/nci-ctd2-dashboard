@@ -1,7 +1,8 @@
 package gov.nih.nci.ctd2.dashboard.importer.internal;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ public class XrefDataWriter implements ItemWriter<XrefData> {
     private DashboardDao dashboardDao;
 
     public void write(List<? extends XrefData> items) throws Exception {
-        List<Subject> all = new ArrayList<Subject>();
+        Map<Integer, Subject> all = new HashMap<Integer, Subject>();
         for (XrefData item : items) {
             List<? extends Subject> subjects = item.subjects;
             if (subjects == null || subjects.size() == 0) {
@@ -27,10 +28,15 @@ public class XrefDataWriter implements ItemWriter<XrefData> {
 
             Xref xref = item.xref;
             for (Subject subject : subjects) {
-                subject.getXrefs().add(xref);
+                Integer subjectId = subject.getId();
+                Subject x = all.get(subjectId);
+                if (x == null) {
+                    x = subject;
+                    all.put(subjectId, x);
+                }
+                x.getXrefs().add(xref);
             }
-            all.addAll(subjects);
         }
-        dashboardDao.batchMerge(all);
+        dashboardDao.batchMerge(all.values());
     }
 }
