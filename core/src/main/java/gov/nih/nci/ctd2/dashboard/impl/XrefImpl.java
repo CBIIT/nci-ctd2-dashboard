@@ -17,7 +17,7 @@ public class XrefImpl extends DashboardEntityImpl implements Xref {
     private String databaseId;
     private String databaseName;
 
-    @Column(length = 64, nullable = false)
+    @Column(length = 128, nullable = false)
     public String getDatabaseId() {
         return databaseId;
     }
