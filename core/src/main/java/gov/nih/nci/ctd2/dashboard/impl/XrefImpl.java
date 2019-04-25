@@ -3,6 +3,8 @@ package gov.nih.nci.ctd2.dashboard.impl;
 import gov.nih.nci.ctd2.dashboard.model.Xref;
 import org.hibernate.annotations.Proxy;
 
+import java.util.Objects;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -31,5 +33,20 @@ public class XrefImpl extends DashboardEntityImpl implements Xref {
 
     public void setDatabaseName(String databaseName) {
         this.databaseName = databaseName;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(databaseName, databaseId);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof XrefImpl) {
+            XrefImpl xref = (XrefImpl) obj;
+            if (databaseName.equals(xref.databaseName) && databaseId.equals(xref.databaseId))
+                return true;
+        }
+        return false;
     }
 }
