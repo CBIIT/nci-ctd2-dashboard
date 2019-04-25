@@ -22,7 +22,7 @@ public class AnimalModelWriter implements ItemWriter<AnimalModel> {
     private static final Log log = LogFactory.getLog(AnimalModelWriter.class);
 
     @Autowired
-    @Qualifier("indexBatchSize")
+    @Qualifier("batchSize")
     private Integer batchSize;
 
     public void write(List<? extends AnimalModel> items) throws Exception {

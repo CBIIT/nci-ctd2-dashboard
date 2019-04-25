@@ -26,7 +26,7 @@ public class ObservationDataWriter implements ItemWriter<ObservationData> {
     private HashMap<String, Submission> submissionCache = new HashMap<String, Submission>();
 
     @Autowired
-    @Qualifier("indexBatchSize")
+    @Qualifier("batchSize")
     private Integer batchSize;
 
     private Map<String, Integer> observationIndex = new HashMap<String, Integer>();

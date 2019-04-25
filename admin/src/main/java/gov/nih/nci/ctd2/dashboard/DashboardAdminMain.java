@@ -133,7 +133,7 @@ public class DashboardAdminMain {
 
             if( commandLine.hasOption("i") ) {
                 DashboardDao dashboardDao = (DashboardDao) appContext.getBean("dashboardDao");
-                dashboardDao.createIndex((Integer) appContext.getBean("indexBatchSize"));
+                dashboardDao.cleanIndex((Integer) appContext.getBean("indexBatchSize"));
             }
 
             log.info("All done.");

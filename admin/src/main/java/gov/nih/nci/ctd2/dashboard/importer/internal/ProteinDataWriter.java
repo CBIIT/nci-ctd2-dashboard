@@ -25,7 +25,7 @@ public class ProteinDataWriter implements ItemWriter<ProteinData> {
     private static final Log log = LogFactory.getLog(ProteinDataWriter.class);
 
     @Autowired
-    @Qualifier("indexBatchSize")
+    @Qualifier("batchSize")
     private Integer batchSize;
 
     public void write(List<? extends ProteinData> items) throws Exception {

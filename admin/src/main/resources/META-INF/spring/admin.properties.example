@@ -37,4 +37,7 @@ utsw.tier2.discoipyrroles.story.data.location=file:${CTD2_DATA_HOME}/submissions
 spring.batch.commit.interval=10000
 
 # batch sizes
-batch.size.index=10000
+batch.size=10000
+
+# index batch sizes
+batch.size.index=100

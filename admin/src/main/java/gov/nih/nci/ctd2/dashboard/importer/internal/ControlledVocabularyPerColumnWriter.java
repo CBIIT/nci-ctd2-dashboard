@@ -27,7 +27,7 @@ public class ControlledVocabularyPerColumnWriter implements ItemWriter<Controlle
 	private static final Log log = LogFactory.getLog(ControlledVocabularyPerColumnWriter.class);
 
     @Autowired
-    @Qualifier("indexBatchSize")
+    @Qualifier("batchSize")
     private Integer batchSize;
 
 	private ArrayList<DashboardEntity> entities;

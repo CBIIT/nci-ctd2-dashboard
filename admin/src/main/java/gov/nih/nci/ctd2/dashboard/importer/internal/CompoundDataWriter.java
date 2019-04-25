@@ -22,7 +22,7 @@ public class CompoundDataWriter implements Tasklet {
     private HashMap<String, Compound> compoundMap;
 
     @Autowired
-    @Qualifier("indexBatchSize")
+    @Qualifier("batchSize")
     private Integer batchSize;
 
     public RepeatStatus execute(StepContribution arg0, ChunkContext arg1) throws Exception {

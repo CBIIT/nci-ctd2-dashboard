@@ -1,10 +1,18 @@
 package gov.nih.nci.ctd2.dashboard.dao.internal;
 
-import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
-import gov.nih.nci.ctd2.dashboard.impl.*;
-import gov.nih.nci.ctd2.dashboard.model.*;
-import gov.nih.nci.ctd2.dashboard.util.DashboardEntityWithCounts;
-import gov.nih.nci.ctd2.dashboard.util.SubjectWithSummaries;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.lucene.analysis.Analyzer;
@@ -12,18 +20,51 @@ import org.apache.lucene.analysis.core.WhitespaceAnalyzer;
 import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.search.Query;
-import org.hibernate.*;
+import org.hibernate.FlushMode;
+import org.hibernate.ScrollMode;
+import org.hibernate.ScrollableResults;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.proxy.HibernateProxy;
 import org.hibernate.search.FullTextQuery;
 import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
 import org.springframework.cache.annotation.Cacheable;
 
-import java.util.*;
-
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
+import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
+import gov.nih.nci.ctd2.dashboard.impl.CompoundImpl;
+import gov.nih.nci.ctd2.dashboard.impl.DashboardEntityImpl;
+import gov.nih.nci.ctd2.dashboard.impl.ObservationTemplateImpl;
+import gov.nih.nci.ctd2.dashboard.impl.SubjectImpl;
+import gov.nih.nci.ctd2.dashboard.impl.SubjectWithOrganismImpl;
+import gov.nih.nci.ctd2.dashboard.impl.SubmissionImpl;
+import gov.nih.nci.ctd2.dashboard.impl.TissueSampleImpl;
+import gov.nih.nci.ctd2.dashboard.model.AnimalModel;
+import gov.nih.nci.ctd2.dashboard.model.Annotation;
+import gov.nih.nci.ctd2.dashboard.model.CellSample;
+import gov.nih.nci.ctd2.dashboard.model.Compound;
+import gov.nih.nci.ctd2.dashboard.model.DashboardEntity;
+import gov.nih.nci.ctd2.dashboard.model.DashboardFactory;
+import gov.nih.nci.ctd2.dashboard.model.Gene;
+import gov.nih.nci.ctd2.dashboard.model.Observation;
+import gov.nih.nci.ctd2.dashboard.model.ObservationTemplate;
+import gov.nih.nci.ctd2.dashboard.model.ObservedEvidence;
+import gov.nih.nci.ctd2.dashboard.model.ObservedEvidenceRole;
+import gov.nih.nci.ctd2.dashboard.model.ObservedSubject;
+import gov.nih.nci.ctd2.dashboard.model.ObservedSubjectRole;
+import gov.nih.nci.ctd2.dashboard.model.Organism;
+import gov.nih.nci.ctd2.dashboard.model.Protein;
+import gov.nih.nci.ctd2.dashboard.model.ShRna;
+import gov.nih.nci.ctd2.dashboard.model.Subject;
+import gov.nih.nci.ctd2.dashboard.model.SubjectWithOrganism;
+import gov.nih.nci.ctd2.dashboard.model.Submission;
+import gov.nih.nci.ctd2.dashboard.model.SubmissionCenter;
+import gov.nih.nci.ctd2.dashboard.model.Synonym;
+import gov.nih.nci.ctd2.dashboard.model.TissueSample;
+import gov.nih.nci.ctd2.dashboard.model.Transcript;
+import gov.nih.nci.ctd2.dashboard.model.Xref;
+import gov.nih.nci.ctd2.dashboard.util.DashboardEntityWithCounts;
+import gov.nih.nci.ctd2.dashboard.util.SubjectWithSummaries;
 
 public class DashboardDaoImpl implements DashboardDao {
     private static final Log log = LogFactory.getLog(DashboardDaoImpl.class);
@@ -512,34 +553,32 @@ public class DashboardDaoImpl implements DashboardDao {
         return queryWithClass("from ObservedEvidenceImpl where observation = :observation", "observation", observation);
     }
 
+    /* purge the index if there is no observation having this subject */
     @SuppressWarnings("unchecked")
     @Override
-    public void createIndex(int batchSize) {
+    public void cleanIndex(int batchSize) {
+        Session session = getSession();
+        org.hibernate.query.Query<BigInteger> query = session.createNativeQuery(
+                "SELECT id FROM subject WHERE id NOT IN (SELECT DISTINCT subject_id FROM observed_subject)");
+        ScrollableResults scrollableResults = query.scroll(ScrollMode.FORWARD_ONLY);
+
         FullTextSession fullTextSession = Search.getFullTextSession(getSession());
         fullTextSession.setHibernateFlushMode(FlushMode.MANUAL);
-        for (Class<?> searchableClass : searchableClasses) {
-            createIndexForClass(fullTextSession, (Class<? extends DashboardEntity>)searchableClass, batchSize);
-        }
-        fullTextSession.flushToIndexes();
-        fullTextSession.clear();
-        fullTextSession.close();
-    }
-
-    private void createIndexForClass(FullTextSession fullTextSession, Class<? extends DashboardEntity> clazz, int batchSize) {
-        CriteriaBuilder cb = fullTextSession.getCriteriaBuilder();
-        CriteriaQuery<? extends DashboardEntity> cq = cb.createQuery(clazz);
-        cq.from(clazz);
-        TypedQuery<? extends DashboardEntity> typedQuery = fullTextSession.createQuery(cq);
 
         int cnt = 0;
-        for (DashboardEntity entity : typedQuery.getResultList()) {
-            fullTextSession.purge(DashboardEntityImpl.class, entity);
-            fullTextSession.index(entity);
+        while (scrollableResults.next()) {
+            Integer id = (Integer) scrollableResults.get(0);
+            fullTextSession.purge(DashboardEntityImpl.class, id);
 
             if(++cnt % batchSize == 0) {
                 fullTextSession.flushToIndexes();
             }
         }
+
+        fullTextSession.flushToIndexes();
+        fullTextSession.clear();
+
+        session.close();
     }
 
     /* The logic to find matching observations is both primitive and complicated at the same time.

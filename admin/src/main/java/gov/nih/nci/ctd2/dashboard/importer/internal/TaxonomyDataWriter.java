@@ -20,7 +20,7 @@ public class TaxonomyDataWriter implements ItemWriter<Organism> {
 	private static final Log log = LogFactory.getLog(TaxonomyDataWriter.class);
 
     @Autowired
-    @Qualifier("indexBatchSize")
+    @Qualifier("batchSize")
     private Integer batchSize;
  
 	public void write(List<? extends Organism> items) throws Exception {

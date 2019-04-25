@@ -24,7 +24,7 @@ public class CellLineDataWriter implements Tasklet {
 	private HashMap<String,CellSample> cellSampleMap;
 
     @Autowired
-    @Qualifier("indexBatchSize")
+    @Qualifier("batchSize")
     private Integer batchSize;
 
 	public RepeatStatus execute(StepContribution arg0, ChunkContext arg1) throws Exception {

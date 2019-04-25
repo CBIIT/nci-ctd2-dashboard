@@ -20,7 +20,7 @@ public class GeneDataWriter implements ItemWriter<Gene> {
     private DashboardDao dashboardDao;
 
     @Autowired
-    @Qualifier("indexBatchSize")
+    @Qualifier("batchSize")
     private Integer batchSize;
 
     private static final Log log = LogFactory.getLog(GeneDataWriter.class);

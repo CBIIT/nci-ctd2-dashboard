@@ -21,7 +21,7 @@ public class TRCshRNADataWriter implements ItemWriter<ShRna> {
 	private static final Log log = LogFactory.getLog(TRCshRNADataWriter.class);
 
     @Autowired
-    @Qualifier("indexBatchSize")
+    @Qualifier("batchSize")
     private Integer batchSize;
 
     public void write(List<? extends ShRna> items) throws Exception {
