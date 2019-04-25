@@ -31,9 +31,6 @@ public class SubmissionAPI {
     private DashboardDao dashboardDao;
 
     @Autowired
-    private WebServiceUtil webServiceUtil;
-
-    @Autowired
     private String dataURL;
 
     @Transactional
@@ -52,8 +49,7 @@ public class SubmissionAPI {
             }
         }
         Submission submission = dashboardDao.getEntityByStableURL("submission", "submission/" + id);
-        List<? extends DashboardEntity> observations = webServiceUtil.getDashboardEntities("observation",
-                submission.getId());
+        List<? extends DashboardEntity> observations = dashboardDao.findObservationsBySubmission(submission);
         if (limit > 0 && limit < observations.size()) {
             observations = observations.subList(0, limit);
         }

@@ -29,9 +29,6 @@ public class CentersAPI {
     @Autowired
     private DashboardDao dashboardDao;
 
-    @Autowired
-    private WebServiceUtil webServiceUtil;
-
     @Transactional
     @RequestMapping(method = { RequestMethod.GET }, headers = "Accept=application/json")
     public ResponseEntity<String> getCenters() {
@@ -47,7 +44,7 @@ public class CentersAPI {
             String pi = submissions.get(0).getObservationTemplate().getPrincipalInvestigator(); // design flaw
             int i = 0;
             for (Submission s : submissions) {
-                int observationCount = webServiceUtil.getDashboardEntities("observation", s.getId()).size();
+                int observationCount = dashboardDao.findObservationsBySubmission(s).size();
                 ss[i++] = new APISubmission(s, observationCount);
             }
             apiCenters[centerIndex++] = new APICenter(center, pi, ss);
