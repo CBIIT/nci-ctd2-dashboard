@@ -617,14 +617,16 @@ public class DashboardDaoImpl implements DashboardDao {
 
         FullTextQuery fullTextQuery = fullTextSession.createFullTextQuery(luceneQuery, searchableClasses);
         fullTextQuery.setReadOnly(true);
-
-        Integer numberOfSearchResults = getMaxNumberOfSearchResults();
-        if(numberOfSearchResults > 0) { // if lte 0, don't set this.
-                fullTextQuery.setMaxResults(numberOfSearchResults);
-        }
-
         List<?> list = fullTextQuery.list();
         fullTextSession.close();
+
+        Integer numberOfSearchResults = getMaxNumberOfSearchResults();
+        if (numberOfSearchResults > 0 && list.size() > numberOfSearchResults) {
+            // if lte 0, the maximum number is ignored
+            log.warn("search result number " + list.size() + " is larger than the maximum expected, "
+                    + numberOfSearchResults);
+        }
+
         for (Object o : list) {
             assert o instanceof DashboardEntity;
 
