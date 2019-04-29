@@ -13,7 +13,7 @@
         <!-- With JDBC 4.0, applications no longer need to issue a Class.forName() on the driver name
         <property name="driverClassName" value="${database.driverClassName}"/>
         -->
-        <property name="url" value="${database.test.url}"/>
+        <property name="url" value="${database.test.url}&amp;useSSL=false"/>
         <property name="username" value="${database.username}"/>
         <property name="password" value="${database.password}"/>
     </bean>
