@@ -61,5 +61,6 @@ public interface DashboardDao {
     List<ObservedSubject> findObservedSubjectByRole(String role);
     List<SubjectWithSummaries> findSubjectWithSummariesByRole(String role, Integer minScore);
     List<Protein> findProteinByGene(Gene gene);
+    List<Observation> getOneObservationPerSubmission(Integer subjectId);
 }
 

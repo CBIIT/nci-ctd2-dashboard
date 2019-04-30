@@ -151,4 +151,20 @@ public class ObservationController {
 
         return new ResponseEntity<String>(jsonSerializer.serialize(entities), headers, HttpStatus.OK);
     }
+
+    // TODO review whether and where supporting role and tier is needed.
+    @Transactional
+    @RequestMapping(value = "onePerSubmissionBySubject", method = { RequestMethod.GET,
+            RequestMethod.POST }, headers = "Accept=application/json")
+    public ResponseEntity<String> getOneObservationsPerSubmission(@RequestParam("subjectId") Integer subjectId) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "application/json; charset=utf-8");
+
+        List<Observation> list = dashboardDao.getOneObservationPerSubmission(subjectId);
+
+        JSONSerializer jsonSerializer = new JSONSerializer().transform(new ImplTransformer(), Class.class)
+                .transform(new DateTransformer(), Date.class);
+
+        return new ResponseEntity<String>(jsonSerializer.serialize(list), headers, HttpStatus.OK);
+    }
 }

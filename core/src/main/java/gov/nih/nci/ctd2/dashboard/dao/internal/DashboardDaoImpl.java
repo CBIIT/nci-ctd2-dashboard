@@ -771,4 +771,23 @@ public class DashboardDaoImpl implements DashboardDao {
 
         return list;
     }
+
+    @Override
+    public List<Observation> getOneObservationPerSubmission(Integer subjectId) {
+        Session session = getSession();
+        @SuppressWarnings("unchecked")
+        org.hibernate.query.Query<Integer> query = session.createNativeQuery(
+                "SELECT observation_id FROM observed_subject JOIN observation on observed_subject.observation_id=observation.id WHERE subject_id="
+                + subjectId + " GROUP BY submission_id");
+        List<Integer> idList = query.list();
+        session.close();
+
+        List<Observation> list = new ArrayList<Observation>();
+        for(Integer id: idList) {
+            Observation observation = getEntityById(Observation.class, id);
+            list.add(observation);
+        }
+
+        return list;
+    }
 }
