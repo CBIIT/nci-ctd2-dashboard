@@ -164,6 +164,25 @@
         }
     });
 
+    var OneObservationsPerSubmissionBySubject = Backbone.Collection.extend({
+        url: CORE_API_URL + "observations/onePerSubmissionBySubject/?subjectId=",
+        model: Observation,
+
+        initialize: function (attributes) {
+            this.url += attributes.subjectId;
+            if (attributes.role != undefined) {
+                this.url += "&role=" + attributes.role;
+            }
+            if (attributes.tier != undefined) {
+                this.url += "&tier=" + attributes.tier;
+            }
+
+            if (attributes.getAll != undefined) {
+                this.url += "&getAll=" + attributes.getAll;
+            }
+        }
+    });
+
     var SubjectRole = Backbone.Model.extend({});
     var SubjectRoles = Backbone.Collection.extend({
         url: CORE_API_URL + "list/role?filterBy=",
@@ -1282,7 +1301,7 @@
             }
 
             $.ajax(countUrl).done(function (count) {
-                var observations = new ObservationsBySubject({
+                var observations = new OneObservationsPerSubmissionBySubject({
                     subjectId: subjectId,
                     role: role,
                     tier: tier
