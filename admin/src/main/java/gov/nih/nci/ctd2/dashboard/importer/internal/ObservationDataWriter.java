@@ -42,12 +42,12 @@ public class ObservationDataWriter implements ItemWriter<ObservationData> {
     private Map<String, Integer> observationIndex = new ConcurrentHashMap<String, Integer>();
 
     public void write(List<? extends ObservationData> items) throws Exception {
-        log.debug("submission counter=" + ++counter + "; number of observations=" + items.size());
         // pre-conditions: (1) all the observation data in one call are from ONE
         // submission (although one submission may be allowed to be written in multiple
         // calls) (2) there is at least one observation in each call
         final Submission submission = items.get(0).observation.getSubmission();
         final String submissionName = submission.getDisplayName();
+        log.debug("[" + ++counter + "]SUBMISSION " + submissionName + ": " + items.size() + " observation(s)");
         final String submissionCacheKey = submissionName
                 + new SimpleDateFormat("yyyy.MM.dd").format(submission.getSubmissionDate())
                 + submission.getObservationTemplate().getDisplayName();

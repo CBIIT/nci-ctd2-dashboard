@@ -601,7 +601,7 @@
         </batch:step></batch:flow>
         <batch:flow><batch:step id="tgenEddyCcleCtrpStep" parent="observationDataStep">
             <batch:tasklet>
-                <batch:chunk reader="tgenEddyCcleCtrpReader" processor="observationDataProcessor" writer="observationDataWriter" commit-interval="100000"/>
+                <batch:chunk reader="tgenEddyCcleCtrpReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
         </batch:step></batch:flow>
         <batch:flow><batch:step id="tgenEddyCcleCtrpCombStep" parent="observationDataStep">
