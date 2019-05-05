@@ -89,14 +89,15 @@ public class ObservationDataWriter implements ItemWriter<ObservationData> {
             }
         }
 
+        int batchSize = 100; // use a smaller batch size to prevent 'lock wait timeout'
         log.debug("observations to write " + observations.size());
-        dashboardDao.batchSave(observations, 1000);
+        dashboardDao.batchSave(observations, batchSize);
         log.debug("observedSubjects to write " + observedSubjects.size());
-        dashboardDao.batchSave(observedSubjects, 1000);
+        dashboardDao.batchSave(observedSubjects, batchSize);
         log.debug("evidences to write " + evidences.size());
-        dashboardDao.batchSave(evidences, 1000);
+        dashboardDao.batchSave(evidences, batchSize);
         log.debug("observedEvidences to write " + observedEvidences.size());
-        dashboardDao.batchSave(observedEvidences, 1000);
+        dashboardDao.batchSave(observedEvidences, batchSize);
         log.debug("ALL WRITTEN: " + submissionName);
     }
 }
