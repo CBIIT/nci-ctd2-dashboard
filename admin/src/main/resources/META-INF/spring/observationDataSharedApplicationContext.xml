@@ -600,7 +600,7 @@
             </batch:tasklet>
         </batch:step></batch:flow>
         <batch:flow><batch:step id="tgenEddyCcleCtrpStep" parent="observationDataStep">
-            <batch:tasklet>
+            <batch:tasklet task-executor="taskExecutor">
                 <batch:chunk reader="tgenEddyCcleCtrpReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
         </batch:step></batch:flow>
