@@ -145,25 +145,6 @@
         }
     });
 
-    var ObservationsBySubject = Backbone.Collection.extend({
-        url: CORE_API_URL + "observations/bySubject/?subjectId=",
-        model: Observation,
-
-        initialize: function (attributes) {
-            this.url += attributes.subjectId;
-            if (attributes.role != undefined) {
-                this.url += "&role=" + attributes.role;
-            }
-            if (attributes.tier != undefined) {
-                this.url += "&tier=" + attributes.tier;
-            }
-
-            if (attributes.getAll != undefined) {
-                this.url += "&getAll=" + attributes.getAll;
-            }
-        }
-    });
-
     var OneObservationsPerSubmissionBySubject = Backbone.Collection.extend({
         url: CORE_API_URL + "observations/onePerSubmissionBySubject/?subjectId=",
         model: Observation,
@@ -175,10 +156,6 @@
             }
             if (attributes.tier != undefined) {
                 this.url += "&tier=" + attributes.tier;
-            }
-
-            if (attributes.getAll != undefined) {
-                this.url += "&getAll=" + attributes.getAll;
             }
         }
     });
@@ -1351,28 +1328,6 @@
 
                     }
                 });
-
-                if (count > maxNumberOfEntities) {
-                    var moreObservationView = new MoreObservationView({
-                        model: {
-                            role: role,
-                            tier: tier,
-                            numOfObservations: maxNumberOfEntities,
-                            numOfAllObservations: count,
-                            subjectId: subjectId,
-                            tableEl: thatEl,
-                            rowView: ObservationRowView,
-                            columns: [{
-                                    "orderDataType": "dashboard-date"
-                                },
-                                null,
-                                null,
-                                null
-                            ]
-                        }
-                    });
-                    moreObservationView.render();
-                }
             });
 
             return this;
@@ -2106,8 +2061,6 @@
         template: _.template($("#more-observations-tmpl").html()),
         render: function () {
             var model = this.model;
-            var role = model.role;
-            var tier = model.tier;
             var thatEl = this.el;
             $(thatEl).html(this.template(model));
             $(thatEl).find("a.load-more-observations").click(function (e) {
@@ -2122,13 +2075,6 @@
                     observations = new ObservationsBySubmission({
                         submissionId: model.submissionId,
                         getAll: true
-                    });
-                } else if (model.subjectId != undefined) {
-                    observations = new ObservationsBySubject({
-                        subjectId: model.subjectId,
-                        getAll: true,
-                        role: role,
-                        tier: tier
                     });
                 } else {
                     console.log("something is wrong here!");

@@ -131,6 +131,7 @@ public class ObservationController {
         return new ResponseEntity<String>(jsonSerializer.serialize(entities), headers, HttpStatus.OK);
     }
 
+    // TODO remove
     @Transactional
     @RequestMapping(value = "bySubject", method = { RequestMethod.GET,
             RequestMethod.POST }, headers = "Accept=application/json")
