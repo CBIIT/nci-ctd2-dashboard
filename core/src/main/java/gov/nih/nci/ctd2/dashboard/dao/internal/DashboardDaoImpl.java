@@ -777,7 +777,7 @@ public class DashboardDaoImpl implements DashboardDao {
         Session session = getSession();
         @SuppressWarnings("unchecked")
         org.hibernate.query.Query<Integer> query = session.createNativeQuery(
-                "SELECT observation_id FROM observed_subject JOIN observation on observed_subject.observation_id=observation.id WHERE subject_id="
+                "SELECT MIN(observation_id) FROM observed_subject JOIN observation on observed_subject.observation_id=observation.id WHERE subject_id="
                 + subjectId + " GROUP BY submission_id");
         List<Integer> idList = query.list();
         session.close();
