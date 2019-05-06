@@ -86,6 +86,43 @@ public class ObservationController {
         }
     }
 
+    private List<Observation> onePerSubmissionBySubjectId(Integer subjectId, String role, Integer tier) {
+        Subject subject = dashboardDao.getEntityById(Subject.class, subjectId);
+        if (subject != null) {
+            Set<Integer> submissionIds = new HashSet<Integer>();
+            Set<Observation> observations = new HashSet<Observation>();
+            for (ObservedSubject observedSubject : dashboardDao.findObservedSubjectBySubject(subject)) {
+                Observation observation = observedSubject.getObservation();
+                Submission submission = observation.getSubmission();
+                Integer submissionId = submission.getId();
+                if (submissionIds.contains(submissionId)) {
+                    continue;
+                }
+                ObservedSubjectRole observedSubjectRole = observedSubject.getObservedSubjectRole();
+                String subjectRole = observedSubjectRole.getSubjectRole().getDisplayName();
+                Integer observationTier = observedSubject.getObservation().getSubmission().getObservationTemplate()
+                        .getTier();
+                if ((role.equals("") || role.equals(subjectRole)) && (tier == 0 || tier == observationTier)) {
+                    observations.add(observation);
+                    submissionIds.add(submissionId);
+                }
+            }
+            List<Observation> list = new ArrayList<Observation>(observations);
+            Collections.sort(list, new Comparator<Observation>() {
+                @Override
+                public int compare(Observation o1, Observation o2) {
+                    Integer tier2 = o2.getSubmission().getObservationTemplate().getTier();
+                    Integer tier1 = o1.getSubmission().getObservationTemplate().getTier();
+                    return tier2 - tier1;
+                }
+            });
+
+            return list;
+        } else {
+            return new ArrayList<Observation>();
+        }
+    }
+
     @Transactional
     @RequestMapping(value = "countBySubmission", method = { RequestMethod.GET,
             RequestMethod.POST }, headers = "Accept=application/json")
@@ -131,37 +168,21 @@ public class ObservationController {
         return new ResponseEntity<String>(jsonSerializer.serialize(entities), headers, HttpStatus.OK);
     }
 
-    // TODO remove
-    @Transactional
-    @RequestMapping(value = "bySubject", method = { RequestMethod.GET,
-            RequestMethod.POST }, headers = "Accept=application/json")
-    public ResponseEntity<String> getObservationsBySubjectId(@RequestParam("subjectId") Integer subjectId,
-            @RequestParam(value = "role", required = false, defaultValue = "") String role,
-            @RequestParam(value = "tier", required = false, defaultValue = "0") Integer tier,
-            @RequestParam(value = "getAll", required = false, defaultValue = "false") Boolean getAll) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "application/json; charset=utf-8");
-
-        List<? extends DashboardEntity> entities = getBySubjectId(subjectId, role, tier);
-        if (!getAll && entities.size() > getMaxNumberOfEntities()) {
-            entities = entities.subList(0, getMaxNumberOfEntities());
-        }
-
-        JSONSerializer jsonSerializer = new JSONSerializer().transform(new ImplTransformer(), Class.class)
-                .transform(new DateTransformer(), Date.class);
-
-        return new ResponseEntity<String>(jsonSerializer.serialize(entities), headers, HttpStatus.OK);
-    }
-
-    // TODO review whether and where supporting role and tier is needed.
     @Transactional
     @RequestMapping(value = "onePerSubmissionBySubject", method = { RequestMethod.GET,
             RequestMethod.POST }, headers = "Accept=application/json")
-    public ResponseEntity<String> getOneObservationsPerSubmission(@RequestParam("subjectId") Integer subjectId) {
+    public ResponseEntity<String> getOneObservationsPerSubmission(@RequestParam("subjectId") Integer subjectId,
+            @RequestParam(value = "role", required = false, defaultValue = "") String role,
+            @RequestParam(value = "tier", required = false, defaultValue = "0") Integer tier) {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json; charset=utf-8");
 
-        List<Observation> list = dashboardDao.getOneObservationPerSubmission(subjectId);
+        List<Observation> list = null;
+        if (tier > 0 || role.trim().length() > 0) {
+            list = onePerSubmissionBySubjectId(subjectId, role, tier);
+        } else {
+            list = dashboardDao.getOneObservationPerSubmission(subjectId);
+        }
 
         JSONSerializer jsonSerializer = new JSONSerializer().transform(new ImplTransformer(), Class.class)
                 .transform(new DateTransformer(), Date.class);
