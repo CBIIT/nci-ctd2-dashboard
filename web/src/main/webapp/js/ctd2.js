@@ -1757,6 +1757,7 @@
                             });
 
                             summary += _.template($("#submission-obs-tbl-row-tmpl").html())(thatModel);
+                            summary += "<button>show all observations</button>";
                             $(thatEl).html(summary);
                             var dataTable = $(tableEl).parent().DataTable();
                             dataTable.cells(cellId).invalidate();
