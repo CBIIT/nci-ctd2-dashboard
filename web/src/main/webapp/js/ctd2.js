@@ -1265,7 +1265,7 @@
         render: function () {
             var thatEl = $(this.el);
             var thatModel = this.model;
-            var subjectId = thatModel.subjectId;
+            const subjectId = thatModel.subjectId;
             var tier = thatModel.tier; // possibly undefined
             var role = thatModel.role; // possibly undefined
 
@@ -1288,6 +1288,7 @@
                         $(".subject-observations-loading", thatEl).remove();
                         _.each(observations.models, function (observation) {
                             observation = observation.toJSON();
+                            observation.contextSubject = subjectId;
                             var observationRowView = new ObservationRowView({
                                 el: $(thatEl).find("tbody"),
                                 model: observation
@@ -1715,13 +1716,21 @@
     var ObservationRowView = Backbone.View.extend({
         template: _.template($("#observation-row-tmpl").html()),
         render: function () {
-            var tableEl = this.el;
-            $(tableEl).append(this.template(this.model));
+            const tableEl = this.el;
+            const thatModel = this.model; // observation
+
+            if(thatModel.extra === undefined) {
+                thatModel.extra = null;
+                $(tableEl).append(this.template(thatModel));
+            } else {
+                thatModel.parentRow.after(this.template(thatModel));
+            }
             var summary = this.model.submission.observationTemplate.observationSummary;
 
-            var thatModel = this.model;
-            var cellId = "#observation-summary-" + this.model.id;
-            var thatEl = $(cellId);
+            const cellId = "#observation-summary-" + this.model.id;
+            const thatEl = $(cellId);
+            const parentRow = $(thatEl).parent("tr");
+
             var observedSubjects = new ObservedSubjects({
                 observationId: this.model.id
             });
@@ -1757,7 +1766,6 @@
                             });
 
                             summary += _.template($("#submission-obs-tbl-row-tmpl").html())(thatModel);
-                            summary += "<button>show all observations</button>";
                             $(thatEl).html(summary);
                             var dataTable = $(tableEl).parent().DataTable();
                             dataTable.cells(cellId).invalidate();
@@ -1766,6 +1774,42 @@
                                 [0, 'desc'],
                                 [1, 'asc']
                             ]).draw();
+
+                            if (thatModel.extra!=null) {
+                                return;
+                            }
+
+                            // following is only for the 'leading' observation
+                            const btn = $("<button>show all observations</button>");
+                            $(thatEl).append(btn);
+                            const expandHandler = (function() {
+                                const submissionId = thatModel.submission.id;
+                                const subjectId = thatModel.contextSubject;
+
+                                // TODO placeholder fake data
+                                for(let observation_id=0; observation_id<3; observation_id++) {
+                                    const extraObservationRowView = new ObservationRowView({
+                                        el: $(thatEl).find("tbody"),
+                                        model: {
+                                            parentRow: parentRow,
+                                            extra: "extra",
+                                            submission: thatModel.submission,
+                                            id:observation_id, // TODO placeholder
+                                            stableURL: "observation-url-placeholder" // TODO placeholder
+                                        },
+                                    });
+                                    extraObservationRowView.render();
+                                }
+                                $(this).text("hide additional observations from the same submission");
+                                $(this).off("click");
+                                $(this).click(function() {
+                                    $(tableEl).find("tr[submission_id="+submissionId+"][extra]").remove();
+                                    $(this).text("show all observations");
+                                    $(this).off("click");
+                                    $(this).click(expandHandler);
+                                });
+                            });
+                            btn.click(expandHandler);
                         }
                     });
                 }

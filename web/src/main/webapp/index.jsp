@@ -1530,7 +1530,7 @@
     </script>
 
     <script type="text/template" id="observation-row-tmpl">
-        <tr>
+        <tr submission_id={{submission.id}} {{extra}}>
             <td>
                 <a href="#{{stableURL}}">
                     {{submission.submissionDate}}
