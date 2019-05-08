@@ -882,8 +882,6 @@
 
              <h3>Related observations <small>{{ role?"for the role of "+role:"" }} {{tier?"and tier "+tier:""}}</small></h3>
 
-             <div class="more-observations-message"></div>
-
              <table id="gene-observation-grid" class="table table-bordered table-striped observations">
                  <thead>
                  <tr>
@@ -959,8 +957,6 @@
 
             <h3>Related observations <small>{{ role?"for the role of "+role:"" }} {{tier?"and tier "+tier:""}}</small></h3>
 
-            <div class="more-observations-message"></div>
-
             <table id="protein-observation-grid" class="table table-bordered table-striped observations">
                 <thead>
                 <tr>
@@ -1030,8 +1026,6 @@
             </div>
 
             <h3>Related observations <small>{{ role?"for the role of "+role:"" }} {{tier?"and tier "+tier:""}}</small></h3>
-
-            <div class="more-observations-message"></div>
 
             <table id="shrna-observation-grid" class="table table-bordered table-striped observations">
                 <thead>
@@ -1103,8 +1097,6 @@
 
             <h3>Related observations <small>{{ role?"for the role of "+role:"" }} {{tier?"and tier "+tier:""}}</small></h3>
 
-            <div class="more-observations-message"></div>
-
             <table id="sirna-observation-grid" class="table table-bordered table-striped observations">
                 <thead>
                 <tr>
@@ -1171,8 +1163,6 @@
             </div>
 
             <h3>Related observations <small>{{ role?"for the role of "+role:"" }} {{tier?"and tier "+tier:""}}</small></h3>
-
-            <div class="more-observations-message"></div>
 
             <table id="transcript-observation-grid" class="table table-bordered table-striped observations">
                 <thead>
@@ -1241,8 +1231,6 @@
             </div>
 
             <h3>Related observations <small>{{ role?"for the role of "+role:"" }} {{tier?"and tier "+tier:""}}</small></h3>
-
-            <div class="more-observations-message"></div>
 
             <table id="tissuesample-observation-grid" class="table table-bordered table-striped observations">
                 <thead>
@@ -1319,8 +1307,6 @@
             </div>
             <h3>Related observations <small>{{ role?"for the role of "+role:"" }} {{tier?"and tier "+tier:""}}</small></h3>
 
-            <div class="more-observations-message"></div>
-
             <table id="cellsample-observation-grid" class="table table-bordered table-striped observations">
                 <thead>
                 <tr>
@@ -1382,8 +1368,6 @@
                 </div>
             </div>
             <h3>Related observations <small>{{ role?"for the role of "+role:"" }} {{tier?"and tier "+tier:""}}</small></h3>
-
-            <div class="more-observations-message"></div>
 
             <table id="animalmodel-observation-grid" class="table table-bordered table-striped observations">
                 <thead>
@@ -1463,8 +1447,6 @@
               </div>
 
               <h3>Related observations <small>{{ role?"for the role of "+decodeURI(role):"" }} {{tier?"and tier "+tier:""}}</small></h3>
-
-              <div class="more-observations-message"></div>
 
               <table id="compound-observation-grid" class="table table-bordered table-striped observations">
                   <thead>

@@ -1308,43 +1308,29 @@
 
     const SubjectObservationsView = Backbone.View.extend({
         render: function () {
-            var thatEl = $(this.el);
-            var thatModel = this.model;
-            const subjectId = thatModel.subjectId;
-            var tier = thatModel.tier; // possibly undefined
-            var role = thatModel.role; // possibly undefined
+            const thatEl = $(this.el);
+            const thatModel = this.model;
 
-            var countUrl = "observations/countBySubject/?subjectId=" + subjectId;
-            if (role != undefined) {
-                countUrl += "&role=" + role;
-            }
-            if (tier != undefined) {
-                countUrl += "&tier=" + tier;
-            }
+            const observations = new OneObservationsPerSubmissionBySubject({
+                subjectId: thatModel.subjectId,
+                role: thatModel.role, // possibly undefined
+                tier: thatModel.tier, // possibly undefined
+            });
+            observations.fetch({
+                success: function () {
+                    $(".subject-observations-loading", thatEl).remove();
+                    _.each(observations.models, function (observation) {
+                        observation = observation.toJSON();
+                        observation.contextSubject = thatModel.subjectId;
+                        new ObservationRowView({
+                            el: $(thatEl).find("tbody"),
+                            model: observation,
+                        }).render();
+                    });
 
-            $.ajax(countUrl).done(function (count) {
-                var observations = new OneObservationsPerSubmissionBySubject({
-                    subjectId: subjectId,
-                    role: role,
-                    tier: tier
-                });
-                observations.fetch({
-                    success: function () {
-                        $(".subject-observations-loading", thatEl).remove();
-                        _.each(observations.models, function (observation) {
-                            observation = observation.toJSON();
-                            observation.contextSubject = subjectId;
-                            var observationRowView = new ObservationRowView({
-                                el: $(thatEl).find("tbody"),
-                                model: observation
-                            });
-                            observationRowView.render();
-                        });
-
-                        var oTable = $(thatEl).dataTable(observationTableOptions);
-                        $(thatEl).width("100%");
-                    }
-                });
+                    $(thatEl).dataTable(observationTableOptions);
+                    $(thatEl).width("100%");
+                }
             });
 
             return this;
@@ -2051,7 +2037,7 @@
         }
     });
 
-    var SubmissionView = Backbone.View.extend({
+    const SubmissionView = Backbone.View.extend({
         el: $("#main-container"),
         template: _.template($("#submission-tmpl").html()),
         render: function () {
@@ -2129,7 +2115,7 @@
         }
     });
 
-    var MoreObservationView = Backbone.View.extend({
+    const MoreObservationView = Backbone.View.extend({
         el: ".more-observations-message",
         template: _.template($("#more-observations-tmpl").html()),
         render: function () {
