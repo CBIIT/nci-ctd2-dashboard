@@ -169,6 +169,39 @@ public class ObservationController {
     }
 
     @Transactional
+    @RequestMapping(value = "bySubmissionAndSubject", method = { RequestMethod.GET,
+            RequestMethod.POST }, headers = "Accept=application/json")
+    public ResponseEntity<String> getObservationsBySubmissionIdAndSubjuectId(
+            @RequestParam("submissionId") Integer submissionId, @RequestParam("subjectId") Integer subjectId,
+            @RequestParam(value = "role", required = false, defaultValue = "") String role,
+            @RequestParam(value = "tier", required = false, defaultValue = "0") Integer tier) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "application/json; charset=utf-8");
+
+        Set<Observation> observations = new HashSet<Observation>();
+        Subject subject = dashboardDao.getEntityById(Subject.class, subjectId);
+        for (ObservedSubject observedSubject : dashboardDao.findObservedSubjectBySubject(subject)) {
+            Observation observation = observedSubject.getObservation();
+            Submission submission = observation.getSubmission();
+            if (!submission.getId().equals(submissionId)) {
+                continue;
+            }
+            ObservedSubjectRole observedSubjectRole = observedSubject.getObservedSubjectRole();
+            String subjectRole = observedSubjectRole.getSubjectRole().getDisplayName();
+            Integer observationTier = submission.getObservationTemplate().getTier();
+            if ((role.equals("") || role.equals(subjectRole)) && (tier == 0 || tier == observationTier)) {
+                observations.add(observedSubject.getObservation());
+            }
+        }
+        List<Observation> list = new ArrayList<Observation>(observations);
+
+        JSONSerializer jsonSerializer = new JSONSerializer().transform(new ImplTransformer(), Class.class)
+                .transform(new DateTransformer(), Date.class);
+
+        return new ResponseEntity<String>(jsonSerializer.serialize(list), headers, HttpStatus.OK);
+    }
+
+    @Transactional
     @RequestMapping(value = "onePerSubmissionBySubject", method = { RequestMethod.GET,
             RequestMethod.POST }, headers = "Accept=application/json")
     public ResponseEntity<String> getOneObservationsPerSubmission(@RequestParam("subjectId") Integer subjectId,

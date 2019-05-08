@@ -145,12 +145,27 @@
         }
     });
 
-    var OneObservationsPerSubmissionBySubject = Backbone.Collection.extend({
+    const OneObservationsPerSubmissionBySubject = Backbone.Collection.extend({
         url: CORE_API_URL + "observations/onePerSubmissionBySubject/?subjectId=",
         model: Observation,
 
         initialize: function (attributes) {
             this.url += attributes.subjectId;
+            if (attributes.role != undefined) {
+                this.url += "&role=" + attributes.role;
+            }
+            if (attributes.tier != undefined) {
+                this.url += "&tier=" + attributes.tier;
+            }
+        }
+    });
+
+    const ObservationsBySubmissionAndSubject = Backbone.Collection.extend({
+        url: CORE_API_URL + "observations/bySubmissionAndSubject/?",
+        model: Observation,
+
+        initialize: function (attributes) {
+            this.url += "submissionId=" + attributes.submissionId + "&subjectId=" + attributes.subjectId;
             if (attributes.role != undefined) {
                 this.url += "&role=" + attributes.role;
             }
@@ -1719,7 +1734,7 @@
             const tableEl = this.el;
             const thatModel = this.model; // observation
 
-            if(thatModel.extra === undefined) {
+            if (thatModel.extra === undefined) {
                 thatModel.extra = null;
                 $(tableEl).append(this.template(thatModel));
             } else {
@@ -1775,38 +1790,46 @@
                                 [1, 'asc']
                             ]).draw();
 
-                            if (thatModel.extra!=null) {
+                            if (thatModel.extra != null) {
                                 return;
                             }
 
                             // following is only for the 'leading' observation
                             const btn = $("<button>show all observations</button>");
                             $(thatEl).append(btn);
-                            const expandHandler = (function() {
+                            const expandHandler = (function () {
                                 const submissionId = thatModel.submission.id;
                                 const subjectId = thatModel.contextSubject;
 
-                                // TODO placeholder fake data
-                                for(let observation_id=0; observation_id<3; observation_id++) {
-                                    const extraObservationRowView = new ObservationRowView({
-                                        el: $(thatEl).find("tbody"),
-                                        model: {
-                                            parentRow: parentRow,
-                                            extra: "extra",
-                                            submission: thatModel.submission,
-                                            id:observation_id, // TODO placeholder
-                                            stableURL: "observation-url-placeholder" // TODO placeholder
-                                        },
-                                    });
-                                    extraObservationRowView.render();
-                                }
-                                $(this).text("hide additional observations from the same submission");
-                                $(this).off("click");
-                                $(this).click(function() {
-                                    $(tableEl).find("tr[submission_id="+submissionId+"][extra]").remove();
-                                    $(this).text("show all observations");
-                                    $(this).off("click");
-                                    $(this).click(expandHandler);
+                                const observations = new ObservationsBySubmissionAndSubject({
+                                    submissionId: submissionId,
+                                    subjectId: subjectId,
+                                });
+                                observations.fetch({
+                                    success: function () {
+                                        _.each(observations.models, function (observation) {
+                                            observation = observation.toJSON();
+                                            if (observation.id == thatModel.id) return;
+                                            observation.parentRow = parentRow;
+                                            observation.extra = "extra";
+                                            const extraObservationRowView = new ObservationRowView({
+                                                el: $(thatEl).find("tbody"),
+                                                model: observation,
+                                            });
+                                            extraObservationRowView.render();
+                                        });
+                                        $(btn).text("hide additional observations from the same submission");
+                                        $(btn).off("click");
+                                        $(btn).click(function () {
+                                            $(tableEl).find("tr[submission_id=" + submissionId + "][extra]").remove();
+                                            $(btn).text("show all observations");
+                                            $(btn).off("click");
+                                            $(btn).click(expandHandler);
+                                        });
+                                    },
+                                    error: function () {
+                                        console.log('ObservationsBySubmissionAndSubject fetch failed');
+                                    },
                                 });
                             });
                             btn.click(expandHandler);
