@@ -1276,7 +1276,37 @@
         }
     });
 
-    var SubjectObservationsView = Backbone.View.extend({
+    const observationTableOptions = {
+        'dom': '<iBfrtlp>',
+        "sPaginationType": "bootstrap",
+        "columns": [{
+                "orderDataType": "dashboard-date"
+            },
+            null,
+            null,
+            null
+        ],
+        'buttons': [{
+            extend: 'excelHtml5',
+            text: 'Export as Spreadsheet',
+            className: "extra-margin",
+            customizeData: function (data) {
+                var body = data.body;
+                for (var i = 0; i < body.length; i++) {
+                    var raw_content = body[i][1].split(/ +/);
+                    raw_content.pop();
+                    raw_content.pop();
+                    body[i][1] = raw_content.join(' ');
+                }
+            },
+        }],
+        order: [
+            [2, 'desc'],
+            [0, 'desc'],
+        ],
+    };
+
+    const SubjectObservationsView = Backbone.View.extend({
         render: function () {
             var thatEl = $(this.el);
             var thatModel = this.model;
@@ -1311,37 +1341,8 @@
                             observationRowView.render();
                         });
 
-                        var oTable = $(thatEl).dataTable({
-                            'dom': '<iBfrtlp>',
-                            "sPaginationType": "bootstrap",
-                            "columns": [{
-                                    "orderDataType": "dashboard-date"
-                                },
-                                null,
-                                null,
-                                null
-                            ],
-                            'buttons': [{
-                                extend: 'excelHtml5',
-                                text: 'Export as Spreadsheet',
-                                className: "extra-margin",
-                                customizeData: function (data) {
-                                    var body = data.body;
-                                    for (var i = 0; i < body.length; i++) {
-                                        var raw_content = body[i][1].split(/ +/);
-                                        raw_content.pop();
-                                        raw_content.pop();
-                                        body[i][1] = raw_content.join(' ');
-                                    }
-                                },
-                            }],
-                        });
+                        var oTable = $(thatEl).dataTable(observationTableOptions);
                         $(thatEl).width("100%");
-
-                        oTable.fnSort([
-                            [2, 'desc']
-                        ]);
-
                     }
                 });
             });
@@ -1807,6 +1808,7 @@
                                 });
                                 observations.fetch({
                                     success: function () {
+                                        $(tableEl).parent().dataTable().fnDestroy();
                                         _.each(observations.models, function (observation) {
                                             observation = observation.toJSON();
                                             if (observation.id == thatModel.id) return;
@@ -1818,10 +1820,13 @@
                                             });
                                             extraObservationRowView.render();
                                         });
+                                        $(tableEl).parent().dataTable(observationTableOptions);
                                         $(btn).text("hide additional observations from the same submission");
                                         $(btn).off("click");
                                         $(btn).click(function () {
+                                            $(tableEl).parent().dataTable().fnDestroy();
                                             $(tableEl).find("tr[submission_id=" + submissionId + "][extra]").remove();
+                                            $(tableEl).parent().dataTable(observationTableOptions);
                                             $(btn).text("show all observations");
                                             $(btn).off("click");
                                             $(btn).click(expandHandler);
