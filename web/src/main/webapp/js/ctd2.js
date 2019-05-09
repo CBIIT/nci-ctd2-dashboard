@@ -1319,8 +1319,10 @@
             observations.fetch({
                 success: function () {
                     $(".subject-observations-loading", thatEl).remove();
-                    _.each(observations.models, function (observation) {
-                        observation = observation.toJSON();
+                    _.each(observations.models, function (observationWithCount) {
+                        observationWithCount = observationWithCount.toJSON();
+                        observation = observationWithCount.observation;
+                        observation.count = observationWithCount.count;
                         observation.contextSubject = thatModel.subjectId;
                         new ObservationRowView({
                             el: $(thatEl).find("tbody"),
@@ -1782,7 +1784,8 @@
                             }
 
                             // following is only for the 'leading' observation
-                            const btn = $("<button>show all observations</button>");
+                            const buttonText = "show all " + thatModel.count + " observations";
+                            const btn = $("<button>" + buttonText + "</button>");
                             $(thatEl).append(btn);
                             const expandHandler = (function () {
                                 const submissionId = thatModel.submission.id;
@@ -1813,7 +1816,7 @@
                                             $(tableEl).parent().dataTable().fnDestroy();
                                             $(tableEl).find("tr[submission_id=" + submissionId + "][extra]").remove();
                                             $(tableEl).parent().dataTable(observationTableOptions);
-                                            $(btn).text("show all observations");
+                                            $(btn).text(buttonText);
                                             $(btn).off("click");
                                             $(btn).click(expandHandler);
                                         });

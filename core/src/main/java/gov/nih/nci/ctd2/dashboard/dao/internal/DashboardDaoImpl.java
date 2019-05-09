@@ -773,21 +773,22 @@ public class DashboardDaoImpl implements DashboardDao {
     }
 
     @Override
-    public List<Observation> getOneObservationPerSubmission(Integer subjectId) {
+    public Map<Observation, BigInteger> getOneObservationPerSubmission(Integer subjectId) {
         Session session = getSession();
         @SuppressWarnings("unchecked")
-        org.hibernate.query.Query<Integer> query = session.createNativeQuery(
-                "SELECT MIN(observation_id) FROM observed_subject JOIN observation on observed_subject.observation_id=observation.id WHERE subject_id="
+        org.hibernate.query.Query<Object[]> query = session.createNativeQuery(
+                "SELECT MIN(observation_id), COUNT(observation_id) FROM observed_subject JOIN observation on observed_subject.observation_id=observation.id WHERE subject_id="
                 + subjectId + " GROUP BY submission_id");
-        List<Integer> idList = query.list();
+        List<Object[]> idList = query.list();
         session.close();
 
-        List<Observation> list = new ArrayList<Observation>();
-        for(Integer id: idList) {
-            Observation observation = getEntityById(Observation.class, id);
-            list.add(observation);
+        Map<Observation, BigInteger> result = new HashMap<Observation, BigInteger>();
+        for(Object[] pair: idList) {
+            Observation observation = getEntityById(Observation.class, (Integer)pair[0]);
+            BigInteger count = (BigInteger)pair[1];
+            result.put(observation, count);
         }
 
-        return list;
+        return result;
     }
 }

@@ -1,11 +1,14 @@
 package gov.nih.nci.ctd2.dashboard.controller;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,40 +89,47 @@ public class ObservationController {
         }
     }
 
-    private List<Observation> onePerSubmissionBySubjectId(Integer subjectId, String role, Integer tier) {
+    private List<ObservationWithCount> onePerSubmissionBySubjectId(Integer subjectId, String role, Integer tier) {
         Subject subject = dashboardDao.getEntityById(Subject.class, subjectId);
         if (subject != null) {
-            Set<Integer> submissionIds = new HashSet<Integer>();
-            Set<Observation> observations = new HashSet<Observation>();
+            Map<Integer, Integer> submissionIds = new HashMap<Integer, Integer>();
+            Map<Integer, Observation> observations = new HashMap<Integer, Observation>();
             for (ObservedSubject observedSubject : dashboardDao.findObservedSubjectBySubject(subject)) {
                 Observation observation = observedSubject.getObservation();
                 Submission submission = observation.getSubmission();
                 Integer submissionId = submission.getId();
-                if (submissionIds.contains(submissionId)) {
-                    continue;
-                }
+
                 ObservedSubjectRole observedSubjectRole = observedSubject.getObservedSubjectRole();
                 String subjectRole = observedSubjectRole.getSubjectRole().getDisplayName();
                 Integer observationTier = observedSubject.getObservation().getSubmission().getObservationTemplate()
                         .getTier();
                 if ((role.equals("") || role.equals(subjectRole)) && (tier == 0 || tier == observationTier)) {
-                    observations.add(observation);
-                    submissionIds.add(submissionId);
+                    if (!submissionIds.containsKey(submissionId)) {
+                        submissionIds.put(submissionId, 1);
+                        observations.put(submissionId, observation);
+                    } else {
+                        submissionIds.put(submissionId, submissionIds.get(submissionId) + 1);
+                    }
                 }
             }
-            List<Observation> list = new ArrayList<Observation>(observations);
-            Collections.sort(list, new Comparator<Observation>() {
+            List<ObservationWithCount> list = new ArrayList<ObservationWithCount>();
+            for (Integer submissionId : observations.keySet()) {
+                Observation obs = observations.get(submissionId);
+                Integer count = submissionIds.get(submissionId);
+                list.add(new ObservationWithCount(obs, count));
+            }
+            Collections.sort(list, new Comparator<ObservationWithCount>() {
                 @Override
-                public int compare(Observation o1, Observation o2) {
-                    Integer tier2 = o2.getSubmission().getObservationTemplate().getTier();
-                    Integer tier1 = o1.getSubmission().getObservationTemplate().getTier();
+                public int compare(ObservationWithCount o1, ObservationWithCount o2) {
+                    Integer tier2 = o2.observation.getSubmission().getObservationTemplate().getTier();
+                    Integer tier1 = o1.observation.getSubmission().getObservationTemplate().getTier();
                     return tier2 - tier1;
                 }
             });
 
             return list;
         } else {
-            return new ArrayList<Observation>();
+            return new ArrayList<ObservationWithCount>();
         }
     }
 
@@ -201,6 +211,24 @@ public class ObservationController {
         return new ResponseEntity<String>(jsonSerializer.serialize(list), headers, HttpStatus.OK);
     }
 
+    static final class ObservationWithCount {
+        public ObservationWithCount(Observation observation, int count) {
+            this.observation = observation;
+            this.count = count;
+        }
+
+        public Observation getObservation() {
+            return observation;
+        }
+
+        public Integer getCount() {
+            return count;
+        }
+
+        final private Observation observation;
+        final private Integer count;
+    }
+
     @Transactional
     @RequestMapping(value = "onePerSubmissionBySubject", method = { RequestMethod.GET,
             RequestMethod.POST }, headers = "Accept=application/json")
@@ -210,11 +238,15 @@ public class ObservationController {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json; charset=utf-8");
 
-        List<Observation> list = null;
+        List<ObservationWithCount> list = null;
         if (tier > 0 || role.trim().length() > 0) {
             list = onePerSubmissionBySubjectId(subjectId, role, tier);
         } else {
-            list = dashboardDao.getOneObservationPerSubmission(subjectId);
+            Map<Observation, BigInteger> observationAndCount = dashboardDao.getOneObservationPerSubmission(subjectId);
+            list = new ArrayList<ObservationWithCount>();
+            for (Observation observation : observationAndCount.keySet()) {
+                list.add(new ObservationWithCount(observation, observationAndCount.get(observation).intValue()));
+            }
         }
 
         JSONSerializer jsonSerializer = new JSONSerializer().transform(new ImplTransformer(), Class.class)
