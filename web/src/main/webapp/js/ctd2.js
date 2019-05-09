@@ -1784,6 +1784,10 @@
                             }
 
                             // following is only for the 'leading' observation
+                            if (thatModel.count == 1) {
+                                $(thatEl).append($("<button>There is only one observation in this submission.</button>"));
+                                return;
+                            }
                             const buttonText = "show all " + thatModel.count + " observations";
                             const btn = $("<button>" + buttonText + "</button>");
                             $(thatEl).append(btn);
