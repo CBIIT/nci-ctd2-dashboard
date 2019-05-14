@@ -196,13 +196,16 @@ public class ObservationController {
         final private String summary;
     }
 
+    /*
+     * For a given submission, tier is decided so there is point of further
+     * specifiying tier.
+     */
     @Transactional
     @RequestMapping(value = "bySubmissionAndSubject", method = { RequestMethod.GET,
             RequestMethod.POST }, headers = "Accept=application/json")
     public ResponseEntity<String> getObservationsBySubmissionIdAndSubjuectId(
             @RequestParam("submissionId") Integer submissionId, @RequestParam("subjectId") Integer subjectId,
-            @RequestParam(value = "role", required = false, defaultValue = "") String role,
-            @RequestParam(value = "tier", required = false, defaultValue = "0") Integer tier) {
+            @RequestParam(value = "role", required = false, defaultValue = "") String role) {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json; charset=utf-8");
 
@@ -219,10 +222,8 @@ public class ObservationController {
             } else if (summaryTemplate == null) {
                 summaryTemplate = submission.getObservationTemplate().getObservationSummary();
             }
-            ObservedSubjectRole observedSubjectRole = observedSubject.getObservedSubjectRole();
-            String subjectRole = observedSubjectRole.getSubjectRole().getDisplayName();
-            Integer observationTier = submission.getObservationTemplate().getTier();
-            if ((role.equals("") || role.equals(subjectRole)) && (tier == 0 || tier == observationTier)) {
+            String subjectRole = observedSubject.getObservedSubjectRole().getSubjectRole().getDisplayName();
+            if ((role.equals("") || role.equals(subjectRole))) {
                 observations.add(observation);
             }
         }

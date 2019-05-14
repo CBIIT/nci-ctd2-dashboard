@@ -169,9 +169,6 @@
             if (attributes.role != undefined) {
                 this.url += "&role=" + attributes.role;
             }
-            if (attributes.tier != undefined) {
-                this.url += "&tier=" + attributes.tier;
-            }
         }
     });
 
@@ -1324,6 +1321,7 @@
                         observation = observationWithCount.observation;
                         observation.count = observationWithCount.count;
                         observation.contextSubject = thatModel.subjectId;
+                        observation.role = thatModel.role;
                         new ObservationRowView({
                             el: $(thatEl).find("tbody"),
                             model: observation,
@@ -1783,6 +1781,10 @@
                                 return;
                             }
 
+                            if (thatModel.count == undefined) { // the case of search result
+                                return;
+                            }
+
                             // following is only for the 'leading' observation
                             if (thatModel.count == 1) {
                                 $(thatEl).append($("<button>There is only one observation in this submission.</button>"));
@@ -1793,11 +1795,11 @@
                             $(thatEl).append(btn);
                             const expandHandler = (function () {
                                 const submissionId = thatModel.submission.id;
-                                const subjectId = thatModel.contextSubject;
 
                                 const observations = new ObservationsBySubmissionAndSubject({
                                     submissionId: submissionId,
-                                    subjectId: subjectId,
+                                    subjectId: thatModel.contextSubject,
+                                    role: thatModel.role,
                                 });
                                 const startTime = new Date();
                                 observations.fetch({
