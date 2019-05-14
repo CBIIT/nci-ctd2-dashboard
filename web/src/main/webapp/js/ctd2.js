@@ -162,7 +162,7 @@
 
     const ObservationsBySubmissionAndSubject = Backbone.Collection.extend({
         url: CORE_API_URL + "observations/bySubmissionAndSubject/?",
-        model: Observation,
+        model: Observation, // in fact observation with summary
 
         initialize: function (attributes) {
             this.url += "submissionId=" + attributes.submissionId + "&subjectId=" + attributes.subjectId;
@@ -1717,7 +1717,7 @@
         }
     });
 
-    var ObservationRowView = Backbone.View.extend({
+    const ObservationRowView = Backbone.View.extend({
         template: _.template($("#observation-row-tmpl").html()),
         render: function () {
             const tableEl = this.el;
@@ -1799,17 +1799,19 @@
                                     submissionId: submissionId,
                                     subjectId: subjectId,
                                 });
+                                const startTime = new Date();
                                 observations.fetch({
                                     success: function () {
+                                        const seconds = Math.round((new Date() - startTime) / 1000); // get seconds
+                                        console.log(seconds + " seconds to get 'observations with summary'");
                                         $(tableEl).parent().dataTable().fnDestroy();
-                                        _.each(observations.models, function (observation) {
-                                            observation = observation.toJSON();
-                                            if (observation.id == thatModel.id) return;
-                                            observation.parentRow = parentRow;
-                                            observation.extra = "extra";
-                                            const extraObservationRowView = new ObservationRowView({
+                                        _.each(observations.models, function (observation_with_summary) {
+                                            observation_with_summary = observation_with_summary.toJSON();
+                                            if (observation_with_summary.observation.id == thatModel.id) return;
+                                            observation_with_summary.parentRow = parentRow;
+                                            const extraObservationRowView = new FastObservationRowView({
                                                 el: $(thatEl).find("tbody"),
-                                                model: observation,
+                                                model: observation_with_summary,
                                             });
                                             extraObservationRowView.render();
                                         });
@@ -1835,6 +1837,33 @@
                     });
                 }
             });
+
+            return this;
+        }
+    });
+
+    // similar to ObservationRowView, but summary readily expanded
+    const FastObservationRowView = Backbone.View.extend({
+        template: _.template($("#observation-row-tmpl").html()),
+        render: function () {
+            const tableEl = this.el;
+            const thatModel = this.model; // observation with summary
+            const observation = thatModel.observation;
+
+            observation.extra = "extra";
+            thatModel.parentRow.after(this.template(observation));
+
+            const cellId = "#observation-summary-" + observation.id;
+            const thatEl = $(cellId);
+            $(thatEl).html(thatModel.summary);
+
+            const dataTable = $(tableEl).parent().DataTable();
+            dataTable.cells(cellId).invalidate();
+            dataTable.order([
+                [2, 'desc'],
+                [0, 'desc'],
+                [1, 'asc']
+            ]).draw();
 
             return this;
         }

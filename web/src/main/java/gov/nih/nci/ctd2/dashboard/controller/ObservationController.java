@@ -178,6 +178,24 @@ public class ObservationController {
         return new ResponseEntity<String>(jsonSerializer.serialize(entities), headers, HttpStatus.OK);
     }
 
+    static final class ObservationWithSummary {
+        public ObservationWithSummary(Observation observation, String summary) {
+            this.observation = observation;
+            this.summary = summary;
+        }
+
+        public Observation getObservation() {
+            return observation;
+        }
+
+        public String getSummary() {
+            return summary;
+        }
+
+        final private Observation observation;
+        final private String summary;
+    }
+
     @Transactional
     @RequestMapping(value = "bySubmissionAndSubject", method = { RequestMethod.GET,
             RequestMethod.POST }, headers = "Accept=application/json")
@@ -188,6 +206,9 @@ public class ObservationController {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json; charset=utf-8");
 
+        Date time1 = new Date();
+        String summaryTemplate = null;
+
         Set<Observation> observations = new HashSet<Observation>();
         Subject subject = dashboardDao.getEntityById(Subject.class, subjectId);
         for (ObservedSubject observedSubject : dashboardDao.findObservedSubjectBySubject(subject)) {
@@ -195,15 +216,26 @@ public class ObservationController {
             Submission submission = observation.getSubmission();
             if (!submission.getId().equals(submissionId)) {
                 continue;
+            } else if (summaryTemplate == null) {
+                summaryTemplate = submission.getObservationTemplate().getObservationSummary();
             }
             ObservedSubjectRole observedSubjectRole = observedSubject.getObservedSubjectRole();
             String subjectRole = observedSubjectRole.getSubjectRole().getDisplayName();
             Integer observationTier = submission.getObservationTemplate().getTier();
             if ((role.equals("") || role.equals(subjectRole)) && (tier == 0 || tier == observationTier)) {
-                observations.add(observedSubject.getObservation());
+                observations.add(observation);
             }
         }
-        List<Observation> list = new ArrayList<Observation>(observations);
+
+        List<ObservationWithSummary> list = new ArrayList<ObservationWithSummary>();
+        for (Observation observation : observations) {
+            String expanded = dashboardDao.expandSummary(observation.getId(), summaryTemplate)
+                    + " (<a class='button-link' href='#" + observation.getStableURL() + "'>details &raquo;</a>)";
+            list.add(new ObservationWithSummary(observation, expanded));
+        }
+
+        Date time2 = new Date();
+        System.out.println((time2.getTime() - time1.getTime()) / 1000 + " seconds to get 'obervations with summary'");
 
         JSONSerializer jsonSerializer = new JSONSerializer().transform(new ImplTransformer(), Class.class)
                 .transform(new DateTransformer(), Date.class);

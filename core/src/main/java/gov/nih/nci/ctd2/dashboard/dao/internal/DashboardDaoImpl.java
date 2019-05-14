@@ -8,6 +8,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -790,5 +792,72 @@ public class DashboardDaoImpl implements DashboardDao {
         }
 
         return result;
+    }
+
+    @Override
+    public String expandSummary(Integer observationId, String summaryTemplate) {
+        String summary = summaryTemplate;
+
+        Session session1 = getSession();
+        @SuppressWarnings("unchecked")
+        org.hibernate.query.Query<Object[]> query1 = session1.createNativeQuery(
+            "SELECT stableURL, displayName, columnName FROM subject"
+            + " JOIN observed_subject ON subject.id=observed_subject.subject_id"
+            + " JOIN observed_subject_role ON observed_subject.observedSubjectRole_id=observed_subject_role.id"
+            + " JOIN dashboard_entity ON subject.id=dashboard_entity.id"
+            + " WHERE observation_id=" + observationId);
+        List<Object[]> subjects = query1.list();
+        session1.close();
+        for(Object[] x: subjects) {
+            String stableURL = (String) x[0];
+            String subjectName = (String) x[1];
+            String columnName = (String) x[2];
+            String replacement = "<a class='summary-replacement' href='#" + stableURL+ "'>" + subjectName + "</a>";
+            summary = summary.replace("<"+columnName+">", replacement);
+        }
+
+        Pattern pattern = Pattern.compile("\\<([0-9a-zA-Z_]+)\\>");
+        Matcher matcher = pattern.matcher(summary);
+        while (matcher.find()) {
+            String match = matcher.group(0);
+            String columnName= matcher.group(1);
+
+            Session session = getSession();
+            @SuppressWarnings("unchecked")
+            org.hibernate.query.Query<String> query = session.createNativeQuery(
+                "SELECT dashboard_entity.displayName FROM evidence"
+                + " JOIN observed_evidence on evidence.id=observed_evidence.evidence_id"
+                + " JOIN observed_evidence_role ON observed_evidence.observedEvidenceRole_id=observed_evidence_role.id"
+                + " JOIN dashboard_entity ON evidence.id=dashboard_entity.id"
+                + " WHERE observed_evidence.observation_id=" + observationId
+                + " AND observed_evidence_role.columnName='" + columnName + "'");
+            String evidenceName = query.getSingleResult();
+            session.close();
+            summary = summary.replace(match, evidenceName);
+        }
+        return summary;
+    }
+
+    @Override
+    public List<Integer> getObservationsBySubmissionIdAndSubjuectId(
+            Integer submissionId, Integer subjectId, String role, Integer tier) {
+        Session session = getSession();
+        @SuppressWarnings("unchecked")
+        org.hibernate.query.Query<Integer> query = session.createNativeQuery(
+            "SELECT observation.id FROM observed_subject"
+            + " JOIN observation ON observed_subject.observation_id=observation.id"
+            + " JOIN submission ON observation.submission_id = submission.id"
+            + " JOIN observation_template ON submission.observationTemplate_id=observation_template.id"
+            + " JOIN observed_subject_role ON observed_subject.observedSubjectRole_id=observed_subject_role.id"
+            + " JOIN subject_role ON observed_subject_role.subjectRole_id=subject_role.id"
+            + " JOIN dashboard_entity ON subject_role.id=dashboard_entity.id"
+            + " WHERE submission.id=" + submissionId
+            + " AND subject_id=" + subjectId
+            + " AND observation_template.tier=" + tier
+            + " AND dashboard_entity.displayName='" + role + "'"
+        );
+        List<Integer> list = query.list();
+        session.close();
+        return list;
     }
 }
