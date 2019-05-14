@@ -65,6 +65,4 @@ public interface DashboardDao {
     List<Protein> findProteinByGene(Gene gene);
     Map<Observation, BigInteger> getOneObservationPerSubmission(Integer subjectId);
     String expandSummary(Integer observationId, String summaryTemplate);
-    List<Integer> getObservationsBySubmissionIdAndSubjuectId(Integer submissionId, Integer subjectId, String role, Integer tier);
 }
-
