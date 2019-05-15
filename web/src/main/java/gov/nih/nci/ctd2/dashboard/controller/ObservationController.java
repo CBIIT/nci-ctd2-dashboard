@@ -18,7 +18,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -179,6 +178,24 @@ public class ObservationController {
         return new ResponseEntity<String>(jsonSerializer.serialize(entities), headers, HttpStatus.OK);
     }
 
+    static final class ObservationWithSummary {
+        public ObservationWithSummary(Observation observation, String summary) {
+            this.observation = observation;
+            this.summary = summary;
+        }
+
+        public Observation getObservation() {
+            return observation;
+        }
+
+        public String getSummary() {
+            return summary;
+        }
+
+        final private Observation observation;
+        final private String summary;
+    }
+
     /*
      * For a given submission, tier is decided so there is point of further
      * specifiying tier.
@@ -211,7 +228,12 @@ public class ObservationController {
             }
         }
 
-        List<Observation> list = new ArrayList<Observation>(observations);
+        List<ObservationWithSummary> list = new ArrayList<ObservationWithSummary>();
+        for (Observation observation : observations) {
+            String expanded = dashboardDao.expandSummary(observation.getId(), summaryTemplate)
+                    + " (<a class='button-link' href='#" + observation.getStableURL() + "'>details &raquo;</a>)";
+            list.add(new ObservationWithSummary(observation, expanded));
+        }
 
         Date time2 = new Date();
         System.out.println((time2.getTime() - time1.getTime()) / 1000 + " seconds to get 'obervations with summary'");
@@ -220,37 +242,6 @@ public class ObservationController {
                 .transform(new DateTransformer(), Date.class);
 
         return new ResponseEntity<String>(jsonSerializer.serialize(list), headers, HttpStatus.OK);
-    }
-
-    static final class SummaryText {
-        public SummaryText(String text) {
-            this.text = text;
-        }
-
-        public String getText() {
-            return text;
-        }
-
-        private String text;
-    }
-
-    @Transactional
-    @RequestMapping(value = "expandedsummary/{observationId}", method = { RequestMethod.GET,
-            RequestMethod.POST }, headers = "Accept=application/json")
-    public ResponseEntity<String> getExpandedSummary(@PathVariable String observationId) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "application/json; charset=utf-8");
-
-        Integer id = Integer.parseInt(observationId);
-        Observation observation = dashboardDao.getEntityById(Observation.class, id);
-        String summaryTemplate = observation.getSubmission().getObservationTemplate().getObservationSummary();
-
-        String expanded = dashboardDao.expandSummary(id, summaryTemplate) + " (<a class='button-link' href='#"
-                + observation.getStableURL() + "'>details &raquo;</a>)";
-
-        JSONSerializer jsonSerializer = new JSONSerializer().transform(new ImplTransformer(), Class.class);
-
-        return new ResponseEntity<String>(jsonSerializer.serialize(new SummaryText(expanded)), headers, HttpStatus.OK);
     }
 
     static final class ObservationWithCount {
