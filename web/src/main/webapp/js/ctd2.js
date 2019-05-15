@@ -1794,6 +1794,7 @@
                             const btn = $("<button>" + buttonText + "</button>");
                             $(thatEl).append(btn);
                             const expandHandler = (function () {
+                                $(btn).prop('disabled', true);
                                 const submissionId = thatModel.submission.id;
 
                                 const observations = new ObservationsBySubmissionAndSubject({
@@ -1828,8 +1829,10 @@
                                             $(btn).off("click");
                                             $(btn).click(expandHandler);
                                         });
+                                        $(btn).prop('disabled', false);
                                     },
                                     error: function () {
+                                        $(btn).prop('disabled', false);
                                         console.log('ObservationsBySubmissionAndSubject fetch failed');
                                     },
                                 });
