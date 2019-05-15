@@ -1786,11 +1786,12 @@
                             }
 
                             // following is only for the 'leading' observation
+                            $(thatEl).append("<br>");
                             if (thatModel.count == 1) {
-                                $(thatEl).append($("<button>There is only one observation in this submission.</button>"));
+                                $(thatEl).append("There is only one observation in this submission.");
                                 return;
                             }
-                            const buttonText = "show all " + thatModel.count + " observations";
+                            const buttonText = "Show all " + thatModel.count + " observations";
                             const btn = $("<button>" + buttonText + "</button>");
                             $(thatEl).append(btn);
                             const expandHandler = (function () {
@@ -1819,7 +1820,7 @@
                                             extraObservationRowView.render();
                                         });
                                         $(tableEl).parent().dataTable(observationTableOptions);
-                                        $(btn).text("hide additional observations from the same submission");
+                                        $(btn).text("Hide additional observations from the same submission");
                                         $(btn).off("click");
                                         $(btn).click(function () {
                                             $(tableEl).parent().dataTable().fnDestroy();
