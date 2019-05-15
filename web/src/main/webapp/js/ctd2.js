@@ -1877,26 +1877,32 @@
                             null
                         ],
                         "drawCallback": function (settings) {
-                            var api = this.api();
-                            var rows = api.rows({
+                            const api = this.api();
+                            api.column(1, {
+                                    page: 'all'
+                                })
+                                .data()
+                                .each(function (group, i) {
+                                    const project_url = group.toLowerCase().replace(/[^a-zA-Z0-9]/g, "-");
+                                    urlMap[project_url] = group;
+                                });
+
+                            const rows = api.rows({
                                 page: 'current'
                             }).nodes();
-                            var last = null;
-
+                            let last = null;
                             api.column(1, {
                                     page: 'current'
                                 })
                                 .data()
                                 .each(function (group, i) {
-                                    var project_url = group.toLowerCase().replace(/[^a-zA-Z0-9]/g, "-");
-                                    urlMap[project_url] = group;
                                     if (last != group) {
                                         $(rows)
                                             .eq(i)
                                             .before(
                                                 _.template($("#tbl-project-title-tmpl").html())({
                                                     project: group,
-                                                    project_url: project_url,
+                                                    project_url: group.toLowerCase().replace(/[^a-zA-Z0-9]/g, "-"),
                                                     centerStableURL: centerModel.stableURL
                                                 })
                                             );
