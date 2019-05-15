@@ -172,6 +172,10 @@
         }
     });
 
+    const ExpandedSummary = Backbone.Model.extend({
+        urlRoot: CORE_API_URL + "observations/expandedsummary"
+    });
+
     var SubjectRole = Backbone.Model.extend({});
     var SubjectRoles = Backbone.Collection.extend({
         url: CORE_API_URL + "list/role?filterBy=",
@@ -1807,13 +1811,13 @@
                                         const seconds = Math.round((new Date() - startTime) / 1000); // get seconds
                                         console.log(seconds + " seconds to get 'observations with summary'");
                                         $(tableEl).parent().dataTable().fnDestroy();
-                                        _.each(observations.models, function (observation_with_summary) {
-                                            observation_with_summary = observation_with_summary.toJSON();
-                                            if (observation_with_summary.observation.id == thatModel.id) return;
-                                            observation_with_summary.parentRow = parentRow;
+                                        _.each(observations.models, function (observation) {
+                                            observation = observation.toJSON();
+                                            if (observation.id == thatModel.id) return;
+                                            observation.parentRow = parentRow;
                                             const extraObservationRowView = new FastObservationRowView({
                                                 el: $(thatEl).find("tbody"),
-                                                model: observation_with_summary,
+                                                model: observation,
                                             });
                                             extraObservationRowView.render();
                                         });
@@ -1849,23 +1853,33 @@
         template: _.template($("#observation-row-tmpl").html()),
         render: function () {
             const tableEl = this.el;
-            const thatModel = this.model; // observation with summary
-            const observation = thatModel.observation;
+            const observation = this.model;
 
             observation.extra = "extra";
-            thatModel.parentRow.after(this.template(observation));
+            observation.parentRow.after(this.template(observation));
 
-            const cellId = "#observation-summary-" + observation.id;
-            const thatEl = $(cellId);
-            $(thatEl).html(thatModel.summary);
+            const summary = new ExpandedSummary({
+                id: observation.id
+            });
+            summary.fetch({
+                success: function () {
+                    const cellId = "#observation-summary-" + observation.id;
+                    $(cellId).html(summary.toJSON().text);
 
-            const dataTable = $(tableEl).parent().DataTable();
-            dataTable.cells(cellId).invalidate();
-            dataTable.order([
-                [2, 'desc'],
-                [0, 'desc'],
-                [1, 'asc']
-            ]).draw();
+                    const dataTable = $(tableEl).parent().DataTable();
+                    dataTable.cells(cellId).invalidate();
+                    dataTable.order([
+                        [2, 'desc'],
+                        [0, 'desc'],
+                        [1, 'asc']
+                    ]).draw();
+
+                },
+                error: function (response, status) {
+                    console.log(response);
+                    console.log(status);
+                },
+            });
 
             return this;
         }
