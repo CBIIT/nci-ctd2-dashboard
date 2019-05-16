@@ -613,7 +613,7 @@
     });
 
     /// TODO: encode these into the DB instead
-    var ecoMappings = [{
+    const ecoMappings = [{
             "evidence": "file",
             "role": "background",
             "eco_term": "inference from background scientific knowledge",
@@ -1066,6 +1066,9 @@
                 })
                 .first()
                 .value();
+            if (result.eco == undefined) {
+                result.eco = {};
+            }
 
             this.template = _.template($(templateId).html());
             var thatEl = $(this.el);
