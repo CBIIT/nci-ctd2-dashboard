@@ -13,6 +13,8 @@ import org.apache.commons.logging.LogFactory;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 
@@ -44,14 +46,7 @@ public class ObservationDataFieldSetMapper implements FieldSetMapper<Observation
 	@Qualifier("observationTemplateMap")
 	private	HashMap<String, String> observationTemplateMap;
 
-	private HashMap<String, Submission> submissionCache = new HashMap<String, Submission>();
-
-	/* Used by ObservationDataWriter */
-	public static String getSubmissionCacheKey(Submission submission) {
-		return submission.getDisplayName() + 
-			ObservationDataFieldSetMapper.TEMPLATE_DATE_FORMAT.format(submission.getSubmissionDate()) +
-			submission.getObservationTemplate().getDisplayName();
-	}
+	private Map<String, Submission> submissionCache = new ConcurrentHashMap<String, Submission>();
 
 	public ObservationData mapFieldSet(FieldSet fieldSet) throws BindException {
 
@@ -59,18 +54,21 @@ public class ObservationDataFieldSetMapper implements FieldSetMapper<Observation
 		Date submissionDate = fieldSet.readDate(SUBMISSION_DATE, "yyyy.MM.dd");
 		String submissionName = fieldSet.readString(SUBMISSION_NAME);
 
-		// create submission - if cache key changes, update getSubmissionCacheKey() defined above
-		String submissionCacheKey = submissionName + TEMPLATE_DATE_FORMAT.format(submissionDate) + templateName;
-		Submission submission = submissionCache.get(submissionCacheKey);
-		if (submission == null) {
-			submission = observationDataFactory.createSubmission(submissionName,
-																 submissionDate,
-																 templateName);
-			submissionCache.put(submissionCacheKey, submission);
-		}
 		// create observation
 		Observation observation = dashboardFactory.create(Observation.class);
-		observation.setSubmission(submission);
+
+		// create submission - if cache key changes, update getSubmissionCacheKey() defined above
+		synchronized(submissionCache) {
+			String submissionCacheKey = submissionName + TEMPLATE_DATE_FORMAT.format(submissionDate) + templateName;
+			Submission submission = submissionCache.get(submissionCacheKey);
+			if (submission == null) {
+				submission = observationDataFactory.createSubmission(submissionName,
+																	submissionDate,
+																	templateName);
+				submissionCache.put(submissionCacheKey, submission);
+			}
+			observation.setSubmission(submission);
+		}
 
 		// these will contain all observed entities / evidence we will persist
 		LinkedHashSet<DashboardEntity> evidenceSet = new LinkedHashSet<DashboardEntity>();

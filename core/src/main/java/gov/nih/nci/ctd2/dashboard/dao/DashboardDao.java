@@ -4,9 +4,11 @@ import gov.nih.nci.ctd2.dashboard.model.*;
 import gov.nih.nci.ctd2.dashboard.util.DashboardEntityWithCounts;
 import gov.nih.nci.ctd2.dashboard.util.SubjectWithSummaries;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 public interface DashboardDao {
     void save(DashboardEntity entity);
@@ -61,5 +63,6 @@ public interface DashboardDao {
     List<ObservedSubject> findObservedSubjectByRole(String role);
     List<SubjectWithSummaries> findSubjectWithSummariesByRole(String role, Integer minScore);
     List<Protein> findProteinByGene(Gene gene);
+    Map<Observation, BigInteger> getOneObservationPerSubmission(Integer subjectId);
+    String expandSummary(Integer observationId, String summaryTemplate);
 }
-
