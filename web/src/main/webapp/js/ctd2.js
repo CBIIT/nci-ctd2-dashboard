@@ -1788,7 +1788,7 @@
                             // following is only for the 'leading' observation
                             $(thatEl).append("<br>");
                             if (thatModel.count == 1) {
-                                $(thatEl).append("There is only one observation in this submission.");
+                                $(thatEl).append("(There is only one observation in this submission.)");
                                 return;
                             }
                             const buttonText = "Show all " + thatModel.count + " observations";
