@@ -652,3 +652,11 @@ div.center-link-container {
     background-color: #FECD68;
     color: black;
 }
+
+.icon-question-sign {
+    background-image: url("../img/unknown.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    padding-left: 30px;
+    margin-left: 5px;
+}
