@@ -209,7 +209,6 @@ public class ObservationController {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json; charset=utf-8");
 
-        Date time1 = new Date();
         String summaryTemplate = null;
 
         Set<Observation> observations = new HashSet<Observation>();
@@ -234,9 +233,6 @@ public class ObservationController {
                     + " (<a class='button-link' href='#" + observation.getStableURL() + "'>details &raquo;</a>)";
             list.add(new ObservationWithSummary(observation, expanded));
         }
-
-        Date time2 = new Date();
-        System.out.println((time2.getTime() - time1.getTime()) / 1000 + " seconds to get 'obervations with summary'");
 
         JSONSerializer jsonSerializer = new JSONSerializer().transform(new ImplTransformer(), Class.class)
                 .transform(new DateTransformer(), Date.class);

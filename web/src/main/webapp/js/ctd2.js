@@ -1809,8 +1809,6 @@
                                 const startTime = new Date();
                                 observations.fetch({
                                     success: function () {
-                                        const seconds = Math.round((new Date() - startTime) / 1000); // get seconds
-                                        console.log(seconds + " seconds to get 'observations with summary'");
                                         $(tableEl).parent().dataTable().fnDestroy();
                                         _.each(observations.models, function (observation_with_summary) {
                                             observation_with_summary = observation_with_summary.toJSON();
