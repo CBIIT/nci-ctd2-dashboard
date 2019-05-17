@@ -24,7 +24,7 @@
     <link rel="stylesheet" href="css/datatables.min.css" type="text/css" />
     <link rel="stylesheet" href="css/jquery.fancybox.min.css" type="text/css" media="screen" />
     <link rel="stylesheet" href="css/jquery.contextMenu.min.css" type="text/css" />
-    <link rel="stylesheet" href="css/ctd2.css" type="text/css" />
+    <link rel="stylesheet" href="css/ctd2.css?ts=201905" type="text/css" />
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
@@ -2378,7 +2378,7 @@
     <script src="js/jquery.contextMenu.min.js"></script>
     <script src="js/jquery.ui.position.min.js"></script>
     <script src="js/ctd2.hovertext.js"></script>
-    <script src="js/ctd2.js?ts=2019"></script>
+    <script src="js/ctd2.js?ts=201905"></script>
 
   </body>
 </html>

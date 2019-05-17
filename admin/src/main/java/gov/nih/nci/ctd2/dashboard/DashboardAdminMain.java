@@ -8,15 +8,11 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
-import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.launch.JobLauncher;
-import org.springframework.batch.core.launch.support.SimpleJobLauncher;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.transaction.annotation.Transactional;
 
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
@@ -70,7 +66,6 @@ public class DashboardAdminMain {
                 .addOption("s", "sample-data", false, "imports sample data.")
                 .addOption("t", "taxonomy-data", false, "imports organism data.")
                 .addOption("i", "index", false, "creates lucene index.")
-                .addOption("x", "super", false, "manage multiple tasks.")
         ;
 
         // Here goes the parsing attempt
@@ -145,36 +140,6 @@ public class DashboardAdminMain {
             if( commandLine.hasOption("i") ) {
                 DashboardDao dashboardDao = (DashboardDao) appContext.getBean("dashboardDao");
                 dashboardDao.cleanIndex((Integer) appContext.getBean("indexBatchSize"));
-            }
-
-            /* this experimental option of managing multiple tasks is for convenience and showing the dependency between different loading steps */
-            if( commandLine.hasOption("x") ) {
-                ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
-                taskExecutor.setCorePoolSize(4);
-                taskExecutor.setMaxPoolSize(20);
-                taskExecutor.initialize();
-                SimpleJobLauncher jobLauncher = (SimpleJobLauncher)appContext.getBean("jobLauncher");
-                jobLauncher.setTaskExecutor(taskExecutor);
-
-                Job taxonomylJob = (Job)appContext.getBean("taxonomyDataImporterJob");
-                Job tissueSamplJob = (Job)appContext.getBean("tissueSampleDataImporterJob");
-                Job compoundJob = (Job)appContext.getBean("compoundDataImporterJob");
-                JobParameters jobParameters = new JobParameters();
-                try {
-                    JobExecution taxonomyExecution = jobLauncher.run(taxonomylJob, jobParameters);
-                    JobExecution tissueSampleExecution = jobLauncher.run(tissueSamplJob, jobParameters);
-                    JobExecution compoundExecution = jobLauncher.run(compoundJob, jobParameters);
-                    BatchStatus status = tissueSampleExecution.getStatus();
-                    while(status!=BatchStatus.COMPLETED && status!=BatchStatus.FAILED) {
-                        Thread.sleep(10000);
-                        status = tissueSampleExecution.getStatus();
-                    }
-                    log.info("tissue sample job status " + status);
-                    log.info("compound job status " + compoundExecution.getStatus());
-                    log.info("taxonomy job status " + taxonomyExecution.getStatus());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
             }
 
             log.info("All done.");
