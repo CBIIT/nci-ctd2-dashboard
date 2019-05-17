@@ -8,809 +8,802 @@
 							http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
 
     <batch:job id="observationDataImporterJob">
-    <batch:split id="split1" task-executor="taskExecutor">
-        <batch:flow><batch:step id="dfciAtarisAnalysisStep" parent="observationDataStep">
+        <batch:step id="dfciAtarisAnalysisStep" parent="observationDataStep" next="broadCompoundSensitivityLineageEnrichmentStep">
             <batch:tasklet>
                 <batch:chunk reader="dfciAtarisAnalysisReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="broadCompoundSensitivityLineageEnrichmentStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="broadCompoundSensitivityLineageEnrichmentStep" parent="observationDataStep" next="broadCompoundSensitivityMutationEnrichmentStep">
             <batch:tasklet>
                 <batch:chunk reader="broadCompoundSensitivityLineageEnrichmentReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="broadCompoundSensitivityMutationEnrichmentStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="broadCompoundSensitivityMutationEnrichmentStep" parent="observationDataStep" next="broadTier3NavitoclaxStoryStep">
             <batch:tasklet>
                 <batch:chunk reader="broadCompoundSensitivityMutationEnrichmentReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="broadTier3NavitoclaxStoryStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="broadTier3NavitoclaxStoryStep" parent="observationDataStep" next="columbiaMRAFetAnalysisStep">
             <batch:tasklet>
                 <batch:chunk reader="broadTier3NavitoclaxStoryReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="columbiaMRAFetAnalysisStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="columbiaMRAFetAnalysisStep" parent="observationDataStep" next="columbiaGbmMrsStoryStep">
             <batch:tasklet>
                 <batch:chunk reader="columbiaMRAFetAnalysisReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="columbiaGbmMrsStoryStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="columbiaGbmMrsStoryStep" parent="observationDataStep" next="cshlTier4FGF19StoryStep">
             <batch:tasklet>
                 <batch:chunk reader="columbiaGbmMrsStoryReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="cshlTier4FGF19StoryStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="cshlTier4FGF19StoryStep" parent="observationDataStep" next="dfciYapYesStoryStep">
             <batch:tasklet>
                 <batch:chunk reader="cshlTier4FGF19StoryReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="dfciYapYesStoryStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="dfciYapYesStoryStep" parent="observationDataStep" next="dfciReporterAnalysisStep">
             <batch:tasklet>
                 <batch:chunk reader="dfciYapYesStoryReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="dfciReporterAnalysisStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="dfciReporterAnalysisStep" parent="observationDataStep" next="dfciOvarianAnalysisStep">
             <batch:tasklet>
                 <batch:chunk reader="dfciReporterAnalysisReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="dfciOvarianAnalysisStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="dfciOvarianAnalysisStep" parent="observationDataStep" next="dfciPax8Tier3Step">
             <batch:tasklet>
                 <batch:chunk reader="dfciOvarianAnalysisReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="dfciPax8Tier3Step" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="dfciPax8Tier3Step" parent="observationDataStep" next="fhcrcCstTier1Step">
             <batch:tasklet>
                 <batch:chunk reader="dfciPax8Tier3Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="fhcrcCstTier1Step" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="fhcrcCstTier1Step" parent="observationDataStep" next="fhcrcCstTier1Profiling1Step">
             <batch:tasklet>
                 <batch:chunk reader="fhcrcCstTier1Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="fhcrcCstTier1Profiling1Step" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="fhcrcCstTier1Profiling1Step" parent="observationDataStep" next="utswTier2DiscoipyrrolesStoryStep">
             <batch:tasklet>
                 <batch:chunk reader="fhcrcCstTier1Profiling1Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="utswTier2DiscoipyrrolesStoryStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="utswTier2DiscoipyrrolesStoryStep" parent="observationDataStep" next="utswTier4DiscoipyrrolesStoryStep">
             <batch:tasklet>
                 <batch:chunk reader="utswTier2DiscoipyrrolesStoryReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="utswTier4DiscoipyrrolesStoryStep" parent="observationDataStep" >
+        </batch:step>
+        <batch:step id="utswTier4DiscoipyrrolesStoryStep" parent="observationDataStep" next="ucsfDifferentialExpressionStep" >
             <batch:tasklet>
                 <batch:chunk reader="utswTier4DiscoipyrrolesStoryReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="ucsfDifferentialExpressionStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="ucsfDifferentialExpressionStep" parent="observationDataStep" next="ucsfMutIsogenicScoresStep">
             <batch:tasklet>
                 <batch:chunk reader="ucsfDifferentialExpressionReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="ucsfMutIsogenicScoresStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="ucsfMutIsogenicScoresStep" parent="observationDataStep" next="ucsfWtIsogenicScoresStep">
             <batch:tasklet>
                 <batch:chunk reader="ucsfMutIsogenicScoresReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="ucsfWtIsogenicScoresStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="ucsfWtIsogenicScoresStep" parent="observationDataStep" next="ucsfAktResistanceStep">
             <batch:tasklet>
                 <batch:chunk reader="ucsfWtIsogenicScoresReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="ucsfAktResistanceStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="ucsfAktResistanceStep" parent="observationDataStep" next="ucsfDasatinibSensitivityStep">
             <batch:tasklet>
                 <batch:chunk reader="ucsfAktResistanceReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="ucsfDasatinibSensitivityStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="ucsfDasatinibSensitivityStep" parent="observationDataStep" next="emoryPpiRaf1Step">
             <batch:tasklet>
                 <batch:chunk reader="ucsfDasatinibSensitivityReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="emoryPpiRaf1Step" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="emoryPpiRaf1Step" parent="observationDataStep" next="mskccForetinibStep">
             <batch:tasklet>
                 <batch:chunk reader="emoryPpiRaf1Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="mskccForetinibStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="mskccForetinibStep" parent="observationDataStep" next="mskccFigrosStep">
             <batch:tasklet>
                 <batch:chunk reader="mskccForetinibReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="mskccFigrosStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="mskccFigrosStep" parent="observationDataStep" next="stanfordMethylmixTier1Step">
             <batch:tasklet>
                 <batch:chunk reader="mskccFigrosReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="stanfordMethylmixTier1Step" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="stanfordMethylmixTier1Step" parent="observationDataStep" next="mdaEndoMutationBaf3Step">
             <batch:tasklet>
                 <batch:chunk reader="stanfordMethylmixTier1Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="mdaEndoMutationBaf3Step" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="mdaEndoMutationBaf3Step" parent="observationDataStep" next="mskccBrd4amlBrd4Step">
             <batch:tasklet>
                 <batch:chunk reader="mdaEndoMutationBaf3Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="mskccBrd4amlBrd4Step" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="mskccBrd4amlBrd4Step" parent="observationDataStep" next="mskccBrd4amlJq1Step">
             <batch:tasklet>
                 <batch:chunk reader="mskccBrd4amlBrd4Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="mskccBrd4amlJq1Step" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="mskccBrd4amlJq1Step" parent="observationDataStep" next="mskccPdgFrbStep">
             <batch:tasklet>
                 <batch:chunk reader="mskccBrd4amlJq1Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="mskccPdgFrbStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="mskccPdgFrbStep" parent="observationDataStep" next="mskccPdgFrbImatinibStep">
             <batch:tasklet>
                 <batch:chunk reader="mskccPdgFrbReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="mskccPdgFrbImatinibStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="mskccPdgFrbImatinibStep" parent="observationDataStep" next="mskccPdgFrbHumanStep">
             <batch:tasklet>
                 <batch:chunk reader="mskccPdgFrbImatinibReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="mskccPdgFrbHumanStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="mskccPdgFrbHumanStep" parent="observationDataStep" next="cshlAvgMeasureStep">
             <batch:tasklet>
                 <batch:chunk reader="mskccPdgFrbHumanReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="cshlAvgMeasureStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="cshlAvgMeasureStep" parent="observationDataStep" next="cshlMouseLiversStep">
             <batch:tasklet>
                 <batch:chunk reader="cshlAvgMeasureReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="cshlMouseLiversStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="cshlMouseLiversStep" parent="observationDataStep" next="cshlCoExpStep">
             <batch:tasklet>
                 <batch:chunk reader="cshlMouseLiversReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="cshlCoExpStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="cshlCoExpStep" parent="observationDataStep" next="dfciArid1aMutAnalysisStep">
             <batch:tasklet>
                 <batch:chunk reader="cshlCoExpReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="dfciArid1aMutAnalysisStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="dfciArid1aMutAnalysisStep" parent="observationDataStep" next="dfciArid1bDependencyStep">
             <batch:tasklet>
                 <batch:chunk reader="dfciArid1aMutAnalysisReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="dfciArid1bDependencyStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="dfciArid1bDependencyStep" parent="observationDataStep" next="dfciSmarca4MutAnalysisStep">
             <batch:tasklet>
                 <batch:chunk reader="dfciArid1bDependencyReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="dfciSmarca4MutAnalysisStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="dfciSmarca4MutAnalysisStep" parent="observationDataStep" next="dfciSmarca2DependencyStep">
             <batch:tasklet>
                 <batch:chunk reader="dfciSmarca4MutAnalysisReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="dfciSmarca2DependencyStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="dfciSmarca2DependencyStep" parent="observationDataStep" next="mskccPi3kStep">
             <batch:tasklet>
                 <batch:chunk reader="dfciSmarca2DependencyReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="mskccPi3kStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="mskccPi3kStep" parent="observationDataStep" next="stanfordElasticNetStep">
             <batch:tasklet>
                 <batch:chunk reader="mskccPi3kReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="stanfordElasticNetStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="stanfordElasticNetStep" parent="observationDataStep" next="fhcrcKKinomeSiRNA2Step">
             <batch:tasklet>
                 <batch:chunk reader="stanfordElasticNetReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="fhcrcKKinomeSiRNA2Step" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="fhcrcKKinomeSiRNA2Step" parent="observationDataStep" next="fhcrcKKinomeSiRNA3Step">
             <batch:tasklet>
                 <batch:chunk reader="fhcrcKKinomeSiRNA2Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="fhcrcKKinomeSiRNA3Step" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="fhcrcKKinomeSiRNA3Step" parent="observationDataStep" next="mdaPik3r1ApoptosisEndoCellsStep">
             <batch:tasklet>
                 <batch:chunk reader="fhcrcKKinomeSiRNA3Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="mdaPik3r1ApoptosisEndoCellsStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="mdaPik3r1ApoptosisEndoCellsStep" parent="observationDataStep" next="mdaPik3r1Baf3SurvivalStep">
             <batch:tasklet>
                 <batch:chunk reader="mdaPik3r1ApoptosisEndoCellsReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="mdaPik3r1Baf3SurvivalStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="mdaPik3r1Baf3SurvivalStep" parent="observationDataStep" next="mdaPik3r1BrduEndoCellsStep">
             <batch:tasklet>
                 <batch:chunk reader="mdaPik3r1Baf3SurvivalReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="mdaPik3r1BrduEndoCellsStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="mdaPik3r1BrduEndoCellsStep" parent="observationDataStep" next="mdaPik3r1DrugCellLinesStep">
             <batch:tasklet>
                 <batch:chunk reader="mdaPik3r1BrduEndoCellsReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="mdaPik3r1DrugCellLinesStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="mdaPik3r1DrugCellLinesStep" parent="observationDataStep" next="mdaPik3r1DrugScreenBaf3Step">
             <batch:tasklet>
                 <batch:chunk reader="mdaPik3r1DrugCellLinesReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="mdaPik3r1DrugScreenBaf3Step" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="mdaPik3r1DrugScreenBaf3Step" parent="observationDataStep" next="mdaPik3r1DrugZenograftsStep">
             <batch:tasklet>
                 <batch:chunk reader="mdaPik3r1DrugScreenBaf3Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="mdaPik3r1DrugZenograftsStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="mdaPik3r1DrugZenograftsStep" parent="observationDataStep" next="mdaPik3r1RppaBaf3Step">
             <batch:tasklet>
                 <batch:chunk reader="mdaPik3r1DrugZenograftsReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="mdaPik3r1RppaBaf3Step" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="mdaPik3r1RppaBaf3Step" parent="observationDataStep" next="broadCompoundSensitivityCtxMutationEnrichmentStep">
             <batch:tasklet>
                 <batch:chunk reader="mdaPik3r1RppaBaf3Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="broadCompoundSensitivityCtxMutationEnrichmentStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="broadCompoundSensitivityCtxMutationEnrichmentStep" parent="observationDataStep" next="broadCompoundSensitivitySublineageEnrichmentStep">
             <batch:tasklet>
                 <batch:chunk reader="broadCompoundSensitivityCtxMutationEnrichmentReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="broadCompoundSensitivitySublineageEnrichmentStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="broadCompoundSensitivitySublineageEnrichmentStep" parent="observationDataStep" next="columbiaPrecmedStep">
             <batch:tasklet>
                 <batch:chunk reader="broadCompoundSensitivitySublineageEnrichmentReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="columbiaPrecmedStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="columbiaPrecmedStep" parent="observationDataStep" next="cshlCdk9Step">
             <batch:tasklet>
                 <batch:chunk reader="columbiaPrecmedReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="cshlCdk9Step" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="cshlCdk9Step" parent="observationDataStep" next="emoryHtBretnPpiStep">
             <batch:tasklet>
                 <batch:chunk reader="cshlCdk9Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="emoryHtBretnPpiStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="emoryHtBretnPpiStep" parent="observationDataStep" next="hutchCtcfStep">
             <batch:tasklet>
                 <batch:chunk reader="emoryHtBretnPpiReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="hutchCtcfStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="hutchCtcfStep" parent="observationDataStep" next="hutchTargetsStep">
             <batch:tasklet>
                 <batch:chunk reader="hutchCtcfReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="hutchTargetsStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="hutchTargetsStep" parent="observationDataStep" next="stanfordOrganoidsStep">
             <batch:tasklet>
                 <batch:chunk reader="hutchTargetsReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="stanfordOrganoidsStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="stanfordOrganoidsStep" parent="observationDataStep" next="ucsfChemgenStep">
             <batch:tasklet>
                 <batch:chunk reader="stanfordOrganoidsReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="ucsfChemgenStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="ucsfChemgenStep" parent="observationDataStep" next="ucsfKrasStep">
             <batch:tasklet>
                 <batch:chunk reader="ucsfChemgenReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="ucsfKrasStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="ucsfKrasStep" parent="observationDataStep" next="ucsfSplicingGeneticsStep">
             <batch:tasklet>
                 <batch:chunk reader="ucsfKrasReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="ucsfSplicingGeneticsStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="ucsfSplicingGeneticsStep" parent="observationDataStep" next="utmdaPik3r1Step">
             <batch:tasklet>
                 <batch:chunk reader="ucsfSplicingGeneticsReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="utmdaPik3r1Step" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="utmdaPik3r1Step" parent="observationDataStep" next="utswNsclcAscl1Step">
             <batch:tasklet>
                 <batch:chunk reader="utmdaPik3r1Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="utswNsclcAscl1Step" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="utswNsclcAscl1Step" parent="observationDataStep" next="cshlBrd4Step">
             <batch:tasklet>
                 <batch:chunk reader="utswNsclcAscl1Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="cshlBrd4Step" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="cshlBrd4Step" parent="observationDataStep" next="utswNsclcStep">
             <batch:tasklet>
                 <batch:chunk reader="cshlBrd4Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="utswNsclcStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="utswNsclcStep" parent="observationDataStep" next="tgenEddyGbmStep">
             <batch:tasklet>
                 <batch:chunk reader="utswNsclcReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="tgenEddyGbmStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="tgenEddyGbmStep" parent="observationDataStep" next="tgenEddyStoryStep">
             <batch:tasklet>
                 <batch:chunk reader="tgenEddyGbmReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="tgenEddyStoryStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="tgenEddyStoryStep" parent="observationDataStep" next="ucsfwNbSplicingStep">
             <batch:tasklet>
                 <batch:chunk reader="tgenEddyStoryReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="ucsfwNbSplicingStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="ucsfwNbSplicingStep" parent="observationDataStep" next="dfciBarbieStep">
             <batch:tasklet>
                 <batch:chunk reader="ucsfwNbSplicingReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="dfciBarbieStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="dfciBarbieStep" parent="observationDataStep" next="dfciKrasMetaAnalysisStep">
             <batch:tasklet>
                 <batch:chunk reader="dfciBarbieReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="dfciKrasMetaAnalysisStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="dfciKrasMetaAnalysisStep" parent="observationDataStep" next="dfciKrasRigerAnalysisStep">
             <batch:tasklet>
                 <batch:chunk reader="dfciKrasMetaAnalysisReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="dfciKrasRigerAnalysisStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="dfciKrasRigerAnalysisStep" parent="observationDataStep" next="dfciKrasTtestAnalysisStep">
             <batch:tasklet>
                 <batch:chunk reader="dfciKrasRigerAnalysisReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="dfciKrasTtestAnalysisStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="dfciKrasTtestAnalysisStep" parent="observationDataStep" next="dfciTbk1AnalysisStep">
             <batch:tasklet>
                 <batch:chunk reader="dfciKrasTtestAnalysisReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="dfciTbk1AnalysisStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="dfciTbk1AnalysisStep" parent="observationDataStep" next="hutchkKinomicsStep">
             <batch:tasklet>
                 <batch:chunk reader="dfciTbk1AnalysisReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="hutchkKinomicsStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="hutchkKinomicsStep" parent="observationDataStep" next="stanfordMethylmixStoryStep">
             <batch:tasklet>
                 <batch:chunk reader="hutchkKinomicsReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="stanfordMethylmixStoryStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="stanfordMethylmixStoryStep" parent="observationDataStep" next="cshlPdacStep">
             <batch:tasklet>
                 <batch:chunk reader="stanfordMethylmixStoryReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="cshlPdacStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="cshlPdacStep" parent="observationDataStep" next="stanfordTgfbr2Step">
             <batch:tasklet>
                 <batch:chunk reader="cshlPdacReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="stanfordTgfbr2Step" parent="observationDataStep" >
+        </batch:step>
+        <batch:step id="stanfordTgfbr2Step" parent="observationDataStep"  next="utmdaPik3caStep">
             <batch:tasklet>
                 <batch:chunk reader="stanfordTgfbr2Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="utmdaPik3caStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="utmdaPik3caStep" parent="observationDataStep" next="emoryBretnStep">
             <batch:tasklet>
                 <batch:chunk reader="utmdaPik3caReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="emoryBretnStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="emoryBretnStep" parent="observationDataStep" next="utmdaNadkPdacStep">
             <batch:tasklet>
                 <batch:chunk reader="emoryBretnReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="utmdaNadkPdacStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="utmdaNadkPdacStep" parent="observationDataStep" next="broadCtrpv2Step">
             <batch:tasklet>
                 <batch:chunk reader="utmdaNadkPdacReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="broadCtrpv2Step" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="broadCtrpv2Step" parent="observationDataStep" next="stanfordElasticNetGeneStep">
             <batch:tasklet>
                 <batch:chunk reader="broadCtrpv2Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="stanfordElasticNetGeneStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="stanfordElasticNetGeneStep" parent="observationDataStep" next="stanfordElasticNetMirStep">
             <batch:tasklet>
                 <batch:chunk reader="stanfordElasticNetGeneReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="stanfordElasticNetMirStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="stanfordElasticNetMirStep" parent="observationDataStep" next="stanfordElasticNetProtStep">
             <batch:tasklet>
                 <batch:chunk reader="stanfordElasticNetMirReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="stanfordElasticNetProtStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="stanfordElasticNetProtStep" parent="observationDataStep" next="columbiaMoaStep">
             <batch:tasklet>
                 <batch:chunk reader="stanfordElasticNetProtReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="columbiaMoaStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="columbiaMoaStep" parent="observationDataStep" next="broadAcmeLineageStep">
             <batch:tasklet>
                 <batch:chunk reader="columbiaMoaReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="broadAcmeLineageStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="broadAcmeLineageStep" parent="observationDataStep" next="broadAcmeMutationStep">
             <batch:tasklet>
                 <batch:chunk reader="broadAcmeLineageReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="broadAcmeMutationStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="broadAcmeMutationStep" parent="observationDataStep" next="dfciPax8Step">
             <batch:tasklet>
                 <batch:chunk reader="broadAcmeMutationReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="dfciPax8Step" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="dfciPax8Step" parent="observationDataStep" next="dfciTbk1Step">
             <batch:tasklet>
                 <batch:chunk reader="dfciPax8Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="dfciTbk1Step" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="dfciTbk1Step" parent="observationDataStep" next="broadKrasDecitabineStep">
             <batch:tasklet>
                 <batch:chunk reader="dfciTbk1Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="broadKrasDecitabineStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="broadKrasDecitabineStep" parent="observationDataStep" next="broadKrasDecitabineMekStep">
             <batch:tasklet>
                 <batch:chunk reader="broadKrasDecitabineReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="broadKrasDecitabineMekStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="broadKrasDecitabineMekStep" parent="observationDataStep" next="broadKrasDecitabineNavitoclaxStep">
             <batch:tasklet>
                 <batch:chunk reader="broadKrasDecitabineMekReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="broadKrasDecitabineNavitoclaxStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="broadKrasDecitabineNavitoclaxStep" parent="observationDataStep" next="broadKrasXenograftStep">
             <batch:tasklet>
                 <batch:chunk reader="broadKrasDecitabineNavitoclaxReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="broadKrasXenograftStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="broadKrasXenograftStep" parent="observationDataStep" next="dfciSwisnfStep">
             <batch:tasklet>
                 <batch:chunk reader="broadKrasXenograftReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="dfciSwisnfStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="dfciSwisnfStep" parent="observationDataStep" next="dfciGab2Step">
             <batch:tasklet>
                 <batch:chunk reader="dfciSwisnfReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="dfciGab2Step" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="dfciGab2Step" parent="observationDataStep" next="dfciGab2AnalysisStep">
             <batch:tasklet>
                 <batch:chunk reader="dfciGab2Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="dfciGab2AnalysisStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="dfciGab2AnalysisStep" parent="observationDataStep" next="dfciYap1Step">
             <batch:tasklet>
                 <batch:chunk reader="dfciGab2AnalysisReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="dfciYap1Step" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="dfciYap1Step" parent="observationDataStep" next="dfciYap1AnalysisStep">
             <batch:tasklet>
                 <batch:chunk reader="dfciYap1Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="dfciYap1AnalysisStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="dfciYap1AnalysisStep" parent="observationDataStep" next="dfciCowley2014AtarisAnalysisStep">
             <batch:tasklet>
                 <batch:chunk reader="dfciYap1AnalysisReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="dfciCowley2014AtarisAnalysisStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="dfciCowley2014AtarisAnalysisStep" parent="observationDataStep" next="columbiaKlhl9PrognosisStep">
             <batch:tasklet>
                 <batch:chunk reader="dfciCowley2014AtarisAnalysisReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="columbiaKlhl9PrognosisStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="columbiaKlhl9PrognosisStep" parent="observationDataStep" next="columbiaKlhl9ProteasomalStep">
             <batch:tasklet>
                 <batch:chunk reader="columbiaKlhl9PrognosisReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="columbiaKlhl9ProteasomalStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="columbiaKlhl9ProteasomalStep" parent="observationDataStep" next="columbiaKlhl9RescueStep">
             <batch:tasklet>
                 <batch:chunk reader="columbiaKlhl9ProteasomalReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="columbiaKlhl9RescueStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="columbiaKlhl9RescueStep" parent="observationDataStep" next="columbiaKlhl9SphaseStep">
             <batch:tasklet>
                 <batch:chunk reader="columbiaKlhl9RescueReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="columbiaKlhl9SphaseStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="columbiaKlhl9SphaseStep" parent="observationDataStep" next="columbiaKlhl9XenograftsStep">
             <batch:tasklet>
                 <batch:chunk reader="columbiaKlhl9SphaseReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="columbiaKlhl9XenograftsStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="columbiaKlhl9XenograftsStep" parent="observationDataStep" next="columbiaDemandAltretamineStep">
             <batch:tasklet>
                 <batch:chunk reader="columbiaKlhl9XenograftsReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="columbiaDemandAltretamineStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="columbiaDemandAltretamineStep" parent="observationDataStep" next="columbiaBisikirskaFlDlbclM1Step">
             <batch:tasklet>
                 <batch:chunk reader="columbiaDemandAltretamineReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="columbiaBisikirskaFlDlbclM1Step" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="columbiaBisikirskaFlDlbclM1Step" parent="observationDataStep" next="columbiaBisikirskaFlDlbclM2Step">
             <batch:tasklet>
                 <batch:chunk reader="columbiaBisikirskaFlDlbclM1Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="columbiaBisikirskaFlDlbclM2Step" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="columbiaBisikirskaFlDlbclM2Step" parent="observationDataStep" next="columbiaBisikirskaFlDlbclSyStep">
             <batch:tasklet>
                 <batch:chunk reader="columbiaBisikirskaFlDlbclM2Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="columbiaBisikirskaFlDlbclSyStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="columbiaBisikirskaFlDlbclSyStep" parent="observationDataStep" next="columbiaPiovanAktNr3c1ActStep">
             <batch:tasklet>
                 <batch:chunk reader="columbiaBisikirskaFlDlbclSyReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="columbiaPiovanAktNr3c1ActStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="columbiaPiovanAktNr3c1ActStep" parent="observationDataStep" next="columbiaPiovanAktNr3c1BindStep">
             <batch:tasklet>
                 <batch:chunk reader="columbiaPiovanAktNr3c1ActReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="columbiaPiovanAktNr3c1BindStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="columbiaPiovanAktNr3c1BindStep" parent="observationDataStep" next="columbiaPiovanAktNr3c1Inh1Step">
             <batch:tasklet>
                 <batch:chunk reader="columbiaPiovanAktNr3c1BindReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="columbiaPiovanAktNr3c1Inh1Step" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="columbiaPiovanAktNr3c1Inh1Step" parent="observationDataStep" next="columbiaPiovanAktNr3c1Inh2Step">
             <batch:tasklet>
                 <batch:chunk reader="columbiaPiovanAktNr3c1Inh1Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="columbiaPiovanAktNr3c1Inh2Step" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="columbiaPiovanAktNr3c1Inh2Step" parent="observationDataStep" next="columbiaPiovanAktNr3c1Inh3Step">
             <batch:tasklet>
                 <batch:chunk reader="columbiaPiovanAktNr3c1Inh2Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="columbiaPiovanAktNr3c1Inh3Step" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="columbiaPiovanAktNr3c1Inh3Step" parent="observationDataStep" next="columbiaPiovanAktNr3c1PhosStep">
             <batch:tasklet>
                 <batch:chunk reader="columbiaPiovanAktNr3c1Inh3Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="columbiaPiovanAktNr3c1PhosStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="columbiaPiovanAktNr3c1PhosStep" parent="observationDataStep" next="columbiaPiovanAktNr3c1SigStep">
             <batch:tasklet>
                 <batch:chunk reader="columbiaPiovanAktNr3c1PhosReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="columbiaPiovanAktNr3c1SigStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="columbiaPiovanAktNr3c1SigStep" parent="observationDataStep" next="columbiaAktTallStep">
             <batch:tasklet>
                 <batch:chunk reader="columbiaPiovanAktNr3c1SigReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="columbiaAktTallStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="columbiaAktTallStep" parent="observationDataStep" next="dfciKimExpressProfileStep">
             <batch:tasklet>
                 <batch:chunk reader="columbiaAktTallReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="dfciKimExpressProfileStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="dfciKimExpressProfileStep" parent="observationDataStep" next="dfciKimHtTransStep">
             <batch:tasklet>
                 <batch:chunk reader="dfciKimExpressProfileReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="dfciKimHtTransStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="dfciKimHtTransStep" parent="observationDataStep" next="dfciKimTumorAssayStep">
             <batch:tasklet>
                 <batch:chunk reader="dfciKimHtTransReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="dfciKimTumorAssayStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="dfciKimTumorAssayStep" parent="observationDataStep" next="dfciRareStep">
             <batch:tasklet>
                 <batch:chunk reader="dfciKimTumorAssayReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="dfciRareStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="dfciRareStep" parent="observationDataStep" next="tgenEddyCcleCtrpStep">
             <batch:tasklet>
                 <batch:chunk reader="dfciRareReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="tgenEddyCcleCtrpStep" parent="observationDataStep">
-            <batch:tasklet task-executor="taskExecutor">
+        </batch:step>
+        <batch:step id="tgenEddyCcleCtrpStep" parent="observationDataStep" next="tgenEddyCcleCtrpCombStep">
+            <batch:tasklet>
                 <batch:chunk reader="tgenEddyCcleCtrpReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="tgenEddyCcleCtrpCombStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="tgenEddyCcleCtrpCombStep" parent="observationDataStep" next="emoryPras40PpiStep">
             <batch:tasklet>
                 <batch:chunk reader="tgenEddyCcleCtrpCombReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="emoryPras40PpiStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="emoryPras40PpiStep" parent="observationDataStep" next="emoryPras40Rpl11CoIpStep">
             <batch:tasklet>
                 <batch:chunk reader="emoryPras40PpiReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="emoryPras40Rpl11CoIpStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="emoryPras40Rpl11CoIpStep" parent="observationDataStep" next="emoryPras40Rpl11CoLocStep">
             <batch:tasklet>
                 <batch:chunk reader="emoryPras40Rpl11CoIpReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="emoryPras40Rpl11CoLocStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="emoryPras40Rpl11CoLocStep" parent="observationDataStep" next="emoryPras40Rpl11TruncationsStep">
             <batch:tasklet>
                 <batch:chunk reader="emoryPras40Rpl11CoLocReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="emoryPras40Rpl11TruncationsStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="emoryPras40Rpl11TruncationsStep" parent="observationDataStep" next="utswKrasXpo1Step">
             <batch:tasklet>
                 <batch:chunk reader="emoryPras40Rpl11TruncationsReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="utswKrasXpo1Step" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="utswKrasXpo1Step" parent="observationDataStep" next="emoryOncoPpiTier1Step">
             <batch:tasklet>
                 <batch:chunk reader="utswKrasXpo1Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="emoryOncoPpiTier1Step" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="emoryOncoPpiTier1Step" parent="observationDataStep" next="emoryOncoPpiTier2Step">
             <batch:tasklet>
                 <batch:chunk reader="emoryOncoPpiTier1Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="emoryOncoPpiTier2Step" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="emoryOncoPpiTier2Step" parent="observationDataStep" next="utswSW044248Step">
             <batch:tasklet>
                 <batch:chunk reader="emoryOncoPpiTier2Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="utswSW044248Step" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="utswSW044248Step" parent="observationDataStep" next="emoryNanoPcaTier1Step">
             <batch:tasklet>
                 <batch:chunk reader="utswSW044248Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="emoryNanoPcaTier1Step" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="emoryNanoPcaTier1Step" parent="observationDataStep" next="emoryNanoPcaTier2Step">
             <batch:tasklet>
                 <batch:chunk reader="emoryNanoPcaTier1Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="emoryNanoPcaTier2Step" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="emoryNanoPcaTier2Step" parent="observationDataStep" next="utswSmarca4Step">
             <batch:tasklet>
                 <batch:chunk reader="emoryNanoPcaTier2Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="utswSmarca4Step" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="utswSmarca4Step" parent="observationDataStep" next="emoryOncoPpiStoryStep">
             <batch:tasklet>
                 <batch:chunk reader="utswSmarca4Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="emoryOncoPpiStoryStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="emoryOncoPpiStoryStep" parent="observationDataStep" next="emoryMkk3BindingPartnersStep">
             <batch:tasklet>
                 <batch:chunk reader="emoryOncoPpiStoryReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="emoryMkk3BindingPartnersStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="emoryMkk3BindingPartnersStep" parent="observationDataStep" next="emoryMkk3MycCoIPStep">
             <batch:tasklet>
                 <batch:chunk reader="emoryMkk3BindingPartnersReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="emoryMkk3MycCoIPStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="emoryMkk3MycCoIPStep" parent="observationDataStep" next="emoryMkk3MycLiveCellsStep">
             <batch:tasklet>
                 <batch:chunk reader="emoryMkk3MycCoIPReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="emoryMkk3MycLiveCellsStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="emoryMkk3MycLiveCellsStep" parent="observationDataStep" next="emoryMkk3MycProteinStabilityStep">
             <batch:tasklet>
                 <batch:chunk reader="emoryMkk3MycLiveCellsReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="emoryMkk3MycProteinStabilityStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="emoryMkk3MycProteinStabilityStep" parent="observationDataStep" next="emoryMkk3MycReporterAssayStep">
             <batch:tasklet>
                 <batch:chunk reader="emoryMkk3MycProteinStabilityReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-        <batch:flow><batch:step id="emoryMkk3MycReporterAssayStep" parent="observationDataStep">
+        </batch:step>
+        <batch:step id="emoryMkk3MycReporterAssayStep" parent="observationDataStep" next="dfciRnaiCancerDependencyMapStep">
             <batch:tasklet>
                 <batch:chunk reader="emoryMkk3MycReporterAssayReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-        </batch:step></batch:flow>
-	<batch:flow><batch:step id="dfciRnaiCancerDependencyMapStep" parent="observationDataStep">
+        </batch:step>
+	<batch:step id="dfciRnaiCancerDependencyMapStep" parent="observationDataStep" next="ucsfGpx4PersisterCellStudyStep">
 	    <batch:tasklet>
                 <batch:chunk reader="dfciRnaiCancerDependencyMapReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	    </batch:tasklet>
-	</batch:step></batch:flow>
-	<batch:flow><batch:step id="ucsfGpx4PersisterCellStudyStep" parent="observationDataStep">
+	</batch:step>
+	<batch:step id="ucsfGpx4PersisterCellStudyStep" parent="observationDataStep" next="fhcrcNovelTargetsHeadAndNeckCancerStep">
 	    <batch:tasklet>
                 <batch:chunk reader="ucsfGpx4PersisterCellStudyReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	    </batch:tasklet>
-	</batch:step></batch:flow>
-	<batch:flow><batch:step id="fhcrcNovelTargetsHeadAndNeckCancerStep" parent="observationDataStep">
+	</batch:step>
+	<batch:step id="fhcrcNovelTargetsHeadAndNeckCancerStep" parent="observationDataStep" next="fhcrcWee1Phase1ClinicalTrialStep">
 	    <batch:tasklet>
                 <batch:chunk reader="fhcrcNovelTargetsHeadAndNeckCancerReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	    </batch:tasklet>
-	</batch:step></batch:flow>
-	<batch:flow><batch:step id="fhcrcWee1Phase1ClinicalTrialStep" parent="observationDataStep">
+	</batch:step>
+	<batch:step id="fhcrcWee1Phase1ClinicalTrialStep" parent="observationDataStep" next="broadGpx4StoryStep">
 	    <batch:tasklet>
                 <batch:chunk reader="fhcrcWee1Phase1ClinicalTrialReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	    </batch:tasklet>
-	</batch:step></batch:flow>
-	<batch:flow><batch:step id="broadGpx4StoryStep" parent="observationDataStep">
+	</batch:step>
+	<batch:step id="broadGpx4StoryStep" parent="observationDataStep" next="UCSF1ChemGenScreenCombResistantStep">
 	    <batch:tasklet>
                 <batch:chunk reader="broadGpx4StoryReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	    </batch:tasklet>
-	</batch:step></batch:flow>
-	<batch:flow><batch:step id="UCSF1ChemGenScreenCombResistantStep" parent="observationDataStep">
+	</batch:step>
+	<batch:step id="UCSF1ChemGenScreenCombResistantStep" parent="observationDataStep" next="UCSF1ChemGenScreenCombSensitiveStep">
             <batch:tasklet>
                 <batch:chunk reader="UCSF1ChemGenScreenCombResistantReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-	</batch:step></batch:flow>
-	<batch:flow><batch:step id="UCSF1ChemGenScreenCombSensitiveStep" parent="observationDataStep">
+	</batch:step>
+	<batch:step id="UCSF1ChemGenScreenCombSensitiveStep" parent="observationDataStep" next="UCSF1ChemGenScreenResistantStep">
             <batch:tasklet>
                 <batch:chunk reader="UCSF1ChemGenScreenCombSensitiveReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-	</batch:step></batch:flow>
-	<batch:flow><batch:step id="UCSF1ChemGenScreenResistantStep" parent="observationDataStep">
+	</batch:step>
+	<batch:step id="UCSF1ChemGenScreenResistantStep" parent="observationDataStep" next="UCSF1ChemGenScreenSensitiveStep">
             <batch:tasklet>
                 <batch:chunk reader="UCSF1ChemGenScreenResistantReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-	</batch:step></batch:flow>
-	<batch:flow><batch:step id="UCSF1ChemGenScreenSensitiveStep" parent="observationDataStep">
+	</batch:step>
+	<batch:step id="UCSF1ChemGenScreenSensitiveStep" parent="observationDataStep" next="columbiaOncotreatStoryStep">
             <batch:tasklet>
                 <batch:chunk reader="UCSF1ChemGenScreenSensitiveReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-	</batch:step></batch:flow>
-	<batch:flow><batch:step id="columbiaOncotreatStoryStep" parent="observationDataStep">
+	</batch:step>
+	<batch:step id="columbiaOncotreatStoryStep" parent="observationDataStep" next="columbiaNetMasterRegulatorsStep">
             <batch:tasklet>
                 <batch:chunk reader="columbiaOncotreatStoryReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-	</batch:step></batch:flow>
-	<batch:flow><batch:step id="columbiaNetMasterRegulatorsStep" parent="observationDataStep">
+	</batch:step>
+	<batch:step id="columbiaNetMasterRegulatorsStep" parent="observationDataStep" next="columbiaNetEntinostateStep">
             <batch:tasklet>
                 <batch:chunk reader="columbiaNetMasterRegulatorsReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-	</batch:step></batch:flow>
-	<batch:flow><batch:step id="columbiaNetEntinostateStep" parent="observationDataStep">
+	</batch:step>
+	<batch:step id="columbiaNetEntinostateStep" parent="observationDataStep" next="columbiaNeuroblastoma1SubtypesStep">
             <batch:tasklet>
                 <batch:chunk reader="columbiaNetEntinostateReader" processor="observationDataProcessor" writer="observationDataWriter"/>
             </batch:tasklet>
-	</batch:step></batch:flow>
-	<batch:flow><batch:step id="columbiaNeuroblastoma1SubtypesStep" parent="observationDataStep">
+	</batch:step>
+	<batch:step id="columbiaNeuroblastoma1SubtypesStep" parent="observationDataStep" next="columbiaNeuroblastoma2MrInferenceStep">
 	    <batch:tasklet>
                 <batch:chunk reader="columbiaNeuroblastoma1SubtypesReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	    </batch:tasklet>
-	</batch:step></batch:flow>
-	<batch:flow><batch:step id="columbiaNeuroblastoma2MrInferenceStep" parent="observationDataStep">
+	</batch:step>
+	<batch:step id="columbiaNeuroblastoma2MrInferenceStep" parent="observationDataStep" next="columbiaNeuroblastoma3MrValidationStep">
 	    <batch:tasklet>
                 <batch:chunk reader="columbiaNeuroblastoma2MrInferenceReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	    </batch:tasklet>
-	</batch:step></batch:flow>
-	<batch:flow><batch:step id="columbiaNeuroblastoma3MrValidationStep" parent="observationDataStep">
+	</batch:step>
+	<batch:step id="columbiaNeuroblastoma3MrValidationStep" parent="observationDataStep" next="columbiaNeuroblastoma4InteractionsStep">
 	    <batch:tasklet>
                 <batch:chunk reader="columbiaNeuroblastoma3MrValidationReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	    </batch:tasklet>
-	</batch:step></batch:flow>
-	<batch:flow><batch:step id="columbiaNeuroblastoma4InteractionsStep" parent="observationDataStep">
+	</batch:step>
+	<batch:step id="columbiaNeuroblastoma4InteractionsStep" parent="observationDataStep" next="columbiaNeuroblastoma5TEAD4MYCNStep">
 	    <batch:tasklet>
                 <batch:chunk reader="columbiaNeuroblastoma4InteractionsReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	    </batch:tasklet>
-	</batch:step></batch:flow>
-	<batch:flow><batch:step id="columbiaNeuroblastoma5TEAD4MYCNStep" parent="observationDataStep">
+	</batch:step>
+	<batch:step id="columbiaNeuroblastoma5TEAD4MYCNStep" parent="observationDataStep" next="columbiaNeuroblastoma6TEAD4ProliferationStep">
 	    <batch:tasklet>
                 <batch:chunk reader="columbiaNeuroblastoma5TEAD4MYCNReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	    </batch:tasklet>
-	</batch:step></batch:flow>
-	<batch:flow><batch:step id="columbiaNeuroblastoma6TEAD4ProliferationStep" parent="observationDataStep">
+	</batch:step>
+	<batch:step id="columbiaNeuroblastoma6TEAD4ProliferationStep" parent="observationDataStep" next="columbiaNeuroblastoma7TEAD4PrognosticStep">
 	    <batch:tasklet>
                 <batch:chunk reader="columbiaNeuroblastoma6TEAD4ProliferationReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	    </batch:tasklet>
-	</batch:step></batch:flow>
-	<batch:flow><batch:step id="columbiaNeuroblastoma7TEAD4PrognosticStep" parent="observationDataStep">
+	</batch:step>
+	<batch:step id="columbiaNeuroblastoma7TEAD4PrognosticStep" parent="observationDataStep" next="columbiaParacne1ColonyStep">
 	    <batch:tasklet>
                 <batch:chunk reader="columbiaNeuroblastoma7TEAD4PrognosticReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	    </batch:tasklet>
-	</batch:step></batch:flow>
-	<batch:flow><batch:step id="columbiaParacne1ColonyStep" parent="observationDataStep">
+	</batch:step>
+	<batch:step id="columbiaParacne1ColonyStep" parent="observationDataStep" next="columbiaParacne2MttStep">
 	    <batch:tasklet>
                 <batch:chunk reader="columbiaParacne1ColonyReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	    </batch:tasklet>
-	</batch:step></batch:flow>
-	<batch:flow><batch:step id="columbiaParacne2MttStep" parent="observationDataStep">
+	</batch:step>
+	<batch:step id="columbiaParacne2MttStep" parent="observationDataStep" next="EmoryHTiPIAPAntagonistsAntitumorImmunityEnhancersStep">
 	    <batch:tasklet>
                 <batch:chunk reader="columbiaParacne2MttReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	    </batch:tasklet>
-	</batch:step></batch:flow>
-	<batch:flow><batch:step id="EmoryHTiPIAPAntagonistsAntitumorImmunityEnhancersStep" parent="observationDataStep">
+	</batch:step>
+	<batch:step id="EmoryHTiPIAPAntagonistsAntitumorImmunityEnhancersStep" parent="observationDataStep">
 	    <batch:tasklet>
                 <batch:chunk reader="EmoryHTiPIAPAntagonistsAntitumorImmunityEnhancersReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	    </batch:tasklet>
-	</batch:step></batch:flow>
-    </batch:split>
+	</batch:step>
     </batch:job>
-
-    <bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
-        <property name="corePoolSize" value="4" />
-        <property name="maxPoolSize" value="20" />
-    </bean>
 
     <bean id="observationDataStep" class="org.springframework.batch.core.step.item.SimpleStepFactoryBean" abstract="true">
         <property name="transactionManager" ref="transactionManager" />
