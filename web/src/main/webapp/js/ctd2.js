@@ -1824,6 +1824,8 @@
                                     subjectId: thatModel.contextSubject,
                                     role: thatModel.role,
                                 });
+                                const page_before_expanding = $(tableEl).parent().dataTable().api().page();
+
                                 const startTime = new Date();
                                 observations.fetch({
                                     success: function () {
@@ -1838,13 +1840,17 @@
                                             });
                                             extraObservationRowView.render();
                                         });
-                                        $(tableEl).parent().dataTable(observationTableOptions);
+                                        const dataTable = $(tableEl).parent().dataTable(observationTableOptions);
+                                        dataTable.api().page(page_before_expanding).draw(false);
+
                                         $(btn).text("Hide additional observations from the same submission");
                                         $(btn).off("click");
                                         $(btn).click(function () {
-                                            $(tableEl).parent().dataTable().fnDestroy();
+                                            const page_before_expanding = dataTable.api().page();
+                                            dataTable.fnDestroy();
                                             $(tableEl).find("tr[submission_id=" + submissionId + "][extra]").remove();
                                             $(tableEl).parent().dataTable(observationTableOptions);
+                                            dataTable.api().page(page_before_expanding).draw(false);
                                             $(btn).text(buttonText);
                                             $(btn).off("click");
                                             $(btn).click(expandHandler);
