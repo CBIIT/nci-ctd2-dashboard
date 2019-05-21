@@ -386,9 +386,27 @@
         }
     });
 
-    var HowToCiteView = Backbone.View.extend({
+    const HowToCiteView = Backbone.View.extend({
         el: $("#main-container"),
         template: _.template($("#how-to-cite-tmpl").html()),
+        render: function () {
+            $(this.el).html(this.template({}));
+            return this;
+        }
+    });
+
+    const ApiDocumentation = Backbone.View.extend({
+        el: $("#main-container"),
+        template: _.template($("#api-documentation-tmpl").html()),
+        render: function () {
+            $(this.el).html(this.template({}));
+            return this;
+        }
+    });
+
+    const Applications = Backbone.View.extend({
+        el: $("#main-container"),
+        template: _.template($("#applications-tmpl").html()),
         render: function () {
             $(this.el).html(this.template({}));
             return this;
@@ -3814,11 +3832,21 @@
             "cnkb-result": "showCnkbResult",
             "gene-cart-help": "showGeneCartHelp",
             "cite": "cite",
+            "api-documentation": "apiDocumentation",
+            "applications": "applications",
             "*actions": "home",
         },
 
         cite: function () {
             new HowToCiteView().render();
+        },
+
+        apiDocumentation: function () {
+            new ApiDocumentation().render();
+        },
+
+        applications: function () {
+            new Applications().render();
         },
 
         home: function (actions) {
