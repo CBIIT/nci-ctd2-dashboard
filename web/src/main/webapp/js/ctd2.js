@@ -1668,6 +1668,13 @@
                 }
             });
 
+            result.cellosaurus = false;
+            _.each(result.xrefs, function (xref) {
+                if (xref.databaseName == "CELLOSAURUS_ACCESSION") {
+                    result.cellosaurus = xref.databaseId;
+                }
+            });
+
             result.type = result.class;
 
             // Look for cbioPortal Id

@@ -1293,6 +1293,9 @@
                                 <ul class="refs">
                                     {{cosmic ? "<li>COSMIC cell line: <a target='_blank' href='https://cancer.sanger.ac.uk/cell_lines/sample/overview?id=" + cosmic + "'>" + cosmic + " <i class='icon-share'></i></a></li>" : "" }}
                                 </ul>
+                                <ul class="refs">
+                                    {{cellosaurus ? "<li>Cellosaurus: <a target='_blank' href='https://web.expasy.org/cellosaurus/" + cellosaurus + "'>" + cellosaurus + " <i class='icon-share'></i></a></li>" : "" }}
+                                </ul>
                             </td>
                         </tr>
                         <tr id="cbiolink">
