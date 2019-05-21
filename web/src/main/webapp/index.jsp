@@ -1220,6 +1220,9 @@
                                 <ul class="xrefs">
                                       {{diseaseOntology ? "<li>Disease ontology: <a target='_blank' href='http://disease-ontology.org/term/" + diseaseOntology + "'>" + diseaseOntology + " <i class='icon-share'></i></a></li>" : ""}}
                                 </ul>
+                                <ul class="xrefs">
+                                      {{malacards ? "<li>MalaCards: <a target='_blank' href='https://www.malacards.org" + malacards + "'>" + malacards + " <i class='icon-share'></i></a></li>" : ""}}
+                                </ul>
                             </td>
                         </tr>
                     </table>

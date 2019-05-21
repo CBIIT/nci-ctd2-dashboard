@@ -1541,6 +1541,13 @@
                 }
             });
 
+            result.malacards = false;
+            _.each(result.xrefs, function (xref) {
+                if (xref.databaseName == "MalaCards") {
+                    result.malacards = xref.databaseId;
+                }
+            });
+
             result.type = result.class;
             $(this.el).html(this.template($.extend(result, {
                 tier: thatModel.tier ? thatModel.tier : null,
