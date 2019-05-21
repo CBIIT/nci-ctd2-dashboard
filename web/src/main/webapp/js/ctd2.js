@@ -399,7 +399,20 @@
         el: $("#main-container"),
         template: _.template($("#api-documentation-tmpl").html()),
         render: function () {
-            $(this.el).html(this.template({}));
+            const el = this.el;
+            const template = this.template;
+            $.get("./doc/apidoc.html", function (content, status) {
+                console.log(status);
+                $(el).html(template({
+                    content: content
+                }));
+            }).fail(function (response) {
+                $(el).html(template({
+                    content: "Content Not Found."
+                }));
+                console.log("error reading api doc");
+                console.log(response.status + " " + response.statusText);
+            });
             return this;
         }
     });
