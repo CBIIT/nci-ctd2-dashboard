@@ -1219,9 +1219,8 @@
                             <td>
                                 <ul class="xrefs">
                                       {{diseaseOntology ? "<li>Disease ontology: <a target='_blank' href='http://disease-ontology.org/term/" + diseaseOntology + "'>" + diseaseOntology + " <i class='icon-share'></i></a></li>" : ""}}
-                                </ul>
-                                <ul class="xrefs">
                                       {{malacards ? "<li>MalaCards: <a target='_blank' href='https://www.malacards.org" + malacards + "'>" + malacards + " <i class='icon-share'></i></a></li>" : ""}}
+                                      {{depmap ? "<li>DepMap: <a target='_blank' href='https://depmap.org/portal/context/" + depmap + "'>" + depmap + "</a> <i class='icon-share'></i></li>" : ""}}
                                 </ul>
                             </td>
                         </tr>
@@ -1292,9 +1291,8 @@
                             <td>
                                 <ul class="refs">
                                     {{cosmic ? "<li>COSMIC cell line: <a target='_blank' href='https://cancer.sanger.ac.uk/cell_lines/sample/overview?id=" + cosmic + "'>" + cosmic + " <i class='icon-share'></i></a></li>" : "" }}
-                                </ul>
-                                <ul class="refs">
                                     {{cellosaurus ? "<li>Cellosaurus: <a target='_blank' href='https://web.expasy.org/cellosaurus/" + cellosaurus + "'>" + cellosaurus + " <i class='icon-share'></i></a></li>" : "" }}
+                                    {{depmap ? "<li>DepMap: <a target='_blank' href='https://depmap.org/portal/cell_line/" + depmap + "'>" + depmap + "</a> <i class='icon-share'></i></li>" : ""}}
                                 </ul>
                             </td>
                         </tr>
@@ -1437,6 +1435,7 @@
                                       {{pubchem ? "<li>PubChem: <a target='_blank' href='https://pubchem.ncbi.nlm.nih.gov/compound/" + pubchem + "'>" + pubchem + "</a> <i class='icon-share'></i></li>" : ""}}
                                       {{drugbank ? "<li>DrugBank: <a target='_blank' href='https://www.drugbank.ca/drugs/" + drugbank + "'>" + drugbank + "</a> <i class='icon-share'></i></li>" : ""}}
                                       {{ctrpID ? (ctrpName ? "<li>CTRP: <a target='_blank' href='http://portals.broadinstitute.org/ctrp.v2.2/?compoundId="+ctrpID+"&compoundName=" + ctrpName + "'>" + ctrpName + "</a> <i class='icon-share'></i></li>" : "") : ""}}
+                                      {{depmap ? "<li>DepMap: <a target='_blank' href='https://depmap.org/portal/compound/" + depmap + "'>" + depmap + "</a> <i class='icon-share'></i></li>" : ""}}
                                       {{cas ? "<li>CAS: " + cas + "</li>" : ""}}
 
                                   </ul>

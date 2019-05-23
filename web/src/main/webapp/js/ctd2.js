@@ -1223,7 +1223,7 @@
             var result = thatModel.subject.toJSON();
 
             result.drugbank = result.pubchem = result.cas = false;
-            result.ctrpID = result.ctrpName = false;
+            result.ctrpID = result.ctrpName = result.depmap = false;
 
             _.each(result.xrefs, function (xref) {
                 if (xref.databaseName == "IMAGE") {
@@ -1236,6 +1236,8 @@
                     result.ctrpID = xref.databaseId;
                 } else if (xref.databaseName == "CTRP NAME") {
                     result.ctrpName = xref.databaseId;
+                } else if (xref.databaseName == "DepMap compound") {
+                    result.depmap = xref.databaseId;
                 } else if (xref.databaseName == "CAS") {
                     result.cas = xref.databaseId;
                 }
@@ -1542,9 +1544,12 @@
             });
 
             result.malacards = false;
+            result.depmap = false;
             _.each(result.xrefs, function (xref) {
                 if (xref.databaseName == "MalaCards") {
                     result.malacards = xref.databaseId;
+                } else if (xref.databaseName == "DepMap lineage") {
+                    result.depmap = xref.databaseId;
                 }
             });
 
@@ -1669,9 +1674,12 @@
             });
 
             result.cellosaurus = false;
+            result.depmap = false;
             _.each(result.xrefs, function (xref) {
                 if (xref.databaseName == "CELLOSAURUS_ACCESSION") {
                     result.cellosaurus = xref.databaseId;
+                } else if (xref.databaseName == "DepMap cell_line") {
+                    result.depmap = xref.databaseId;
                 }
             });
 
