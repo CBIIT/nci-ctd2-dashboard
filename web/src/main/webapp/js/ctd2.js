@@ -1819,6 +1819,7 @@
                             const buttonText = "Show all " + thatModel.count + " observations";
                             const btn = $("<button>" + buttonText + "</button>");
                             $(thatEl).append(btn);
+                            thatEl.css("border", "1px solid black");
                             const expandHandler = (function () {
                                 $(btn).prop('disabled', true);
                                 const submissionId = thatModel.submission.id;
