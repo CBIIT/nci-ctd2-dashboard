@@ -1441,8 +1441,114 @@
             </bean>
         </property>
     </bean>
-
-
+    <bean name="columbiaParacneStoryReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${columbia.paracne.story.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="columbiaParacneStoryLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="broadCccGpx4Reader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${broad.ccc.gpx4.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="broadCccGpx4LineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="broadCccGpx4Tier2Reader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${broad.ccc.gpx4.tier2.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="broadCccGpx4Tier2LineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="broadCcleMetabAsparagineReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${broad.ccle.metab.asparagine.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="broadCcleMetabAsparagineLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="broadCcleMetabKynurenineReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${broad.ccle.metab.kynurenine.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="broadCcleMetabKynurenineLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="broadChordomaCpdSensitivityReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${broad.chordoma.cpd.sensitivity.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="broadChordomaCpdSensitivityLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="broadChordomaCrisprCas9Reader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${broad.chordoma.crispr.cas9.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="broadChordomaCrisprCas9LineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="broadChordomaImmunoblotReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${broad.chordoma.immunoblot.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="broadChordomaImmunoblotLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="broadChordomaInVivoReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${broad.chordoma.in.vivo.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="broadChordomaInVivoLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="broadChordomaRnaSeqReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${broad.chordoma.rna.seq.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="broadChordomaRnaSeqLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="broadChordomaSuperEnhancerReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${broad.chordoma.super.enhancer.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="broadChordomaSuperEnhancerLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="broadChordomaCpdSensPrimaryReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${broad.chordoma.cpd.sens.primary.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="broadChordomaCpdSensPrimaryLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
 
 
 

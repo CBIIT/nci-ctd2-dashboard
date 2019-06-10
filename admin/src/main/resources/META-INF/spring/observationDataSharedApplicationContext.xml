@@ -798,9 +798,69 @@
                 <batch:chunk reader="columbiaParacne2MttReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	    </batch:tasklet>
 	</batch:step>
-	<batch:step id="EmoryHTiPIAPAntagonistsAntitumorImmunityEnhancersStep" parent="observationDataStep">
+	<batch:step id="EmoryHTiPIAPAntagonistsAntitumorImmunityEnhancersStep" parent="observationDataStep" next="columbiaParacneStoryStep">
 	    <batch:tasklet>
                 <batch:chunk reader="EmoryHTiPIAPAntagonistsAntitumorImmunityEnhancersReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	    </batch:tasklet>
+	</batch:step>
+	<batch:step id="columbiaParacneStoryStep" parent="observationDataStep" next="broadCccGpx4Step">
+	    <batch:tasklet>
+                <batch:chunk reader="columbiaParacneStoryReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	    </batch:tasklet>
+	</batch:step>
+	<batch:step id="broadCccGpx4Step" parent="observationDataStep" next="broadCccGpx4Tier2Step">
+	    <batch:tasklet>
+                <batch:chunk reader="broadCccGpx4Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	    </batch:tasklet>
+	</batch:step>
+	<batch:step id="broadCccGpx4Tier2Step" parent="observationDataStep" next="broadCcleMetabAsparagineStep">
+	    <batch:tasklet>
+                <batch:chunk reader="broadCccGpx4Tier2Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	    </batch:tasklet>
+	</batch:step>
+	<batch:step id="broadCcleMetabAsparagineStep" parent="observationDataStep" next="broadCcleMetabKynurenineStep">
+	    <batch:tasklet>
+                <batch:chunk reader="broadCcleMetabAsparagineReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	    </batch:tasklet>
+	</batch:step>
+	<batch:step id="broadCcleMetabKynurenineStep" parent="observationDataStep" next="broadChordomaCpdSensitivityStep">
+	    <batch:tasklet>
+                <batch:chunk reader="broadCcleMetabKynurenineReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	    </batch:tasklet>
+	</batch:step>
+	<batch:step id="broadChordomaCpdSensitivityStep" parent="observationDataStep" next="broadChordomaCrisprCas9Step">
+	    <batch:tasklet>
+                <batch:chunk reader="broadChordomaCpdSensitivityReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	    </batch:tasklet>
+	</batch:step>
+	<batch:step id="broadChordomaCrisprCas9Step" parent="observationDataStep" next="broadChordomaImmunoblotStep">
+	    <batch:tasklet>
+                <batch:chunk reader="broadChordomaCrisprCas9Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	    </batch:tasklet>
+	</batch:step>
+	<batch:step id="broadChordomaImmunoblotStep" parent="observationDataStep" next="broadChordomaInVivoStep">
+	    <batch:tasklet>
+                <batch:chunk reader="broadChordomaImmunoblotReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	    </batch:tasklet>
+	</batch:step>
+	<batch:step id="broadChordomaInVivoStep" parent="observationDataStep" next="broadChordomaRnaSeqStep">
+	    <batch:tasklet>
+                <batch:chunk reader="broadChordomaInVivoReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	    </batch:tasklet>
+	</batch:step>
+	<batch:step id="broadChordomaRnaSeqStep" parent="observationDataStep" next="broadChordomaSuperEnhancerStep">
+	    <batch:tasklet>
+                <batch:chunk reader="broadChordomaRnaSeqReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	    </batch:tasklet>
+	</batch:step>
+	<batch:step id="broadChordomaSuperEnhancerStep" parent="observationDataStep" next="broadChordomaCpdSensPrimaryStep">
+	    <batch:tasklet>
+                <batch:chunk reader="broadChordomaSuperEnhancerReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	    </batch:tasklet>
+	</batch:step>
+	<batch:step id="broadChordomaCpdSensPrimaryStep" parent="observationDataStep">
+	    <batch:tasklet>
+                <batch:chunk reader="broadChordomaCpdSensPrimaryReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	    </batch:tasklet>
 	</batch:step>
     </batch:job>
@@ -2241,6 +2301,121 @@
         <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,compound_name,parent_cell_line,PBMC,cell_confluency,cell_viability,reference,data_portal_link"/>
     </bean>
+
+
+
+
+
+
+    <bean name="columbiaParacneStoryLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="columbiaParacneStoryLineTokenizer" />
+    </bean>
+    <bean name="columbiaParacneStoryLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="&#9;"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,gene_1,gene_2,compound_1,compound_2,tissue_1,reference,data_portal_link,story_location"/>
+    </bean>
+
+    <bean name="broadCccGpx4LineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="broadCccGpx4LineTokenizer" />
+    </bean>
+    <bean name="broadCccGpx4LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="&#9;"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,gene_1,gene_2,gene_3,gene_4,gene_5,gene_6,disease_1,disease_2,story_location,reference,evidence_ontolgy_term,ctrp_link,depmap_link"/>
+    </bean>
+
+    <bean name="broadCccGpx4Tier2LineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="broadCccGpx4Tier2LineTokenizer" />
+    </bean>
+    <bean name="broadCccGpx4Tier2LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="&#9;"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,gene_1,gene_2,gene_3,gene_4,disease_1,disease_2,reference,evidence_ontolgy_term,ctrp_link,figure_1a,figure_2b,figure_3b,figure_4h"/>
+    </bean>
+
+    <bean name="broadCcleMetabAsparagineLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="broadCcleMetabAsparagineLineTokenizer" />
+    </bean>
+    <bean name="broadCcleMetabAsparagineLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="&#9;"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,gene_1,metabolite,compound,figure_5c,figure_5d,figure_5e,reference,evidence_ontology_term"/>
+    </bean>
+
+    <bean name="broadCcleMetabKynurenineLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="broadCcleMetabKynurenineLineTokenizer" />
+    </bean>
+    <bean name="broadCcleMetabKynurenineLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="&#9;"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,gene_1,gene_2,gene_3,metabolite,compound,figure_6c,figure_6d,figure_6g,reference,evidence_ontology_term"/>
+    </bean>
+
+    <bean name="broadChordomaCpdSensitivityLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="broadChordomaCpdSensitivityLineTokenizer" />
+    </bean>
+    <bean name="broadChordomaCpdSensitivityLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="&#9;"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,gene_1,gene_2,gene_3,gene_4,disease,compound_1,compound_2,compound_3,compound_4,compound_5,compound_6,cell_line_1,cell_line_2,cell_line_3,cell_line_4,reference,figure_2b,evidence_ontology_term"/>
+    </bean>
+
+    <bean name="broadChordomaCrisprCas9LineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="broadChordomaCrisprCas9LineTokenizer" />
+    </bean>
+    <bean name="broadChordomaCrisprCas9LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="&#9;"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,disease,cell_line_1,cell_line_2,gene_5,reference,figure_1a,evidence_ontology_term"/>
+    </bean>
+
+    <bean name="broadChordomaImmunoblotLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="broadChordomaImmunoblotLineTokenizer" />
+    </bean>
+    <bean name="broadChordomaImmunoblotLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="&#9;"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,gene_1,gene_2,gene_3,gene_4,disease,compound_1,compound_3,compound_4,compound_5,cell_line_1,cell_line_2,cell_line_3,cell_line_4,gene_5,reference,figure_4b,evidence_ontology_term"/>
+    </bean>
+
+    <bean name="broadChordomaInVivoLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="broadChordomaInVivoLineTokenizer" />
+    </bean>
+    <bean name="broadChordomaInVivoLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="&#9;"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,gene_1,gene_2,gene_3,disease,compound_1,reference,figure_4hi,evidence_ontology_term"/>
+    </bean>
+
+    <bean name="broadChordomaRnaSeqLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="broadChordomaRnaSeqLineTokenizer" />
+    </bean>
+    <bean name="broadChordomaRnaSeqLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="&#9;"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,gene_1,gene_2,gene_3,disease,compound_1,cell_line_1,gene_5,reference,figure_4c,evidence_ontology_term"/>
+    </bean>
+
+    <bean name="broadChordomaSuperEnhancerLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="broadChordomaSuperEnhancerLineTokenizer" />
+    </bean>
+    <bean name="broadChordomaSuperEnhancerLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="&#9;"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,disease,cell_line_1,cell_line_2,cell_line_3,cell_line_4,gene_5,cell_line_5,reference,figure_3e,evidence_ontology_term"/>
+    </bean>
+
+    <bean name="broadChordomaCpdSensPrimaryLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="broadChordomaCpdSensPrimaryLineTokenizer" />
+    </bean>
+    <bean name="broadChordomaCpdSensPrimaryLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="&#9;"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,disease,compound_1,cell_line_1,reference,sensitivity,evidence_ontology_term"/>
+    </bean>
+
+
 
 
     <!-- shared helper beans -->
@@ -3876,6 +4051,135 @@
 		<entry key="Emory_HTiP_IAP_antagonists_antitumor_immunity_enhancers:cell_viability" value="evidence:readString:createObservedLabelEvidence" />
 		<entry key="Emory_HTiP_IAP_antagonists_antitumor_immunity_enhancers:data_portal_link" value="evidence:readString:createObservedUrlEvidence" />
 		<entry key="Emory_HTiP_IAP_antagonists_antitumor_immunity_enhancers:reference" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="broad_ccc_gpx4:gene_1" value="subject:findGenesBySymbol" />
+		<entry key="broad_ccc_gpx4:gene_2" value="subject:findGenesBySymbol" />
+		<entry key="broad_ccc_gpx4:gene_3" value="subject:findGenesBySymbol" />
+		<entry key="broad_ccc_gpx4:gene_4" value="subject:findGenesBySymbol" />
+		<entry key="broad_ccc_gpx4:gene_5" value="subject:findGenesBySymbol" />
+		<entry key="broad_ccc_gpx4:gene_6" value="subject:findGenesBySymbol" />
+		<entry key="broad_ccc_gpx4:disease_1" value="subject:findTissueSampleByName" />
+		<entry key="broad_ccc_gpx4:disease_2" value="subject:findTissueSampleByName" />
+		<entry key="broad_ccc_gpx4:story_location" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="broad_ccc_gpx4:reference" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="broad_ccc_gpx4:evidence_ontolgy_term" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="broad_ccc_gpx4:ctrp_link" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="broad_ccc_gpx4:depmap_link" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="broad_ccc_gpx4_tier2:gene_1" value="subject:findGenesBySymbol" />
+		<entry key="broad_ccc_gpx4_tier2:gene_2" value="subject:findGenesBySymbol" />
+		<entry key="broad_ccc_gpx4_tier2:gene_3" value="subject:findGenesBySymbol" />
+		<entry key="broad_ccc_gpx4_tier2:gene_4" value="subject:findGenesBySymbol" />
+		<entry key="broad_ccc_gpx4_tier2:disease_1" value="subject:findTissueSampleByName" />
+		<entry key="broad_ccc_gpx4_tier2:disease_2" value="subject:findTissueSampleByName" />
+		<entry key="broad_ccc_gpx4_tier2:reference" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="broad_ccc_gpx4_tier2:evidence_ontolgy_term" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="broad_ccc_gpx4_tier2:ctrp_link" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="broad_ccc_gpx4_tier2:figure_1a" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="broad_ccc_gpx4_tier2:figure_2b" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="broad_ccc_gpx4_tier2:figure_3b" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="broad_ccc_gpx4_tier2:figure_4h" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="broad_ccle_metab_asparagine:gene_1" value="subject:findGenesBySymbol" />
+		<entry key="broad_ccle_metab_asparagine:metabolite" value="subject:findCompoundsByName" />
+		<entry key="broad_ccle_metab_asparagine:compound" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="broad_ccle_metab_asparagine:figure_5c" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="broad_ccle_metab_asparagine:figure_5d" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="broad_ccle_metab_asparagine:figure_5e" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="broad_ccle_metab_asparagine:reference" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="broad_ccle_metab_asparagine:evidence_ontology_term" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="broad_ccle_metab_kynurenine:gene_1" value="subject:findGenesBySymbol" />
+		<entry key="broad_ccle_metab_kynurenine:gene_2" value="subject:findGenesBySymbol" />
+		<entry key="broad_ccle_metab_kynurenine:gene_3" value="subject:findGenesBySymbol" />
+		<entry key="broad_ccle_metab_kynurenine:metabolite" value="subject:findCompoundsByName" />
+		<entry key="broad_ccle_metab_kynurenine:compound" value="subject:findCompoundsByName" />
+		<entry key="broad_ccle_metab_kynurenine:figure_6c" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="broad_ccle_metab_kynurenine:figure_6d" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="broad_ccle_metab_kynurenine:figure_6g" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="broad_ccle_metab_kynurenine:reference" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="broad_ccle_metab_kynurenine:evidence_ontology_term" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="broad_chordoma_cpd_sens_primary:disease" value="subject:findTissueSampleByName" />
+		<entry key="broad_chordoma_cpd_sens_primary:compound_1" value="subject:findCompoundsByName" />
+		<entry key="broad_chordoma_cpd_sens_primary:cell_line_1" value="subject:findCellLineByName" />
+		<entry key="broad_chordoma_cpd_sens_primary:reference" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="broad_chordoma_cpd_sens_primary:sensitivity" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="broad_chordoma_cpd_sens_primary:evidence_ontology_term" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="broad_chordoma_cpd_sensitivity:gene_1" value="subject:findGenesBySymbol" />
+		<entry key="broad_chordoma_cpd_sensitivity:gene_2" value="subject:findGenesBySymbol" />
+		<entry key="broad_chordoma_cpd_sensitivity:gene_3" value="subject:findGenesBySymbol" />
+		<entry key="broad_chordoma_cpd_sensitivity:gene_4" value="subject:findGenesBySymbol" />
+		<entry key="broad_chordoma_cpd_sensitivity:disease" value="subject:findTissueSampleByName" />
+		<entry key="broad_chordoma_cpd_sensitivity:compound_1" value="subject:findCompoundsByName" />
+		<entry key="broad_chordoma_cpd_sensitivity:compound_2" value="subject:findCompoundsByName" />
+		<entry key="broad_chordoma_cpd_sensitivity:compound_3" value="subject:findCompoundsByName" />
+		<entry key="broad_chordoma_cpd_sensitivity:compound_4" value="subject:findCompoundsByName" />
+		<entry key="broad_chordoma_cpd_sensitivity:compound_5" value="subject:findCompoundsByName" />
+		<entry key="broad_chordoma_cpd_sensitivity:compound_6" value="subject:findCompoundsByName" />
+		<entry key="broad_chordoma_cpd_sensitivity:cell_line_1" value="subject:findCellLineByName" />
+		<entry key="broad_chordoma_cpd_sensitivity:cell_line_2" value="subject:findCellLineByName" />
+		<entry key="broad_chordoma_cpd_sensitivity:cell_line_3" value="subject:findCellLineByName" />
+		<entry key="broad_chordoma_cpd_sensitivity:cell_line_4" value="subject:findCellLineByName" />
+		<entry key="broad_chordoma_cpd_sensitivity:reference" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="broad_chordoma_cpd_sensitivity:figure_2b" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="broad_chordoma_cpd_sensitivity:evidence_ontology_term" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="broad_chordoma_crispr_cas9:disease" value="subject:findTissueSampleByName" />
+		<entry key="broad_chordoma_crispr_cas9:cell_line_1" value="subject:findCellLineByName" />
+		<entry key="broad_chordoma_crispr_cas9:cell_line_2" value="subject:findCellLineByName" />
+		<entry key="broad_chordoma_crispr_cas9:gene_5" value="subject:findGenesBySymbol" />
+		<entry key="broad_chordoma_crispr_cas9:reference" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="broad_chordoma_crispr_cas9:figure_1a" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="broad_chordoma_crispr_cas9:evidence_ontology_term" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="broad_chordoma_immunoblot:gene_1" value="subject:findGenesBySymbol" />
+		<entry key="broad_chordoma_immunoblot:gene_2" value="subject:findGenesBySymbol" />
+		<entry key="broad_chordoma_immunoblot:gene_3" value="subject:findGenesBySymbol" />
+		<entry key="broad_chordoma_immunoblot:gene_4" value="subject:findGenesBySymbol" />
+		<entry key="broad_chordoma_immunoblot:disease" value="subject:findTissueSampleByName" />
+		<entry key="broad_chordoma_immunoblot:compound_1" value="subject:findCompoundsByName" />
+		<entry key="broad_chordoma_immunoblot:compound_3" value="subject:findCompoundsByName" />
+		<entry key="broad_chordoma_immunoblot:compound_4" value="subject:findCompoundsByName" />
+		<entry key="broad_chordoma_immunoblot:compound_5" value="subject:findCompoundsByName" />
+		<entry key="broad_chordoma_immunoblot:cell_line_1" value="subject:findCellLineByName" />
+		<entry key="broad_chordoma_immunoblot:cell_line_2" value="subject:findCellLineByName" />
+		<entry key="broad_chordoma_immunoblot:cell_line_3" value="subject:findCellLineByName" />
+		<entry key="broad_chordoma_immunoblot:cell_line_4" value="subject:findCellLineByName" />
+		<entry key="broad_chordoma_immunoblot:gene_5" value="subject:findGenesBySymbol" />
+		<entry key="broad_chordoma_immunoblot:reference" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="broad_chordoma_immunoblot:figure_4b" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="broad_chordoma_immunoblot:evidence_ontology_term" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="broad_chordoma_in_vivo:gene_1" value="subject:findGenesBySymbol" />
+		<entry key="broad_chordoma_in_vivo:gene_2" value="subject:findGenesBySymbol" />
+		<entry key="broad_chordoma_in_vivo:gene_3" value="subject:findGenesBySymbol" />
+		<entry key="broad_chordoma_in_vivo:disease" value="subject:findTissueSampleByName" />
+		<entry key="broad_chordoma_in_vivo:compound_1" value="subject:findCompoundsByName" />
+		<entry key="broad_chordoma_in_vivo:reference" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="broad_chordoma_in_vivo:figure_4hi" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="broad_chordoma_in_vivo:evidence_ontology_term" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="broad_chordoma_rna_seq:gene_1" value="subject:findGenesBySymbol" />
+		<entry key="broad_chordoma_rna_seq:gene_2" value="subject:findGenesBySymbol" />
+		<entry key="broad_chordoma_rna_seq:gene_3" value="subject:findGenesBySymbol" />
+		<entry key="broad_chordoma_rna_seq:disease" value="subject:findTissueSampleByName" />
+		<entry key="broad_chordoma_rna_seq:compound_1" value="subject:findCompoundsByName" />
+		<entry key="broad_chordoma_rna_seq:cell_line_1" value="subject:findCellLineByName" />
+		<entry key="broad_chordoma_rna_seq:gene_5" value="subject:findGenesBySymbol" />
+		<entry key="broad_chordoma_rna_seq:reference" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="broad_chordoma_rna_seq:figure_4c" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="broad_chordoma_rna_seq:evidence_ontology_term" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="broad_chordoma_super_enhancer:disease" value="subject:findTissueSampleByName" />
+		<entry key="broad_chordoma_super_enhancer:cell_line_1" value="subject:findCellLineByName" />
+		<entry key="broad_chordoma_super_enhancer:cell_line_2" value="subject:findCellLineByName" />
+		<entry key="broad_chordoma_super_enhancer:cell_line_3" value="subject:findCellLineByName" />
+		<entry key="broad_chordoma_super_enhancer:cell_line_4" value="subject:findCellLineByName" />
+		<entry key="broad_chordoma_super_enhancer:gene_5" value="subject:findGenesBySymbol" />
+		<entry key="broad_chordoma_super_enhancer:cell_line_5" value="subject:findCellLineByName" />
+		<entry key="broad_chordoma_super_enhancer:reference" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="broad_chordoma_super_enhancer:figure_3e" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="broad_chordoma_super_enhancer:evidence_ontology_term" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="columbia_paracne_story:gene_1" value="subject:findGenesBySymbol" />
+		<entry key="columbia_paracne_story:gene_2" value="subject:findGenesBySymbol" />
+		<entry key="columbia_paracne_story:compound_1" value="subject:findCompoundsByName" />
+		<entry key="columbia_paracne_story:compound_2" value="subject:findCompoundsByName" />
+		<entry key="columbia_paracne_story:tissue_1" value="subject:findTissueSampleByName" />
+		<entry key="columbia_paracne_story:reference" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="columbia_paracne_story:data_portal_link" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="columbia_paracne_story:story_location" value="evidence:readString:createObservedFileEvidence" />
+
             </map>
         </constructor-arg>
     </bean>
