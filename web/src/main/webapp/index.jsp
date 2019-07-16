@@ -862,7 +862,7 @@
                                      <li>
                                          Entrez: <a href="http://www.ncbi.nlm.nih.gov/gene/{{entrezGeneId}}" target="_blank">{{entrezGeneId}} <i class="icon-share"></i></a>
                                      </li>
-                                     {{genecard ? "<li>GeneCard: <a target='_blank' href='https://www.genecards.org/cgi-bin/carddisp.pl?gene=" + genecard + "'>" + genecard + " <i class='icon-share'></i></a></li>" : "" }}
+                                     {{genecard ? "<li>GeneCards: <a target='_blank' href='https://www.genecards.org/cgi-bin/carddisp.pl?gene=" + genecard + "'>" + genecard + " <i class='icon-share'></i></a></li>" : "" }}
                                  </ul>
                              </td>
                          </tr>
