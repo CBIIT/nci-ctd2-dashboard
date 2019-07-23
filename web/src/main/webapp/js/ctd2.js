@@ -296,10 +296,19 @@
                         counter++;
                     });
 
-                    $('.stories-pagination a.story-link').click(function (e) {
+                    const allinks = $('.stories-pagination a.story-link');
+                    allinks.click(function (e) {
                         e.preventDefault();
                         $(this).tab('show');
                     });
+                    let next = 1;
+                    const turn_carousel = function () {
+                        allinks[next].click();
+                        next++;
+                        next = next % 4;
+                        setTimeout(turn_carousel, 5000);
+                    };
+                    setTimeout(turn_carousel, 5000);
                 }
             });
 
