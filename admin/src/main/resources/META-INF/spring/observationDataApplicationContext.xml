@@ -1549,9 +1549,32 @@
             </bean>
         </property>
     </bean>
-
-
-
-
+    <bean name="dfciEgln1DependencyReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${dfci.egln1.dependency.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="dfciEgln1DependencyLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="dfciSmarcb1DependencyReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${dfci.smarcb1.dependency.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="dfciSmarcb1DependencyLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="dfciTp53MutagenesisReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${dfci.tp53.mutagenesis.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="dfciTp53MutagenesisLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
 
 </beans>

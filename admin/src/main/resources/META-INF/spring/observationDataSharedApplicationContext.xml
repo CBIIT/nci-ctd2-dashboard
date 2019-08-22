@@ -858,9 +858,27 @@
                 <batch:chunk reader="broadChordomaSuperEnhancerReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	    </batch:tasklet>
 	</batch:step>
-	<batch:step id="broadChordomaCpdSensPrimaryStep" parent="observationDataStep">
+	<batch:step id="broadChordomaCpdSensPrimaryStep" parent="observationDataStep" next="dfciEgln1DependencyStep">
 	    <batch:tasklet>
                 <batch:chunk reader="broadChordomaCpdSensPrimaryReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	    </batch:tasklet>
+	</batch:step>
+
+	<batch:step id="dfciEgln1DependencyStep" parent="observationDataStep" next="dfciSmarcb1DependencyStep">
+	    <batch:tasklet>
+                <batch:chunk reader="dfciEgln1DependencyReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	    </batch:tasklet>
+	</batch:step>
+	
+	<batch:step id="dfciSmarcb1DependencyStep" parent="observationDataStep" next="dfciTp53MutagenesisStep">
+	    <batch:tasklet>
+                <batch:chunk reader="dfciSmarcb1DependencyReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	    </batch:tasklet>
+	</batch:step>
+	
+	<batch:step id="dfciTp53MutagenesisStep" parent="observationDataStep">
+	    <batch:tasklet>
+                <batch:chunk reader="dfciTp53MutagenesisReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	    </batch:tasklet>
 	</batch:step>
     </batch:job>
@@ -2415,7 +2433,32 @@
         <property name="names" value="dummy,submission_name,submission_date,template_name,disease,compound_1,cell_line_1,reference,sensitivity,evidence_ontology_term"/>
     </bean>
 
-
+    <bean name="dfciEgln1DependencyLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="dfciEgln1DependencyLineTokenizer" />
+    </bean>
+    <bean name="dfciEgln1DependencyLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="&#9;"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,gene_symbol_3,disease,compound,reference,evidence_ontology,depmap,story_location"/>
+    </bean>
+	
+    <bean name="dfciSmarcb1DependencyLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="dfciSmarcb1DependencyLineTokenizer" />
+    </bean>
+    <bean name="dfciSmarcb1DependencyLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="&#9;"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,gene_symbol_3,disease,compound_1,compound_2,reference,evidence_ontology,informer_set,ccle,depmap,story_location"/>
+    </bean>
+	
+    <bean name="dfciTp53MutagenesisLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="dfciTp53MutagenesisLineTokenizer" />
+    </bean>
+    <bean name="dfciTp53MutagenesisLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="&#9;"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,compound_1,compound_2,reference,evidence_ontology,informer_set,cosmic,depmap,story_location"/>
+    </bean>
 
 
     <!-- shared helper beans -->
@@ -4179,7 +4222,36 @@
 		<entry key="columbia_paracne_story:reference" value="evidence:readString:createObservedUrlEvidence" />
 		<entry key="columbia_paracne_story:data_portal_link" value="evidence:readString:createObservedUrlEvidence" />
 		<entry key="columbia_paracne_story:story_location" value="evidence:readString:createObservedFileEvidence" />
-
+		<entry key="dfci_egln1_dependency:gene_symbol_1" value="subject:findGenesBySymbol" />
+		<entry key="dfci_egln1_dependency:gene_symbol_2" value="subject:findGenesBySymbol" />
+		<entry key="dfci_egln1_dependency:gene_symbol_3" value="subject:findGenesBySymbol" />
+		<entry key="dfci_egln1_dependency:disease" value="subject:findTissueSampleByName" />
+		<entry key="dfci_egln1_dependency:compound" value="subject:findCompoundsByName" />
+		<entry key="dfci_egln1_dependency:reference" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="dfci_egln1_dependency:evidence_ontology" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="dfci_egln1_dependency:depmap" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="dfci_egln1_dependency:story_location" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="dfci_smarcb1_dependency:gene_symbol_1" value="subject:findGenesBySymbol" />
+		<entry key="dfci_smarcb1_dependency:gene_symbol_2" value="subject:findGenesBySymbol" />
+		<entry key="dfci_smarcb1_dependency:gene_symbol_3" value="subject:findGenesBySymbol" />
+		<entry key="dfci_smarcb1_dependency:disease" value="subject:findTissueSampleByName" />
+		<entry key="dfci_smarcb1_dependency:compound_1" value="subject:findCompoundsByName" />
+		<entry key="dfci_smarcb1_dependency:compound_2" value="subject:findCompoundsByName" />
+		<entry key="dfci_smarcb1_dependency:reference" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="dfci_smarcb1_dependency:evidence_ontology" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="dfci_smarcb1_dependency:informer_set" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="dfci_smarcb1_dependency:ccle" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="dfci_smarcb1_dependency:depmap" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="dfci_smarcb1_dependency:story_location" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="dfci_tp53_mutagenesis:gene_symbol_1" value="subject:findGenesBySymbol" />
+		<entry key="dfci_tp53_mutagenesis:compound_1" value="subject:findCompoundsByName" />
+		<entry key="dfci_tp53_mutagenesis:compound_2" value="subject:findCompoundsByName" />
+		<entry key="dfci_tp53_mutagenesis:reference" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="dfci_tp53_mutagenesis:evidence_ontology" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="dfci_tp53_mutagenesis:informer_set" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="dfci_tp53_mutagenesis:cosmic" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="dfci_tp53_mutagenesis:depmap" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="dfci_tp53_mutagenesis:story_location" value="evidence:readString:createObservedFileEvidence" />
             </map>
         </constructor-arg>
     </bean>
