@@ -10,6 +10,7 @@ import org.apache.commons.logging.LogFactory;
 import java.io.File;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.Matcher;
@@ -118,6 +119,19 @@ public class ObservationDataFactoryImpl implements ObservationDataFactory {
 						break;
 					}
 				}
+				// in case of gene symbol, try case-correct symbols first
+				if (subject == null && daoFindQueryName.equals("findGenesBySymbol")) {
+					for (Subject returnedSubject : dashboardEntities) {
+						Set<Synonym> synonyms = returnedSubject.getSynonyms();
+						for (Synonym synonym : synonyms) {
+							if (synonym.getDisplayName().equals(subjectValue)) {
+								subject = returnedSubject;
+								break;
+							}
+						}
+					}
+				}
+
 				subject = (subject == null) ? dashboardEntities.iterator().next() : subject;
 				subjectCache.put(subjectValue, subject);
 			}
