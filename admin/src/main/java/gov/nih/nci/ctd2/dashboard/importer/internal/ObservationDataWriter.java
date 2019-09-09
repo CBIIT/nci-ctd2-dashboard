@@ -45,6 +45,10 @@ public class ObservationDataWriter implements ItemWriter<ObservationData> {
         // pre-conditions: (1) all the observation data in one call are from ONE
         // submission (although one submission may be allowed to be written in multiple
         // calls) (2) there is at least one observation in each call
+        if (items.size() == 0) { // this might happen when some suject is rejected
+            log.debug("no item");
+            return;
+        }
         final Submission submission = items.get(0).observation.getSubmission();
         final String submissionName = submission.getDisplayName();
         StableURL stableURL = new StableURL();

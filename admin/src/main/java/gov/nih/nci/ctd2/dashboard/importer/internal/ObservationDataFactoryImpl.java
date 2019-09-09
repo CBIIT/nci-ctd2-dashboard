@@ -119,20 +119,29 @@ public class ObservationDataFactoryImpl implements ObservationDataFactory {
 						break;
 					}
 				}
-				// in case of gene symbol, try case-correct symbols first
+				// in case of human gene symbol, try case-correct synonyms
 				if (subject == null && daoFindQueryName.equals("findGenesBySymbol")) {
 					for (Subject returnedSubject : dashboardEntities) {
-						Set<Synonym> synonyms = returnedSubject.getSynonyms();
+						if (!(returnedSubject instanceof Gene))
+							continue; // this should not happen
+						Gene gene = (Gene) returnedSubject;
+						if (!gene.getOrganism().getDisplayName().equals("Homo sapiens"))
+							continue;
+						// only match synonym if it is homo sapiens
+						Set<Synonym> synonyms = gene.getSynonyms();
 						for (Synonym synonym : synonyms) {
 							if (synonym.getDisplayName().equals(subjectValue)) {
-								subject = returnedSubject;
+								subject = gene;
 								break;
 							}
 						}
 					}
 				}
 
-				subject = (subject == null) ? dashboardEntities.iterator().next() : subject;
+				// do flexible matching only when it is NOT for gene
+				if (subject == null && !(daoFindQueryName.equals("findGenesBySymbol"))) {
+					subject = dashboardEntities.iterator().next();
+				}
 				subjectCache.put(subjectValue, subject);
 			}
 		}
