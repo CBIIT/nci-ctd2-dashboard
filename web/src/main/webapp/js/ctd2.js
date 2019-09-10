@@ -355,21 +355,21 @@
             $('#explore-gene-button').popover({
                 placement: "bottom",
                 trigger: 'hover',
-                content: 'Explore genes and proteins to find experimental evidence for cancer targets that are implicated in a cancer model',
+                content: __ctd2_hovertext.BROWSE_GENES,
             }).click(function () {
                 $(this).popover('hide');
             });
             $('#explore-compound-button').popover({
                 placement: "bottom",
                 trigger: 'hover',
-                content: 'Explore compounds and perturgabens to find experimental evidence for agents that show activity in a cancer model',
+                content: __ctd2_hovertext.BROWSE_COMPOUNDS,
             }).click(function () {
                 $(this).popover('hide');
             });
             $('#explore-disease-button').popover({
                 placement: "bottom",
                 trigger: 'hover',
-                content: 'Explore disease context to find disease-specific targets or agents',
+                content: __ctd2_hovertext.BROWSE_DISEASE,
             }).click(function () {
                 $(this).popover('hide');
             });
