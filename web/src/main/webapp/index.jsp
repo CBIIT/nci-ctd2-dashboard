@@ -2383,7 +2383,7 @@
     <script src="js/jquery.contextMenu.min.js"></script>
     <script src="js/jquery.ui.position.min.js"></script>
     <script src="js/ctd2.hovertext.js"></script>
-    <script src="js/ctd2.js?ts=201905"></script>
+    <script src="js/ctd2.js?ts=2019009"></script>
 
   </body>
 </html>

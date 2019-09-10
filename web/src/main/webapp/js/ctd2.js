@@ -303,6 +303,7 @@
                     });
                     let next = 1;
                     const turn_carousel = function () {
+                        if (!allinks.is(":visible")) return;
                         allinks[next].click();
                         next++;
                         next = next % 4;
