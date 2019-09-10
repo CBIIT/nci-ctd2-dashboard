@@ -301,7 +301,14 @@ public class DashboardDaoImpl implements DashboardDao {
 
     @Override
     public List<Gene> findGenesBySymbol(String symbol) {
-        return queryWithClass("from GeneImpl where displayName = :symbol", "symbol", symbol);
+        List<Gene> caseInsensitive = queryWithClass("from GeneImpl where displayName = :symbol", "symbol", symbol);
+        // only case-sensitive match is accepted
+        List<Gene> list = new ArrayList<Gene>();
+        for (Gene gene : caseInsensitive) {
+            if (gene.getDisplayName().equals(symbol))
+                list.add(gene);
+        }
+        return list;
     }
 
     @Override
