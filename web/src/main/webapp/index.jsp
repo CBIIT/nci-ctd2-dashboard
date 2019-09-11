@@ -104,6 +104,7 @@
                           <li><a target="_blank" href="https://ocg.cancer.gov/programs/ctd2">CTD<sup>2</sup> Home Page</a></li>
                           <li><a href="#cite">How to Cite</a></li>
                           <li><a target="_blank" href="https://ocg.cancer.gov/programs/ctd2/publications">Publications</a></li>
+                          <li><a href="" class="help-navigate">Glossary</a></li>
                           <li><a target="_blank" href="https://ocg.cancer.gov/programs/ctd2/data-portal">Data Portal - Downloads</a></li>
                           <li><a target="_blank" href="https://ocg.cancer.gov/programs/ctd2/analytical-tools">Analytical Tools</a></li>
                           <li><a target="_blank" href="https://ocg.cancer.gov/programs/ctd2/supported-reagents">Supported Reagents</a></li>
