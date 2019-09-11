@@ -23,6 +23,7 @@ public interface DashboardDao {
     <T extends DashboardEntity> List<T> findEntities(Class<T> entityClass);
     List<Gene> findGenesByEntrezId(String entrezId);
     List<Gene> findGenesBySymbol(String symbol);
+    List<Gene> findGenesBySymbolCaseSensitive(String symbol);
     List<Protein> findProteinsByUniprotId(String uniprotId);
     List<Transcript> findTranscriptsByRefseqId(String refseqId);
     List<CellSample> findCellSampleByAnnoType(String type);

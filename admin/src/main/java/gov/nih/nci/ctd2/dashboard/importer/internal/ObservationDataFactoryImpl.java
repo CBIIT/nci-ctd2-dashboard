@@ -85,6 +85,9 @@ public class ObservationDataFactoryImpl implements ObservationDataFactory {
 			}
 			else {
 				Method method = dashboardDao.getClass().getMethod(daoFindQueryName, String.class);
+				if (daoFindQueryName.equals("findGenesBySymbol")) {
+					method = dashboardDao.getClass().getMethod("findGenesBySymbolCaseSensitive", String.class);
+				}
 				dashboardEntities = (List<Subject>)method.invoke(dashboardDao, subjectValue);
 				// if we've searched for gene by symbol and come up empty, try by synonym
 				if (dashboardEntities.isEmpty() && daoFindQueryName.equals("findGenesBySymbol")) {
