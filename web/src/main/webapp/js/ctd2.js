@@ -307,9 +307,9 @@
                         allinks[next].click();
                         next++;
                         next = next % 4;
-                        setTimeout(turn_carousel, 5000);
+                        setTimeout(turn_carousel, 12000);
                     };
-                    setTimeout(turn_carousel, 5000);
+                    setTimeout(turn_carousel, 12000);
                 }
             });
 
