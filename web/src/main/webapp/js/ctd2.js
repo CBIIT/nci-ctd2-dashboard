@@ -1154,7 +1154,11 @@
 
                     $("#centers-list-table").dataTable({
                         // might want to increase this number if we have incredible number of centers
-                        "iDisplayLength": 25
+                        "iDisplayLength": 25,
+                        columnDefs: [{
+                            targets: [0, 2, 3],
+                            orderable: false,
+                        }, ],
                     }).fnSort([
                         [1, 'asc']
                     ]);
