@@ -11,7 +11,7 @@
 
     <bean class="org.apache.commons.dbcp2.BasicDataSource" id="dataSource">
         <property name="driverClassName" value="${database.driverClassName}"/>
-        <property name="url" value="${database.url}&amp;useSSL=false"/>
+        <property name="url" value="${database.url}&amp;useSSL=false&amp;allowPublicKeyRetrieval=true"/>
         <property name="username" value="${database.username}"/>
         <property name="password" value="${database.password}"/>
         <property name="validationQuery" value="SELECT 1"/>
