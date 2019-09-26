@@ -56,7 +56,7 @@ public class XrefFieldSetMapper implements FieldSetMapper<XrefData> {
 		case "compound": 
 			return dashboardDao.findCompoundsByName(name);
 		case "gene": 
-			return dashboardDao.findGenesBySymbol(name);
+			return dashboardDao.findGenesBySymbolCaseSensitive(name);
 		case "protein": 
 			return dashboardDao.findProteinsByUniprotId(name);
 		case "shrna": 
