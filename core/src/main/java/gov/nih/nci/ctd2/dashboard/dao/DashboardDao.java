@@ -10,6 +10,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import gov.nih.nci.ctd2.dashboard.api.SubjectItem;
+
 public interface DashboardDao {
     void save(DashboardEntity entity);
     void update(DashboardEntity entity);
@@ -66,4 +68,8 @@ public interface DashboardDao {
     List<Protein> findProteinByGene(Gene gene);
     Map<Observation, BigInteger> getOneObservationPerSubmission(Integer subjectId);
     String expandSummary(Integer observationId, String summaryTemplate);
+
+    // the following are added to support more efficient API without changing underlying database
+    List<SubjectItem> getObservedSubjectInfo(Integer observationId);
+    List<String> getRolesPerSubjectAndObservtion(Integer subjectId, Integer observationId);
 }

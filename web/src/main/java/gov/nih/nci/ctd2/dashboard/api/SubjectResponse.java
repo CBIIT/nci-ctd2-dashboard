@@ -115,20 +115,16 @@ public class SubjectResponse {
             assert tier > 0 && tier < 3;
             tierCount[tier - 1]++;
 
-            List<ObservedSubject> observedSubjects = dashboardDao.findObservedSubjectByObservation(observation);
-            for (ObservedSubject os : observedSubjects) {
-                if (os.getSubject().equals(subject)) {
-                    String rl = os.getObservedSubjectRole().getSubjectRole().getDisplayName();
-                    roles.add(rl);
-                }
-            }
+            List<String> rolesPerObsevation = dashboardDao.getRolesPerSubjectAndObservtion(subject.getId(), observation.getId());
+            roles.addAll(rolesPerObsevation);
         }
         SubjectResponse subjectResponse = new SubjectResponse(subject, obvs, roles.toArray(new String[0]), tierCount);
         return subjectResponse;
     }
 
     public SubjectResponse(Subject subject, ObservationItem[] observations, String[] roles, int[] tierCount) {
-        clazz = SubjectItem.simpleClassName.get( subject.getClass().getSimpleName().replace("Impl", "") );
+        String stableURL = subject.getStableURL();
+        this.clazz =  stableURL.substring(0, stableURL.indexOf("/"));
 
         this.name = subject.getDisplayName();
         this.synonyms = getSynomyms(subject);

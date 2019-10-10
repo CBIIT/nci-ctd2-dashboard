@@ -68,6 +68,9 @@ import gov.nih.nci.ctd2.dashboard.model.Xref;
 import gov.nih.nci.ctd2.dashboard.util.DashboardEntityWithCounts;
 import gov.nih.nci.ctd2.dashboard.util.SubjectWithSummaries;
 
+import gov.nih.nci.ctd2.dashboard.api.SubjectItem;
+import gov.nih.nci.ctd2.dashboard.api.XRefItem;
+
 public class DashboardDaoImpl implements DashboardDao {
     private static final Log log = LogFactory.getLog(DashboardDaoImpl.class);
 
@@ -863,5 +866,67 @@ public class DashboardDaoImpl implements DashboardDao {
             summary = summary.replace(match, evidenceName);
         }
         return summary;
+    }
+
+    public List<SubjectItem> getObservedSubjectInfo(Integer observationId) {
+        Session session1 = getSession();
+        @SuppressWarnings("unchecked")
+        org.hibernate.query.Query<Object[]> query1 = session1.createNativeQuery(
+                "SELECT d2.displayName AS role, observed_subject_role.displayText AS description, d1.displayName AS name, subject.id, columnName, stableURL"
+                        + " FROM observed_subject join subject on observed_subject.subject_id=subject.id"
+                        + " JOIN dashboard_entity d1 ON subject.id=d1.id"
+                        + " JOIN observed_subject_role ON observed_subject.observedSubjectRole_id = observed_subject_role.id"
+                        + " JOIN subject_role ON observed_subject_role.subjectRole_id=subject_role.id"
+                        + " JOIN dashboard_entity AS d2 ON subject_role.id=d2.id" + " where observation_id="
+                        + observationId);
+        List<Object[]> subjects = query1.list();
+
+        List<SubjectItem> list = new ArrayList<SubjectItem>();
+        for (Object[] obj : subjects) {
+            String role = (String) obj[0];
+            String description = (String) obj[1];
+            String name = (String) obj[2];
+            Integer subjectId = (Integer) obj[3];
+            String columnName = (String) obj[4];
+            String stableURL = (String) obj[5];
+
+            @SuppressWarnings("unchecked")
+            org.hibernate.query.Query<String> query2 = session1
+                    .createNativeQuery("SELECT displayName FROM subject_synonym_map "
+                            + " JOIN synonym ON subject_synonym_map.synonyms_id=synonym.id "
+                            + " JOIN dashboard_entity ON synonym.id = dashboard_entity.id" + " WHERE SubjectImpl_id="
+                            + subjectId);
+            List<String> synonyms = query2.list();
+
+            @SuppressWarnings("unchecked")
+            org.hibernate.query.Query<Object[]> query3 = session1
+                    .createNativeQuery("SELECT databaseId, databaseName FROM subject_xref_map"
+                            + " JOIN xref ON subject_xref_map.xrefs_id=xref.id " + " WHERE SubjectImpl_id="
+                            + subjectId);
+            List<Object[]> xrefs = query3.list();
+            List<XRefItem> xrefItems = new ArrayList<XRefItem>();
+            for (Object[] x : xrefs) {
+                xrefItems.add(new XRefItem((String) x[1], (String) x[0]));
+            }
+
+            SubjectItem subjectItem = new SubjectItem(stableURL.substring(0, stableURL.indexOf("/")), role, description,
+                    name, synonyms.toArray(new String[0]), xrefItems.toArray(new XRefItem[0]), columnName);
+            list.add(subjectItem);
+        }
+        session1.close();
+        return list;
+    }
+
+    public List<String> getRolesPerSubjectAndObservtion(Integer subjectId, Integer observationId) {
+        Session session = getSession();
+        @SuppressWarnings("unchecked")
+        org.hibernate.query.Query<String> query = session
+                .createNativeQuery("SELECT displayName AS role FROM observed_subject "
+                        + " JOIN observed_subject_role ON observed_subject.observedSubjectRole_id=observed_subject_role.id"
+                        + " JOIN dashboard_entity ON observed_subject_role.subjectRole_id=dashboard_entity.id"
+                        + " WHERE observation_id=" + observationId + " AND observed_subject.subject_id=" + subjectId);
+        List<String> list = query.list();
+        session.close();
+        return list;
     }
 }
