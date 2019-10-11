@@ -9,10 +9,12 @@ public class CTD2Serializer {
     static public JSONSerializer createJSONSerializer() {
         JSONSerializer jsonSerializer = new JSONSerializer().exclude("observation_count.class").exclude("xref.class")
                 .exclude("observations.subject_list.xref.class").transform(new ImplTransformer(), Class.class)
-                .transform(new SimpleDateTransformer(), Date.class).transform(new FieldNameTransformer("class"), "clazz")
+                .transform(new SimpleDateTransformer(), Date.class)
+                .transform(new FieldNameTransformer("class"), "clazz")
                 .transform(new FieldNameTransformer("class"), "observations.subject_list.clazz")
                 .transform(new FieldNameTransformer("class"), "observations.evidence_list.clazz")
-                .transform(new ExcludeTransformer(), void.class).exclude("class").exclude("observations.class");
+                .transform(new ExcludeTransformer(), void.class).exclude("class").exclude("observations.class")
+                .exclude("observations.subject_list.columnName");
         return jsonSerializer;
     }
 }
