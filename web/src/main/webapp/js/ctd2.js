@@ -46,6 +46,16 @@
                     return (new Date($('a', td).html())).getTime();
                 }
             );
+        },
+        /* this sorting order is special and only for the date column of the center page */
+        "text-date-order": function (settings, col) {
+            return this.api().column(col, {
+                order: 'index'
+            }).nodes().map(
+                function (td, i) {
+                    return (new Date($('small', td).html())).getTime();
+                }
+            );
         }
     });
 
@@ -1988,7 +1998,7 @@
                             },
                             null,
                             {
-                                "orderDataType": "dashboard-date"
+                                "orderDataType": "text-date-order"
                             },
                             null
                         ],
