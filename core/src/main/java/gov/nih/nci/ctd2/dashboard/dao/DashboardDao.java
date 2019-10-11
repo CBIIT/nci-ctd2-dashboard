@@ -71,5 +71,4 @@ public interface DashboardDao {
 
     // the following are added to support more efficient API without changing underlying database
     List<SubjectItem> getObservedSubjectInfo(Integer observationId);
-    List<String> getRolesPerSubjectAndObservtion(Integer subjectId, Integer observationId);
 }

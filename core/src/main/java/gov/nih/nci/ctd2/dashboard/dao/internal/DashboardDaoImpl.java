@@ -916,17 +916,4 @@ public class DashboardDaoImpl implements DashboardDao {
         session1.close();
         return list;
     }
-
-    public List<String> getRolesPerSubjectAndObservtion(Integer subjectId, Integer observationId) {
-        Session session = getSession();
-        @SuppressWarnings("unchecked")
-        org.hibernate.query.Query<String> query = session
-                .createNativeQuery("SELECT displayName AS role FROM observed_subject "
-                        + " JOIN observed_subject_role ON observed_subject.observedSubjectRole_id=observed_subject_role.id"
-                        + " JOIN dashboard_entity ON observed_subject_role.subjectRole_id=dashboard_entity.id"
-                        + " WHERE observation_id=" + observationId + " AND observed_subject.subject_id=" + subjectId);
-        List<String> list = query.list();
-        session.close();
-        return list;
-    }
 }

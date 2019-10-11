@@ -83,12 +83,15 @@ public class SubjectResponse {
         for (ObservedSubject observedSubject : dashboardDao.findObservedSubjectBySubject(subject)) {
             ObservedSubjectRole observedSubjectRole = observedSubject.getObservedSubjectRole();
             String subjectRole = observedSubjectRole.getSubjectRole().getDisplayName();
-            if(filter.rolesIncluded.size()>0 && !filter.rolesIncluded.contains(subjectRole)) continue;
+            if (filter.rolesIncluded.size() > 0 && !filter.rolesIncluded.contains(subjectRole))
+                continue;
 
-            ObservationTemplate observatinoTemplate = observedSubject.getObservation().getSubmission().getObservationTemplate();
+            ObservationTemplate observatinoTemplate = observedSubject.getObservation().getSubmission()
+                    .getObservationTemplate();
             Integer observationTier = observatinoTemplate.getTier();
-            String centerNameBrief = observatinoTemplate.getSubmissionCenter().getStableURL().substring(7); // remove prefix "center/"
-            if(filter.centerIncluded.size()>0 && !filter.centerIncluded.contains(centerNameBrief)) continue;
+            String centerNameBrief = observatinoTemplate.getSubmissionCenter().getStableURL().substring(7);
+            if (filter.centerIncluded.size() > 0 && !filter.centerIncluded.contains(centerNameBrief))
+                continue;
 
             if ((Arrays.asList(filter.tiersIncluded).contains(observationTier))) {
                 observations.add(observedSubject.getObservation());
@@ -97,7 +100,8 @@ public class SubjectResponse {
         return new ArrayList<Observation>(observations);
     }
 
-    public static SubjectResponse createInstance(final Subject subject, final Filter filter, DashboardDao dashboardDao) {
+    public static SubjectResponse createInstance(final Subject subject, final Filter filter,
+            DashboardDao dashboardDao) {
 
         List<Observation> observations = getObservations(subject, filter, dashboardDao);
 
@@ -115,8 +119,12 @@ public class SubjectResponse {
             assert tier > 0 && tier < 3;
             tierCount[tier - 1]++;
 
-            List<String> rolesPerObsevation = dashboardDao.getRolesPerSubjectAndObservtion(subject.getId(), observation.getId());
-            roles.addAll(rolesPerObsevation);
+            for (SubjectItem sub : obvs[i].subject_list) {
+                if (sub.name.equals(subject.getDisplayName())) {
+                    roles.add(sub.role);
+                    break;
+                }
+            }
         }
         SubjectResponse subjectResponse = new SubjectResponse(subject, obvs, roles.toArray(new String[0]), tierCount);
         return subjectResponse;
@@ -124,7 +132,7 @@ public class SubjectResponse {
 
     public SubjectResponse(Subject subject, ObservationItem[] observations, String[] roles, int[] tierCount) {
         String stableURL = subject.getStableURL();
-        this.clazz =  stableURL.substring(0, stableURL.indexOf("/"));
+        this.clazz = stableURL.substring(0, stableURL.indexOf("/"));
 
         this.name = subject.getDisplayName();
         this.synonyms = getSynomyms(subject);
