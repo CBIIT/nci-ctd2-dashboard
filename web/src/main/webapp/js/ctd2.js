@@ -384,6 +384,13 @@
                 $(this).popover('hide');
             });
 
+            $('#navlink-genecart').popover({
+                placement: "bottom",
+                trigger: 'hover',
+                content: __ctd2_hovertext.GENE_CART,
+            }).click(function () {
+                $(this).popover('hide');
+            });
             return this;
         }
     });

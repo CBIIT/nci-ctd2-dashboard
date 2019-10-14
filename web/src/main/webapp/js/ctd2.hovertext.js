@@ -23,4 +23,5 @@ __ctd2_hovertext = {
     CNKB_LAYOUT: 'Choose from several available graphical layout options',
     CNKB_CREATE_NETWORK: 'Plot network interaction diagram',
     CENTER_LIST: 'Number of Dashboard “Submissions” contributed by a Center',
+    GENE_CART: 'Build or edit a list of genes and query for molecular interactions',
 };
