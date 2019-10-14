@@ -10,6 +10,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import gov.nih.nci.ctd2.dashboard.api.EvidenceItem;
 import gov.nih.nci.ctd2.dashboard.api.SubjectItem;
 
 public interface DashboardDao {
@@ -71,4 +72,5 @@ public interface DashboardDao {
 
     // the following are added to support more efficient API without changing underlying database
     List<SubjectItem> getObservedSubjectInfo(Integer observationId);
+    List<EvidenceItem> getObservedEvidenceInfo(Integer observationId);
 }

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import flexjson.JSONSerializer;
 import gov.nih.nci.ctd2.dashboard.api.CTD2Serializer;
+import gov.nih.nci.ctd2.dashboard.api.EvidenceItem;
 import gov.nih.nci.ctd2.dashboard.api.ObservationItem;
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
 import gov.nih.nci.ctd2.dashboard.model.DashboardEntity;
@@ -55,7 +56,7 @@ public class SubmissionAPI {
         if (limit > 0 && limit < observations.size()) {
             observations = observations.subList(0, limit);
         }
-        ObservationItem.dataURL = dataURL;
+        EvidenceItem.dataURL = dataURL;
         ObservationItem[] obvs = new ObservationItem[observations.size()];
         for (int i = 0; i < observations.size(); i++) {
             obvs[i] = new ObservationItem((Observation) observations.get(i), dashboardDao);

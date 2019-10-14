@@ -47,6 +47,7 @@ import gov.nih.nci.ctd2.dashboard.model.CellSample;
 import gov.nih.nci.ctd2.dashboard.model.Compound;
 import gov.nih.nci.ctd2.dashboard.model.DashboardEntity;
 import gov.nih.nci.ctd2.dashboard.model.DashboardFactory;
+import gov.nih.nci.ctd2.dashboard.model.Evidence;
 import gov.nih.nci.ctd2.dashboard.model.Gene;
 import gov.nih.nci.ctd2.dashboard.model.Observation;
 import gov.nih.nci.ctd2.dashboard.model.ObservationTemplate;
@@ -67,7 +68,7 @@ import gov.nih.nci.ctd2.dashboard.model.Transcript;
 import gov.nih.nci.ctd2.dashboard.model.Xref;
 import gov.nih.nci.ctd2.dashboard.util.DashboardEntityWithCounts;
 import gov.nih.nci.ctd2.dashboard.util.SubjectWithSummaries;
-
+import gov.nih.nci.ctd2.dashboard.api.EvidenceItem;
 import gov.nih.nci.ctd2.dashboard.api.SubjectItem;
 import gov.nih.nci.ctd2.dashboard.api.XRefItem;
 
@@ -914,6 +915,33 @@ public class DashboardDaoImpl implements DashboardDao {
             list.add(subjectItem);
         }
         session1.close();
+        return list;
+    }
+
+    public List<EvidenceItem> getObservedEvidenceInfo(Integer observationId) {
+        Session session = getSession();
+        @SuppressWarnings("unchecked")
+        org.hibernate.query.Query<Object[]> query = session.createNativeQuery(
+                "SELECT d2.displayName AS type, observed_evidence_role.displayText AS description, evidence.id, columnName"
+                        + " FROM observed_evidence join evidence on observed_evidence.evidence_id=evidence.id"
+                        + " JOIN observed_evidence_role ON observed_evidence.observedEvidenceRole_id=observed_evidence_role.id"
+                        + " JOIN evidence_role ON observed_evidence_role.evidenceRole_id=evidence_role.id"
+                        + " JOIN dashboard_entity AS d2 ON evidence_role.id=d2.id WHERE observation_id="
+                        + observationId);
+        List<EvidenceItem> list = new ArrayList<EvidenceItem>();
+        List<Object[]> evidences = query.list();
+
+        for (Object[] obj : evidences) {
+            String type = (String) obj[0];
+            String description = (String) obj[1];
+            Integer evidenceId = (Integer) obj[2];
+            Evidence evidence = getEntityById(Evidence.class, evidenceId);
+            String evidenceName = evidence.getDisplayName();
+            String columnName = (String) obj[3];
+            EvidenceItem evidenceItem = new EvidenceItem(evidence, type, description, evidenceName, columnName);
+            list.add(evidenceItem);
+        }
+        session.close();
         return list;
     }
 }

@@ -14,6 +14,8 @@ public class CTD2Serializer {
                 .transform(new FieldNameTransformer("class"), "observations.subject_list.clazz")
                 .transform(new FieldNameTransformer("class"), "observations.evidence_list.clazz")
                 .transform(new ExcludeTransformer(), void.class).exclude("class").exclude("observations.class")
+                .exclude("observations.evidence_list.evidenceName")
+                .exclude("observations.evidence_list.columnName")
                 .exclude("observations.subject_list.columnName");
         return jsonSerializer;
     }
