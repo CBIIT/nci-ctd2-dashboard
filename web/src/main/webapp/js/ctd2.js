@@ -59,7 +59,7 @@
         }
     });
 
-    // Let datatables know about dashboard rank (for sorting)
+    // Let datatables know about dashboard count (for sorting)
     $.extend($.fn.dataTable.ext.order, {
         "dashboard-rank": function (settings, col) {
             return this.api().column(col, {
@@ -69,10 +69,20 @@
                     return $('a', td).attr("count");
                 }
             );
+        },
+        'submission-count': function (settings, col) {
+            return this.api().column(col, {
+                order: 'index'
+            }).nodes().map(
+                function (td, i) {
+                    const t = $('a', td).text().trim();
+                    return parseInt(t.split(' ')[0]);
+                }
+            );
         }
     });
 
-    // Let datatables know about observation count (for sorting)
+    // Let datatables know about observation count (for sorting explore-table)
     $.extend($.fn.dataTable.ext.type.order, {
         "observation-count-pre": function (d) {
             if (d == null || d == "") return 0;
@@ -1173,9 +1183,13 @@
                         // might want to increase this number if we have incredible number of centers
                         "iDisplayLength": 25,
                         columnDefs: [{
-                            targets: [0, 2, 3],
+                            targets: [0, 2],
                             orderable: false,
-                        }, ],
+                        }, {
+                            targets: 3,
+                            orderDataType: "submission-count",
+                            type: "numeric"
+                        }],
                     }).fnSort([
                         [1, 'asc']
                     ]);
