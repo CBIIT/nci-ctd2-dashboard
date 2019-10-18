@@ -1205,7 +1205,7 @@
         }
     });
 
-    var StoriesListView = Backbone.View.extend({
+    const StoriesListView = Backbone.View.extend({
         el: $("#main-container"),
         template: _.template($("#stories-tmpl").html()),
 
@@ -1213,19 +1213,33 @@
             $(this.el).html(this.template({}));
 
             // and load the stories
-            var storySubmissions = new StorySubmissions({
+            const storySubmissions = new StorySubmissions({
                 limit: -1
             });
             storySubmissions.fetch({
                 success: function () {
-                    var counter = 1;
                     _.each(storySubmissions.models, function (aStory) {
-                        var storyView = new StoryListItemView({
+                        const storyView = new StoryListItemView({
                             el: $("#stories-list #stories-tbody"),
                             model: aStory.toJSON()
                         });
                         storyView.render();
-                        counter++;
+                    });
+                    $('#stories-list').dataTable({
+                        columns: [{
+                                type: "string"
+                            },
+                            null,
+                            {
+                                orderDataType: "text-date-order"
+                            },
+                            {
+                                "orderable": false
+                            },
+                        ],
+                        order: [
+                            [2, 'desc']
+                        ],
                     });
                 }
             });
