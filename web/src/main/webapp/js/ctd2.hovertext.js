@@ -24,4 +24,5 @@ __ctd2_hovertext = {
     CNKB_CREATE_NETWORK: 'Plot network interaction diagram',
     CENTER_LIST: 'Number of Dashboard “Submissions” contributed by a Center',
     GENE_CART: 'Build or edit a list of genes and query for molecular interactions',
+    ALL_TIERS: 'Tier 1: Preliminary results of a screening campaign or large-scale computational analysis.<br/>Tier 2: Confirmation of primary results in a cancer-relevant in vitro model.<br/>Tier 3: Validation of results in a cancer relevant in vivo model.',
 };

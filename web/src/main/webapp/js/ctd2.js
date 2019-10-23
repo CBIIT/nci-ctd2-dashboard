@@ -1391,6 +1391,14 @@
                             model: observation,
                         }).render();
                     });
+                    $(thatEl).find('thead th:contains("Tier")').popover({
+                        placement: "top",
+                        trigger: 'hover',
+                        html: true, // because we need multiple lines
+                        content: function () {
+                            return __ctd2_hovertext.ALL_TIERS;
+                        },
+                    });
 
                     $(thatEl).dataTable(observationTableOptions);
                     $(thatEl).width("100%");
