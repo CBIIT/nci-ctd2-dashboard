@@ -1997,22 +1997,22 @@
         }
     });
 
-    var CenterView = Backbone.View.extend({
+    const CenterView = Backbone.View.extend({
         el: $("#main-container"),
         template: _.template($("#center-tmpl").html()),
         render: function (filterProject) {
-            var urlMap = {};
-            var centerModel = this.model.toJSON();
+            const urlMap = {};
+            const centerModel = this.model.toJSON();
             $(this.el).html(this.template(centerModel));
 
-            var thatEl = this.el;
-            var centerSubmissions = new CenterSubmissions({
+            const thatEl = this.el;
+            const centerSubmissions = new CenterSubmissions({
                 centerId: centerModel.id
             });
             centerSubmissions.fetch({
                 success: function () {
                     _.each(centerSubmissions.toJSON(), function (submission) {
-                        var centerSubmissionRowView = new CenterSubmissionRowView({
+                        const centerSubmissionRowView = new CenterSubmissionRowView({
                             el: $(thatEl).find("tbody"),
                             model: submission
                         });
@@ -2020,7 +2020,7 @@
                         $.ajax("observations/countBySubmission/?submissionId=" + submission.id, {
                             "async": false
                         }).done(function (count) {
-                            var tmplName = submission.observationTemplate.isSubmissionStory ?
+                            const tmplName = submission.observationTemplate.isSubmissionStory ?
                                 "#count-story-tmpl" :
                                 "#count-observations-tmpl";
                             submission.details = _.template(
@@ -2084,14 +2084,22 @@
                         [0, 'desc']
                     ]);
                     $("#center-submission-grid").parent().find('input[type=search]').popover(table_filter_popover);
+                    $("#center-submission-grid").find('thead th:contains("Tier")').popover({
+                        placement: "top",
+                        trigger: 'hover',
+                        html: true,
+                        content: function () {
+                            return __ctd2_hovertext.ALL_TIERS;
+                        },
+                    });
 
                     if (filterProject != null) {
                         $('#center-submission-grid').DataTable().search(urlMap[filterProject]).draw();
-                        var mpModel = {
+                        const mpModel = {
                             filterProject: urlMap[filterProject],
                             centerStableURL: centerModel.stableURL
                         };
-                        var moreProjectsView = new MoreProjectsView({
+                        const moreProjectsView = new MoreProjectsView({
                             model: mpModel
                         });
                         moreProjectsView.render();
@@ -2436,7 +2444,7 @@
         });
     };
 
-    var SearchView = Backbone.View.extend({
+    const SearchView = Backbone.View.extend({
         el: $("#main-container"),
         template: _.template($("#search-tmpl").html()),
         render: function () {
@@ -2445,9 +2453,9 @@
             // update the search box accordingly
             $("#omni-input").val(decodeURIComponent(this.model.term));
 
-            var thatEl = this.el;
-            var thatModel = this.model;
-            var searchResults = new SearchResults({
+            const thatEl = this.el;
+            const thatModel = this.model;
+            const searchResults = new SearchResults({
                 term: this.model.term
             });
 
@@ -2460,8 +2468,8 @@
                             model: thatModel
                         })).render();
                     } else {
-                        var submissions = [];
-                        var matching_observations = [];
+                        const submissions = [];
+                        const matching_observations = [];
                         _.each(searchResults.models, function (aResult) {
                             aResult = aResult.toJSON();
                             if (aResult.dashboardEntity.organism == undefined) {
@@ -2478,7 +2486,7 @@
                                 return;
                             }
 
-                            var searchResultsRowView = new SearchResultsRowView({
+                            const searchResultsRowView = new SearchResultsRowView({
                                 model: aResult,
                                 el: $(thatEl).find("tbody")
                             });
@@ -2490,7 +2498,7 @@
                         });
                         $(".obs-tooltip").tooltip();
 
-                        var oTable = $("#search-results-grid").dataTable({
+                        const oTable = $("#search-results-grid").dataTable({
                             "columns": [
                                 null,
                                 null,
@@ -2527,7 +2535,7 @@
                             $("#submission-search-results").fadeIn();
 
                             _.each(submissions, function (submission) {
-                                var searchSubmissionRowView = new SearchSubmissionRowView({
+                                const searchSubmissionRowView = new SearchSubmissionRowView({
                                     model: submission
                                 });
                                 searchSubmissionRowView.render();
@@ -2535,17 +2543,17 @@
                                 if (submission.observationTemplate === undefined) { // TODO why does this happen?
                                     submission.observationTemplate = {};
                                 }
-                                var tmplName = submission.observationTemplate.isSubmissionStory ?
+                                const tmplName = submission.observationTemplate.isSubmissionStory ?
                                     "#count-story-tmpl" :
                                     "#count-observations-tmpl";
-                                var cntContent = _.template(
+                                const cntContent = _.template(
                                     $(tmplName).html())({
                                     count: submission.observationCount
                                 });
                                 $("#search-observation-count-" + submission.dashboardEntity.id).html(cntContent);
                             });
 
-                            var sTable = $("#searched-submissions").dataTable({
+                            const sTable = $("#searched-submissions").dataTable({
                                 "columns": [
                                     null,
                                     {
@@ -2562,6 +2570,14 @@
                                 [2, 'desc']
                             ]);
                             $("#searched-submissions").parent().find('input[type=search]').popover(table_filter_popover);
+                            $("#searched-submissions").find('thead th:contains("Tier")').popover({
+                                placement: "top",
+                                trigger: 'hover',
+                                html: true,
+                                content: function () {
+                                    return __ctd2_hovertext.ALL_TIERS;
+                                },
+                            });
                         }
 
                         tabulate_matching_observations(matching_observations);
