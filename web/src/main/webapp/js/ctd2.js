@@ -774,38 +774,47 @@
         }
     ];
 
-    var ObservationView = Backbone.View.extend({
+    const ObservationView = Backbone.View.extend({
         el: $("#main-container"),
         template: _.template($("#observation-tmpl").html()),
         render: function () {
-            var result = this.model.toJSON();
+            const result = this.model.toJSON();
             $(this.el).html(this.template(result));
 
+            $(this.el).find("h2 > small").popover({
+                placement: "top",
+                trigger: 'hover',
+                content: function () {
+                    const hovertext_id = 'EXPLORE_' + $(this).text().toUpperCase().replace(' ', '_').replace(/\(|\)/g, '');
+                    return __ctd2_hovertext[hovertext_id];
+                },
+            });
+
             // We will replace the values in this summary
-            var summary = result.submission.observationTemplate.observationSummary;
+            let summary = result.submission.observationTemplate.observationSummary;
 
             // Load Subjects
-            var observedSubjects = new ObservedSubjects({
+            const observedSubjects = new ObservedSubjects({
                 observationId: result.id
             });
-            var thatEl = $("#observed-subjects-grid");
+            const thatEl = $("#observed-subjects-grid");
             observedSubjects.fetch({
                 success: function () {
                     _.each(observedSubjects.models, function (observedSubject) {
                         observedSubject = observedSubject.toJSON();
 
-                        var observedSubjectRowView = new ObservedSubjectSummaryRowView({
+                        const observedSubjectRowView = new ObservedSubjectSummaryRowView({
                             el: $(thatEl).find("tbody"),
                             model: observedSubject
                         });
                         observedSubjectRowView.render();
 
 
-                        var subject = observedSubject.subject;
-                        var thatEl2 = $("#subject-image-" + observedSubject.id);
-                        var imgTemplate = $("#search-results-unknown-image-tmpl");
+                        const subject = observedSubject.subject;
+                        const thatEl2 = $("#subject-image-" + observedSubject.id);
+                        let imgTemplate = $("#search-results-unknown-image-tmpl");
                         if (subject.class == "Compound") {
-                            var compound = new Subject({
+                            let compound = new Subject({
                                 id: subject.id
                             });
                             compound.fetch({
@@ -861,17 +870,17 @@
             });
 
             // Load evidences
-            var observedEvidences = new ObservedEvidences({
+            const observedEvidences = new ObservedEvidences({
                 observationId: result.id
             });
-            var thatEl2 = $("#observed-evidences-grid");
+            const thatEl2 = $("#observed-evidences-grid");
             observedEvidences.fetch({
                 success: function () {
-                    var storyFilePath = "";
+                    let storyFilePath = "";
                     _.each(observedEvidences.models, function (observedEvidence) {
                         observedEvidence = observedEvidence.toJSON();
 
-                        var observedEvidenceRowView = new ObservedEvidenceRowView({
+                        const observedEvidenceRowView = new ObservedEvidenceRowView({
                             el: $(thatEl2).find("tbody"),
                             model: observedEvidence
                         });
@@ -891,8 +900,8 @@
                         }
                     });
 
-                    var tableLength = (observedEvidences.models.length > 25 ? 10 : 25);
-                    var oTable = $('#observed-evidences-grid').dataTable({
+                    const tableLength = (observedEvidences.models.length > 25 ? 10 : 25);
+                    const oTable = $('#observed-evidences-grid').dataTable({
                         "iDisplayLength": tableLength
                     });
 
@@ -919,8 +928,8 @@
                     });
 
                     $(".numeric-value").each(function (idx) {
-                        var val = $(this).html();
-                        var vals = val.split("e"); // capture scientific notation
+                        const val = $(this).html();
+                        const vals = val.split("e"); // capture scientific notation
                         if (vals.length > 1) {
                             $(this).html(_.template($("#observeddatanumericevidence-val-tmpl").html())({
                                 firstPart: vals[0],
@@ -931,8 +940,8 @@
                     $(".cytoscape-view").click(function (event) {
                         event.preventDefault();
 
-                        var sifUrl = $(this).attr("data-sif-url");
-                        var sifDesc = $(this).attr("data-description");
+                        const sifUrl = $(this).attr("data-sif-url");
+                        const sifDesc = $(this).attr("data-description");
                         $.ajax({
                             url: "sif/",
                             data: {
@@ -1034,7 +1043,7 @@
                 $("#small-hide-sub-details").show();
             });
 
-            var hide_submission_detail = function () {
+            const hide_submission_detail = function () {
                 $("#obs-submission-details").slideUp();
                 $("#small-hide-sub-details").hide();
                 $("#small-show-sub-details").show();
@@ -2191,19 +2200,27 @@
         el: $("#main-container"),
         template: _.template($("#submission-tmpl").html()),
         render: function () {
-            var submission = this.model.toJSON();
+            const submission = this.model.toJSON();
             $(this.el).html(this.template(submission));
+            $(this.el).find("span.badge-tier").popover({
+                placement: "top",
+                trigger: 'hover',
+                content: function () {
+                    const hovertext_id = 'EXPLORE_' + $(this).text().toUpperCase().replace(' ', '_');
+                    return __ctd2_hovertext[hovertext_id];
+                },
+            });
 
             if (submission.observationTemplate.submissionDescription.length > 0) {
-                var submissionDescriptionView = new SubmissionDescriptionView({
+                const submissionDescriptionView = new SubmissionDescriptionView({
                     model: submission
                 });
                 submissionDescriptionView.render();
             }
 
-            var thatEl = this.el;
-            var submissionId = this.model.get("id");
-            var sTable = '#submission-observation-grid';
+            const thatEl = this.el;
+            const submissionId = this.model.get("id");
+            const sTable = '#submission-observation-grid';
 
             $.ajax("list/similar/" + submissionId).done(function (similarSubmissions) {
                 if (similarSubmissions.length < 1) {
@@ -2218,7 +2235,7 @@
             });
 
             $.ajax("observations/countBySubmission/?submissionId=" + submissionId).done(function (count) {
-                var observations = new ObservationsBySubmission({
+                const observations = new ObservationsBySubmission({
                     submissionId: submissionId
                 });
                 observations.fetch({
@@ -2228,7 +2245,7 @@
                         _.each(observations.models, function (observation) {
                             observation = observation.toJSON();
 
-                            var submissionRowView = new SubmissionRowView({
+                            const submissionRowView = new SubmissionRowView({
                                 el: $(thatEl).find(".observations tbody"),
                                 model: observation,
                                 attributes: {
@@ -2246,7 +2263,7 @@
                 });
 
                 if (count > maxNumberOfEntities) {
-                    var moreObservationView = new MoreObservationView({
+                    const moreObservationView = new MoreObservationView({
                         model: {
                             numOfObservations: maxNumberOfEntities,
                             numOfAllObservations: count,
