@@ -2890,7 +2890,7 @@
         }
     });
 
-    var reformattedClassName = {
+    const reformattedClassName = {
         "Gene": "gene",
         "AnimalModel": "animal model",
         "Compound": "compound",
@@ -2907,26 +2907,23 @@
         content: __ctd2_hovertext.TABLE_FILTER,
     };
 
-    var ExploreView = Backbone.View.extend({
+    const ExploreView = Backbone.View.extend({
         el: $("#main-container"),
         template: _.template($("#explore-tmpl").html()),
 
         render: function () {
-            var exploreLimit = 36;
-
-            var thatModel = this.model;
+            const thatModel = this.model;
             $(this.el).html(this.template(thatModel));
-            var data_url = $("#explore-tmpl").attr("data-url");
-            var subjectWithSummaryCollection = new SubjectWithSummaryCollection(thatModel);
+            const data_url = $("#explore-tmpl").attr("data-url");
+            const subjectWithSummaryCollection = new SubjectWithSummaryCollection(thatModel);
             subjectWithSummaryCollection.fetch({
                 success: function () {
                     $("#explore-items").html("");
 
-                    var numberOfEls = subjectWithSummaryCollection.models.length;
-                    var table_data = [];
+                    const table_data = [];
                     _.each(subjectWithSummaryCollection.models, function (subjectWithSummary) {
-                        var sModel = subjectWithSummary.toJSON();
-                        var subject = sModel.subject;
+                        const sModel = subjectWithSummary.toJSON();
+                        const subject = sModel.subject;
                         if (subject.class == "Compound") {
                             _.each(subject.xrefs, function (xref) {
                                 if (xref.databaseName == "IMAGE") {
@@ -2934,8 +2931,8 @@
                                 }
                             });
                         }
-                        var role = sModel.role;
-                        var reformatted = reformattedClassName[subject.class];
+                        const role = sModel.role;
+                        let reformatted = reformattedClassName[subject.class];
                         if (subject.class == 'Compound') {
                             reformatted += " <span style='display:inline-block;width:100px'><a href='" + data_url + "compounds/" +
                                 subject.imageFile + "' target='_blank' class='compound-image' title='Compound: " +
@@ -2944,18 +2941,18 @@
                         } else {
                             reformatted += " <img src='img/" + subject.class.toLowerCase() + ".png' style='height:25px' alt=''>";
                         }
-                        var nameLink = "<a href='#" + subject.stableURL + "/" + role + "'>" + subject.displayName + "</a>";
-                        var n3obv = sModel.numberOfTier3Observations;
-                        var n3ctr = sModel.numberOfTier3SubmissionCenters;
-                        var n3link = (n3obv == 0 ? "" : "<a href='#" + subject.stableURL + "/" + role + "/3'>" + n3obv + "</a>") +
+                        const nameLink = "<a href='#" + subject.stableURL + "/" + role + "'>" + subject.displayName + "</a>";
+                        const n3obv = sModel.numberOfTier3Observations;
+                        const n3ctr = sModel.numberOfTier3SubmissionCenters;
+                        const n3link = (n3obv == 0 ? "" : "<a href='#" + subject.stableURL + "/" + role + "/3'>" + n3obv + "</a>") +
                             (n3obv > 1 ? " (" + n3ctr + " center" + (n3ctr > 1 ? "s" : "") + ")" : "");
-                        var n2obv = sModel.numberOfTier2Observations;
-                        var n2ctr = sModel.numberOfTier2SubmissionCenters;
-                        var n2link = (n2obv == 0 ? "" : "<a href='#" + subject.stableURL + "/" + role + "/2'>" + n2obv + "</a>") +
+                        const n2obv = sModel.numberOfTier2Observations;
+                        const n2ctr = sModel.numberOfTier2SubmissionCenters;
+                        const n2link = (n2obv == 0 ? "" : "<a href='#" + subject.stableURL + "/" + role + "/2'>" + n2obv + "</a>") +
                             (n2obv > 1 ? " (" + n2ctr + " center" + (n2ctr > 1 ? "s" : "") + ")" : "");
-                        var n1obv = sModel.numberOfTier1Observations;
-                        var n1ctr = sModel.numberOfTier1SubmissionCenters;
-                        var n1link = (n1obv == 0 ? "" : "<a href='#" + subject.stableURL + "/" + role + "/1'>" + n1obv + "</a>") +
+                        const n1obv = sModel.numberOfTier1Observations;
+                        const n1ctr = sModel.numberOfTier1SubmissionCenters;
+                        const n1link = (n1obv == 0 ? "" : "<a href='#" + subject.stableURL + "/" + role + "/1'>" + n1obv + "</a>") +
                             (n1obv > 1 ? " (" + n1ctr + " center" + (n1ctr > 1 ? "s" : "") + ")" : "");
                         table_data.push([reformatted, nameLink, role, n3link, n2link, n1link]);
                     });
@@ -3001,7 +2998,7 @@
                         },
                     });
 
-                    var blurb = $("#text-blurb");
+                    const blurb = $("#text-blurb");
                     if (blurb.length > 0) {
                         $("#explore-blurb").append(_.template(blurb.html())({
                             subject_type: subjectType[thatModel.type],
@@ -3026,25 +3023,25 @@
             $("#customize-roles").popover({
                 placement: "top",
                 trigger: 'hover',
-                content: __ctd2_hovertext.EXPLORE_SELECT_ROLES,
+                content: __ctd2_hovertext["EXPLORE_SELECT_ROLES_" + thatModel.type.toUpperCase()],
             });
             $("#customize-roles").click(function (e) {
                 e.preventDefault();
 
-                var subjectRoles = new SubjectRoles();
+                const subjectRoles = new SubjectRoles();
                 subjectRoles.fetch({
                     success: function () {
                         $("#customized-roles-tbl tbody").html("");
 
-                        var currentRoles = decodeURIComponent(thatModel.roles.toLowerCase());
+                        const currentRoles = decodeURIComponent(thatModel.roles.toLowerCase());
                         _.each(subjectRoles.models, function (role) {
                             role = role.toJSON();
                             if (browseRole[thatModel.type].indexOf(role.displayName) == -1) return;
-                            var checked = currentRoles.search(role.displayName.toLowerCase()) > -1;
+                            const checked = currentRoles.search(role.displayName.toLowerCase()) > -1;
                             role.checked = checked;
-                            var roleName = role.displayName;
+                            const roleName = role.displayName;
                             role.displayName = roleName.charAt(0).toUpperCase() + roleName.slice(1);
-                            var customRoleItemView = new CustomRoleItemView({
+                            const customRoleItemView = new CustomRoleItemView({
                                 model: role
                             });
                             customRoleItemView.render();
@@ -3053,9 +3050,9 @@
                         $("#role-modal").modal('show');
 
                         $("#select-roles-button").click(function (e) {
-                            var newRoles = [];
+                            const newRoles = [];
                             $("#role-modal input").each(function () {
-                                var aRole = $(this).attr("data-role");
+                                const aRole = $(this).attr("data-role");
                                 if ($(this).prop("checked")) {
                                     newRoles.push(aRole);
                                 }
@@ -3074,13 +3071,13 @@
         }
     });
 
-    var browseRole = {
+    const browseRole = {
         target: ["background", "biomarker", "candidate master regulator", "interactor", "master regulator", "oncogene", "target"],
         compound: ["candidate drug", "control compound", "perturbagen"],
         context: ["disease", "metastasis", "tissue"]
     };
 
-    var subjectType = {
+    const subjectType = {
         target: "Biomarkers, Targets, Genes & Proteins (genes)",
         compound: "Compounds and Perturbagens (compounds, shRNA, genes)",
         context: "Disease Context (tissues)"
