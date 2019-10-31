@@ -263,7 +263,7 @@
         urlRoot: CORE_API_URL + "get/protein",
     });
 
-    var ShRna = Backbone.Model.extend({
+    const ShRna = Backbone.Model.extend({
         urlRoot: CORE_API_URL + "get/rna",
     });
 
@@ -1527,27 +1527,26 @@
         }
     });
 
-    var ShrnaView = Backbone.View.extend({
+    const ShrnaView = Backbone.View.extend({
         el: $("#main-container"),
         template: _.template($("#shrna-tmpl").html()),
         render: function () {
-            var thatModel = this.model;
-            var result = thatModel.subject.toJSON();
+            const thatModel = this.model;
+            const result = thatModel.subject.toJSON();
             result.type = result.class;
             $(this.el).html(this.template($.extend(result, {
                 tier: thatModel.tier ? thatModel.tier : null,
                 role: thatModel.role ? thatModel.role : null
             })));
 
-            var subjectObservationView = new SubjectObservationsView({
+            new SubjectObservationsView({
                 model: {
                     subjectId: result.id,
                     tier: thatModel.tier,
                     role: thatModel.role
                 },
                 el: "#shrna-observation-grid"
-            });
-            subjectObservationView.render();
+            }).render();
 
             return this;
         }

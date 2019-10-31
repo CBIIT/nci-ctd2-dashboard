@@ -1005,13 +1005,15 @@
                         <tr>
                             <th>Target Transcript</th>
                             <td>
-                                <a href="#{{transcript.stableURL}}">{{transcript.refseqId}}</a>
+                                <a
+                                    href="#{{transcript?transcript.stableURL:''}}">{{transcript?transcript.refseqId:''}}</a>
                             </td>
                         </tr>
                         <tr>
                             <th>Target Gene</th>
                             <td>
-                                <a href="#{{transcript.gene.stableURL}}">{{transcript.gene.displayName}}</a>
+                                <a
+                                    href="#{{transcript?transcript.gene.stableURL:''}}">{{transcript?transcript.gene.displayName:''}}</a>
                             </td>
                         </tr>
                         <tr>
