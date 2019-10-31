@@ -1,14 +1,14 @@
 (function ($) {
     // This is strictly coupled to the homepage design!
-    var numOfStoriesHomePage = 4;
-    var numOfCartGene = 25;
+    const numOfStoriesHomePage = 4;
+    const numOfCartGene = 25;
 
     // These seperators are for replacing items within the observation summary
-    var leftSep = "<";
-    var rightSep = ">";
+    const leftSep = "<";
+    const rightSep = ">";
 
     // To make URL constructing more configurable
-    var CORE_API_URL = "./";
+    const CORE_API_URL = "./";
 
     // This is for the moustache-like templates
     // prevents collisions with JSP tags <%...%>
@@ -17,7 +17,7 @@
     };
 
     // Get these options from the page
-    var maxNumberOfEntities = $("#maxNumberOfEntites").html() * 1;
+    const maxNumberOfEntities = $("#maxNumberOfEntites").html() * 1;
 
     // Datatables fix
     $.extend($.fn.dataTableExt.oStdClasses, {
@@ -86,11 +86,11 @@
     $.extend($.fn.dataTable.ext.type.order, {
         "observation-count-pre": function (d) {
             if (d == null || d == "") return 0;
-            var start = d.indexOf(">");
-            var end = d.indexOf("<", start);
+            const start = d.indexOf(">");
+            const end = d.indexOf("<", start);
             if (end <= start) return 0;
-            var count_text = d.substring(start + 1, end);
-            var count = 0;
+            const count_text = d.substring(start + 1, end);
+            let count = 0;
             if (count_text != undefined) count = parseInt(count_text);
             return count;
         }
@@ -109,23 +109,23 @@
     });
 
     /* Models */
-    var HomepageText = Backbone.Model.extend({
+    const HomepageText = Backbone.Model.extend({
         urlRoot: CORE_API_URL + "get/homepage-text"
     });
 
-    var SubmissionCenter = Backbone.Model.extend({
+    const SubmissionCenter = Backbone.Model.extend({
         urlRoot: CORE_API_URL + "get/center"
     });
-    var SubmissionCenters = Backbone.Collection.extend({
+    const SubmissionCenters = Backbone.Collection.extend({
         url: CORE_API_URL + "list/center/?filterBy=",
         model: SubmissionCenter
     });
 
-    var Submission = Backbone.Model.extend({
+    const Submission = Backbone.Model.extend({
         urlRoot: CORE_API_URL + "get/submission"
     });
 
-    var CenterSubmissions = Backbone.Collection.extend({
+    const CenterSubmissions = Backbone.Collection.extend({
         url: CORE_API_URL + "list/submission/?filterBy=",
         model: Submission,
 
@@ -134,7 +134,7 @@
         }
     });
 
-    var StorySubmissions = Backbone.Collection.extend({
+    const StorySubmissions = Backbone.Collection.extend({
         url: CORE_API_URL + "stories/?limit=",
         model: Submission,
 
@@ -148,11 +148,11 @@
 
     });
 
-    var Observation = Backbone.Model.extend({
+    const Observation = Backbone.Model.extend({
         urlRoot: CORE_API_URL + "get/observation"
     });
 
-    var ObservationsBySubmission = Backbone.Collection.extend({
+    const ObservationsBySubmission = Backbone.Collection.extend({
         url: CORE_API_URL + "observations/bySubmission/?submissionId=",
         model: Observation,
 
@@ -192,17 +192,17 @@
         }
     });
 
-    var SubjectRole = Backbone.Model.extend({});
-    var SubjectRoles = Backbone.Collection.extend({
+    const SubjectRole = Backbone.Model.extend({});
+    const SubjectRoles = Backbone.Collection.extend({
         url: CORE_API_URL + "list/role?filterBy=",
         model: SubjectRole
     });
 
-    var ObservedEvidence = Backbone.Model.extend({
+    const ObservedEvidence = Backbone.Model.extend({
         urlRoot: CORE_API_URL + "get/observedevidence"
     });
 
-    var ObservedEvidences = Backbone.Collection.extend({
+    const ObservedEvidences = Backbone.Collection.extend({
         url: CORE_API_URL + "list/observedevidence/?filterBy=",
         model: ObservedEvidence,
 
@@ -211,11 +211,11 @@
         }
     });
 
-    var ObservedSubject = Backbone.Model.extend({
+    const ObservedSubject = Backbone.Model.extend({
         urlRoot: CORE_API_URL + "get/observedsubject"
     });
 
-    var ObservedSubjects = Backbone.Collection.extend({
+    const ObservedSubjects = Backbone.Collection.extend({
         url: CORE_API_URL + "list/observedsubject/?filterBy=",
         model: ObservedSubject,
 
@@ -228,9 +228,9 @@
         }
     });
 
-    var SearchResult = Backbone.Model.extend({});
+    const SearchResult = Backbone.Model.extend({});
 
-    var SearchResults = Backbone.Collection.extend({
+    const SearchResults = Backbone.Collection.extend({
         url: CORE_API_URL + "search/",
         model: SearchResult,
 
@@ -239,11 +239,11 @@
         }
     });
 
-    var AnimalModel = Backbone.Model.extend({
+    const AnimalModel = Backbone.Model.extend({
         urlRoot: CORE_API_URL + "get/animal-model"
     });
 
-    var Gene = Backbone.Model.extend({
+    const Gene = Backbone.Model.extend({
         urlRoot: 'get/gene',
 
         initialize: function (attributes) {
@@ -251,15 +251,15 @@
         }
     });
 
-    var CellSample = Backbone.Model.extend({
+    const CellSample = Backbone.Model.extend({
         urlRoot: CORE_API_URL + "get/cell-sample",
     });
 
-    var Compound = Backbone.Model.extend({
+    const Compound = Backbone.Model.extend({
         urlRoot: CORE_API_URL + "get/compound",
     });
 
-    var Protein = Backbone.Model.extend({
+    const Protein = Backbone.Model.extend({
         urlRoot: CORE_API_URL + "get/protein",
     });
 
@@ -267,19 +267,19 @@
         urlRoot: CORE_API_URL + "get/rna",
     });
 
-    var TissueSample = Backbone.Model.extend({
+    const TissueSample = Backbone.Model.extend({
         urlRoot: CORE_API_URL + "get/tissue",
     });
 
-    var Transcript = Backbone.Model.extend({
+    const Transcript = Backbone.Model.extend({
         urlRoot: CORE_API_URL + "get/transcript",
     });
 
-    var Subject = Backbone.Model.extend({
+    const Subject = Backbone.Model.extend({
         urlRoot: CORE_API_URL + "get/subject"
     });
 
-    var SubjectWithSummaryCollection = Backbone.Collection.extend({
+    const SubjectWithSummaryCollection = Backbone.Collection.extend({
         url: CORE_API_URL + "explore/",
 
         initialize: function (attributes) {
