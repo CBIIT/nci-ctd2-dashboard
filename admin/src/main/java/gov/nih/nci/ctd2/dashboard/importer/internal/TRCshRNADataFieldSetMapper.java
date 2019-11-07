@@ -11,6 +11,8 @@ import gov.nih.nci.ctd2.dashboard.util.NaturalOrderComparator;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindException;
 import org.springframework.batch.item.file.transform.FieldSet;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.batch.item.file.mapping.FieldSetMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -21,6 +23,7 @@ import java.util.Arrays;
 
 @Component("TRCshRNADataMapper")
 public class TRCshRNADataFieldSetMapper implements FieldSetMapper<ShRna> {
+	private static Log log = LogFactory.getLog(TRCshRNADataFieldSetMapper.class);
 
 	public static final String BROAD_SHRNA_DATABASE = "BROAD_SHRNA";
 	private static final String MISSING_ENTRY = "EMPTY";
@@ -46,6 +49,7 @@ public class TRCshRNADataFieldSetMapper implements FieldSetMapper<ShRna> {
     private HashMap<String, Organism> organismMap = new HashMap<String, Organism>();
     private HashMap<String, Transcript> transcriptMap = new HashMap<String, Transcript>();
 
+	private volatile int missingTranscriptCount = 0;
 	public ShRna mapFieldSet(FieldSet fieldSet) throws BindException {
 
         ShRna shRNA = dashboardFactory.create(ShRna.class);
@@ -87,7 +91,13 @@ public class TRCshRNADataFieldSetMapper implements FieldSetMapper<ShRna> {
         }
         else {
 		    transcript = getTranscript(fieldSet.readString(ALT_TRANSCRIPT_ID_COL_INDEX));
-            if (transcript != null) shRNA.setTranscript(transcript);
+			if (transcript != null) shRNA.setTranscript(transcript);
+			else {
+				missingTranscriptCount++;
+				log.debug("null transcript " + missingTranscriptCount + ": " + fieldSet.readString(TARGET_SEQ_COL_INDEX)
+						+ " [" + fieldSet.readString(TRANSCRIPT_ID_COL_INDEX) + "]["
+						+ fieldSet.readString(ALT_TRANSCRIPT_ID_COL_INDEX) + "]");
+			}
         }
 
         return shRNA;
