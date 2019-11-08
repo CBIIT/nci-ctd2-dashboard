@@ -288,7 +288,7 @@
     });
 
     /* Views */
-    var HomeView = Backbone.View.extend({
+    const HomeView = Backbone.View.extend({
         el: $("#main-container"),
         template: _.template($("#home-tmpl").html()),
         render: function () {
@@ -303,16 +303,15 @@
             });
 
             // and load the stories
-            var storySubmissions = new StorySubmissions();
+            const storySubmissions = new StorySubmissions();
             storySubmissions.fetch({
                 success: function () {
-                    var counter = 1;
+                    let counter = 1;
                     _.each(storySubmissions.models, function (aStory) {
-                        var storyView = new StorySubmissionView({
+                        new StorySubmissionView({
                             el: $("#story-" + counter),
                             model: aStory.toJSON()
-                        });
-                        storyView.render();
+                        }).render();
                         counter++;
                     });
 
@@ -334,8 +333,7 @@
             });
 
             $("#omni-search-form").submit(function () {
-                var searchTerm = $("#omni-search").val();
-                window.location.hash = "search/" + searchTerm;
+                window.location.hash = "search/" + $("#omni-search").val();
                 return false;
             });
 
@@ -405,13 +403,12 @@
         }
     });
 
-    var VideoPopupView = Backbone.View.extend({
+    const VideoPopupView = Backbone.View.extend({
         template: _.template($("#video-popup-tmpl").html()),
         render: function () {
-            var content = this.template(this.model);
 
             $.fancybox.open(
-                content, {
+                this.template(this.model), {
                     'autoDimensions': false,
                     'centerOnScroll': true,
                     'transitionIn': 'none',
@@ -423,7 +420,7 @@
         }
     });
 
-    var HowToCiteView = Backbone.View.extend({
+    const HowToCiteView = Backbone.View.extend({
         el: $("#main-container"),
         template: _.template($("#how-to-cite-tmpl").html()),
         render: function () {
@@ -432,14 +429,13 @@
         }
     });
 
-    var HelpNavigateView = Backbone.View.extend({
+    const HelpNavigateView = Backbone.View.extend({
         template: _.template($("#help-navigate-tmpl").html()),
 
         render: function () {
-            var content = this.template({});
 
             $.fancybox.open(
-                content, {
+                this.template({}), {
                     'autoDimensions': false,
                     'centerOnScroll': true,
                     'transitionIn': 'none',
@@ -451,14 +447,14 @@
         }
     });
 
-    var HtmlStoryView = Backbone.View.extend({
+    const HtmlStoryView = Backbone.View.extend({
         el: $("#main-container"),
         template: _.template($("#html-story-container-tmpl").html()),
         render: function () {
-            var storyView = this;
-            var thatEl = $(this.el);
-            var url = this.model.url;
-            var observation = this.model.observation;
+            const storyView = this;
+            const thatEl = $(this.el);
+            const url = this.model.url;
+            const observation = this.model.observation;
 
             $.post("html", {
                 url: url
@@ -468,7 +464,7 @@
                     "#" + observation.submission.observationTemplate.submissionCenter.stableURL
                 );
 
-                var observedSubjects = new ObservedSubjects({
+                const observedSubjects = new ObservedSubjects({
                     observationId: observation.id
                 });
                 observedSubjects.fetch({
@@ -485,7 +481,7 @@
                             );
                         });
 
-                        var observedEvidences = new ObservedEvidences({
+                        const observedEvidences = new ObservedEvidences({
                             observationId: observation.id
                         });
                         observedEvidences.fetch({
@@ -531,17 +527,16 @@
         }
     });
 
-    var StoryListItemView = Backbone.View.extend({
+    const StoryListItemView = Backbone.View.extend({
         template: _.template($("#stories-tbl-row-tmpl").html()),
 
         render: function () {
-            var mainContainer = $(this.el);
-            mainContainer.append(this.template(this.model));
+            $(this.el).append(this.template(this.model));
 
-            var summary = this.model.submission.observationTemplate.observationSummary;
-            var thatModel = this.model;
-            var thatEl = $("#story-list-summary-" + this.model.id);
-            var observedSubjects = new ObservedSubjects({
+            let summary = this.model.submission.observationTemplate.observationSummary;
+            const thatModel = this.model;
+            const thatEl = $("#story-list-summary-" + this.model.id);
+            const observedSubjects = new ObservedSubjects({
                 observationId: this.model.id
             });
             observedSubjects.fetch({
@@ -558,7 +553,7 @@
                         );
                     });
 
-                    var observedEvidences = new ObservedEvidences({
+                    const observedEvidences = new ObservedEvidences({
                         observationId: thatModel.id
                     });
                     observedEvidences.fetch({
@@ -594,15 +589,15 @@
         }
     });
 
-    var StorySubmissionView = Backbone.View.extend({
+    const StorySubmissionView = Backbone.View.extend({
         template: _.template($("#story-homepage-tmpl").html()),
         render: function () {
             $(this.el).append(this.template(this.model));
 
-            var summary = this.model.submission.observationTemplate.observationSummary;
-            var thatModel = this.model;
-            var thatEl = $("#story-summary-" + this.model.id);
-            var observedSubjects = new ObservedSubjects({
+            let summary = this.model.submission.observationTemplate.observationSummary;
+            const thatModel = this.model;
+            const thatEl = $("#story-summary-" + this.model.id);
+            const observedSubjects = new ObservedSubjects({
                 observationId: this.model.id
             });
             observedSubjects.fetch({
@@ -619,7 +614,7 @@
                         );
                     });
 
-                    var observedEvidences = new ObservedEvidences({
+                    const observedEvidences = new ObservedEvidences({
                         observationId: thatModel.id
                     });
                     observedEvidences.fetch({
