@@ -2443,20 +2443,27 @@
         }
     });
 
-    var tabulate_matching_observations = function (m_observations) {
+    const tabulate_matching_observations = function (m_observations) {
         $("#observation-search-results").hide();
         if (m_observations.length <= 0) return;
 
         $("#observation-search-results").fadeIn();
-        var thatEl = $("#searched-observation-grid");
+        const thatEl = $("#searched-observation-grid");
 
         $(".subject-observations-loading", thatEl).remove();
         _.each(m_observations, function (observation) {
-            var observationRowView = new ObservationRowView({
+            new ObservationRowView({
                 el: $(thatEl).find("tbody"),
                 model: observation
-            });
-            observationRowView.render();
+            }).render();
+        });
+        $(thatEl).find('thead th:contains("Tier")').popover({
+            placement: "top",
+            trigger: 'hover',
+            html: true,
+            content: function () {
+                return __ctd2_hovertext.ALL_TIERS;
+            },
         });
     };
 
