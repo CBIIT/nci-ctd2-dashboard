@@ -2033,8 +2033,7 @@
             <button type="button" class="close" data-dismiss="alert">&times;</button>
             <p>
                 Only {{numOfObservations}} of {{numOfAllObservations}} observations are listed in the table below.
-                To load all observations please <a href="#" class="load-more-observations">click here</a>
-                (<i>this might take a while</i>).
+                {{ numOfAllObservations<=1000 ? 'To load all observations please <a href="#" class="load-more-observations">click here</a> (<i>this might take a while</i>).' : 'There are too many observations to display in the browser; <a href="<%=dataURL%>submissions/' + submissionDisplayName + '.zip">download</a> the complete set of observations as a file.' }}
             </p>
         </div>
     </script>

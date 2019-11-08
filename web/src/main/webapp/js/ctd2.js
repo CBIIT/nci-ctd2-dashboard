@@ -2130,18 +2130,18 @@
         }
     });
 
-    var SubmissionRowView = Backbone.View.extend({
+    const SubmissionRowView = Backbone.View.extend({
         template: _.template($("#submission-tbl-row-tmpl").html()),
         render: function () {
             $(this.el).append(this.template(this.model));
-            var sTable = $(this.el).parent();
+            const sTable = $(this.el).parent();
 
-            var summary = this.model.submission.observationTemplate.observationSummary;
+            let summary = this.model.submission.observationTemplate.observationSummary;
 
-            var thatModel = this.model;
-            var cellId = "#submission-observation-summary-" + this.model.id;
-            var thatEl = $(cellId);
-            var observedSubjects = new ObservedSubjects({
+            const thatModel = this.model;
+            const cellId = "#submission-observation-summary-" + this.model.id;
+            const thatEl = $(cellId);
+            const observedSubjects = new ObservedSubjects({
                 observationId: this.model.id
             });
             observedSubjects.fetch({
@@ -2158,7 +2158,7 @@
                         );
                     });
 
-                    var observedEvidences = new ObservedEvidences({
+                    const observedEvidences = new ObservedEvidences({
                         observationId: thatModel.id
                     });
                     observedEvidences.fetch({
@@ -2264,7 +2264,8 @@
                             submissionId: submissionId,
                             tableEl: sTable,
                             rowView: SubmissionRowView,
-                            columns: [null]
+                            columns: [null],
+                            submissionDisplayName: submission.displayName,
                         }
                     });
                     moreObservationView.render();
@@ -2275,30 +2276,29 @@
             return this;
         }
     });
-
+    
     const MoreObservationView = Backbone.View.extend({
         el: ".more-observations-message",
         template: _.template($("#more-observations-tmpl").html()),
         render: function () {
-            var model = this.model;
-            var thatEl = this.el;
+            const model = this.model;
+            const thatEl = this.el;
             $(thatEl).html(this.template(model));
             $(thatEl).find("a.load-more-observations").click(function (e) {
                 e.preventDefault();
                 $(thatEl).slideUp();
 
                 $(".submission-observations-loading").show();
-                var sTableId = model.tableEl;
+                const sTableId = model.tableEl;
 
-                var observations;
-                if (model.submissionId != undefined) {
-                    observations = new ObservationsBySubmission({
-                        submissionId: model.submissionId,
-                        getAll: true
-                    });
-                } else {
+                if (model.submissionId === undefined) {
                     console.log("something is wrong here!");
+                    return;
                 }
+                const observations = new ObservationsBySubmission({
+                    submissionId: model.submissionId,
+                    getAll: true
+                });
                 observations.fetch({
                     success: function () {
                         $(sTableId).DataTable().rows().remove().draw().destroy();
@@ -2306,11 +2306,10 @@
                         _.each(observations.models, function (observation, i) {
                             observation = observation.toJSON();
 
-                            var submissionRowView = new model.rowView({
+                            new model.rowView({
                                 el: $(model.tableEl).find("tbody"),
                                 model: observation
-                            });
-                            submissionRowView.render();
+                            }).render();
                         });
 
                         $(sTableId).dataTable({
