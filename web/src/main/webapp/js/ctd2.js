@@ -957,8 +957,6 @@
                                 );
 
                                 // load cytoscape
-                                //var div_id = "cytoscape-sif";
-
                                 cytoscape({
                                     container: $('#cytoscape-sif'),
 
@@ -1057,10 +1055,10 @@
         }
     });
 
-    var ObservedEvidenceRowView = Backbone.View.extend({
+    const ObservedEvidenceRowView = Backbone.View.extend({
         render: function () {
-            var result = this.model;
-            var type = result.evidence.class;
+            const result = this.model;
+            const type = result.evidence.class;
             result.evidence.type = type;
 
             if (result.observedEvidenceRole == null) {
@@ -1072,9 +1070,9 @@
                 };
             }
 
-            var templateId = "#observedevidence-row-tmpl";
-            var isHtmlStory = false;
-            var mEvidence = "";
+            let templateId = "#observedevidence-row-tmpl";
+            let isHtmlStory = false;
+            let mEvidence = "";
 
             if (type == "FileEvidence") {
                 result.evidence.filePath = result.evidence.filePath.replace(/\\/g, "/");
@@ -1107,11 +1105,10 @@
                 mEvidence = "numeric";
             }
 
-            var mRole = result.observedEvidenceRole.evidenceRole.displayName;
             result.eco =
                 _.chain(ecoMappings)
                 .filter(function (m) {
-                    return m.evidence == mEvidence && m.role == mRole;
+                    return m.evidence == mEvidence && m.role == result.observedEvidenceRole.evidenceRole.displayName;
                 })
                 .first()
                 .value();
@@ -1120,11 +1117,10 @@
             }
 
             this.template = _.template($(templateId).html());
-            var thatEl = $(this.el);
             $(this.el).append(this.template(result));
 
             if (isHtmlStory) {
-                thatEl.find(".html-story-link").attr("href", "#" + result.observation.submission.stableURL.replace("submission", "story"));
+                $(this.el).find(".html-story-link").attr("href", "#" + result.observation.submission.stableURL.replace("submission", "story"));
             }
 
             $(".img-rounded").tooltip({
@@ -1134,7 +1130,7 @@
         }
     });
 
-    var CenterListRowView = Backbone.View.extend({
+    const CenterListRowView = Backbone.View.extend({
         template: _.template($("#centers-tbl-row-tmpl").html()),
         render: function () {
             $(this.el).append(this.template(this.model));
@@ -1143,41 +1139,40 @@
 
     });
 
-    var CenterListView = Backbone.View.extend({
+    const CenterListView = Backbone.View.extend({
         el: $("#main-container"),
         template: _.template($("#centers-tmpl").html()),
         render: function () {
             $(this.el).html(this.template({}));
 
-            var centers = new SubmissionCenters();
-            var thatEl = this.el;
+            const centers = new SubmissionCenters();
+            const thatEl = this.el;
             centers.fetch({
                 success: function () {
 
                     _.each(centers.toJSON(), function (aCenter) {
-                        var centerListRowView = new CenterListRowView({
+                        new CenterListRowView({
                             el: $(thatEl).find("#centers-tbody"),
                             model: aCenter
-                        });
-                        centerListRowView.render();
+                        }).render();
 
                         $.ajax("count/submission/?filterBy=" + aCenter.id).done(function (count) {
-                            var cntContent = _.template(
+                            const cntContent = _.template(
                                 $("#count-submission-tmpl").html())({
                                 count: count
                             });
 
-                            var countCellId = "#submission-count-" + aCenter.id;
+                            const countCellId = "#submission-count-" + aCenter.id;
                             $(countCellId).html(cntContent);
                             $("#centers-list-table").DataTable().cells(countCellId).invalidate();
                         });
 
                         $.ajax("list/observationtemplate/?filterBy=" + aCenter.id).done(function (templates) {
-                            var pis = [];
+                            const pis = [];
                             _.each(templates, function (template) {
                                 pis.push(template.principalInvestigator);
                             });
-                            var piCellId = "#center-pi-" + aCenter.id;
+                            const piCellId = "#center-pi-" + aCenter.id;
                             $(piCellId).html(_.uniq(pis).join(", "));
                             $("#centers-list-table").DataTable().cells(piCellId).invalidate();
                         });
@@ -1252,7 +1247,7 @@
         }
     });
 
-    var CenterSubmissionRowView = Backbone.View.extend({
+    const CenterSubmissionRowView = Backbone.View.extend({
         template: _.template($("#center-submission-tbl-row-tmpl").html()),
         render: function () {
             $(this.el).append(this.template(this.model));
@@ -1260,7 +1255,7 @@
         }
     });
 
-    var SearchSubmissionRowView = Backbone.View.extend({
+    const SearchSubmissionRowView = Backbone.View.extend({
         el: "#searched-submissions tbody",
         template: _.template($("#search-submission-tbl-row-tmpl").html()),
         render: function () {
@@ -1269,7 +1264,7 @@
         }
     });
 
-    var SubmissionDescriptionView = Backbone.View.extend({
+    const SubmissionDescriptionView = Backbone.View.extend({
         el: "#optional-submission-description",
         template: _.template($("#submission-description-tmpl").html()),
         render: function () {
@@ -1278,12 +1273,12 @@
         }
     });
 
-    var CompoundView = Backbone.View.extend({
+    const CompoundView = Backbone.View.extend({
         el: $("#main-container"),
         template: _.template($("#compound-tmpl").html()),
         render: function () {
-            var thatModel = this.model;
-            var result = thatModel.subject.toJSON();
+            const thatModel = this.model;
+            const result = thatModel.subject.toJSON();
 
             result.drugbank = result.pubchem = result.cas = false;
             result.ctrpID = result.ctrpName = result.depmap = false;
@@ -1313,26 +1308,23 @@
                 role: thatModel.role ? thatModel.role : null
             })));
 
-            var thatEl = $("ul.synonyms");
             _.each(result.synonyms, function (aSynonym) {
                 if (aSynonym.displayName == result.displayName) return;
 
-                var synonymView = new SynonymView({
+                new SynonymView({
                     model: aSynonym,
-                    el: thatEl
-                });
-                synonymView.render();
+                    el: $("ul.synonyms")
+                }).render();
             });
 
-            var subjectObservationView = new SubjectObservationsView({
+            new SubjectObservationsView({
                 model: {
                     subjectId: result.id,
                     tier: thatModel.tier,
                     role: thatModel.role
                 },
                 el: "#compound-observation-grid"
-            });
-            subjectObservationView.render();
+            }).render();
 
             $("a.compound-image").fancybox({
                 titlePosition: 'inside'
@@ -1356,9 +1348,9 @@
             text: 'Export as Spreadsheet',
             className: "extra-margin",
             customizeData: function (data) {
-                var body = data.body;
-                for (var i = 0; i < body.length; i++) {
-                    var raw_content = body[i][1].split(/ +/);
+                const body = data.body;
+                for (let i = 0; i < body.length; i++) {
+                    const raw_content = body[i][1].split(/ +/);
                     raw_content.pop();
                     raw_content.pop();
                     body[i][1] = raw_content.join(' ');
@@ -1413,12 +1405,12 @@
         }
     });
 
-    var GeneView = Backbone.View.extend({
+    const GeneView = Backbone.View.extend({
         el: $("#main-container"),
         template: _.template($("#gene-tmpl").html()),
         render: function () {
-            var thatModel = this.model;
-            var result = thatModel.subject.toJSON();
+            const thatModel = this.model;
+            const result = thatModel.subject.toJSON();
             // Find out the UniProt ID
 
             result.genecard = false;
@@ -1434,37 +1426,33 @@
                 role: thatModel.role ? thatModel.role : null
             })));
 
-            var thatEl = $("ul.synonyms");
             _.each(result.synonyms, function (aSynonym) {
                 if (aSynonym.displayName == result.displayName) return;
 
-                var synonymView = new SynonymView({
+                new SynonymView({
                     model: aSynonym,
-                    el: thatEl
-                });
-                synonymView.render();
+                    el: $("ul.synonyms")
+                }).render();
             });
 
-            thatEl = $("ul.refs");
             $.getJSON("findProteinFromGene/" + result.id, function (proteins) {
                 _.each(proteins, function (protein) {
-                    thatEl.append(_.template($("#gene-uniprot-tmpl").html())({
+                    $("ul.refs").append(_.template($("#gene-uniprot-tmpl").html())({
                         uniprotId: protein.uniprotId
                     }));
                 });
             });
 
-            var subjectObservationView = new SubjectObservationsView({
+            new SubjectObservationsView({
                 model: {
                     subjectId: result.id,
                     tier: thatModel.tier,
                     role: thatModel.role
                 },
                 el: "#gene-observation-grid"
-            });
-            subjectObservationView.render();
+            }).render();
 
-            var currentGene = result.displayName;
+            const currentGene = result.displayName;
             $(".addGene-" + currentGene).click(function (e) {
                 e.preventDefault();
                 updateGeneList(currentGene);
@@ -1475,48 +1463,43 @@
         }
     });
 
-    var ProteinView = Backbone.View.extend({
+    const ProteinView = Backbone.View.extend({
         el: $("#main-container"),
         template: _.template($("#protein-tmpl").html()),
         render: function () {
-            var thatModel = this.model;
-            var result = thatModel.subject.toJSON();
+            const thatModel = this.model;
+            const result = thatModel.subject.toJSON();
             result.type = result.class;
             $(this.el).html(this.template($.extend(result, {
                 tier: thatModel.tier ? thatModel.tier : null,
                 role: thatModel.role ? thatModel.role : null
             })));
 
-            var thatEl = $("ul.synonyms");
             _.each(result.synonyms, function (aSynonym) {
                 if (aSynonym.displayName == result.displayName) return;
 
-                var synonymView = new SynonymView({
+                new SynonymView({
                     model: aSynonym,
-                    el: thatEl
-                });
-                synonymView.render();
+                    el: $("ul.synonyms")
+                }).render();
             });
 
-            thatEl = $("ul.transcripts");
             _.each(result.transcripts, function (aTranscript) {
-                var transcriptItemView = new TranscriptItemView({
+                new TranscriptItemView({
                     model: aTranscript,
-                    el: thatEl
-                });
-                transcriptItemView.render();
+                    el: $("ul.transcripts")
+                }).render();
             });
 
 
-            var subjectObservationView = new SubjectObservationsView({
+            new SubjectObservationsView({
                 model: {
                     subjectId: result.id,
                     tier: thatModel.tier,
                     role: thatModel.role
                 },
                 el: "#protein-observation-grid"
-            });
-            subjectObservationView.render();
+            }).render();
 
             return this;
         }
@@ -1547,64 +1530,62 @@
         }
     });
 
-    var SirnaView = Backbone.View.extend({
+    const SirnaView = Backbone.View.extend({
         el: $("#main-container"),
         template: _.template($("#sirna-tmpl").html()),
         render: function () {
-            var thatModel = this.model;
-            var result = thatModel.subject.toJSON();
+            const thatModel = this.model;
+            const result = thatModel.subject.toJSON();
             result.type = "sirna";
             $(this.el).html(this.template($.extend(result, {
                 tier: thatModel.tier ? thatModel.tier : null,
                 role: thatModel.role ? thatModel.role : null
             })));
 
-            var subjectObservationView = new SubjectObservationsView({
+            new SubjectObservationsView({
                 model: {
                     subjectId: result.id,
                     tier: thatModel.tier,
                     role: thatModel.role
                 },
                 el: "#sirna-observation-grid"
-            });
-            subjectObservationView.render();
+            }).render();
 
             return this;
         }
     });
 
-    var TranscriptView = Backbone.View.extend({
+    const TranscriptView = Backbone.View.extend({
         el: $("#main-container"),
         template: _.template($("#transcript-tmpl").html()),
         render: function () {
-            var thatModel = this.model;
-            var result = thatModel.subject.toJSON();
+            const thatModel = this.model;
+            const result = thatModel.subject.toJSON();
             result.type = result.class;
             $(this.el).html(this.template($.extend(result, {
                 tier: thatModel.tier ? thatModel.tier : null,
                 role: thatModel.role ? thatModel.role : null
             })));
 
-            var subjectObservationView = new SubjectObservationsView({
+            new SubjectObservationsView({
                 model: {
                     subjectId: result.id,
                     tier: thatModel.tier,
                     role: thatModel.role
                 },
                 el: "#transcript-observation-grid"
-            });
-            subjectObservationView.render();
+            }).render();
 
             return this;
         }
     });
 
-    var TissueSampleView = Backbone.View.extend({
+    const TissueSampleView = Backbone.View.extend({
         el: $("#main-container"),
         template: _.template($("#tissuesample-tmpl").html()),
         render: function () {
-            var thatModel = this.model;
-            var result = thatModel.subject.toJSON();
+            const thatModel = this.model;
+            const result = thatModel.subject.toJSON();
 
             result.diseaseOntology = false;
             _.each(result.xrefs, function (xref) {
@@ -1629,14 +1610,14 @@
                 role: thatModel.role ? thatModel.role : null
             })));
 
-            var thatEl = this.el;
+            const thatEl = this.el;
             if (result.xrefs.length == 0) {
                 $(thatEl).find("#tissue-refs").hide();
             }
             _.each(result.xrefs, function (xref) {
                 //if(xref.databaseName == "NCI_PARENT_THESAURUS" || xref.databaseName == "NCI_THESAURUS") {
                 if (xref.databaseName == "NCI_THESAURUS") {
-                    var ids = xref.databaseId.split(";");
+                    const ids = xref.databaseId.split(";");
                     _.each(ids, function (xrefid) {
                         $(thatEl).find("ul.xrefs").append(
                             _.template($("#ncithesaurus-tmpl").html())({
@@ -1650,91 +1631,83 @@
             if (result.synonyms.length == 0) {
                 $(thatEl).find("#tissue-synonyms").hide();
             }
-            var synonymEl = $("ul.synonyms");
             _.each(result.synonyms, function (aSynonym) {
                 if (aSynonym.displayName == result.displayName) return;
 
-                var synonymView = new SynonymView({
+                new SynonymView({
                     model: aSynonym,
-                    el: synonymEl
-                });
-                synonymView.render();
+                    el: $("ul.synonyms")
+                }).render();
             });
 
-            var subjectObservationView = new SubjectObservationsView({
+            new SubjectObservationsView({
                 model: {
                     subjectId: result.id,
                     tier: thatModel.tier,
                     role: thatModel.role
                 },
                 el: "#tissuesample-observation-grid"
-            });
-            subjectObservationView.render();
+            }).render();
 
             return this;
         }
     });
 
-    var AnimalModelView = Backbone.View.extend({
+    const AnimalModelView = Backbone.View.extend({
         el: $("#main-container"),
         template: _.template($("#animalmodel-tmpl").html()),
         render: function () {
-            var thatModel = this.model;
-            var result = thatModel.subject.toJSON();
+            const thatModel = this.model;
+            const result = thatModel.subject.toJSON();
             result.type = result.class;
             $(this.el).html(this.template($.extend(result, {
                 tier: thatModel.tier ? thatModel.tier : null,
                 role: thatModel.role ? thatModel.role : null
             })));
 
-            var thatEl = $("ul.synonyms");
             _.each(result.synonyms, function (aSynonym) {
                 if (aSynonym.displayName == result.displayName) return;
 
-                var synonymView = new SynonymView({
+                new SynonymView({
                     model: aSynonym,
-                    el: thatEl
-                });
-                synonymView.render();
+                    el: $("ul.synonyms")
+                }).render();
             });
 
-            var thatEl2 = $("#annotations ul");
             _.each(result.annotations, function (annotation) {
                 annotation.displayName = annotation.displayName.replace(/_/g, " ");
-                var annotationView = new AnnotationView({
+                new AnnotationView({
                     model: annotation,
-                    el: thatEl2
-                });
-                annotationView.render();
+                    el: $("#annotations ul")
+                }).render();
             });
 
-            var subjectObservationView = new SubjectObservationsView({
+            new SubjectObservationsView({
                 model: {
                     subjectId: result.id,
                     tier: thatModel.tier,
                     role: thatModel.role
                 },
                 el: "#animalmodel-observation-grid"
-            });
-            subjectObservationView.render();
+            }).render();
 
             return this;
         }
     });
 
-    var AnnotationView = Backbone.View.extend({
+    const AnnotationView = Backbone.View.extend({
         template: _.template($("#annotation-tmpl").html()),
         render: function () {
             $(this.el).append(this.template(this.model));
         }
     });
 
-    var CellSampleView = Backbone.View.extend({
+    const CellSampleView = Backbone.View.extend({
         el: $("#main-container"),
         template: _.template($("#cellsample-tmpl").html()),
         render: function () {
-            var thatModel = this.model;
-            var result = thatModel.subject.toJSON();
+            const thatModel = this.model;
+            const result = thatModel.subject.toJSON();
 
             result.cosmic = false;
             _.each(result.xrefs, function (xref) {
@@ -1756,7 +1729,7 @@
             result.type = result.class;
 
             // Look for cbioPortal Id
-            var cbioPortalId = null;
+            let cbioPortalId = null;
             _.each(result.xrefs, function (xref) {
                 if (xref.databaseName == "CBIO_PORTAL") {
                     cbioPortalId = xref.databaseId;
@@ -1775,36 +1748,31 @@
                 $("#cbiolink").css("display", "none");
             }
 
-            var thatEl = $("ul.synonyms");
             _.each(result.synonyms, function (aSynonym) {
                 if (aSynonym.displayName == result.displayName) return;
 
-                var synonymView = new SynonymView({
+                new SynonymView({
                     model: aSynonym,
-                    el: thatEl
-                });
-                synonymView.render();
+                    el: $("ul.synonyms")
+                }).render();
             });
 
-            var thatEl2 = $("#annotations ul");
             _.each(result.annotations, function (annotation) {
                 annotation.displayName = annotation.displayName.replace(/_/g, " ");
-                var annotationView = new AnnotationView({
+                new AnnotationView({
                     model: annotation,
-                    el: thatEl2
-                });
-                annotationView.render();
+                    el: $("#annotations ul")
+                }).render();
             });
 
-            var subjectObservationView = new SubjectObservationsView({
+            new SubjectObservationsView({
                 model: {
                     subjectId: result.id,
                     tier: thatModel.tier,
                     role: thatModel.role
                 },
                 el: "#cellsample-observation-grid"
-            });
-            subjectObservationView.render();
+            }).render();
 
             return this;
         }
@@ -1822,13 +1790,13 @@
             } else {
                 thatModel.parentRow.after(this.template(thatModel));
             }
-            var summary = this.model.submission.observationTemplate.observationSummary;
+            let summary = this.model.submission.observationTemplate.observationSummary;
 
             const cellId = "#observation-summary-" + this.model.id;
             const thatEl = $(cellId);
             const parentRow = $(thatEl).parent("tr");
 
-            var observedSubjects = new ObservedSubjects({
+            const observedSubjects = new ObservedSubjects({
                 observationId: this.model.id
             });
             observedSubjects.fetch({
@@ -1845,7 +1813,7 @@
                         );
                     });
 
-                    var observedEvidences = new ObservedEvidences({
+                    const observedEvidences = new ObservedEvidences({
                         observationId: thatModel.id
                     });
                     observedEvidences.fetch({
@@ -1864,7 +1832,7 @@
 
                             summary += _.template($("#submission-obs-tbl-row-tmpl").html())(thatModel);
                             $(thatEl).html(summary);
-                            var dataTable = $(tableEl).parent().DataTable();
+                            const dataTable = $(tableEl).parent().DataTable();
                             dataTable.cells(cellId).invalidate();
                             dataTable.order([
                                 [2, 'desc'],
@@ -1972,10 +1940,10 @@
         }
     });
 
-    var ObservedSubjectSummaryRowView = Backbone.View.extend({
+    const ObservedSubjectSummaryRowView = Backbone.View.extend({
         template: _.template($("#observedsubject-summary-row-tmpl").html()),
         render: function () {
-            var result = this.model;
+            const result = this.model;
             if (result.subject == null) return;
             if (result.subject.type == undefined) {
                 result.subject.type = result.subject.class;
@@ -1987,7 +1955,7 @@
             } else {
                 this.template = _.template($("#observedsubject-gene-summary-row-tmpl").html());
                 $(this.el).append(this.template(result));
-                var currentGene = result.subject.displayName;
+                const currentGene = result.subject.displayName;
 
                 $(".addGene-" + currentGene).click(function (e) {
                     e.preventDefault();
@@ -2102,10 +2070,9 @@
                             filterProject: urlMap[filterProject],
                             centerStableURL: centerModel.stableURL
                         };
-                        const moreProjectsView = new MoreProjectsView({
+                        new MoreProjectsView({
                             model: mpModel
-                        });
-                        moreProjectsView.render();
+                        }).render();
                     }
                 }
             });
@@ -2121,7 +2088,7 @@
 
     });
 
-    var MoreProjectsView = Backbone.View.extend({
+    const MoreProjectsView = Backbone.View.extend({
         template: _.template($("#more-projects-tmpl").html()),
         el: "#more-project-container",
 
@@ -2322,7 +2289,7 @@
         }
     });
 
-    var TranscriptItemView = Backbone.View.extend({
+    const TranscriptItemView = Backbone.View.extend({
         template: _.template($("#transcript-item-tmpl").html()),
         render: function () {
             $(this.el).append(this.template(this.model));
@@ -2330,7 +2297,7 @@
         }
     });
 
-    var SynonymView = Backbone.View.extend({
+    const SynonymView = Backbone.View.extend({
         template: _.template($("#synonym-item-tmpl").html()),
         render: function () {
             $(this.el).append(this.template(this.model));
@@ -2338,7 +2305,7 @@
         }
     });
 
-    var RoleView = Backbone.View.extend({
+    const RoleView = Backbone.View.extend({
         template: _.template($("#role-item-tmpl").html()),
         render: function () {
             $(this.el).append(this.template(this.model));
@@ -2346,7 +2313,7 @@
         }
     });
 
-    var EmptyResultsView = Backbone.View.extend({
+    const EmptyResultsView = Backbone.View.extend({
         template: _.template($("#search-empty-tmpl").html()),
         render: function () {
             $(this.el).append(this.template(this.model));
@@ -2355,11 +2322,11 @@
         }
     });
 
-    var SearchResultsRowView = Backbone.View.extend({
+    const SearchResultsRowView = Backbone.View.extend({
         template: _.template($("#search-result-row-tmpl").html()),
         render: function () {
-            var model = this.model;
-            var result = model.dashboardEntity;
+            const model = this.model;
+            const result = model.dashboardEntity;
 
             if (result.class != "Gene") {
                 this.template = _.template($("#search-result-row-tmpl").html());
@@ -2367,7 +2334,7 @@
             } else {
                 this.template = _.template($("#search-result-gene-row-tmpl").html());
                 $(this.el).append(this.template(model));
-                var currentGene = result.displayName;
+                const currentGene = result.displayName;
 
                 $(".addGene-" + currentGene).click(function (e) {
                     e.preventDefault();
@@ -2376,28 +2343,23 @@
                 }); //end addGene
             }
 
-            var thatEl = $("#synonyms-" + result.id);
             _.each(result.synonyms, function (aSynonym) {
-                var synonymView = new SynonymView({
+                new SynonymView({
                     model: aSynonym,
-                    el: thatEl
-                });
-                synonymView.render();
+                    el: $("#synonyms-" + result.id)
+                }).render();
             });
 
-            var roleEl = $("#roles-" + result.id);
             _.each(model.roles, function (aRole) {
-                var roleView = new RoleView({
+                new RoleView({
                     model: {
                         role: aRole
                     },
-                    el: roleEl
-                });
-                roleView.render();
+                    el: $("#roles-" + result.id)
+                }).render();
             });
 
-            var searchEl = $("#search-image-" + result.id);
-            var imgTemplate = $("#search-results-unknown-image-tmpl");
+            let imgTemplate = $("#search-results-unknown-image-tmpl");
             if (result.class == "Compound") {
                 _.each(result.xrefs, function (xref) {
                     if (xref.databaseName == "IMAGE") {
@@ -2422,16 +2384,14 @@
             } else {
                 result.subjectClass = result.class; // this is only to avoid using 'class' alone because it is a javascript keyword
             }
-            searchEl.append(_.template(imgTemplate.html())(result));
+            $("#search-image-" + result.id).append(_.template(imgTemplate.html())(result));
 
             // some of the elements will be hidden in the pagination. Use magic-scoping!
-            var updateElId = "#subject-observation-count-" + result.id;
-            var updateEl = $(updateElId);
-            var cntContent = _.template(
+            const cntContent = _.template(
                 $("#count-observations-tmpl").html())({
                 count: model.observationCount
             });
-            updateEl.html(cntContent);
+            $("#subject-observation-count-" + result.id).html(cntContent);
 
             return this;
         }
@@ -2607,12 +2567,12 @@
     });
 
     //MRA View
-    var MraView = Backbone.View.extend({
+    const MraView = Backbone.View.extend({
         el: $("#main-container"),
         template: _.template($("#mra-view-tmpl").html()),
         render: function () {
-            var result = this.model.toJSON();
-            var mra_data_url = $("#mra-view-tmpl").attr("mra-data-url") + result.evidence.filePath.replace(/\\/g, '/');
+            const result = this.model.toJSON();
+            const mra_data_url = $("#mra-view-tmpl").attr("mra-data-url") + result.evidence.filePath.replace(/\\/g, '/');
             $(this.el).html(this.template(result));
             $.ajax({
                 url: "mra-data/",
@@ -2627,41 +2587,38 @@
                 contentType: "json",
 
                 success: function (data) {
-                    var thatEl = $("#master-regulator-grid");
-                    var thatE2 = $("#mra-barcode-grid");
+                    const thatEl = $("#master-regulator-grid");
+                    const thatE2 = $("#mra-barcode-grid");
                     _.each(data, function (aData) {
-                        var mraViewRowView = new MraViewRowView({
+                        new MraViewRowView({
                             el: $(thatEl).find("tbody"),
                             model: aData
-                        });
-                        mraViewRowView.render();
+                        }).render();
 
-                        var mraBarcodeRowView = new MraBarcodeRowView({
+                        new MraBarcodeRowView({
                             el: $(thatE2).find("tbody"),
                             model: aData
-                        });
-                        mraBarcodeRowView.render();
+                        }).render();
 
                     });
 
-                    var oTable1 = $('#master-regulator-grid').dataTable({
+                    $(thatEl).dataTable({
                         "sDom": "<'fullwidth'ifrtlp>",
                         "sScrollY": "200px",
                         "bPaginate": false
                     });
 
-                    var oTable2 = $('#mra-barcode-grid').dataTable();
+                    $(thatE2).dataTable();
                 }
             }); //ajax 
 
             $(".mra-cytoscape-view").click(function (event) {
                 event.preventDefault();
-                var mraDesc = $(this).attr("data-description");
-                var throttle = $("#throttle-input").text();
-                var layoutName = $("#cytoscape-layouts").val();
-                var nodeLimit = $("#cytoscape-node-limit").val();
+                const mraDesc = $(this).attr("data-description");
+                const layoutName = $("#cytoscape-layouts").val();
+                const nodeLimit = $("#cytoscape-node-limit").val();
 
-                var filters = "";
+                let filters = "";
                 $('input[type="checkbox"]:checked').each(function () {
                     filters = filters + ($(this).val() + ',');
                 });
@@ -2774,8 +2731,7 @@
             }); //end .cytoscape-view
 
             $("#master-regulator-grid").on("change", ":checkbox", function () {
-                var nodeLimit = $("#cytoscape-node-limit").val();
-                var filters = "";
+                let filters = "";
                 $('input[type="checkbox"]:checked').each(function () {
                     filters = filters + ($(this).val() + ',');
                 });
@@ -2786,7 +2742,7 @@
                         url: mra_data_url,
                         dataType: "throttle",
                         filterBy: filters,
-                        nodeNumLimit: nodeLimit,
+                        nodeNumLimit: $("#cytoscape-node-limit").val(),
                         throttle: ""
                     },
                     dataType: "json",
@@ -2806,8 +2762,7 @@
             $("#cytoscape-node-limit").change(function (evt) {
                 //the following block code is same as above, shall make it as function,
                 //but for somehow the function call does not work here for me. 
-                var nodeLimit = $("#cytoscape-node-limit").val();
-                var filters = "";
+                let filters = "";
                 $('input[type="checkbox"]:checked').each(function () {
                     filters = filters + ($(this).val() + ',');
                 });
@@ -2818,7 +2773,7 @@
                         url: mra_data_url,
                         dataType: "throttle",
                         filterBy: filters,
-                        nodeNumLimit: nodeLimit,
+                        nodeNumLimit: $("#cytoscape-node-limit").val(),
                         throttle: ""
                     },
                     dataType: "json",
@@ -2838,26 +2793,20 @@
         }
     });
 
-    var MraViewRowView = Backbone.View.extend({
+    const MraViewRowView = Backbone.View.extend({
         render: function () {
-            var result = this.model;
-
-            var templateId = "#mra-view-row-tmpl";
-
-            this.template = _.template($(templateId).html());
-            $(this.el).append(this.template(result));
+            this.template = _.template($("#mra-view-row-tmpl").html());
+            $(this.el).append(this.template(this.model));
 
             return this;
         }
     });
 
-    var MraBarcodeRowView = Backbone.View.extend({
+    const MraBarcodeRowView = Backbone.View.extend({
         render: function () {
-            var result = this.model;
+            const result = this.model;
 
-            var templateId = "#mra-barcode-view-row-tmpl";
-
-            this.template = _.template($(templateId).html());
+            this.template = _.template($("#mra-barcode-view-row-tmpl").html());
             $(this.el).append(this.template(result));
 
             if (result.daColor != null)
@@ -2870,12 +2819,11 @@
                     "background-color": result.deColor
                 });
 
-            var canvasId = "draw-" + result.entrezId;
-            var ctx = document.getElementById(canvasId).getContext("2d");
+            const ctx = document.getElementById("draw-" + result.entrezId).getContext("2d");
 
             _.each(result.mraTargets, function (mraTarget) {
 
-                var colorIndex = 255 - mraTarget.colorIndex;
+                const colorIndex = 255 - mraTarget.colorIndex;
                 if (mraTarget.arrayIndex == 0) {
                     ctx.fillStyle = 'rgb(255,' + colorIndex + ',' + colorIndex + ')';
                     ctx.fillRect(mraTarget.position, 0, 1, 15);
@@ -3084,7 +3032,7 @@
     };
 
     //customize-roles-item-tmpl
-    var CustomRoleItemView = Backbone.View.extend({
+    const CustomRoleItemView = Backbone.View.extend({
         el: "#customized-roles-tbl tbody",
         template: _.template($("#customize-roles-item-tmpl").html()),
 
@@ -3099,26 +3047,23 @@
     });
 
     //Gene List View
-    var GeneListView = Backbone.View.extend({
+    const GeneListView = Backbone.View.extend({
         el: $("#main-container"),
         template: _.template($("#genelist-view-tmpl").html()),
         render: function () {
 
-            var geneList = JSON.parse(localStorage.getItem("genelist"));
+            let geneList = JSON.parse(localStorage.getItem("genelist"));
             if (geneList == null)
                 geneList = [];
             else if (geneList.length > numOfCartGene) {
-                var len = geneList.length;
-                geneList.slice(numOfCartGene, len - 1);
+                geneList.slice(numOfCartGene, geneList.length - 1);
                 localStorage.genelist = JSON.stringify(geneList);
             }
 
-            var html = "";
             $(this.el).html(this.template({}));
             $.each(geneList, function (aData) {
-                var value = Encoder.htmlEncode(this.toString());
                 $("#geneNames").append(_.template($("#gene-cart-option-tmpl").html())({
-                    displayItem: value
+                    displayItem: Encoder.htmlEncode(this.toString())
                 }));
             });
 
@@ -3130,15 +3075,12 @@
             });
 
             $("#add-gene-symbols").click(function () {
-                var inputGenes = $("#gene-symbols").val();
-                var genes = Encoder.htmlEncode(inputGenes).split(/[\s,]+/);
-
-                processInputGenes(genes);
+                processInputGenes(Encoder.htmlEncode($("#gene-symbols").val()).split(/[\s,]+/));
             });
 
             $("#deleteGene").click(function (e) {
                 e.preventDefault();
-                var selectedGenes = [];
+                const selectedGenes = [];
                 $('#geneNames :selected').each(function (i, selected) {
                     selectedGenes[i] = $(selected).text();
                 });
@@ -3149,9 +3091,7 @@
                 }
 
                 $.each(selectedGenes, function () {
-
-                    var gene = $.trim(this.toString()).toUpperCase();
-                    var index = $.inArray(gene, geneList);
+                    const index = $.inArray($.trim(this.toString()).toUpperCase(), geneList);
                     if (index >= 0) geneList.splice(index, 1);
 
                 });
@@ -3179,16 +3119,14 @@
 
             if (window.FileReader) {
                 $('#geneFileInput').on('change', function (e) {
-                    var file = e.target.files[0];
+                    const file = e.target.files[0];
                     if (file.size > 1000) {
                         showAlertMessage("Gene Cart can only contains " + numOfCartGene + " genes.");
                         return;
                     }
-                    var reader = new FileReader();
+                    const reader = new FileReader();
                     reader.onload = function (e) {
-                        var genes = reader.result.split(/[\s,]+/);
-
-                        processInputGenes(genes);
+                        processInputGenes(reader.result.split(/[\s,]+/));
                     };
                     reader.readAsText(file);
                     $('#geneFileInput').each(function () {
@@ -3201,7 +3139,7 @@
 
             $("#cnkb-query").click(function (e) {
 
-                var selectedGenes = [];
+                const selectedGenes = [];
                 $('#geneNames :selected').each(function (i, selected) {
                     selectedGenes[i] = $(selected).text();
                 });
@@ -3214,12 +3152,12 @@
 
             });
 
-            var processInputGenes = function (genes) {
-                var geneNames = JSON.parse(localStorage.getItem("genelist"));
+            const processInputGenes = function (genes) {
+                let geneNames = JSON.parse(localStorage.getItem("genelist"));
                 if (geneNames == null)
                     geneNames = [];
-                var num = genes.length + geneNames.length;
-                if (num > numOfCartGene) {
+
+                if (genes.length + geneNames.length > numOfCartGene) {
                     showAlertMessage("Gene Cart can only contains " + numOfCartGene + " genes.");
                     return;
                 }
@@ -3232,7 +3170,7 @@
                     dataType: "json",
                     contentType: "json",
                     success: function (data) {
-                        var invalidGenes = "";
+                        let invalidGenes = "";
                         _.each(data, function (aData) {
                             if (invalidGenes.length > 0)
                                 invalidGenes = aData;
@@ -3254,14 +3192,12 @@
                 }); //ajax   
             };
 
-            var addGenes = function (genes) {
-                var alreadyHave = [];
-                var newGenes = [];
+            const addGenes = function (genes) {
+                const newGenes = [];
                 $.each(genes, function () {
-                    var eachGene = Encoder.htmlEncode($.trim(this.toString())).toUpperCase();
-                    if (geneList.indexOf(eachGene) > -1)
-                        alreadyHave.push(eachGene);
-                    else if (newGenes.indexOf(eachGene.toUpperCase()) == -1 && eachGene != "") {
+                    const eachGene = Encoder.htmlEncode($.trim(this.toString())).toUpperCase();
+                    if (geneList.indexOf(eachGene) == -1 &&
+                            newGenes.indexOf(eachGene.toUpperCase()) == -1 && eachGene != "") {
                         newGenes.push(eachGene);
                         geneList.push(eachGene);
                     }
@@ -3270,9 +3206,8 @@
                 if (newGenes.length > 0) {
                     localStorage.genelist = JSON.stringify(geneList);
                     $.each(newGenes, function () {
-                        var value = this.toString();
                         $("#geneNames").append(_.template($("#gene-cart-option-tmpl").html())({
-                            displayItem: value
+                            displayItem: this.toString()
                         }));
                     });
 
@@ -3284,23 +3219,18 @@
 
     });
 
-    var CnkbQueryView = Backbone.View.extend({
+    const CnkbQueryView = Backbone.View.extend({
         el: $("#main-container"),
         template: _.template($("#cnkb-query-tmpl").html()),
         render: function () {
-            var selectedGenes = JSON.parse(sessionStorage.getItem("selectedGenes"));
-            var count = 0;
+            const selectedGenes = JSON.parse(sessionStorage.getItem("selectedGenes"));
+            let count = 0;
             if (selectedGenes != null)
                 count = selectedGenes.length;
-            var description;
-            if (count == 0 || count == 1)
-                description = "Query with " + count + " gene from cart";
-            else
-                description = "Query with " + count + " genes from cart";
 
             $(this.el).html(this.template({}));
             $('#queryDescription').html("");
-            $('#queryDescription').html(description);
+            $('#queryDescription').html("Query with " + count + " genes from cart");
             $.ajax({
                 url: "cnkb/query",
                 data: {
@@ -3314,18 +3244,16 @@
                 dataType: "json",
                 contentType: "json",
                 success: function (data) {
-                    var list = data.interactomeList;
-                    _.each(list, function (aData) {
+                    _.each(data.interactomeList, function (aData) {
                         if (aData.toLowerCase().startsWith("preppi")) {
                             $("#interactomeList").prepend(_.template($("#gene-cart-option-tmpl-preselected").html())({
                                 displayItem: aData
                             }));
-                            var interactome = aData.split("(")[0].trim();
                             $.ajax({ // query the description
                                 url: "cnkb/query",
                                 data: {
                                     dataType: "interactome-version",
-                                    interactome: interactome,
+                                    interactome: aData.split("(")[0].trim(),
                                     version: "",
                                     selectedGenes: "",
                                     interactionLimit: 0,
@@ -3334,7 +3262,6 @@
                                 dataType: "json",
                                 contentType: "json",
                                 success: function (data) {
-                                    $('#interactomeDescription').html("");
                                     $('#interactomeDescription').html(convertUrl(data.description));
                                     $('#interactomeVersionList').html("");
                                     _.each(data.versionDescriptorList, function (aData) {
@@ -3356,14 +3283,13 @@
                 }
             }); //ajax   
 
-            var versionDescriptors;
+            let versionDescriptors;
             $('#interactomeList').change(function () {
-                var selectedInteractome = $('#interactomeList option:selected').text().split("(")[0].trim();
                 $.ajax({
                     url: "cnkb/query",
                     data: {
                         dataType: "interactome-version",
-                        interactome: selectedInteractome,
+                        interactome: $('#interactomeList option:selected').text().split("(")[0].trim(),
                         version: "",
                         selectedGenes: "",
                         interactionLimit: 0,
@@ -3373,12 +3299,9 @@
                     contentType: "json",
                     success: function (data) {
                         versionDescriptors = data.versionDescriptorList;
-                        var description = data.description;
-                        $('#interactomeDescription').html("");
-                        $('#interactomeDescription').html(convertUrl(description));
-                        var list = data.versionDescriptorList;
+                        $('#interactomeDescription').html(convertUrl(data.description));
                         $('#interactomeVersionList').html("");
-                        _.each(list, function (aData) {
+                        _.each(data.versionDescriptorList, function (aData) {
                             $("#interactomeVersionList").append(_.template($("#gene-cart-option-tmpl").html())({
                                 displayItem: aData.version
                             }));
@@ -3393,7 +3316,7 @@
             }); //end $('#interactomeList').change()
 
             $('#interactomeVersionList').change(function () {
-                var selectedVersion = $('#interactomeVersionList option:selected').text().trim();
+                const selectedVersion = $('#interactomeVersionList option:selected').text().trim();
                 _.each(versionDescriptors, function (aData) {
                     if (aData.version === selectedVersion) {
                         $('#versionDescription').html("");
@@ -3405,8 +3328,8 @@
 
             $("#cnkb-result").click(function (e) {
 
-                var selectedInteractome = $('#interactomeList option:selected').text().split("(")[0].trim();
-                var selectedVersion = $('#interactomeVersionList option:selected').text().trim();
+                const selectedInteractome = $('#interactomeList option:selected').text().split("(")[0].trim();
+                const selectedVersion = $('#interactomeVersionList option:selected').text().trim();
 
                 if (selectedInteractome == null || $.trim(selectedInteractome).length == 0) {
                     e.preventDefault();
@@ -3427,17 +3350,16 @@
 
     });
 
-    var CnkbResultView = Backbone.View.extend({
+    const CnkbResultView = Backbone.View.extend({
         el: $("#main-container"),
         template: _.template($("#cnkb-result-tmpl").html()),
         render: function () {
-            var selectedgenes = JSON.parse(sessionStorage.getItem("selectedGenes"));
-            var selectedInteractome = JSON.parse(sessionStorage.getItem("selectedInteractome"));
-            var selectedVersion = JSON.parse(sessionStorage.getItem("selectedVersion"));
+            const selectedgenes = JSON.parse(sessionStorage.getItem("selectedGenes"));
+            const selectedInteractome = JSON.parse(sessionStorage.getItem("selectedInteractome"));
+            const selectedVersion = JSON.parse(sessionStorage.getItem("selectedVersion"));
 
             if (selectedgenes.length > numOfCartGene) {
-                var len = selectedgenes.length;
-                selectedgenes.slice(numOfCartGene, len - 1);
+                selectedgenes.slice(numOfCartGene, selectedgenes.length - 1);
                 sessionStorage.selectedGenes = JSON.stringify(selectedgenes);
             }
 
@@ -3456,29 +3378,25 @@
                 contentType: "json",
                 success: function (data) {
                     $("#cnkb_data_progress").hide();
-                    var cnkbElementList = data.cnkbElementList;
-                    var interactionTypes = data.interactionTypeList;
-                    _.each(interactionTypes, function (aData) {
-                        var type = aData.toUpperCase();
-                        $('#cnkb-result-grid thead tr').append('<th>' + type + '</th>');
+                    _.each(data.interactionTypeList, function (aData) {
+                        $('#cnkb-result-grid thead tr').append('<th>' + aData.toUpperCase() + '</th>');
                     });
 
-                    var thatEl = $("#cnkb-result-grid");
-                    _.each(cnkbElementList, function (aData) {
-                        var cnkbResultRowView = new CnkbResultRowView({
+                    const thatEl = $("#cnkb-result-grid");
+                    _.each(data.cnkbElementList, function (aData) {
+                        new CnkbResultRowView({
                             el: $(thatEl).find("tbody"),
                             model: aData
-                        });
-                        cnkbResultRowView.render();
+                        }).render();
 
                     });
 
-                    $('#cnkb-result-grid').dataTable({
+                    $(thatEl).dataTable({
                         "dom": "<'fullwidth'ifrtlp>",
                         "paging": false
                     }); // return value ignored
-                    $("#cnkb-result-grid").parents("#cnkb-result-grid_wrapper").find('input[type=search]').popover(table_filter_popover);
-                    $('#cnkb-result-grid thead th').popover({
+                    $(thatEl).parents("#cnkb-result-grid_wrapper").find('input[type=search]').popover(table_filter_popover);
+                    $(thatEl).find('thead th').popover({
                         placement: "top",
                         trigger: 'hover',
                         content: function () {
@@ -3494,7 +3412,7 @@
 
             $('#cnkbExport').click(function (e) {
                 e.preventDefault();
-                var filters = "";
+                let filters = "";
                 $('input[type="checkbox"]:checked').each(function () {
                     filters = filters + ($(this).val() + ',');
                 });
@@ -3512,10 +3430,9 @@
 
             }); //end $('#interactomeList').change()
 
-            var getThrottleValue = function () {
+            const getThrottleValue = function () {
 
-                var interactionLimit = $("#cytoscape-node-limit").val();
-                var filters = "";
+                let filters = "";
                 $('input[type="checkbox"]:checked').each(function () {
                     filters = filters + ($(this).val() + ',');
                 });
@@ -3527,7 +3444,7 @@
                         interactome: selectedInteractome,
                         version: selectedVersion,
                         selectedGenes: filters,
-                        interactionLimit: interactionLimit,
+                        interactionLimit: $("#cytoscape-node-limit").val(),
                         throttle: ""
                     },
                     dataType: "json",
@@ -3580,13 +3497,10 @@
 
             $('#createnetwork').click(function (event) {
                 event.preventDefault();
-                var throttle = $("#throttle-input").text();
-                var layoutName = $("#cytoscape-layouts").val();
-                var interactionLimit = $("#cytoscape-node-limit").val();
+                const throttle = $("#throttle-input").text();
+                const interactionLimit = $("#cytoscape-node-limit").val();
 
-                var n = $("input:checked").length;
-
-                var filters = "";
+                let filters = "";
                 $('input[type="checkbox"]:checked').each(function () {
                     filters = filters + ($(this).val() + ',');
 
@@ -3614,8 +3528,7 @@
                             showAlertMessage("The network is empty.");
                             return;
                         }
-                        var cnkbDescription = selectedInteractome + " (v" + selectedVersion + ")";
-                        drawCNKBCytoscape(data, Encoder.htmlEncode(cnkbDescription));
+                        drawCNKBCytoscape(data, Encoder.htmlEncode(selectedInteractome + " (v" + selectedVersion + ")"));
 
                     } //end success
                 }); //end ajax
@@ -3632,19 +3545,15 @@
 
     });
 
-    var CnkbResultRowView = Backbone.View.extend({
+    const CnkbResultRowView = Backbone.View.extend({
         render: function () {
-            var result = this.model;
+            const result = this.model;
 
-            var templateId = "#cnkb-result-row-tmpl";
-
-            this.template = _.template($(templateId).html());
+            this.template = _.template($("#cnkb-result-row-tmpl").html());
             $(this.el).append(this.template(result));
-            var geneName = Encoder.htmlEncode(result.geneName);
 
-            var numList = result.interactionNumlist;
-            _.each(numList, function (aData) {
-                $("#tr_" + geneName).append('<td>' + aData + '</td>');
+            _.each(result.interactionNumlist, function (aData) {
+                $("#tr_" + Encoder.htmlEncode(result.geneName)).append('<td>' + aData + '</td>');
             });
 
 
@@ -3652,7 +3561,7 @@
         }
     });
 
-    var GeneCartHelpView = Backbone.View.extend({
+    const GeneCartHelpView = Backbone.View.extend({
         el: $("#main-container"),
         template: _.template($("#gene-cart-help-tmpl").html()),
         render: function () {
@@ -3661,8 +3570,8 @@
         }
     });
 
-    var updateGeneList = function (addedGene) {
-        var geneNames = JSON.parse(localStorage.getItem("genelist"));
+    const updateGeneList = function (addedGene) {
+        let geneNames = JSON.parse(localStorage.getItem("genelist"));
         if (geneNames == null)
             geneNames = [];
 
@@ -3681,36 +3590,35 @@
         }
     };
 
-    var showAlertMessage = function (message) {
+    const showAlertMessage = function (message) {
         $("#alertMessage").text(message);
         $("#alertMessage").css('color', '#5a5a5a');
         $("#alert-message-modal").modal('show');
     };
 
-    var showInvalidMessage = function (message) {
+    const showInvalidMessage = function (message) {
         $("#alertMessage").text(message);
         $("#alertMessage").css('color', 'red');
         $("#alert-message-modal").modal('show');
     };
 
-    var convertUrl = function (description) {
+    const convertUrl = function (description) {
         if (description.indexOf("http:") > -1) {
-            var word = description.split("http:");
-            var temp = $.trim(word[1]);
+            const word = description.split("http:");
+            let temp = $.trim(word[1]);
             if (temp.match(/.$/))
                 temp = temp.substring(0, temp.length - 1);
             temp = $.trim(temp);
-            var link = "<a target=\"_blank\" href=\"" + temp + "\">" + temp + "</a>";
-            return word[0] + link;
+            return word[0] + "<a target=\"_blank\" href=\"" + temp + "\">" + temp + "</a>";
         } else
             return description;
 
     };
 
-    var drawCNKBCytoscape = function (data, description) {
-        var svgHtml = "";
-        var interactions = data.interactions;
-        var x1 = 20 + 90 * (3 - interactions.length),
+    const drawCNKBCytoscape = function (data, description) {
+        let svgHtml = "";
+        const interactions = data.interactions;
+        let x1 = 20 + 90 * (3 - interactions.length),
             x2 = 53 + 90 * (3 - interactions.length);
         _.each(interactions, function (aData) {
             svgHtml = svgHtml + '<rect x="' + x1 + '" y="15" width="30" height="2" fill="' + aData.color + '" stroke="grey" stroke-width="0"/><text x="' + x2 + '" y="20" fill="grey">' + aData.type + '</text>';
@@ -3730,14 +3638,11 @@
             }
         );
 
-        var container = $('#cytoscape');
-        var layoutName = $("#cytoscape-layouts").val();
-
-        var cy = cytoscape({
+        cytoscape({
 
             container: document.getElementById("cytoscape"),
             layout: {
-                name: layoutName,
+                name: $("#cytoscape-layouts").val(),
                 fit: true,
                 liveUpdate: false,
                 maxSimulationTime: 4000, // max length in ms to run the layout
@@ -3798,12 +3703,10 @@
             ready: function () {
                 window.cy = this; // for debugging
             }
-        });
-
-        cy.on('cxttap', 'node', function () {
+        }).on('cxttap', 'node', function () {
 
             $.contextMenu('destroy', '#cytoscape');
-            var sym = this.data('id');
+            const sym = this.data('id');
             $.contextMenu({
                 selector: '#cytoscape',
 
@@ -3813,7 +3716,7 @@
                         return;
                     }
 
-                    var linkUrl = "";
+                    let linkUrl = "";
                     switch (key) {
                         case 'linkout':
                             return;
@@ -3945,7 +3848,7 @@
         },
 
         home: function (actions) {
-            var homepageText = new HomepageText();
+            const homepageText = new HomepageText();
             homepageText.fetch({
                 success: function () {
                     new HomeView({
@@ -3956,48 +3859,46 @@
         },
 
         search: function (term) {
-            var searchView = new SearchView({
+            new SearchView({
                 model: {
                     term: decodeURI(term)
                         .replace(new RegExp("<", "g"), "")
                         .replace(new RegExp(">", "g"), "")
                 }
-            });
-            searchView.render();
+            }).render();
         },
 
         explore: function (type, roles) {
-            var exploreView = new ExploreView({
+            new ExploreView({
                 model: {
                     roles: roles.replace(new RegExp("<", "g"), "").replace(new RegExp(">", "g"), ""),
                     type: type.replace(new RegExp("<", "g"), "").replace(new RegExp(">", "g"), ""),
                     customized: false
                 }
-            });
-            exploreView.render();
+            }).render();
         },
 
         showStory: function (submission_name) {
-            var storySubmissions = new StorySubmissions({
+            const storySubmissions = new StorySubmissions({
                 limit: -1
             });
             storySubmissions.fetch({
                 success: function () {
-                    var counter = 1;
+                    // only one match is expected
                     _.each(storySubmissions.models, function (aStory) {
-                        var observation = aStory.toJSON();
-                        var id = observation.submission.stableURL.replace("submission/", "");
+                        const observation = aStory.toJSON();
+                        const id = observation.submission.stableURL.replace("submission/", "");
                         if (id !== submission_name) {
                             //console.log("NOT MATCH"); // no-op
                             return;
                         }
                         // if it is the queried submission, ...
-                        var observedEvidences = new ObservedEvidences({
+                        const observedEvidences = new ObservedEvidences({
                             observationId: observation.id
                         });
                         observedEvidences.fetch({
                             success: function () {
-                                var url = "";
+                                let url = "";
 
                                 _.each(observedEvidences.models, function (observedEvidence) {
                                     observedEvidence = observedEvidence.toJSON();
@@ -4016,280 +3917,258 @@
                                     }
                                 });
 
-                                var storyView = new HtmlStoryView({
+                                new HtmlStoryView({
                                     model: {
                                         observation: observation,
                                         url: url,
                                     }
-                                });
-                                storyView.render();
+                                }).render();
                             }
                         });
-                        counter++; // only one match is expected
                     });
                 }
             });
         },
 
         showAnimalModel: function (name, role, tier) {
-            var animalModel = new AnimalModel({
+            const animalModel = new AnimalModel({
                 id: name
             });
             animalModel.fetch({
                 success: function () {
-                    var animalModelView = new AnimalModelView({
+                    new AnimalModelView({
                         model: {
                             subject: animalModel,
                             tier: tier,
                             role: role
                         }
-                    });
-                    animalModelView.render();
+                    }).render();
                 }
             });
         },
 
         showCellSample: function (name, role, tier) {
-            var cellSample = new CellSample({
+            const cellSample = new CellSample({
                 id: name
             });
             cellSample.fetch({
                 success: function () {
-                    var cellSampleView = new CellSampleView({
+                    new CellSampleView({
                         model: {
                             subject: cellSample,
                             tier: tier,
                             role: role
                         }
-                    });
-                    cellSampleView.render();
+                    }).render();
                 }
             });
         },
 
         showCompound: function (name, role, tier) {
-            var compound = new Compound({
+            const compound = new Compound({
                 id: name
             });
             compound.fetch({
                 success: function () {
-                    var compoundView = new CompoundView({
+                    new CompoundView({
                         model: {
                             subject: compound,
                             tier: tier,
                             role: role
                         }
-                    });
-                    compoundView.render();
+                    }).render();
                 }
             });
         },
 
         showProtein: function (name, role, tier) {
-            var protein = new Protein({
+            const protein = new Protein({
                 id: name
             });
             protein.fetch({
                 success: function () {
-                    var proteinView = new ProteinView({
+                    new ProteinView({
                         model: {
                             subject: protein,
                             tier: tier,
                             role: role
                         }
-                    });
-                    proteinView.render();
+                    }).render();
                 }
             });
         },
 
         showShRna: function (name, role, tier) {
-            var shRna = new ShRna({
+            const shRna = new ShRna({
                 id: name
             });
             shRna.fetch({
                 success: function () {
                     // shRna covers both siRNA and shRNA
-                    var rnaView;
                     if (shRna.get("type").toLowerCase() == "sirna") {
-                        rnaView = new SirnaView({
+                        new SirnaView({
                             model: {
                                 subject: shRna,
                                 tier: tier,
                                 role: role
                             }
-                        });
+                        }).render();
                     } else {
-                        rnaView = new ShrnaView({
+                        new ShrnaView({
                             model: {
                                 subject: shRna,
                                 tier: tier,
                                 role: role
                             }
-                        });
+                        }).render();
                     }
-                    rnaView.render();
                 }
             });
         },
 
         showTissueSample: function (name, role, tier) {
-            var tissueSample = new TissueSample({
+            const tissueSample = new TissueSample({
                 id: name
             });
             tissueSample.fetch({
                 success: function () {
-                    var tissueSampleView = new TissueSampleView({
+                    new TissueSampleView({
                         model: {
                             subject: tissueSample,
                             tier: tier,
                             role: role
                         }
-                    });
-                    tissueSampleView.render();
+                    }).render();
                 }
             });
         },
 
         showTranscript: function (name, role, tier) {
-            var transcript = new Transcript({
+            const transcript = new Transcript({
                 id: name
             });
             transcript.fetch({
                 success: function () {
-                    var transcriptView = new TranscriptView({
+                    new TranscriptView({
                         model: {
                             subject: transcript,
                             tier: tier,
                             role: role
                         }
-                    });
-                    transcriptView.render();
+                    }).render();
                 }
             });
         },
 
         showGene: function (species, symbol, role, tier) {
-            var gmodel = new Gene({
+            const gmodel = new Gene({
                 species: species,
                 symbol: symbol
             });
             gmodel.fetch({
                 success: function () {
-                    var modelView = new GeneView({
+                    new GeneView({
                         model: {
                             subject: gmodel,
                             tier: tier,
                             role: role
                         }
-                    });
-                    modelView.render();
+                    }).render();
                 }
             });
         },
 
         showCenter: function (name) {
-            var center = new SubmissionCenter({
+            const center = new SubmissionCenter({
                 id: name
             });
             center.fetch({
                 success: function () {
-                    var centerView = new CenterView({
+                    new CenterView({
                         model: center
-                    });
-                    centerView.render(null);
+                    }).render(null);
                 }
             });
         },
 
         showCenterProject: function (name, project) {
-            var center = new SubmissionCenter({
+            const center = new SubmissionCenter({
                 id: name
             });
             center.fetch({
                 success: function () {
-                    var centerView = new CenterView({
-                        model: center
-                    });
                     project = decodeURI(project)
                         .replace(new RegExp("<", "g"), "")
                         .replace(new RegExp(">", "g"), "");
-                    centerView.render(project);
+                    new CenterView({
+                        model: center
+                    }).render(project);
                 }
             });
         },
 
 
         showSubmission: function (id) {
-            var submission = new Submission({
+            const submission = new Submission({
                 id: id
             });
             submission.fetch({
                 success: function () {
-                    var submissionView = new SubmissionView({
+                    new SubmissionView({
                         model: submission
-                    });
-                    submissionView.render();
+                    }).render();
                 }
             });
         },
 
         showObservation: function (id) {
-            var observation = new Observation({
+            const observation = new Observation({
                 id: id
             });
             observation.fetch({
                 success: function () {
-                    var observationView = new ObservationView({
+                    new ObservationView({
                         model: observation
-                    });
-                    observationView.render();
+                    }).render();
                 }
             });
         },
 
         listCenters: function () {
-            var centerListView = new CenterListView();
-            centerListView.render();
+            new CenterListView().render();
         },
 
         listStories: function () {
-            var storiesListView = new StoriesListView();
-            storiesListView.render();
+            new StoriesListView().render();
         },
 
         showMraView: function (filename) {
-            var observedEvidence = new ObservedEvidence({
+            const observedEvidence = new ObservedEvidence({
                 id: filename
             });
             observedEvidence.fetch({
                 success: function () {
-                    var mraView = new MraView({
+                    new MraView({
                         model: observedEvidence
-                    });
-                    mraView.render();
+                    }).render();
                 }
             });
         },
 
         showGeneList: function () {
-            var geneListView = new GeneListView();
-            geneListView.render();
+            new GeneListView().render();
         },
 
         showCnkbQuery: function () {
-            var cnkbQueryView = new CnkbQueryView();
-            cnkbQueryView.render();
+            new CnkbQueryView().render();
         },
 
         showCnkbResult: function () {
-            var cnkbResultView = new CnkbResultView();
-            cnkbResultView.render();
+            new CnkbResultView().render();
         },
 
         showGeneCartHelp: function () {
-            var geneCartHelpView = new GeneCartHelpView();
-            geneCartHelpView.render();
+            new GeneCartHelpView().render();
         },
 
     });
@@ -4299,8 +4178,7 @@
         Backbone.history.start();
 
         $("#omnisearch").submit(function () {
-            var searchTerm = $("#omni-input").val();
-            window.location.hash = "search/" + encodeURI(encodeURIComponent(searchTerm));
+            window.location.hash = "search/" + encodeURI(encodeURIComponent($("#omni-input").val()));
             return false;
         });
 
@@ -4315,13 +4193,13 @@
                 return $("#search-help-content").html();
             },
         }).on("mouseenter", function () {
-            var _this = this;
+            const _this = this;
             $(this).popover("show");
             $(".popover").on("mouseleave", function () {
                 $(_this).popover('hide');
             });
         }).on("mouseleave", function () {
-            var _this = this;
+            const _this = this;
             setTimeout(function () {
                 if (!$(".popover:hover").length) {
                     $(_this).popover("hide");
@@ -4335,12 +4213,11 @@
         });
     });
 
-    var subjectWithSummaryCollection = new SubjectWithSummaryCollection({
+    new SubjectWithSummaryCollection({
         roles: "Perturbagen,Candidate Drug",
         type: "compound",
         customized: false
-    });
-    subjectWithSummaryCollection.fetch({
+    }).fetch({
         success: function () {
             console.log('long query pre-prepared ' + performance.now());
         }
