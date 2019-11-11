@@ -3894,6 +3894,24 @@
 
     };
 
+    const subjectRouter = function(SubjectModel, SubjectView) {
+        return function (name, role, tier) {
+            const model = new SubjectModel({
+                id: name
+            });
+            model.fetch({
+                success: function () {
+                    new SubjectView({
+                        model: {
+                            subject: model,
+                            tier: tier,
+                            role: role
+                        }
+                    }).render();
+                }
+            });
+        };
+    };
 
     /* Routers */
     AppRouter = Backbone.Router.extend({
@@ -3916,9 +3934,7 @@
             "compound/:name": "showCompound",
             "compound/:name/:role": "showCompound",
             "compound/:name/:role/:tier": "showCompound",
-            "gene/:species/:symbol": "showGene",
-            "gene/:species/:symbol/:role": "showGene",
-            "gene/:species/:symbol/:role/:tier": "showGene",
+            "gene/:species/:symbol(/:role)(/:tier)": "showGene",
             "protein/:name": "showProtein",
             "protein/:name/:role": "showProtein",
             "protein/:name/:role/:tier": "showProtein",
@@ -4067,23 +4083,7 @@
             });
         },
 
-        showCompound: function (name, role, tier) {
-            var compound = new Compound({
-                id: name
-            });
-            compound.fetch({
-                success: function () {
-                    var compoundView = new CompoundView({
-                        model: {
-                            subject: compound,
-                            tier: tier,
-                            role: role
-                        }
-                    });
-                    compoundView.render();
-                }
-            });
-        },
+        showCompound: subjectRouter(Compound, CompoundView),
 
         showProtein: function (name, role, tier) {
             var protein = new Protein({
