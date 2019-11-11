@@ -2243,7 +2243,7 @@
             return this;
         }
     });
-    
+
     const MoreObservationView = Backbone.View.extend({
         el: ".more-observations-message",
         template: _.template($("#more-observations-tmpl").html()),
@@ -3197,7 +3197,7 @@
                 $.each(genes, function () {
                     const eachGene = Encoder.htmlEncode($.trim(this.toString())).toUpperCase();
                     if (geneList.indexOf(eachGene) == -1 &&
-                            newGenes.indexOf(eachGene.toUpperCase()) == -1 && eachGene != "") {
+                        newGenes.indexOf(eachGene.toUpperCase()) == -1 && eachGene != "") {
                         newGenes.push(eachGene);
                         geneList.push(eachGene);
                     }
@@ -3797,6 +3797,24 @@
 
     };
 
+    const subjectRouter = function (SubjectModel, SubjectView) {
+        return function (name, role, tier) {
+            const model = new SubjectModel({
+                id: name
+            });
+            model.fetch({
+                success: function () {
+                    new SubjectView({
+                        model: {
+                            subject: model,
+                            tier: tier,
+                            role: role
+                        }
+                    }).render();
+                }
+            });
+        };
+    };
 
     /* Routers */
     AppRouter = Backbone.Router.extend({
@@ -3804,36 +3822,19 @@
             "centers": "listCenters",
             "stories": "listStories",
             "explore/:type/:roles": "explore",
-            "center/:name/:project": "showCenterProject",
-            "center/:name": "showCenter",
+            "center/:name(/:project)": "showCenter",
             "submission/:id": "showSubmission",
             "observation/:id": "showObservation",
             "search/:term": "search",
             "story/:submission_name": "showStory",
-            "animal-model/:name": "showAnimalModel",
-            "animal-model/:name/:role": "showAnimalModel",
-            "animal-model/:name/:role/:tier": "showAnimalModel",
-            "cell-sample/:name": "showCellSample",
-            "cell-sample/:name/:role": "showCellSample",
-            "cell-sample/:name/:role/:tier": "showCellSample",
-            "compound/:name": "showCompound",
-            "compound/:name/:role": "showCompound",
-            "compound/:name/:role/:tier": "showCompound",
-            "gene/:species/:symbol": "showGene",
-            "gene/:species/:symbol/:role": "showGene",
-            "gene/:species/:symbol/:role/:tier": "showGene",
-            "protein/:name": "showProtein",
-            "protein/:name/:role": "showProtein",
-            "protein/:name/:role/:tier": "showProtein",
-            "rna/:name": "showShRna",
-            "rna/:name/:role": "showShRna",
-            "rna/:name/:role/:tier": "showShRna",
-            "tissue/:name": "showTissueSample",
-            "tissue/:name/:role": "showTissueSample",
-            "tissue/:name/:role/:tier": "showTissueSample",
-            "transcript/:name": "showTranscript",
-            "transcript/:name/:role": "showTranscript",
-            "transcript/:name/:role/:tier": "showTranscript",
+            "animal-model/:name(/:role)(/:tier)": subjectRouter(AnimalModel, AnimalModelView),
+            "cell-sample/:name(/:role)(/:tier)": subjectRouter(CellSample, CellSampleView),
+            "compound/:name(/:role)(/:tier)": subjectRouter(Compound, CompoundView),
+            "protein/:name(/:role)(/:tier)": subjectRouter(Protein, ProteinView),
+            "tissue/:name(/:role)(/:tier)": subjectRouter(TissueSample, TissueSampleView),
+            "transcript/:name(/:role)(/:tier)": subjectRouter(Transcript, TranscriptView),
+            "rna/:name(/:role)(/:tier)": "showShRna",
+            "gene/:species/:symbol(/:role)(/:tier)": "showGene",
             "mra/:filename": "showMraView",
             "genes": "showGeneList",
             "cnkb-query": "showCnkbQuery",
@@ -3930,74 +3931,6 @@
             });
         },
 
-        showAnimalModel: function (name, role, tier) {
-            const animalModel = new AnimalModel({
-                id: name
-            });
-            animalModel.fetch({
-                success: function () {
-                    new AnimalModelView({
-                        model: {
-                            subject: animalModel,
-                            tier: tier,
-                            role: role
-                        }
-                    }).render();
-                }
-            });
-        },
-
-        showCellSample: function (name, role, tier) {
-            const cellSample = new CellSample({
-                id: name
-            });
-            cellSample.fetch({
-                success: function () {
-                    new CellSampleView({
-                        model: {
-                            subject: cellSample,
-                            tier: tier,
-                            role: role
-                        }
-                    }).render();
-                }
-            });
-        },
-
-        showCompound: function (name, role, tier) {
-            const compound = new Compound({
-                id: name
-            });
-            compound.fetch({
-                success: function () {
-                    new CompoundView({
-                        model: {
-                            subject: compound,
-                            tier: tier,
-                            role: role
-                        }
-                    }).render();
-                }
-            });
-        },
-
-        showProtein: function (name, role, tier) {
-            const protein = new Protein({
-                id: name
-            });
-            protein.fetch({
-                success: function () {
-                    new ProteinView({
-                        model: {
-                            subject: protein,
-                            tier: tier,
-                            role: role
-                        }
-                    }).render();
-                }
-            });
-        },
-
         showShRna: function (name, role, tier) {
             const shRna = new ShRna({
                 id: name
@@ -4026,40 +3959,6 @@
             });
         },
 
-        showTissueSample: function (name, role, tier) {
-            const tissueSample = new TissueSample({
-                id: name
-            });
-            tissueSample.fetch({
-                success: function () {
-                    new TissueSampleView({
-                        model: {
-                            subject: tissueSample,
-                            tier: tier,
-                            role: role
-                        }
-                    }).render();
-                }
-            });
-        },
-
-        showTranscript: function (name, role, tier) {
-            const transcript = new Transcript({
-                id: name
-            });
-            transcript.fetch({
-                success: function () {
-                    new TranscriptView({
-                        model: {
-                            subject: transcript,
-                            tier: tier,
-                            role: role
-                        }
-                    }).render();
-                }
-            });
-        },
-
         showGene: function (species, symbol, role, tier) {
             const gmodel = new Gene({
                 species: species,
@@ -4078,35 +3977,23 @@
             });
         },
 
-        showCenter: function (name) {
+        showCenter: function (name, project) {
             const center = new SubmissionCenter({
                 id: name
             });
             center.fetch({
                 success: function () {
-                    new CenterView({
-                        model: center
-                    }).render(null);
-                }
-            });
-        },
-
-        showCenterProject: function (name, project) {
-            const center = new SubmissionCenter({
-                id: name
-            });
-            center.fetch({
-                success: function () {
-                    project = decodeURI(project)
-                        .replace(new RegExp("<", "g"), "")
-                        .replace(new RegExp(">", "g"), "");
+                    if (project != null) {
+                        project = decodeURI(project)
+                            .replace(new RegExp("<", "g"), "")
+                            .replace(new RegExp(">", "g"), "");
+                    }
                     new CenterView({
                         model: center
                     }).render(project);
                 }
             });
         },
-
 
         showSubmission: function (id) {
             const submission = new Submission({
