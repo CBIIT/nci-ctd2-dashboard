@@ -1505,13 +1505,12 @@
         }
     });
 
-    const ShrnaView = Backbone.View.extend({
+    const RnaView = Backbone.View.extend({
         el: $("#main-container"),
-        template: _.template($("#shrna-tmpl").html()),
+        template: _.template($("#rna-tmpl").html()),
         render: function () {
             const thatModel = this.model;
             const result = thatModel.subject.toJSON();
-            result.type = result.class;
             $(this.el).html(this.template($.extend(result, {
                 tier: thatModel.tier ? thatModel.tier : null,
                 role: thatModel.role ? thatModel.role : null
@@ -1524,31 +1523,6 @@
                     role: thatModel.role
                 },
                 el: "#shrna-observation-grid"
-            }).render();
-
-            return this;
-        }
-    });
-
-    const SirnaView = Backbone.View.extend({
-        el: $("#main-container"),
-        template: _.template($("#sirna-tmpl").html()),
-        render: function () {
-            const thatModel = this.model;
-            const result = thatModel.subject.toJSON();
-            result.type = "sirna";
-            $(this.el).html(this.template($.extend(result, {
-                tier: thatModel.tier ? thatModel.tier : null,
-                role: thatModel.role ? thatModel.role : null
-            })));
-
-            new SubjectObservationsView({
-                model: {
-                    subjectId: result.id,
-                    tier: thatModel.tier,
-                    role: thatModel.role
-                },
-                el: "#sirna-observation-grid"
             }).render();
 
             return this;
@@ -3833,7 +3807,7 @@
             "protein/:name(/:role)(/:tier)": subjectRouter(Protein, ProteinView),
             "tissue/:name(/:role)(/:tier)": subjectRouter(TissueSample, TissueSampleView),
             "transcript/:name(/:role)(/:tier)": subjectRouter(Transcript, TranscriptView),
-            "rna/:name(/:role)(/:tier)": "showShRna",
+            "rna/:name(/:role)(/:tier)": subjectRouter(ShRna, RnaView),
             "gene/:species/:symbol(/:role)(/:tier)": "showGene",
             "mra/:filename": "showMraView",
             "genes": "showGeneList",
@@ -3927,34 +3901,6 @@
                             }
                         });
                     });
-                }
-            });
-        },
-
-        showShRna: function (name, role, tier) {
-            const shRna = new ShRna({
-                id: name
-            });
-            shRna.fetch({
-                success: function () {
-                    // shRna covers both siRNA and shRNA
-                    if (shRna.get("type").toLowerCase() == "sirna") {
-                        new SirnaView({
-                            model: {
-                                subject: shRna,
-                                tier: tier,
-                                role: role
-                            }
-                        }).render();
-                    } else {
-                        new ShrnaView({
-                            model: {
-                                subject: shRna,
-                                tier: tier,
-                                role: role
-                            }
-                        }).render();
-                    }
                 }
             });
         },
