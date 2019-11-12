@@ -317,7 +317,7 @@
                     Submissions RSS feed
                 </a>
                 to receive alerts when new content is posted to the site.
-            <div/>
+            </div>
 
         </div>
     </script>
@@ -346,7 +346,7 @@
                     Stories RSS feed
                 </a>
                 to receive alerts when new content is posted to the site.
-            <div/>
+            </div>
 
         </div>
     </script>
@@ -911,8 +911,8 @@
                      '{{displayName}}' RSS feed
                  </a>
                  to receive alerts when new observations are posted to the site.
-             <div/>
-         </div>        
+             </div>
+         </div>
     </script>
 
     <script type="text/template" id="protein-tmpl">
@@ -986,7 +986,7 @@
                     '{{displayName}}' RSS feed
                 </a>
                 to receive alerts when new observations are posted to the site.
-            <div/>
+            </div>
 
         </div>
     </script>
@@ -1124,7 +1124,7 @@
                     '{{displayName}}' RSS feed
                 </a>
                 to receive alerts when new observations are posted to the site.
-            <div/>
+            </div>
 
         </div>
     </script>
@@ -1271,7 +1271,7 @@
                     '{{displayName}}' RSS feed
                 </a>
                 to receive alerts when new observations are posted to the site.
-            <div/>
+            </div>
 
         </div>
     </script>
@@ -1334,7 +1334,7 @@
                     '{{displayName}}' RSS feed
                 </a>
                 to receive alerts when new observations are posted to the site.
-            <div/>
+            </div>
 
         </div>
     </script>
@@ -1414,7 +1414,7 @@
                       '{{displayName}}' RSS feed
                   </a>
                   to receive alerts when new observations are posted to the site.
-              <div/>
+              </div>
 
           </div>
      </script>
@@ -1675,7 +1675,7 @@
                     '{{decodeURIComponent(term)}}' RSS feed
                 </a>
                 to receive alerts when new content is posted to the site.
-            <div/>
+            </div>
 
             </div>
     </script>
