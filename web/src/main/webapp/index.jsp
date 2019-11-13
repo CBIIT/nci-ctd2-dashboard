@@ -1491,58 +1491,9 @@
         </div>
     </script>
 
-    <script type="text/template" id="search-results-gene-image-tmpl">
-        <a href="#{{stableURL}}">
-            <img src="img/gene.png" class="img-polaroid search-info" title="Gene" alt="Gene" height="50" width="50">
-        </a>
-    </script>
-
-    <script type="text/template" id="search-results-protein-image-tmpl">
+    <script type="text/template" id="search-results-image-tmpl">
         <a href="#/{{stableURL}}">
-            <img src="img/protein.png" class="img-polaroid search-info" title="Protein" alt="Protein" height="50" width="50">
-        </a>
-    </script>
-
-
-    <script type="text/template" id="search-results-shrna-image-tmpl">
-        <a href="#/{{stableURL}}">
-            <img src="img/shrna.png" class="img-polaroid search-info" title="shRNA" alt="shRNA" height="50" width="50">
-        </a>
-    </script>
-
-    <script type="text/template" id="search-results-sirna-image-tmpl">
-        <a href="#/{{stableURL}}">
-            <img src="img/sirna.png" class="img-polaroid search-info" title="siRNA" alt="siRNA" height="50" width="50">
-        </a>
-    </script>
-
-    <script type="text/template" id="search-results-compound-image-tmpl">
-        <a href="#/{{stableURL}}">
-            <img class="img-polaroid search-info" title="Compound" alt="Compound" width=50 height=50 src="<%=dataURL%>compounds/{{imageFile}}">
-        </a>
-    </script>
-
-    <script type="text/template" id="search-results-animalmodel-image-tmpl">
-        <a href="#{{stableURL}}">
-            <img src="img/animalmodel.png" title="Animal model" alt="Animal model" class="img-polaroid search-info" height="50" width="50">
-        </a>
-    </script>
-
-    <script type="text/template" id="search-results-cellsample-image-tmpl">
-        <a href="#{{stableURL}}">
-            <img src="img/cellsample.png" title="Cell sample" alt="Cell sample" class="img-polaroid search-info" height="50" width="50">
-        </a>
-    </script>
-
-    <script type="text/template" id="search-results-tissuesample-image-tmpl">
-        <a href="#/{{stableURL}}">
-            <img src="img/tissuesample.png" title="Tissue sample" alt="Tissue sample" class="img-polaroid search-info" height="50" width="50">
-        </a>
-    </script>
-
-    <script type="text/template" id="search-results-unknown-image-tmpl">
-        <a href="#{{stableURL}}">
-            <img src="img/unknown.png" title="{{subjectClass}}" class="img-polaroid search-info" alt="{{subjectClass}}" height="50" width="50">
+            <img src="{{image}}" class="img-polaroid search-info" title="{{label}}" alt="{{label}}" height="50" width="50">
         </a>
     </script>
 
