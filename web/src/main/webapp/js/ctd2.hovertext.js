@@ -7,6 +7,7 @@ __ctd2_hovertext = {
     EXPLORE_SELECT_ROLES_TARGET: "Only observations matching selected roles will be displayed, e.g. target, biomarker, etc.",
     EXPLORE_SELECT_ROLES_COMPOUND: "Only observations matching selected roles will be displayed, e.g. perturbagen, candidate drug, control compound",
     EXPLORE_SELECT_ROLES_CONTEXT: "Only observations matching selected roles will be displayed, e.g. disease, metastatis, tissue",
+    EXPLORE_SELECT_ROLES_CELLLINE: "Only observations matching selected roles will be displayed, e.g. cell line",
     EXPLORE_CLASS: "Gene, compound, tissue, etc.",
     EXPLORE_NAME: "Gene symbol, compound name, etc.",
     EXPLORE_ROLE: "Subjects have designated Roles based on the interpretation of Observations from experimental or computational context",

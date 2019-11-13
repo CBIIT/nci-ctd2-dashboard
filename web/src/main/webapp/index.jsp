@@ -122,6 +122,7 @@
                           <li><a href="#explore/target/Biomarker,Target">Genes (Biomarkers, Targets, etc.)</a></li>
                           <li><a href="#explore/compound/Perturbagen,Candidate Drug">Compounds and Perturbagens</a></li>
                           <li><a href="#explore/context/Disease">Disease Contexts</a></li>
+                          <li><a href="#explore/cellline/Cell Line">Cell Lines</a></li>
                       </ul>
                   </li>
                   <li class="dropdown">

@@ -2996,13 +2996,15 @@
     const browseRole = {
         target: ["background", "biomarker", "candidate master regulator", "interactor", "master regulator", "oncogene", "target"],
         compound: ["candidate drug", "control compound", "perturbagen"],
-        context: ["disease", "metastasis", "tissue"]
+        context: ["disease", "metastasis", "tissue"],
+        cellline: ["cell line", ],
     };
 
     const subjectType = {
         target: "Biomarkers, Targets, Genes & Proteins (genes)",
         compound: "Compounds and Perturbagens (compounds, shRNA, genes)",
-        context: "Disease Context (tissues)"
+        context: "Disease Context (tissues)",
+        cellline: "Cell Lines",
     };
 
     //customize-roles-item-tmpl
@@ -4046,13 +4048,4 @@
         });
     });
 
-    new SubjectWithSummaryCollection({
-        roles: "Perturbagen,Candidate Drug",
-        type: "compound",
-        customized: false
-    }).fetch({
-        success: function () {
-            console.log('long query pre-prepared ' + performance.now());
-        }
-    });
 })(window.jQuery);
