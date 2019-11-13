@@ -1962,14 +1962,14 @@
 
                     <select id="geneNames" class="geneSelectList" size="6" 
                                 multiple></select>
-                    </br></br>
+                    <br/><br/>
                     <a href="#" id="addGene">Add Gene</a>
                     <a href="#" id="deleteGene">Delete Gene</a>
-                    </br></br>
+                    <br/><br/>
                     <a href="#" id="clearList">Clear List</a>
                     <a href="#" id="loadGenes">Load Genes from File</a>
-                    </br><input id="geneFileInput" type="file" style="visibility:hidden" /> 
-                    </br>
+                    <br/><input id="geneFileInput" type="file" style="visibility:hidden" /> 
+                    <br/>
                     <a href="#cnkb-query" id="cnkb-query">Find Gene Interactions in  Networks (CNKB)</a>
                  </div>
 
@@ -2005,25 +2005,25 @@
 
                        <medium>Select Interactome:</medium>
                        <small id="queryDescription" class="cnkbDescription"></small> 
-                       </br>
+                       <br/>
                        <select id="interactomeList" name="interactomes"
                             class="cnkbSelectList" size="4"></select>
-                       </br>
+                       <br/>
                        <small id="interactomeDescription" class="cnkbDescription">
                         &nbsp;&nbsp;
                        </small>
-                     </br></br>
+                     <br/><br/>
                       
                     <medium class="labelDisable" id="selectVersion"> Select Version: </medium>
-                    </br>
+                    <br/>
                     <select id="interactomeVersionList" name="interactomeVersions"
                          class="cnkbSelectList" size="4"></select>
-                     </br>
+                     <br/>
                     <small id="versionDescription" class="cnkbDescription">
                         &nbsp;&nbsp;
                     </small>
-                     </br>
-                     </br>
+                     <br/>
+                     <br/>
                      <a href="#cnkb-result" id="cnkb-result">Submit</a>
                  </div>
 
