@@ -3773,6 +3773,27 @@
 
     };
 
+    const viewOnlyRouter = function (View) {
+        return function () {
+            new View().render();
+        };
+    };
+
+    const idBasedRouter = function (Model, View) {
+        return function (id) {
+            const model = new Model({
+                id: id
+            });
+            model.fetch({
+                success: function () {
+                    new View({
+                        model: model,
+                    }).render();
+                }
+            });
+        };
+    };
+
     const subjectRouter = function (SubjectModel, SubjectView) {
         return function (name, role, tier) {
             const model = new SubjectModel({
@@ -3793,14 +3814,14 @@
     };
 
     /* Routers */
-    AppRouter = Backbone.Router.extend({
+    const AppRouter = Backbone.Router.extend({
         routes: {
-            "centers": "listCenters",
-            "stories": "listStories",
+            "centers": viewOnlyRouter(CenterListView),
+            "stories": viewOnlyRouter(StoriesListView),
             "explore/:type/:roles": "explore",
             "center/:name(/:project)": "showCenter",
-            "submission/:id": "showSubmission",
-            "observation/:id": "showObservation",
+            "submission/:id": idBasedRouter(Submission, SubmissionView),
+            "observation/:id": idBasedRouter(Observation, ObservationView),
             "search/:term": "search",
             "story/:submission_name": "showStory",
             "animal-model/:name(/:role)(/:tier)": subjectRouter(AnimalModel, AnimalModelView),
@@ -3811,17 +3832,13 @@
             "transcript/:name(/:role)(/:tier)": subjectRouter(Transcript, TranscriptView),
             "rna/:name(/:role)(/:tier)": subjectRouter(ShRna, RnaView),
             "gene/:species/:symbol(/:role)(/:tier)": "showGene",
-            "mra/:filename": "showMraView",
-            "genes": "showGeneList",
-            "cnkb-query": "showCnkbQuery",
-            "cnkb-result": "showCnkbResult",
-            "gene-cart-help": "showGeneCartHelp",
-            "cite": "cite",
+            "mra/:filename": idBasedRouter(ObservedEvidence, MraView),
+            "genes": viewOnlyRouter(GeneListView),
+            "cnkb-query": viewOnlyRouter(CnkbQueryView),
+            "cnkb-result": viewOnlyRouter(CnkbResultView),
+            "gene-cart-help": viewOnlyRouter(GeneCartHelpView),
+            "cite": viewOnlyRouter(HowToCiteView),
             "*actions": "home",
-        },
-
-        cite: function () {
-            new HowToCiteView().render();
         },
 
         home: function (actions) {
@@ -3942,70 +3959,6 @@
                 }
             });
         },
-
-        showSubmission: function (id) {
-            const submission = new Submission({
-                id: id
-            });
-            submission.fetch({
-                success: function () {
-                    new SubmissionView({
-                        model: submission
-                    }).render();
-                }
-            });
-        },
-
-        showObservation: function (id) {
-            const observation = new Observation({
-                id: id
-            });
-            observation.fetch({
-                success: function () {
-                    new ObservationView({
-                        model: observation
-                    }).render();
-                }
-            });
-        },
-
-        listCenters: function () {
-            new CenterListView().render();
-        },
-
-        listStories: function () {
-            new StoriesListView().render();
-        },
-
-        showMraView: function (filename) {
-            const observedEvidence = new ObservedEvidence({
-                id: filename
-            });
-            observedEvidence.fetch({
-                success: function () {
-                    new MraView({
-                        model: observedEvidence
-                    }).render();
-                }
-            });
-        },
-
-        showGeneList: function () {
-            new GeneListView().render();
-        },
-
-        showCnkbQuery: function () {
-            new CnkbQueryView().render();
-        },
-
-        showCnkbResult: function () {
-            new CnkbResultView().render();
-        },
-
-        showGeneCartHelp: function () {
-            new GeneCartHelpView().render();
-        },
-
     });
 
     $(function () {
