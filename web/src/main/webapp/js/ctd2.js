@@ -287,6 +287,10 @@
         }
     });
 
+    const Summary = Backbone.Collection.extend({
+        url: CORE_API_URL + "api/summary",
+    });
+
     /* Views */
     const HomeView = Backbone.View.extend({
         el: $("#main-container"),
@@ -329,6 +333,20 @@
                         setTimeout(turn_carousel, 12000);
                     };
                     setTimeout(turn_carousel, 12000);
+                }
+            });
+
+            const summary = new Summary();
+            summary.fetch({
+                success: function () {
+                    _.each(summary.models, function (summaryItem) {
+                        console.log(summaryItem);
+                        console.log(summaryItem.toJSON());
+                        new SummaryItemView({
+                            el: $("#summary-table"),
+                            model: summaryItem.toJSON(),
+                        }).render();
+                    });
                 }
             });
 
@@ -2559,6 +2577,13 @@
 
             return this;
         }
+    });
+
+    const SummaryItemView = Backbone.View.extend({
+        template: _.template($("#summary-item-tmpl").html()),
+        render: function () {
+            $(this.el).append(this.template(this.model));
+        },
     });
 
     //MRA View

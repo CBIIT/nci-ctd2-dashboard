@@ -9,9 +9,11 @@
     String dataURL = (String) context.getBean("dataURL");
     Integer maxNumOfObservations = (Integer) context.getBean("maxNumberOfEntities");
     String dashboardReleaseVersion = (String) context.getBean("dashboardReleaseVersion");
-%><!DOCTYPE html>
+%>
+<!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/html">
-  <head>
+
+<head>
     <!-- X-UA-Compatible meta tag to disable IE compatibility view must always be first -->
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -33,136 +35,153 @@
 
     <!-- Fav and touch icons -->
     <link rel="shortcut icon" href="img/favicon.png" />
-  </head>
+</head>
 
-  <body>
+<body>
     <!-- NAVBAR
     ================================================== -->
     <script src="js/jquery-3.3.1.min.js"></script>
     <script>
-    $(function() {
-        // Bind an event to window.onhashchange that, when the hash changes, 
-        // gets the hash and alters class of desired navlinks
-        window.onhashchange  = function() {
-            var hash = location.hash || '#';
-            $('[id^="navlink-"]').each(function() {
-                // navbar regular items
-                if (
-                    $(this).attr('id') == 'navlink-dashboard' ||
-                    $(this).attr('id') == 'navlink-centers'
-                ) {
-                    if ($(this).attr('href') === decodeURIComponent(hash)) {
-                        $(this).removeClass('navlink');
-                        $(this).addClass('navlink-current');
-                    }
-                    else {
-                        $(this).removeClass('navlink-current');
-                        $(this).addClass('navlink');
-                    }
-                }
-                // navbar dropdown menu items
-                else if (
-                    $(this).attr('id') == 'navlink-browse' ||
-                    $(this).attr('id') == 'navlink-genecart'
-                ) {
-                    var id = $(this).attr('id') == 'navlink-browse'
-                           ? 'dropdown-menu-browse'
-                           : 'dropdown-menu-genecart';
-                    var dropdownLink = $(this);
-                    $('#' + id + ' li a').each(function() {
+        $(function () {
+            // Bind an event to window.onhashchange that, when the hash changes, 
+            // gets the hash and alters class of desired navlinks
+            window.onhashchange = function () {
+                var hash = location.hash || '#';
+                $('[id^="navlink-"]').each(function () {
+                    // navbar regular items
+                    if (
+                        $(this).attr('id') == 'navlink-dashboard' ||
+                        $(this).attr('id') == 'navlink-centers'
+                    ) {
                         if ($(this).attr('href') === decodeURIComponent(hash)) {
-                            dropdownLink.removeClass('navlink');
-                            dropdownLink.addClass('navlink-current');
-                            return false;
+                            $(this).removeClass('navlink');
+                            $(this).addClass('navlink-current');
                         }
                         else {
-                            dropdownLink.removeClass('navlink-current');
-                            dropdownLink.addClass('navlink');
+                            $(this).removeClass('navlink-current');
+                            $(this).addClass('navlink');
                         }
-                    });
-                }
-            });
-        };
-        // Since the event is only triggered when the hash changes, we need to trigger
-        // the event now, to handle the hash the page may have been loaded with.
-        window.onhashchange();
-    });
+                    }
+                    // navbar dropdown menu items
+                    else if (
+                        $(this).attr('id') == 'navlink-browse' ||
+                        $(this).attr('id') == 'navlink-genecart'
+                    ) {
+                        var id = $(this).attr('id') == 'navlink-browse'
+                            ? 'dropdown-menu-browse'
+                            : 'dropdown-menu-genecart';
+                        var dropdownLink = $(this);
+                        $('#' + id + ' li a').each(function () {
+                            if ($(this).attr('href') === decodeURIComponent(hash)) {
+                                dropdownLink.removeClass('navlink');
+                                dropdownLink.addClass('navlink-current');
+                                return false;
+                            }
+                            else {
+                                dropdownLink.removeClass('navlink-current');
+                                dropdownLink.addClass('navlink');
+                            }
+                        });
+                    }
+                });
+            };
+            // Since the event is only triggered when the hash changes, we need to trigger
+            // the event now, to handle the hash the page may have been loaded with.
+            window.onhashchange();
+        });
     </script>
     <div class="navbar-wrapper">
-      <!-- Wrap the .navbar in .container to center it within the absolutely positioned parent. -->
-      <div class="container">
+        <!-- Wrap the .navbar in .container to center it within the absolutely positioned parent. -->
+        <div class="container">
 
-        <div class="navbar">
-          <div class="navbar-inner">
-            <div class="nav-collapse collapse show">
-              <ul id="nav" class="nav">
-                <li><a id="navlink-dashboard" class="navlink" href="#">CTD<sup>2</sup> Dashboard</a></li>
-                <li><a id="navlink-centers" class="navlink" href="#centers">Centers</a></li>
-                <li class="dropdown">
-                      <a class="dropdown-toggle navlink" href="#" data-toggle="dropdown">Resources <b class="caret"></b></a>
-                      <ul class="dropdown-menu">
-                          <li><a target="_blank" href="https://ocg.cancer.gov/programs/ctd2">CTD<sup>2</sup> Home Page</a></li>
-                          <li><a href="#cite">How to Cite</a></li>
-                          <li><a target="_blank" href="https://ocg.cancer.gov/programs/ctd2/publications">Publications</a></li>
-                          <li><a href="" class="help-navigate">Glossary</a></li>
-                          <li><a target="_blank" href="https://ocg.cancer.gov/programs/ctd2/data-portal">Data Portal - Downloads</a></li>
-                          <li><a target="_blank" href="https://ocg.cancer.gov/programs/ctd2/analytical-tools">Analytical Tools</a></li>
-                          <li><a target="_blank" href="https://ocg.cancer.gov/programs/ctd2/supported-reagents">Supported Reagents</a></li>
-                          <li class="dropdown-submenu"><a tabindex="-1" href="#">Outside Resources</a>
+            <div class="navbar">
+                <div class="navbar-inner">
+                    <div class="nav-collapse collapse show">
+                        <ul id="nav" class="nav">
+                            <li><a id="navlink-dashboard" class="navlink" href="#">CTD<sup>2</sup> Dashboard</a></li>
+                            <li><a id="navlink-centers" class="navlink" href="#centers">Centers</a></li>
+                            <li class="dropdown">
+                                <a class="dropdown-toggle navlink" href="#" data-toggle="dropdown">Resources <b
+                                        class="caret"></b></a>
                                 <ul class="dropdown-menu">
-                                    <li><a target="_blank" href="http://www.lincsproject.org/">LINCS</a></li>
+                                    <li><a target="_blank" href="https://ocg.cancer.gov/programs/ctd2">CTD<sup>2</sup>
+                                            Home Page</a></li>
+                                    <li><a href="#cite">How to Cite</a></li>
+                                    <li><a target="_blank"
+                                            href="https://ocg.cancer.gov/programs/ctd2/publications">Publications</a>
+                                    </li>
+                                    <li><a href="" class="help-navigate">Glossary</a></li>
+                                    <li><a target="_blank" href="https://ocg.cancer.gov/programs/ctd2/data-portal">Data
+                                            Portal - Downloads</a></li>
+                                    <li><a target="_blank"
+                                            href="https://ocg.cancer.gov/programs/ctd2/analytical-tools">Analytical
+                                            Tools</a></li>
+                                    <li><a target="_blank"
+                                            href="https://ocg.cancer.gov/programs/ctd2/supported-reagents">Supported
+                                            Reagents</a></li>
+                                    <li class="dropdown-submenu"><a tabindex="-1" href="#">Outside Resources</a>
+                                        <ul class="dropdown-menu">
+                                            <li><a target="_blank" href="http://www.lincsproject.org/">LINCS</a></li>
+                                        </ul>
+                                    </li>
                                 </ul>
-                           </li>
-                      </ul>
-                  </li>
-                  <li class="dropdown">
-                      <a id="navlink-browse" class="dropdown-toggle navlink" href="#" data-toggle="dropdown">Browse <b class="caret"></b></a>
-                      <ul id="dropdown-menu-browse" class="dropdown-menu">
-                          <li><a href="#stories">Stories</a></li>
-                          <li><a href="#explore/target/Biomarker,Target">Genes (Biomarkers, Targets, etc.)</a></li>
-                          <li><a href="#explore/compound/Perturbagen,Candidate Drug">Compounds and Perturbagens</a></li>
-                          <li><a href="#explore/context/Disease">Disease Contexts</a></li>
-                          <li><a href="#explore/cellline/Cell Line">Cell Lines</a></li>
-                      </ul>
-                  </li>
-                  <li class="dropdown">
-                      <a id="navlink-genecart" class="dropdown-toggle navlink" href="#" data-toggle="dropdown">Gene Cart <b class="caret"></b></a>
-                      <ul id="dropdown-menu-genecart" class="dropdown-menu">
-                          <li><a href="#genes">Go To Cart</a></li> 
-                          <li><a href="#gene-cart-help">Help</a></li>
-                      </ul>
-                  </li>
-              </ul>
-              <ul class="nav pull-right">
-                  <form class="form-search" id="omnisearch">
-                      <div class="input-append">
-                          <input type="text" id="omni-input" class="search-query" title="Search" placeholder="e.g. CTNNB1 or dasatinib" aria-label="search">
-                          <button type="submit" class="btn search-button">Search</button>
-                          <span class="d-none" id="search-help-content">
-                              <p>Please enter the keyword(s) you would like to search on the website.  You may enter multiple search terms, but do not use "AND" or "OR".</p>
-                              <strong>Examples:</strong>
-                              <ul>
-                                <li><em>Gene: </em> <a href="#search/CTNNB1">CTNNB1</a></li>
-                                <li><em>Gene: </em> <a href="#search/YAP*">YAP*</a></li>
-                                <li><em>Compound: </em> <a href="#search/dasatinib">dasatinib</a></li>
-                                <li><em>Cell Sample: </em> <a href="#search/OVCAR8">OVCAR8</a></li>
-                                <li><em>Multiple: </em> <a href="#search/dexamethasone AKT1">dexamethasone AKT1</a></li>
-                              </ul>
-                              <br>
-                          </span>
-                      </div>
-                  </form>
-              </ul>
-            </div><!--/.nav-collapse -->
-          </div><!-- /.navbar-inner -->
-        </div><!-- /.navbar -->
+                            </li>
+                            <li class="dropdown">
+                                <a id="navlink-browse" class="dropdown-toggle navlink" href="#"
+                                    data-toggle="dropdown">Browse <b class="caret"></b></a>
+                                <ul id="dropdown-menu-browse" class="dropdown-menu">
+                                    <li><a href="#stories">Stories</a></li>
+                                    <li><a href="#explore/target/Biomarker,Target">Genes (Biomarkers, Targets, etc.)</a>
+                                    </li>
+                                    <li><a href="#explore/compound/Perturbagen,Candidate Drug">Compounds and
+                                            Perturbagens</a></li>
+                                    <li><a href="#explore/context/Disease">Disease Contexts</a></li>
+                                    <li><a href="#explore/cellline/Cell Line">Cell Lines</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a id="navlink-genecart" class="dropdown-toggle navlink" href="#"
+                                    data-toggle="dropdown">Gene Cart <b class="caret"></b></a>
+                                <ul id="dropdown-menu-genecart" class="dropdown-menu">
+                                    <li><a href="#genes">Go To Cart</a></li>
+                                    <li><a href="#gene-cart-help">Help</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul class="nav pull-right">
+                            <form class="form-search" id="omnisearch">
+                                <div class="input-append">
+                                    <input type="text" id="omni-input" class="search-query" title="Search"
+                                        placeholder="e.g. CTNNB1 or dasatinib" aria-label="search">
+                                    <button type="submit" class="btn search-button">Search</button>
+                                    <span class="d-none" id="search-help-content">
+                                        <p>Please enter the keyword(s) you would like to search on the website. You may
+                                            enter multiple search terms, but do not use "AND" or "OR".</p>
+                                        <strong>Examples:</strong>
+                                        <ul>
+                                            <li><em>Gene: </em> <a href="#search/CTNNB1">CTNNB1</a></li>
+                                            <li><em>Gene: </em> <a href="#search/YAP*">YAP*</a></li>
+                                            <li><em>Compound: </em> <a href="#search/dasatinib">dasatinib</a></li>
+                                            <li><em>Cell Sample: </em> <a href="#search/OVCAR8">OVCAR8</a></li>
+                                            <li><em>Multiple: </em> <a href="#search/dexamethasone AKT1">dexamethasone
+                                                    AKT1</a></li>
+                                        </ul>
+                                        <br>
+                                    </span>
+                                </div>
+                            </form>
+                        </ul>
+                    </div>
+                    <!--/.nav-collapse -->
+                </div><!-- /.navbar-inner -->
+            </div><!-- /.navbar -->
 
-      </div> <!-- /.container -->
+        </div> <!-- /.container -->
     </div><!-- /.navbar-wrapper -->
 
     <!-- all the backbone magic will happen here, right in this div -->
     <div id="main-container"></div>
-    
+
     <div class="container footer-container">
         <!-- FOOTER -->
         <footer>
@@ -171,30 +190,42 @@
                 <a href="#attribution" data-toggle="collapse">attributions</a>
             </div>
             <div id="attribution" class="collapse">
-            <div style="font-size:14px; margin-bottom:10px;">
-                Data users must acknowledge and cite the manuscript <a href="https://www.ncbi.nlm.nih.gov/pubmed/29220450" target="_blank">Aksoy, Dančík, Smith et al.</a>, Database 2017;1-10 and provide the URL <a href="https://ctd2-dashboard.nci.nih.gov/dashboard/">https://ctd2-dashboard.nci.nih.gov/dashboard/</a>.
-            </div>
-            <div style="font-size:14px; margin-bottom:10px;">
-                As the CTD<sup>2</sup> Network continues to refine the Dashboard, input from the research community is highly valued to help improve usability.
-                Please send your feedback and comments to <a href="mailto:ocg@mail.nih.gov?subject=CTD2 Dashboard Feedback">ocg@mail.nih.gov</a>.
-            </div>
-            <div style="font-size:14px; margin-bottom:10px;">
-                <a href="http://cancer.gov"><img src="img/logos/footer_logo_nci.jpg" alt="NCI logo" title="NCI logo"></a><a href="http://www.dhhs.gov/"><img src="img/logos/footer_logo_hhs.jpg" title="HHS logo" alt="HHS logo"></a><a href="http://www.nih.gov/"><img src="img/logos/footer_logo_nih.jpg" title="NIH logo" alt="NIH logo"></a><a href="http://www.firstgov.gov/"><img src="img/logos/footer_logo_firstgov.jpg" title="First Gov logo" alt="First Gov logo"></a>
-            </div>
-            <div style="font-size:14px; margin-bottom:10px;">
-                <a class="help-navigate">Glossary</a> &middot;
-                <a href="http://www.cancer.gov/global/web/policies" target="_blank">Policies</a> &middot;
-                <a href="http://www.cancer.gov/global/web/policies/accessibility" target="_blank">Accessibility</a> &middot;
-                <a href="http://www.cancer.gov/global/web/policies/foia" target="_blank">FOIA</a>
-            </div>
+                <div style="font-size:14px; margin-bottom:10px;">
+                    Data users must acknowledge and cite the manuscript <a
+                        href="https://www.ncbi.nlm.nih.gov/pubmed/29220450" target="_blank">Aksoy, Dančík, Smith et
+                        al.</a>, Database 2017;1-10 and provide the URL <a
+                        href="https://ctd2-dashboard.nci.nih.gov/dashboard/">https://ctd2-dashboard.nci.nih.gov/dashboard/</a>.
+                </div>
+                <div style="font-size:14px; margin-bottom:10px;">
+                    As the CTD<sup>2</sup> Network continues to refine the Dashboard, input from the research community
+                    is highly valued to help improve usability.
+                    Please send your feedback and comments to <a
+                        href="mailto:ocg@mail.nih.gov?subject=CTD2 Dashboard Feedback">ocg@mail.nih.gov</a>.
+                </div>
+                <div style="font-size:14px; margin-bottom:10px;">
+                    <a href="http://cancer.gov"><img src="img/logos/footer_logo_nci.jpg" alt="NCI logo"
+                            title="NCI logo"></a><a href="http://www.dhhs.gov/"><img src="img/logos/footer_logo_hhs.jpg"
+                            title="HHS logo" alt="HHS logo"></a><a href="http://www.nih.gov/"><img
+                            src="img/logos/footer_logo_nih.jpg" title="NIH logo" alt="NIH logo"></a><a
+                        href="http://www.firstgov.gov/"><img src="img/logos/footer_logo_firstgov.jpg"
+                            title="First Gov logo" alt="First Gov logo"></a>
+                </div>
+                <div style="font-size:14px; margin-bottom:10px;">
+                    <a class="help-navigate">Glossary</a> &middot;
+                    <a href="http://www.cancer.gov/global/web/policies" target="_blank">Policies</a> &middot;
+                    <a href="http://www.cancer.gov/global/web/policies/accessibility" target="_blank">Accessibility</a>
+                    &middot;
+                    <a href="http://www.cancer.gov/global/web/policies/foia" target="_blank">FOIA</a>
+                </div>
             </div>
         </footer>
     </div>
-    
-    <div class="modal hide fade" id="alert-message-modal">  <!-- a hidden div for showing alert message -->
+
+    <div class="modal hide fade" id="alert-message-modal">
+        <!-- a hidden div for showing alert message -->
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <div class="modal-body" >
+                <div class="modal-body">
                     <br>
                     <medium id="alertMessage"></medium>
                 </div>
@@ -239,6 +270,14 @@
                 </div><!-- row -->
 
         <div class="dark-separator"></div>
+        <span>Show Dashboard Statistics</span>
+        <table>
+            <thead>
+                <tr><th>Category</th><th>Submissions</th><th>Tier 1</th><th>Tier 2</th><th>Tier 3</th><th>Total</th></tr>
+            </thead>
+            <tbody id='summary-table'>
+            </tbody>
+        </table>
 
         <div class="container ctd2-boxes">
             <div class=row>
@@ -1433,7 +1472,7 @@
             <td>{{observedSubjectRole.displayText}}</td>
         </tr>
     </script>
-    
+
     <script type="text/template" id="observedsubject-gene-summary-row-tmpl">
         <tr>
             <td id="subject-image-{{id}}"></td>
@@ -1522,7 +1561,7 @@
             </td>
         </tr>
     </script>
-    
+
     <script type="text/template" id="search-result-gene-row-tmpl">
         <tr>
             <td id="search-image-{{dashboardEntity.id}}"></td>
@@ -1798,8 +1837,8 @@
                 </div>
             </td>
         </tr>
-    </script>  
-    
+    </script>
+
     <script type="text/template" id="mra-view-tmpl" mra-data-url="<%=dataURL%>">
          <div class="container common-container" id="mra-container" > 
                <div class="row">
@@ -1868,8 +1907,8 @@
                   </table>
 
         </div>
-    </script>   
-    
+    </script>
+
     <script type="text/template" id="mra-view-row-tmpl">
         <tr>
             <td><input type="checkbox" id="checkbox_{{entrezId}}" value="{{entrezId}}"></td>
@@ -1878,7 +1917,7 @@
             <td>{{dataRowCount}}</td>
         </tr>
     </script>
-    
+
     <script type="text/template" id="mra-barcode-view-row-tmpl">
         <tr>             
 			<td><canvas id="draw-{{entrezId}}" width="450" height="36"></canvas></td>				  
@@ -1887,8 +1926,8 @@
             <td>{{deRank}}</td>
             <td>{{geneSymbol}}</td>
         </tr>
-    </script>   
-    
+    </script>
+
     <script type="text/template" id="mra-cytoscape-tmpl">
         <div class="cytoscape-container">
         <div id="mra_progress">
@@ -1949,8 +1988,8 @@
     <script type="text/template" id="maxNumberOfEntites">
         <%=maxNumOfObservations%>
     </script>
-    
-    <script type="text/template" id="genelist-view-tmpl" >
+
+    <script type="text/template" id="genelist-view-tmpl">
         <div class="container common-container" id="genelist-container" > 
              <div class=row>
                  <div class="col-10" align="center">
@@ -2001,8 +2040,8 @@
         </div>
         </div>
       </script>
-      
-      <script type="text/template" id="cnkb-query-tmpl" >
+
+    <script type="text/template" id="cnkb-query-tmpl">
         <div class="container common-container" id="cnkbquery-container" > 
             <div class=row>
                     <div class="col-10">
@@ -2038,8 +2077,8 @@
             </div>
         </div>
       </script>
-      
-      <script type="text/template" id="cnkb-result-tmpl" >
+
+    <script type="text/template" id="cnkb-result-tmpl">
          <div class="container common-container" id="cnkbresult-container" > 
                <div class="row">
                   <div class="col-10">
@@ -2104,15 +2143,15 @@
                   <br/>	
              </div>
       </script>
-    
-      <script type="text/template" id="cnkb-result-row-tmpl">
+
+    <script type="text/template" id="cnkb-result-row-tmpl">
         <tr id="tr_{{geneName}}">
             <td><input type="checkbox" id="checkbox_{{geneName}}" value="{{geneName}}" class="cnkb_checkbox"></td> 
             <td>{{geneName}}</td>; 
         </tr>
       </script>
-      
-      <script type="text/template" id="cnkb-cytoscape-tmpl">
+
+    <script type="text/template" id="cnkb-cytoscape-tmpl">
         <div class="cytoscape-container">
         <div id="cnkb_cytoscape_progress">
             <img id="cnkb_cytoscape_progress_indicator" class="centeredImage" src="img/progress_indicator.gif" width="30" height="30" alt="Please wait ......">
@@ -2128,8 +2167,8 @@
         </div>
         </div>
       </script>
-     
-    <script type="text/template" id="gene-cart-help-tmpl" >
+
+    <script type="text/template" id="gene-cart-help-tmpl">
          <div class="container common-container" id="cnkbhelp-container" > 
              <div class=row>
                <div class="col-10">
@@ -2147,14 +2186,18 @@
             </div>
          </div>
      </script>
-     
-     <script type="text/template" id="gene-cart-option-tmpl">
+
+    <script type="text/template" id="gene-cart-option-tmpl">
         <option value="{{displayItem}}">{{displayItem}}</option>
      </script>
 
-     <script type="text/template" id="gene-cart-option-tmpl-preselected">
+    <script type="text/template" id="gene-cart-option-tmpl-preselected">
         <option value="{{displayItem}}" selected>{{displayItem}}</option>
      </script>
+
+    <script type="text/template" id="summary-item-tmpl">
+        <tr><td>{{label}}</td><td>{{submissions}}</td><td>{{tier1}}</td><td>{{tier2}}</td><td>{{tier3}}</td><td>{{tier1+tier2+tier3}}</td></tr>
+    </script>
 
     <script type="text/template" id="video-popup-tmpl">
         <div id="ytplayer-{{videoid}}" class="flex-video widescreen" data-video-id="{{videoid}}" style="padding: 70px 20px;">
@@ -2255,7 +2298,7 @@
     </script>
 
     <!-- end of templates -->
-    
+
     <script src="js/datatables.min.js"></script>
     <script src="js/paging.js"></script>
     <script src="js/underscore-min.js"></script>
@@ -2272,5 +2315,6 @@
     <script src="js/ctd2.hovertext.js"></script>
     <script src="js/ctd2.js?ts=2019009"></script>
 
-  </body>
+</body>
+
 </html>

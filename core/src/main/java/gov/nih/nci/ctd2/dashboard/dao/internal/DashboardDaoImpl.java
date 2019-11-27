@@ -72,6 +72,8 @@ import gov.nih.nci.ctd2.dashboard.api.EvidenceItem;
 import gov.nih.nci.ctd2.dashboard.api.SubjectItem;
 import gov.nih.nci.ctd2.dashboard.api.XRefItem;
 
+import gov.nih.nci.ctd2.dashboard.dao.Summary;
+
 public class DashboardDaoImpl implements DashboardDao {
     private static final Log log = LogFactory.getLog(DashboardDaoImpl.class);
 
@@ -943,5 +945,43 @@ public class DashboardDaoImpl implements DashboardDao {
         }
         session.close();
         return list;
+    }
+
+    public Summary getSummaryPerSubject(Class<? extends Subject> subjectClass) {
+        String tableName = "";
+        Class<?> implClass = subjectClass.isInterface() ? dashboardFactory.getImplClass(subjectClass) : subjectClass;
+        java.lang.annotation.Annotation[] annotation = implClass.getAnnotationsByType(javax.persistence.Table.class);
+        if (annotation.length == 1) {
+            javax.persistence.Table table = (javax.persistence.Table) annotation[0];
+            tableName = table.name();
+        } else {
+            return new Summary("exception", 0, 0, 0, 0);
+        }
+
+        Session session = getSession();
+        @SuppressWarnings("unchecked")
+        org.hibernate.query.Query<BigInteger> query = session
+                .createNativeQuery("SELECT count(DISTINCT submission_id) FROM " + tableName
+                        + " JOIN observed_subject ON observed_subject.subject_id=" + tableName + ".id"
+                        + " JOIN observation ON observation.id=observed_subject.observation_id");
+        BigInteger submisssions = query.getSingleResult();
+
+        String tierQuery = "SELECT COUNT(DISTINCT observation_id) FROM " + tableName
+                + " JOIN observed_subject ON observed_subject.subject_id=" + tableName + ".id"
+                + " JOIN observation ON observation.id=observed_subject.observation_id"
+                + " JOIN submission ON submission.id=observation.submission_id"
+                + " JOIN observation_template ON observation_template.id=submission.observationTemplate_id"
+                + " WHERE tier=";
+        int[] tierCount = new int[3];
+        for (int i = 0; i < 3; i++) {
+            @SuppressWarnings("unchecked")
+            org.hibernate.query.Query<BigInteger> query2 = session.createNativeQuery(tierQuery + (i + 1));
+            tierCount[i] = query2.getSingleResult().intValue();
+        }
+
+        session.close();
+
+        return new Summary(subjectClass.getSimpleName(), submisssions.intValue(), tierCount[0], tierCount[1],
+                tierCount[2]);
     }
 }

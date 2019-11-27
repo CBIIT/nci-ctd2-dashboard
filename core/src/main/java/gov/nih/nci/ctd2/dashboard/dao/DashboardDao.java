@@ -73,4 +73,6 @@ public interface DashboardDao {
     // the following are added to support more efficient API without changing underlying database
     List<SubjectItem> getObservedSubjectInfo(Integer observationId);
     List<EvidenceItem> getObservedEvidenceInfo(Integer observationId);
+
+    Summary getSummaryPerSubject(Class<? extends Subject> subjectClass);
 }
