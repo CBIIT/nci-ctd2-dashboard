@@ -270,12 +270,13 @@
                 </div><!-- row -->
 
         <div class="dark-separator"></div>
-        <span>Show Dashboard Statistics</span>
-        <table>
+        <a id=summary-table-label style="text-align:center;display:block"><span id=toggle-word>Show</span> Dashboard Statistics</a>
+        <table id=summary-table class="table table-bordered table-sm text-center">
             <thead>
-                <tr><th>Category</th><th>Submissions</th><th>Tier 1</th><th>Tier 2</th><th>Tier 3</th><th>Total</th></tr>
+                <tr><th rowspan=2>Category</th><th rowspan=2>Submissions</th><th colspan=4>Observations</th></tr>
+                <tr><th>Tier 1</th><th>Tier 2</th><th>Tier 3</th><th>Total</th></tr>
             </thead>
-            <tbody id='summary-table'>
+            <tbody id='summary-table-body'>
             </tbody>
         </table>
 
@@ -1723,7 +1724,7 @@
     <script type="text/template" id="story-homepage-tmpl">
         <h4>{{submission.observationTemplate.description}}</h4>
         <p><a href="#story-summary-{{id}}" data-toggle="collapse">details</a>
-            | <a href="#{{submission.stableURL.replace("submission", "story")}}">view full story</a>
+            | <a href="#{{submission.stableURL.replace('submission', 'story')}}">view full story</a>
             | <a href="#{{stableURL}}">see observation</a>
             | <a href="#stories">all stories</a>
         </p>

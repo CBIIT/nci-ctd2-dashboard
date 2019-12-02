@@ -340,14 +340,20 @@
             summary.fetch({
                 success: function () {
                     _.each(summary.models, function (summaryItem) {
-                        console.log(summaryItem);
-                        console.log(summaryItem.toJSON());
                         new SummaryItemView({
-                            el: $("#summary-table"),
+                            el: $("#summary-table-body"),
                             model: summaryItem.toJSON(),
                         }).render();
                     });
                 }
+            });
+            $("#summary-table").hide();
+            $("#summary-table-label").click(function (e) {
+                $("#summary-table").toggle();
+                $("#toggle-word").text(function (index, content) {
+                    if (content == "Show") return "Hide";
+                    else return "Show";
+                });
             });
 
             $("#omni-search-form").submit(function () {
