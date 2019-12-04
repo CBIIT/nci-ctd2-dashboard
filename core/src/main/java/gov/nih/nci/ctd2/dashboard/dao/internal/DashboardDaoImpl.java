@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -68,11 +69,10 @@ import gov.nih.nci.ctd2.dashboard.model.Transcript;
 import gov.nih.nci.ctd2.dashboard.model.Xref;
 import gov.nih.nci.ctd2.dashboard.util.DashboardEntityWithCounts;
 import gov.nih.nci.ctd2.dashboard.util.SubjectWithSummaries;
+import gov.nih.nci.ctd2.dashboard.util.Summary;
 import gov.nih.nci.ctd2.dashboard.api.EvidenceItem;
 import gov.nih.nci.ctd2.dashboard.api.SubjectItem;
 import gov.nih.nci.ctd2.dashboard.api.XRefItem;
-
-import gov.nih.nci.ctd2.dashboard.dao.Summary;
 
 public class DashboardDaoImpl implements DashboardDao {
     private static final Log log = LogFactory.getLog(DashboardDaoImpl.class);
@@ -871,6 +871,7 @@ public class DashboardDaoImpl implements DashboardDao {
         return summary;
     }
 
+    @Override
     public List<SubjectItem> getObservedSubjectInfo(Integer observationId) {
         Session session1 = getSession();
         @SuppressWarnings("unchecked")
@@ -920,6 +921,7 @@ public class DashboardDaoImpl implements DashboardDao {
         return list;
     }
 
+    @Override
     public List<EvidenceItem> getObservedEvidenceInfo(Integer observationId) {
         Session session = getSession();
         @SuppressWarnings("unchecked")
@@ -947,7 +949,7 @@ public class DashboardDaoImpl implements DashboardDao {
         return list;
     }
 
-    public Summary getSummaryPerSubject(Class<? extends Subject> subjectClass) {
+    private Summary summarizePerSubject(Class<? extends Subject> subjectClass) {
         String tableName = "";
         Class<?> implClass = subjectClass.isInterface() ? dashboardFactory.getImplClass(subjectClass) : subjectClass;
         java.lang.annotation.Annotation[] annotation = implClass.getAnnotationsByType(javax.persistence.Table.class);
@@ -964,7 +966,7 @@ public class DashboardDaoImpl implements DashboardDao {
                 .createNativeQuery("SELECT count(DISTINCT submission_id) FROM " + tableName
                         + " JOIN observed_subject ON observed_subject.subject_id=" + tableName + ".id"
                         + " JOIN observation ON observation.id=observed_subject.observation_id");
-        BigInteger submisssions = query.getSingleResult();
+        BigInteger submissions = query.getSingleResult();
 
         String tierQuery = "SELECT COUNT(DISTINCT observation_id) FROM " + tableName
                 + " JOIN observed_subject ON observed_subject.subject_id=" + tableName + ".id"
@@ -980,8 +982,25 @@ public class DashboardDaoImpl implements DashboardDao {
         }
 
         session.close();
-
-        return new Summary(subjectClass.getSimpleName(), submisssions.intValue(), tierCount[0], tierCount[1],
+        return new Summary(subjectClass.getSimpleName(), submissions.intValue(), tierCount[0], tierCount[1],
                 tierCount[2]);
+    }
+
+    @Override
+    public void summarize() {
+        findEntities(Summary.class).forEach(s -> delete(s));
+
+        Class<?>[] summaryClasses = new Class<?>[] { AnimalModel.class, CellSample.class, Compound.class, Gene.class,
+                ShRna.class };
+        for (Class<?> c : summaryClasses) {
+            @SuppressWarnings("unchecked")
+            Summary s = summarizePerSubject((Class<? extends Subject>) c);
+            save(s);
+        }
+    }
+
+    @Override
+    public List<Summary> getOverallSummary() {
+        return findEntities(Summary.class).stream().filter(s -> s.getLabel() != null).collect(Collectors.toList());
     }
 }

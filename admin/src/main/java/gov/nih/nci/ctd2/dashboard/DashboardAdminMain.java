@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
 import gov.nih.nci.ctd2.dashboard.importer.internal.SampleImporter;
+import gov.nih.nci.ctd2.dashboard.util.OverallSummary;
 import gov.nih.nci.ctd2.dashboard.util.SubjectScorer;
 
 public class DashboardAdminMain {
@@ -135,6 +136,8 @@ public class DashboardAdminMain {
             if(commandLine.hasOption("r")) {
                 SubjectScorer subjectScorer = (SubjectScorer) appContext.getBean("subjectScorer");
                 subjectScorer.scoreAllRoles();
+                OverallSummary overallSummary = (OverallSummary) appContext.getBean("overallSummary");
+                overallSummary.summarize();
             }
 
             if( commandLine.hasOption("i") ) {

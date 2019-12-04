@@ -21,7 +21,7 @@ import gov.nih.nci.ctd2.dashboard.api.SimpleDateTransformer;
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
 import gov.nih.nci.ctd2.dashboard.util.ImplTransformer;
 
-import gov.nih.nci.ctd2.dashboard.dao.Summary;
+import gov.nih.nci.ctd2.dashboard.util.Summary;
 import gov.nih.nci.ctd2.dashboard.model.*;
 
 @Controller
@@ -37,16 +37,12 @@ public class SummaryController {
 
     @Transactional
     @RequestMapping(method = { RequestMethod.GET }, headers = "Accept=application/json")
-    public ResponseEntity<String> getCenters() {
+    public ResponseEntity<String> getSummary() {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json; charset=utf-8");
 
-        Class<?>[] summaryClasses = new Class<?>[] { AnimalModel.class, CellSample.class, Compound.class, Gene.class,
-                ShRna.class };
-        List<Summary> summary = new ArrayList<Summary>();
-        for (Class<?> c : summaryClasses) {
-            summary.add(dashboardDao.getSummaryPerSubject((Class<? extends Subject>) c));
-        }
+        List<Summary> summary = dashboardDao.getOverallSummary();
+
         JSONSerializer jsonSerializer = new JSONSerializer().transform(new ImplTransformer(), Class.class)
                 .transform(new SimpleDateTransformer(), Date.class).transform(new ExcludeTransformer(), void.class);
         String json = "{}";

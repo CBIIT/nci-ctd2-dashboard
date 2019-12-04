@@ -3,6 +3,7 @@ package gov.nih.nci.ctd2.dashboard.dao;
 import gov.nih.nci.ctd2.dashboard.model.*;
 import gov.nih.nci.ctd2.dashboard.util.DashboardEntityWithCounts;
 import gov.nih.nci.ctd2.dashboard.util.SubjectWithSummaries;
+import gov.nih.nci.ctd2.dashboard.util.Summary;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -74,5 +75,6 @@ public interface DashboardDao {
     List<SubjectItem> getObservedSubjectInfo(Integer observationId);
     List<EvidenceItem> getObservedEvidenceInfo(Integer observationId);
 
-    Summary getSummaryPerSubject(Class<? extends Subject> subjectClass);
+    void summarize();
+    List<Summary> getOverallSummary();
 }
