@@ -991,7 +991,7 @@ public class DashboardDaoImpl implements DashboardDao {
         findEntities(Summary.class).forEach(s -> delete(s));
 
         Class<?>[] summaryClasses = new Class<?>[] { AnimalModel.class, CellSample.class, Compound.class, Gene.class,
-                ShRna.class };
+                ShRna.class, TissueSample.class };
         for (Class<?> c : summaryClasses) {
             @SuppressWarnings("unchecked")
             Summary s = summarizePerSubject((Class<? extends Subject>) c);
