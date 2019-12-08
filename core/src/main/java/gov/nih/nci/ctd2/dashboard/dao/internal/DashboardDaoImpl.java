@@ -968,22 +968,50 @@ public class DashboardDaoImpl implements DashboardDao {
                         + " JOIN observation ON observation.id=observed_subject.observation_id");
         BigInteger submissions = query.getSingleResult();
 
-        String tierQuery = "SELECT COUNT(DISTINCT observation_id) FROM " + tableName
+        String tierQuery = "SELECT tier, COUNT(DISTINCT observation_id) FROM " + tableName
                 + " JOIN observed_subject ON observed_subject.subject_id=" + tableName + ".id"
                 + " JOIN observation ON observation.id=observed_subject.observation_id"
                 + " JOIN submission ON submission.id=observation.submission_id"
                 + " JOIN observation_template ON observation_template.id=submission.observationTemplate_id"
-                + " WHERE tier=";
+                + " GROUP BY tier";
+        @SuppressWarnings("unchecked")
+        org.hibernate.query.Query<Object[]> query2 = session.createNativeQuery(tierQuery);
         int[] tierCount = new int[3];
-        for (int i = 0; i < 3; i++) {
-            @SuppressWarnings("unchecked")
-            org.hibernate.query.Query<BigInteger> query2 = session.createNativeQuery(tierQuery + (i + 1));
-            tierCount[i] = query2.getSingleResult().intValue();
+        List<Object[]> result = query2.list();
+        for (Object[] obj : result) {
+            Integer tier = (Integer) obj[0];
+            BigInteger count = (BigInteger) obj[1];
+            tierCount[tier - 1] = count.intValue();
         }
 
         session.close();
         return new Summary(subjectClass.getSimpleName(), submissions.intValue(), tierCount[0], tierCount[1],
                 tierCount[2]);
+    }
+
+    private Summary summarizeStories() {
+        Session session = getSession();
+        @SuppressWarnings("unchecked")
+        org.hibernate.query.Query<BigInteger> query = session.createNativeQuery("SELECT COUNT(*) FROM submission"
+                + " JOIN observation_template ON submission.observationTemplate_id=observation_template.id"
+                + " WHERE isSubmissionStory=True");
+        BigInteger submissions = query.getSingleResult();
+
+        String tierQuery = "SELECT tier, COUNT(*) FROM observation"
+                + " JOIN submission ON observation.submission_id=submission.id"
+                + " JOIN observation_template ON submission.observationTemplate_id=observation_template.id"
+                + " WHERE isSubmissionStory=TRUE" + " GROUP BY tier";
+        @SuppressWarnings("unchecked")
+        org.hibernate.query.Query<Object[]> query2 = session.createNativeQuery(tierQuery);
+        int[] tierCount = new int[3];
+        List<Object[]> result = query2.list();
+        for (Object[] obj : result) {
+            Integer tier = (Integer) obj[0];
+            BigInteger count = (BigInteger) obj[1];
+            tierCount[tier - 1] = count.intValue();
+        }
+        session.close();
+        return new Summary("Stories", submissions.intValue(), tierCount[0], tierCount[1], tierCount[2]);
     }
 
     @Override
@@ -997,6 +1025,9 @@ public class DashboardDaoImpl implements DashboardDao {
             Summary s = summarizePerSubject((Class<? extends Subject>) c);
             save(s);
         }
+
+        Summary s = summarizeStories();
+        save(s);
     }
 
     @Override
