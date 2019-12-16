@@ -1553,10 +1553,12 @@
     <script type="text/template" id="search-tmpl">
         <div class="container common-container" id="search-results-container">
             <h2>Search <small>for <i>{{decodeURIComponent(term)}}</i></small></h2>
+            <div style='padding: 20px 0px; width=100%'>
             <a href="" onclick="document.getElementById('submission-search-results').scrollIntoView(); return false" id=submission-summary-link>
                 See <span id=submission-summary></span> from <span id=center-summary></span></a> 
             | <a href="" onclick="document.getElementById('observation-search-results').scrollIntoView(); return false" id=observation-summary-link>
                 See <span id=observation-count></span> observations matching all search terms</a>
+            </div>
 
             <table id="search-results-grid" class="table table-bordered table-striped">
                 <thead>
