@@ -137,6 +137,7 @@
                                             Perturbagens</a></li>
                                     <li><a href="#explore/context/Disease">Disease Contexts</a></li>
                                     <li><a href="#explore/cellline/Cell Line">Cell Lines</a></li>
+                                    <li><a href="#eco_browse">Experimental Evidence</a></li>
                                 </ul>
                             </li>
                             <li class="dropdown">
@@ -1746,6 +1747,46 @@
                 {{ decodeURIComponent(roles).split(",").join(", ") }}
                 (see <a class="blurb-help">background information</a> for the meaning of observations, roles, and Tiers).
             </p>
+        </div>
+    </script>
+
+    <script type="text/template" id="eco-browse-tmpl">
+        <div class="container common-container" id="explore-container">
+            <h2>Explore: <i>Evidence terms</i></h2>
+
+            <div id="eco-browse-blurb">
+                <div class="alert alert-warning">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    <p>
+                        This table summarizes submissions and observations based on the experimental techniques used to generat them.
+                        This is realized by annotating the various submissions with terms drawn from the
+                        <a href='http://www.evidenceontology.org/' target='_blank'>Evidence Ontology</a>.
+                    </p>
+                </div>
+            </div>
+            <div class="container" style="padding-bottom:5px;">
+            <button type="button" class="btn btn-outline-dark" id="reset-ordering">Reset initial ordering</button>
+            </div>
+
+            <table class="table table-bordered table-striped observations" id="eco-browse-table">
+                <thead>
+                <tr>
+                    <th colspan=2></th>
+                    <th colspan=3 style="text-align:center">Observations</th>
+                </tr>
+                <tr>
+                    <th>Name</th>
+                    <th>Submissions</th>
+                    <th>Tier 3</th>
+                    <th>Tier 2</th>
+                    <th>Tier 1</th>
+                </tr>
+                </thead>
+                <tbody id="eco-browse-items" style='white-space: nowrap;'>
+                    <!-- here will go the rows -->
+                </tbody>
+            </table>
+
         </div>
     </script>
 

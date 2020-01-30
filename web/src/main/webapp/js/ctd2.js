@@ -287,6 +287,10 @@
         }
     });
 
+    const EcoBrowse = Backbone.Collection.extend({
+        url: CORE_API_URL + "eco/browse",
+    });
+
     const Summary = Backbone.Collection.extend({
         url: CORE_API_URL + "api/summary",
     });
@@ -1281,6 +1285,87 @@
 
             return this;
         }
+    });
+
+    const EcoBrowseView = Backbone.View.extend({
+        el: $("#main-container"),
+        template: _.template($("#eco-browse-tmpl").html()),
+        render: function () {
+            const thatModel = this.model;
+            $(this.el).html(this.template(thatModel));
+            const ecoBrowse = new EcoBrowse(thatModel);
+            ecoBrowse.fetch({
+                success: function () {
+                    $("#eco-browse-items").html("");
+
+                    const table_data = [];
+                    _.each(ecoBrowse.models, function (ecoBrowseRow) {
+                        const sModel = ecoBrowseRow.toJSON();
+                        const sbumission_count = sModel.submissions;
+                        const nameLink = "<a href='#" + sModel.stableURL + "'>" + sModel.displayName + "</a>";
+                        const n3obv = sModel.numberOfTier3Observations;
+                        const n3ctr = sModel.numberOfTier3SubmissionCenters;
+                        const n3link = (n3obv == 0 ? "" : "<a href='#" + sModel.stableURL + "/3'>" + n3obv + "</a>") +
+                            (n3obv > 1 ? " (" + n3ctr + " center" + (n3ctr > 1 ? "s" : "") + ")" : "");
+                        const n2obv = sModel.numberOfTier2Observations;
+                        const n2ctr = sModel.numberOfTier2SubmissionCenters;
+                        const n2link = (n2obv == 0 ? "" : "<a href='#" + sModel.stableURL + "/2'>" + n2obv + "</a>") +
+                            (n2obv > 1 ? " (" + n2ctr + " center" + (n2ctr > 1 ? "s" : "") + ")" : "");
+                        const n1obv = sModel.numberOfTier1Observations;
+                        const n1ctr = sModel.numberOfTier1SubmissionCenters;
+                        const n1link = (n1obv == 0 ? "" : "<a href='#" + sModel.stableURL + "/1'>" + n1obv + "</a>") +
+                            (n1obv > 1 ? " (" + n1ctr + " center" + (n1ctr > 1 ? "s" : "") + ")" : "");
+                        table_data.push([nameLink, sbumission_count, n3link, n2link, n1link]);
+                    });
+                    $("#eco-browse-table").dataTable({
+                        'dom': '<iBfrtlp>',
+                        'data': table_data,
+                        "deferRender": true,
+                        "columns": [
+                            null,
+                            null,
+                            {
+                                "type": "observation-count"
+                            },
+                            {
+                                "type": "observation-count"
+                            },
+                            {
+                                "type": "observation-count"
+                            }
+                        ],
+                        'buttons': [{
+                            extend: 'excelHtml5',
+                            text: 'Export as Spreadsheet',
+                            className: "extra-margin",
+                        }],
+                    });
+                    $("#eco-browse-table").parent().width("100%");
+                    $("#eco-browse-table").width("100%");
+                    $("#eco-browse-table").parent().find('input[type=search]').popover(table_filter_popover);
+
+                    $('#ceo-browse-table thead th').popover({
+                        placement: "top",
+                        trigger: 'hover',
+                        content: function () {
+                            const hovertext_id = 'EXPLORE_' + $(this).text().toUpperCase().replace(' ', '_');
+                            return __ctd2_hovertext[hovertext_id];
+                        },
+                    });
+
+                    $("#reset-ordering").popover({
+                        placement: "top",
+                        trigger: 'hover',
+                        content: __ctd2_hovertext.EXPLORE_RESET_ORDER,
+                    });
+                    $("#reset-ordering").click(function () {
+                        $("#explore-table").DataTable().order.neutral().draw();
+                    });
+                }
+            });
+
+            return this;
+        },
     });
 
     const CenterSubmissionRowView = Backbone.View.extend({
@@ -3870,6 +3955,7 @@
         routes: {
             "centers": viewOnlyRouter(CenterListView),
             "stories": viewOnlyRouter(StoriesListView),
+            "eco_browse": viewOnlyRouter(EcoBrowseView),
             "explore/:type/:roles": "explore",
             "center/:name(/:project)": "showCenter",
             "submission/:id": idBasedRouter(Submission, SubmissionView),
