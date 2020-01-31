@@ -239,6 +239,10 @@
         }
     });
 
+    const ECOTerm = Backbone.Model.extend({
+        urlRoot: CORE_API_URL + "eco/term"
+    });
+
     const AnimalModel = Backbone.Model.extend({
         urlRoot: CORE_API_URL + "get/animal-model"
     });
@@ -1746,6 +1750,45 @@
 
             return this;
         }
+    });
+
+    const ECOTermView = Backbone.View.extend({
+        el: $("#main-container"),
+        template: _.template($("#ecoterm-tmpl").html()),
+        render: function () {
+            const thatModel = this.model;
+            const result = thatModel.ecoterm.toJSON();
+            $(this.el).html(this.template($.extend(result, {
+                tier: thatModel.tier ? thatModel.tier : null,
+            })));
+
+            _.each(result.synonyms, function (aSynonym) {
+                if (aSynonym.displayName == result.displayName) return;
+
+                new SynonymView({
+                    model: aSynonym,
+                    el: $("ul.synonyms")
+                }).render();
+            });
+
+            _.each(result.annotations, function (annotation) {
+                annotation.displayName = annotation.displayName.replace(/_/g, " ");
+                new AnnotationView({
+                    model: annotation,
+                    el: $("#annotations ul")
+                }).render();
+            });
+
+            new SubjectObservationsView({
+                model: {
+                    subjectId: result.id,
+                    tier: thatModel.tier,
+                },
+                el: "#ecoterm-observation-grid"
+            }).render();
+
+            return this;
+        },
     });
 
     const AnimalModelView = Backbone.View.extend({
@@ -3970,6 +4013,22 @@
             "transcript/:name(/:role)(/:tier)": subjectRouter(Transcript, TranscriptView),
             "rna/:name(/:role)(/:tier)": subjectRouter(ShRna, RnaView),
             "gene/:species/:symbol(/:role)(/:tier)": "showGene",
+            "eco/:code(/:tier)": function (code, tier) {
+                const eco_model = new ECOTerm({
+                    id: code,
+                });
+                eco_model.fetch({
+                    success: function () {
+                        new ECOTermView({
+                            model: {
+                                ecoterm: eco_model,
+                                tier: tier,
+                            }
+                        }).render();
+                    },
+                    error: function () { console.log('ECO term ' + code + " (tier=" + tier + ") not returned"); },
+                });
+            },
             "mra/:filename": idBasedRouter(ObservedEvidence, MraView),
             "genes": viewOnlyRouter(GeneListView),
             "cnkb-query": viewOnlyRouter(CnkbQueryView),

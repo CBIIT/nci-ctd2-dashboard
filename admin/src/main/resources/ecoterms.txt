@@ -1,0 +1,2 @@
+name	code	definition
+high throughput expression pattern evidence	ECO:0007006	A type of high throughput evidence derived from the high throughput characterization of gene expression

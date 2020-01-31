@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:batch="http://www.springframework.org/schema/batch"
+		xmlns:context="http://www.springframework.org/schema/context"
+        xsi:schemaLocation="http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-3.0.xsd
+							http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+							http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+  <import resource="classpath*:META-INF/spring/adminApplicationContext.xml" />
+  <context:component-scan base-package="gov.nih.nci.ctd2.dashboard.importer.internal" />
+
+  <batch:job id="ecotermDataImporterJob">
+	<batch:step id="ecotermDataStep" parent="ecotermDataSimpleStep">
+	  <batch:tasklet>
+		<batch:chunk reader="ecotermDataReader" writer="ecotermDataWriter"/>
+	  </batch:tasklet>
+	</batch:step>
+  </batch:job>
+
+  <bean id="ecotermDataSimpleStep" class="org.springframework.batch.core.step.item.SimpleStepFactoryBean" abstract="true">
+	<property name="transactionManager" ref="transactionManager" />
+	<property name="jobRepository" ref="jobRepository" />
+	<property name="commitInterval" value="${spring.batch.commit.interval}" />
+  </bean>
+
+  <bean name="ecotermDataReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<property name="resource" value="classpath:ecoterms.txt" />
+    <property name="lineMapper" ref="ecotermDataLineMapper" />
+	<property name="linesToSkip" value="1" />
+  </bean>
+
+  <bean name="ecotermDataLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+	<property name="fieldSetMapper" ref="ecotermDataMapper" />
+	<property name="lineTokenizer" ref="ecotermDataLineTokenizer" />
+  </bean>
+
+  <bean name="ecotermDataLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+	<property name="names" value="name,code,definition"/>
+	<property name="delimiter" value="&#9;"/>
+  </bean>
+</beans>

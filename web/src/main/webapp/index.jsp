@@ -1318,6 +1318,75 @@
         </div>
     </script>
 
+    <script type="text/template" id="ecoterm-tmpl">
+        <div class="container common-container" id="animalmodel-container">
+            <h2>{{displayName}}</h2>
+            <div class="row">
+                <div class="col-9">
+                    <table id="animalmodel-details-grid" class="table table-bordered table-striped">
+                        <tr>
+                            <th>Name</th>
+                            <td>{{displayName}}</td>
+                        </tr>
+                        <tr>
+                            <th>Code</th>
+                            <td>{{code}}</td>
+                        </tr>
+                        <tr>
+                            <th>Definition</th>
+                            <td>{{definition}}</td>
+                        </tr>
+
+                        <tr>
+                            <th>Synonyms</th>
+                            <td>
+                                <ul class="synonyms"></ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>References</th>
+                            <td><a href="http://www.evidenceontology.org/browse/#{{code.replace(':','_')}}" target='_blank'>http://www.evidenceontology.org/browse/#{{code.replace(':','_')}}</a>
+                                <br/><a href="http://purl.obolibrary.org/obo/{{code.replace(':','_')}}" target='_blank'>http://purl.obolibrary.org/obo/{{code.replace(':','_')}}</a></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <h3>Related observations <small>{{tier?"and tier "+tier:""}}</small></h3>
+
+            <table id="ecoterm-observation-grid" class="table table-bordered table-striped observations">
+                <thead>
+                <tr>
+                    <th>Date</th>
+                    <th width=500>Observation Summary</th>
+                    <th>Tier</th>
+                    <th>Center</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- here will go the rows -->
+                <tr class="subject-observations-loading">
+                    <td colspan="5">
+                        <h3>Loading observations...</h3>
+                        <div class="progress progress-striped active">
+                            <div class="bar" style="width: 100%;"></div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+
+            <div class="rss-feed">
+                Subscribe to the
+                <a href="feed/search/{{code}}">
+                    '{{code}}' RSS feed
+                </a>
+                to receive alerts when new observations are posted to the site.
+            </div>
+
+        </div>
+    </script>
+
     <script type="text/template" id="animalmodel-tmpl">
         <div class="container common-container" id="animalmodel-container">
             <h2>{{displayName}}</h2>

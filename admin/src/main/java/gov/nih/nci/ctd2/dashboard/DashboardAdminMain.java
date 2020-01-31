@@ -38,6 +38,7 @@ public class DashboardAdminMain {
         "classpath*:META-INF/spring/controlledVocabularyApplicationContext.xml", // This is for controlled vocabulary importer beans
         "classpath*:META-INF/spring/observationDataApplicationContext.xml", // This is for observation data importer beans
         "classpath*:META-INF/spring/taxonomyDataApplicationContext.xml", // This is for taxonomy data importer beans
+        "classpath*:META-INF/spring/ecotermDataApplicationContext.xml", // This is for ECO term data importer beans
         "classpath*:META-INF/spring/xrefApplicationContext.xml" // this is for xref importer beans
     );
 
@@ -55,13 +56,14 @@ public class DashboardAdminMain {
                 .addOption("h", "help", false, "shows this help document and quits.")
 			    .addOption("am", "animal-model-data", false, "imports animal model data.")
 			    .addOption("cl", "cell-line-data", false, "imports cell line data.")
-			    .addOption("cp", "compound-data", false, "imports compound data.")
+                .addOption("cp", "compound-data", false, "imports compound data.")
+                .addOption("e", "eco-term", false, "import ECO terms.")
 			    .addOption("g", "gene-data", false, "imports gene data.")
                 .addOption("p", "protein-data", false, "imports protein data.")
                 .addOption("r", "rank-subjects", false, "prioritize and rank the subjects according to the observation data.")
                 .addOption("sh", "shrna-data", false, "imports shrna data.")
                 .addOption("si", "sirna-data", false, "imports sirna data.")
-			    .addOption("ts", "tissue-sample-data", false, "imports tissue sample data.")
+                .addOption("ts", "tissue-sample-data", false, "imports tissue sample data.")
                 .addOption("cv", "controlled-vocabulary", false, "imports the dashboard controlled vocabulary.")
                 .addOption("o", "observation-data", false, "imports dashboard observation data.")
                 .addOption("s", "sample-data", false, "imports sample data.")
@@ -131,6 +133,10 @@ public class DashboardAdminMain {
 
 			if( commandLine.hasOption("t") ) {
                 launchJob("taxonomyDataImporterJob");
+            }
+            
+            if( commandLine.hasOption("e") ) {
+                launchJob("ecotermDataImporterJob");
 			}
 
             if(commandLine.hasOption("r")) {
