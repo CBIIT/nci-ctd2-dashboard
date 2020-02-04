@@ -27,7 +27,7 @@
   <bean name="ecotermDataReader" class="org.springframework.batch.item.file.FlatFileItemReader">
 	<property name="resource" value="classpath:ecoterms.txt" />
     <property name="lineMapper" ref="ecotermDataLineMapper" />
-	<property name="linesToSkip" value="1" />
+	<property name="linesToSkip" value="2" />
   </bean>
 
   <bean name="ecotermDataLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">

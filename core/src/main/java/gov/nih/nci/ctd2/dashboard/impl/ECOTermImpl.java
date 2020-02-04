@@ -46,6 +46,7 @@ public class ECOTermImpl extends DashboardEntityImpl implements ECOTerm {
         this.code = code;
     }
 
+    @Column(length = 512)
     @Override
     public String getDefinition() {
         return definition;
