@@ -52,6 +52,7 @@ public class ControlledVocabularyPerTemplateFieldSetMapper implements FieldSetMa
 		observationTemplate.setIsSubmissionStory(fieldSet.readBoolean(SUBMISSION_STORY, "TRUE"));
 		observationTemplate.setSubmissionStoryRank(fieldSet.readInt(SUBMISSION_STORY_RANK));
 		observationTemplate.setPrincipalInvestigator(fieldSet.readString(PRINCIPAL_INVESTIGATOR));
+		observationTemplate.setECOCode(fieldSet.readString("eco"));
 
 		String submissionCenterName = fieldSet.readString(SUBMISSION_CENTER);
 		SubmissionCenter submissionCenter = submissionCenterCache.get(submissionCenterName);
