@@ -830,6 +830,10 @@
             image: 'img/tissuesample.png',
             label: 'Tissue sample'
         },
+        ECOTerm: {
+            image: 'img/eco_logo.png',
+            label: "ECO Term"
+        }
     };
 
     const ObservationView = Backbone.View.extend({

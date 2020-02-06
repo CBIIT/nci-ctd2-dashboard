@@ -48,6 +48,7 @@ import gov.nih.nci.ctd2.dashboard.model.CellSample;
 import gov.nih.nci.ctd2.dashboard.model.Compound;
 import gov.nih.nci.ctd2.dashboard.model.DashboardEntity;
 import gov.nih.nci.ctd2.dashboard.model.DashboardFactory;
+import gov.nih.nci.ctd2.dashboard.model.ECOTerm;
 import gov.nih.nci.ctd2.dashboard.model.Evidence;
 import gov.nih.nci.ctd2.dashboard.model.Gene;
 import gov.nih.nci.ctd2.dashboard.model.Observation;
@@ -719,6 +720,22 @@ public class DashboardDaoImpl implements DashboardDao {
             entitiesWithCounts.add(entityWithCounts);
         }
 
+        /* search ECO terms */
+        List<ECOTerm> ecoterms = findECOTerms(keyword);
+        for (ECOTerm ecoterm : ecoterms) {
+            int observationNumber = countObservation(ecoterm.getCode());
+            if (observationNumber == 0)
+                continue;
+            DashboardEntityWithCounts entity = new DashboardEntityWithCounts();
+            entity.setDashboardEntity(ecoterm);
+            entity.setObservationCount(observationNumber);
+            int[] x = templateSummary(ecoterm.getCode());
+            entity.setMaxTier(x[0]);
+            entity.setCenterCount(x[1]);
+
+            entitiesWithCounts.add(entity);
+        }
+
         // add observations
         Set<String> allTerms = new HashSet<String>();
         for (Observation ob : matchingObservations.keySet()) {
@@ -752,6 +769,45 @@ public class DashboardDaoImpl implements DashboardDao {
         }
 
         return entitiesWithCounts;
+    }
+
+    private List<ECOTerm> findECOTerms(String queryString) {
+        Session session = getSession();
+        org.hibernate.query.Query<?> query = session
+                .createQuery("from ECOTermImpl where displayName like CONCAT('%', :txt, '%')");
+        query.setParameter("txt", queryString);
+        @SuppressWarnings("unchecked")
+        List<ECOTerm> list = (List<ECOTerm>) query.list();
+        System.out.println("eco term number " + list.size());
+        session.close();
+        return list;
+    }
+
+    private int countObservation(String ecocode) {
+        String sql = "SELECT count(observation.id) FROM observation"
+                + " JOIN submission ON observation.submission_id=submission.id"
+                + " JOIN observation_template ON submission.observationTemplate_id=observation_template.id"
+                + " WHERE ecocode='" + ecocode + "'";
+        Session session = getSession();
+        org.hibernate.query.Query<BigInteger> query = session.createNativeQuery(sql);
+        BigInteger count = query.getSingleResult();
+        session.close();
+        return count.intValue();
+
+    }
+
+    private int[] templateSummary(String ecocode) {
+        String sql = "SELECT MAX(tier), COUNT(DISTINCT submissionCenter_id) FROM observation_template WHERE ecocode='"
+                + ecocode + "'";
+        log.debug(sql);
+        Session session = getSession();
+        org.hibernate.query.Query<Object[]> query = session.createNativeQuery(sql);
+        Object[] result = query.getSingleResult();
+        int[] x = new int[2];
+        x[0] = result[0] == null ? 0 : ((Integer) result[0]).intValue();
+        x[1] = result[1] == null ? 0 : ((BigInteger) result[1]).intValue();
+        session.close();
+        return x;
     }
 
     @Override
