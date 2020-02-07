@@ -69,6 +69,7 @@ import gov.nih.nci.ctd2.dashboard.model.TissueSample;
 import gov.nih.nci.ctd2.dashboard.model.Transcript;
 import gov.nih.nci.ctd2.dashboard.model.Xref;
 import gov.nih.nci.ctd2.dashboard.util.DashboardEntityWithCounts;
+import gov.nih.nci.ctd2.dashboard.util.EcoBrowse;
 import gov.nih.nci.ctd2.dashboard.util.SubjectWithSummaries;
 import gov.nih.nci.ctd2.dashboard.util.Summary;
 import gov.nih.nci.ctd2.dashboard.api.EvidenceItem;
@@ -778,7 +779,7 @@ public class DashboardDaoImpl implements DashboardDao {
         query.setParameter("txt", queryString);
         @SuppressWarnings("unchecked")
         List<ECOTerm> list = (List<ECOTerm>) query.list();
-        System.out.println("eco term number " + list.size());
+        log.debug("eco term number " + list.size());
         session.close();
         return list;
     }
@@ -808,6 +809,52 @@ public class DashboardDaoImpl implements DashboardDao {
         x[1] = result[1] == null ? 0 : ((BigInteger) result[1]).intValue();
         session.close();
         return x;
+    }
+
+    @Override
+    public List<EcoBrowse> getEcoBrowse() {
+        String sql = "SELECT displayName, ecoterm.stableURL, COUNT(DISTINCT submission.id), tier, COUNT(tier), COUNT(DISTINCT submissionCenter_id)"
+                + " FROM observation JOIN submission ON observation.submission_id=submission.id"
+                + " JOIN observation_template ON submission.observationTemplate_id=observation_template.id"
+                + " JOIN ecoterm ON observation_template.ecocode=ecoterm.code"
+                + " JOIN dashboard_entity ON ecoterm.id=dashboard_entity.id GROUP BY ecocode, tier";
+        Session session = getSession();
+        org.hibernate.query.Query<Object[]> query = session.createNativeQuery(sql);
+        List<Object[]> result = query.list();
+
+        Map<String, EcoBrowse> map = new HashMap<String, EcoBrowse>();
+        for (Object[] array : result) {
+            String name = (String) array[0];
+            String url = (String) array[1];
+            BigInteger submissionCount = (BigInteger) array[2];
+            Integer tier = (Integer) array[3];
+            BigInteger tierCount = (BigInteger) array[4];
+            BigInteger centerCount = (BigInteger) array[5];
+            EcoBrowse b = map.get(name);
+            if (b == null) {
+                b = new EcoBrowse(name, url, submissionCount.intValue());
+                map.put(name, b);
+            } else {
+                b.setNumberOfSubmissions(b.getNumberOfSubmissions() + submissionCount.intValue());
+            }
+            switch (tier) {
+            case 1:
+                b.setNumberOfTier1Observations(tierCount.intValue());
+                b.setNumberOfTier1SubmissionCenters(centerCount.intValue());
+                break;
+            case 2:
+                b.setNumberOfTier2Observations(tierCount.intValue());
+                b.setNumberOfTier2SubmissionCenters(centerCount.intValue());
+                break;
+            case 3:
+                b.setNumberOfTier3Observations(tierCount.intValue());
+                b.setNumberOfTier3SubmissionCenters(centerCount.intValue());
+                break;
+            }
+        }
+        session.close();
+        log.debug("map size " + map.size());
+        return new ArrayList<EcoBrowse>(map.values());
     }
 
     @Override

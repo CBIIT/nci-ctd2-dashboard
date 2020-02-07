@@ -15,8 +15,7 @@ import gov.nih.nci.ctd2.dashboard.model.DashboardEntity;
 @Table(name = "eco_browse")
 public class EcoBrowse extends DashboardEntityImpl implements DashboardEntity {
 
-    private String name;
-
+    private String ecoTermURL;
     private Integer numberOfSubmissions;
     private Integer numberOfSubmissionCenters;
     private Integer numberOfObservations;
@@ -34,12 +33,18 @@ public class EcoBrowse extends DashboardEntityImpl implements DashboardEntity {
     private Set<Integer> tier2Centers = new TreeSet<Integer>();
     private Set<Integer> tier1Centers = new TreeSet<Integer>();
 
-    public String getName() {
-        return name;
+    public EcoBrowse(String name, String ecoTermURL, Integer numberOfSubmissions) {
+        this.setDisplayName(name);
+        this.setEcoTermURL(ecoTermURL);
+        this.setNumberOfSubmissions(numberOfSubmissions);
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getEcoTermURL() {
+        return ecoTermURL;
+    }
+
+    public void setEcoTermURL(String ecoTermURL) {
+        this.ecoTermURL = ecoTermURL;
     }
 
     public void addSubmission(Integer tier, Integer submissionCenterId) {

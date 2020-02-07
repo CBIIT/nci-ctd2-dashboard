@@ -1309,19 +1309,19 @@
                     const table_data = [];
                     _.each(ecoBrowse.models, function (ecoBrowseRow) {
                         const sModel = ecoBrowseRow.toJSON();
-                        const sbumission_count = sModel.submissions;
-                        const nameLink = "<a href='#" + sModel.stableURL + "'>" + sModel.displayName + "</a>";
+                        const sbumission_count = sModel.numberOfSubmissions;
+                        const nameLink = "<a href='#" + sModel.ecoTermURL + "'>" + sModel.displayName + "</a>";
                         const n3obv = sModel.numberOfTier3Observations;
                         const n3ctr = sModel.numberOfTier3SubmissionCenters;
-                        const n3link = (n3obv == 0 ? "" : "<a href='#" + sModel.stableURL + "/3'>" + n3obv + "</a>") +
+                        const n3link = (n3obv == 0 ? "" : "<a href='#" + sModel.ecoTermURL + "/3'>" + n3obv + "</a>") +
                             (n3obv > 1 ? " (" + n3ctr + " center" + (n3ctr > 1 ? "s" : "") + ")" : "");
                         const n2obv = sModel.numberOfTier2Observations;
                         const n2ctr = sModel.numberOfTier2SubmissionCenters;
-                        const n2link = (n2obv == 0 ? "" : "<a href='#" + sModel.stableURL + "/2'>" + n2obv + "</a>") +
+                        const n2link = (n2obv == 0 ? "" : "<a href='#" + sModel.ecoTermURL + "/2'>" + n2obv + "</a>") +
                             (n2obv > 1 ? " (" + n2ctr + " center" + (n2ctr > 1 ? "s" : "") + ")" : "");
                         const n1obv = sModel.numberOfTier1Observations;
                         const n1ctr = sModel.numberOfTier1SubmissionCenters;
-                        const n1link = (n1obv == 0 ? "" : "<a href='#" + sModel.stableURL + "/1'>" + n1obv + "</a>") +
+                        const n1link = (n1obv == 0 ? "" : "<a href='#" + sModel.ecoTermURL + "/1'>" + n1obv + "</a>") +
                             (n1obv > 1 ? " (" + n1ctr + " center" + (n1ctr > 1 ? "s" : "") + ")" : "");
                         table_data.push([nameLink, sbumission_count, n3link, n2link, n1link]);
                     });

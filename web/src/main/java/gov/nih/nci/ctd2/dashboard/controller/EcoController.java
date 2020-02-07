@@ -47,22 +47,13 @@ public class EcoController {
     public ResponseEntity<String> browse() {
         final HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json; charset=utf-8");
-        final List<EcoBrowse> list = new ArrayList<EcoBrowse>();
+        final List<EcoBrowse> list = dashboardDao.getEcoBrowse();
+        log.debug("number of ECO terms " + list.size());
 
         Collections.sort(list, new Comparator<EcoBrowse>() {
             @Override
             public int compare(final EcoBrowse o1, final EcoBrowse o2) {
-                final int i = o2.getScore() - o1.getScore();
-                if (i == 0) {
-                    final int j = o2.getMaxTier() - o1.getMaxTier();
-                    if (j == 0) {
-                        return o2.getNumberOfObservations() - o1.getNumberOfObservations();
-                    } else {
-                        return j;
-                    }
-                } else {
-                    return i;
-                }
+                return o2.getNumberOfSubmissions() - o1.getNumberOfSubmissions();
             }
         });
 
