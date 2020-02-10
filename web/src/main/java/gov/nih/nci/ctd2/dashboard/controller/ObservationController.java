@@ -240,6 +240,33 @@ public class ObservationController {
         return new ResponseEntity<String>(jsonSerializer.serialize(list), headers, HttpStatus.OK);
     }
 
+    @Transactional
+    @RequestMapping(value = "bySubmissionAndEcoTerm", method = { RequestMethod.GET,
+            RequestMethod.POST }, headers = "Accept=application/json")
+    public ResponseEntity<String> getObservationsBySubmissionIdAndEcoTerm(
+            @RequestParam("submissionId") Integer submissionId, @RequestParam("ecocode") String ecocode) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "application/json; charset=utf-8");
+        System.out.println("request received");
+
+        String summaryTemplate = dashboardDao.getEntityById(Submission.class, submissionId).getObservationTemplate()
+                .getObservationSummary();
+
+        List<Observation> observations = dashboardDao.getObservationsForSubmissionAndEcoCode(submissionId, ecocode);
+        List<ObservationWithSummary> list = new ArrayList<ObservationWithSummary>();
+        for (Observation observation : observations) {
+            String expanded = dashboardDao.expandSummary(observation.getId(), summaryTemplate)
+                    + " (<a class='button-link' href='#" + observation.getStableURL() + "'>details &raquo;</a>)";
+            list.add(new ObservationWithSummary(observation, expanded));
+        }
+        System.out.println("resut list size " + list.size());
+
+        JSONSerializer jsonSerializer = new JSONSerializer().transform(new ImplTransformer(), Class.class)
+                .transform(new DateTransformer(), Date.class);
+
+        return new ResponseEntity<String>(jsonSerializer.serialize(list), headers, HttpStatus.OK);
+    }
+
     static final class ObservationWithCount {
         public ObservationWithCount(Observation observation, int count) {
             this.observation = observation;
@@ -276,6 +303,27 @@ public class ObservationController {
             for (Observation observation : observationAndCount.keySet()) {
                 list.add(new ObservationWithCount(observation, observationAndCount.get(observation).intValue()));
             }
+        }
+
+        JSONSerializer jsonSerializer = new JSONSerializer().transform(new ImplTransformer(), Class.class)
+                .transform(new DateTransformer(), Date.class);
+
+        return new ResponseEntity<String>(jsonSerializer.serialize(list), headers, HttpStatus.OK);
+    }
+
+    @Transactional
+    @RequestMapping(value = "onePerSubmissionByEcoTerm", method = { RequestMethod.GET,
+            RequestMethod.POST }, headers = "Accept=application/json")
+    public ResponseEntity<String> getOneObservationsPerSubmissionByECOTerm(@RequestParam("ecocode") String ecocode,
+            @RequestParam(value = "tier", required = false, defaultValue = "0") Integer tier) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "application/json; charset=utf-8");
+
+        Map<Observation, BigInteger> observationAndCount = dashboardDao.getOneObservationPerSubmissionByEcoCode(ecocode,
+                tier);
+        List<ObservationWithCount> list = new ArrayList<ObservationWithCount>();
+        for (Observation observation : observationAndCount.keySet()) {
+            list.add(new ObservationWithCount(observation, observationAndCount.get(observation).intValue()));
         }
 
         JSONSerializer jsonSerializer = new JSONSerializer().transform(new ImplTransformer(), Class.class)

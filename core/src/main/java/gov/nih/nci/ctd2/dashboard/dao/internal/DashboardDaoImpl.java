@@ -790,6 +790,7 @@ public class DashboardDaoImpl implements DashboardDao {
                 + " JOIN observation_template ON submission.observationTemplate_id=observation_template.id"
                 + " WHERE ecocode='" + ecocode + "'";
         Session session = getSession();
+        @SuppressWarnings("unchecked")
         org.hibernate.query.Query<BigInteger> query = session.createNativeQuery(sql);
         BigInteger count = query.getSingleResult();
         session.close();
@@ -797,11 +798,56 @@ public class DashboardDaoImpl implements DashboardDao {
 
     }
 
+    @Override
+    public Map<Observation, BigInteger> getOneObservationPerSubmissionByEcoCode(String ecocode, int tier) {
+        String sql = "SELECT MIN(observation.id), COUNT(DISTINCT observation.id) FROM observation"
+                + " JOIN submission ON observation.submission_id=submission.id"
+                + " JOIN observation_template ON submission.observationTemplate_id=observation_template.id"
+                + " WHERE ecocode='" + ecocode + "'";
+        if (tier > 0) {
+            sql += " AND tier=" + tier;
+        }
+        Session session = getSession();
+        @SuppressWarnings("unchecked")
+        org.hibernate.query.Query<Object[]> query = session.createNativeQuery(sql);
+        List<Object[]> idList = query.list();
+        session.close();
+
+        Map<Observation, BigInteger> result = new HashMap<Observation, BigInteger>();
+        for (Object[] pair : idList) {
+            Observation observation = getEntityById(Observation.class, (Integer) pair[0]);
+            BigInteger count = (BigInteger) pair[1];
+            result.put(observation, count);
+        }
+
+        return result;
+    }
+
+    @Override
+    public List<Observation> getObservationsForSubmissionAndEcoCode(Integer submissionId, String ecocode) {
+        String sql = "SELECT observation.id FROM observation"
+                + " JOIN submission ON observation.submission_id=submission.id"
+                + " JOIN observation_template ON submission.observationTemplate_id=observation_template.id"
+                + " WHERE submission.id=" + submissionId + " AND ecocode='" + ecocode + "'";
+        Session session = getSession();
+        @SuppressWarnings("unchecked")
+        org.hibernate.query.Query<Integer> query = session.createNativeQuery(sql);
+        List<Integer> idList = query.list();
+        List<Observation> list = new ArrayList<Observation>();
+        for (Integer id : idList) {
+            Observation observation = getEntityById(Observation.class, id);
+            list.add(observation);
+        }
+        session.close();
+        return list;
+    }
+
     private int[] templateSummary(String ecocode) {
         String sql = "SELECT MAX(tier), COUNT(DISTINCT submissionCenter_id) FROM observation_template WHERE ecocode='"
                 + ecocode + "'";
         log.debug(sql);
         Session session = getSession();
+        @SuppressWarnings("unchecked")
         org.hibernate.query.Query<Object[]> query = session.createNativeQuery(sql);
         Object[] result = query.getSingleResult();
         int[] x = new int[2];
@@ -819,6 +865,7 @@ public class DashboardDaoImpl implements DashboardDao {
                 + " JOIN ecoterm ON observation_template.ecocode=ecoterm.code"
                 + " JOIN dashboard_entity ON ecoterm.id=dashboard_entity.id GROUP BY ecocode, tier";
         Session session = getSession();
+        @SuppressWarnings("unchecked")
         org.hibernate.query.Query<Object[]> query = session.createNativeQuery(sql);
         List<Object[]> result = query.list();
 

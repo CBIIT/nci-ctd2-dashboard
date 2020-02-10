@@ -180,6 +180,18 @@
         }
     });
 
+    const OneObservationsPerSubmissionByECOTerm = Backbone.Collection.extend({
+        url: CORE_API_URL + "observations/onePerSubmissionByEcoTerm/?ecocode=",
+        model: Observation,
+
+        initialize: function (attributes) {
+            this.url += attributes.ecocode;
+            if (attributes.tier != undefined) {
+                this.url += "&tier=" + attributes.tier;
+            }
+        }
+    });
+
     const ObservationsBySubmissionAndSubject = Backbone.Collection.extend({
         url: CORE_API_URL + "observations/bySubmissionAndSubject/?",
         model: Observation, // in fact observation with summary
@@ -189,6 +201,15 @@
             if (attributes.role != undefined) {
                 this.url += "&role=" + attributes.role;
             }
+        }
+    });
+
+    const ObservationsBySubmissionAndEcoTerm = Backbone.Collection.extend({
+        url: CORE_API_URL + "observations/bySubmissionAndEcoTerm/?",
+        model: Observation, // in fact observation with summary
+
+        initialize: function (attributes) {
+            this.url += "submissionId=" + attributes.submissionId + "&ecocode=" + attributes.ecocode;
         }
     });
 
@@ -1534,6 +1555,48 @@
         }
     });
 
+    const ECOTermObservationsView = Backbone.View.extend({
+        render: function () {
+            const thatEl = $(this.el);
+            const thatModel = this.model;
+
+            const observations = new OneObservationsPerSubmissionByECOTerm({
+                ecocode: thatModel.ecocode,
+                tier: thatModel.tier, // possibly undefined
+            });
+            observations.fetch({
+                success: function () {
+                    $(".subject-observations-loading", thatEl).remove();
+                    _.each(observations.models, function (observationWithCount) {
+                        observationWithCount = observationWithCount.toJSON();
+                        observation = observationWithCount.observation;
+                        observation.count = observationWithCount.count;
+                        observation.contextSubject = thatModel.subjectId;
+                        observation.role = thatModel.role;
+                        observation.ecocode = thatModel.ecocode;
+                        new ObservationRowView({
+                            el: $(thatEl).find("tbody"),
+                            model: observation,
+                        }).render();
+                    });
+                    $(thatEl).find('thead th:contains("Tier")').popover({
+                        placement: "top",
+                        trigger: 'hover',
+                        html: true, // because we need multiple lines
+                        content: function () {
+                            return __ctd2_hovertext.ALL_TIERS;
+                        },
+                    });
+
+                    $(thatEl).dataTable(observationTableOptions);
+                    $(thatEl).width("100%");
+                }
+            });
+
+            return this;
+        }
+    });
+
     const GeneView = Backbone.View.extend({
         el: $("#main-container"),
         template: _.template($("#gene-tmpl").html()),
@@ -1783,9 +1846,9 @@
                 }).render();
             });
 
-            new SubjectObservationsView({
+            new ECOTermObservationsView({
                 model: {
-                    subjectId: result.id,
+                    ecocode: result.code,
                     tier: thatModel.tier,
                 },
                 el: "#ecoterm-observation-grid"
@@ -1925,6 +1988,7 @@
         render: function () {
             const tableEl = this.el;
             const thatModel = this.model; // observation
+            const ecocode = thatModel.ecocode;
 
             if (thatModel.extra === undefined) {
                 thatModel.extra = null;
@@ -2004,11 +2068,19 @@
                                 $(btn).prop('disabled', true);
                                 const submissionId = thatModel.submission.id;
 
-                                const observations = new ObservationsBySubmissionAndSubject({
-                                    submissionId: submissionId,
-                                    subjectId: thatModel.contextSubject,
-                                    role: thatModel.role,
-                                });
+                                let observations = null;
+                                if (ecocode != undefined && ecocode.length > 0) { /* ECO term case */
+                                    observations = new ObservationsBySubmissionAndEcoTerm({
+                                        submissionId: submissionId,
+                                        ecocode: ecocode,
+                                    });
+                                } else { /* subject case */
+                                    observations = new ObservationsBySubmissionAndSubject({
+                                        submissionId: submissionId,
+                                        subjectId: thatModel.contextSubject,
+                                        role: thatModel.role,
+                                    });
+                                }
                                 const page_before_expanding = $(tableEl).parent().dataTable().api().page();
                                 observations.fetch({
                                     success: function () {
