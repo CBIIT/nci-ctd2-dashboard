@@ -8,9 +8,10 @@ class ECOTerm:
         self.name = ""
         self.id = ""
         self.definition = ""
+        self.synonyms = []
 
     def __str__(self):
-        return self.name+"\t"+self.id+"\t"+self.definition
+        return self.name+"\t"+self.id+"\t"+self.definition+"\t"+"|".join(self.synonyms)
 
 
 def main():
@@ -34,7 +35,7 @@ def main():
             print('#', line, end='\t', file=result_file)
         if count == 3:
             print(line, file=result_file)
-            print('name\tcode\tdefinition', file=result_file)
+            print('name\tcode\tdefinition\tsynonyms', file=result_file)
 
         if line == '[Term]':
             ecoterm = ECOTerm()
@@ -55,6 +56,8 @@ def main():
                 ecoterm.name = line[6:]
             elif x[0] == 'def:':
                 ecoterm.definition = x[1]
+            elif x[0] == 'synonym:':
+                ecoterm.synonyms.append( x[1] )
     conn.close()
     result_file.close()
 

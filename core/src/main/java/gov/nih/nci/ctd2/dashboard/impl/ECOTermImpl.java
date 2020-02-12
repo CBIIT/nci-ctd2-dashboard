@@ -25,6 +25,7 @@ public class ECOTermImpl extends DashboardEntityImpl implements ECOTerm {
     private String stableURL = "";
     private String code = "";
     private String definition = "";
+    private String synonyms = "";
 
     @Override
     public String getStableURL() {
@@ -55,6 +56,15 @@ public class ECOTermImpl extends DashboardEntityImpl implements ECOTerm {
     @Override
     public void setDefinition(String definition) {
         this.definition = definition;
+    }
+
+    @Column(length = 512)
+    public String getSynonyms() {
+        return synonyms;
+    }
+
+    public void setSynonyms(String synonyms) {
+        this.synonyms = synonyms;
     }
 
     @Override

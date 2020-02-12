@@ -1829,11 +1829,11 @@
                 tier: thatModel.tier ? thatModel.tier : null,
             })));
 
-            _.each(result.synonyms, function (aSynonym) {
+            _.each(result.synonyms.split("|"), function (aSynonym) {
                 if (aSynonym.displayName == result.displayName) return;
 
                 new SynonymView({
-                    model: aSynonym,
+                    model: { displayName: aSynonym },
                     el: $("ul.synonyms")
                 }).render();
             });

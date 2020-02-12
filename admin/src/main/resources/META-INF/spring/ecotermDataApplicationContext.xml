@@ -36,7 +36,7 @@
   </bean>
 
   <bean name="ecotermDataLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
-	<property name="names" value="name,code,definition"/>
+	<property name="names" value="name,code,definition,synonyms"/>
 	<property name="delimiter" value="&#9;"/>
   </bean>
 </beans>
