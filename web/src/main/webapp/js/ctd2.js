@@ -2557,7 +2557,15 @@
                 }); //end addGene
             }
 
-            _.each(result.synonyms, function (aSynonym) {
+            let synonyms = result.synonyms;
+            if (result.class == "ECOTerm") {
+                synonyms = [];
+                _.each(result.synonyms.split("|"), function (aSynonym) {
+                    if (aSynonym.displayName == result.displayName) return;
+                    synonyms.push({ displayName: aSynonym });
+                });
+            }
+            _.each(synonyms, function (aSynonym) {
                 new SynonymView({
                     model: aSynonym,
                     el: $("#synonyms-" + result.id)
