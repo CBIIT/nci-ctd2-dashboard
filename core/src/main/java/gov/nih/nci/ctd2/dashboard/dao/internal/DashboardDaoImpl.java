@@ -774,9 +774,8 @@ public class DashboardDaoImpl implements DashboardDao {
 
     private List<ECOTerm> findECOTerms(String queryString) {
         Session session = getSession();
-        org.hibernate.query.Query<?> query = session
-                .createQuery("from ECOTermImpl where displayName like CONCAT('%', :txt, '%')");
-        query.setParameter("txt", queryString);
+        org.hibernate.query.Query<?> query = session.createQuery("FROM ECOTermImpl WHERE displayName LIKE '%"
+                + queryString + "%' OR synonyms LIKE '%" + queryString + "%'");
         @SuppressWarnings("unchecked")
         List<ECOTerm> list = (List<ECOTerm>) query.list();
         log.debug("eco term number " + list.size());
