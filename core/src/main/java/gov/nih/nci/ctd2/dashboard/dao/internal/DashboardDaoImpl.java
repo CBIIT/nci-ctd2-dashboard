@@ -773,9 +773,23 @@ public class DashboardDaoImpl implements DashboardDao {
     }
 
     private List<ECOTerm> findECOTerms(String queryString) {
+        // search ECO codes first
+        Pattern ECOCodePattern = Pattern.compile("(eco[:_])?(\\d{7})");
+        Matcher matcher = ECOCodePattern.matcher(queryString);
+        List<String> codes = new ArrayList<String>();
+        while (matcher.find()) {
+            codes.add("ECO:" + matcher.group(2));
+        }
+
+        org.hibernate.query.Query<?> query = null;
         Session session = getSession();
-        org.hibernate.query.Query<?> query = session.createQuery("FROM ECOTermImpl WHERE displayName LIKE '%"
-                + queryString + "%' OR synonyms LIKE '%" + queryString + "%'");
+        if (codes.size() > 0) {
+            query = session.createQuery("FROM ECOTermImpl WHERE code in (:codes)");
+            query.setParameterList("codes", codes);
+        } else {
+            query = session.createQuery("FROM ECOTermImpl WHERE displayName LIKE '%" + queryString
+                    + "%' OR synonyms LIKE '%" + queryString + "%'");
+        }
         @SuppressWarnings("unchecked")
         List<ECOTerm> list = (List<ECOTerm>) query.list();
         log.debug("eco term number " + list.size());
