@@ -772,6 +772,7 @@ public class DashboardDaoImpl implements DashboardDao {
         return entitiesWithCounts;
     }
 
+    @SuppressWarnings("unchecked")
     private List<ECOTerm> findECOTerms(String queryString) {
         // search ECO codes first
         Pattern ECOCodePattern = Pattern.compile("(eco[:_])?(\\d{7})");
@@ -782,16 +783,23 @@ public class DashboardDaoImpl implements DashboardDao {
         }
 
         org.hibernate.query.Query<?> query = null;
+        List<ECOTerm> list = null;
         Session session = getSession();
         if (codes.size() > 0) {
             query = session.createQuery("FROM ECOTermImpl WHERE code in (:codes)");
             query.setParameterList("codes", codes);
+            list = (List<ECOTerm>) query.list();
         } else {
-            query = session.createQuery("FROM ECOTermImpl WHERE displayName LIKE '%" + queryString
-                    + "%' OR synonyms LIKE '%" + queryString + "%'");
+            String[] words = queryString.split(" (?=([^\"]*\"[^\"]*\")*[^\"]*$)");
+            Set<ECOTerm> set = new HashSet<ECOTerm>();
+            for (String w : words) {
+                String x = w.replaceAll("^\"|\"$", "");
+                query = session.createQuery(
+                        "FROM ECOTermImpl WHERE displayName LIKE '%" + x + "%' OR synonyms LIKE '%" + x + "%'");
+                set.addAll((List<ECOTerm>) query.list());
+            }
+            list = new ArrayList<ECOTerm>(set);
         }
-        @SuppressWarnings("unchecked")
-        List<ECOTerm> list = (List<ECOTerm>) query.list();
         log.debug("eco term number " + list.size());
         session.close();
         return list;
