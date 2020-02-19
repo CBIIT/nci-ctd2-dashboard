@@ -1576,5 +1576,141 @@
             </bean>
         </property>
     </bean>
+    <bean name="emoryInvasionReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${emory.invasion.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="emoryInvasionLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="ohsuYongParpiPersistsReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${ohsu.yong.parpi.persists.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="ohsuYongParpiPersistsLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="ohsuYongRppaReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${ohsu.yong.rppa.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="ohsuYongRppaLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="ohsuYongSequentialBasalReplStressReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${ohsu.yong.sequential.basal.repl.stress.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="ohsuYongSequentialBasalReplStressLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="ohsuYongSequentialInVivo1Reader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${ohsu.yong.sequential.in.vivo.1.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="ohsuYongSequentialInVivo1LineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="ohsuYongSequentialInVivo2Reader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${ohsu.yong.sequential.in.vivo.2.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="ohsuYongSequentialInVivo2LineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="ohsuYongSequentialNormalCellsReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${ohsu.yong.sequential.normal.cells.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="ohsuYongSequentialNormalCellsLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="ohsuYongSequentialTumorCellsReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${ohsu.yong.sequential.tumor.cells.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="ohsuYongSequentialTumorCellsLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="columbiaOncomatchMoaOverlapReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${columbia.oncomatch.moa.overlap.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="columbiaOncomatchMoaOverlapLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="columbiaOncomatchModelRankReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${columbia.oncomatch.model.rank.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="columbiaOncomatchModelRankLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="columbiaOncomatchTumorModelsReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${columbia.oncomatch.tumor.models.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="columbiaOncomatchTumorModelsLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="columbiaOncomatchValidationReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${columbia.oncomatch.validation.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="columbiaOncomatchValidationLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="columbiaOncomatchValidation2Reader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${columbia.oncomatch.validation.2.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="columbiaOncomatchValidation2LineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="columbiaOncotreatOverlapReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${columbia.oncotreat.overlap.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="columbiaOncotreatOverlapLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="emoryImmunotherapyReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${emory.immunotherapy.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="emoryImmunotherapyLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+
 
 </beans>

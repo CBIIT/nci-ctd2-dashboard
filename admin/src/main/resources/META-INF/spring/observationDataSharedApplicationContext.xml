@@ -863,22 +863,97 @@
                 <batch:chunk reader="broadChordomaCpdSensPrimaryReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	    </batch:tasklet>
 	</batch:step>
-
 	<batch:step id="dfciEgln1DependencyStep" parent="observationDataStep" next="dfciSmarcb1DependencyStep">
 	    <batch:tasklet>
                 <batch:chunk reader="dfciEgln1DependencyReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	    </batch:tasklet>
 	</batch:step>
-	
 	<batch:step id="dfciSmarcb1DependencyStep" parent="observationDataStep" next="dfciTp53MutagenesisStep">
 	    <batch:tasklet>
                 <batch:chunk reader="dfciSmarcb1DependencyReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	    </batch:tasklet>
 	</batch:step>
-	
-	<batch:step id="dfciTp53MutagenesisStep" parent="observationDataStep">
+	<batch:step id="dfciTp53MutagenesisStep" parent="observationDataStep" next="emoryInvasionStep">
 	    <batch:tasklet>
                 <batch:chunk reader="dfciTp53MutagenesisReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	    </batch:tasklet>
+	</batch:step>
+
+
+
+	<batch:step id="emoryInvasionStep" parent="observationDataStep" next="ohsuYongParpiPersistsStep">
+	    <batch:tasklet>
+                <batch:chunk reader="emoryInvasionReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	    </batch:tasklet>
+	</batch:step>
+	<batch:step id="ohsuYongParpiPersistsStep" parent="observationDataStep" next="ohsuYongRppaStep">
+	    <batch:tasklet>
+                <batch:chunk reader="ohsuYongParpiPersistsReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	    </batch:tasklet>
+	</batch:step>
+	<batch:step id="ohsuYongRppaStep" parent="observationDataStep" next="ohsuYongSequentialBasalReplStressStep">
+	    <batch:tasklet>
+                <batch:chunk reader="ohsuYongRppaReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	    </batch:tasklet>
+	</batch:step>
+	<batch:step id="ohsuYongSequentialBasalReplStressStep" parent="observationDataStep" next="ohsuYongSequentialInVivo1Step">
+	    <batch:tasklet>
+                <batch:chunk reader="ohsuYongSequentialBasalReplStressReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	    </batch:tasklet>
+	</batch:step>
+	<batch:step id="ohsuYongSequentialInVivo1Step" parent="observationDataStep" next="ohsuYongSequentialInVivo2Step">
+	    <batch:tasklet>
+                <batch:chunk reader="ohsuYongSequentialInVivo1Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	    </batch:tasklet>
+	</batch:step>
+	<batch:step id="ohsuYongSequentialInVivo2Step" parent="observationDataStep" next="ohsuYongSequentialNormalCellsStep">
+	    <batch:tasklet>
+                <batch:chunk reader="ohsuYongSequentialInVivo2Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	    </batch:tasklet>
+	</batch:step>
+	<batch:step id="ohsuYongSequentialNormalCellsStep" parent="observationDataStep" next="ohsuYongSequentialTumorCellsStep">
+	    <batch:tasklet>
+                <batch:chunk reader="ohsuYongSequentialNormalCellsReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	    </batch:tasklet>
+	</batch:step>
+ 	<batch:step id="ohsuYongSequentialTumorCellsStep" parent="observationDataStep" next="columbiaOncomatchMoaOverlapStep">
+	    <batch:tasklet>
+                <batch:chunk reader="ohsuYongSequentialTumorCellsReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	    </batch:tasklet>
+	</batch:step>
+	<batch:step id="columbiaOncomatchMoaOverlapStep" parent="observationDataStep" next="columbiaOncomatchModelRankStep">
+	    <batch:tasklet>
+                <batch:chunk reader="columbiaOncomatchMoaOverlapReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	    </batch:tasklet>
+	</batch:step>
+	<batch:step id="columbiaOncomatchModelRankStep" parent="observationDataStep" next="columbiaOncomatchTumorModelsStep">
+	    <batch:tasklet>
+                <batch:chunk reader="columbiaOncomatchModelRankReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	    </batch:tasklet>
+	</batch:step>
+	<batch:step id="columbiaOncomatchTumorModelsStep" parent="observationDataStep" next="columbiaOncomatchValidationStep">
+	    <batch:tasklet>
+                <batch:chunk reader="columbiaOncomatchTumorModelsReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	    </batch:tasklet>
+	</batch:step>
+	<batch:step id="columbiaOncomatchValidationStep" parent="observationDataStep" next="columbiaOncomatchValidation2Step">
+	    <batch:tasklet>
+                <batch:chunk reader="columbiaOncomatchValidationReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	    </batch:tasklet>
+	</batch:step>
+	<batch:step id="columbiaOncomatchValidation2Step" parent="observationDataStep" next="columbiaOncotreatOverlapStep">
+	    <batch:tasklet>
+                <batch:chunk reader="columbiaOncomatchValidation2Reader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	    </batch:tasklet>
+	</batch:step>
+	<batch:step id="columbiaOncotreatOverlapStep" parent="observationDataStep" next="emoryImmunotherapyStep">
+	    <batch:tasklet>
+                <batch:chunk reader="columbiaOncotreatOverlapReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	    </batch:tasklet>
+	</batch:step>
+	<batch:step id="emoryImmunotherapyStep" parent="observationDataStep">
+	    <batch:tasklet>
+                <batch:chunk reader="emoryImmunotherapyReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	    </batch:tasklet>
 	</batch:step>
     </batch:job>
@@ -2320,11 +2395,6 @@
         <property name="names" value="dummy,submission_name,submission_date,template_name,compound_name,parent_cell_line,PBMC,cell_confluency,cell_viability,reference,data_portal_link"/>
     </bean>
 
-
-
-
-
-
     <bean name="columbiaParacneStoryLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
         <property name="fieldSetMapper" ref="observationDataMapper" />
         <property name="lineTokenizer" ref="columbiaParacneStoryLineTokenizer" />
@@ -2459,6 +2529,144 @@
         <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,compound_1,compound_2,reference,evidence_ontology,informer_set,cosmic,depmap,story_location"/>
     </bean>
+
+
+
+    <bean name="emoryInvasionLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="emoryInvasionLineTokenizer" />
+    </bean>
+    <bean name="emoryInvasionLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="&#9;"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,cell_line,disease,gene_symbol_2,compound,figure_4,reference"/>
+    </bean>
+
+    <bean name="ohsuYongParpiPersistsLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="ohsuYongParpiPersistsLineTokenizer" />
+    </bean>
+    <bean name="ohsuYongParpiPersistsLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="&#9;"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,parp,ovcar_8,talazoparib,figure_4a,publication_reference"/>
+    </bean>
+
+    <bean name="ohsuYongRppaLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="ohsuYongRppaLineTokenizer" />
+    </bean>
+    <bean name="ohsuYongRppaLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="&#9;"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,parp,wee_1,olaparib,adavosertib,bt_474,hcc_1954,hcc_1937,mda_mb_468,skbr_3,igrov_1,tov_21_g,skov_3,hoc_8,ovcar_8,caov_3,uwb_1289,ovcar_5,kle,etn_1,hoc_7,figure_s1,figure_s2,publication_reference"/>
+    </bean>
+
+    <bean name="ohsuYongSequentialBasalReplStressLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="ohsuYongSequentialBasalReplStressLineTokenizer" />
+    </bean>
+    <bean name="ohsuYongSequentialBasalReplStressLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="&#9;"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,talazoparib,adavosertib,mcf_10a,bm_msc,hydroxyurea,cyclin_e,parp,wee_1,figure_6i,figure_6k,figure_6o,publication_reference"/>
+    </bean>
+
+    <bean name="ohsuYongSequentialInVivo1LineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="ohsuYongSequentialInVivo1LineTokenizer" />
+    </bean>
+    <bean name="ohsuYongSequentialInVivo1LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="&#9;"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,talazoparib,adavosertib,ovarian_cancer,parp,wee_1,figure_8a,publication_reference"/>
+    </bean>
+
+    <bean name="ohsuYongSequentialInVivo2LineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="ohsuYongSequentialInVivo2LineTokenizer" />
+    </bean>
+    <bean name="ohsuYongSequentialInVivo2LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="&#9;"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,olaparib,adavosertib,ovarian_cancer,parp,wee_1,figure_8c,publication_reference"/>
+    </bean>
+
+    <bean name="ohsuYongSequentialNormalCellsLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="ohsuYongSequentialNormalCellsLineTokenizer" />
+    </bean>
+    <bean name="ohsuYongSequentialNormalCellsLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="&#9;"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,talazoparib,adavosertib,mcf_10a,bm_msc,parp,wee_1,figure_6e,figure_6f,figure_6g,publication_reference"/>
+    </bean>
+
+    <bean name="ohsuYongSequentialTumorCellsLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="ohsuYongSequentialTumorCellsLineTokenizer" />
+    </bean>
+    <bean name="ohsuYongSequentialTumorCellsLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="&#9;"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,talazoparib,adavosertib,ovcar8,parp,wee_1,figure_5d,figure_5e,publication_reference"/>
+    </bean>
+
+    <bean name="columbiaOncomatchMoaOverlapLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="columbiaOncomatchMoaOverlapLineTokenizer" />
+    </bean>
+    <bean name="columbiaOncomatchMoaOverlapLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="&#9;"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,tumor_type_1,net_cell_line_1,net_cell_line_3,control_drug_1,figure_2a,publication_reference,evidence_ontology_term"/>
+    </bean>
+
+    <bean name="columbiaOncomatchModelRankLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="columbiaOncomatchModelRankLineTokenizer" />
+    </bean>
+    <bean name="columbiaOncomatchModelRankLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="&#9;"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,tumor_type_1,net_cell_line_1,net_cell_line_2,figure_1,publication_reference,evidence_ontology_term"/>
+    </bean>
+
+    <bean name="columbiaOncomatchTumorModelsLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="columbiaOncomatchTumorModelsLineTokenizer" />
+    </bean>
+    <bean name="columbiaOncomatchTumorModelsLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="&#9;"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,tumor_type_1,net_cell_line_1,net_cell_line_2,story_location,publication_reference_1,publication_reference_2,publication_reference_3,evidence_ontology_term_1,evidence_ontology_term_2"/>
+    </bean>
+
+    <bean name="columbiaOncomatchValidationLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="columbiaOncomatchValidationLineTokenizer" />
+    </bean>
+    <bean name="columbiaOncomatchValidationLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="&#9;"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,tumor_type_1,net_cell_line_1,figure_4,publication_reference,evidence_ontology_term"/>
+    </bean>
+
+    <bean name="columbiaOncomatchValidation2LineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="columbiaOncomatchValidation2LineTokenizer" />
+    </bean>
+    <bean name="columbiaOncomatchValidation2LineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="&#9;"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,tumor_type_1,net_cell_line_1,figure_5,publication_reference,evidence_ontology_term"/>
+    </bean>
+
+    <bean name="columbiaOncotreatOverlapLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="columbiaOncotreatOverlapLineTokenizer" />
+    </bean>
+    <bean name="columbiaOncotreatOverlapLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="&#9;"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,tumor_type_1,net_cell_line_1,net_cell_line_3,figure_2b,publication_reference,evidence_ontology_term"/>
+    </bean>
+
+    <bean name="emoryImmunotherapyLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="emoryImmunotherapyLineTokenizer" />
+    </bean>
+    <bean name="emoryImmunotherapyLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="&#9;"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,compound_1,compound_2,compound_3,gene_1,gene_2,gene_3,gene_4,gene_5,cell_line_1,cell_line_2,cell_line_3,cell_line_4,disease,story_location,publication_reference,evidence_ontology_term_1,evidence_ontology_term_2,evidence_ontology_term_3"/>
+    </bean>
+
 
 
     <!-- shared helper beans -->
@@ -4252,6 +4460,144 @@
 		<entry key="dfci_tp53_mutagenesis:cosmic" value="evidence:readString:createObservedUrlEvidence" />
 		<entry key="dfci_tp53_mutagenesis:depmap" value="evidence:readString:createObservedUrlEvidence" />
 		<entry key="dfci_tp53_mutagenesis:story_location" value="evidence:readString:createObservedFileEvidence" />
+
+
+
+		<entry key="columbia_oncomatch_moa_overlap:tumor_type_1" value="subject:findTissueSampleByName" />
+		<entry key="columbia_oncomatch_moa_overlap:net_cell_line_1" value="subject:findCellLineByName" />
+		<entry key="columbia_oncomatch_moa_overlap:net_cell_line_3" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="columbia_oncomatch_moa_overlap:control_drug_1" value="subject:findCompoundsByName" />
+		<entry key="columbia_oncomatch_moa_overlap:figure_2a" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="columbia_oncomatch_moa_overlap:publication_reference" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="columbia_oncomatch_moa_overlap:evidence_ontology_term" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="columbia_oncomatch_model_rank:tumor_type_1" value="subject:findTissueSampleByName" />
+		<entry key="columbia_oncomatch_model_rank:net_cell_line_1" value="subject:findCellLineByName" />
+		<entry key="columbia_oncomatch_model_rank:net_cell_line_2" value="subject:findCellLineByName" />
+		<entry key="columbia_oncomatch_model_rank:figure_1" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="columbia_oncomatch_model_rank:publication_reference" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="columbia_oncomatch_model_rank:evidence_ontology_term" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="columbia_oncomatch_tumor_models:tumor_type_1" value="subject:findTissueSampleByName" />
+		<entry key="columbia_oncomatch_tumor_models:net_cell_line_1" value="subject:findCellLineByName" />
+		<entry key="columbia_oncomatch_tumor_models:net_cell_line_2" value="subject:findCellLineByName" />
+		<entry key="columbia_oncomatch_tumor_models:story_location" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="columbia_oncomatch_tumor_models:publication_reference_1" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="columbia_oncomatch_tumor_models:publication_reference_2" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="columbia_oncomatch_tumor_models:publication_reference_3" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="columbia_oncomatch_tumor_models:evidence_ontology_term_1" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="columbia_oncomatch_tumor_models:evidence_ontology_term_2" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="columbia_oncomatch_validation:tumor_type_1" value="subject:findTissueSampleByName" />
+		<entry key="columbia_oncomatch_validation:net_cell_line_1" value="subject:findCellLineByName" />
+		<entry key="columbia_oncomatch_validation:figure_4" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="columbia_oncomatch_validation:publication_reference" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="columbia_oncomatch_validation:evidence_ontology_term" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="columbia_oncomatch_validation_2:tumor_type_1" value="subject:findTissueSampleByName" />
+		<entry key="columbia_oncomatch_validation_2:net_cell_line_1" value="subject:findCellLineByName" />
+		<entry key="columbia_oncomatch_validation_2:figure_5" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="columbia_oncomatch_validation_2:publication_reference" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="columbia_oncomatch_validation_2:evidence_ontology_term" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="columbia_oncotreat_overlap:tumor_type_1" value="subject:findTissueSampleByName" />
+		<entry key="columbia_oncotreat_overlap:net_cell_line_1" value="subject:findCellLineByName" />
+		<entry key="columbia_oncotreat_overlap:net_cell_line_3" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="columbia_oncotreat_overlap:figure_2b" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="columbia_oncotreat_overlap:publication_reference" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="columbia_oncotreat_overlap:evidence_ontology_term" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="emory_immunotherapy:compound_1" value="subject:findCompoundsByName" />
+		<entry key="emory_immunotherapy:compound_2" value="subject:findCompoundsByName" />
+		<entry key="emory_immunotherapy:compound_3" value="subject:findCompoundsByName" />
+		<entry key="emory_immunotherapy:gene_1" value="subject:findGenesBySymbol" />
+		<entry key="emory_immunotherapy:gene_2" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="emory_immunotherapy:gene_3" value="subject:findGenesBySymbol" />
+		<entry key="emory_immunotherapy:gene_4" value="subject:findGenesBySymbol" />
+		<entry key="emory_immunotherapy:gene_5" value="subject:findGenesBySymbol" />
+		<entry key="emory_immunotherapy:cell_line_1" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="emory_immunotherapy:cell_line_2" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="emory_immunotherapy:cell_line_3" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="emory_immunotherapy:cell_line_4" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="emory_immunotherapy:disease" value="subject:findTissueSampleByName" />
+		<entry key="emory_immunotherapy:story_location" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="emory_immunotherapy:publication_reference" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="emory_immunotherapy:evidence_ontology_term_1" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="emory_immunotherapy:evidence_ontology_term_2" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="emory_immunotherapy:evidence_ontology_term_3" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="emory_invasion:gene_symbol_1" value="subject:findGenesBySymbol" />
+		<entry key="emory_invasion:cell_line" value="subject:findCellLineByName" />
+		<entry key="emory_invasion:disease" value="subject:findTissueSampleByName" />
+		<entry key="emory_invasion:gene_symbol_2" value="subject:findGenesBySymbol" />
+		<entry key="emory_invasion:compound" value="subject:findCompoundsByName" />
+		<entry key="emory_invasion:figure_4" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="emory_invasion:reference" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="ohsu_yong_parpi_persists:parp" value="subject:findGenesBySymbol" />
+		<entry key="ohsu_yong_parpi_persists:ovcar_8" value="subject:findCellLineByName" />
+		<entry key="ohsu_yong_parpi_persists:talazoparib" value="subject:findCompoundsByName" />
+		<entry key="ohsu_yong_parpi_persists:figure_4a" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="ohsu_yong_parpi_persists:publication_reference" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="ohsu_yong_rppa:parp" value="subject:findGenesBySymbol" />
+		<entry key="ohsu_yong_rppa:wee_1" value="subject:findGenesBySymbol" />
+		<entry key="ohsu_yong_rppa:olaparib" value="subject:findCompoundsByName" />
+		<entry key="ohsu_yong_rppa:adavosertib" value="subject:findCompoundsByName" />
+		<entry key="ohsu_yong_rppa:bt_474" value="subject:findCellLineByName" />
+		<entry key="ohsu_yong_rppa:hcc_1954" value="subject:findCellLineByName" />
+		<entry key="ohsu_yong_rppa:hcc_1937" value="subject:findCellLineByName" />
+		<entry key="ohsu_yong_rppa:mda_mb_468" value="subject:findCellLineByName" />
+		<entry key="ohsu_yong_rppa:skbr_3" value="subject:findCellLineByName" />
+		<entry key="ohsu_yong_rppa:igrov_1" value="subject:findCellLineByName" />
+		<entry key="ohsu_yong_rppa:tov_21_g" value="subject:findCellLineByName" />
+		<entry key="ohsu_yong_rppa:skov_3" value="subject:findCellLineByName" />
+		<entry key="ohsu_yong_rppa:hoc_8" value="subject:findCellLineByName" />
+		<entry key="ohsu_yong_rppa:ovcar_8" value="subject:findCellLineByName" />
+		<entry key="ohsu_yong_rppa:caov_3" value="subject:findCellLineByName" />
+		<entry key="ohsu_yong_rppa:uwb_1289" value="subject:findCellLineByName" />
+		<entry key="ohsu_yong_rppa:ovcar_5" value="subject:findCellLineByName" />
+		<entry key="ohsu_yong_rppa:kle" value="subject:findCellLineByName" />
+		<entry key="ohsu_yong_rppa:etn_1" value="subject:findCellLineByName" />
+		<entry key="ohsu_yong_rppa:hoc_7" value="subject:findCellLineByName" />
+		<entry key="ohsu_yong_rppa:figure_s1" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="ohsu_yong_rppa:figure_s2" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="ohsu_yong_rppa:publication_reference" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="ohsu_yong_sequential_basal_repl_stress:talazoparib" value="subject:findCompoundsByName" />
+		<entry key="ohsu_yong_sequential_basal_repl_stress:adavosertib" value="subject:findCompoundsByName" />
+		<entry key="ohsu_yong_sequential_basal_repl_stress:mcf_10a" value="subject:findCellLineByName" />
+		<entry key="ohsu_yong_sequential_basal_repl_stress:bm_msc" value="subject:findCellLineByName" />
+		<entry key="ohsu_yong_sequential_basal_repl_stress:hydroxyurea" value="subject:findCompoundsByName" />
+		<entry key="ohsu_yong_sequential_basal_repl_stress:cyclin_e" value="subject:findGenesBySymbol" />
+		<entry key="ohsu_yong_sequential_basal_repl_stress:parp" value="subject:findGenesBySymbol" />
+		<entry key="ohsu_yong_sequential_basal_repl_stress:wee_1" value="subject:findGenesBySymbol" />
+		<entry key="ohsu_yong_sequential_basal_repl_stress:figure_6i" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="ohsu_yong_sequential_basal_repl_stress:figure_6k" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="ohsu_yong_sequential_basal_repl_stress:figure_6o" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="ohsu_yong_sequential_basal_repl_stress:publication_reference" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="ohsu_yong_sequential_in_vivo_1:talazoparib" value="subject:findCompoundsByName" />
+		<entry key="ohsu_yong_sequential_in_vivo_1:adavosertib" value="subject:findCompoundsByName" />
+		<entry key="ohsu_yong_sequential_in_vivo_1:ovarian_cancer" value="subject:findTissueSampleByName" />
+		<entry key="ohsu_yong_sequential_in_vivo_1:parp" value="subject:findGenesBySymbol" />
+		<entry key="ohsu_yong_sequential_in_vivo_1:wee_1" value="subject:findGenesBySymbol" />
+		<entry key="ohsu_yong_sequential_in_vivo_1:figure_8a" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="ohsu_yong_sequential_in_vivo_1:publication_reference" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="ohsu_yong_sequential_in_vivo_2:olaparib" value="subject:findCompoundsByName" />
+		<entry key="ohsu_yong_sequential_in_vivo_2:adavosertib" value="subject:findCompoundsByName" />
+		<entry key="ohsu_yong_sequential_in_vivo_2:ovarian_cancer" value="subject:findTissueSampleByName" />
+		<entry key="ohsu_yong_sequential_in_vivo_2:parp" value="subject:findGenesBySymbol" />
+		<entry key="ohsu_yong_sequential_in_vivo_2:wee_1" value="subject:findGenesBySymbol" />
+		<entry key="ohsu_yong_sequential_in_vivo_2:figure_8c" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="ohsu_yong_sequential_in_vivo_2:publication_reference" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="ohsu_yong_sequential_normal_cells:talazoparib" value="subject:findCompoundsByName" />
+		<entry key="ohsu_yong_sequential_normal_cells:adavosertib" value="subject:findCompoundsByName" />
+		<entry key="ohsu_yong_sequential_normal_cells:mcf_10a" value="subject:findCellLineByName" />
+		<entry key="ohsu_yong_sequential_normal_cells:bm_msc" value="subject:findCellLineByName" />
+		<entry key="ohsu_yong_sequential_normal_cells:parp" value="subject:findGenesBySymbol" />
+		<entry key="ohsu_yong_sequential_normal_cells:wee_1" value="subject:findGenesBySymbol" />
+		<entry key="ohsu_yong_sequential_normal_cells:figure_6e" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="ohsu_yong_sequential_normal_cells:figure_6f" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="ohsu_yong_sequential_normal_cells:figure_6g" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="ohsu_yong_sequential_normal_cells:publication_reference" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="ohsu_yong_sequential_tumor_cells:talazoparib" value="subject:findCompoundsByName" />
+		<entry key="ohsu_yong_sequential_tumor_cells:adavosertib" value="subject:findCompoundsByName" />
+		<entry key="ohsu_yong_sequential_tumor_cells:ovcar8" value="subject:findCellLineByName" />
+		<entry key="ohsu_yong_sequential_tumor_cells:parp" value="subject:findGenesBySymbol" />
+		<entry key="ohsu_yong_sequential_tumor_cells:wee_1" value="subject:findGenesBySymbol" />
+		<entry key="ohsu_yong_sequential_tumor_cells:figure_5d" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="ohsu_yong_sequential_tumor_cells:figure_5e" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="ohsu_yong_sequential_tumor_cells:publication_reference" value="evidence:readString:createObservedUrlEvidence" />
             </map>
         </constructor-arg>
     </bean>
