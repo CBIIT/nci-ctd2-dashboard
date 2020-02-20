@@ -2253,6 +2253,7 @@
         <a href="https://ocg.cancer.gov/programs/ctd2/centers#translational-genomics-research-institute" data-center="Translational Genomics Research Institute" target="_blank">view center description</a>
         <a href="https://ocg.cancer.gov/programs/ctd2/centers#johns-hopkins-university" data-center="Johns Hopkins University" target="_blank">view center description</a>
         <a href="https://ocg.cancer.gov/programs/ctd2/centers#oregon-health-and-science-university" data-center="Oregon Health and Science University" target="_blank">view center description</a>
+        <a href="https://ocg.cancer.gov/programs/ctd2/centers#oregon-health-and-science-university-2" data-center="Oregon Health and Science University (2)" target="_blank">view center description</a>
         <a href="https://ocg.cancer.gov/programs/ctd2/centers#university-of-california-san-diego" data-center="University of California San Diego" target="_blank">view center description</a>
     </script>
 

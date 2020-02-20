@@ -84,6 +84,7 @@ public class ControlledVocabularyPerTemplateFieldSetMapper implements FieldSetMa
 		shortCenterNameMap.put("Fred Hutchinson Cancer Research Center (2)", "FHCRC2");
 		shortCenterNameMap.put("Johns Hopkins University", "JHU");
 		shortCenterNameMap.put("Oregon Health and Science University", "OHSU");
+		shortCenterNameMap.put("Oregon Health and Science University (2)", "OHSU-2");
 		shortCenterNameMap.put("Stanford University", "Stanford");
 		shortCenterNameMap.put("Translational Genomics Research Institute", "TGen");
 		shortCenterNameMap.put("University of California San Diego", "UCSD");
