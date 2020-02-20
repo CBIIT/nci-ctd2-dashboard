@@ -2654,6 +2654,8 @@
                             el: $(thatEl).find("tbody"),
                             model: thatModel
                         })).render();
+                        $('#submission-search-results').hide();
+                        $('#observation-search-results').hide();
                     } else {
                         const submissions = [];
                         const matching_observations = [];
