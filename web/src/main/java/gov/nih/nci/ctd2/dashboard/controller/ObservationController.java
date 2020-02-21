@@ -247,7 +247,6 @@ public class ObservationController {
             @RequestParam("submissionId") Integer submissionId, @RequestParam("ecocode") String ecocode) {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json; charset=utf-8");
-        System.out.println("request received");
 
         String summaryTemplate = dashboardDao.getEntityById(Submission.class, submissionId).getObservationTemplate()
                 .getObservationSummary();
@@ -259,7 +258,6 @@ public class ObservationController {
                     + " (<a class='button-link' href='#" + observation.getStableURL() + "'>details &raquo;</a>)";
             list.add(new ObservationWithSummary(observation, expanded));
         }
-        System.out.println("resut list size " + list.size());
 
         JSONSerializer jsonSerializer = new JSONSerializer().transform(new ImplTransformer(), Class.class)
                 .transform(new DateTransformer(), Date.class);

@@ -2,6 +2,8 @@ package gov.nih.nci.ctd2.dashboard.importer.internal;
 
 import gov.nih.nci.ctd2.dashboard.model.*;
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindException;
 import org.springframework.batch.item.file.transform.FieldSet;
@@ -15,13 +17,15 @@ import java.util.Map;
 @Component("controlledVocabularyPerTemplateMapper")
 public class ControlledVocabularyPerTemplateFieldSetMapper implements FieldSetMapper<ObservationTemplate> {
 
+	private static final Log log = LogFactory.getLog(ControlledVocabularyPerTemplateFieldSetMapper.class);
+
 	private static final String TEMPLATE_TIER = "observation_tier";
 	private static final String TEMPLATE_NAME = "template_name";
 	private static final String OBSERVATION_SUMMARY = "observation_summary";
 	private static final String TEMPLATE_DESCRIPTION = "template_description";
 	private static final String SUBMISSION_NAME = "submission_name";
 	private static final String SUBMISSION_DESCRIPTION = "submission_description";
-    private static final String PROJECT = "project";
+	private static final String PROJECT = "project";
 	private static final String SUBMISSION_STORY = "submission_story";
 	private static final String SUBMISSION_STORY_RANK = "submission_story_rank";
 	private static final String PRINCIPAL_INVESTIGATOR = "principal_investigator";
@@ -30,12 +34,12 @@ public class ControlledVocabularyPerTemplateFieldSetMapper implements FieldSetMa
 	@Autowired
 	private DashboardDao dashboardDao;
 
-    @Autowired
-    private DashboardFactory dashboardFactory;
+	@Autowired
+	private DashboardFactory dashboardFactory;
 
-    @Autowired
+	@Autowired
 	@Qualifier("observationTemplateNameMap")
-	private HashMap<String,ObservationTemplate> observationTemplateNameMap;
+	private HashMap<String, ObservationTemplate> observationTemplateNameMap;
 
 	private HashMap<String, SubmissionCenter> submissionCenterCache = new HashMap<String, SubmissionCenter>();
 
@@ -48,11 +52,18 @@ public class ControlledVocabularyPerTemplateFieldSetMapper implements FieldSetMa
 		observationTemplate.setDescription(fieldSet.readString(TEMPLATE_DESCRIPTION));
 		observationTemplate.setSubmissionName(fieldSet.readString(SUBMISSION_NAME));
 		observationTemplate.setSubmissionDescription(fieldSet.readString(SUBMISSION_DESCRIPTION));
-        observationTemplate.setProject(fieldSet.readString(PROJECT));
+		observationTemplate.setProject(fieldSet.readString(PROJECT));
 		observationTemplate.setIsSubmissionStory(fieldSet.readBoolean(SUBMISSION_STORY, "TRUE"));
 		observationTemplate.setSubmissionStoryRank(fieldSet.readInt(SUBMISSION_STORY_RANK));
 		observationTemplate.setPrincipalInvestigator(fieldSet.readString(PRINCIPAL_INVESTIGATOR));
-		observationTemplate.setECOCode(fieldSet.readString("eco"));
+		String ecocodes = fieldSet.readString("eco");
+		// check the format: one ECO code or multiple ones delimited by |
+		if (ecocodes.length() > 0 && !ecocodes.matches("ECO:\\d{7}(\\|ECO:\\d{7})*")) {
+			log.warn("incorrect ECO code " + ecocodes + " is ignored for template "
+					+ fieldSet.readString(TEMPLATE_NAME));
+			ecocodes = "";
+		}
+		observationTemplate.setECOCode(ecocodes);
 
 		String submissionCenterName = fieldSet.readString(SUBMISSION_CENTER);
 		SubmissionCenter submissionCenter = submissionCenterCache.get(submissionCenterName);
@@ -62,8 +73,9 @@ public class ControlledVocabularyPerTemplateFieldSetMapper implements FieldSetMa
 				submissionCenter = dashboardFactory.create(SubmissionCenter.class);
 				submissionCenter.setDisplayName(submissionCenterName);
 				String shortCenterNames = shortCenterNameMap.get(submissionCenterName);
-				if(shortCenterNames==null) shortCenterNames = "";
-				submissionCenter.setStableURL("center/"+shortCenterNames.toLowerCase());
+				if (shortCenterNames == null)
+					shortCenterNames = "";
+				submissionCenter.setStableURL("center/" + shortCenterNames.toLowerCase());
 			}
 			submissionCenterCache.put(submissionCenterName, submissionCenter);
 		}
