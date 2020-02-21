@@ -809,7 +809,7 @@ public class DashboardDaoImpl implements DashboardDao {
         String sql = "SELECT count(observation.id) FROM observation"
                 + " JOIN submission ON observation.submission_id=submission.id"
                 + " JOIN observation_template ON submission.observationTemplate_id=observation_template.id"
-                + " WHERE ecocode='" + ecocode + "'";
+                + " WHERE ecocode LIKE '%" + ecocode + "%'";
         Session session = getSession();
         @SuppressWarnings("unchecked")
         org.hibernate.query.Query<BigInteger> query = session.createNativeQuery(sql);
@@ -824,10 +824,12 @@ public class DashboardDaoImpl implements DashboardDao {
         String sql = "SELECT MIN(observation.id), COUNT(DISTINCT observation.id) FROM observation"
                 + " JOIN submission ON observation.submission_id=submission.id"
                 + " JOIN observation_template ON submission.observationTemplate_id=observation_template.id"
-                + " WHERE ecocode='" + ecocode + "'";
+                + " WHERE ecocode LIKE '%" + ecocode + "%'";
         if (tier > 0) {
             sql += " AND tier=" + tier;
         }
+        sql += " GROUP BY submission_id";
+
         Session session = getSession();
         @SuppressWarnings("unchecked")
         org.hibernate.query.Query<Object[]> query = session.createNativeQuery(sql);
@@ -849,7 +851,7 @@ public class DashboardDaoImpl implements DashboardDao {
         String sql = "SELECT observation.id FROM observation"
                 + " JOIN submission ON observation.submission_id=submission.id"
                 + " JOIN observation_template ON submission.observationTemplate_id=observation_template.id"
-                + " WHERE submission.id=" + submissionId + " AND ecocode='" + ecocode + "'";
+                + " WHERE submission.id=" + submissionId + " AND ecocode LIKE '%" + ecocode + "%'";
         Session session = getSession();
         @SuppressWarnings("unchecked")
         org.hibernate.query.Query<Integer> query = session.createNativeQuery(sql);
@@ -880,44 +882,58 @@ public class DashboardDaoImpl implements DashboardDao {
 
     @Override
     public List<EcoBrowse> getEcoBrowse() {
-        String sql = "SELECT displayName, ecoterm.stableURL, COUNT(DISTINCT submission.id), tier, COUNT(tier), COUNT(DISTINCT submissionCenter_id)"
-                + " FROM observation JOIN submission ON observation.submission_id=submission.id"
-                + " JOIN observation_template ON submission.observationTemplate_id=observation_template.id"
-                + " JOIN ecoterm ON observation_template.ecocode=ecoterm.code"
-                + " JOIN dashboard_entity ON ecoterm.id=dashboard_entity.id GROUP BY ecocode, tier";
         Session session = getSession();
         @SuppressWarnings("unchecked")
-        org.hibernate.query.Query<Object[]> query = session.createNativeQuery(sql);
-        List<Object[]> result = query.list();
-
+        org.hibernate.query.Query<Object[]> ecocodeQuery = session
+                .createNativeQuery("SELECT ecocode, id FROM observation_template WHERE LENGTH(ecocode)>0");
+        List<Object[]> ecocodeResult = ecocodeQuery.list();
         Map<String, EcoBrowse> map = new HashMap<String, EcoBrowse>();
-        for (Object[] array : result) {
-            String name = (String) array[0];
-            String url = (String) array[1];
-            BigInteger submissionCount = (BigInteger) array[2];
-            Integer tier = (Integer) array[3];
-            BigInteger tierCount = (BigInteger) array[4];
-            BigInteger centerCount = (BigInteger) array[5];
-            EcoBrowse b = map.get(name);
-            if (b == null) {
-                b = new EcoBrowse(name, url, submissionCount.intValue());
-                map.put(name, b);
-            } else {
+        for (Object[] array : ecocodeResult) {
+            String allcodes = (String) array[0];
+            Integer templateId = (Integer) array[1];
+
+            String countSql = "SELECT COUNT(DISTINCT submission.id), tier, COUNT(DISTINCT observation.id), COUNT(DISTINCT submissionCenter_id)"
+                    + " FROM observation JOIN submission ON observation.submission_id=submission.id"
+                    + " JOIN observation_template ON submission.observationTemplate_id=observation_template.id"
+                    + " WHERE submission.observationTemplate_id=" + templateId + " GROUP BY tier";
+            @SuppressWarnings("unchecked")
+            org.hibernate.query.Query<Object[]> query = session.createNativeQuery(countSql);
+            Object[] result = query.getSingleResult();
+            BigInteger submissionCount = (BigInteger) result[0];
+            Integer tier = (Integer) result[1];
+            BigInteger tierCount = (BigInteger) result[2];
+            BigInteger centerCount = (BigInteger) result[3];
+
+            String[] ecocodes = allcodes.split("\\|");
+            for (String code : ecocodes) {
+                EcoBrowse b = map.get(code);
+                if (b == null) { // this term not in the map yet
+                    @SuppressWarnings("unchecked")
+                    org.hibernate.query.Query<ECOTerm> ecotermQuery = session
+                            .createQuery("FROM ECOTermImpl WHERE code='" + code + "'");
+                    ECOTerm term = ecotermQuery.getSingleResult();
+                    b = new EcoBrowse(term.getDisplayName(), term.getStableURL(), 0);
+                    map.put(code, b);
+                }
+
                 b.setNumberOfSubmissions(b.getNumberOfSubmissions() + submissionCount.intValue());
-            }
-            switch (tier) {
-            case 1:
-                b.setNumberOfTier1Observations(tierCount.intValue());
-                b.setNumberOfTier1SubmissionCenters(centerCount.intValue());
-                break;
-            case 2:
-                b.setNumberOfTier2Observations(tierCount.intValue());
-                b.setNumberOfTier2SubmissionCenters(centerCount.intValue());
-                break;
-            case 3:
-                b.setNumberOfTier3Observations(tierCount.intValue());
-                b.setNumberOfTier3SubmissionCenters(centerCount.intValue());
-                break;
+                switch (tier) {
+                    case 1:
+                        b.setNumberOfTier1Observations(b.getNumberOfTier1Observations() + tierCount.intValue());
+                        b.setNumberOfTier1SubmissionCenters(
+                                b.getNumberOfTier1SubmissionCenters() + centerCount.intValue());
+                        break;
+                    case 2:
+                        b.setNumberOfTier2Observations(b.getNumberOfTier2Observations() + tierCount.intValue());
+                        b.setNumberOfTier2SubmissionCenters(
+                                b.getNumberOfTier2SubmissionCenters() + centerCount.intValue());
+                        break;
+                    case 3:
+                        b.setNumberOfTier3Observations(b.getNumberOfTier3Observations() + tierCount.intValue());
+                        b.setNumberOfTier3SubmissionCenters(
+                                b.getNumberOfTier3SubmissionCenters() + centerCount.intValue());
+                        break;
+                }
             }
         }
         session.close();
