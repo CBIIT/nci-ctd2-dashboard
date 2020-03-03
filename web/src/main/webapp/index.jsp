@@ -1827,7 +1827,7 @@
                 <div class="alert alert-warning">
                     <button type="button" class="close" data-dismiss="alert">&times;</button>
                     <p>
-                        This table summarizes submissions and observations based on the experimental techniques used to generat them.
+                        This table summarizes submissions and observations based on the experimental techniques used to generate them.
                         This is realized by annotating the various submissions with terms drawn from the
                         <a href='http://www.evidenceontology.org/' target='_blank'>Evidence Ontology</a>.
                     </p>
