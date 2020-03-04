@@ -660,3 +660,7 @@ div.center-link-container {
     padding-left: 30px;
     margin-left: 5px;
 }
+
+#summary-item {
+    background-color: bisque;
+}

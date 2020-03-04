@@ -2309,7 +2309,7 @@
      </script>
 
     <script type="text/template" id="summary-item-tmpl">
-        <tr><td>{{label}}</td><td>{{submissions}}</td><td>{{tier1}}</td><td>{{tier2}}</td><td>{{tier3}}</td><td>{{tier1+tier2+tier3}}</td></tr>
+        <tr id=summary-item><td>{{label}}</td><td>{{submissions}}</td><td>{{tier1}}</td><td>{{tier2}}</td><td>{{tier3}}</td><td>{{tier1+tier2+tier3}}</td></tr>
     </script>
 
     <script type="text/template" id="video-popup-tmpl">

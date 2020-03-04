@@ -368,12 +368,37 @@
             const summary = new Summary();
             summary.fetch({
                 success: function () {
+                    const x = {};
                     _.each(summary.models, function (summaryItem) {
+                        const label = summaryItem.get('label');
+                        x[label] = summaryItem;
+                    });
+                    ['Compound', 'Gene', 'ShRna'].forEach(function (s) {
                         new SummaryItemView({
                             el: $("#summary-table-body"),
-                            model: summaryItem.toJSON(),
+                            model: x[s].toJSON(),
                         }).render();
                     });
+                    $("#summary-table-body").append('<tr><td colspan=6></td></tr>');
+                    ['AnimalModel', 'CellSample', 'TissueSample'].forEach(function (s) {
+                        new SummaryItemView({
+                            el: $("#summary-table-body"),
+                            model: x[s].toJSON(),
+                        }).render();
+                    });
+                    $("#summary-table-body").append('<tr><td colspan=6></td></tr>');
+                    ['Evidence Ontology Codes', 'Stories'].forEach(function (s) {
+                        new SummaryItemView({
+                            el: $("#summary-table-body"),
+                            model: x[s].toJSON(),
+                        }).render();
+                    });
+                    const summaryTable = new SummaryItemView({
+                        el: $("#summary-table-body"),
+                        model: x.Total.toJSON(),
+                    });
+                    summaryTable.render();
+                    summaryTable.$('tr').last().css('background-color', 'white');
                 }
             });
             $("#summary-table").hide();
