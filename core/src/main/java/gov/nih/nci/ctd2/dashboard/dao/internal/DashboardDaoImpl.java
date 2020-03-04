@@ -884,25 +884,28 @@ public class DashboardDaoImpl implements DashboardDao {
     public List<EcoBrowse> getEcoBrowse() {
         Session session = getSession();
         @SuppressWarnings("unchecked")
-        org.hibernate.query.Query<Object[]> ecocodeQuery = session
-                .createNativeQuery("SELECT ecocode, id FROM observation_template WHERE LENGTH(ecocode)>0");
+        org.hibernate.query.Query<Object[]> ecocodeQuery = session.createNativeQuery(
+                "SELECT ecocode, id, tier, submissionCenter_id FROM observation_template WHERE LENGTH(ecocode)>0");
         List<Object[]> ecocodeResult = ecocodeQuery.list();
         Map<String, EcoBrowse> map = new HashMap<String, EcoBrowse>();
+        Map<String, Set<Integer>> mapTier1centers = new HashMap<String, Set<Integer>>();
+        Map<String, Set<Integer>> mapTier2centers = new HashMap<String, Set<Integer>>();
+        Map<String, Set<Integer>> mapTier3centers = new HashMap<String, Set<Integer>>();
         for (Object[] array : ecocodeResult) {
             String allcodes = (String) array[0];
             Integer templateId = (Integer) array[1];
+            Integer tier = (Integer) array[2];
+            Integer centerId = (Integer) array[3];
 
-            String countSql = "SELECT COUNT(DISTINCT submission.id), tier, COUNT(DISTINCT observation.id), COUNT(DISTINCT submissionCenter_id)"
+            String countSql = "SELECT COUNT(DISTINCT submission.id), COUNT(DISTINCT observation.id)"
                     + " FROM observation JOIN submission ON observation.submission_id=submission.id"
                     + " JOIN observation_template ON submission.observationTemplate_id=observation_template.id"
-                    + " WHERE submission.observationTemplate_id=" + templateId + " GROUP BY tier";
+                    + " WHERE submission.observationTemplate_id=" + templateId;
             @SuppressWarnings("unchecked")
             org.hibernate.query.Query<Object[]> query = session.createNativeQuery(countSql);
             Object[] result = query.getSingleResult();
             BigInteger submissionCount = (BigInteger) result[0];
-            Integer tier = (Integer) result[1];
-            BigInteger tierCount = (BigInteger) result[2];
-            BigInteger centerCount = (BigInteger) result[3];
+            BigInteger tierCount = (BigInteger) result[1];
 
             String[] ecocodes = allcodes.split("\\|");
             for (String code : ecocodes) {
@@ -917,25 +920,53 @@ public class DashboardDaoImpl implements DashboardDao {
                 }
 
                 b.setNumberOfSubmissions(b.getNumberOfSubmissions() + submissionCount.intValue());
+                Set<Integer> centerSet = null;
                 switch (tier) {
                     case 1:
                         b.setNumberOfTier1Observations(b.getNumberOfTier1Observations() + tierCount.intValue());
-                        b.setNumberOfTier1SubmissionCenters(
-                                b.getNumberOfTier1SubmissionCenters() + centerCount.intValue());
+                        centerSet = mapTier1centers.get(code);
+                        if (centerSet == null) {
+                            centerSet = new HashSet<Integer>();
+                            mapTier1centers.put(code, centerSet);
+                        }
                         break;
                     case 2:
                         b.setNumberOfTier2Observations(b.getNumberOfTier2Observations() + tierCount.intValue());
-                        b.setNumberOfTier2SubmissionCenters(
-                                b.getNumberOfTier2SubmissionCenters() + centerCount.intValue());
+                        centerSet = mapTier2centers.get(code);
+                        if (centerSet == null) {
+                            centerSet = new HashSet<Integer>();
+                            mapTier2centers.put(code, centerSet);
+                        }
                         break;
                     case 3:
                         b.setNumberOfTier3Observations(b.getNumberOfTier3Observations() + tierCount.intValue());
-                        b.setNumberOfTier3SubmissionCenters(
-                                b.getNumberOfTier3SubmissionCenters() + centerCount.intValue());
+                        centerSet = mapTier3centers.get(code);
+                        if (centerSet == null) {
+                            centerSet = new HashSet<Integer>();
+                            mapTier3centers.put(code, centerSet);
+                        }
                         break;
+                    default:
+                        log.error("unknow tier number " + tier);
                 }
+                centerSet.add(centerId);
             }
         }
+        map.forEach((code, browseItem) -> {
+            int tier1 = 0, tier2 = 0, tier3 = 0;
+            Set<Integer> set1 = mapTier1centers.get(code);
+            Set<Integer> set2 = mapTier2centers.get(code);
+            Set<Integer> set3 = mapTier3centers.get(code);
+            if (set1 != null)
+                tier1 = set1.size();
+            if (set2 != null)
+                tier2 = set2.size();
+            if (set3 != null)
+                tier3 = set3.size();
+            browseItem.setNumberOfTier1SubmissionCenters(tier1);
+            browseItem.setNumberOfTier2SubmissionCenters(tier2);
+            browseItem.setNumberOfTier3SubmissionCenters(tier3);
+        });
         session.close();
         log.debug("map size " + map.size());
         return new ArrayList<EcoBrowse>(map.values());
