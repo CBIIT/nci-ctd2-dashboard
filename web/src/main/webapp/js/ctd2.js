@@ -1829,14 +1829,16 @@
                 tier: thatModel.tier ? thatModel.tier : null,
             })));
 
-            _.each(result.synonyms.split("|"), function (aSynonym) {
-                if (aSynonym.displayName == result.displayName) return;
+            if (result.synonyms != null && result.synonyms.length > 0) {
+                _.each(result.synonyms.split("|"), function (aSynonym) {
+                    if (aSynonym.displayName == result.displayName) return;
 
-                new SynonymView({
-                    model: { displayName: aSynonym },
-                    el: $("ul.synonyms")
-                }).render();
-            });
+                    new SynonymView({
+                        model: { displayName: aSynonym },
+                        el: $("ul.synonyms")
+                    }).render();
+                });
+            }
 
             _.each(result.annotations, function (annotation) {
                 annotation.displayName = annotation.displayName.replace(/_/g, " ");
@@ -2560,10 +2562,12 @@
             let synonyms = result.synonyms;
             if (result.class == "ECOTerm") {
                 synonyms = [];
-                _.each(result.synonyms.split("|"), function (aSynonym) {
-                    if (aSynonym.displayName == result.displayName) return;
-                    synonyms.push({ displayName: aSynonym });
-                });
+                if (result.synonyms != null && result.synonyms.length > 0) {
+                    _.each(result.synonyms.split("|"), function (aSynonym) {
+                        if (aSynonym.displayName == result.displayName) return;
+                        synonyms.push({ displayName: aSynonym });
+                    });
+                }
             }
             _.each(synonyms, function (aSynonym) {
                 new SynonymView({
