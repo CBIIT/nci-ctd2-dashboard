@@ -166,6 +166,8 @@
                                             <li><em>Cell Sample: </em> <a href="#search/OVCAR8">OVCAR8</a></li>
                                             <li><em>Multiple: </em> <a href="#search/dexamethasone AKT1">dexamethasone
                                                     AKT1</a></li>
+                                            <li><em>Expt. Evidence Code: </em> <a href="#search/ECO_0006053">ECO_0006053</a></li>
+                                            <li><em>Expt. Evidence term: </em> <a href="#search/PCR">PCR</a></li>
                                         </ul>
                                         <br>
                                     </span>
