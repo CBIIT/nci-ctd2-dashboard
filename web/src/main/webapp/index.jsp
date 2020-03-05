@@ -612,8 +612,7 @@
                     <tr>
                         <th>Description</th>
                         <td>
-                            {{submission.observationTemplate.description}}
-                            <small>(<a href="#{{submission.stableURL}}">details &raquo;</a>)</small>
+                            <a href="#{{submission.stableURL}}">{{submission.observationTemplate.description}}</a>
                         </td>
                     </tr>
                     <tr id="obs-submission-summary">
