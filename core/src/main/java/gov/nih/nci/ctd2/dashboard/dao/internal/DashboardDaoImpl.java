@@ -1168,7 +1168,7 @@ public class DashboardDaoImpl implements DashboardDao {
         return list;
     }
 
-    private Summary summarizePerSubject(Class<? extends Subject> subjectClass) {
+    private Summary summarizePerSubject(Class<? extends Subject> subjectClass, String label) {
         String tableName = "";
         Class<?> implClass = subjectClass.isInterface() ? dashboardFactory.getImplClass(subjectClass) : subjectClass;
         java.lang.annotation.Annotation[] annotation = implClass.getAnnotationsByType(javax.persistence.Table.class);
@@ -1204,8 +1204,7 @@ public class DashboardDaoImpl implements DashboardDao {
         }
 
         session.close();
-        return new Summary(subjectClass.getSimpleName(), submissions.intValue(), tierCount[0], tierCount[1],
-                tierCount[2]);
+        return new Summary(label, submissions.intValue(), tierCount[0], tierCount[1], tierCount[2]);
     }
 
     private Summary summarizeStories() {
@@ -1255,7 +1254,7 @@ public class DashboardDaoImpl implements DashboardDao {
             tierCount[tier - 1] = count.intValue();
         }
         session.close();
-        return new Summary("Evidence Ontology Codes", submissions.intValue(), tierCount[0], tierCount[1], tierCount[2]);
+        return new Summary("Evidence Types", submissions.intValue(), tierCount[0], tierCount[1], tierCount[2]);
     }
 
     private Summary summarizeTotal() {
@@ -1279,20 +1278,25 @@ public class DashboardDaoImpl implements DashboardDao {
             tierCount[tier - 1] = count.intValue();
         }
         session.close();
-        return new Summary("Total", submissions.intValue(), tierCount[0], tierCount[1], tierCount[2]);
+        return new Summary("", submissions.intValue(), tierCount[0], tierCount[1], tierCount[2]);
     }
 
     @Override
     public void summarize() {
         findEntities(Summary.class).forEach(s -> delete(s));
 
-        Class<?>[] summaryClasses = new Class<?>[] { AnimalModel.class, CellSample.class, Compound.class, Gene.class,
-                ShRna.class, TissueSample.class };
-        for (Class<?> c : summaryClasses) {
+        Map<Class<?>, String> summaryClasses = new HashMap<Class<?>, String>();
+        summaryClasses.put(AnimalModel.class, "Animal Models");
+        summaryClasses.put(CellSample.class, "Cell Lines");
+        summaryClasses.put(Compound.class, "Compounds");
+        summaryClasses.put(Gene.class, "Genes");
+        summaryClasses.put(ShRna.class, "shRNA");
+        summaryClasses.put(TissueSample.class, "Disease Contexts (Tissues)");
+        summaryClasses.forEach((clazz, label) -> {
             @SuppressWarnings("unchecked")
-            Summary s = summarizePerSubject((Class<? extends Subject>) c);
+            Summary s = summarizePerSubject((Class<? extends Subject>) clazz, label);
             save(s);
-        }
+        });
 
         Summary s = summarizeStories();
         save(s);
