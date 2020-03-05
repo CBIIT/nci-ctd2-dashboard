@@ -271,7 +271,7 @@
                 </div><!-- row -->
 
         <div class="dark-separator"></div>
-        <a id=summary-table-label style="text-align:center;display:block"><span id=toggle-word>Show</span> Dashboard Content Summary</a>
+        <a id=summary-table-label style="text-align:center;display:block;padding:10px"><span id=toggle-word>Show</span> Dashboard Content Summary</a>
         <table id=summary-table class="table table-bordered table-sm text-center">
             <thead>
                 <tr><th rowspan=2>Category</th><th rowspan=2>Submissions</th><th colspan=4>Observations</th></tr>
