@@ -958,6 +958,38 @@
                 }
             });
 
+            const ecoTable = $("#eco-grid");
+            const ecocodes = result.submission.observationTemplate.ECOCode;
+            if (ecocodes.length == 0) {
+                ecoTable.hide();
+            } else {
+                const ecos = ecocodes.split('|');
+                const ecodata = [];
+                ecos.forEach(function (ecocode) {
+                    if (ecocode == '') return;
+                    const ecourl = ecocode.replace(':', '-').toLowerCase();
+                    const eco_model = new ECOTerm({
+                        id: ecourl,
+                    });
+                    eco_model.fetch({
+                        async: false,
+                        success: function () { // no-op 
+                        },
+                        error: function () { console.log('ECO term not found for' + ecocode); },
+                    });
+                    const econame = eco_model.toJSON().displayName;
+                    ecodata.push(['<a href="#eco/' + ecourl + '">' + ecocode + '</a>', econame]);
+                });
+
+                ecoTable.DataTable({
+                    data: ecodata,
+                    paging: false,
+                    ordering: false,
+                    info: false,
+                    searching: false,
+                });
+            }
+
             // Load evidences
             const observedEvidences = new ObservedEvidences({
                 observationId: result.id

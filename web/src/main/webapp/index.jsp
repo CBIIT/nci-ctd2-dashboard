@@ -605,8 +605,21 @@
 
 
             <h3>Submission <small>(<a href="#" id="small-show-sub-details">show details</a><a href="#" id="small-hide-sub-details">hide details</a>)</small></h3>
+            <div>
+                <table id="eco-grid" class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <th>Evidence Ontology Code</th>
+                        <th>Term Name</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!-- ECO term content goes here -->
+                    </tbody>
+                </table>
+            </div>
             <div id="obs-submission-details">
-                <table id="obs-submission-details-grid" class="table table-bordered table-striped">
+                <table class="table table-bordered table-striped">
                     <tr>
                         <th>Project</th>
                         <td>{{submission.observationTemplate.project}}</td>
