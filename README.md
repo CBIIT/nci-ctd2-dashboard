@@ -40,7 +40,7 @@ From here on you can follow the module-specific notes below.
 ## Core: Data structures and DAO methods
 This module tries to capture the main database schema outlined below:
 
-![Dashboard DB schema](https://bitbucket.org/cbio_mskcc/ctd2-dashboard/downloads/dashboard_schema.png)
+![Dashboard DB schema](dashboard_schema.png)
 
 We are taking advantage of _factory pattern_ and also separating class definitions (interfaces) and their actual implementations (`*Impl`s) for convenience.
 We basically try to convey the following basic ideas in our implementation:
@@ -55,11 +55,11 @@ The interface determines which methods a class should provide.
 The actual implementation of the methods goes into the class `CompoundImpl` which, programmatically speaking, implements `Compound`.
 This is better explained with the following simple UML diagram:
 
-![Compound](https://bitbucket.org/cbio_mskcc/ctd2-dashboard/downloads/sampleClassDiagram.png)
+![Compound](sampleClassDiagram.png)
 
 The following UML diagram also shows properties and methods in a detailed manner:
 
-![CompoundDeatils](https://bitbucket.org/cbio_mskcc/ctd2-dashboard/downloads/sampleClassDiagramDetails.png)
+![CompoundDeatils](sampleClassDiagramDetails.png)
 
 Because of these implementation choices, the good practice for creating a new instance of a specific object is as follows:
 
@@ -126,26 +126,18 @@ For example:
 
 	java -jar admin/target/dashboard-admin.jar -h
 
-will list all available options to you.  For more information about running the admin tool, please visit the [Dashboard Admin Tool](https://bitbucket.org/cbio_mskcc/ctd2-dashboard/wiki/Dashboard%20Admin%20Tool) wiki page.
+will list all available options to you.  For more information about running the admin tool, please visit the [Dashboard Admin Tool](admin/admin_tool.md) page.
 
 ## Web: CTD^2 Dashboard UI/Web API
 ### Deploy
 This module will create a single _war_ file for the Web API/UI.
 You can simply deploy this application, with the following generic command:
 
-	cp -f web/target/web.war $TOMCAT_HOME/webapps/ctd2-dashboard.war
+	cp -f web/target/web.war $TOMCAT_HOME/webapps/dashboard.war
 
 or better, especially if you do not want to deal with a new Tomcat installation, you can take advantage of the _mvn tomcat_ plugin:
 
 	cd web/
 	mvn tomcat:run-war
 
-and point your browser to [http://localhost:8080/dashboard-webapp](http://localhost:8080/dashboard-webapp).
-
-### Notes about design
-Here are a few quick comments from Arman `arman@cbio.mskcc.org` about this prototype:
-
- * This is just the first iteration, so please feel free to comment and hopefully the design will converge accordingly
- * I decided to color code main categories (blue/red/orange/green) and I think it turns out quite well since it will allow any cross-link (e.g. from drug-view to target-view) to pop-up to the eye
- * I have not optimized things on the mobile side, so although I believe it will work fine on an iPad; it might lack some of the eye-candies on a mobile phone due to size limitations.
- * I have altered the main "tiles-design" pattern a little bit in order to be able to put an emphasis on "Stories" -- so this is why it is being shown by default. This is something between what Chris initially suggested and what Daniela wanted to see.
+and point your browser to [http://localhost:8080/dashboard](http://localhost:8080/dashboard).
