@@ -1855,9 +1855,6 @@
                     </p>
                 </div>
             </div>
-            <div class="container" style="padding-bottom:5px;">
-            <button type="button" class="btn btn-outline-dark" id="reset-ordering">Reset initial ordering</button>
-            </div>
 
             <table class="table table-bordered table-striped observations" id="eco-browse-table">
                 <thead>
