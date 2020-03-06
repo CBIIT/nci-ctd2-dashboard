@@ -514,6 +514,12 @@
                                 <ul class="similar-submission-list"></ul>
                             </td>
                         </tr>
+                        <tr id="eco-row">
+                            <th>Evidence Ontology Terms</th>
+                            <td>
+                                <ul id="eco-list"></ul>
+                            </td>
+                        </tr>
                         <tr>
                             <th width="175">Submission Date</th>
                             <td>{{submissionDate}}</td>

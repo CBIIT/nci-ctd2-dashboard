@@ -2468,6 +2468,27 @@
                 }
             });
 
+            const ecocodes = submission.observationTemplate.ECOCode;
+            if (ecocodes.length == 0) {
+                $("#eco-row").hide();
+            } else {
+                const ecos = ecocodes.split('|');
+                ecos.forEach(function (ecocode) {
+                    if (ecocode == '') return;
+                    const ecourl = ecocode.replace(':', '-').toLowerCase();
+                    const eco_model = new ECOTerm({
+                        id: ecourl,
+                    });
+                    eco_model.fetch({
+                        success: function () {
+                            const econame = eco_model.toJSON().displayName;
+                            $("#eco-list").append('<li>' + econame + " (<a href='#eco/" + ecourl + "'>" + ecocode + '</a>)</li>');
+                        },
+                        error: function () { console.log('ECO term not found for' + ecocode); },
+                    });
+                });
+            }
+
             $.ajax("observations/countBySubmission/?submissionId=" + submissionId).done(function (count) {
                 const observations = new ObservationsBySubmission({
                     submissionId: submissionId
