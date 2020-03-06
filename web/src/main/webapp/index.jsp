@@ -296,6 +296,19 @@
                 </div>
             </div>
         </div>
+        <div class="container ctd2-boxes">
+            <div class=row>
+                <div class="col-4">
+                    <a class="btn btn-success btn-block" href="#stories" role="button" id="explore-gene-button">stories</a>
+                </div>
+                <div class="col-4">
+                    <a class="btn btn-primary btn-block" href="#explore/cellline/Cell Line" role="button" id="explore-compound-button">cell lines</a>
+                </div>
+                <div class="col-4">
+                    <a class="btn btn-danger btn-block" href="#eco_browse" role="button" id="explore-disease-button">experimental evidence</a>
+                </div>
+            </div>
+        </div>
 
         <div class="dark-separator"></div>
         <!-- Carousel
