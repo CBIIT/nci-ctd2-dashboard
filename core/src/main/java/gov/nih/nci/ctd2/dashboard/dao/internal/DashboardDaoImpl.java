@@ -724,9 +724,11 @@ public class DashboardDaoImpl implements DashboardDao {
         /* search ECO terms */
         List<ECOTerm> ecoterms = findECOTerms(keyword);
         for (ECOTerm ecoterm : ecoterms) {
-            int observationNumber = countObservation(ecoterm.getCode());
+            List<Integer> observationIds = observationIdsForEcoCode(ecoterm.getCode());
+            int observationNumber = observationIds.size();
             if (observationNumber == 0)
                 continue;
+
             DashboardEntityWithCounts entity = new DashboardEntityWithCounts();
             entity.setDashboardEntity(ecoterm);
             entity.setObservationCount(observationNumber);
@@ -735,6 +737,35 @@ public class DashboardDaoImpl implements DashboardDao {
             entity.setCenterCount(x[1]);
 
             entitiesWithCounts.add(entity);
+
+            Set<String> newTerms = new HashSet<String>();
+            String nameEntered = getMatchedTerm(reconstructedQueryString, ecoterm.getDisplayName());
+            if (nameEntered != null) {
+                newTerms.add(nameEntered);
+            }
+            String codeEntered = getMatchedTerm(reconstructedQueryString, ecoterm.getCode());
+            if (codeEntered != null) {
+                newTerms.add(codeEntered);
+            }
+            for (String synonym : ecoterm.getSynonyms().split("\\|")) {
+                String synonymEntered = getMatchedTerm(reconstructedQueryString, synonym);
+                if (synonymEntered != null) {
+                    newTerms.add(synonymEntered);
+                }
+            }
+            if (newTerms.size() == 0) {
+                continue; // nothing to do for the 'intersection search'
+            }
+
+            for (Integer obid : observationIds) {
+                Observation observation = getEntityById(Observation.class, obid);
+                Set<String> terms = matchingObservations.get(observation);
+                if (terms == null) {
+                    terms = new HashSet<String>();
+                    matchingObservations.put(observation, terms);
+                }
+                terms.addAll(newTerms);
+            }
         }
 
         // add observations
@@ -805,17 +836,17 @@ public class DashboardDaoImpl implements DashboardDao {
         return list;
     }
 
-    private int countObservation(String ecocode) {
-        String sql = "SELECT count(observation.id) FROM observation"
+    private List<Integer> observationIdsForEcoCode(String ecocode) {
+        String sql = "SELECT observation.id FROM observation"
                 + " JOIN submission ON observation.submission_id=submission.id"
                 + " JOIN observation_template ON submission.observationTemplate_id=observation_template.id"
                 + " WHERE ecocode LIKE '%" + ecocode + "%'";
         Session session = getSession();
         @SuppressWarnings("unchecked")
-        org.hibernate.query.Query<BigInteger> query = session.createNativeQuery(sql);
-        BigInteger count = query.getSingleResult();
+        org.hibernate.query.Query<Integer> query = session.createNativeQuery(sql);
+        List<Integer> list = query.list();
         session.close();
-        return count.intValue();
+        return list;
 
     }
 
