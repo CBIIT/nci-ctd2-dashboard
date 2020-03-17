@@ -1392,15 +1392,15 @@
                         const n3obv = sModel.numberOfTier3Observations;
                         const n3ctr = sModel.numberOfTier3SubmissionCenters;
                         const n3link = (n3obv == 0 ? "" : "<a href='#" + sModel.ecoTermURL + "/3'>" + n3obv + "</a>") +
-                            (n3obv > 1 ? " (" + n3ctr + " center" + (n3ctr > 1 ? "s" : "") + ")" : "");
+                            (n3obv > 0 ? " (" + n3ctr + " center" + (n3ctr > 1 ? "s" : "") + ")" : "");
                         const n2obv = sModel.numberOfTier2Observations;
                         const n2ctr = sModel.numberOfTier2SubmissionCenters;
                         const n2link = (n2obv == 0 ? "" : "<a href='#" + sModel.ecoTermURL + "/2'>" + n2obv + "</a>") +
-                            (n2obv > 1 ? " (" + n2ctr + " center" + (n2ctr > 1 ? "s" : "") + ")" : "");
+                            (n2obv > 0 ? " (" + n2ctr + " center" + (n2ctr > 1 ? "s" : "") + ")" : "");
                         const n1obv = sModel.numberOfTier1Observations;
                         const n1ctr = sModel.numberOfTier1SubmissionCenters;
                         const n1link = (n1obv == 0 ? "" : "<a href='#" + sModel.ecoTermURL + "/1'>" + n1obv + "</a>") +
-                            (n1obv > 1 ? " (" + n1ctr + " center" + (n1ctr > 1 ? "s" : "") + ")" : "");
+                            (n1obv > 0 ? " (" + n1ctr + " center" + (n1ctr > 1 ? "s" : "") + ")" : "");
                         table_data.push([nameLink, sbumission_count, n3link, n2link, n1link]);
                     });
                     $("#eco-browse-table").dataTable({
@@ -3215,15 +3215,15 @@
                         const n3obv = sModel.numberOfTier3Observations;
                         const n3ctr = sModel.numberOfTier3SubmissionCenters;
                         const n3link = (n3obv == 0 ? "" : "<a href='#" + subject.stableURL + "/" + role + "/3'>" + n3obv + "</a>") +
-                            (n3obv > 1 ? " (" + n3ctr + " center" + (n3ctr > 1 ? "s" : "") + ")" : "");
+                            (n3obv > 0 ? " (" + n3ctr + " center" + (n3ctr > 1 ? "s" : "") + ")" : "");
                         const n2obv = sModel.numberOfTier2Observations;
                         const n2ctr = sModel.numberOfTier2SubmissionCenters;
                         const n2link = (n2obv == 0 ? "" : "<a href='#" + subject.stableURL + "/" + role + "/2'>" + n2obv + "</a>") +
-                            (n2obv > 1 ? " (" + n2ctr + " center" + (n2ctr > 1 ? "s" : "") + ")" : "");
+                            (n2obv > 0 ? " (" + n2ctr + " center" + (n2ctr > 1 ? "s" : "") + ")" : "");
                         const n1obv = sModel.numberOfTier1Observations;
                         const n1ctr = sModel.numberOfTier1SubmissionCenters;
                         const n1link = (n1obv == 0 ? "" : "<a href='#" + subject.stableURL + "/" + role + "/1'>" + n1obv + "</a>") +
-                            (n1obv > 1 ? " (" + n1ctr + " center" + (n1ctr > 1 ? "s" : "") + ")" : "");
+                            (n1obv > 0 ? " (" + n1ctr + " center" + (n1ctr > 1 ? "s" : "") + ")" : "");
                         table_data.push([reformatted, nameLink, role, n3link, n2link, n1link]);
                     });
                     $("#explore-table").dataTable({
