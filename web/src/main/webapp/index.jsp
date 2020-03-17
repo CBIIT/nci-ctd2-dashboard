@@ -1864,7 +1864,8 @@
                     <p>
                         This table summarizes submissions and observations based on the experimental techniques used to generate them.
                         This is realized by annotating the various submissions with terms drawn from the
-                        <a href='http://www.evidenceontology.org/' target='_blank'>Evidence Ontology</a>. Note - not all submissions have been annotated with Evidence Ontology codes.
+                        <a href='http://www.evidenceontology.org/' target='_blank'>Evidence Ontology</a>. 
+                        <p>Note - not all submissions have been annotated with Evidence Ontology codes.
                     </p>
                 </div>
             </div>
