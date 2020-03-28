@@ -644,12 +644,27 @@ div.center-link-container {
 }
 
 #explore-compound-button {
-    background-color: #FDA100;
+    background-color: #FE8500;
     color: black;
 }
 
 #explore-disease-button {
+    background-color: #FDA100;
+    color: black;
+}
+
+#explore-stories-button {
+    background-color: #FDB735;
+    color: black;
+}
+
+#explore-celllines-button {
     background-color: #FECD68;
+    color: black;
+}
+
+#explore-eco-button {
+    background-color: #FEF0C0;
     color: black;
 }
 
@@ -663,4 +678,10 @@ div.center-link-container {
 
 #summary-item {
     background-color: bisque;
+}
+
+.ctd2bigbutton {
+    height: 100px;
+    white-space: normal;
+    padding-top: 10px;
 }
