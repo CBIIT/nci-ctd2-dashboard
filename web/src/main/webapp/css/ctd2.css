@@ -639,22 +639,22 @@ div.center-link-container {
 }
 
 #explore-gene-button {
-    background-color: #FECD68;
+    background-color: #FF6800;
     color: black;
 }
 
 #explore-compound-button {
-    background-color: #FECD68;
+    background-color: #FE8500;
     color: black;
 }
 
 #explore-disease-button {
-    background-color: #FECD68;
+    background-color: #FDA100;
     color: black;
 }
 
 #explore-stories-button {
-    background-color: #FECD68;
+    background-color: #FDB735;
     color: black;
 }
 
@@ -664,7 +664,7 @@ div.center-link-container {
 }
 
 #explore-eco-button {
-    background-color: #FECD68;
+    background-color: #FEF0C0;
     color: black;
 }
 
@@ -678,10 +678,4 @@ div.center-link-container {
 
 #summary-item {
     background-color: bisque;
-}
-
-.ctd2bigbutton {
-    height: 100px;
-    white-space: normal;
-    padding-top: 10px;
 }
