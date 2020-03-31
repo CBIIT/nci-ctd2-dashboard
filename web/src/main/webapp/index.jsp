@@ -286,24 +286,24 @@
         <div class="container ctd2-boxes">
             <div class=row>
                 <div class="col-4">
-                    <a class="btn btn-danger btn-block" href="#explore/target/Biomarker,Target" role="button" id="explore-gene-button">genes and proteins</a>
+                    <a class="btn btn-danger btn-block ctd2bigbutton" href="#explore/target/Biomarker,Target" role="button" id="explore-gene-button">genes and proteins</a>
                 </div>
                 <div class="col-4">
-                    <a class="btn btn-danger btn-block" href="#explore/compound/Perturbagen,Candidate Drug" role="button" id="explore-compound-button">compounds and perturbagens</a>
+                    <a class="btn btn-danger btn-block ctd2bigbutton" href="#explore/compound/Perturbagen,Candidate Drug" role="button" id="explore-compound-button">compounds and perturbagens</a>
                 </div>
                 <div class="col-4">
-                    <a class="btn btn-danger btn-block" href="#explore/context/Disease" role="button" id="explore-disease-button">disease context</a>
+                    <a class="btn btn-danger btn-block ctd2bigbutton" href="#explore/context/Disease" role="button" id="explore-disease-button">disease context</a>
                 </div>
             </div>
             <div class=row>
                 <div class="col-4">
-                    <a class="btn btn-danger btn-block" href="#stories" role="button" id="explore-stories-button">stories</a>
+                    <a class="btn btn-danger btn-block ctd2bigbutton" href="#stories" role="button" id="explore-stories-button">stories</a>
                 </div>
                 <div class="col-4">
-                    <a class="btn btn-danger btn-block" href="#explore/cellline/Cell Line" role="button" id="explore-celllines-button">cell lines</a>
+                    <a class="btn btn-danger btn-block ctd2bigbutton" href="#explore/cellline/Cell Line" role="button" id="explore-celllines-button">cell lines</a>
                 </div>
                 <div class="col-4">
-                    <a class="btn btn-danger btn-block" href="#eco_browse" role="button" id="explore-eco-button">experimental evidence</a>
+                    <a class="btn btn-danger btn-block ctd2bigbutton" href="#eco_browse" role="button" id="explore-eco-button">experimental evidence</a>
                 </div>
             </div>
         </div>

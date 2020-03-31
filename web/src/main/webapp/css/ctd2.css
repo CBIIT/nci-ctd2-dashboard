@@ -668,6 +668,10 @@ div.center-link-container {
     color: black;
 }
 
+.ctd2bigbutton {
+    border-radius: 1rem;
+}
+
 .icon-question-sign {
     background-image: url("../img/unknown.png");
     background-size: contain;
