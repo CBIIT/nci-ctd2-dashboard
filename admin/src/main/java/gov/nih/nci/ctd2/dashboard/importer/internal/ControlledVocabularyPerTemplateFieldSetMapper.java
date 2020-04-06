@@ -105,5 +105,7 @@ public class ControlledVocabularyPerTemplateFieldSetMapper implements FieldSetMa
 		shortCenterNameMap.put("University of California San Francisco (2)", "UCSF2");
 		shortCenterNameMap.put("University of Texas MD Anderson Cancer Center", "UTMDACC");
 		shortCenterNameMap.put("University of Texas Southwestern Medical Center", "UTSW");
+		shortCenterNameMap.put("CTD² Network Collaboration", "Collaboration");
+		shortCenterNameMap.put("Other NCI Programs", "OTHERS");
 	}
 }
