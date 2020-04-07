@@ -1,18 +1,13 @@
 package gov.nih.nci.ctd2.dashboard.impl;
 
-import gov.nih.nci.ctd2.dashboard.model.ECOTerm;
-import org.hibernate.annotations.Proxy;
-import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Fields;
-import org.hibernate.search.annotations.Indexed;
-import org.hibernate.search.annotations.Analyze;
-import org.hibernate.search.annotations.Analyzer;
-import org.hibernate.search.annotations.Store;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
-import javax.persistence.*;
-import java.util.LinkedHashSet;
-import java.util.Set;
-import java.util.jar.Attributes.Name;
+import org.hibernate.annotations.Proxy;
+import org.hibernate.search.annotations.Indexed;
+
+import gov.nih.nci.ctd2.dashboard.model.ECOTerm;
 
 @Entity
 @Proxy(proxyClass = ECOTerm.class)

@@ -3,17 +3,16 @@ package gov.nih.nci.ctd2.dashboard.util;
 import java.util.Set;
 import java.util.TreeSet;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import gov.nih.nci.ctd2.dashboard.impl.DashboardEntityImpl;
-import gov.nih.nci.ctd2.dashboard.model.DashboardEntity;
 
 @Entity
 @Table(name = "eco_browse")
-public class EcoBrowse extends DashboardEntityImpl implements DashboardEntity {
+public class EcoBrowse extends DashboardEntityImpl {
+
+    private static final long serialVersionUID = 4016872234163960460L;
 
     private String ecoTermURL;
     private Integer numberOfSubmissions;
