@@ -571,6 +571,7 @@
                 <!-- here will go the rows -->
                 </tbody>
             </table>
+            <p id=center-abbreviations >Center Abbreviations: Broad, BR; Cold Spring Harbor Laboratory, CSHL; Columbia University, CU; Dana-Farber Cancer Institute, DFCI; Emory, EM</p>
         </div>
     </script>
 
