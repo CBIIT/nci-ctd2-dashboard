@@ -449,6 +449,7 @@
                     loading...
                 </a>
             </td>
+            <td>{{pinned}}</td>
         </tr>
     </script>
 

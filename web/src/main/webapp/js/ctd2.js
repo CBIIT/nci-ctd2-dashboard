@@ -1279,6 +1279,9 @@
                 success: function () {
 
                     _.each(centers.toJSON(), function (aCenter) {
+                        aCenter.pinned = 0;
+                        if ('CTD² Network Collaboration' == aCenter.displayName) aCenter.pinned = 2;
+                        if ('Other NCI Programs' == aCenter.displayName) aCenter.pinned = 1;
                         new CenterListRowView({
                             el: $(thatEl).find("#centers-tbody"),
                             model: aCenter
@@ -1309,14 +1312,22 @@
                     $("#centers-list-table").dataTable({
                         // might want to increase this number if we have incredible number of centers
                         "iDisplayLength": 25,
+                        "orderFixed": [4, "desc"],
                         columnDefs: [{
-                            targets: [0, 2],
-                            orderable: false,
-                        }, {
-                            targets: 3,
-                            orderDataType: "submission-count",
-                            type: "numeric"
-                        }],
+                                targets: [0, 2],
+                                orderable: false,
+                            }, {
+                                targets: 3,
+                                orderDataType: "submission-count",
+                                type: "numeric"
+                            },
+                            {
+                                "visible": false,
+                                "sortable": false,
+                                "searchable": false,
+                                "targets": 4
+                            },
+                        ],
                     }).fnSort([
                         [1, 'asc']
                     ]);
