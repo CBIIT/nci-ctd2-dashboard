@@ -42,10 +42,6 @@ public class ResultSetlUtil {
         INTERACTIONS_SERVLET_URL = aUrl;
     }
 
-    public static String getUrl() { // ignored
-        return null;
-    }
-
     private int getColumNum(final String name) {
         final Integer ret = metaMap.get(name);
         if (ret != null)
@@ -91,14 +87,14 @@ public class ResultSetlUtil {
         in.close();
     }
 
-    public static ResultSetlUtil executeQuery(final String methodAndParams, final String dummy)
+    public static ResultSetlUtil executeQuery(final String methodAndParams)
             throws IOException, UnAuthenticatedException {
 
-        return executeQueryWithUserInfo(methodAndParams, dummy, null);
+        return executeQueryWithUserInfo(methodAndParams, null);
     }
 
-    public static ResultSetlUtil executeQueryWithUserInfo(final String methodAndParams, final String dummy,
-            final String userInfo) throws IOException, UnAuthenticatedException {
+    public static ResultSetlUtil executeQueryWithUserInfo(final String methodAndParams, final String userInfo)
+            throws IOException, UnAuthenticatedException {
 
         final URL aURL = new URL(INTERACTIONS_SERVLET_URL);
         final HttpURLConnection aConnection = (HttpURLConnection) (aURL.openConnection());

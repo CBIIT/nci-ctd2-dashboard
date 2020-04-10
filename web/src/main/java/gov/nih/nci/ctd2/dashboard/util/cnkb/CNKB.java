@@ -63,8 +63,7 @@ public class CNKB {
 		String methodAndParams = "getInteractionsSifFormat" + Constants.DEL
 				+ context + Constants.DEL + version + Constants.DEL
 				+ interactionType + Constants.DEL + presentBy;
-		ResultSetlUtil rs = ResultSetlUtil.executeQuery(methodAndParams,
-				ResultSetlUtil.getUrl());
+		ResultSetlUtil rs = ResultSetlUtil.executeQuery(methodAndParams);
 
 		String sifLine = null;
 		while (rs.next()) {
@@ -92,8 +91,7 @@ public class CNKB {
 		String methodAndParams = "getInteractionsAdjFormat" + Constants.DEL
 				+ context + Constants.DEL + version + Constants.DEL
 				+ interactionType + Constants.DEL + presentBy;
-		ResultSetlUtil rs = ResultSetlUtil.executeQuery(methodAndParams,
-				ResultSetlUtil.getUrl());
+		ResultSetlUtil rs = ResultSetlUtil.executeQuery(methodAndParams);
 
 		String adjLine = null;
 		while (rs.next()) {
@@ -119,8 +117,7 @@ public class CNKB {
 			return interactionTypeMap;
 		interactionTypeMap = new HashMap<String, String>();
 		String methodAndParams = "getInteractionTypes";
-		ResultSetlUtil rs = ResultSetlUtil.executeQuery(methodAndParams,
-				ResultSetlUtil.getUrl());
+		ResultSetlUtil rs = ResultSetlUtil.executeQuery(methodAndParams);
 
 		while (rs.next()) {
 
@@ -141,8 +138,7 @@ public class CNKB {
 		HashMap<String, String> map = new HashMap<String, String>();
 
 		String methodAndParams = "getInteractionEvidences";
-		ResultSetlUtil rs = ResultSetlUtil.executeQuery(methodAndParams,
-				ResultSetlUtil.getUrl());
+		ResultSetlUtil rs = ResultSetlUtil.executeQuery(methodAndParams);
 
 		while (rs.next()) {
 
@@ -163,8 +159,7 @@ public class CNKB {
 		HashMap<String, String> map = new HashMap<String, String>();
 
 		String methodAndParams = "getConfidenceTypes";
-		ResultSetlUtil rs = ResultSetlUtil.executeQuery(methodAndParams,
-				ResultSetlUtil.getUrl());
+		ResultSetlUtil rs = ResultSetlUtil.executeQuery(methodAndParams);
 
 		while (rs.next()) {
 
@@ -184,8 +179,7 @@ public class CNKB {
 		List<String> arrayList = new ArrayList<String>();
 
 		String methodAndParams = "getInteractionTypes";
-		ResultSetlUtil rs = ResultSetlUtil.executeQuery(methodAndParams,
-				ResultSetlUtil.getUrl());
+		ResultSetlUtil rs = ResultSetlUtil.executeQuery(methodAndParams);
 
 		while (rs.next()) {
 
@@ -205,8 +199,7 @@ public class CNKB {
 
 		String methodAndParams = "getInteractionTypesByInteractomeVersion"
 				+ Constants.DEL + context + Constants.DEL + version;
-		ResultSetlUtil rs = ResultSetlUtil.executeQuery(methodAndParams,
-				ResultSetlUtil.getUrl());
+		ResultSetlUtil rs = ResultSetlUtil.executeQuery(methodAndParams);
 
 		while (rs.next()) {
 
@@ -227,8 +220,7 @@ public class CNKB {
 
 		String methodAndParams = "getInteractomeDescription" + Constants.DEL
 				+ interactomeName;
-		ResultSetlUtil rs = ResultSetlUtil.executeQuery(methodAndParams,
-				ResultSetlUtil.getUrl());
+		ResultSetlUtil rs = ResultSetlUtil.executeQuery(methodAndParams);
 		while (rs.next()) {
 			interactomeDesc = rs.getString("description").trim();
 			break;
@@ -247,8 +239,7 @@ public class CNKB {
 		int interactionCount = 0;
 
 		String methodAndParams = "getDatasetNames";
-		ResultSetlUtil rs = ResultSetlUtil.executeQuery(methodAndParams,
-				ResultSetlUtil.getUrl());
+		ResultSetlUtil rs = ResultSetlUtil.executeQuery(methodAndParams);
 
 		while (rs.next()) {
 
@@ -271,8 +262,7 @@ public class CNKB {
 		int interactionCount = 0;
 
 		String methodAndParams = "getNciDatasetNames";
-		ResultSetlUtil rs = ResultSetlUtil.executeQuery(methodAndParams,
-				ResultSetlUtil.getUrl());
+		ResultSetlUtil rs = ResultSetlUtil.executeQuery(methodAndParams);
 
 		while (rs.next()) {
 
@@ -293,8 +283,7 @@ public class CNKB {
 
 		String methodAndParams = "getVersionDescriptor" + Constants.DEL
 				+ interactomeName;
-		ResultSetlUtil rs = ResultSetlUtil.executeQuery(methodAndParams,
-				ResultSetlUtil.getUrl());
+		ResultSetlUtil rs = ResultSetlUtil.executeQuery(methodAndParams);
 		while (rs.next()) {
 			String version = rs.getString("version").trim();
 			if (version.equalsIgnoreCase("DEL"))
@@ -322,8 +311,7 @@ public class CNKB {
 				+ geneSymbols + Constants.DEL + context + Constants.DEL
 				+ version + Constants.DEL + rowLimit;
 
-		ResultSetlUtil rs = ResultSetlUtil.executeQuery(methodAndParams,
-				ResultSetlUtil.getUrl());
+		ResultSetlUtil rs = ResultSetlUtil.executeQuery(methodAndParams);
 
 		double throttle = 0;
 		while (rs.next()) {
@@ -350,7 +338,7 @@ public class CNKB {
 				+ Constants.DEL + version + Constants.DEL + limit;
 
 		ResultSetlUtil rs = ResultSetlUtil.executeQueryWithUserInfo(
-				methodAndParams, ResultSetlUtil.getUrl(), userInfo);
+				methodAndParams, userInfo);
 
 		String previousInteractionId = null;
 
@@ -456,8 +444,8 @@ public class CNKB {
 		if (limit != null )
 			methodAndParams = methodAndParams +  Constants.DEL + limit;
 		 
-		ResultSetlUtil rs = ResultSetlUtil.executeQueryWithUserInfo(
-				methodAndParams, ResultSetlUtil.getUrl(), null);
+		ResultSetlUtil rs = ResultSetlUtil.executeQuery(
+				methodAndParams);
 
 		String previousInteractionId = null;
 
