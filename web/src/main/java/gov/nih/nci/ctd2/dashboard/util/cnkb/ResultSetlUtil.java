@@ -8,8 +8,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.TreeMap;
 
-import javax.xml.bind.DatatypeConverter;
-
 public class ResultSetlUtil {
     private static final String REGEX_DEL = "\\|";
     private static final int SPLIT_ALL = -2;
@@ -89,23 +87,11 @@ public class ResultSetlUtil {
 
     public static ResultSetlUtil executeQuery(final String methodAndParams)
             throws IOException, UnAuthenticatedException {
-
-        return executeQueryWithUserInfo(methodAndParams, null);
-    }
-
-    public static ResultSetlUtil executeQueryWithUserInfo(final String methodAndParams, final String userInfo)
-            throws IOException, UnAuthenticatedException {
-
         final URL aURL = new URL(INTERACTIONS_SERVLET_URL);
         final HttpURLConnection aConnection = (HttpURLConnection) (aURL.openConnection());
         aConnection.setDoOutput(true);
         aConnection.setConnectTimeout(urlConnectionTimeout);
 
-        if (userInfo != null && userInfo.trim().length() != 0) {
-            aConnection.setRequestProperty("Authorization",
-                    "Basic " + DatatypeConverter.printBase64Binary(userInfo.getBytes()));
-
-        }
         final OutputStreamWriter out = new OutputStreamWriter(aConnection.getOutputStream());
 
         out.write(methodAndParams);
