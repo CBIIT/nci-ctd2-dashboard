@@ -82,4 +82,6 @@ public interface DashboardDao {
     List<EcoBrowse> getEcoBrowse();
     Map<Observation, BigInteger> getOneObservationPerSubmissionByEcoCode(String ecocode, int tier);
     List<Observation> getObservationsForSubmissionAndEcoCode(Integer submissionId, String ecocode);
+    String getEcoTermName(String ecoTermCode);
+    String getEcoTermDefinition(String ecoTermCode);
 }
