@@ -1344,32 +1344,16 @@ public class DashboardDaoImpl implements DashboardDao {
     }
 
     @Override
-    public String getEcoTermName(String ecoTermCode) {
+    public ECOTerm getEcoTerm(String ecoTermCode) {
         Session session = getSession();
         @SuppressWarnings("unchecked")
         org.hibernate.query.Query<ECOTerm> query = session.createQuery("from ECOTermImpl where code = :ecocode");
         query.setParameter("ecocode", ecoTermCode);
-        String result = "";
+        ECOTerm result = null;
         try {
-            result = query.getSingleResult().getDisplayName();
+            result = query.getSingleResult();
         } catch (NoResultException e) {
-            result = "(not available)";
-        }
-        session.close();
-        return result;
-    }
-
-    @Override
-    public String getEcoTermDefinition(String ecoTermCode) {
-        Session session = getSession();
-        @SuppressWarnings("unchecked")
-        org.hibernate.query.Query<ECOTerm> query = session.createQuery("from ECOTermImpl where code = :ecocode");
-        query.setParameter("ecocode", ecoTermCode);
-        String result = "";
-        try {
-            result = query.getSingleResult().getDefinition();
-        } catch (NoResultException e) {
-            result = "(not available)";
+            log.info("ECO term not available for ECO code " + ecoTermCode);
         }
         session.close();
         return result;
