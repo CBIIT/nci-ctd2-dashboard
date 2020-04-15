@@ -12,6 +12,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -1340,5 +1341,21 @@ public class DashboardDaoImpl implements DashboardDao {
     @Override
     public List<Summary> getOverallSummary() {
         return findEntities(Summary.class).stream().filter(s -> s.getLabel() != null).collect(Collectors.toList());
+    }
+
+    @Override
+    public ECOTerm getEcoTerm(String ecoTermCode) {
+        Session session = getSession();
+        @SuppressWarnings("unchecked")
+        org.hibernate.query.Query<ECOTerm> query = session.createQuery("from ECOTermImpl where code = :ecocode");
+        query.setParameter("ecocode", ecoTermCode);
+        ECOTerm result = null;
+        try {
+            result = query.getSingleResult();
+        } catch (NoResultException e) {
+            log.info("ECO term not available for ECO code " + ecoTermCode);
+        }
+        session.close();
+        return result;
     }
 }
