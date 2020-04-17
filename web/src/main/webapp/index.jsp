@@ -461,7 +461,7 @@
                     <div class="center-link-container">(<span class="center-link"></span>)</div>
                 </div>
                 <div class="col-3">
-                    <img src="img/{{displayName}}.png" title="{{displayName}}" alt="{{displayName}}" class="img-polaroid" width="200">
+                    <img src="img/{{displayName}}.png" title="{{displayName}}" alt="{{displayName}}" class="img-polaroid" style="max-width:200px;max-height:50px">
                 </div>
             </div>
 
