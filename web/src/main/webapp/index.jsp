@@ -135,7 +135,7 @@
                                     </li>
                                     <li><a href="#explore/compound/Perturbagen,Candidate Drug">Compounds and
                                             Perturbagens</a></li>
-                                    <li><a href="#explore/context/Disease">Disease Contexts</a></li>
+                                    <li><a href="#explore/context/Disease">Disease Context</a></li>
                                     <li><a href="#explore/cellline/Cell Line">Cell Lines</a></li>
                                     <li><a href="#eco_browse">Experimental Evidence</a></li>
                                 </ul>

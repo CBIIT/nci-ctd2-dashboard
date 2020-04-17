@@ -1,7 +1,10 @@
 __ctd2_hovertext = {
-    BROWSE_GENES: "Genes and Proteins: Find experimental evidence for cancer targets that are implicated in a cancer model",
-    BROWSE_COMPOUNDS: "Compounds and perturbagens: Find experimental evidence for agents that show activity in a cancer model",
-    BROWSE_DISEASE: "Disease Context: Find disease-specific targets or agents",
+    BROWSE_GENES: "Find experimental evidence for cancer targets that are implicated in a cancer model",
+    BROWSE_COMPOUNDS: "Find experimental evidence for agents that show activity in a cancer model",
+    BROWSE_DISEASE: "Find disease-specific targets or agents",
+    BROWSE_STORIES: "Find the summaries of research findings described for the general scientific audience",
+    BROWSE_CELLLINES: "Find the number of submissions and observations with different Tier level",
+    BROWSE_ECO: "Find the number of submissions and observations with different Tier levels for a given type of ECO code",
     TABLE_FILTER: "Filter tabular results based on text entered",
     EXPLORE_RESET_ORDER: "Subjects are displayed based on Tier level and number of reporting Centers",
     EXPLORE_SELECT_ROLES_TARGET: "Only observations matching selected roles will be displayed, e.g. target, biomarker, etc.",

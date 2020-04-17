@@ -469,6 +469,27 @@
             }).click(function () {
                 $(this).popover('hide');
             });
+            $('#explore-stories-button').popover({
+                placement: "bottom",
+                trigger: 'hover',
+                content: __ctd2_hovertext.BROWSE_STORIES,
+            }).click(function () {
+                $(this).popover('hide');
+            });
+            $('#explore-celllines-button').popover({
+                placement: "bottom",
+                trigger: 'hover',
+                content: __ctd2_hovertext.BROWSE_CELLLINES,
+            }).click(function () {
+                $(this).popover('hide');
+            });
+            $('#explore-eco-button').popover({
+                placement: "bottom",
+                trigger: 'hover',
+                content: __ctd2_hovertext.BROWSE_ECO,
+            }).click(function () {
+                $(this).popover('hide');
+            });
 
             $('#navlink-genecart').popover({
                 placement: "bottom",
