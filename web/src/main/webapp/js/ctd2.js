@@ -3524,6 +3524,55 @@
 
             });
 
+            function enrich(options) {
+                if (typeof options.list === 'undefined') {
+                    alert('No genes defined.');
+                }
+
+                const description = options.description || "",
+                    popup = options.popup || false,
+                    form = document.createElement('form'),
+                    listField = document.createElement('input'),
+                    descField = document.createElement('input');
+
+                form.setAttribute('method', 'post');
+                form.setAttribute('action', 'http://amp.pharm.mssm.edu/Enrichr/enrich');
+                if (popup) {
+                    form.setAttribute('target', '_blank');
+                }
+                form.setAttribute('enctype', 'multipart/form-data');
+
+                listField.setAttribute('type', 'hidden');
+                listField.setAttribute('name', 'list');
+                listField.setAttribute('value', options.list);
+                form.appendChild(listField);
+
+                descField.setAttribute('type', 'hidden');
+                descField.setAttribute('name', 'description');
+                descField.setAttribute('value', description);
+                form.appendChild(descField);
+
+                document.body.appendChild(form);
+                form.submit();
+                document.body.removeChild(form);
+            }
+            $("#enrichr").click(function (e) {
+                let genes = '';
+                $('#geneNames :selected').each(function (i, selected) {
+                    genes += $(selected).text() + "\n";
+                });
+                if (genes == '') {
+                    for (let index = 0; index < geneList.length; index++) {
+                        genes += geneList[index] + "\n";
+                    }
+                }
+                enrich({
+                    list: genes,
+                    description: "CTD2 Dashboard Query",
+                    popup: true,
+                });
+            });
+
             const processInputGenes = function (genes) {
                 let geneNames = JSON.parse(localStorage.getItem("genelist"));
                 if (geneNames == null)
