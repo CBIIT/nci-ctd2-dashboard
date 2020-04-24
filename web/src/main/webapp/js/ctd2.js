@@ -3231,6 +3231,7 @@
 
         render: function () {
             const thatModel = this.model;
+            thatModel.rolesLabel = _.map(decodeURIComponent(thatModel.roles).split(","), uppercase_roles, []).join(", ");
             $(this.el).html(this.template(thatModel));
             const data_url = $("#explore-tmpl").attr("data-url");
             const subjectWithSummaryCollection = new SubjectWithSummaryCollection(thatModel);
@@ -3990,6 +3991,11 @@
             return this;
         }
     });
+
+    const uppercase_roles = function (role) {
+        if (role == 'Metastasis') return 'Metastases';
+        return role + "s";
+    };
 
     const updateGeneList = function (addedGene) {
         let geneNames = JSON.parse(localStorage.getItem("genelist"));
