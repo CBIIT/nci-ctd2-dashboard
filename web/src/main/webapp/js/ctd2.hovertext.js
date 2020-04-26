@@ -2,7 +2,7 @@ __ctd2_hovertext = {
     BROWSE_GENES: "Find experimental evidence implicating targets in a cancer model",
     BROWSE_COMPOUNDS: "Find experimental evidence for agents that show activity in a cancer model",
     BROWSE_DISEASE: "Find experimental evidence for disease-specific targets or agents",
-    BROWSE_STORIES: "Browse the summaries of research findings described for the general scientific audience",
+    BROWSE_STORIES: "Browse summaries of research findings described for a general scientific audience",
     BROWSE_CELLLINES: "Browse cell lines appearing in experimental observations",
     BROWSE_ECO: "Browse observations by experimental method as annotated with Evidence Ontology codes",
     TABLE_FILTER: "Filter tabular results based on text entered",
