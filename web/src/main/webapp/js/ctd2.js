@@ -3558,6 +3558,7 @@
                 document.body.removeChild(form);
             }
             $("#enrichr").click(function (e) {
+                e.preventDefault();
                 let genes = '';
                 $('#geneNames :selected').each(function (i, selected) {
                     genes += $(selected).text() + "\n";

@@ -2160,7 +2160,7 @@
                     <br/><input id="geneFileInput" type="file" style="visibility:hidden" /> 
                     <br/>
                     <a href="#cnkb-query" id="cnkb-query">Find Gene Interactions in  Networks (CNKB)</a>
-                    <br/><br/><a id=enrichr>Enrichr<a>
+                    <br/><br/><a href="" id=enrichr>Gene set enrichment analysis (Enrichr)<a>
                  </div>
 
                  <div class="col-1">
