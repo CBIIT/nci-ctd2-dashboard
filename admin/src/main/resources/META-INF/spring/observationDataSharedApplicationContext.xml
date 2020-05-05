@@ -878,9 +878,6 @@
                 <batch:chunk reader="dfciTp53MutagenesisReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	    </batch:tasklet>
 	</batch:step>
-
-
-
 	<batch:step id="emoryInvasionStep" parent="observationDataStep" next="ohsuYongParpiPersistsStep">
 	    <batch:tasklet>
                 <batch:chunk reader="emoryInvasionReader" processor="observationDataProcessor" writer="observationDataWriter"/>
@@ -951,11 +948,48 @@
                 <batch:chunk reader="columbiaOncotreatOverlapReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	    </batch:tasklet>
 	</batch:step>
-	<batch:step id="emoryImmunotherapyStep" parent="observationDataStep">
+	<batch:step id="emoryImmunotherapyStep" parent="observationDataStep" next="mdaccPik3caGliomaStep">
 	    <batch:tasklet>
                 <batch:chunk reader="emoryImmunotherapyReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	    </batch:tasklet>
 	</batch:step>
+
+
+
+	<batch:step id="mdaccPik3caGliomaStep" parent="observationDataStep" next="ucsfDdx3xMutationTumorFormationStep">
+	    <batch:tasklet>
+                <batch:chunk reader="mdaccPik3caGliomaReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	    </batch:tasklet>
+	</batch:step>
+
+	<batch:step id="ucsfDdx3xMutationTumorFormationStep" parent="observationDataStep" next="ucsfGorlinNesCellTumorFormationStep">
+	    <batch:tasklet>
+                <batch:chunk reader="ucsfDdx3xMutationTumorFormationReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	    </batch:tasklet>
+	</batch:step>
+	<batch:step id="ucsfGorlinNesCellTumorFormationStep" parent="observationDataStep" next="ucsfGse1TumorFormationStep">
+	    <batch:tasklet>
+                <batch:chunk reader="ucsfGorlinNesCellTumorFormationReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	    </batch:tasklet>
+	</batch:step>
+	<batch:step id="ucsfGse1TumorFormationStep" parent="observationDataStep" next="ucsfMycnTransformationStep">
+	    <batch:tasklet>
+                <batch:chunk reader="ucsfGse1TumorFormationReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	    </batch:tasklet>
+	</batch:step>
+	<batch:step id="ucsfMycnTransformationStep" parent="observationDataStep" next="broadPorStep">
+	    <batch:tasklet>
+                <batch:chunk reader="ucsfMycnTransformationReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	    </batch:tasklet>
+	</batch:step>
+	<batch:step id="broadPorStep" parent="observationDataStep">
+	    <batch:tasklet>
+                <batch:chunk reader="broadPorReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	    </batch:tasklet>
+	</batch:step>
+
+
+
     </batch:job>
 
     <bean id="observationDataStep" class="org.springframework.batch.core.step.item.SimpleStepFactoryBean" abstract="true">
@@ -2667,6 +2701,54 @@
         <property name="names" value="dummy,submission_name,submission_date,template_name,compound_1,compound_2,compound_3,gene_1,gene_2,gene_3,gene_4,gene_5,cell_line_1,cell_line_2,cell_line_3,cell_line_4,disease,story_location,publication_reference,evidence_ontology_term_1,evidence_ontology_term_2,evidence_ontology_term_3"/>
     </bean>
 
+    <bean name="mdaccPik3caGliomaLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="mdaccPik3caGliomaLineTokenizer" />
+    </bean>
+    <bean name="mdaccPik3caGliomaLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="&#9;"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,gene_1,gene_2,model_1,tissue_1,reference,eco_term_1,eco_term_2,eco_term_3"/>
+    </bean>
+    <bean name="ucsfDdx3xMutationTumorFormationLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="ucsfDdx3xMutationTumorFormationLineTokenizer" />
+    </bean>
+    <bean name="ucsfDdx3xMutationTumorFormationLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="&#9;"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,ddx3x,disease,strain,reference,evidence_ontology_term,figure_6"/>
+    </bean>
+    <bean name="ucsfGorlinNesCellTumorFormationLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="ucsfGorlinNesCellTumorFormationLineTokenizer" />
+    </bean>
+    <bean name="ucsfGorlinNesCellTumorFormationLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="&#9;"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,disease,strain,reference,evidence_ontology_term,figure_4"/>
+    </bean>
+    <bean name="ucsfGse1TumorFormationLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="ucsfGse1TumorFormationLineTokenizer" />
+    </bean>
+    <bean name="ucsfGse1TumorFormationLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="&#9;"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,gse1,gorlin_nes_cells,disease,reference,evidence_ontology_term,figure_7"/>
+    </bean>
+    <bean name="ucsfMycnTransformationLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="ucsfMycnTransformationLineTokenizer" />
+    </bean>
+    <bean name="ucsfMycnTransformationLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="&#9;"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,gene_1,cell_line,disease,reference,evidence_ontology_term,figure_1"/>
+    </bean>
+    <bean name="broadPorLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="broadPorLineTokenizer" />
+    </bean>
+    <bean name="broadPorLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="&#9;"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,gene_1,gene_2,cell_line_1,cell_line_2,disease_1,disease_2,story_location,reference_1,reference_2,evidence_ontology"/>
+    </bean>
 
 
     <!-- shared helper beans -->
@@ -4598,6 +4680,52 @@
 		<entry key="ohsu_yong_sequential_tumor_cells:figure_5d" value="evidence:readString:createObservedFileEvidence" />
 		<entry key="ohsu_yong_sequential_tumor_cells:figure_5e" value="evidence:readString:createObservedFileEvidence" />
 		<entry key="ohsu_yong_sequential_tumor_cells:publication_reference" value="evidence:readString:createObservedUrlEvidence" />
+
+
+<entry key="broad_por:gene_1" value="subject:findGenesBySymbol" />
+<entry key="broad_por:gene_2" value="subject:findGenesBySymbol" />
+<entry key="broad_por:cell_line_1" value="subject:findCellLineByName" />
+<entry key="broad_por:cell_line_2" value="subject:findCellLineByName" />
+<entry key="broad_por:disease_1" value="subject:findTissueSampleByName" />
+<entry key="broad_por:disease_2" value="subject:findTissueSampleByName" />
+<entry key="broad_por:story_location" value="evidence:readString:createObservedFileEvidence" />
+<entry key="broad_por:reference_1" value="evidence:readString:createObservedUrlEvidence" />
+<entry key="broad_por:reference_2" value="evidence:readString:createObservedUrlEvidence" />
+<entry key="broad_por:evidence_ontology" value="evidence:readString:createObservedUrlEvidence" />
+<entry key="mdacc_pik3ca_glioma:gene_1" value="subject:findGenesBySymbol" />
+<entry key="mdacc_pik3ca_glioma:gene_2" value="subject:findGenesBySymbol" />
+<entry key="mdacc_pik3ca_glioma:model_1" value="subject:findAnimalModelByName" />
+<entry key="mdacc_pik3ca_glioma:tissue_1" value="subject:findTissueSampleByName" />
+<entry key="mdacc_pik3ca_glioma:reference" value="evidence:readString:createObservedUrlEvidence" />
+<entry key="mdacc_pik3ca_glioma:eco_term_1" value="evidence:readString:createObservedUrlEvidence" />
+<entry key="mdacc_pik3ca_glioma:eco_term_2" value="evidence:readString:createObservedUrlEvidence" />
+<entry key="mdacc_pik3ca_glioma:eco_term_3" value="evidence:readString:createObservedUrlEvidence" />
+<entry key="ucsf_ddx3x_mutation_tumor_formation:ddx3x" value="subject:findGenesBySymbol" />
+<entry key="ucsf_ddx3x_mutation_tumor_formation:disease" value="subject:findTissueSampleByName" />
+<entry key="ucsf_ddx3x_mutation_tumor_formation:strain" value="subject:findAnimalModelByName" />
+<entry key="ucsf_ddx3x_mutation_tumor_formation:reference" value="evidence:readString:createObservedUrlEvidence" />
+<entry key="ucsf_ddx3x_mutation_tumor_formation:evidence_ontology_term" value="evidence:readString:createObservedUrlEvidence" />
+<entry key="ucsf_ddx3x_mutation_tumor_formation:figure_6" value="evidence:readString:createObservedFileEvidence" />
+<entry key="ucsf_gorlin_nes_cell_tumor_formation:disease" value="subject:findTissueSampleByName" />
+<entry key="ucsf_gorlin_nes_cell_tumor_formation:strain" value="subject:findAnimalModelByName" />
+<entry key="ucsf_gorlin_nes_cell_tumor_formation:reference" value="evidence:readString:createObservedUrlEvidence" />
+<entry key="ucsf_gorlin_nes_cell_tumor_formation:evidence_ontology_term" value="evidence:readString:createObservedUrlEvidence" />
+<entry key="ucsf_gorlin_nes_cell_tumor_formation:figure_4" value="evidence:readString:createObservedFileEvidence" />
+<entry key="ucsf_gse1_tumor_formation:gse1" value="subject:findGenesBySymbol" />
+<entry key="ucsf_gse1_tumor_formation:gorlin_nes_cells" value="evidence:readString:createObservedLabelEvidence" />
+<entry key="ucsf_gse1_tumor_formation:disease" value="subject:findTissueSampleByName" />
+<entry key="ucsf_gse1_tumor_formation:reference" value="evidence:readString:createObservedUrlEvidence" />
+<entry key="ucsf_gse1_tumor_formation:evidence_ontology_term" value="evidence:readString:createObservedUrlEvidence" />
+<entry key="ucsf_gse1_tumor_formation:figure_7" value="evidence:readString:createObservedFileEvidence" />
+<entry key="ucsf_mycn_transformation:gene_1" value="subject:findGenesBySymbol" />
+<entry key="ucsf_mycn_transformation:cell_line" value="evidence:readString:createObservedLabelEvidence" />
+<entry key="ucsf_mycn_transformation:disease" value="subject:findTissueSampleByName" />
+<entry key="ucsf_mycn_transformation:reference" value="evidence:readString:createObservedUrlEvidence" />
+<entry key="ucsf_mycn_transformation:evidence_ontology_term" value="evidence:readString:createObservedUrlEvidence" />
+<entry key="ucsf_mycn_transformation:figure_1" value="evidence:readString:createObservedFileEvidence" />
+
+
+
             </map>
         </constructor-arg>
     </bean>

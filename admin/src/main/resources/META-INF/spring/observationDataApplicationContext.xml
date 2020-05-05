@@ -1711,6 +1711,59 @@
             </bean>
         </property>
     </bean>
-
+    <bean name="mdaccPik3caGliomaReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${mdacc.pik3ca.glioma.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="mdaccPik3caGliomaLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="ucsfDdx3xMutationTumorFormationReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${ucsf.ddx3x.mutation.tumor.formation.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="ucsfDdx3xMutationTumorFormationLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="ucsfGorlinNesCellTumorFormationReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${ucsf.gorlin.nes.cell.tumor.formation.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="ucsfGorlinNesCellTumorFormationLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="ucsfGse1TumorFormationReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${ucsf.gse1.tumor.formation.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="ucsfGse1TumorFormationLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="ucsfMycnTransformationReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${ucsf.mycn.transformation.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="ucsfMycnTransformationLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="broadPorReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${broad.por.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="broadPorLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
 
 </beans>
