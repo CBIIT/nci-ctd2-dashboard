@@ -284,7 +284,7 @@
         </table>
 
         <div class="container ctd2-boxes">
-            <div class=row>
+            <div class=row style='margin-bottom:-20px'>
                 <div class="col-4">
                     <a class="btn btn-danger btn-block ctd2bigbutton" href="#explore/target/Biomarker,Target" role="button" id="explore-gene-button">genes and proteins</a>
                 </div>
