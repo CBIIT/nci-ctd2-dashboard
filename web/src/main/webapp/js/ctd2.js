@@ -1320,12 +1320,16 @@
                         });
 
                         $.ajax("list/observationtemplate/?filterBy=" + aCenter.id).done(function (templates) {
-                            const pis = [];
-                            _.each(templates, function (template) {
-                                pis.push(template.principalInvestigator);
-                            });
                             const piCellId = "#center-pi-" + aCenter.id;
-                            $(piCellId).html(_.uniq(pis).join(", "));
+                            if ('CTD² Network Collaboration' == aCenter.displayName || 'Other NCI Programs' == aCenter.displayName) {
+                                $(piCellId).html('');
+                            } else {
+                                const pis = [];
+                                _.each(templates, function (template) {
+                                    pis.push(template.principalInvestigator);
+                                });
+                                $(piCellId).html(_.uniq(pis).join(", "));
+                            }
                             $("#centers-list-table").DataTable().cells(piCellId).invalidate();
                         });
                     });
