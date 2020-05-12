@@ -449,6 +449,7 @@
                     loading...
                 </a>
             </td>
+            <td>{{pinned}}</td>
         </tr>
     </script>
 
@@ -460,7 +461,7 @@
                     <div class="center-link-container">(<span class="center-link"></span>)</div>
                 </div>
                 <div class="col-3">
-                    <img src="img/{{displayName}}.png" title="{{displayName}}" alt="{{displayName}}" class="img-polaroid" width="200">
+                    <img src="img/{{displayName}}.png" title="{{displayName}}" alt="{{displayName}}" class="img-polaroid" style="max-width:200px;max-height:50px">
                 </div>
             </div>
 
@@ -571,6 +572,7 @@
                 <!-- here will go the rows -->
                 </tbody>
             </table>
+            <p id=center-abbreviations >Center Abbreviations: Broad, BR; Cold Spring Harbor Laboratory, CSHL; Columbia University, CU; Dana-Farber Cancer Institute, DFCI; Emory, EM</p>
         </div>
     </script>
 
@@ -2158,6 +2160,7 @@
                     <br/><input id="geneFileInput" type="file" style="visibility:hidden" /> 
                     <br/>
                     <a href="#cnkb-query" id="cnkb-query">Find Gene Interactions in  Networks (CNKB)</a>
+                    <br/><br/><a href="" id=enrichr>Gene set enrichment analysis (Enrichr)<a>
                  </div>
 
                  <div class="col-1">

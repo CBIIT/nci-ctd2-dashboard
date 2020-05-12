@@ -1,7 +1,6 @@
 package gov.nih.nci.ctd2.dashboard.controller;
 
 import java.util.Date;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -20,9 +19,7 @@ import gov.nih.nci.ctd2.dashboard.api.ExcludeTransformer;
 import gov.nih.nci.ctd2.dashboard.api.SimpleDateTransformer;
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
 import gov.nih.nci.ctd2.dashboard.util.ImplTransformer;
-
 import gov.nih.nci.ctd2.dashboard.util.Summary;
-import gov.nih.nci.ctd2.dashboard.model.*;
 
 @Controller
 @RequestMapping("/api/summary")
@@ -54,6 +51,7 @@ public class SummaryController {
             return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
         }
 
+        log.debug("get summary");
         return new ResponseEntity<String>(json, headers, HttpStatus.OK);
     }
 }

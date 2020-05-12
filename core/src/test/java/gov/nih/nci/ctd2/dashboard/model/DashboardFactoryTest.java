@@ -1,7 +1,7 @@
 package gov.nih.nci.ctd2.dashboard.model;
 
 import org.junit.Test;
-import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import static org.junit.Assert.assertEquals;
@@ -12,7 +12,7 @@ public class DashboardFactoryTest {
     public void testBeanCreate() {
         DashboardFactory dashboardFactory;
 
-        ApplicationContext appContext =
+        ConfigurableApplicationContext appContext =
                 new ClassPathXmlApplicationContext("classpath*:META-INF/spring/testApplicationContext.xml");
         dashboardFactory = (DashboardFactory) appContext.getBean("dashboardFactory");
 
@@ -26,6 +26,7 @@ public class DashboardFactoryTest {
         FileEvidence fileEvidence = dashboardFactory.create(FileEvidence.class);
         assertNotNull(fileEvidence);
         assertEquals(null, fileEvidence.getId());
+        appContext.close();
     }
 
 }

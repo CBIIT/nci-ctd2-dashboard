@@ -508,11 +508,11 @@
 
             $.fancybox.open(
                 this.template(this.model), {
-                'autoDimensions': false,
-                'centerOnScroll': true,
-                'transitionIn': 'none',
-                'transitionOut': 'none'
-            }
+                    'autoDimensions': false,
+                    'centerOnScroll': true,
+                    'transitionIn': 'none',
+                    'transitionOut': 'none'
+                }
             );
 
             return this;
@@ -535,11 +535,11 @@
 
             $.fancybox.open(
                 this.template({}), {
-                'autoDimensions': false,
-                'centerOnScroll': true,
-                'transitionIn': 'none',
-                'transitionOut': 'none'
-            }
+                    'autoDimensions': false,
+                    'centerOnScroll': true,
+                    'transitionIn': 'none',
+                    'transitionOut': 'none'
+                }
             );
 
             return this;
@@ -753,119 +753,119 @@
 
     /// TODO: encode these into the DB instead
     const ecoMappings = [{
-        "evidence": "file",
-        "role": "background",
-        "eco_term": "inference from background scientific knowledge",
-        "eco_id": "ECO:0000001"
-    },
-    {
-        "evidence": "file",
-        "role": "computed",
-        "eco_term": "computational combinatorial evidence",
-        "eco_id": "ECO:0000053"
-    },
-    {
-        "evidence": "file",
-        "role": "literature",
-        "eco_term": "traceable author statement",
-        "eco_id": "ECO:0000033"
-    },
-    {
-        "evidence": "file",
-        "role": "measured",
-        "eco_term": "direct assay evidence",
-        "eco_id": "ECO:0000002"
-    },
-    {
-        "evidence": "file",
-        "role": "observed",
-        "eco_term": "experimental phenotypic evidence",
-        "eco_id": "ECO:0000059"
-    },
-    {
-        "evidence": "file",
-        "role": "written",
-        "eco_term": "author statement",
-        "eco_id": "ECO:0000204"
-    },
-    {
-        "evidence": "label",
-        "role": "background",
-        "eco_term": "inference from background scientific knowledge",
-        "eco_id": "ECO:0000001"
-    },
-    {
-        "evidence": "label",
-        "role": "computed",
-        "eco_term": "computational combinatorial evidence",
-        "eco_id": "ECO:0000053"
-    },
-    {
-        "evidence": "label",
-        "role": "observed",
-        "eco_term": "ad-hoc qualitative phenotype observation evidence",
-        "eco_id": "ECO:0005673"
-    },
-    {
-        "evidence": "label",
-        "role": "species",
-        "eco_term": "biological system reconstruction evidence by experimental evidence from single species",
-        "eco_id": "ECO:0005553"
-    },
-    {
-        "evidence": "numeric",
-        "role": "background",
-        "eco_term": "inference from background scientific knowledge",
-        "eco_id": "ECO:0000001"
-    },
-    {
-        "evidence": "numeric",
-        "role": "computed",
-        "eco_term": "computational combinatorial evidence",
-        "eco_id": "ECO:0000053"
-    },
-    {
-        "evidence": "numeric",
-        "role": "measured",
-        "eco_term": "experimental phenotypic evidence",
-        "eco_id": "ECO:0000059"
-    },
-    {
-        "evidence": "numeric",
-        "role": "observed",
-        "eco_term": "ad-hoc quantitative phenotype observation evidence",
-        "eco_id": "ECO:0005675"
-    },
-    {
-        "evidence": "url",
-        "role": "computed",
-        "eco_term": "computational combinatorial evidence",
-        "eco_id": "ECO:0000053"
-    },
-    {
-        "evidence": "url",
-        "role": "link",
-        "eco_term": "combinatorial evidence",
-        "eco_id": "ECO:0000212"
-    },
-    {
-        "evidence": "url",
-        "role": "measured",
-        "eco_term": "experimental phenotypic evidence",
-        "eco_id": "ECO:0000059"
-    },
-    {
-        "evidence": "url",
-        "role": "reference",
-        "eco_term": "traceable author statement",
-        "eco_id": "ECO:0000033"
-    },
-    {
-        "evidence": "url",
-        "role": "resource",
-        "eco_term": "imported information",
-        "eco_id": "ECO:0000311"
-    }
+            "evidence": "file",
+            "role": "background",
+            "eco_term": "inference from background scientific knowledge",
+            "eco_id": "ECO:0000001"
+        },
+        {
+            "evidence": "file",
+            "role": "computed",
+            "eco_term": "computational combinatorial evidence",
+            "eco_id": "ECO:0000053"
+        },
+        {
+            "evidence": "file",
+            "role": "literature",
+            "eco_term": "traceable author statement",
+            "eco_id": "ECO:0000033"
+        },
+        {
+            "evidence": "file",
+            "role": "measured",
+            "eco_term": "direct assay evidence",
+            "eco_id": "ECO:0000002"
+        },
+        {
+            "evidence": "file",
+            "role": "observed",
+            "eco_term": "experimental phenotypic evidence",
+            "eco_id": "ECO:0000059"
+        },
+        {
+            "evidence": "file",
+            "role": "written",
+            "eco_term": "author statement",
+            "eco_id": "ECO:0000204"
+        },
+        {
+            "evidence": "label",
+            "role": "background",
+            "eco_term": "inference from background scientific knowledge",
+            "eco_id": "ECO:0000001"
+        },
+        {
+            "evidence": "label",
+            "role": "computed",
+            "eco_term": "computational combinatorial evidence",
+            "eco_id": "ECO:0000053"
+        },
+        {
+            "evidence": "label",
+            "role": "observed",
+            "eco_term": "ad-hoc qualitative phenotype observation evidence",
+            "eco_id": "ECO:0005673"
+        },
+        {
+            "evidence": "label",
+            "role": "species",
+            "eco_term": "biological system reconstruction evidence by experimental evidence from single species",
+            "eco_id": "ECO:0005553"
+        },
+        {
+            "evidence": "numeric",
+            "role": "background",
+            "eco_term": "inference from background scientific knowledge",
+            "eco_id": "ECO:0000001"
+        },
+        {
+            "evidence": "numeric",
+            "role": "computed",
+            "eco_term": "computational combinatorial evidence",
+            "eco_id": "ECO:0000053"
+        },
+        {
+            "evidence": "numeric",
+            "role": "measured",
+            "eco_term": "experimental phenotypic evidence",
+            "eco_id": "ECO:0000059"
+        },
+        {
+            "evidence": "numeric",
+            "role": "observed",
+            "eco_term": "ad-hoc quantitative phenotype observation evidence",
+            "eco_id": "ECO:0005675"
+        },
+        {
+            "evidence": "url",
+            "role": "computed",
+            "eco_term": "computational combinatorial evidence",
+            "eco_id": "ECO:0000053"
+        },
+        {
+            "evidence": "url",
+            "role": "link",
+            "eco_term": "combinatorial evidence",
+            "eco_id": "ECO:0000212"
+        },
+        {
+            "evidence": "url",
+            "role": "measured",
+            "eco_term": "experimental phenotypic evidence",
+            "eco_id": "ECO:0000059"
+        },
+        {
+            "evidence": "url",
+            "role": "reference",
+            "eco_term": "traceable author statement",
+            "eco_id": "ECO:0000033"
+        },
+        {
+            "evidence": "url",
+            "role": "resource",
+            "eco_term": "imported information",
+            "eco_id": "ECO:0000311"
+        }
     ];
 
     const class2imageData = {
@@ -996,7 +996,9 @@
                         async: false,
                         success: function () { // no-op 
                         },
-                        error: function () { console.log('ECO term not found for' + ecocode); },
+                        error: function () {
+                            console.log('ECO term not found for' + ecocode);
+                        },
                     });
                     const econame = eco_model.toJSON().displayName;
                     ecodata.push(['<a href="#eco/' + ecourl + '">' + ecocode + '</a>', econame]);
@@ -1096,11 +1098,11 @@
                                     _.template($("#cytoscape-tmpl").html())({
                                         description: sifDesc
                                     }), {
-                                    touch: false,
-                                    'autoDimensions': false,
-                                    'transitionIn': 'none',
-                                    'transitionOut': 'none'
-                                }
+                                        touch: false,
+                                        'autoDimensions': false,
+                                        'transitionIn': 'none',
+                                        'transitionOut': 'none'
+                                    }
                                 );
 
                                 // load cytoscape
@@ -1254,11 +1256,11 @@
 
             result.eco =
                 _.chain(ecoMappings)
-                    .filter(function (m) {
-                        return m.evidence == mEvidence && m.role == result.observedEvidenceRole.evidenceRole.displayName;
-                    })
-                    .first()
-                    .value();
+                .filter(function (m) {
+                    return m.evidence == mEvidence && m.role == result.observedEvidenceRole.evidenceRole.displayName;
+                })
+                .first()
+                .value();
             if (result.eco == undefined) {
                 result.eco = {};
             }
@@ -1298,6 +1300,9 @@
                 success: function () {
 
                     _.each(centers.toJSON(), function (aCenter) {
+                        aCenter.pinned = 0;
+                        if ('CTD² Network Collaboration' == aCenter.displayName) aCenter.pinned = 2;
+                        if ('Other NCI Programs' == aCenter.displayName) aCenter.pinned = 1;
                         new CenterListRowView({
                             el: $(thatEl).find("#centers-tbody"),
                             model: aCenter
@@ -1306,8 +1311,8 @@
                         $.ajax("count/submission/?filterBy=" + aCenter.id).done(function (count) {
                             const cntContent = _.template(
                                 $("#count-submission-tmpl").html())({
-                                    count: count
-                                });
+                                count: count
+                            });
 
                             const countCellId = "#submission-count-" + aCenter.id;
                             $(countCellId).html(cntContent);
@@ -1328,14 +1333,22 @@
                     $("#centers-list-table").dataTable({
                         // might want to increase this number if we have incredible number of centers
                         "iDisplayLength": 25,
+                        "orderFixed": [4, "desc"],
                         columnDefs: [{
-                            targets: [0, 2],
-                            orderable: false,
-                        }, {
-                            targets: 3,
-                            orderDataType: "submission-count",
-                            type: "numeric"
-                        }],
+                                targets: [0, 2],
+                                orderable: false,
+                            }, {
+                                targets: 3,
+                                orderDataType: "submission-count",
+                                type: "numeric"
+                            },
+                            {
+                                "visible": false,
+                                "sortable": false,
+                                "searchable": false,
+                                "targets": 4
+                            },
+                        ],
                     }).fnSort([
                         [1, 'asc']
                     ]);
@@ -1373,15 +1386,15 @@
                     });
                     $('#stories-list').dataTable({
                         columns: [{
-                            type: "string"
-                        },
+                                type: "string"
+                            },
                             null,
-                        {
-                            orderDataType: "text-date-order"
-                        },
-                        {
-                            "orderable": false
-                        },
+                            {
+                                orderDataType: "text-date-order"
+                            },
+                            {
+                                "orderable": false
+                            },
                         ],
                         order: [
                             [2, 'desc']
@@ -1565,8 +1578,8 @@
         'dom': '<iBfrtlp>',
         "sPaginationType": "bootstrap",
         "columns": [{
-            "orderDataType": "dashboard-date"
-        },
+                "orderDataType": "dashboard-date"
+            },
             null,
             null,
             null
@@ -1912,7 +1925,9 @@
                     if (aSynonym.displayName == result.displayName) return;
 
                     new SynonymView({
-                        model: { displayName: aSynonym },
+                        model: {
+                            displayName: aSynonym
+                        },
                         el: $("ul.synonyms")
                     }).render();
                 });
@@ -2149,12 +2164,14 @@
                                 const submissionId = thatModel.submission.id;
 
                                 let observations = null;
-                                if (ecocode != undefined && ecocode.length > 0) { /* ECO term case */
+                                if (ecocode != undefined && ecocode.length > 0) {
+                                    /* ECO term case */
                                     observations = new ObservationsBySubmissionAndEcoTerm({
                                         submissionId: submissionId,
                                         ecocode: ecocode,
                                     });
-                                } else { /* subject case */
+                                } else {
+                                    /* subject case */
                                     observations = new ObservationsBySubmissionAndSubject({
                                         submissionId: submissionId,
                                         subjectId: thatModel.contextSubject,
@@ -2290,8 +2307,8 @@
                                 "#count-observations-tmpl";
                             submission.details = _.template(
                                 $(tmplName).html())({
-                                    count: count
-                                });
+                                count: count
+                            });
                         });
 
                         centerSubmissionRowView.render();
@@ -2313,8 +2330,8 @@
                         "drawCallback": function (settings) {
                             const api = this.api();
                             api.column(1, {
-                                page: 'all'
-                            })
+                                    page: 'all'
+                                })
                                 .data()
                                 .each(function (group, i) {
                                     const project_url = group.toLowerCase().replace(/[^a-zA-Z0-9]/g, "-");
@@ -2326,8 +2343,8 @@
                             }).nodes();
                             let last = null;
                             api.column(1, {
-                                page: 'current'
-                            })
+                                    page: 'current'
+                                })
                                 .data()
                                 .each(function (group, i) {
                                     if (last != group) {
@@ -2457,6 +2474,12 @@
         render: function () {
             const submission = this.model.toJSON();
             $(this.el).html(this.template(submission));
+            const centerName = submission.observationTemplate.submissionCenter.displayName;
+            if (centerName == 'CTD² Network Collaboration') {
+                $('#center-abbreviations').show();
+            } else {
+                $('#center-abbreviations').hide();
+            }
             $(this.el).find("span.badge-tier").popover({
                 placement: "top",
                 trigger: 'hover',
@@ -2505,7 +2528,9 @@
                             const econame = eco_model.toJSON().displayName;
                             $("#eco-list").append('<li>' + econame + " (<a href='#eco/" + ecourl + "'>" + ecocode + '</a>)</li>');
                         },
-                        error: function () { console.log('ECO term not found for' + ecocode); },
+                        error: function () {
+                            console.log('ECO term not found for' + ecocode);
+                        },
                     });
                 });
             }
@@ -2664,7 +2689,9 @@
                 if (result.synonyms != null && result.synonyms.length > 0) {
                     _.each(result.synonyms.split("|"), function (aSynonym) {
                         if (aSynonym.displayName == result.displayName) return;
-                        synonyms.push({ displayName: aSynonym });
+                        synonyms.push({
+                            displayName: aSynonym
+                        });
                     });
                 }
             }
@@ -2702,8 +2729,8 @@
             // some of the elements will be hidden in the pagination. Use magic-scoping!
             const cntContent = _.template(
                 $("#count-observations-tmpl").html())({
-                    count: model.observationCount
-                });
+                count: model.observationCount
+            });
             $("#subject-observation-count-" + result.id).html(cntContent);
 
             return this;
@@ -2841,8 +2868,8 @@
                                     "#count-observations-tmpl";
                                 const cntContent = _.template(
                                     $(tmplName).html())({
-                                        count: submission.observationCount
-                                    });
+                                    count: submission.observationCount
+                                });
                                 $("#search-observation-count-" + submission.dashboardEntity.id).html(cntContent);
                                 const centerId = submission.dashboardEntity.observationTemplate.submissionCenter.id;
                                 centerCounter.add(centerId);
@@ -2993,11 +3020,11 @@
                             _.template($("#mra-cytoscape-tmpl").html())({
                                 description: mraDesc
                             }), {
-                            touch: false,
-                            'autoDimensions': false,
-                            'transitionIn': 'none',
-                            'transitionOut': 'none'
-                        }
+                                touch: false,
+                                'autoDimensions': false,
+                                'transitionIn': 'none',
+                                'transitionOut': 'none'
+                            }
                         );
 
                         window.cy = this;
@@ -3367,7 +3394,7 @@
         target: ["background", "biomarker", "candidate master regulator", "interactor", "master regulator", "oncogene", "target"],
         compound: ["candidate drug", "control compound", "perturbagen"],
         context: ["disease", "metastasis", "tissue"],
-        cellline: ["cell line",],
+        cellline: ["cell line", ],
     };
 
     const subjectType = {
@@ -3496,6 +3523,56 @@
                     sessionStorage.selectedGenes = JSON.stringify(selectedGenes);
                 }
 
+            });
+
+            function enrich(options) {
+                if (typeof options.list === 'undefined') {
+                    alert('No genes defined.');
+                }
+
+                const description = options.description || "",
+                    popup = options.popup || false,
+                    form = document.createElement('form'),
+                    listField = document.createElement('input'),
+                    descField = document.createElement('input');
+
+                form.setAttribute('method', 'post');
+                form.setAttribute('action', 'http://amp.pharm.mssm.edu/Enrichr/enrich');
+                if (popup) {
+                    form.setAttribute('target', '_blank');
+                }
+                form.setAttribute('enctype', 'multipart/form-data');
+
+                listField.setAttribute('type', 'hidden');
+                listField.setAttribute('name', 'list');
+                listField.setAttribute('value', options.list);
+                form.appendChild(listField);
+
+                descField.setAttribute('type', 'hidden');
+                descField.setAttribute('name', 'description');
+                descField.setAttribute('value', description);
+                form.appendChild(descField);
+
+                document.body.appendChild(form);
+                form.submit();
+                document.body.removeChild(form);
+            }
+            $("#enrichr").click(function (e) {
+                e.preventDefault();
+                let genes = '';
+                $('#geneNames :selected').each(function (i, selected) {
+                    genes += $(selected).text() + "\n";
+                });
+                if (genes == '') {
+                    for (let index = 0; index < geneList.length; index++) {
+                        genes += geneList[index] + "\n";
+                    }
+                }
+                enrich({
+                    list: genes,
+                    description: "CTD2 Dashboard Query",
+                    popup: true,
+                });
             });
 
             const processInputGenes = function (genes) {
@@ -3982,11 +4059,11 @@
                 description: description,
                 svgHtml: svgHtml
             }), {
-            touch: false,
-            'autoDimensions': false,
-            'transitionIn': 'none',
-            'transitionOut': 'none'
-        }
+                touch: false,
+                'autoDimensions': false,
+                'transitionIn': 'none',
+                'transitionOut': 'none'
+            }
         );
 
         cytoscape({
@@ -4221,7 +4298,9 @@
                             }
                         }).render();
                     },
-                    error: function () { console.log('ECO term ' + code + " (tier=" + tier + ") not returned"); },
+                    error: function () {
+                        console.log('ECO term ' + code + " (tier=" + tier + ") not returned");
+                    },
                 });
             },
             "mra/:filename": idBasedRouter(ObservedEvidence, MraView),

@@ -10,12 +10,11 @@ import javax.persistence.Table;
 
 import gov.nih.nci.ctd2.dashboard.impl.DashboardEntityImpl;
 import gov.nih.nci.ctd2.dashboard.impl.SubjectImpl;
-import gov.nih.nci.ctd2.dashboard.model.DashboardEntity;
 import gov.nih.nci.ctd2.dashboard.model.Subject;
 
 @Entity
 @Table(name = "subject_with_summaries")
-public class SubjectWithSummaries extends DashboardEntityImpl implements DashboardEntity {
+public class SubjectWithSummaries extends DashboardEntityImpl {
     private static final long serialVersionUID = -2632817631463691414L;
 
     private Subject subject;

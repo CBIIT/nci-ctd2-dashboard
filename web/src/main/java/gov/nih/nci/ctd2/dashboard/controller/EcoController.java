@@ -1,6 +1,5 @@
 package gov.nih.nci.ctd2.dashboard.controller;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -20,10 +19,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import flexjson.JSONSerializer;
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
+import gov.nih.nci.ctd2.dashboard.model.ECOTerm;
 import gov.nih.nci.ctd2.dashboard.util.DateTransformer;
 import gov.nih.nci.ctd2.dashboard.util.EcoBrowse;
 import gov.nih.nci.ctd2.dashboard.util.ImplTransformer;
-import gov.nih.nci.ctd2.dashboard.model.ECOTerm;
 
 @Controller
 @RequestMapping("/eco")

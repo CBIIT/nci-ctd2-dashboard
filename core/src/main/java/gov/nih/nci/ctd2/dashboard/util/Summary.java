@@ -4,11 +4,12 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import gov.nih.nci.ctd2.dashboard.impl.DashboardEntityImpl;
-import gov.nih.nci.ctd2.dashboard.model.DashboardEntity;
 
 @Entity
 @Table(name = "overall_summary")
-public class Summary extends DashboardEntityImpl implements DashboardEntity {
+public class Summary extends DashboardEntityImpl {
+    private static final long serialVersionUID = 7869911630555973618L;
+
     private String label;
     private int submissions;
     private int tier1;

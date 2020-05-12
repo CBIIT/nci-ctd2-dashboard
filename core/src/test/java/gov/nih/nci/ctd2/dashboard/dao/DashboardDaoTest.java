@@ -2,8 +2,9 @@ package gov.nih.nci.ctd2.dashboard.dao;
 
 import gov.nih.nci.ctd2.dashboard.model.*;
 import org.junit.Before;
+import org.junit.After;
 import org.junit.Test;
-import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.util.ArrayList;
@@ -13,15 +14,21 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 public class DashboardDaoTest {
+    private ConfigurableApplicationContext appContext;
     private DashboardDao dashboardDao;
     private DashboardFactory dashboardFactory;
 
     @Before
     public void initiateDao() {
-        ApplicationContext appContext =
+        appContext =
                 new ClassPathXmlApplicationContext("classpath*:META-INF/spring/testApplicationContext.xml");
         this.dashboardDao = (DashboardDao) appContext.getBean("dashboardDao");
         this.dashboardFactory = (DashboardFactory) appContext.getBean("dashboardFactory");
+    }
+
+    @After
+    public void closeContext() {
+        appContext.close();
     }
 
     @Test
