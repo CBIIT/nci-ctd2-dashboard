@@ -1302,7 +1302,7 @@
                     _.each(centers.toJSON(), function (aCenter) {
                         aCenter.pinned = 0;
                         if ('CTD² Network Collaboration' == aCenter.displayName) aCenter.pinned = 2;
-                        if ('Other NCI Programs' == aCenter.displayName) aCenter.pinned = 1;
+                        if ('Other NCI Programs' == aCenter.displayName) aCenter.pinned = -1;
                         new CenterListRowView({
                             el: $(thatEl).find("#centers-tbody"),
                             model: aCenter
