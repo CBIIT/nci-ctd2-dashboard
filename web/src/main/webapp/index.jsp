@@ -1379,8 +1379,8 @@
                             <th>References</th>
                             <td><a href="http://purl.obolibrary.org/obo/{{code.replace(':','_')}}" target='_blank'>Ontobee</a>
                                 <br/><a href='https://www.ebi.ac.uk/QuickGO/term/{{code}}' target='_blank'>QuickGO</a>
-                                <br/>Evidence Ontology: <a href="http://www.evidenceontology.org/browse/#{{code.replace(':','_')}}" target='_blank'>Browse</a>
-                                <a href="http://www.evidenceontology.org/term/{{code}}" target='_blank'>Term</a></td>
+                                <br/>Evidence Ontology: <a href="http://www.evidenceontology.org/browse/#{{code.replace(':','_')}}" target='_blank'>Browse Page</a>,
+                                <a href="http://www.evidenceontology.org/term/{{code}}/" target='_blank'>Term Page</a></td>
                         </tr>
                     </table>
                 </div>
