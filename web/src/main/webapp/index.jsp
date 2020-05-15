@@ -253,17 +253,17 @@
                         {{description}}
                         <ul id='video-list' class="list-inline">
                             <li class="list-inline-item small">
-                                <a id="video-link1"  title='This video introduces and defines common terminology used throughout the Dashboard.'>
+                                <a href='' id="video-link1"  title='This video introduces and defines common terminology used throughout the Dashboard.'>
                                     Understanding the Dashboard
                                 </a>
                             </li>
                             <li class="list-inline-item small">
-                                <a id="video-link2" title='This video explains how users can search and browse the Dashboard through gene-centric, compound/perturbation-centric, or disease-relevant keywords.'>
+                                <a href='' id="video-link2" title='This video explains how users can search and browse the Dashboard through gene-centric, compound/perturbation-centric, or disease-relevant keywords.'>
                                     Searching and Browsing
                                 </a>
                             </li>
                             <li class="list-inline-item small">
-                                <a id="video-link3" title='This video shows how the Dashboard Gene Cart can predict or verify molecular interactions using a subset of publicly available tissue- and disease-specific interactomes.'>
+                                <a href='' id="video-link3" title='This video shows how the Dashboard Gene Cart can predict or verify molecular interactions using a subset of publicly available tissue- and disease-specific interactomes.'>
                                     Identifying Molecular Interactions
                                 </a>
                             </li>
@@ -273,7 +273,7 @@
                 </div><!-- row -->
 
         <div class="dark-separator"></div>
-        <a id=summary-table-label style="text-align:center;display:block;padding:10px"><span id=toggle-word>Show</span> Dashboard Content Summary</a>
+        <a href='' id=summary-table-label style="text-align:center;display:block;padding:10px"><span id=toggle-word>Show</span> Dashboard Content Summary</a>
         <table id=summary-table class="table table-bordered table-sm text-center">
             <thead>
                 <tr><th rowspan=2>Category</th><th rowspan=2>Submissions</th><th colspan=4>Observations</th></tr>

@@ -403,6 +403,7 @@
             });
             $("#summary-table").hide();
             $("#summary-table-label").click(function (e) {
+                e.preventDefault();
                 $("#summary-table").toggle();
                 $("#toggle-word").text(function (index, content) {
                     if (content == "Show") return "Hide";
