@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
 import gov.nih.nci.ctd2.dashboard.importer.internal.SampleImporter;
+import gov.nih.nci.ctd2.dashboard.util.APIDataBuilder;
 import gov.nih.nci.ctd2.dashboard.util.OverallSummary;
 import gov.nih.nci.ctd2.dashboard.util.SubjectScorer;
 
@@ -25,42 +26,37 @@ public class DashboardAdminMain {
     private static final String helpText = DashboardAdminMain.class.getSimpleName();
 
     private static final ClassPathXmlApplicationContext appContext = new ClassPathXmlApplicationContext(
-        "classpath*:META-INF/spring/applicationContext.xml", // This is for DAO/Dashboard Model
-        "classpath*:META-INF/spring/adminApplicationContext.xml", // This is for admin-related beans
-        "classpath*:META-INF/spring/animalModelApplicationContext.xml", // This is for gene data importer beans
-        "classpath*:META-INF/spring/cellLineDataApplicationContext.xml", // This is for cell line data importer beans
-        "classpath*:META-INF/spring/compoundDataApplicationContext.xml", // This is for compound data importer beans
-        "classpath*:META-INF/spring/geneDataApplicationContext.xml", // This is for gene data importer beans
-        "classpath*:META-INF/spring/proteinDataApplicationContext.xml", // This is for compound data importer beans
-		"classpath*:META-INF/spring/TRCshRNADataApplicationContext.xml", // and this is for trc-shRNA data importer beans
-        "classpath*:META-INF/spring/siRNADataApplicationContext.xml", // and this is for siRNA reagents data importer beans
-        "classpath*:META-INF/spring/tissueSampleDataApplicationContext.xml", // This is for cell line data importer beans
-        "classpath*:META-INF/spring/controlledVocabularyApplicationContext.xml", // This is for controlled vocabulary importer beans
-        "classpath*:META-INF/spring/observationDataApplicationContext.xml", // This is for observation data importer beans
-        "classpath*:META-INF/spring/taxonomyDataApplicationContext.xml", // This is for taxonomy data importer beans
-        "classpath*:META-INF/spring/ecotermDataApplicationContext.xml", // This is for ECO term data importer beans
-        "classpath*:META-INF/spring/xrefApplicationContext.xml" // this is for xref importer beans
+            "classpath*:META-INF/spring/applicationContext.xml", // This is for DAO/Dashboard Model
+            "classpath*:META-INF/spring/adminApplicationContext.xml", // This is for admin-related beans
+            "classpath*:META-INF/spring/animalModelApplicationContext.xml", // This is for gene data importer beans
+            "classpath*:META-INF/spring/cellLineDataApplicationContext.xml", // cell line data importer beans
+            "classpath*:META-INF/spring/compoundDataApplicationContext.xml", // This is for compound data importer beans
+            "classpath*:META-INF/spring/geneDataApplicationContext.xml", // This is for gene data importer beans
+            "classpath*:META-INF/spring/proteinDataApplicationContext.xml", // This is for compound data importer beans
+            "classpath*:META-INF/spring/TRCshRNADataApplicationContext.xml", // trc-shRNA data importer beans
+            "classpath*:META-INF/spring/siRNADataApplicationContext.xml", // siRNA reagents data importer beans
+            "classpath*:META-INF/spring/tissueSampleDataApplicationContext.xml", // cell line data importer beans
+            "classpath*:META-INF/spring/controlledVocabularyApplicationContext.xml", // controlled vocab importer beans
+            "classpath*:META-INF/spring/observationDataApplicationContext.xml", // observation data importer beans
+            "classpath*:META-INF/spring/taxonomyDataApplicationContext.xml", // This is for taxonomy data importer beans
+            "classpath*:META-INF/spring/ecotermDataApplicationContext.xml", // This is for ECO term data importer beans
+            "classpath*:META-INF/spring/xrefApplicationContext.xml" // this is for xref importer beans
     );
 
     @Transactional
     public static void main(String[] args) {
 
-        // These two should not be exposed in the main method, but were put here
-        // to show how we can access beans from the core module
-        //final DashboardDao dashboardDao = (DashboardDao) appContext.getBean("dashboardDao");
-        //final DashboardFactory dashboardFactory = (DashboardFactory) appContext.getBean("dashboardFactory");
-
         final CommandLineParser parser = new GnuParser();
         Options gnuOptions = new Options();
-        gnuOptions
-                .addOption("h", "help", false, "shows this help document and quits.")
-			    .addOption("am", "animal-model-data", false, "imports animal model data.")
-			    .addOption("cl", "cell-line-data", false, "imports cell line data.")
+        gnuOptions.addOption("h", "help", false, "shows this help document and quits.")
+                .addOption("am", "animal-model-data", false, "imports animal model data.")
+                .addOption("cl", "cell-line-data", false, "imports cell line data.")
                 .addOption("cp", "compound-data", false, "imports compound data.")
                 .addOption("e", "eco-term", false, "import ECO terms.")
-			    .addOption("g", "gene-data", false, "imports gene data.")
+                .addOption("g", "gene-data", false, "imports gene data.")
                 .addOption("p", "protein-data", false, "imports protein data.")
-                .addOption("r", "rank-subjects", false, "prioritize and rank the subjects according to the observation data.")
+                .addOption("r", "rank-subjects", false,
+                        "prioritize and rank the subjects according to the observation data.")
                 .addOption("sh", "shrna-data", false, "imports shrna data.")
                 .addOption("si", "sirna-data", false, "imports sirna data.")
                 .addOption("ts", "tissue-sample-data", false, "imports tissue sample data.")
@@ -68,85 +64,87 @@ public class DashboardAdminMain {
                 .addOption("o", "observation-data", false, "imports dashboard observation data.")
                 .addOption("s", "sample-data", false, "imports sample data.")
                 .addOption("t", "taxonomy-data", false, "imports organism data.")
-                .addOption("i", "index", false, "creates lucene index.")
-        ;
+                .addOption("i", "index", false, "creates lucene index.");
 
         // Here goes the parsing attempt
         try {
             CommandLine commandLine = parser.parse(gnuOptions, args);
 
-            if( commandLine.getOptions().length == 0 ) {
+            if (commandLine.getOptions().length == 0) {
                 // Here goes help message about running admin
                 throw new ParseException("Nothing to do!");
             }
 
-            if( commandLine.hasOption("h") ) {
+            if (commandLine.hasOption("h")) {
                 printHelpAndExit(gnuOptions, 0);
             }
 
-			if( commandLine.hasOption("am") ) {
+            if (commandLine.hasOption("am")) {
                 launchJob("animalModelImporterJob");
-			}
+            }
 
-			if( commandLine.hasOption("cl") ) {
+            if (commandLine.hasOption("cl")) {
                 launchJob("cellLineDataImporterJob");
-			}
+            }
 
-			if( commandLine.hasOption("cp") ) {
+            if (commandLine.hasOption("cp")) {
                 launchJob("compoundDataImporterJob");
-			}
+            }
 
-			if( commandLine.hasOption("g") ) {
+            if (commandLine.hasOption("g")) {
                 launchJob("geneDataImporterJob");
-			}
+            }
 
-			if( commandLine.hasOption("p") ) {
+            if (commandLine.hasOption("p")) {
                 launchJob("proteinDataImporterJob");
-			}
+            }
 
-			if( commandLine.hasOption("sh") ) {
+            if (commandLine.hasOption("sh")) {
                 launchJob("TRCshRNADataImporterJob");
-			}
+            }
 
-            if( commandLine.hasOption("si") ) {
+            if (commandLine.hasOption("si")) {
                 launchJob("siRNADataImporterJob");
             }
 
-			if( commandLine.hasOption("ts") ) {
+            if (commandLine.hasOption("ts")) {
                 launchJob("tissueSampleDataImporterJob");
-			}
+            }
 
-			if( commandLine.hasOption("cv") ) {
+            if (commandLine.hasOption("cv")) {
                 launchJob("controlledVocabularyImporterJob");
-			}
+            }
 
-			if( commandLine.hasOption("o") ) {
+            if (commandLine.hasOption("o")) {
                 launchJob("observationDataImporterJob");
-			}
+                String dataURL = (String) appContext.getBean("dataURL");
+                APIDataBuilder b = (APIDataBuilder) appContext.getBean("apiDataBuilder");
+                b.prepareData(dataURL);
+            }
 
-            if( commandLine.hasOption("s") ) {
+            if (commandLine.hasOption("s")) {
                 log.info("Running sample importer...");
                 // This is just for demonstration purposes
                 SampleImporter sampleImporter = (SampleImporter) appContext.getBean("sampleImporter");
                 sampleImporter.run();
             }
 
-			if( commandLine.hasOption("t") ) {
+            if (commandLine.hasOption("t")) {
                 launchJob("taxonomyDataImporterJob");
             }
-            
-            if( commandLine.hasOption("e") ) {
-                launchJob("ecotermDataImporterJob");
-			}
 
-            if(commandLine.hasOption("r")) {
+            if (commandLine.hasOption("e")) {
+                launchJob("ecotermDataImporterJob");
+            }
+
+            if (commandLine.hasOption("r")) {
                 SubjectScorer subjectScorer = (SubjectScorer) appContext.getBean("subjectScorer");
                 subjectScorer.scoreAllRoles();
                 OverallSummary overallSummary = (OverallSummary) appContext.getBean("overallSummary");
                 overallSummary.summarize();
             }
 
-            if( commandLine.hasOption("i") ) {
+            if (commandLine.hasOption("i")) {
                 DashboardDao dashboardDao = (DashboardDao) appContext.getBean("dashboardDao");
                 dashboardDao.cleanIndex((Integer) appContext.getBean("indexBatchSize"));
             }
@@ -168,13 +166,12 @@ public class DashboardAdminMain {
     private static void launchJob(String jobName) {
         log.info("launchJob: jobName:" + jobName);
         try {
-            Job job = (Job)appContext.getBean(jobName);
-            JobLauncher jobLauncher = (JobLauncher)appContext.getBean("jobLauncher");
+            Job job = (Job) appContext.getBean(jobName);
+            JobLauncher jobLauncher = (JobLauncher) appContext.getBean("jobLauncher");
             JobParametersBuilder builder = new JobParametersBuilder();
             JobExecution jobExecution = jobLauncher.run(job, builder.toJobParameters());
             log.info("launchJob: exit code: " + jobExecution.getExitStatus().getExitCode());
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             System.err.println(e.getMessage());
             System.exit(-1);
         }

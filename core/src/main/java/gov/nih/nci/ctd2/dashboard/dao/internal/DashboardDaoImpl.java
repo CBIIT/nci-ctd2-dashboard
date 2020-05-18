@@ -1176,6 +1176,23 @@ public class DashboardDaoImpl implements DashboardDao {
     public List<EvidenceItem> getObservedEvidenceInfo(Integer observationId) {
         Session session = getSession();
         @SuppressWarnings("unchecked")
+        org.hibernate.query.Query<EvidenceItem> query = session
+                .createQuery("from EvidenceItem where observation_id = :oid");
+        query.setParameter("oid", observationId);
+        List<EvidenceItem> list = new ArrayList<EvidenceItem>();
+        try {
+            list = query.getResultList();
+        } catch (NoResultException e) {
+            log.info("EvidenceItem not available for observation id " + observationId);
+        }
+        session.close();
+        return list;
+
+    }
+
+    private List<EvidenceItem> createObservedEvidenceInfo(Integer observationId) {
+        Session session = getSession();
+        @SuppressWarnings("unchecked")
         org.hibernate.query.Query<Object[]> query = session.createNativeQuery(
                 "SELECT d2.displayName AS type, observed_evidence_role.displayText AS description, evidence.id, columnName"
                         + " FROM observed_evidence join evidence on observed_evidence.evidence_id=evidence.id"
@@ -1193,11 +1210,29 @@ public class DashboardDaoImpl implements DashboardDao {
             Evidence evidence = getEntityById(Evidence.class, evidenceId);
             String evidenceName = evidence.getDisplayName();
             String columnName = (String) obj[3];
-            EvidenceItem evidenceItem = new EvidenceItem(evidence, type, description, evidenceName, columnName);
+            EvidenceItem evidenceItem = new EvidenceItem(evidence, type, description, evidenceName, columnName,
+                    observationId);
             list.add(evidenceItem);
         }
         session.close();
         return list;
+    }
+
+    @Override
+    public void prepareEvidenceData() {
+        Session session = getSession();
+        session.beginTransaction();
+        @SuppressWarnings("unchecked")
+        org.hibernate.query.Query<Integer> query = session.createNativeQuery("SELECT id FROM observation");
+        List<Integer> oid = query.list();
+
+        for (Integer id : oid) {
+            List<EvidenceItem> evidences = createObservedEvidenceInfo(id);
+            for (EvidenceItem e : evidences)
+                session.save(e);
+        }
+        session.getTransaction().commit();
+        session.close();
     }
 
     private Summary summarizePerSubject(Class<? extends Subject> subjectClass, String label) {

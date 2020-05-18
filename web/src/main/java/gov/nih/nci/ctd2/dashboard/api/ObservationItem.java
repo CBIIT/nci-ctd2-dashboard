@@ -33,7 +33,7 @@ public class ObservationItem {
             summary = summary.replace("<" + s.columnName + ">", s.name);
         }
         for (EvidenceItem e : evidences) {
-            summary = summary.replace("<" + e.columnName + ">", e.evidenceName);
+            summary = summary.replace("<" + e.getColumnName() + ">", e.getEvidenceName());
         }
         return summary;
     }

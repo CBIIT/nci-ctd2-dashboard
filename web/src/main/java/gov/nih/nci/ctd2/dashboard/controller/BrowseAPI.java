@@ -58,7 +58,6 @@ public class BrowseAPI {
             return new ResponseEntity<String>("{}", headers, HttpStatus.OK);
         }
 
-        EvidenceItem.dataURL = dataURL;
         SubjectResponse subjectResponse = SubjectResponse.createInstance(subject, filter, dashboardDao);
 
         log.debug("ready to serialize");

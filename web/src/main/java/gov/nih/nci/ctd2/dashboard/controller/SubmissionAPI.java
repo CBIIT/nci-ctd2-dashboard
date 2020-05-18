@@ -56,7 +56,6 @@ public class SubmissionAPI {
         if (limit > 0 && limit < observations.size()) {
             observations = observations.subList(0, limit);
         }
-        EvidenceItem.dataURL = dataURL;
         ObservationItem[] obvs = new ObservationItem[observations.size()];
         for (int i = 0; i < observations.size(); i++) {
             obvs[i] = new ObservationItem((Observation) observations.get(i), dashboardDao);

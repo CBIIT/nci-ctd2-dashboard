@@ -41,6 +41,7 @@
             <list>
                 <value>gov.nih.nci.ctd2.dashboard.impl</value>
                 <value>gov.nih.nci.ctd2.dashboard.util</value>
+                <value>gov.nih.nci.ctd2.dashboard.api</value>
             </list>
         </property>
     </bean>
