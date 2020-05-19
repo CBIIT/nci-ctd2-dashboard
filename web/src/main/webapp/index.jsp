@@ -352,7 +352,7 @@
     <script type="text/template" id="centers-tmpl">
         <div class="container common-container" id="centers-container">
             <h2>Centers</h2>
-            <table class="table table-bordered table-striped table-compact" id="centers-list-table">
+            <table class="table table-bordered table-striped table-compact nowrap" id="centers-list-table">
                 <thead>
                     <tr>
                         <th class="center-image-column"></th>
