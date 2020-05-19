@@ -681,3 +681,7 @@ div.center-link-container {
 #summary-item {
     background-color: bisque;
 }
+
+td.wrapok {
+    white-space:normal
+}

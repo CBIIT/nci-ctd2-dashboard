@@ -1446,8 +1446,9 @@
                         'dom': '<iBfrtlp>',
                         'data': table_data,
                         "deferRender": true,
-                        "columns": [
-                            null,
+                        "columns": [{
+                                class: "wrapok"
+                            },
                             null,
                             {
                                 "type": "observation-count"
