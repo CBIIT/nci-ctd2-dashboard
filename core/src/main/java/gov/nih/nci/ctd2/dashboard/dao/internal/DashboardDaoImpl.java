@@ -1222,6 +1222,7 @@ public class DashboardDaoImpl implements DashboardDao {
     public void prepareEvidenceData() {
         Session session = getSession();
         session.beginTransaction();
+        session.createQuery("DELETE FROM EvidenceItem").executeUpdate();
         @SuppressWarnings("unchecked")
         org.hibernate.query.Query<Integer> query = session.createNativeQuery("SELECT id FROM observation");
         List<Integer> oid = query.list();

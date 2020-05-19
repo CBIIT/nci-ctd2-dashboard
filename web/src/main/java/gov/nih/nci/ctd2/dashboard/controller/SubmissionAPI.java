@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import flexjson.JSONSerializer;
 import gov.nih.nci.ctd2.dashboard.api.CTD2Serializer;
-import gov.nih.nci.ctd2.dashboard.api.EvidenceItem;
 import gov.nih.nci.ctd2.dashboard.api.ObservationItem;
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
 import gov.nih.nci.ctd2.dashboard.model.DashboardEntity;
@@ -32,9 +31,6 @@ public class SubmissionAPI {
     private static final Log log = LogFactory.getLog(SubmissionAPI.class);
     @Autowired
     private DashboardDao dashboardDao;
-
-    @Autowired
-    private String dataURL;
 
     @Transactional
     @RequestMapping(value = "{id}", method = { RequestMethod.GET }, headers = "Accept=application/json")
