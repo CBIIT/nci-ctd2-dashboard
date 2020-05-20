@@ -3374,18 +3374,14 @@
 
                         $("#role-modal").modal('show');
 
-                        $("#select-roles-button").click(function (e) {
+                        $("#role-modal").on('hidden.bs.modal', function (e) {
                             const newRoles = [];
                             $("#role-modal input").each(function () {
                                 const aRole = $(this).attr("data-role");
                                 if ($(this).prop("checked")) {
                                     newRoles.push(aRole);
                                 }
-
                             });
-
-                            $("#role-modal").modal('hide');
-                            $(".modal-backdrop").remove();
                             window.location.hash = "/explore/" + thatModel.type + "/" + newRoles.join(",");
                         });
                     }

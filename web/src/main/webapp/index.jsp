@@ -1945,7 +1945,7 @@
                 </table>
             </div>
             <div class="modal-footer">
-                <button type="btn btn-block btn-info" id="select-roles-button">Select</button>
+                <button type="btn btn-block btn-info" data-dismiss="modal" id="select-roles-button">Select</button>
             </div>
         </div>
         </div>
