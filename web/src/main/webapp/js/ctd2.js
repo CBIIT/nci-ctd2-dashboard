@@ -1263,7 +1263,7 @@
                 .first()
                 .value();
             if (result.eco == undefined) {
-                result.eco = {};
+                result.eco = wildcard_evidence_codes[result.observedEvidenceRole.evidenceRole.displayName];
             }
 
             this.template = _.template($(templateId).html());

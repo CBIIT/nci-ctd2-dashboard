@@ -2460,7 +2460,8 @@
     <script src="js/jquery.contextMenu.min.js"></script>
     <script src="js/jquery.ui.position.min.js"></script>
     <script src="js/ctd2.hovertext.js"></script>
-    <script src="js/ctd2.js?ts=2019009"></script>
+    <script src="js/wildcard_evidence_codes.js"></script>
+    <script src="js/ctd2.js?ts=2020"></script>
 
 </body>
 
