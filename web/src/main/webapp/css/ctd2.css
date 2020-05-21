@@ -356,7 +356,6 @@ td.next-cell {
 
 .center-image-column img {
     max-width: 100px;
-    max-height: 25px;
 }
 
 .center-image-column {
@@ -684,4 +683,8 @@ div.center-link-container {
 
 td.wrapok {
     white-space:normal
+}
+
+#centers-list-table img {
+    max-height: 25px;
 }
