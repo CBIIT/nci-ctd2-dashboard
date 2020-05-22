@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import flexjson.JSONSerializer;
 import gov.nih.nci.ctd2.dashboard.api.CTD2Serializer;
-import gov.nih.nci.ctd2.dashboard.api.EvidenceItem;
 import gov.nih.nci.ctd2.dashboard.api.SubjectResponse;
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
 import gov.nih.nci.ctd2.dashboard.model.Gene;
@@ -29,9 +28,6 @@ public class BrowseAPI {
     private static final Log log = LogFactory.getLog(BrowseAPI.class);
     @Autowired
     private DashboardDao dashboardDao;
-
-    @Autowired
-    private String dataURL;
 
     @Transactional
     @RequestMapping(value = "{subjectClass}/{subjectName}", method = {
