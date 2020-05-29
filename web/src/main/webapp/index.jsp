@@ -300,13 +300,13 @@
             </div>
             <div class=row>
                 <div class="col-4">
-                    <a class="btn btn-danger btn-block ctd2bigbutton" href="#stories" role="button" id="explore-stories-button">stories</a>
-                </div>
-                <div class="col-4">
                     <a class="btn btn-danger btn-block ctd2bigbutton" href="#explore/cellline/Cell Line" role="button" id="explore-celllines-button">cell lines</a>
                 </div>
                 <div class="col-4">
                     <a class="btn btn-danger btn-block ctd2bigbutton" href="#eco_browse" role="button" id="explore-eco-button">experimental evidence</a>
+                </div>
+                <div class="col-4">
+                    <a class="btn btn-danger btn-block ctd2bigbutton" href="#stories" role="button" id="explore-stories-button">stories</a>
                 </div>
             </div>
         </div>
