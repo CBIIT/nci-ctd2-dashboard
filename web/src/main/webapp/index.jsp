@@ -274,7 +274,7 @@
 
         <div class="dark-separator"></div>
         <div style="text-align:center;display:block;padding:10px">
-        <button type="button" class="btn btn-outline-dark" id=summary-table-label><span id=toggle-word>Show</span> Dashboard Content Summary</button>
+        <button type="button" class="btn btn-secondary" id=summary-table-label><span id=toggle-word>Show</span> Dashboard Content Summary</button>
         </div>
         <table id=summary-table class="table table-bordered table-sm text-center">
             <thead>
@@ -284,6 +284,7 @@
             <tbody id='summary-table-body'>
             </tbody>
         </table>
+        <div class="dark-separator"></div>
 
         <div class="container ctd2-boxes">
             <div class=row style='margin-bottom:-20px'>
