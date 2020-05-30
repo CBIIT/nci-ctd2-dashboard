@@ -20,8 +20,7 @@ public class FieldNameTransformer extends AbstractTransformer {
         if (!typeContext.isFirst())
             getContext().writeComma();
 
-        typeContext.setFirst(false);
-
+        typeContext.increment();
         getContext().writeName(getTransformedFieldName());
         getContext().writeQuoted(object.toString());
 
