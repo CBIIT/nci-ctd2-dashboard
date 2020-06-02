@@ -20,14 +20,10 @@ import com.google.gson.TypeAdapter;
 import com.google.gson.internal.bind.util.ISO8601Utils;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import com.google.gson.JsonElement;
 import io.gsonfire.GsonFireBuilder;
-import io.gsonfire.TypeSelector;
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.OffsetDateTime;
 import org.threeten.bp.format.DateTimeFormatter;
-
-import io.swagger.client.model.*;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -36,8 +32,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.ParsePosition;
 import java.util.Date;
-import java.util.Map;
-import java.util.HashMap;
 
 public class JSON {
     private Gson gson;
@@ -51,22 +45,6 @@ public class JSON {
         GsonFireBuilder fireBuilder = new GsonFireBuilder()
         ;
         return fireBuilder.createGsonBuilder();
-    }
-
-    private static String getDiscriminatorValue(JsonElement readElement, String discriminatorField) {
-        JsonElement element = readElement.getAsJsonObject().get(discriminatorField);
-        if(null == element) {
-            throw new IllegalArgumentException("missing discriminator field: <" + discriminatorField + ">");
-        }
-        return element.getAsString();
-    }
-
-    private static Class getClassByDiscriminator(Map classByDiscriminatorValue, String discriminatorValue) {
-        Class clazz = (Class) classByDiscriminatorValue.get(discriminatorValue.toUpperCase());
-        if(null == clazz) {
-            throw new IllegalArgumentException("cannot determine model class of name: <" + discriminatorValue + ">");
-        }
-        return clazz;
     }
 
     public JSON() {

@@ -20,12 +20,8 @@ import io.swagger.client.model.Observation;
 import io.swagger.client.model.ObservationEvidenceList;
 import io.swagger.client.model.Subject;
 import org.junit.Test;
-import org.junit.Ignore;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -98,8 +94,7 @@ public class DefaultApiTest {
         Integer maximum = null;
         List<Subject> response = api.searchTermGet(term, center, role, tier, maximum);
 
-        //System.out.println(response);
-        // TODO: test validations
+        System.out.println(response);
     }
     
     /**

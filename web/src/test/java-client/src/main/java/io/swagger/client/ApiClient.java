@@ -60,9 +60,6 @@ public class ApiClient {
     private Map<String, Authentication> authentications;
 
     private DateFormat dateFormat;
-    private DateFormat datetimeFormat;
-    private boolean lenientDatetimeFormat;
-    private int dateLength;
 
     private InputStream sslCaCert;
     private boolean verifyingSsl;
@@ -495,7 +492,7 @@ public class ApiClient {
             return jsonStr.substring(1, jsonStr.length() - 1);
         } else if (param instanceof Collection) {
             StringBuilder b = new StringBuilder();
-            for (Object o : (Collection)param) {
+            for (Object o : (Collection<?>)param) {
                 if (b.length() > 0) {
                     b.append(",");
                 }
@@ -536,7 +533,7 @@ public class ApiClient {
      * @param value The value of the parameter.
      * @return A list of {@code Pair} objects.
      */
-    public List<Pair> parameterToPairs(String collectionFormat, String name, Collection value) {
+    public List<Pair> parameterToPairs(String collectionFormat, String name, Collection<?> value) {
         List<Pair> params = new ArrayList<Pair>();
 
         // preconditions
@@ -1156,7 +1153,6 @@ public class ApiClient {
                     @Override
                     public X509Certificate[] getAcceptedIssuers() { return null; }
                 };
-                SSLContext sslContext = SSLContext.getInstance("TLS");
                 trustManagers = new TrustManager[]{ trustAll };
                 hostnameVerifier = new HostnameVerifier() {
                     @Override
