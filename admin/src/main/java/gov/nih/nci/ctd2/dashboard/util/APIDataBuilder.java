@@ -23,7 +23,7 @@ public class APIDataBuilder {
 
     public void prepareData(String dataURL) {
         EvidenceItem.dataURL = dataURL;
-        dashboardDao.prepareEvidenceData();
+        dashboardDao.prepareAPIData();
         log.debug("finish preparing API data");
     }
 }

@@ -1124,6 +1124,22 @@ public class DashboardDaoImpl implements DashboardDao {
 
     @Override
     public List<SubjectItem> getObservedSubjectInfo(Integer observationId) {
+        Session session = getSession();
+        @SuppressWarnings("unchecked")
+        org.hibernate.query.Query<SubjectItem> query = session
+                .createQuery("from SubjectItem where observation_id = :oid");
+        query.setParameter("oid", observationId);
+        List<SubjectItem> list = new ArrayList<SubjectItem>();
+        try {
+            list = query.getResultList();
+        } catch (NoResultException e) {
+            log.info("SubjectItem not available for observation id " + observationId);
+        }
+        session.close();
+        return list;
+    }
+
+    private List<SubjectItem> createObservedSubjectInfo(Integer observationId) {
         Session session1 = getSession();
         @SuppressWarnings("unchecked")
         org.hibernate.query.Query<Object[]> query1 = session1.createNativeQuery(
@@ -1165,7 +1181,8 @@ public class DashboardDaoImpl implements DashboardDao {
             }
 
             SubjectItem subjectItem = new SubjectItem(stableURL.substring(0, stableURL.indexOf("/")), role, description,
-                    name, synonyms.toArray(new String[0]), xrefItems.toArray(new XRefItem[0]), columnName);
+                    name, synonyms.toArray(new String[0]), xrefItems.toArray(new XRefItem[0]), columnName,
+                    observationId);
             list.add(subjectItem);
         }
         session1.close();
@@ -1187,7 +1204,6 @@ public class DashboardDaoImpl implements DashboardDao {
         }
         session.close();
         return list;
-
     }
 
     private List<EvidenceItem> createObservedEvidenceInfo(Integer observationId) {
@@ -1219,10 +1235,11 @@ public class DashboardDaoImpl implements DashboardDao {
     }
 
     @Override
-    public void prepareEvidenceData() {
+    public void prepareAPIData() {
         Session session = getSession();
         session.beginTransaction();
         session.createQuery("DELETE FROM EvidenceItem").executeUpdate();
+        session.createQuery("DELETE FROM SubjectItem").executeUpdate();
         @SuppressWarnings("unchecked")
         org.hibernate.query.Query<Integer> query = session.createNativeQuery("SELECT id FROM observation");
         List<Integer> oid = query.list();
@@ -1231,6 +1248,10 @@ public class DashboardDaoImpl implements DashboardDao {
             List<EvidenceItem> evidences = createObservedEvidenceInfo(id);
             for (EvidenceItem e : evidences)
                 session.save(e);
+
+            List<SubjectItem> subjects = createObservedSubjectInfo(id);
+            for (SubjectItem s : subjects)
+                session.save(s);
         }
         session.getTransaction().commit();
         session.close();

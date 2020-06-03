@@ -120,8 +120,8 @@ public class SubjectResponse {
             tierCount[tier - 1]++;
 
             for (SubjectItem sub : obvs[i].subject_list) {
-                if (sub.name.equals(subject.getDisplayName())) {
-                    roles.add(sub.role);
+                if (sub.getName().equals(subject.getDisplayName())) {
+                    roles.add(sub.getRole());
                     break;
                 }
             }

@@ -30,7 +30,7 @@ public class ObservationItem {
 
     private static String replaceValues(String summary, List<SubjectItem> subjects, List<EvidenceItem> evidences) {
         for (SubjectItem s : subjects) {
-            summary = summary.replace("<" + s.columnName + ">", s.name);
+            summary = summary.replace("<" + s.getColumnName() + ">", s.getName());
         }
         for (EvidenceItem e : evidences) {
             summary = summary.replace("<" + e.getColumnName() + ">", e.getEvidenceName());

@@ -84,5 +84,5 @@ public interface DashboardDao {
     List<Observation> getObservationsForSubmissionAndEcoCode(Integer submissionId, String ecocode);
     ECOTerm getEcoTerm(String ecoTermCode);
 
-    void prepareEvidenceData();
+    void prepareAPIData();
 }
