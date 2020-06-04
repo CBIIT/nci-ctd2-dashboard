@@ -1732,7 +1732,7 @@
             </table>
 
             <div id="submission-search-results">
-                <h3>Submissions descriptions or submission summaries matching any search term</h3>
+                <h3>Submission descriptions or summaries matching any search term</h3>
                 <table id="searched-submissions" class="table table-bordered table-striped">
                     <thead>
                     <tr>
