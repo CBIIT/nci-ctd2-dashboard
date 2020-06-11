@@ -1,8 +1,6 @@
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<!DOCTYPE html>
 <%@page import="org.springframework.web.context.WebApplicationContext"%>
 <%@page import="org.springframework.web.context.support.WebApplicationContextUtils"%>
-<%@page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
 <%
     WebApplicationContext context = WebApplicationContextUtils
             .getWebApplicationContext(application);
@@ -10,7 +8,6 @@
     Integer maxNumOfObservations = (Integer) context.getBean("maxNumberOfEntities");
     String dashboardReleaseVersion = (String) context.getBean("dashboardReleaseVersion");
 %>
-<!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/html">
 
 <head>
@@ -166,7 +163,8 @@
                                             <li><em>Cell Sample: </em> <a href="#search/OVCAR8">OVCAR8</a></li>
                                             <li><em>Multiple: </em> <a href="#search/dexamethasone AKT1">dexamethasone
                                                     AKT1</a></li>
-                                            <li><em>Expt. Evidence Code: </em> <a href="#search/ECO_0006053">ECO_0006053</a></li>
+                                            <li><em>Expt. Evidence Code: </em> <a
+                                                    href="#search/ECO_0006053">ECO_0006053</a></li>
                                             <li><em>Expt. Evidence term: </em> <a href="#search/PCR">PCR</a></li>
                                         </ul>
                                         <br>
