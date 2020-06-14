@@ -6,17 +6,14 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Index;
 import javax.persistence.Lob;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "subject_item", indexes = @Index(name = "observation_id", columnList = "observation_id", unique = false))
+@Table(name = "subject_item")
 public class SubjectItem implements Serializable {
 
     private static final long serialVersionUID = 4332875482830599641L;
-
-    private Integer observation_id;
 
     @Column(length = 10240)
     private String description;
@@ -86,18 +83,8 @@ public class SubjectItem implements Serializable {
         this.clazz = clazz;
     }
 
-    @Column(name = "observation_id")
-    public Integer getObservationId() {
-        return observation_id;
-    }
-
-    public void setObservationId(Integer x) {
-        observation_id = x;
-    }
-
     public SubjectItem(String clazz, String role, String description, String name, String[] synonyms, XRefItem[] xref,
-            String columnName, Integer oid) {
-        this.observation_id = oid;
+            String columnName) {
 
         this.setClazz(clazz);
         this.setRole(role);

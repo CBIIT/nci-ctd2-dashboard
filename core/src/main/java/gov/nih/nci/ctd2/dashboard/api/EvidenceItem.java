@@ -6,7 +6,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Index;
 import javax.persistence.Table;
 
 import gov.nih.nci.ctd2.dashboard.model.DataNumericValue;
@@ -16,12 +15,10 @@ import gov.nih.nci.ctd2.dashboard.model.LabelEvidence;
 import gov.nih.nci.ctd2.dashboard.model.UrlEvidence;
 
 @Entity
-@Table(name = "evidence_item", indexes = @Index(name = "observation_id", columnList = "observation_id", unique = false))
+@Table(name = "evidence_item")
 public class EvidenceItem implements Serializable {
 
     private static final long serialVersionUID = -6215951762324186670L;
-
-    private Integer observation_id;
 
     @Column(length = 10240)
     private String description;
@@ -102,18 +99,7 @@ public class EvidenceItem implements Serializable {
         this.clazz = clazz;
     }
 
-    @Column(name = "observation_id")
-    public Integer getObservationId() {
-        return observation_id;
-    }
-
-    public void setObservationId(Integer x) {
-        observation_id = x;
-    }
-
-    public EvidenceItem(Evidence evidence, String type, String description, String evidenceName, String columnName,
-            Integer oid) {
-        this.observation_id = oid;
+    public EvidenceItem(Evidence evidence, String type, String description, String evidenceName, String columnName) {
         this.setType(type);
         this.setDescription(description);
 

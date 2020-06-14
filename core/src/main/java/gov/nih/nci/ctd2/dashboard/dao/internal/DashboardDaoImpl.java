@@ -1165,8 +1165,7 @@ public class DashboardDaoImpl implements DashboardDao {
             }
 
             SubjectItem subjectItem = new SubjectItem(stableURL.substring(0, stableURL.indexOf("/")), role, description,
-                    name, synonyms.toArray(new String[0]), xrefItems.toArray(new XRefItem[0]), columnName,
-                    observationId);
+                    name, synonyms.toArray(new String[0]), xrefItems.toArray(new XRefItem[0]), columnName);
             list.add(subjectItem);
         }
         session1.close();
@@ -1193,8 +1192,7 @@ public class DashboardDaoImpl implements DashboardDao {
             Evidence evidence = getEntityById(Evidence.class, evidenceId);
             String evidenceName = evidence.getDisplayName();
             String columnName = (String) obj[3];
-            EvidenceItem evidenceItem = new EvidenceItem(evidence, type, description, evidenceName, columnName,
-                    observationId);
+            EvidenceItem evidenceItem = new EvidenceItem(evidence, type, description, evidenceName, columnName);
             list.add(evidenceItem);
         }
         session.close();
