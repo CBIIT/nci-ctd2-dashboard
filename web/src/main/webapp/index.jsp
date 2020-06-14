@@ -212,7 +212,7 @@
                             title="First Gov logo" alt="First Gov logo"></a>
                 </div>
                 <div style="font-size:14px; margin-bottom:10px;">
-                    <a class="help-navigate">Glossary</a> &middot;
+                    <a href='' class="help-navigate">Glossary</a> &middot;
                     <a href="http://www.cancer.gov/global/web/policies" target="_blank">Policies</a> &middot;
                     <a href="http://www.cancer.gov/global/web/policies/accessibility" target="_blank">Accessibility</a>
                     &middot;
