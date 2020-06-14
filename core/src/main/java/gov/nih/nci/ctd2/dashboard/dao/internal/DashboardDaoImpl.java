@@ -1123,23 +1123,6 @@ public class DashboardDaoImpl implements DashboardDao {
         return summary;
     }
 
-    @Override
-    public List<SubjectItem> getObservedSubjectInfo(Integer observationId) {
-        Session session = getSession();
-        @SuppressWarnings("unchecked")
-        org.hibernate.query.Query<SubjectItem> query = session
-                .createQuery("from SubjectItem where observation_id = :oid");
-        query.setParameter("oid", observationId);
-        List<SubjectItem> list = new ArrayList<SubjectItem>();
-        try {
-            list = query.getResultList();
-        } catch (NoResultException e) {
-            log.info("SubjectItem not available for observation id " + observationId);
-        }
-        session.close();
-        return list;
-    }
-
     private List<SubjectItem> createObservedSubjectInfo(Integer observationId) {
         Session session1 = getSession();
         @SuppressWarnings("unchecked")
@@ -1187,23 +1170,6 @@ public class DashboardDaoImpl implements DashboardDao {
             list.add(subjectItem);
         }
         session1.close();
-        return list;
-    }
-
-    @Override
-    public List<EvidenceItem> getObservedEvidenceInfo(Integer observationId) {
-        Session session = getSession();
-        @SuppressWarnings("unchecked")
-        org.hibernate.query.Query<EvidenceItem> query = session
-                .createQuery("from EvidenceItem where observation_id = :oid");
-        query.setParameter("oid", observationId);
-        List<EvidenceItem> list = new ArrayList<EvidenceItem>();
-        try {
-            list = query.getResultList();
-        } catch (NoResultException e) {
-            log.info("EvidenceItem not available for observation id " + observationId);
-        }
-        session.close();
         return list;
     }
 
@@ -1289,13 +1255,7 @@ public class DashboardDaoImpl implements DashboardDao {
 
             for (Integer id : oid) {
                 List<EvidenceItem> evidences = createObservedEvidenceInfo(id);
-                for (EvidenceItem e : evidences)
-                    session.save(e);
-
                 List<SubjectItem> subjects = createObservedSubjectInfo(id);
-                for (SubjectItem s : subjects)
-                    session.save(s);
-
                 ObservationItem obsv = new ObservationItem();
                 obsv.setId(id);
                 obsv.setSubmission_id(submission_id);
