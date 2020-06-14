@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 import gov.nih.nci.ctd2.dashboard.api.EvidenceItem;
+import gov.nih.nci.ctd2.dashboard.api.ObservationItem;
 import gov.nih.nci.ctd2.dashboard.api.SubjectItem;
 
 public interface DashboardDao {
@@ -72,9 +73,10 @@ public interface DashboardDao {
     Map<Observation, BigInteger> getOneObservationPerSubmission(Integer subjectId);
     String expandSummary(Integer observationId, String summaryTemplate);
 
-    // the following are added to support more efficient API without changing underlying database
+    // the following are added to support more efficient API
     List<SubjectItem> getObservedSubjectInfo(Integer observationId);
     List<EvidenceItem> getObservedEvidenceInfo(Integer observationId);
+    List<ObservationItem> findObservationInfo(Integer submissionId);
 
     void summarize();
     List<Summary> getOverallSummary();

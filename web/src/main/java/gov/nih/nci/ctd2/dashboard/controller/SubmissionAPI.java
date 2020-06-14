@@ -20,8 +20,6 @@ import flexjson.JSONSerializer;
 import gov.nih.nci.ctd2.dashboard.api.CTD2Serializer;
 import gov.nih.nci.ctd2.dashboard.api.ObservationItem;
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
-import gov.nih.nci.ctd2.dashboard.model.DashboardEntity;
-import gov.nih.nci.ctd2.dashboard.model.Observation;
 import gov.nih.nci.ctd2.dashboard.model.ObservationTemplate;
 import gov.nih.nci.ctd2.dashboard.model.Submission;
 
@@ -48,15 +46,11 @@ public class SubmissionAPI {
             }
         }
         Submission submission = dashboardDao.getEntityByStableURL("submission", "submission/" + id);
-        List<? extends DashboardEntity> observations = dashboardDao.findObservationsBySubmission(submission);
+        List<ObservationItem> observations = dashboardDao.findObservationInfo(submission.getId());
         if (limit > 0 && limit < observations.size()) {
             observations = observations.subList(0, limit);
         }
-        ObservationItem[] obvs = new ObservationItem[observations.size()];
-        for (int i = 0; i < observations.size(); i++) {
-            obvs[i] = new ObservationItem((Observation) observations.get(i), dashboardDao);
-        }
-        APISubmission apiSubmission = new APISubmission(submission, obvs);
+        APISubmission apiSubmission = new APISubmission(submission, observations.toArray(new ObservationItem[0]));
 
         log.debug("ready to serialize");
         JSONSerializer jsonSerializer = CTD2Serializer.createJSONSerializer();

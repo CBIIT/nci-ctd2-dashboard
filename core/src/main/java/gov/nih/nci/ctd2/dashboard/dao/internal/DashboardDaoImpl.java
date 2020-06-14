@@ -74,6 +74,7 @@ import gov.nih.nci.ctd2.dashboard.util.EcoBrowse;
 import gov.nih.nci.ctd2.dashboard.util.SubjectWithSummaries;
 import gov.nih.nci.ctd2.dashboard.util.Summary;
 import gov.nih.nci.ctd2.dashboard.api.EvidenceItem;
+import gov.nih.nci.ctd2.dashboard.api.ObservationItem;
 import gov.nih.nci.ctd2.dashboard.api.SubjectItem;
 import gov.nih.nci.ctd2.dashboard.api.XRefItem;
 
@@ -1234,27 +1235,72 @@ public class DashboardDaoImpl implements DashboardDao {
         return list;
     }
 
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<ObservationItem> findObservationInfo(Integer submissionId) {
+        Session session = getSession();
+        List<ObservationItem> list = new ArrayList<ObservationItem>();
+        org.hibernate.query.Query<ObservationItem> query = session
+                .createQuery("from ObservationItem where submission_id = :sid");
+        query.setParameter("sid", submissionId);
+        try {
+            list = query.getResultList();
+        } catch (NoResultException e) {
+            log.info("ObservationItem not available for submission ID " + submissionId);
+        }
+        session.close();
+        return list;
+    }
+
+    @SuppressWarnings("unchecked")
     @Override
     public void prepareAPIData() {
         Session session = getSession();
         session.beginTransaction();
         session.createQuery("DELETE FROM EvidenceItem").executeUpdate();
         session.createQuery("DELETE FROM SubjectItem").executeUpdate();
-        @SuppressWarnings("unchecked")
-        org.hibernate.query.Query<Integer> query = session.createNativeQuery("SELECT id FROM observation");
-        List<Integer> oid = query.list();
+        session.createQuery("DELETE FROM ObservationItem").executeUpdate();
+        org.hibernate.query.Query<Object[]> query0 = session.createNativeQuery(
+                "SELECT submission.id, observationSummary FROM observation_template JOIN  submission ON observation_template.id=submission.observationTemplate_id");
+        List<Object[]> submissions = query0.list();
+        for (Object[] objs : submissions) {
+            Integer submission_id = (Integer) (objs[0]);
+            String observationSummary = (String) (objs[1]);
+            org.hibernate.query.Query<Integer> query = session
+                    .createNativeQuery("SELECT id  FROM observation WHERE submission_id=" + submission_id);
+            List<Integer> oid = query.list();
 
-        for (Integer id : oid) {
-            List<EvidenceItem> evidences = createObservedEvidenceInfo(id);
-            for (EvidenceItem e : evidences)
-                session.save(e);
+            for (Integer id : oid) {
+                List<EvidenceItem> evidences = createObservedEvidenceInfo(id);
+                for (EvidenceItem e : evidences)
+                    session.save(e);
 
-            List<SubjectItem> subjects = createObservedSubjectInfo(id);
-            for (SubjectItem s : subjects)
-                session.save(s);
+                List<SubjectItem> subjects = createObservedSubjectInfo(id);
+                for (SubjectItem s : subjects)
+                    session.save(s);
+
+                ObservationItem obsv = new ObservationItem();
+                obsv.setId(id);
+                obsv.setSubmission_id(submission_id);
+                obsv.observation_summary = replaceValues(observationSummary, subjects, evidences);
+                obsv.evidence_list = evidences.toArray(new EvidenceItem[0]);
+                obsv.subject_list = subjects.toArray(new SubjectItem[0]);
+                session.save(obsv);
+            }
         }
         session.getTransaction().commit();
         session.close();
+    }
+
+    private static String replaceValues(String summary, final List<SubjectItem> subjects,
+            final List<EvidenceItem> evidences) {
+        for (final SubjectItem s : subjects) {
+            summary = summary.replace("<" + s.getColumnName() + ">", s.getName());
+        }
+        for (final EvidenceItem e : evidences) {
+            summary = summary.replace("<" + e.getColumnName() + ">", e.getEvidenceName());
+        }
+        return summary;
     }
 
     private Summary summarizePerSubject(Class<? extends Subject> subjectClass, String label) {
