@@ -76,7 +76,8 @@ public interface DashboardDao {
     // the following are added to support more efficient API
     List<SubjectItem> getObservedSubjectInfo(Integer observationId);
     List<EvidenceItem> getObservedEvidenceInfo(Integer observationId);
-    List<ObservationItem> findObservationInfo(Integer submissionId);
+    List<ObservationItem> findObservationInfo(Integer submissionId, int limit);
+    List<ObservationItem> findObservationInfo(List<Integer> observationIds);
 
     void summarize();
     List<Summary> getOverallSummary();

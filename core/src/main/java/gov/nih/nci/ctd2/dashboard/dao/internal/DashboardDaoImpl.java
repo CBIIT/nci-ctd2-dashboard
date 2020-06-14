@@ -1235,18 +1235,35 @@ public class DashboardDaoImpl implements DashboardDao {
         return list;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
-    public List<ObservationItem> findObservationInfo(Integer submissionId) {
+    public List<ObservationItem> findObservationInfo(Integer submissionId, int limit) {
         Session session = getSession();
         List<ObservationItem> list = new ArrayList<ObservationItem>();
+        @SuppressWarnings("unchecked")
         org.hibernate.query.Query<ObservationItem> query = session
                 .createQuery("from ObservationItem where submission_id = :sid");
         query.setParameter("sid", submissionId);
+        if (limit > 0)
+            query.setMaxResults(limit);
         try {
             list = query.getResultList();
         } catch (NoResultException e) {
             log.info("ObservationItem not available for submission ID " + submissionId);
+        }
+        session.close();
+        return list;
+    }
+
+    @Override
+    public List<ObservationItem> findObservationInfo(List<Integer> observationIds) {
+        Session session = getSession();
+        List<ObservationItem> list = new ArrayList<ObservationItem>();
+        for (Integer id : observationIds) {
+            @SuppressWarnings("unchecked")
+            org.hibernate.query.Query<ObservationItem> query = session
+                    .createQuery("from ObservationItem where id = :id");
+            query.setParameter("id", id);
+            list.add(query.getSingleResult());
         }
         session.close();
         return list;

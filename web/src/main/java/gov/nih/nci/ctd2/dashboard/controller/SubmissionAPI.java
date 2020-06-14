@@ -46,10 +46,7 @@ public class SubmissionAPI {
             }
         }
         Submission submission = dashboardDao.getEntityByStableURL("submission", "submission/" + id);
-        List<ObservationItem> observations = dashboardDao.findObservationInfo(submission.getId());
-        if (limit > 0 && limit < observations.size()) {
-            observations = observations.subList(0, limit);
-        }
+        List<ObservationItem> observations = dashboardDao.findObservationInfo(submission.getId(), limit);
         APISubmission apiSubmission = new APISubmission(submission, observations.toArray(new ObservationItem[0]));
 
         log.debug("ready to serialize");

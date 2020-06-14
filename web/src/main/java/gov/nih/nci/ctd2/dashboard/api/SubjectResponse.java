@@ -8,7 +8,6 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
-import gov.nih.nci.ctd2.dashboard.model.Observation;
 import gov.nih.nci.ctd2.dashboard.model.ObservationTemplate;
 import gov.nih.nci.ctd2.dashboard.model.ObservedSubject;
 import gov.nih.nci.ctd2.dashboard.model.ObservedSubjectRole;
@@ -78,8 +77,11 @@ public class SubjectResponse {
         return new Filter(limit, rolesIncluded, centerIncluded, tiersIncluded);
     }
 
-    private static List<Observation> getObservations(Subject subject, final Filter filter, DashboardDao dashboardDao) {
-        Set<Observation> observations = new HashSet<Observation>();
+    public static SubjectResponse createInstance(final Subject subject, final Filter filter,
+            DashboardDao dashboardDao) {
+
+        int[] tierCount = new int[3];
+        Set<Integer> set = new HashSet<Integer>();
         for (ObservedSubject observedSubject : dashboardDao.findObservedSubjectBySubject(subject)) {
             ObservedSubjectRole observedSubjectRole = observedSubject.getObservedSubjectRole();
             String subjectRole = observedSubjectRole.getSubjectRole().getDisplayName();
@@ -94,39 +96,26 @@ public class SubjectResponse {
                 continue;
 
             if ((Arrays.asList(filter.tiersIncluded).contains(observationTier))) {
-                observations.add(observedSubject.getObservation());
+                set.add(observedSubject.getObservation().getId());
+                tierCount[observationTier.intValue() - 1]++;
+                if (filter.limit > 0 && set.size() >= filter.limit) {
+                    break;
+                }
             }
         }
-        return new ArrayList<Observation>(observations);
-    }
+        List<ObservationItem> observations = dashboardDao.findObservationInfo(new ArrayList<Integer>(set));
 
-    public static SubjectResponse createInstance(final Subject subject, final Filter filter,
-            DashboardDao dashboardDao) {
-
-        List<Observation> observations = getObservations(subject, filter, dashboardDao);
-
-        if (filter.limit > 0 && filter.limit < observations.size()) {
-            observations = observations.subList(0, filter.limit);
-        }
-
-        ObservationItem[] obvs = new ObservationItem[observations.size()];
         Set<String> roles = new TreeSet<String>();
-        int[] tierCount = new int[3];
         for (int i = 0; i < observations.size(); i++) {
-            Observation observation = (Observation) observations.get(i);
-            obvs[i] = new ObservationItem(observation, dashboardDao);
-            int tier = observation.getSubmission().getObservationTemplate().getTier();
-            assert tier > 0 && tier < 3;
-            tierCount[tier - 1]++;
-
-            for (SubjectItem sub : obvs[i].subject_list) {
+            for (SubjectItem sub : observations.get(i).subject_list) {
                 if (sub.getName().equals(subject.getDisplayName())) {
                     roles.add(sub.getRole());
                     break;
                 }
             }
         }
-        SubjectResponse subjectResponse = new SubjectResponse(subject, obvs, roles.toArray(new String[0]), tierCount);
+        SubjectResponse subjectResponse = new SubjectResponse(subject, observations.toArray(new ObservationItem[0]),
+                roles.toArray(new String[0]), tierCount);
         return subjectResponse;
     }
 
