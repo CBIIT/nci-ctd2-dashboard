@@ -982,9 +982,24 @@
                 <batch:chunk reader="ucsfMycnTransformationReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	    </batch:tasklet>
 	</batch:step>
-	<batch:step id="broadPorStep" parent="observationDataStep">
+	<batch:step id="broadPorStep" parent="observationDataStep" next="dfciCreb5DataLocatonStep">
 	    <batch:tasklet>
                 <batch:chunk reader="broadPorReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	    </batch:tasklet>
+	</batch:step>
+	<batch:step id="dfciCreb5DataLocatonStep" parent="observationDataStep" next="dfciShoc2DataLocationStep">
+	    <batch:tasklet>
+                <batch:chunk reader="dfciCreb5DataLocatonReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	    </batch:tasklet>
+	</batch:step>
+	<batch:step id="dfciShoc2DataLocationStep" parent="observationDataStep" next="dfciMrtVulnerablilityDataLocationStep">
+	    <batch:tasklet>
+                <batch:chunk reader="dfciShoc2DataLocationReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	    </batch:tasklet>
+	</batch:step>
+	<batch:step id="dfciMrtVulnerablilityDataLocationStep" parent="observationDataStep" >
+	    <batch:tasklet>
+                <batch:chunk reader="dfciMrtVulnerablilityDataLocationReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	    </batch:tasklet>
 	</batch:step>
 
@@ -2748,6 +2763,30 @@
     <bean name="broadPorLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
         <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_1,gene_2,cell_line_1,cell_line_2,disease_1,disease_2,story_location,reference_1,reference_2,evidence_ontology"/>
+    </bean>
+    <bean name="dfciCreb5DataLocatonLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="dfciCreb5DataLocatonLineTokenizer" />
+    </bean>
+    <bean name="dfciCreb5DataLocatonLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="&#9;"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,gene_1,disease_1,drug_1,gene_2,ref_1,figure_1,figure_2,figure_5,evidence_ontology_1,evidence_ontology_2,evidence_ontology_3,evidence_ontology_4,evidence_ontology_5"/>
+    </bean>
+    <bean name="dfciShoc2DataLocationLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="dfciShoc2DataLocationLineTokenizer" />
+    </bean>
+    <bean name="dfciShoc2DataLocationLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="&#9;"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,gene_1,disease_1,disease_2,drug_1,gene_2,gene_3,gene_4,gene_5,ref_1,figure_1,figure_4,figure_5,evidence_ontology_1,evidence_ontology_2,evidence_ontology_3,evidence_ontology_4"/>
+    </bean>
+    <bean name="dfciMrtVulnerablilityDataLocationLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="dfciMrtVulnerablilityDataLocationLineTokenizer" />
+    </bean>
+    <bean name="dfciMrtVulnerablilityDataLocationLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="&#9;"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,gene_1,gene_2,gene_3,disease,gene_4,drug_1,drug_2,reference,figure_2,evidence_ontology_1,evidence_ontology_2,evidence_ontology_3,evidence_ontology_4,evidence_ontology_5,figure_4,figure_1"/>
     </bean>
 
 
@@ -4724,6 +4763,51 @@
 <entry key="ucsf_mycn_transformation:evidence_ontology_term" value="evidence:readString:createObservedUrlEvidence" />
 <entry key="ucsf_mycn_transformation:figure_1" value="evidence:readString:createObservedFileEvidence" />
 
+<entry key="dfci_creb5:gene_1" value="subject:findGenesBySymbol" />
+<entry key="dfci_creb5:disease_1" value="subject:findTissueSampleByName" />
+<entry key="dfci_creb5:drug_1" value="subject:findCompoundsByName" />
+<entry key="dfci_creb5:gene_2" value="subject:findGenesBySymbol" />
+<entry key="dfci_creb5:ref_1" value="evidence:readString:createObservedUrlEvidence" />
+<entry key="dfci_creb5:figure_1" value="evidence:readString:createObservedFileEvidence" />
+<entry key="dfci_creb5:figure_2" value="evidence:readString:createObservedFileEvidence" />
+<entry key="dfci_creb5:figure_5" value="evidence:readString:createObservedFileEvidence" />
+<entry key="dfci_creb5:evidence_ontology_1" value="evidence:readString:createObservedUrlEvidence" />
+<entry key="dfci_creb5:evidence_ontology_2" value="evidence:readString:createObservedUrlEvidence" />
+<entry key="dfci_creb5:evidence_ontology_3" value="evidence:readString:createObservedUrlEvidence" />
+<entry key="dfci_creb5:evidence_ontology_4" value="evidence:readString:createObservedUrlEvidence" />
+<entry key="dfci_creb5:evidence_ontology_5" value="evidence:readString:createObservedUrlEvidence" />
+<entry key="dfci_mrt_vulnerability:gene_1" value="subject:findGenesBySymbol" />
+<entry key="dfci_mrt_vulnerability:gene_2" value="subject:findGenesBySymbol" />
+<entry key="dfci_mrt_vulnerability:gene_3" value="subject:findGenesBySymbol" />
+<entry key="dfci_mrt_vulnerability:disease" value="subject:findTissueSampleByName" />
+<entry key="dfci_mrt_vulnerability:gene_4" value="subject:findGenesBySymbol" />
+<entry key="dfci_mrt_vulnerability:drug_1" value="subject:findCompoundsByName" />
+<entry key="dfci_mrt_vulnerability:drug_2" value="evidence:readString:createObservedLabelEvidence" />
+<entry key="dfci_mrt_vulnerability:reference" value="evidence:readString:createObservedUrlEvidence" />
+<entry key="dfci_mrt_vulnerability:figure_2" value="evidence:readString:createObservedFileEvidence" />
+<entry key="dfci_mrt_vulnerability:evidence_ontology_1" value="evidence:readString:createObservedUrlEvidence" />
+<entry key="dfci_mrt_vulnerability:evidence_ontology_2" value="evidence:readString:createObservedUrlEvidence" />
+<entry key="dfci_mrt_vulnerability:evidence_ontology_3" value="evidence:readString:createObservedUrlEvidence" />
+<entry key="dfci_mrt_vulnerability:evidence_ontology_4" value="evidence:readString:createObservedUrlEvidence" />
+<entry key="dfci_mrt_vulnerability:evidence_ontology_5" value="evidence:readString:createObservedUrlEvidence" />
+<entry key="dfci_mrt_vulnerability:figure_4" value="evidence:readString:createObservedFileEvidence" />
+<entry key="dfci_mrt_vulnerability:figure_1" value="evidence:readString:createObservedFileEvidence" />
+<entry key="dfci_shoc2:gene_1" value="subject:findGenesBySymbol" />
+<entry key="dfci_shoc2:disease_1" value="subject:findTissueSampleByName" />
+<entry key="dfci_shoc2:disease_2" value="subject:findTissueSampleByName" />
+<entry key="dfci_shoc2:drug_1" value="subject:findCompoundsByName" />
+<entry key="dfci_shoc2:gene_2" value="subject:findGenesBySymbol" />
+<entry key="dfci_shoc2:gene_3" value="subject:findGenesBySymbol" />
+<entry key="dfci_shoc2:gene_4" value="subject:findGenesBySymbol" />
+<entry key="dfci_shoc2:gene_5" value="subject:findGenesBySymbol" />
+<entry key="dfci_shoc2:ref_1" value="evidence:readString:createObservedUrlEvidence" />
+<entry key="dfci_shoc2:figure_1" value="evidence:readString:createObservedFileEvidence" />
+<entry key="dfci_shoc2:figure_4" value="evidence:readString:createObservedFileEvidence" />
+<entry key="dfci_shoc2:figure_5" value="evidence:readString:createObservedFileEvidence" />
+<entry key="dfci_shoc2:evidence_ontology_1" value="evidence:readString:createObservedUrlEvidence" />
+<entry key="dfci_shoc2:evidence_ontology_2" value="evidence:readString:createObservedUrlEvidence" />
+<entry key="dfci_shoc2:evidence_ontology_3" value="evidence:readString:createObservedUrlEvidence" />
+<entry key="dfci_shoc2:evidence_ontology_4" value="evidence:readString:createObservedUrlEvidence" />
 
 
             </map>

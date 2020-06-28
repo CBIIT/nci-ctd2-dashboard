@@ -1766,4 +1766,33 @@
         </property>
     </bean>
 
+
+    <bean name="dfciCreb5DataLocatonReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${dfci.creb5.data.locaton}"/>
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="dfciCreb5DataLocatonLineMapper"  />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="dfciMrtVulnerablilityDataLocationReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${dfci.mrt.vulnerablility.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="dfciMrtVulnerablilityDataLocationLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="dfciShoc2DataLocationReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${dfci.shoc2.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="dfciShoc2DataLocationLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+
 </beans>
