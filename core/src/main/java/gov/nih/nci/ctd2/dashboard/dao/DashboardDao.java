@@ -12,9 +12,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import gov.nih.nci.ctd2.dashboard.api.EvidenceItem;
 import gov.nih.nci.ctd2.dashboard.api.ObservationItem;
-import gov.nih.nci.ctd2.dashboard.api.SubjectItem;
 
 public interface DashboardDao {
     void save(DashboardEntity entity);
