@@ -231,7 +231,7 @@ public class MraController {
 			if (nodeNames.size() >= nodeNumLimit)
 				break;
 			int index = edgeList.size() - i;
-			float confValue = new Float(edgeList.get(index).getData()
+			float confValue = Float.valueOf(edgeList.get(index).getData()
 					.get(CyElement.WEIGHT).toString());
 			if (divisor != 0)
 				edgeList.get(index).setProperty(CyElement.WEIGHT,
@@ -296,7 +296,7 @@ public class MraController {
 
 		float throttleVal = 0;
 		if (throttle != null && throttle.trim().length() > 0)
-			throttleVal = new Float(throttle);
+			throttleVal = Float.valueOf(throttle);
 
 		CyNode source = null;
 	 
@@ -343,7 +343,7 @@ public class MraController {
 					if (line.contains("!target_table_end"))
 						break;
 					String tokens[] = line.trim().split("\t");
-					float confValue = new Float(tokens[3]);
+					float confValue = Float.valueOf(tokens[3]);
 					if (confValue < throttleVal)
 						continue;
 					CyEdge cyEdge = new CyEdge();
@@ -363,7 +363,7 @@ public class MraController {
 								shapeMap.get(tokens[2]));
 						target.setProperty(
 								CyElement.COLOR,
-								calculateColor(absMaxDeScore, new Double(
+								calculateColor(absMaxDeScore, Double.valueOf(
 										tokens[4])));
 						nodeList.put(tokens[1], target);
 
@@ -397,20 +397,20 @@ public class MraController {
 			nodeNames.add(targetId);
 
 		}
-		return new Float(edgeList.get(index).getData().get(CyElement.WEIGHT)
+		return Float.valueOf(edgeList.get(index).getData().get(CyElement.WEIGHT)
 				.toString());
 	}
 
 	private int getIntValue(String line) {
 		String tokens[] = line.trim().split("=");
 		assert tokens.length == 2;
-		return new Integer(tokens[1].trim()).intValue();
+		return Integer.valueOf(tokens[1].trim()).intValue();
 	}
 
 	private double getDoubleValue(String line) {
 		String tokens[] = line.trim().split("=");
 		assert tokens.length == 2;
-		return new Double(tokens[1].trim()).doubleValue();
+		return Double.valueOf(tokens[1].trim()).doubleValue();
 	}
 
 	private String getStringValue(String line) {
@@ -426,10 +426,10 @@ public class MraController {
 		String tokens[] = line.trim().split("\t");
 		assert tokens.length == 7;
 		mraTargetBarcode = new MraTargetBarcode();
-		mraTargetBarcode.setEntrezId(new Long(tokens[0].trim()));
-		double spearmanCor = new Double(tokens[6]).doubleValue();
+		mraTargetBarcode.setEntrezId(Long.valueOf(tokens[0].trim()));
+		double spearmanCor = Double.valueOf(tokens[6]).doubleValue();
 		mraTargetBarcode.setArrayIndex(spearmanCor > 0 ? 0 : 1);
-		int position = (int) 400 * new Integer(tokens[5]).intValue()
+		int position = (int) 400 * Integer.valueOf(tokens[5]).intValue()
 				/ totalMarkerNumber;
 		mraTargetBarcode.setPosition(position);
 		int arrayindex = spearmanCor >= 0 ? 0 : 1;

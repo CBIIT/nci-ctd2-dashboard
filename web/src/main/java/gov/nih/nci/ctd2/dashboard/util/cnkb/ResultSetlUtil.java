@@ -32,7 +32,7 @@ public class ResultSetlUtil {
         if (row == null)
             return;
         for (int i = 0; i < row.length; i++) {
-            metaMap.put(row[i], new Integer(i + 1));
+            metaMap.put(row[i], Integer.valueOf(i + 1));
         }
     }
 

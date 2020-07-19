@@ -239,7 +239,7 @@ public class CnkbController {
 			List<String> selectedGenesList = convertStringToList(selectedGenes);
 			float throttleValue = 0;
 			try {
-				throttleValue = new Float(throttle);
+				throttleValue = Float.valueOf(throttle);
 			} catch (NumberFormatException ne) {
 				// set throttleValue = 0;
 			}
@@ -623,7 +623,7 @@ public class CnkbController {
 
 		for (int i = 0; i < cyEdgeList.size(); i++) {
 
-			float confValue = new Float(edgeList.get(i).getData()
+			float confValue = Float.valueOf(edgeList.get(i).getData()
 					.get(CyElement.WEIGHT).toString());
 			if (divisor != 0)
 				edgeList.get(i).setProperty(CyElement.WEIGHT,

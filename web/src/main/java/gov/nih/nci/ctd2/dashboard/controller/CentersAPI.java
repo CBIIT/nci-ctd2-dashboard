@@ -79,7 +79,7 @@ public class CentersAPI {
             this.tier = observationTemplate.getTier();
             this.project = observationTemplate.getProject();
             this.submission_description = observationTemplate.getDescription();
-            this.observation_count = new Integer(observationCount);
+            this.observation_count = Integer.valueOf(observationCount);
 
             // not-required
             String st = null;
