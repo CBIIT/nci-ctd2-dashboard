@@ -1,6 +1,8 @@
 package gov.nih.nci.ctd2.dashboard.impl;
 
 import gov.nih.nci.ctd2.dashboard.model.Gene;
+import gov.nih.nci.ctd2.dashboard.model.GeneType;
+
 import javax.persistence.Index;
 import org.hibernate.annotations.Proxy;
 import org.hibernate.search.annotations.Field;
@@ -8,6 +10,7 @@ import org.hibernate.search.annotations.Indexed;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -22,7 +25,10 @@ public class GeneImpl extends SubjectWithOrganismImpl implements Gene {
     public final static String FIELD_HGNCID = "hgncid";
 
     private String entrezGeneId;
-	private String hgncId;
+    private String hgncId;
+    private String fullName;
+    private GeneType geneType;
+    private String mapLocation;
 
     @Field(name=FIELD_ENTREZID, index = org.hibernate.search.annotations.Index.YES)
     @Column(length = 32, nullable = false, unique = true)
@@ -42,5 +48,30 @@ public class GeneImpl extends SubjectWithOrganismImpl implements Gene {
 
     public void setHGNCId(String hgncId) {
         this.hgncId = hgncId;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fn) {
+        fullName = fn;
+    }
+
+    @ManyToOne(targetEntity = GeneTypeImpl.class)
+    public GeneType getGeneType() {
+        return geneType;
+    }
+
+    public void setGeneType(GeneType gt) {
+        geneType = gt;
+    }
+
+    public String getMapLocation() {
+        return mapLocation;
+    }
+
+    public void setMapLocation(String ml) {
+        mapLocation = ml;
     }
 }
