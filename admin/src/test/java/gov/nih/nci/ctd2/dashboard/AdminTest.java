@@ -138,7 +138,7 @@ public class AdminTest {
         assertEquals("Gene count", 19, dashboardDao.countEntities(Gene.class).intValue());
         List<Gene> genes = dashboardDao.findGenesByEntrezId("7529");
         assertEquals(1, genes.size());
-        assertEquals(5, genes.iterator().next().getSynonyms().size());
+        assertEquals("synonym number for 7529", 12, genes.iterator().next().getSynonyms().size());
         List<Subject> geneSubjects = dashboardDao.findSubjectsBySynonym("RB1", true);
         assertEquals(1, geneSubjects.size());
 
