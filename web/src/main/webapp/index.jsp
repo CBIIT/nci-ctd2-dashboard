@@ -921,6 +921,9 @@
                                   <a href="#" class="addGene-{{displayName}} cartAddPlus" title="Add gene to cart">+</a>
                              </td>
                          </tr>
+                         <tr><th>Gene Name</th><td>{{fullName}}</td></tr>
+                         <tr><th>Gene Type</th><td>{{geneType.displayName}}</td></tr>
+                         <tr><th>Map Location</th><td>{{mapLocation}}</td></tr>
                          <tr>
                              <th>Synonyms/Related terms<div style="font-size:10px; font-style:italic">(from Entrez)</div></th>
                              <td>
