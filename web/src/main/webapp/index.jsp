@@ -11,6 +11,16 @@
 <html lang="en" xmlns="http://www.w3.org/1999/html">
 
 <head>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-173263585-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-173263585-1');
+</script>
+
     <!-- X-UA-Compatible meta tag to disable IE compatibility view must always be first -->
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
