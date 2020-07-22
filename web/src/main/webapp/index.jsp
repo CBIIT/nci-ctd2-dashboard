@@ -459,7 +459,7 @@
             <div class="row">
                 <div class="col-9">
                     <h2 class="center-title">{{displayName}} <small>submissions</small></h2>
-                    <div class="center-link-container">(<span class="center-link"></span>)</div>
+                    <div class="center-link-container">(<span class="center-link"><a href="https://ocg.cancer.gov/programs/ctd2/centers#{{ocg_dash}}" target="_blank">view center description</a></span>)</div>
                 </div>
                 <div class="col-3">
                     <img src="img/{{displayName}}.png" title="{{displayName}}" alt="{{displayName}}" class="img-polaroid" style="max-width:200px;max-height:50px">
@@ -2428,26 +2428,6 @@
         <tr class="group"><td colspan="5"><a href="#{{centerStableURL}}/{{project_url}}">Project: {{project}}</a></td></tr>
     </script>
 
-    <script id="center-specific-information-tmpl" type="text/template">
-        <a href="https://ocg.cancer.gov/programs/ctd2/centers#broad-institute" data-center="Broad Institute" target="_blank">view center description</a>
-        <a href="https://ocg.cancer.gov/programs/ctd2/centers#cold-spring-harbor-laboratory" data-center="Cold Spring Harbor Laboratory" target="_blank">view center description</a>
-        <a href="https://ocg.cancer.gov/programs/ctd2/centers#columbia-university" data-center="Columbia University" target="_blank">view center description</a>
-        <a href="https://ocg.cancer.gov/programs/ctd2/centers#dana-farber-cancer-institute" data-center="Dana-Farber Cancer Institute" target="_blank">view center description</a>
-        <a href="https://ocg.cancer.gov/programs/ctd2/centers#emory-university" data-center="Emory University" target="_blank">view center description</a>
-        <a href="https://ocg.cancer.gov/programs/ctd2/centers#fred-hutchinson-cancer-research-center-1" data-center="Fred Hutchinson Cancer Research Center (1)" target="_blank">view center description</a>
-        <a href="https://ocg.cancer.gov/programs/ctd2/centers#fred-hutchinson-cancer-research-center-2" data-center="Fred Hutchinson Cancer Research Center (2)" target="_blank">view center description</a>
-        <a href="https://ocg.cancer.gov/programs/ctd2/centers#university-of-texas-md-anderson-cancer-center" data-center="University of Texas MD Anderson Cancer Center" target="_blank">view center description</a>
-        <a href="https://ocg.cancer.gov/programs/ctd2/centers#stanford-university" data-center="Stanford University" target="_blank">view center description</a>
-        <a href="https://ocg.cancer.gov/programs/ctd2/centers#university-of-california-san-francisco-1" data-center="University of California San Francisco (1)" target="_blank">view center description</a>
-        <a href="https://ocg.cancer.gov/programs/ctd2/centers#university-of-california-san-francisco-2" data-center="University of California San Francisco (2)" target="_blank">view center description</a>
-        <a href="https://ocg.cancer.gov/programs/ctd2/centers#university-of-texas-southwestern-medical-center" data-center="University of Texas Southwestern Medical Center" target="_blank">view center description</a>
-        <a href="https://ocg.cancer.gov/programs/ctd2/centers#translational-genomics-research-institute" data-center="Translational Genomics Research Institute" target="_blank">view center description</a>
-        <a href="https://ocg.cancer.gov/programs/ctd2/centers#johns-hopkins-university" data-center="Johns Hopkins University" target="_blank">view center description</a>
-        <a href="https://ocg.cancer.gov/programs/ctd2/centers#oregon-health-and-science-university" data-center="Oregon Health and Science University" target="_blank">view center description</a>
-        <a href="https://ocg.cancer.gov/programs/ctd2/centers#oregon-health-and-science-university-2" data-center="Oregon Health and Science University (2)" target="_blank">view center description</a>
-        <a href="https://ocg.cancer.gov/programs/ctd2/centers#university-of-california-san-diego" data-center="University of California San Diego" target="_blank">view center description</a>
-    </script>
-
     <!-- end of templates -->
 
     <script src="js/datatables.min.js"></script>
@@ -2463,9 +2443,8 @@
     <script src="js/encoder.js"></script>
     <script src="js/jquery.contextMenu.min.js"></script>
     <script src="js/jquery.ui.position.min.js"></script>
-    <script src="js/ctd2.hovertext.js"></script>
-    <script src="js/wildcard_evidence_codes.js"></script>
-    <script src="js/ctd2.js?ts=202007"></script>
+    <script src="js/ctd2.constants.js"></script>
+    <script src="js/ctd2.js?ts=20200722"></script>
 
 </body>
 

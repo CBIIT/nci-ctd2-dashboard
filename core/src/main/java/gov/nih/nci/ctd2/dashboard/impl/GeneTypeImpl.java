@@ -10,4 +10,6 @@ import javax.persistence.Table;
 @Table(name = "gene_type")
 public class GeneTypeImpl extends DashboardEntityImpl implements GeneType {
 
+    private static final long serialVersionUID = -2780523146377767629L;
+
 }

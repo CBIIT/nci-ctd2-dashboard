@@ -1,4 +1,61 @@
-__ctd2_hovertext = {
+const ctd2_ocg_dash = {
+    "Broad Institute": "broad-institute",
+    "Cold Spring Harbor Laboratory": "cold-spring-harbor-laboratory",
+    "Columbia University": "columbia-university",
+    "Dana-Farber Cancer Institute": "dana-farber-cancer-institute",
+    "Emory University": "emory-university",
+    "Fred Hutchinson Cancer Research Center (1)": "fred-hutchinson-cancer-research-center-1",
+    "Fred Hutchinson Cancer Research Center (2)": "fred-hutchinson-cancer-research-center-2",
+    "University of Texas MD Anderson Cancer Center": "university-of-texas-md-anderson-cancer-center",
+    "Stanford University": "stanford-university",
+    "University of California San Francisco (1)": "university-of-california-san-francisco-1",
+    "University of California San Francisco (2)": "university-of-california-san-francisco-2",
+    "University of Texas Southwestern Medical Center": "university-of-texas-southwestern-medical-center",
+    "Translational Genomics Research Institute": "translational-genomics-research-institute",
+    "Johns Hopkins University": "johns-hopkins-university",
+    "Oregon Health and Science University": "oregon-health-and-science-university",
+    "Oregon Health and Science University (2)": "oregon-health-and-science-university-2",
+    "University of California San Diego": "university-of-california-san-diego",
+};
+const wildcard_evidence_codes = {
+    measured: {
+        eco_term: 'direct assay evidence',
+        eco_id: 'ECO:0000002'
+    },
+    observed: {
+        eco_term: 'ad-hoc quantitative phenotype observation evidence',
+        eco_id: 'ECO:0005675'
+    },
+    computed: {
+        eco_term: 'computational combinatorial evidence',
+        eco_id: 'ECO:0000053'
+    },
+    background: {
+        eco_term: 'inference from background scientific knowledge',
+        eco_id: 'ECO:0000001'
+    },
+    species: {
+        eco_term: 'biological system reconstruction evidence by experimental evidence from single species',
+        eco_id: 'ECO:0005553'
+    },
+    literature: {
+        eco_term: 'traceable author statement',
+        eco_id: 'ECO:0000033'
+    },
+    written: {
+        eco_term: 'author statement',
+        eco_id: 'ECO:0000204'
+    },
+    reference: {
+        eco_term: 'traceable author statement',
+        eco_id: 'ECO:0000033'
+    },
+    resource: {
+        eco_term: 'imported information',
+        eco_id: 'ECO:0000311'
+    },
+};
+const __ctd2_hovertext = {
     BROWSE_GENES: "Browse experimental evidence implicating targets in a cancer model",
     BROWSE_COMPOUNDS: "Browse experimental evidence for agents that show activity in a cancer model",
     BROWSE_DISEASE: "Browse experimental evidence for disease-specific targets or agents",
