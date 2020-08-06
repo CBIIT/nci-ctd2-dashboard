@@ -33,7 +33,7 @@
     <link rel="stylesheet" href="css/datatables.min.css" type="text/css" />
     <link rel="stylesheet" href="css/jquery.fancybox.min.css" type="text/css" media="screen" />
     <link rel="stylesheet" href="css/jquery.contextMenu.min.css" type="text/css" />
-    <link rel="stylesheet" href="css/ctd2.css?ts=201905" type="text/css" />
+    <link rel="stylesheet" href="css/ctd2.css?ts=2020" type="text/css" />
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
@@ -100,7 +100,7 @@
     <div class="navbar-wrapper">
         <!-- Wrap the .navbar in .container to center it within the absolutely positioned parent. -->
         <div class="container">
-
+            <a href="https://ocg.cancer.gov/" target="_blank"><img src="img/logos/ocg.png"></a>
             <div class="navbar">
                 <div class="navbar-inner">
                     <div class="nav-collapse collapse show">

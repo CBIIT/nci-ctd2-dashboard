@@ -70,13 +70,12 @@ a,a:not([href]):not([tabindex]){color:#9c0001}
 
 /* Special class on .container surrounding .navbar, used for positioning it into place. */
 .navbar-wrapper {
-  position: absolute;
   top: 0;
   left: 0;
   right: 0;
   z-index: 1000;
   margin-top: 10px;
-  margin-bottom: -90px; /* Negative margin to pull up carousel. 90px is roughly margins and height of navbar. */
+  margin-bottom: -50px;
 }
 
 /* Remove border and change up box shadow for more contrast */
