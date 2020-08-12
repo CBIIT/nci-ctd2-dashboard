@@ -509,11 +509,11 @@
 
             $.fancybox.open(
                 this.template(this.model), {
-                    'autoDimensions': false,
-                    'centerOnScroll': true,
-                    'transitionIn': 'none',
-                    'transitionOut': 'none'
-                }
+                'autoDimensions': false,
+                'centerOnScroll': true,
+                'transitionIn': 'none',
+                'transitionOut': 'none'
+            }
             );
 
             return this;
@@ -536,11 +536,11 @@
 
             $.fancybox.open(
                 this.template({}), {
-                    'autoDimensions': false,
-                    'centerOnScroll': true,
-                    'transitionIn': 'none',
-                    'transitionOut': 'none'
-                }
+                'autoDimensions': false,
+                'centerOnScroll': true,
+                'transitionIn': 'none',
+                'transitionOut': 'none'
+            }
             );
 
             return this;
@@ -754,119 +754,119 @@
 
     /// TODO: encode these into the DB instead
     const ecoMappings = [{
-            "evidence": "file",
-            "role": "background",
-            "eco_term": "inference from background scientific knowledge",
-            "eco_id": "ECO:0000001"
-        },
-        {
-            "evidence": "file",
-            "role": "computed",
-            "eco_term": "computational combinatorial evidence",
-            "eco_id": "ECO:0000053"
-        },
-        {
-            "evidence": "file",
-            "role": "literature",
-            "eco_term": "traceable author statement",
-            "eco_id": "ECO:0000033"
-        },
-        {
-            "evidence": "file",
-            "role": "measured",
-            "eco_term": "direct assay evidence",
-            "eco_id": "ECO:0000002"
-        },
-        {
-            "evidence": "file",
-            "role": "observed",
-            "eco_term": "experimental phenotypic evidence",
-            "eco_id": "ECO:0000059"
-        },
-        {
-            "evidence": "file",
-            "role": "written",
-            "eco_term": "author statement",
-            "eco_id": "ECO:0000204"
-        },
-        {
-            "evidence": "label",
-            "role": "background",
-            "eco_term": "inference from background scientific knowledge",
-            "eco_id": "ECO:0000001"
-        },
-        {
-            "evidence": "label",
-            "role": "computed",
-            "eco_term": "computational combinatorial evidence",
-            "eco_id": "ECO:0000053"
-        },
-        {
-            "evidence": "label",
-            "role": "observed",
-            "eco_term": "ad-hoc qualitative phenotype observation evidence",
-            "eco_id": "ECO:0005673"
-        },
-        {
-            "evidence": "label",
-            "role": "species",
-            "eco_term": "biological system reconstruction evidence by experimental evidence from single species",
-            "eco_id": "ECO:0005553"
-        },
-        {
-            "evidence": "numeric",
-            "role": "background",
-            "eco_term": "inference from background scientific knowledge",
-            "eco_id": "ECO:0000001"
-        },
-        {
-            "evidence": "numeric",
-            "role": "computed",
-            "eco_term": "computational combinatorial evidence",
-            "eco_id": "ECO:0000053"
-        },
-        {
-            "evidence": "numeric",
-            "role": "measured",
-            "eco_term": "experimental phenotypic evidence",
-            "eco_id": "ECO:0000059"
-        },
-        {
-            "evidence": "numeric",
-            "role": "observed",
-            "eco_term": "ad-hoc quantitative phenotype observation evidence",
-            "eco_id": "ECO:0005675"
-        },
-        {
-            "evidence": "url",
-            "role": "computed",
-            "eco_term": "computational combinatorial evidence",
-            "eco_id": "ECO:0000053"
-        },
-        {
-            "evidence": "url",
-            "role": "link",
-            "eco_term": "combinatorial evidence",
-            "eco_id": "ECO:0000212"
-        },
-        {
-            "evidence": "url",
-            "role": "measured",
-            "eco_term": "experimental phenotypic evidence",
-            "eco_id": "ECO:0000059"
-        },
-        {
-            "evidence": "url",
-            "role": "reference",
-            "eco_term": "traceable author statement",
-            "eco_id": "ECO:0000033"
-        },
-        {
-            "evidence": "url",
-            "role": "resource",
-            "eco_term": "imported information",
-            "eco_id": "ECO:0000311"
-        }
+        "evidence": "file",
+        "role": "background",
+        "eco_term": "inference from background scientific knowledge",
+        "eco_id": "ECO:0000001"
+    },
+    {
+        "evidence": "file",
+        "role": "computed",
+        "eco_term": "computational combinatorial evidence",
+        "eco_id": "ECO:0000053"
+    },
+    {
+        "evidence": "file",
+        "role": "literature",
+        "eco_term": "traceable author statement",
+        "eco_id": "ECO:0000033"
+    },
+    {
+        "evidence": "file",
+        "role": "measured",
+        "eco_term": "direct assay evidence",
+        "eco_id": "ECO:0000002"
+    },
+    {
+        "evidence": "file",
+        "role": "observed",
+        "eco_term": "experimental phenotypic evidence",
+        "eco_id": "ECO:0000059"
+    },
+    {
+        "evidence": "file",
+        "role": "written",
+        "eco_term": "author statement",
+        "eco_id": "ECO:0000204"
+    },
+    {
+        "evidence": "label",
+        "role": "background",
+        "eco_term": "inference from background scientific knowledge",
+        "eco_id": "ECO:0000001"
+    },
+    {
+        "evidence": "label",
+        "role": "computed",
+        "eco_term": "computational combinatorial evidence",
+        "eco_id": "ECO:0000053"
+    },
+    {
+        "evidence": "label",
+        "role": "observed",
+        "eco_term": "ad-hoc qualitative phenotype observation evidence",
+        "eco_id": "ECO:0005673"
+    },
+    {
+        "evidence": "label",
+        "role": "species",
+        "eco_term": "biological system reconstruction evidence by experimental evidence from single species",
+        "eco_id": "ECO:0005553"
+    },
+    {
+        "evidence": "numeric",
+        "role": "background",
+        "eco_term": "inference from background scientific knowledge",
+        "eco_id": "ECO:0000001"
+    },
+    {
+        "evidence": "numeric",
+        "role": "computed",
+        "eco_term": "computational combinatorial evidence",
+        "eco_id": "ECO:0000053"
+    },
+    {
+        "evidence": "numeric",
+        "role": "measured",
+        "eco_term": "experimental phenotypic evidence",
+        "eco_id": "ECO:0000059"
+    },
+    {
+        "evidence": "numeric",
+        "role": "observed",
+        "eco_term": "ad-hoc quantitative phenotype observation evidence",
+        "eco_id": "ECO:0005675"
+    },
+    {
+        "evidence": "url",
+        "role": "computed",
+        "eco_term": "computational combinatorial evidence",
+        "eco_id": "ECO:0000053"
+    },
+    {
+        "evidence": "url",
+        "role": "link",
+        "eco_term": "combinatorial evidence",
+        "eco_id": "ECO:0000212"
+    },
+    {
+        "evidence": "url",
+        "role": "measured",
+        "eco_term": "experimental phenotypic evidence",
+        "eco_id": "ECO:0000059"
+    },
+    {
+        "evidence": "url",
+        "role": "reference",
+        "eco_term": "traceable author statement",
+        "eco_id": "ECO:0000033"
+    },
+    {
+        "evidence": "url",
+        "role": "resource",
+        "eco_term": "imported information",
+        "eco_id": "ECO:0000311"
+    }
     ];
 
     const class2imageData = {
@@ -1099,11 +1099,11 @@
                                     _.template($("#cytoscape-tmpl").html())({
                                         description: sifDesc
                                     }), {
-                                        touch: false,
-                                        'autoDimensions': false,
-                                        'transitionIn': 'none',
-                                        'transitionOut': 'none'
-                                    }
+                                    touch: false,
+                                    'autoDimensions': false,
+                                    'transitionIn': 'none',
+                                    'transitionOut': 'none'
+                                }
                                 );
 
                                 // load cytoscape
@@ -1257,11 +1257,11 @@
 
             result.eco =
                 _.chain(ecoMappings)
-                .filter(function (m) {
-                    return m.evidence == mEvidence && m.role == result.observedEvidenceRole.evidenceRole.displayName;
-                })
-                .first()
-                .value();
+                    .filter(function (m) {
+                        return m.evidence == mEvidence && m.role == result.observedEvidenceRole.evidenceRole.displayName;
+                    })
+                    .first()
+                    .value();
             if (result.eco == undefined) {
                 result.eco = wildcard_evidence_codes[result.observedEvidenceRole.evidenceRole.displayName];
             }
@@ -1318,8 +1318,8 @@
                         $.ajax("count/submission/?filterBy=" + aCenter.id).done(function (count) {
                             const cntContent = _.template(
                                 $("#count-submission-tmpl").html())({
-                                count: count
-                            });
+                                    count: count
+                                });
 
                             const countCellId = "#submission-count-" + aCenter.id;
                             $(countCellId).html(cntContent);
@@ -1346,19 +1346,19 @@
                         "iDisplayLength": 25,
                         "orderFixed": [4, "desc"],
                         columnDefs: [{
-                                targets: [0, 2],
-                                orderable: false,
-                            }, {
-                                targets: 3,
-                                orderDataType: "submission-count",
-                                type: "numeric"
-                            },
-                            {
-                                "visible": false,
-                                "sortable": false,
-                                "searchable": false,
-                                "targets": 4
-                            },
+                            targets: [0, 2],
+                            orderable: false,
+                        }, {
+                            targets: 3,
+                            orderDataType: "submission-count",
+                            type: "numeric"
+                        },
+                        {
+                            "visible": false,
+                            "sortable": false,
+                            "searchable": false,
+                            "targets": 4
+                        },
                         ],
                     }).fnSort([
                         [1, 'asc']
@@ -1397,15 +1397,15 @@
                     });
                     $('#stories-list').dataTable({
                         columns: [{
-                                type: "string"
-                            },
+                            type: "string"
+                        },
                             null,
-                            {
-                                orderDataType: "text-date-order"
-                            },
-                            {
-                                "orderable": false
-                            },
+                        {
+                            orderDataType: "text-date-order"
+                        },
+                        {
+                            "orderable": false
+                        },
                         ],
                         order: [
                             [2, 'desc']
@@ -1453,18 +1453,18 @@
                         'data': table_data,
                         "deferRender": true,
                         "columns": [{
-                                class: "wrapok"
-                            },
+                            class: "wrapok"
+                        },
                             null,
-                            {
-                                "type": "observation-count"
-                            },
-                            {
-                                "type": "observation-count"
-                            },
-                            {
-                                "type": "observation-count"
-                            }
+                        {
+                            "type": "observation-count"
+                        },
+                        {
+                            "type": "observation-count"
+                        },
+                        {
+                            "type": "observation-count"
+                        }
                         ],
                         'buttons': [{
                             extend: 'excelHtml5',
@@ -1590,8 +1590,8 @@
         'dom': '<iBfrtlp>',
         "sPaginationType": "bootstrap",
         "columns": [{
-                "orderDataType": "dashboard-date"
-            },
+            "orderDataType": "dashboard-date"
+        },
             null,
             null,
             null
@@ -2320,8 +2320,8 @@
                                 "#count-observations-tmpl";
                             submission.details = _.template(
                                 $(tmplName).html())({
-                                count: count
-                            });
+                                    count: count
+                                });
                         });
 
                         centerSubmissionRowView.render();
@@ -2343,8 +2343,8 @@
                         "drawCallback": function (settings) {
                             const api = this.api();
                             api.column(1, {
-                                    page: 'all'
-                                })
+                                page: 'all'
+                            })
                                 .data()
                                 .each(function (group, i) {
                                     const project_url = group.toLowerCase().replace(/[^a-zA-Z0-9]/g, "-");
@@ -2356,8 +2356,8 @@
                             }).nodes();
                             let last = null;
                             api.column(1, {
-                                    page: 'current'
-                                })
+                                page: 'current'
+                            })
                                 .data()
                                 .each(function (group, i) {
                                     if (last != group) {
@@ -2736,8 +2736,8 @@
             // some of the elements will be hidden in the pagination. Use magic-scoping!
             const cntContent = _.template(
                 $("#count-observations-tmpl").html())({
-                count: model.observationCount
-            });
+                    count: model.observationCount
+                });
             $("#subject-observation-count-" + result.id).html(cntContent);
 
             return this;
@@ -2875,8 +2875,8 @@
                                     "#count-observations-tmpl";
                                 const cntContent = _.template(
                                     $(tmplName).html())({
-                                    count: submission.observationCount
-                                });
+                                        count: submission.observationCount
+                                    });
                                 $("#search-observation-count-" + submission.dashboardEntity.id).html(cntContent);
                                 const centerId = submission.dashboardEntity.observationTemplate.submissionCenter.id;
                                 centerCounter.add(centerId);
@@ -3027,11 +3027,11 @@
                             _.template($("#mra-cytoscape-tmpl").html())({
                                 description: mraDesc
                             }), {
-                                touch: false,
-                                'autoDimensions': false,
-                                'transitionIn': 'none',
-                                'transitionOut': 'none'
-                            }
+                            touch: false,
+                            'autoDimensions': false,
+                            'transitionIn': 'none',
+                            'transitionOut': 'none'
+                        }
                         );
 
                         window.cy = this;
@@ -3280,7 +3280,7 @@
                         const n1ctr = sModel.numberOfTier1SubmissionCenters;
                         const n1link = (n1obv == 0 ? "" : "<a href='#" + subject.stableURL + "/" + role + "/1'>" + n1obv + "</a>") +
                             (n1obv > 0 ? " (" + n1ctr + " center" + (n1ctr > 1 ? "s" : "") + ")" : "");
-                        table_data.push([reformatted, nameLink, role, n3link, n2link, n1link]);
+                        table_data.push([reformatted, nameLink, "<span class=subject_role>" + role + "</span>", n3link, n2link, n1link]);
                     });
                     $("#explore-table").dataTable({
                         'dom': '<iBfrtlp>',
@@ -3310,10 +3310,25 @@
                             text: 'Export as Spreadsheet',
                             className: "extra-margin",
                         }],
+                    }).on('draw.dt', function () {
+                        $(".subject_role").popover({
+                            placement: "top",
+                            trigger: 'hover',
+                            content: function () {
+                                return ctd2_role_definition[$(this).text()];
+                            },
+                        })
                     });
                     $("#explore-table").parent().width("100%");
                     $("#explore-table").width("100%");
                     $("#explore-table").parent().find('input[type=search]').popover(table_filter_popover);
+                    $(".subject_role").popover({
+                        placement: "top",
+                        trigger: 'hover',
+                        content: function () {
+                            return ctd2_role_definition[$(this).text()];
+                        },
+                    });
 
                     $('#explore-table thead th').popover({
                         placement: "top",
@@ -3397,7 +3412,7 @@
         target: ["background", "biomarker", "candidate master regulator", "interactor", "master regulator", "oncogene", "target"],
         compound: ["candidate drug", "control compound", "perturbagen"],
         context: ["disease", "metastasis", "tissue"],
-        cellline: ["cell line", ],
+        cellline: ["cell line",],
     };
 
     const subjectType = {
@@ -4062,11 +4077,11 @@
                 description: description,
                 svgHtml: svgHtml
             }), {
-                touch: false,
-                'autoDimensions': false,
-                'transitionIn': 'none',
-                'transitionOut': 'none'
-            }
+            touch: false,
+            'autoDimensions': false,
+            'transitionIn': 'none',
+            'transitionOut': 'none'
+        }
         );
 
         cytoscape({

@@ -89,3 +89,7 @@ const __ctd2_hovertext = {
     GENE_CART: 'Build or edit a list of genes and query for molecular interactions',
     ALL_TIERS: 'Tier 1: Preliminary results of a screening campaign or large-scale computational analysis.<br/>Tier 2: Confirmation of primary results in a cancer-relevant in vitro model.<br/>Tier 3: Validation of results in a cancer relevant in vivo model.',
 };
+const ctd2_role_definition = {
+    'target': 'a gene or protein targeted by chemical or genetic perturbagens',
+    'biomarker': 'a gene product or other signal whose presence is an indication of a phenotype or activity',
+}
