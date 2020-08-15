@@ -1582,7 +1582,7 @@
                 </a>
             </td>
             <td>{{subject.type}}</td>
-            <td>{{observedSubjectRole.subjectRole.displayName}}</td>
+            <td class=subject_role>{{observedSubjectRole.subjectRole.displayName}}</td>
             <td>{{observedSubjectRole.displayText}}</td>
         </tr>
     </script>
@@ -1597,7 +1597,7 @@
                 <a href="#" class="addGene-{{subject.displayName}} cartAddPlus" title="Add gene to cart" >+</a>
             </td>
             <td>{{subject.type}}</td>
-            <td>{{observedSubjectRole.subjectRole.displayName}}</td>
+            <td class=subject_role>{{observedSubjectRole.subjectRole.displayName}}</td>
             <td>{{observedSubjectRole.displayText}}</td>
         </tr>
     </script>

@@ -939,7 +939,6 @@
                         });
                         observedSubjectRowView.render();
 
-
                         const subject = observedSubject.subject;
                         const imageData = class2imageData[subject.class];
                         imageData.stableURL = subject.stableURL;
@@ -976,6 +975,13 @@
                         );
 
                         $("#observation-summary").html(summary);
+                    });
+                    $(".subject_role").popover({
+                        placement: "top",
+                        trigger: 'hover',
+                        content: function () {
+                            return ctd2_role_definition[$(this).text()];
+                        },
                     });
                 }
             });
