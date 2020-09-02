@@ -327,8 +327,10 @@
         render: function () {
             // Load the template
             $(this.el).html(this.template(this.model));
-            $("#tierTooltip").tooltip({
-                title: "A CTD<sup>2</sup> Network-defined ranking system for evidence that is based on the extent of characterization associated with a particular study." +
+            $("#tierTooltip").popover({
+                placement: "bottom",
+                trigger: 'hover',
+                content: "A CTD<sup>2</sup> Network-defined ranking system for evidence that is based on the extent of characterization associated with a particular study." +
                     "<ul><li><b><i>Tier 1</i></b>: Preliminary results of screening campaigns." +
                     "<li><b><i>Tier 2</i></b>: Confirmation of primary results <i>in vitro</i>." +
                     "<li><b><i>Tier 3</i></b>: Validation of results in a cancer relevant <i>in vivo</i> model.</ul>",
