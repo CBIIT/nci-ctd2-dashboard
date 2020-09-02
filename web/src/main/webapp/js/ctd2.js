@@ -429,6 +429,10 @@
                         description: this.title
                     }
                 })).render();
+            }).popover({
+                placement: "bottom",
+                trigger: 'hover',
+                content: "This video introduces and defines common terminology used throughout the Dashboard.",
             });
             $("#video-link2").click(function (e) {
                 e.preventDefault();
@@ -438,6 +442,10 @@
                         description: this.title
                     }
                 })).render();
+            }).popover({
+                placement: "bottom",
+                trigger: 'hover',
+                content: "This video explains how users can search and browse the Dashboard through gene-centric, compound/perturbation-centric, or disease-relevant keywords.",
             });
             $("#video-link3").click(function (e) {
                 e.preventDefault();
@@ -447,6 +455,10 @@
                         description: this.title
                     }
                 })).render();
+            }).popover({
+                placement: "bottom",
+                trigger: 'hover',
+                content: "This video shows how the Dashboard Gene Cart can predict or verify molecular interactions using a subset of publicly available tissue- and disease-specific interactomes.",
             });
 
             $('#explore-gene-button').popover({

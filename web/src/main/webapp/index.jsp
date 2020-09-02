@@ -256,19 +256,13 @@
                         {{description}}
                         <ul id='video-list' class="list-inline">
                             <li class="list-inline-item small">
-                                <a href='' id="video-link1"  title='This video introduces and defines common terminology used throughout the Dashboard.'>
-                                    Understanding the Dashboard
-                                </a>
+                                <a href='' id="video-link1">Understanding the Dashboard</a>
                             </li>
                             <li class="list-inline-item small">
-                                <a href='' id="video-link2" title='This video explains how users can search and browse the Dashboard through gene-centric, compound/perturbation-centric, or disease-relevant keywords.'>
-                                    Searching and Browsing
-                                </a>
+                                <a href='' id="video-link2">Searching and Browsing</a>
                             </li>
                             <li class="list-inline-item small">
-                                <a href='' id="video-link3" title='This video shows how the Dashboard Gene Cart can predict or verify molecular interactions using a subset of publicly available tissue- and disease-specific interactomes.'>
-                                    Identifying Molecular Interactions
-                                </a>
+                                <a href='' id="video-link3">Identifying Molecular Interactions</a>
                             </li>
                         </ul>
 
