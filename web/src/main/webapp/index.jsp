@@ -214,15 +214,15 @@
                         href="mailto:ocg@mail.nih.gov?subject=CTD2 Dashboard Feedback">ocg@mail.nih.gov</a>.
                 </div>
                 <div style="font-size:14px; margin-bottom:10px;">
-                    <a href="http://www.hhs.gov/" target="_blank">U.S. Department of Health and Human Services</a> / <a href="http://www.nih.gov" target="_blank">National Institutes of Health</a> / <a href="http://www.cancer.gov/" target="_blank">National Cancer Institute</a> / <a href="http://usa.gov" target="_blank">USA.gov</a>
-                </div>
-                <div style="font-size:14px; margin-bottom:10px;">
                     <a href='' class="help-navigate">Glossary</a> &middot;
                     <a href="http://www.cancer.gov/global/web/policies" target="_blank">Policies</a> &middot;
                     <a href="http://www.cancer.gov/global/web/policies/accessibility" target="_blank">Accessibility</a>
                     &middot;
                     <a href="http://www.cancer.gov/global/web/policies/foia" target="_blank">FOIA</a>
                 </div>
+            </div>
+            <div style="font-size:14px; margin-bottom:10px;">
+                <a href="http://www.hhs.gov/" target="_blank">U.S. Department of Health and Human Services</a> / <a href="http://www.nih.gov" target="_blank">National Institutes of Health</a> / <a href="http://www.cancer.gov/" target="_blank">National Cancer Institute</a> / <a href="http://usa.gov" target="_blank">USA.gov</a>
             </div>
         </footer>
     </div>
