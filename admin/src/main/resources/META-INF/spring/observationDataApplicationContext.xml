@@ -1794,5 +1794,23 @@
             </bean>
         </property>
     </bean>
+    <bean name="ucsf1KrasSlDrugScreenResistanceReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${ucsf1.kras.sl.drug.screen.resistance.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="ucsf1KrasSlDrugScreenResistanceLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="ucsf1KrasSlDrugScreenSensitivityReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${ucsf1.kras.sl.drug.screen.sensitivity.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="ucsf1KrasSlDrugScreenSensitivityLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
 
 </beans>

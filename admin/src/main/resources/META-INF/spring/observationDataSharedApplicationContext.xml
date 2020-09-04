@@ -997,12 +997,22 @@
                 <batch:chunk reader="dfciShoc2DataLocationReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	    </batch:tasklet>
 	</batch:step>
-	<batch:step id="dfciMrtVulnerablilityDataLocationStep" parent="observationDataStep" >
+	<batch:step id="dfciMrtVulnerablilityDataLocationStep" parent="observationDataStep" next="ucsf1KrasSlDrugScreenResistanceStep">
 	    <batch:tasklet>
                 <batch:chunk reader="dfciMrtVulnerablilityDataLocationReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	    </batch:tasklet>
 	</batch:step>
 
+	<batch:step id="ucsf1KrasSlDrugScreenResistanceStep" parent="observationDataStep" next="ucsf1KrasSlDrugScreenSensitivityStep">
+	    <batch:tasklet>
+                <batch:chunk reader="ucsf1KrasSlDrugScreenResistanceReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	    </batch:tasklet>
+	</batch:step>
+	<batch:step id="ucsf1KrasSlDrugScreenSensitivityStep" parent="observationDataStep" >
+	    <batch:tasklet>
+                <batch:chunk reader="ucsf1KrasSlDrugScreenSensitivityReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	    </batch:tasklet>
+	</batch:step>
 
 
     </batch:job>
@@ -2789,6 +2799,22 @@
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_1,gene_2,gene_3,disease,gene_4,drug_1,drug_2,reference,figure_2,evidence_ontology_1,evidence_ontology_2,evidence_ontology_3,evidence_ontology_4,evidence_ontology_5,figure_4,figure_1"/>
     </bean>
 
+    <bean name="ucsf1KrasSlDrugScreenResistanceLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="ucsf1KrasSlDrugScreenResistanceLineTokenizer" />
+    </bean>
+    <bean name="ucsf1KrasSlDrugScreenResistanceLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="&#9;"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,drug_name,gene_name,percent_change_auc,reference"/>
+    </bean>
+    <bean name="ucsf1KrasSlDrugScreenSensitivityLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="ucsf1KrasSlDrugScreenSensitivityLineTokenizer" />
+    </bean>
+    <bean name="ucsf1KrasSlDrugScreenSensitivityLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="&#9;"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,drug_name,gene_name,percent_change_auc,reference"/>
+    </bean>
 
     <!-- shared helper beans -->
     <bean name="observationTemplateMap" class="java.util.HashMap">
@@ -4808,6 +4834,16 @@
 <entry key="dfci_shoc2:evidence_ontology_2" value="evidence:readString:createObservedUrlEvidence" />
 <entry key="dfci_shoc2:evidence_ontology_3" value="evidence:readString:createObservedUrlEvidence" />
 <entry key="dfci_shoc2:evidence_ontology_4" value="evidence:readString:createObservedUrlEvidence" />
+<entry key="ucsf1_kras_sl_drug_screen-resistance:drug_name" value="subject:findCompoundsByName" />
+<entry key="ucsf1_kras_sl_drug_screen-resistance:gene_name" value="subject:findGenesBySymbol" />
+<entry key="ucsf1_kras_sl_drug_screen-resistance:percent_change_auc" value="evidence:readDouble:createObservedNumericEvidence"  />
+<entry key="ucsf1_kras_sl_drug_screen-resistance:reference" value="evidence:readString:createObservedUrlEvidence" />
+<entry key="ucsf1_kras_sl_drug_screen-sensitivity:drug_name" value="subject:findCompoundsByName" />
+<entry key="ucsf1_kras_sl_drug_screen-sensitivity:gene_name" value="subject:findGenesBySymbol" />
+<entry key="ucsf1_kras_sl_drug_screen-sensitivity:percent_change_auc" value="evidence:readDouble:createObservedNumericEvidence"  />
+<entry key="ucsf1_kras_sl_drug_screen-sensitivity:reference" value="evidence:readString:createObservedUrlEvidence" />
+
+
 
 
             </map>
