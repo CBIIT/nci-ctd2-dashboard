@@ -214,15 +214,15 @@
                         href="mailto:ocg@mail.nih.gov?subject=CTD2 Dashboard Feedback">ocg@mail.nih.gov</a>.
                 </div>
                 <div style="font-size:14px; margin-bottom:10px;">
-                    <a href="http://www.hhs.gov/" target="_blank">U.S. Department of Health and Human Services</a> / <a href="http://www.nih.gov" target="_blank">National Institutes of Health</a> / <a href="http://www.cancer.gov/" target="_blank">National Cancer Institute</a> / <a href="http://usa.gov" target="_blank">USA.gov</a>
-                </div>
-                <div style="font-size:14px; margin-bottom:10px;">
                     <a href='' class="help-navigate">Glossary</a> &middot;
                     <a href="http://www.cancer.gov/global/web/policies" target="_blank">Policies</a> &middot;
                     <a href="http://www.cancer.gov/global/web/policies/accessibility" target="_blank">Accessibility</a>
                     &middot;
                     <a href="http://www.cancer.gov/global/web/policies/foia" target="_blank">FOIA</a>
                 </div>
+            </div>
+            <div style="font-size:14px; margin-bottom:10px;">
+                <a href="http://www.hhs.gov/" target="_blank">U.S. Department of Health and Human Services</a> / <a href="http://www.nih.gov" target="_blank">National Institutes of Health</a> / <a href="http://www.cancer.gov/" target="_blank">National Cancer Institute</a> / <a href="http://usa.gov" target="_blank">USA.gov</a>
             </div>
         </footer>
     </div>
@@ -256,19 +256,13 @@
                         {{description}}
                         <ul id='video-list' class="list-inline">
                             <li class="list-inline-item small">
-                                <a href='' id="video-link1"  title='This video introduces and defines common terminology used throughout the Dashboard.'>
-                                    Understanding the Dashboard
-                                </a>
+                                <a href='' id="video-link1">Understanding the Dashboard</a>
                             </li>
                             <li class="list-inline-item small">
-                                <a href='' id="video-link2" title='This video explains how users can search and browse the Dashboard through gene-centric, compound/perturbation-centric, or disease-relevant keywords.'>
-                                    Searching and Browsing
-                                </a>
+                                <a href='' id="video-link2">Searching and Browsing</a>
                             </li>
                             <li class="list-inline-item small">
-                                <a href='' id="video-link3" title='This video shows how the Dashboard Gene Cart can predict or verify molecular interactions using a subset of publicly available tissue- and disease-specific interactomes.'>
-                                    Identifying Molecular Interactions
-                                </a>
+                                <a href='' id="video-link3">Identifying Molecular Interactions</a>
                             </li>
                         </ul>
 

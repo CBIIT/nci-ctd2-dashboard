@@ -30,6 +30,6 @@ web.data.url=https://ctd2-dashboard.nci.nih.gov/data/
 list.max.observations=100
 
 # this is the URL for CNKB query
-cnkb.data.url=http://cagridnode.c2b2.columbia.edu:8080/cknb/InteractionsServlet_new/InteractionsServlet
+cnkb.data.url=http://34.74.237.111:8080/cnkb/InteractionsServlet
 
 dashboard.release.version=v201705

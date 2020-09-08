@@ -327,8 +327,10 @@
         render: function () {
             // Load the template
             $(this.el).html(this.template(this.model));
-            $("#tierTooltip").tooltip({
-                title: "A CTD<sup>2</sup> Network-defined ranking system for evidence that is based on the extent of characterization associated with a particular study." +
+            $("#tierTooltip").popover({
+                placement: "bottom",
+                trigger: 'hover',
+                content: "A CTD<sup>2</sup> Network-defined ranking system for evidence that is based on the extent of characterization associated with a particular study." +
                     "<ul><li><b><i>Tier 1</i></b>: Preliminary results of screening campaigns." +
                     "<li><b><i>Tier 2</i></b>: Confirmation of primary results <i>in vitro</i>." +
                     "<li><b><i>Tier 3</i></b>: Validation of results in a cancer relevant <i>in vivo</i> model.</ul>",
@@ -429,6 +431,10 @@
                         description: this.title
                     }
                 })).render();
+            }).popover({
+                placement: "bottom",
+                trigger: 'hover',
+                content: "This video introduces and defines common terminology used throughout the Dashboard.",
             });
             $("#video-link2").click(function (e) {
                 e.preventDefault();
@@ -438,6 +444,10 @@
                         description: this.title
                     }
                 })).render();
+            }).popover({
+                placement: "bottom",
+                trigger: 'hover',
+                content: "This video explains how users can search and browse the Dashboard through gene-centric, compound/perturbation-centric, or disease-relevant keywords.",
             });
             $("#video-link3").click(function (e) {
                 e.preventDefault();
@@ -447,6 +457,10 @@
                         description: this.title
                     }
                 })).render();
+            }).popover({
+                placement: "bottom",
+                trigger: 'hover',
+                content: "This video shows how the Dashboard Gene Cart can predict or verify molecular interactions using a subset of publicly available tissue- and disease-specific interactomes.",
             });
 
             $('#explore-gene-button').popover({
