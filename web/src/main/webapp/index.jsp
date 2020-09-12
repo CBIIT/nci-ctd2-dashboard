@@ -2443,7 +2443,8 @@
     <script src="js/jquery.contextMenu.min.js"></script>
     <script src="js/jquery.ui.position.min.js"></script>
     <script src="js/ctd2.constants.js"></script>
-    <script src="js/ctd2.js?ts=20200722"></script>
+    <script src="js/cnkb.js"></script>
+    <script src="js/ctd2.js?ts=20200911"></script>
 
 </body>
 
