@@ -2140,7 +2140,9 @@
     <script type="text/template" id="genelist-view-tmpl">
         <div class="container common-container" id="genelist-container" > 
              <div class=row>
-                 <div class="col-10" align="center">
+                <div class="col-1">
+                </div>
+                <div class="col-10" align="center">
                     <h4>  Gene List</h4>
 
                      <div class="alert alert-warning">
@@ -2160,14 +2162,23 @@
                     <br/><br/>
                     <a href="#" id="clearList">Clear List</a>
                     <a href="#" id="loadGenes">Load Genes from File</a>
-                    <br/><input id="geneFileInput" type="file" style="visibility:hidden" /> 
+                    <br/><input id="geneFileInput" type="file" style="visibility:hidden" />
+                    <br/><br/>
+                    <label for="gene-cart-action-list">Select Action</label>
+                    <select multiple class="form-control" id="gene-cart-action-list" name="sellist2">
+                        <option>CNKB - Find Gene Interactions in Networks</option>
+                        <option>Enrichr - Gene Set Enrichment Analysis</option>
+                        <option>STRING - Protein-Protein Interaction Networks + Functional Enrichment Analysis</option>
+                    </select>
                     <br/>
-                    <a href="#cnkb-query" id="cnkb-query">Find Gene Interactions in  Networks (CNKB)</a>
-                    <br/><br/><a href="" id=enrichr>Gene set enrichment analysis (Enrichr)<a>
+                    <div class="card">
+                        <div class="card-body">STRING is a database of known and predicted protein-protein interactions. The interactions include direct (physical) and indirect (functional) associations; they stem from computational prediction, from knowledge transfer between organisms, and from interactions aggregated from other (primary) databases.</div>
+                    </div>
+                    <br/>
+                    <button type="submit" class="btn btn-success" id=gene-cart-action>Submit</button>
                  </div>
 
                  <div class="col-1">
-                    <a href="javascript:history.back()">Back</a>
                  </div>
              </div>
         </div>
@@ -2193,7 +2204,9 @@
     <script type="text/template" id="cnkb-query-tmpl">
         <div class="container common-container" id="cnkbquery-container" > 
             <div class=row>
-                    <div class="col-10">
+                <div class="col-1">
+                </div>
+                <div class="col-10">
                        <h3>Cellular Network Knowledge Base</h3>
 
                        <medium>Select Interactome:</medium>
@@ -2218,11 +2231,10 @@
                      <br/>
                      <br/>
                      <a href="#cnkb-result" id="cnkb-result">Submit</a>
-                 </div>
+                </div>
 
-                 <div class="col-1">
-                    <a href="javascript:history.back()">Back</a>
-                 </div>
+                <div class="col-1">
+                </div>
             </div>
         </div>
       </script>
@@ -2230,6 +2242,8 @@
     <script type="text/template" id="cnkb-result-tmpl">
          <div class="container common-container" id="cnkbresult-container" > 
                <div class="row">
+                  <div class="col-1">
+                  </div>
                   <div class="col-10">
                      <h3>Cellular Network Knowledge Base</h2>
                      <a href="#" id="cnkbExport"  target="_blank" title="Export all selected interactions to a SIF file."> Export </a>
@@ -2253,7 +2267,6 @@
                       </table>  
                    </div>
                    <div class="col-1">
-                      <a href="javascript:history.back()">Back</a>
                    </div>
                 </div>
                 <br/>

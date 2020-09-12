@@ -3595,7 +3595,7 @@
                 form.submit();
                 document.body.removeChild(form);
             }
-            $("#enrichr").click(function (e) {
+            const go_enrichr = function (e) {
                 e.preventDefault();
                 let genes = '';
                 $('#geneNames :selected').each(function (i, selected) {
@@ -3611,6 +3611,23 @@
                     description: "CTD2 Dashboard Query",
                     popup: true,
                 });
+            };
+            $("#gene-cart-action").click(function(e) {
+                const selected = $('#gene-cart-action-list :selected');
+                if(selected.length==0) {
+                    console.log('no action selected');
+                    return;
+                }
+                if(selected.length>1) {
+                    console.log('more than one action selected');
+                    return;
+                }
+                const action_index = selected[0].index;
+                switch(action_index) {
+                    case 0: document.location.href = '#cnkb-query'; break;
+                    case 1: go_enrichr(e); break;
+                    case 2: showAlertMessage('STRING action is under construction'); break;
+                }
             });
 
             const processInputGenes = function (genes) {
