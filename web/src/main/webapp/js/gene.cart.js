@@ -148,14 +148,6 @@ const GeneListView = Backbone.View.extend({
         };
         $("#gene-cart-action").click(function (e) {
             const selected = $('#gene-cart-action-list :selected');
-            if (selected.length == 0) {
-                console.log('no action selected');
-                return;
-            }
-            if (selected.length > 1) {
-                console.log('more than one action selected');
-                return;
-            }
             const action_index = selected[0].index;
             switch (action_index) {
                 case 0:
@@ -173,6 +165,15 @@ const GeneListView = Backbone.View.extend({
                     break;
                 case 1: go_enrichr(e); break;
                 case 2: showAlertMessage('STRING action is under construction'); break;
+            }
+        });
+        $("#gene-cart-action").attr("disabled", true);
+        $('#gene-cart-action-list').change(function () {
+            const selected = $('#gene-cart-action-list :selected');
+            if (selected.length == 1) {
+                $("#gene-cart-action").attr("disabled", false);
+            } else {
+                $("#gene-cart-action").attr("disabled", true);
             }
         });
 
