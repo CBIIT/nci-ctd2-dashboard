@@ -164,7 +164,7 @@ const GeneListView = Backbone.View.extend({
                     document.location.href = '#cnkb-query';
                     break;
                 case 1: go_enrichr(e); break;
-                case 2: showAlertMessage('STRING action is under construction'); break;
+                case 2: showAlertMessage('STRING action is under development'); break;
             }
         });
         $("#gene-cart-action").attr("disabled", true);
@@ -172,8 +172,12 @@ const GeneListView = Backbone.View.extend({
             const selected = $('#gene-cart-action-list :selected');
             if (selected.length == 1) {
                 $("#gene-cart-action").attr("disabled", false);
+                const action_index = selected[0].index;
+                const detail = gene_cart_actions[action_index];
+                $("#gene-cart-action-detail").text(detail);
             } else {
                 $("#gene-cart-action").attr("disabled", true);
+                $("#gene-cart-action-detail").empty();
             }
         });
 

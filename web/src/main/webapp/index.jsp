@@ -2172,7 +2172,7 @@
                     </select>
                     <br/>
                     <div class="card">
-                        <div class="card-body">STRING is a database of known and predicted protein-protein interactions. The interactions include direct (physical) and indirect (functional) associations; they stem from computational prediction, from knowledge transfer between organisms, and from interactions aggregated from other (primary) databases.</div>
+                        <div class="card-body" id=gene-cart-action-detail align="left"></div>
                     </div>
                     <br/>
                     <button type="submit" class="btn btn-success" id=gene-cart-action>Submit</button>
