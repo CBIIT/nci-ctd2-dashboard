@@ -90,21 +90,6 @@ const GeneListView = Backbone.View.extend({
             showAlertMessage("Load Genes from file is not supported.");
         }
 
-        $("#cnkb-query").click(function (e) {
-
-            const selectedGenes = [];
-            $('#geneNames :selected').each(function (i, selected) {
-                selectedGenes[i] = $(selected).text();
-            });
-
-            if (selectedGenes == null || selectedGenes.length == 0) {
-                sessionStorage.selectedGenes = JSON.stringify(geneList);
-            } else {
-                sessionStorage.selectedGenes = JSON.stringify(selectedGenes);
-            }
-
-        });
-
         function enrich(options) {
             if (typeof options.list === 'undefined') {
                 alert('No genes defined.');
@@ -166,7 +151,19 @@ const GeneListView = Backbone.View.extend({
             }
             const action_index = selected[0].index;
             switch (action_index) {
-                case 0: document.location.href = '#cnkb-query'; break;
+                case 0:
+                    const selectedGenes = [];
+                    $('#geneNames :selected').each(function (i, selected) {
+                        selectedGenes[i] = $(selected).text();
+                    });
+
+                    if (selectedGenes == null || selectedGenes.length == 0) {
+                        sessionStorage.selectedGenes = JSON.stringify(geneList);
+                    } else {
+                        sessionStorage.selectedGenes = JSON.stringify(selectedGenes);
+                    }
+                    document.location.href = '#cnkb-query'; 
+                    break;
                 case 1: go_enrichr(e); break;
                 case 2: showAlertMessage('STRING action is under construction'); break;
             }
