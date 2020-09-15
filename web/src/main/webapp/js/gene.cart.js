@@ -162,7 +162,7 @@ const GeneListView = Backbone.View.extend({
                     } else {
                         sessionStorage.selectedGenes = JSON.stringify(selectedGenes);
                     }
-                    document.location.href = '#cnkb-query'; 
+                    document.location.href = '#cnkb-query';
                     break;
                 case 1: go_enrichr(e); break;
                 case 2: showAlertMessage('STRING action is under construction'); break;
@@ -274,43 +274,18 @@ const CnkbQueryView = Backbone.View.extend({
             contentType: "json",
             success: function (data) {
                 _.each(data.interactomeList, function (aData) {
+                    const option = '<option value="' + aData + '">' + aData + '</option>';
                     if (aData.toLowerCase().startsWith("preppi")) {
-                        $("#interactomeList").prepend(_.template($("#gene-cart-option-tmpl-preselected").html())({
-                            displayItem: aData
-                        }));
-                        $.ajax({ // query the description
-                            url: "cnkb/query",
-                            data: {
-                                dataType: "interactome-version",
-                                interactome: aData.split("(")[0].trim(),
-                                version: "",
-                                selectedGenes: "",
-                                interactionLimit: 0,
-                                throttle: ""
-                            },
-                            dataType: "json",
-                            contentType: "json",
-                            success: function (data) {
-                                $('#interactomeDescription').html(convertUrl(data.description));
-                                $('#interactomeVersionList').html("");
-                                _.each(data.versionDescriptorList, function (aData) {
-                                    $("#interactomeVersionList").append(_.template($("#gene-cart-option-tmpl").html())({
-                                        displayItem: aData.version
-                                    }));
-                                });
-                                $('#interactomeVersionList').disabled = false;
-                                $('#selectVersion').css('color', '#5a5a5a');
-                                $('#versionDescription').html("");
-                            }
-                        }); //ajax
-                    } else
-                        $("#interactomeList").append(_.template($("#gene-cart-option-tmpl").html())({
-                            displayItem: aData
-                        }));
+                        $("#interactomeList").prepend(option);
+                    } else {
+                        $("#interactomeList").append(option);
+                    }
                 });
+                $('#interactomeList option:contains("Preppi")').prop('selected', true);
+                $('#interactomeList').change();
                 $('#interactomeVersionList').disabled = true;
             }
-        }); //ajax   
+        });
 
         let versionDescriptors;
         $('#interactomeList').change(function () {
@@ -331,9 +306,7 @@ const CnkbQueryView = Backbone.View.extend({
                     $('#interactomeDescription').html(convertUrl(data.description));
                     $('#interactomeVersionList').html("");
                     _.each(data.versionDescriptorList, function (aData) {
-                        $("#interactomeVersionList").append(_.template($("#gene-cart-option-tmpl").html())({
-                            displayItem: aData.version
-                        }));
+                        $("#interactomeVersionList").append('<option value="' + aData.version + '">' + aData.version + '</option>');
                     });
                     $('#interactomeVersionList').disabled = false;
                     $('#selectVersion').css('color', '#5a5a5a');
