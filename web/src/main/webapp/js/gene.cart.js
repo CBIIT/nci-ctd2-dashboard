@@ -1,3 +1,10 @@
+// common utility
+const showAlertMessage = function (message) {
+    $("#alertMessage").text(message);
+    $("#alertMessage").css('color', '#5a5a5a');
+    $("#alert-message-modal").modal('show');
+};
+
 //Gene List View
 const GeneListView = Backbone.View.extend({
     el: $("#main-container"),
@@ -376,11 +383,6 @@ const CnkbResultView = (function () {
                 placement: "top",
                 trigger: 'hover',
                 content: __ctd2_hovertext.TABLE_FILTER,
-            };
-            const showAlertMessage = function (message) {
-                $("#alertMessage").text(message);
-                $("#alertMessage").css('color', '#5a5a5a');
-                $("#alert-message-modal").modal('show');
             };
             if (selectedgenes.length > numOfCartGene) {
                 selectedgenes.slice(numOfCartGene, selectedgenes.length - 1);
