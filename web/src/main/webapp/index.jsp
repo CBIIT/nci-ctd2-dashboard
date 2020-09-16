@@ -2143,14 +2143,13 @@
                 <div class="col-1">
                 </div>
                 <div class="col-10" align="center">
-                    <h4>  Gene List</h4>
-
-                     <div class="alert alert-warning">
-                         <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    <div class="alert alert-warning">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
                            <p>The Gene Cart allows users to build a list of genes and query them agains a number of gene and protein interaction databases 
                              [<a href="#gene-cart-help">More Details</a>].
                            </p>
-                     </div>
+                    </div>
+                    <h4>Gene List</h4>
 
                     <select id="geneNames" class="geneSelectList" size="6" 
                                 multiple></select>
