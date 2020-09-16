@@ -180,6 +180,8 @@ const GeneListView = Backbone.View.extend({
                 $("#gene-cart-action-detail").empty();
             }
         });
+        $('#gene-cart-action-list option:contains("CNKB")').prop('selected', true);
+        $('#gene-cart-action-list').change();
 
         const processInputGenes = function (genes) {
             let geneNames = JSON.parse(localStorage.getItem("genelist"));
