@@ -2147,10 +2147,8 @@
 
                      <div class="alert alert-warning">
                          <button type="button" class="close" data-dismiss="alert">&times;</button>
-                           <p>
-                             The Gene Cart allows users to build a list of genes and query the Cellular Networks Knowledge Base (CNKB) for molecular interactions involving these genes.  The CNKB is a database of gene interaction networks maintained at Columbia University [
-                             <a href="#gene-cart-help">More Details</a>
-                             ].
+                           <p>The Gene Cart allows users to build a list of genes and query them agains a number of gene and protein interaction databases 
+                             [<a href="#gene-cart-help">More Details</a>].
                            </p>
                      </div>
 
