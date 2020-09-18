@@ -2161,15 +2161,14 @@
                     <a href="#" id="loadGenes">Load Genes from File</a>
                     <br/><input id="geneFileInput" type="file" style="visibility:hidden" />
                     <br/><br/>
-                    <label for="gene-cart-action-list">Select Action</label>
+                    <h5>Select Action</h5>
                     <select multiple class="form-control" id="gene-cart-action-list" name="sellist2">
                         <option>CNKB - Find Gene Interactions in Networks</option>
                         <option>Enrichr - Gene Set Enrichment Analysis</option>
                         <option>STRING - Protein-Protein Interaction Networks + Functional Enrichment Analysis</option>
                     </select>
-                    <br/>
-                    <div class="card">
-                        <div class="card-body" id=gene-cart-action-detail align="left"></div>
+                    <div align="left">
+                        <small id=gene-cart-action-detail></small>
                     </div>
                     <br/>
                     <button type="submit" class="btn btn-success" id=gene-cart-action>Submit</button>
