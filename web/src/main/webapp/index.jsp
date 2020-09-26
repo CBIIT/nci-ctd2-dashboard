@@ -160,7 +160,7 @@
                         <ul class="nav pull-right">
                             <form class="form-search" id="omnisearch">
                                 <div class="input-append">
-                                    <input type="text" id="omni-input" class="search-query" title="Search"
+                                    <input type="text" id="omni-input" class="search-query"
                                         placeholder="e.g. CTNNB1 or dasatinib" aria-label="search">
                                     <button type="submit" class="btn search-button">Search</button>
                                     <span class="d-none" id="search-help-content">
@@ -178,7 +178,6 @@
                                                     href="#search/ECO_0006053">ECO_0006053</a></li>
                                             <li><em>Expt. Evidence term: </em> <a href="#search/PCR">PCR</a></li>
                                         </ul>
-                                        <br>
                                     </span>
                                 </div>
                             </form>
@@ -250,7 +249,7 @@
                 <div class="row" id="overview-text">
                     <div class="col-3">
                         <a href="https://ocg.cancer.gov/programs/ctd2">
-                            <img class="img-polaroid pull-left" src="img/logos/ctd2_overall.png" alt="CTD2 general image" title="CTD2 general image" style="margin:0px">
+                            <img class="img-polaroid pull-left" src="img/logos/ctd2_overall.png" alt="CTD2 general image" style="margin:0px">
                         </a>
                     </div>
                     <div class="col-9">
