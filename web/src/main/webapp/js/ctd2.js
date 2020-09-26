@@ -2346,7 +2346,6 @@
                         centerSubmissionRowView.render();
                     });
 
-                    $(".template-description").tooltip();
                     $('#center-submission-grid').dataTable({
                         "columns": [
                             null,
@@ -2838,10 +2837,14 @@
                             searchResultsRowView.render();
                         });
 
-                        $(".search-info").tooltip({
-                            placement: "left"
+                        $(".search-info").popover({
+                            placement: "left",
+                            trigger: "hover",
                         });
-                        $(".obs-tooltip").tooltip();
+                        $(".obs-tooltip").popover({
+                            placement: "bottom",
+                            trigger: "hover",
+                        });
 
                         const oTable = $("#search-results-grid").dataTable({
                             "columns": [

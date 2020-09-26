@@ -1642,7 +1642,7 @@
 
     <script type="text/template" id="search-results-image-tmpl">
         <a href="#/{{stableURL}}">
-            <img src="{{image}}" class="img-polaroid search-info" title="{{label}}" alt="{{label}}" height="50" width="50">
+            <img src="{{image}}" class="img-polaroid search-info" data-content="{{label}}" alt="{{label}}" height="50" width="50">
         </a>
     </script>
 
@@ -1666,7 +1666,7 @@
             </td>
             <td class="nonewline">
                 <a href="#{{dashboardEntity.stableURL}}" id="subject-observation-count-{{dashboardEntity.id}}" count="{{observationCount}}">{{observationCount}}</a>
-                <i class="icon-question-sign obs-tooltip {{observationCount < 1 ? 'hide' : ''}}" title="{{observationCount}} observations from {{centerCount}} centers: Tier {{maxTier}}"></i>
+                <i class="icon-question-sign obs-tooltip {{observationCount < 1 ? 'hide' : ''}}" data-content="{{observationCount}} observations from {{centerCount}} centers: Tier {{maxTier}}"></i>
             </td>
         </tr>
     </script>
@@ -1693,7 +1693,7 @@
             </td>
             <td class="nonewline">
                 <a href="#{{dashboardEntity.stableURL}}" id="subject-observation-count-{{dashboardEntity.id}}" count="{{observationCount}}">{{observationCount}}</a>
-                <i class="icon-question-sign obs-tooltip {{observationCount < 1 ? 'hide' : ''}}" title="{{observationCount}} observations from {{centerCount}} centers: Tier {{maxTier}}"></i>
+                <i class="icon-question-sign obs-tooltip {{observationCount < 1 ? 'hide' : ''}}" data-content="{{observationCount}} observations from {{centerCount}} centers: Tier {{maxTier}}"></i>
             </td>
         </tr>
     </script>
@@ -2450,7 +2450,7 @@
     <script src="js/jquery.ui.position.min.js"></script>
     <script src="js/ctd2.constants.js"></script>
     <script src="js/gene.cart.js"></script>
-    <script src="js/ctd2.js?ts=20200911"></script>
+    <script src="js/ctd2.js?ts=20200926"></script>
 
 </body>
 
