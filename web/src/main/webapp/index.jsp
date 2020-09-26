@@ -711,7 +711,7 @@
             <td>&nbsp;&nbsp;</td>
             <td>
                 {{observedEvidenceRole.evidenceRole.displayName}}
-                <a target="_blank" href="http://www.evidenceontology.org/term/{{eco.eco_id}}/" title="ECO Term: {{eco.eco_term}} ({{eco.eco_id}})"><i class="icon-question-sign"></i></a>
+                <a target="_blank" href="http://www.evidenceontology.org/term/{{eco.eco_id}}/" class=desc-tooltip data-content="ECO Term: {{eco.eco_term}} ({{eco.eco_id}})"><i class="icon-question-sign"></i></a>
             </td>
             <td>
                 {{observedEvidenceRole.displayText}}</td>
@@ -722,15 +722,15 @@
     <script type="text/template" id="observedfileevidence-row-tmpl">
         <tr>
             <td>
-                <img src="img/icons/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}" alt="{{observedEvidenceRole.evidenceRole.displayName}}">
+                <img src="img/icons/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" data-content="{{observedEvidenceRole.evidenceRole.displayName}}" alt="{{observedEvidenceRole.evidenceRole.displayName}}">
             </td>
             <td>
                 {{observedEvidenceRole.evidenceRole.displayName}}
-                <a target="_blank" href="http://www.evidenceontology.org/term/{{eco.eco_id}}/" title="ECO Term: {{eco.eco_term}} ({{eco.eco_id}})"><i class="icon-question-sign"></i></a>
+                <a target="_blank" href="http://www.evidenceontology.org/term/{{eco.eco_id}}/" class=desc-tooltip data-content="ECO Term: {{eco.eco_term}} ({{eco.eco_id}})"><i class="icon-question-sign"></i></a>
             </td>
             <td>{{observedEvidenceRole.displayText}}</td>
             <td>(
-                <a href="<%=dataURL%>{{evidence.filePath}}" target="_blank" title="Download file ({{evidence.mimeType}})" class="desc-tooltip" title="Download File">
+                <a href="<%=dataURL%>{{evidence.filePath}}" target="_blank" data-content="Download file ({{evidence.mimeType}})" class="desc-tooltip">
                     download file
                 </a>
             )</td>
@@ -740,15 +740,15 @@
     <script type="text/template" id="observedhtmlfileevidence-row-tmpl">
         <tr>
             <td>
-                <img src="img/icons/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}" alt="{{observedEvidenceRole.evidenceRole.displayName}}">
+                <img src="img/icons/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" data-content="{{observedEvidenceRole.evidenceRole.displayName}}" alt="{{observedEvidenceRole.evidenceRole.displayName}}">
             </td>
             <td>
                 {{observedEvidenceRole.evidenceRole.displayName}}
-                <a target="_blank" href="http://www.evidenceontology.org/term/{{eco.eco_id}}/" title="ECO Term: {{eco.eco_term}} ({{eco.eco_id}})"><i class="icon-question-sign"></i></a>
+                <a target="_blank" href="http://www.evidenceontology.org/term/{{eco.eco_id}}/" class=desc-tooltip data-content="ECO Term: {{eco.eco_term}} ({{eco.eco_id}})"><i class="icon-question-sign"></i></a>
             </td>
             <td>{{observedEvidenceRole.displayText}}</td>
             <td>(
-                <a href="<%=dataURL%>{{evidence.filePath}}" title="View file ({{evidence.mimeType}})" class="desc-tooltip html-story-link" title="Download File">
+                <a href="<%=dataURL%>{{evidence.filePath}}" data-content="View file ({{evidence.mimeType}})" class="desc-tooltip html-story-link">
                     view
                 </a>
                 )</td>
@@ -759,15 +759,15 @@
     <script type="text/template" id="observedpdffileevidence-row-tmpl">
         <tr>
             <td>
-                <img src="img/icons/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}" alt="{{observedEvidenceRole.evidenceRole.displayName}}">
+                <img src="img/icons/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" data-content="{{observedEvidenceRole.evidenceRole.displayName}}" alt="{{observedEvidenceRole.evidenceRole.displayName}}">
             </td>
             <td>
                 {{observedEvidenceRole.evidenceRole.displayName}}
-                <a target="_blank" href="http://www.evidenceontology.org/term/{{eco.eco_id}}/" title="ECO Term: {{eco.eco_term}} ({{eco.eco_id}})"><i class="icon-question-sign"></i></a>
+                <a target="_blank" href="http://www.evidenceontology.org/term/{{eco.eco_id}}/" class=desc-tooltip data-content="ECO Term: {{eco.eco_term}} ({{eco.eco_id}})"><i class="icon-question-sign"></i></a>
             </td>
             <td>{{observedEvidenceRole.displayText}}</td>
             <td>(
-                <a href="<%=dataURL%>{{evidence.filePath}}" target="_blank" title="{{observedEvidenceRole.displayText}}" class="desc-tooltip pdf-file-link">
+                <a href="<%=dataURL%>{{evidence.filePath}}" target="_blank" data-content="{{observedEvidenceRole.displayText}}" class="desc-tooltip pdf-file-link">
                     view PDF
                 </a>
                 )</td>
@@ -777,11 +777,11 @@
     <script type="text/template" id="observedgctfileevidence-row-tmpl">
         <tr>
             <td>
-                <img src="img/icons/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}" alt="{{observedEvidenceRole.evidenceRole.displayName}}">
+                <img src="img/icons/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" data-content="{{observedEvidenceRole.evidenceRole.displayName}}" alt="{{observedEvidenceRole.evidenceRole.displayName}}">
             </td>
             <td>
                 {{observedEvidenceRole.evidenceRole.displayName}}
-                <a target="_blank" href="http://www.evidenceontology.org/term/{{eco.eco_id}}/" title="ECO Term: {{eco.eco_term}} ({{eco.eco_id}})"><i class="icon-question-sign"></i></a>
+                <a target="_blank" href="http://www.evidenceontology.org/term/{{eco.eco_id}}/" class=desc-tooltip data-content="ECO Term: {{eco.eco_term}} ({{eco.eco_id}})"><i class="icon-question-sign"></i></a>
             </td>
             <td>{{observedEvidenceRole.displayText}}</td>
             <td>
@@ -789,12 +789,12 @@
                     ( <a class="dropdown-toggle" data-toggle="dropdown" href="#">view file <b class="caret"></b></a> )
                     <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                         <li>
-                            <a href="http://www.broadinstitute.org/cancer/software/GENE-E/dynamic.php?data=<%=dataURL%>{{evidence.filePath}}" target="_blank" title="open in GENE-E (Java Web-start)" class="desc-tooltip">
+                            <a href="http://www.broadinstitute.org/cancer/software/GENE-E/dynamic.php?data=<%=dataURL%>{{evidence.filePath}}" target="_blank" data-content="open in GENE-E (Java Web-start)" class="desc-tooltip">
                                 open with GENE-E
                             </a>
                         </li>
                         <li>
-                            <a href="<%=dataURL%>{{evidence.filePath}}" class="desc-tooltip" target="_blank" title="type: ({{evidence.mimeType}})">view in browser</a>
+                            <a href="<%=dataURL%>{{evidence.filePath}}" class="desc-tooltip" target="_blank" data-content="type: ({{evidence.mimeType}})">view in browser</a>
                         </li>
 
                     </ul>
@@ -806,11 +806,11 @@
     <script type="text/template" id="observedsiffileevidence-row-tmpl">
         <tr>
             <td>
-                <img src="img/icons/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}" alt="{{observedEvidenceRole.evidenceRole.displayName}}">
+                <img src="img/icons/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" data-content="{{observedEvidenceRole.evidenceRole.displayName}}" alt="{{observedEvidenceRole.evidenceRole.displayName}}">
             </td>
             <td>
                 {{observedEvidenceRole.evidenceRole.displayName}}
-                <a target="_blank" href="http://www.evidenceontology.org/term/{{eco.eco_id}}/" title="ECO Term: {{eco.eco_term}} ({{eco.eco_id}})"><i class="icon-question-sign"></i></a>
+                <a target="_blank" href="http://www.evidenceontology.org/term/{{eco.eco_id}}/" class=desc-tooltip data-content="ECO Term: {{eco.eco_term}} ({{eco.eco_id}})"><i class="icon-question-sign"></i></a>
             </td>
             <td>{{observedEvidenceRole.displayText}}</td>
             <td>
@@ -823,7 +823,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="<%=dataURL%>{{evidence.filePath}}" class="desc-tooltip" target="_blank" title="type: ({{evidence.mimeType}})">view in browser</a>
+                            <a href="<%=dataURL%>{{evidence.filePath}}" class="desc-tooltip" target="_blank" data-content="type: ({{evidence.mimeType}})">view in browser</a>
                         </li>
                     </ul>
                 </div>
@@ -834,17 +834,17 @@
     <script type="text/template" id="observedimageevidence-row-tmpl">
         <tr>
             <td>
-                <img src="img/icons/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}" alt="{{observedEvidenceRole.evidenceRole.displayName}}">
+                <img src="img/icons/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" data-content="{{observedEvidenceRole.evidenceRole.displayName}}" alt="{{observedEvidenceRole.evidenceRole.displayName}}">
             </td>
             <td>
                 {{observedEvidenceRole.evidenceRole.displayName}}
-                <a target="_blank" href="http://www.evidenceontology.org/term/{{eco.eco_id}}/" title="ECO Term: {{eco.eco_term}} ({{eco.eco_id}})"><i class="icon-question-sign"></i></a>
+                <a target="_blank" href="http://www.evidenceontology.org/term/{{eco.eco_id}}/" class=desc-tooltip data-content="ECO Term: {{eco.eco_term}} ({{eco.eco_id}})"><i class="icon-question-sign"></i></a>
             </td>
             <td>{{observedEvidenceRole.displayText}}</td>
             <td>
                 <div class="image-evidence-wrapper">
                     <a href="<%=dataURL%>{{evidence.filePath}}" target="_blank" data-caption="{{observedEvidenceRole.displayText}}" rel="evidence-images" class="evidence-images">
-                        <img src="<%=dataURL%>{{evidence.filePath}}" class="img-polaroid img-evidence" height="140" title="File" alt="File">
+                        <img src="<%=dataURL%>{{evidence.filePath}}" class="img-polaroid img-evidence desc-tooltip" height="140" data-content="File" alt="File">
                     </a>
                 </div>
             </td>
@@ -855,11 +855,11 @@
     <script type="text/template" id="observedlabelevidence-row-tmpl">
         <tr>
             <td>
-                <img src="img/icons/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}" alt="{{observedEvidenceRole.evidenceRole.displayName}}">
+                <img src="img/icons/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" data-content="{{observedEvidenceRole.evidenceRole.displayName}}" alt="{{observedEvidenceRole.evidenceRole.displayName}}">
             </td>
             <td>
                 {{observedEvidenceRole.evidenceRole.displayName}}
-                <a target="_blank" href="http://www.evidenceontology.org/term/{{eco.eco_id}}/" title="ECO Term: {{eco.eco_term}} ({{eco.eco_id}})"><i class="icon-question-sign"></i></a>
+                <a target="_blank" href="http://www.evidenceontology.org/term/{{eco.eco_id}}/" class=desc-tooltip data-content="ECO Term: {{eco.eco_term}} ({{eco.eco_id}})"><i class="icon-question-sign"></i></a>
             </td>
             <td>{{observedEvidenceRole.displayText}}</td>
             <td><div class="labelevidence expandable">{{displayName}}</div></td>
@@ -869,15 +869,15 @@
     <script type="text/template" id="observedurlevidence-row-tmpl">
         <tr>
             <td>
-                <img src="img/icons/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}" alt="{{observedEvidenceRole.evidenceRole.displayName}}">
+                <img src="img/icons/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" data-content="{{observedEvidenceRole.evidenceRole.displayName}}" alt="{{observedEvidenceRole.evidenceRole.displayName}}">
             </td>
             <td>
                 {{observedEvidenceRole.evidenceRole.displayName}}
-                <a target="_blank" href="http://www.evidenceontology.org/term/{{eco.eco_id}}/" title="ECO Term: {{eco.eco_term}} ({{eco.eco_id}})"><i class="icon-question-sign"></i></a>
+                <a target="_blank" href="http://www.evidenceontology.org/term/{{eco.eco_id}}/" class=desc-tooltip data-content="ECO Term: {{eco.eco_term}} ({{eco.eco_id}})"><i class="icon-question-sign"></i></a>
             </td>
             <td>{{observedEvidenceRole.displayText}}</td>
             <td>
-                (<a href="{{evidence.url.replace(/^\//, '')}}" target="_blank" class="desc-tooltip" title="Open link in a new window">
+                (<a href="{{evidence.url.replace(/^\//, '')}}" target="_blank" class="desc-tooltip" data-content="Open link in a new window">
                     open link
                 </a>)
             </td>
@@ -887,11 +887,11 @@
     <script type="text/template" id="observeddatanumericevidence-row-tmpl">
         <tr>
             <td>
-                <img src="img/icons/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}" alt="{{observedEvidenceRole.evidenceRole.displayName}}">
+                <img src="img/icons/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" data-content="{{observedEvidenceRole.evidenceRole.displayName}}" alt="{{observedEvidenceRole.evidenceRole.displayName}}">
             </td>
             <td>
                 {{observedEvidenceRole.evidenceRole.displayName}}
-                <a target="_blank" href="http://www.evidenceontology.org/term/{{eco.eco_id}}/" title="ECO Term: {{eco.eco_term}} ({{eco.eco_id}})"><i class="icon-question-sign"></i></a>
+                <a target="_blank" href="http://www.evidenceontology.org/term/{{eco.eco_id}}/" class=desc-tooltip data-content="ECO Term: {{eco.eco_term}} ({{eco.eco_id}})"><i class="icon-question-sign"></i></a>
             </td>
             <td>{{observedEvidenceRole.displayText}}</td>
             <td><span class="numeric-value">{{evidence.numericValue}}</span> <em>{{evidence.unit}}</em></td>
@@ -1966,7 +1966,7 @@
     <script type="text/template" id="observedmrafileevidence-row-tmpl">
         <tr>
             <td>
-                <img src="img/icons/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" title="{{observedEvidenceRole.evidenceRole.displayName}}" alt="{{observedEvidenceRole.evidenceRole.displayName}}">
+                <img src="img/icons/{{observedEvidenceRole.evidenceRole.displayName}}.png" class="img-rounded" data-content="{{observedEvidenceRole.evidenceRole.displayName}}" alt="{{observedEvidenceRole.evidenceRole.displayName}}">
             </td>
             <td>{{observedEvidenceRole.evidenceRole.displayName}}</td>
             <td>{{observedEvidenceRole.displayText}}</td>
@@ -1975,12 +1975,12 @@
                     ( <a class="dropdown-toggle" data-toggle="dropdown" href="#">view mra file<b class="caret"></b></a> )
                     <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                         <li>
-                            <a href="#{{stableURL}}" title="Open Master Regulator View" class="desc-tooltip">
+                            <a href="#{{stableURL}}" data-content="Open Master Regulator View" class="desc-tooltip">
                                 mra view
                             </a>
                         </li>
                         <li>
-                            <a href="<%=dataURL%>{{evidence.filePath}}" class="desc-tooltip" target="_blank" title="type: ({{evidence.mimeType}})">view in browser</a>
+                            <a href="<%=dataURL%>{{evidence.filePath}}" class="desc-tooltip" target="_blank" data-content="type: ({{evidence.mimeType}})">view in browser</a>
                         </li>
                     </ul>
                 </div>

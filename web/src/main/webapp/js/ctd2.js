@@ -1075,11 +1075,9 @@
                         [2, 'asc']
                     ]);
 
-                    $('.desc-tooltip').tooltip({
+                    $('.desc-tooltip').popover({
                         placement: "left",
                         trigger: "hover",
-                    }).on('click', function () {
-                        $(this).tooltip('hide');
                     });
 
                     $("a.evidence-images").fancybox({
@@ -1299,8 +1297,9 @@
                 $(this.el).find(".html-story-link").attr("href", "#" + result.observation.submission.stableURL.replace("submission", "story"));
             }
 
-            $(".img-rounded").tooltip({
-                placement: "left"
+            $(".img-rounded").popover({
+                placement: "left",
+                trigger: "hover",
             });
             return this;
         }
