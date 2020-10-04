@@ -2989,6 +2989,12 @@
                             $('#observation-count').text(matching_observations.length);
                         }
                     }
+                    $('.clickable-popover').popover({
+                        placement: "bottom",
+                        trigger: 'hover',
+                    }).click(function () {
+                        $(this).popover('hide');
+                    });
                 }
             });
 
@@ -3779,19 +3785,6 @@
             e.preventDefault();
             (new HelpNavigateView()).render();
         });
-
-        $('.clickable-popover').popover({
-            placement: "bottom",
-            trigger: 'hover',
-        }).click(function () {
-            $(this).popover('hide');
-        });
-    });
-    $('.clickable-popover').popover({
-        placement: "bottom",
-        trigger: 'hover',
-    }).click(function () {
-        $(this).popover('hide');
     });
 
 })(window.jQuery);
