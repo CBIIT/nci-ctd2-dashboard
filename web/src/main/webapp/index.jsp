@@ -2033,7 +2033,7 @@
                            <option value="circle">Circle</option>
                       </select>
                       <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
-                      <a href="#" id="createnetwork" data-description="{{observedEvidenceRole.displayText}}" target="_blank" title="please select master regulator to create network" class="mra-cytoscape-view">Create Network</a>   				 
+                      <a href="#" id="createnetwork" data-description="{{observedEvidenceRole.displayText}}" target="_blank" data-content="please select master regulator to create network" class="mra-cytoscape-view clickable-popover">Create Network</a>   				 
                       <br/>
                       <small><font color="grey">Threshold: </font></small>
                       <small id="throttle-input"><font color="grey">e.g. 0.01 </font></small>
@@ -2042,11 +2042,11 @@
                   <table id="mra-barcode-grid" class="table table-bordered table-striped">
                      <thead>
                         <tr>
-                          <th width="450" title="Correlation of regulatory gene with its targets (red +, blue-) ordered by ranked differential expression, lowest at left.">Barcode</th>
-                          <th width="50" title="Differential Activity(e.g. NES from GSEA)">DA</th>
-                          <th width="50" title="Differential Expression">DE</th>
-                          <th title="Rank of regulatory gene in overall DE results.">DE Rank</th>
-                          <th title="E.g.  TF or signalling molecule whose regulon was tested for enrichment in differentially expressed genes.">Regulator</th>
+                          <th width="450" class=clickable-popover data-content="Correlation of regulatory gene with its targets (red +, blue-) ordered by ranked differential expression, lowest at left.">Barcode</th>
+                          <th width="50" class=clickable-popover data-content="Differential Activity(e.g. NES from GSEA)">DA</th>
+                          <th width="50" class=clickable-popover data-content="Differential Expression">DE</th>
+                          <th class=clickable-popover data-content="Rank of regulatory gene in overall DE results.">DE Rank</th>
+                          <th class=clickable-popover data-content="E.g.  TF or signalling molecule whose regulon was tested for enrichment in differentially expressed genes.">Regulator</th>
                        </tr>
                      </thead>
                      <tbody>

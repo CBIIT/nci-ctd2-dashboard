@@ -3249,6 +3249,12 @@
                 });
 
             });
+            $('.clickable-popover').popover({
+                placement: "bottom",
+                trigger: 'hover',
+            }).click(function () {
+                $(this).popover('hide');
+            });
 
             return this;
         }
