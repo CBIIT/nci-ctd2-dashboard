@@ -572,6 +572,12 @@ const CnkbResultView = (function () {
                 trigger: 'hover',
                 content: __ctd2_hovertext.CNKB_CREATE_NETWORK,
             });
+            $('.clickable-popover').popover({
+                placement: "bottom",
+                trigger: 'hover',
+            }).click(function () {
+                $(this).popover('hide');
+            });
 
             return this;
         }

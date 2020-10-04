@@ -2242,7 +2242,7 @@
                   </div>
                   <div class="col-10">
                      <h3>Cellular Network Knowledge Base</h2>
-                     <a href="#" id="cnkbExport"  target="_blank" title="Export all selected interactions to a SIF file."> Export </a>
+                     <a href="#" id="cnkbExport"  target="_blank" class=clickable-popover data-content="Export all selected interactions to a SIF file."> Export </a>
                      <br>
                      <form method="POST" action="cnkb/download" id="cnkbExport-form" style="display: none;">
                              <input type="hidden" name="interactome" id="interactome">
@@ -2254,7 +2254,7 @@
                      <table id="cnkb-result-grid" class="table table-bordered table-striped ">
                         <thead> 
                             <tr>
-                            <th><input type="checkbox" id="checkbox_selectall" title="select or deselect all checkboxes"></th>
+                            <th><input type="checkbox" id="checkbox_selectall" class=clickable-popover data-content="select or deselect all checkboxes"></th>
                             <th>GENE</th>
                             </tr>
                          </thead>
