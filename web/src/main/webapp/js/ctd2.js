@@ -1788,6 +1788,12 @@
                 updateGeneList(currentGene);
                 return this;
             }); //end addGene
+            $('.cartAddPlus').popover({
+                placement: "bottom",
+                trigger: 'hover',
+            }).click(function () {
+                $(this).popover('hide');
+            });
 
             return this;
         }
@@ -2332,6 +2338,12 @@
                     updateGeneList(currentGene);
                     return this;
                 }); //end addGene
+                $('.cartAddPlus').popover({
+                    placement: "bottom",
+                    trigger: 'hover',
+                }).click(function () {
+                    $(this).popover('hide');
+                });
             }
 
             return this;
@@ -2744,6 +2756,12 @@
                     updateGeneList(currentGene);
                     return this;
                 }); //end addGene
+                $('.cartAddPlus').popover({
+                    placement: "bottom",
+                    trigger: 'hover',
+                }).click(function () {
+                    $(this).popover('hide');
+                });
             }
 
             let synonyms = result.synonyms;
