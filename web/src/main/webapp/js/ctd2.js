@@ -1617,6 +1617,12 @@
             $("a.compound-image").fancybox({
                 titlePosition: 'inside'
             });
+            $('.clickable-popover').popover({
+                placement: "bottom",
+                trigger: 'hover',
+            }).click(function () {
+                $(this).popover('hide');
+            });
             return this;
         }
     });
@@ -2654,6 +2660,10 @@
             }).click(function () {
                 $(this).popover('hide');
             });
+            $('.noclick-popover').popover({
+                placement: "bottom",
+                trigger: 'hover',
+            });
 
             return this;
         }
@@ -3351,7 +3361,7 @@
                         let reformatted = reformattedClassName[subject.class];
                         if (subject.class == 'Compound') {
                             reformatted += " <span style='display:inline-block;width:100px'><a href='" + data_url + "compounds/" +
-                                subject.imageFile + "' target='_blank' class='compound-image' title='Compound: " +
+                                subject.imageFile + "' target='_blank' class='compound-image clickable-popover' data-content='Compound: " +
                                 subject.displayName + "'><img class='img-polaroid' style='height:25px' src='" + data_url + "compounds/" +
                                 subject.imageFile + "' alt='Compound: " + subject.displayName + "'></a></span>";
                         } else {
@@ -3448,6 +3458,12 @@
                     $("#reset-ordering").click(function () {
                         $("#explore-table").DataTable().order.neutral().draw();
                     });
+                    $('.clickable-popover').popover({
+                        placement: "bottom",
+                        trigger: 'hover',
+                    }).click(function () {
+                        $(this).popover('hide');
+                    });        
                 }
             });
 

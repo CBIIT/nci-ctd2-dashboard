@@ -550,7 +550,7 @@
                     <br>
                     <br>
 
-                    <img src="img/submission.png" class="img-polaroid" width=150 height=150 alt="Submission" title="Submission"><br>
+                    <img src="img/submission.png" class="img-polaroid noclick-popover" width=150 height=150 alt="Submission" data-content="Submission"><br>
                 </div>
             </div>
 
@@ -817,7 +817,7 @@
                     ( <a class="dropdown-toggle" data-toggle="dropdown" href="#">view file <b class="caret"></b></a> )
                     <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                         <li>
-                            <a href="#" data-description="{{observedEvidenceRole.displayText}}" data-sif-url="<%=dataURL%>{{evidence.filePath}}" target="_blank" title="open in Cytoscape.js" class="desc-tooltip cytoscape-view">
+                            <a href="#" data-description="{{observedEvidenceRole.displayText}}" data-sif-url="<%=dataURL%>{{evidence.filePath}}" target="_blank" data-content="open in Cytoscape.js" class="desc-tooltip cytoscape-view">
                                 interactive network view
                             </a>
                         </li>
@@ -1525,7 +1525,7 @@
                   </div>
                   <div class="col-3">
                       <h4>Compound</h4>
-                      <a href="<%=dataURL%>compounds/{{imageFile}}" target="_blank" class="compound-image" title="Compound: {{displayName}}">
+                      <a href="<%=dataURL%>compounds/{{imageFile}}" target="_blank" class="compound-image clickable-popover" data-content="Compound: {{displayName}}">
                         <img class="img-polaroid" width=200 src="<%=dataURL%>compounds/{{imageFile}}" alt="Compound: {{displayName}}">
                       </a>
                   </div>
