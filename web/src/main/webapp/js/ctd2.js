@@ -630,6 +630,10 @@
                                     story: summary,
                                     centerName: observation.submission.observationTemplate.submissionCenter.displayName
                                 }));
+                                $('.noclick-popover').popover({
+                                    placement: "bottom",
+                                    trigger: 'hover',
+                                });                    
                             }
                         });
                     }
@@ -697,6 +701,12 @@
                         }
                     });
                 }
+            });
+            $('.clickable-popover').popover({
+                placement: "bottom",
+                trigger: 'hover',
+            }).click(function () {
+                $(this).popover('hide');
             });
 
             return this;
@@ -1309,6 +1319,12 @@
         template: _.template($("#centers-tbl-row-tmpl").html()),
         render: function () {
             $(this.el).append(this.template(this.model));
+            $('.clickable-popover').popover({
+                placement: "bottom",
+                trigger: 'hover',
+            }).click(function () {
+                $(this).popover('hide');
+            });
             return this;
         }
 
@@ -2250,6 +2266,12 @@
                     });
                 }
             });
+            $('.clickable-popover').popover({
+                placement: "bottom",
+                trigger: 'hover',
+            }).click(function () {
+                $(this).popover('hide');
+            });
 
             return this;
         }
@@ -2277,6 +2299,12 @@
                 [0, 'desc'],
                 [1, 'asc']
             ]).draw();
+            $('.clickable-popover').popover({
+                placement: "bottom",
+                trigger: 'hover',
+            }).click(function () {
+                $(this).popover('hide');
+            });
 
             return this;
         }
@@ -2417,6 +2445,10 @@
                         }).render();
                     }
                 }
+            });
+            $('.noclick-popover').popover({
+                placement: "bottom",
+                trigger: 'hover',
             });
 
             return this;
@@ -2603,6 +2635,12 @@
                     moreObservationView.render();
                 }
 
+            });
+            $('.clickable-popover').popover({
+                placement: "bottom",
+                trigger: 'hover',
+            }).click(function () {
+                $(this).popover('hide');
             });
 
             return this;
@@ -3741,6 +3779,19 @@
             e.preventDefault();
             (new HelpNavigateView()).render();
         });
+
+        $('.clickable-popover').popover({
+            placement: "bottom",
+            trigger: 'hover',
+        }).click(function () {
+            $(this).popover('hide');
+        });
+    });
+    $('.clickable-popover').popover({
+        placement: "bottom",
+        trigger: 'hover',
+    }).click(function () {
+        $(this).popover('hide');
     });
 
 })(window.jQuery);

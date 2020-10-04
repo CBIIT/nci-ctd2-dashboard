@@ -411,7 +411,7 @@
         <tr>
             <td class="center-image-column">
                 <a href="#{{submission.observationTemplate.submissionCenter.stableURL}}">
-                    <img src="img/slogos/{{submission.observationTemplate.submissionCenter.displayName}}.png" alt="{{submission.observationTemplate.submissionCenter.displayName}}" title="{{submission.observationTemplate.submissionCenter.displayName}}" class="img-circle">
+                    <img src="img/slogos/{{submission.observationTemplate.submissionCenter.displayName}}.png" alt="{{submission.observationTemplate.submissionCenter.displayName}}" data-content="{{submission.observationTemplate.submissionCenter.displayName}}" class="img-circle clickable-popover">
                 </a>
             </td>
             <td>
@@ -433,7 +433,7 @@
         <tr>
             <td class="center-image-column">
                 <a href="#{{stableURL}}">
-                    <img src="img/{{displayName}}.png" alt="{{displayName}}" title="{{displayName}}" class="img-polaroid">
+                    <img src="img/{{displayName}}.png" alt="{{displayName}}" data-content="{{displayName}}" class="img-polaroid clickable-popover">
                 </a>
             </td>
             <td class="center-name">
@@ -461,7 +461,7 @@
                     <div class="center-link-container">(<span class="center-link"><a href="https://ocg.cancer.gov/programs/ctd2/centers#{{ocg_dash}}" target="_blank">view center description</a></span>)</div>
                 </div>
                 <div class="col-3">
-                    <img src="img/{{displayName}}.png" title="{{displayName}}" alt="{{displayName}}" class="img-polaroid" style="max-width:200px;max-height:50px">
+                    <img src="img/{{displayName}}.png" data-content="{{displayName}}" alt="{{displayName}}" class="img-polaroid noclick-popover" style="max-width:200px;max-height:50px">
                 </div>
             </div>
 
@@ -544,7 +544,7 @@
                 </div>
                 <div class="col-2">
                     <a href="#{{observationTemplate.submissionCenter.stableURL}}">
-                        <img src="img/{{observationTemplate.submissionCenter.displayName}}.png" class="img-polaroid" height=30 alt="{{observationTemplate.submissionCenter.displayName}}" title="{{observationTemplate.submissionCenter.displayName}}">
+                        <img src="img/{{observationTemplate.submissionCenter.displayName}}.png" class="img-polaroid clickable-popover" height=30 alt="{{observationTemplate.submissionCenter.displayName}}" data-content="{{observationTemplate.submissionCenter.displayName}}">
                     </a>
 
                     <br>
@@ -1609,7 +1609,7 @@
             <td><span class="badge tier-badge">Tier {{submission.observationTemplate.tier}}</span></td>
             <td>
                 <a href="#{{submission.observationTemplate.submissionCenter.stableURL}}">
-                    <img alt="{{submission.observationTemplate.submissionCenter.displayName}}" title="{{submission.observationTemplate.submissionCenter.displayName}}" width="150" src="img/{{submission.observationTemplate.submissionCenter.displayName}}.png">
+                    <img alt="{{submission.observationTemplate.submissionCenter.displayName}}" data-content="{{submission.observationTemplate.submissionCenter.displayName}}" class="clickable-popover" width="150" src="img/{{submission.observationTemplate.submissionCenter.displayName}}.png">
                 </a>
                 <span class="hide-text">{{submission.observationTemplate.submissionCenter.displayName}}</span>
 
@@ -1634,7 +1634,7 @@
 
     <script type="text/template" id="html-story-container-tmpl">
         <div class="container common-container" id="story-container">
-            <img src="img/{{centerName}}.png" alt="{{centerName}}" title="{{centerName}}" height="50" class="fancy-story-img img-polaroid">
+            <img src="img/{{centerName}}.png" alt="{{centerName}}" data-content="{{centerName}}" height="50" class="fancy-story-img img-polaroid noclick-popover">
             {{story}}
         </div>
     </script>
