@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MasterRegulator {
-	private Long entrezId;
+	private long entrezId;
 	private String geneSymbol;
 	private double score;
 	private String daColor;
