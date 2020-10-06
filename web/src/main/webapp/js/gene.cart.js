@@ -164,7 +164,36 @@ const GeneListView = Backbone.View.extend({
                     document.location.href = '#cnkb-query';
                     break;
                 case 1: go_enrichr(e); break;
-                case 2: showAlertMessage('STRING action is under development'); break;
+                case 2: 
+                    let genes = '';
+                    $('#geneNames :selected').each(function (i, selected) {
+                        genes += $(selected).text() + ",";
+                    });
+                    if (genes == '') {
+                        for (let index = 0; index < geneList.length; index++) {
+                            genes += geneList[index] + ",";
+                        }
+                    }
+                    $.ajax({
+                        url: "string/identifier",
+                        data: {
+                            genes: genes,
+                        },
+                        dataType: "text",
+                        success: function (identifiers) {
+                            console.log(identifiers);
+                            if(identifiers.length==0) {
+                                showAlertMessage('no match identifer found in STRING DB');
+                            } else {
+                                const network_url = 'https://string-db.org/cgi/network.pl?identifiers=' + identifiers;
+                                window.open(network_url, "_blank");
+                            }
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            console.log(JSON);
+                        },
+                    });
+                    break;
             }
         });
         $("#gene-cart-action").attr("disabled", true);
