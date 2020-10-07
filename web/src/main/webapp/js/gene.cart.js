@@ -166,13 +166,21 @@ const GeneListView = Backbone.View.extend({
                 case 1: go_enrichr(e); break;
                 case 2: 
                     let genes = '';
+                    let counter = 0;
                     $('#geneNames :selected').each(function (i, selected) {
                         genes += $(selected).text() + ",";
+                        counter++;
                     });
                     if (genes == '') {
                         for (let index = 0; index < geneList.length; index++) {
                             genes += geneList[index] + ",";
+                            counter++;
                         }
+                    }
+                    if(counter==1) {
+                        const network_url = 'https://string-db.org/network/homo_sapiens/' + genes.substring(0,genes.length-1);
+                        window.open(network_url, "_blank");
+                        break;
                     }
                     $.ajax({
                         url: "string/identifier",
