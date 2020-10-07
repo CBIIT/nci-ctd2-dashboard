@@ -112,8 +112,7 @@
                                 <a class="dropdown-toggle navlink" href="#" data-toggle="dropdown">Resources <b
                                         class="caret"></b></a>
                                 <ul class="dropdown-menu">
-                                    <li><a target="_blank" href="https://ocg.cancer.gov/programs/ctd2">CTD<sup>2</sup>
-                                            Home Page</a></li>
+                                    <li><a target="_blank" href="https://ocg.cancer.gov/programs/ctd2">OCG/CTD² Home Page</a></li>
                                     <li><a href="#cite">How to Cite</a></li>
                                     <li><a target="_blank"
                                             href="https://ocg.cancer.gov/programs/ctd2/publications">Publications</a>
