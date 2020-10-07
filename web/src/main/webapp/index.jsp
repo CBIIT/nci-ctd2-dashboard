@@ -1990,6 +1990,7 @@
     <script type="text/template" id="mra-view-tmpl" mra-data-url="<%=dataURL%>">
          <div class="container common-container" id="mra-container" > 
                <div class="row">
+                 <div class="col-1"></div>
                  <div class="col-10">
                     <h2>Master Regulator View</h2>
                    
@@ -2007,9 +2008,7 @@
                         </tbody>
                      </table>  
                  </div>
-                 <div class="col-1">
-                    <a href="javascript:history.back()">Back</a>
-                 </div>
+                 <div class="col-1"></div>
              </div>
                    <br/>
                    <br/>
