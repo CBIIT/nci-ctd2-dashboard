@@ -176,6 +176,7 @@ const GeneListView = Backbone.View.extend({
                     }
                     $.ajax({
                         url: "string/identifier",
+                        method: 'GET',
                         data: {
                             genes: genes,
                         },

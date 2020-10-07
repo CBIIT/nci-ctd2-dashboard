@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class STRINGController {
 
     @Transactional
-    @RequestMapping(value="identifier", method = {RequestMethod.POST, RequestMethod.GET}, headers = "Accept=application/json")
+    @RequestMapping(value="identifier", method = {RequestMethod.GET}, headers = "Accept=application/json")
     public ResponseEntity<String> getIdentifier(@RequestParam("genes") String genes) {
         String[] geneSymbols = genes.split(",");
 
