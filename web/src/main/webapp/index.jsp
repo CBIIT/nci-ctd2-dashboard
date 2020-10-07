@@ -1876,7 +1876,7 @@
                 <thead>
                 <tr>
                     <th colspan=2></th>
-                    <th colspan=3 style="text-align:center">Observations</th>
+                    <th colspan=3 style="text-align:center" data-content="A finding about one or more subjects submitted by a Center based on submitted evidence">Observations</th>
                 </tr>
                 <tr>
                     <th>Name</th>
@@ -1908,7 +1908,7 @@
                 <thead>
                 <tr>
                     <th colspan=3></th>
-                    <th colspan=3 style="text-align:center">Observations</th>
+                    <th colspan=3 style="text-align:center" data-content="A finding about one or more subjects submitted by a Center based on submitted evidence">Observations</th>
                 </tr>
                 <tr>
                     <th>Class</th>

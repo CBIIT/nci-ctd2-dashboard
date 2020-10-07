@@ -1511,7 +1511,7 @@
                     $("#eco-browse-table").width("100%");
                     $("#eco-browse-table").parent().find('input[type=search]').popover(table_filter_popover);
 
-                    $('#ceo-browse-table thead th').popover({
+                    $('#eco-browse-table thead th').popover({
                         placement: "top",
                         trigger: 'hover',
                         content: function () {
