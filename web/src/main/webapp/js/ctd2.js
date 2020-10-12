@@ -1620,8 +1620,9 @@
                         $(this).text(SEE_ALL);
                     }
                 });
+                $("#see-all-switch").show();
             } else {
-                $("#see-all-switch").empty();
+                $("#see-all-switch").hide();
             }
 
             new SubjectObservationsView({
@@ -1805,8 +1806,9 @@
                         $(this).text(SEE_ALL);
                     }
                 });
+                $("#see-all-switch").show();
             } else {
-                $("#see-all-switch").empty();
+                $("#see-all-switch").hide();
             }
 
             $.getJSON("findProteinFromGene/" + result.id, function (proteins) {
@@ -1879,8 +1881,9 @@
                         $(this).text(SEE_ALL);
                     }
                 });
+                $("#see-all-switch").show();
             } else {
-                $("#see-all-switch").empty();
+                $("#see-all-switch").hide();
             }
 
             _.each(result.transcripts, function (aTranscript) {
@@ -2028,8 +2031,9 @@
                         $(this).text(SEE_ALL);
                     }
                 });
+                $("#see-all-switch").show();
             } else {
-                $("#see-all-switch").empty();
+                $("#see-all-switch").hide();
             }
 
             new SubjectObservationsView({
@@ -2125,8 +2129,9 @@
                         $(this).text(SEE_ALL);
                     }
                 });
+                $("#see-all-switch").show();
             } else {
-                $("#see-all-switch").empty();
+                $("#see-all-switch").hide();
             }
 
             _.each(result.annotations, function (annotation) {
@@ -2227,8 +2232,9 @@
                         $(this).text(SEE_ALL);
                     }
                 });
+                $("#see-all-switch").show();
             } else {
-                $("#see-all-switch").empty();
+                $("#see-all-switch").hide();
             }
 
             _.each(result.annotations, function (annotation) {
