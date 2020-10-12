@@ -926,6 +926,7 @@
                              <th>Synonyms/Related terms<div style="font-size:10px; font-style:italic">(from Entrez)</div></th>
                              <td>
                                  <ul class="synonyms"></ul>
+                                 <button type="button" class="btn btn-outline-dark" id=see-all-switch></button>
                              </td>
                          </tr>
                          <tr>
@@ -1006,6 +1007,7 @@
                             <th>Synonyms/Related terms<div style="font-size:10px; font-style:italic">(from Entrez)</div></th>
                             <td>
                                 <ul class="synonyms"></ul>
+                                <button type="button" class="btn btn-outline-dark" id=see-all-switch></button>
                             </td>
                         </tr>
                         <tr>
@@ -1220,6 +1222,7 @@
                             <th>Synonyms</th>
                             <td>
                                 <ul class="synonyms"></ul>
+                                <button type="button" class="btn btn-outline-dark" id=see-all-switch></button>
                             </td>
                         </tr>
                         <tr id="tissue-refs">
@@ -1282,6 +1285,7 @@
                             <th>Synonyms</th>
                             <td>
                                 <ul class="synonyms"></ul>
+                                <button type="button" class="btn btn-outline-dark" id=see-all-switch></button>
                             </td>
                         </tr>
                         <tr>
@@ -1437,6 +1441,7 @@
                             <th>Synonyms</th>
                             <td>
                                 <ul class="synonyms"></ul>
+                                <button type="button" class="btn btn-outline-dark" id=see-all-switch></button>
                             </td>
                         </tr>
                         <tr>
@@ -1501,6 +1506,7 @@
                               <th>Synonyms</th>
                               <td>
                                   <ul class="synonyms"></ul>
+                                  <button type="button" class="btn btn-outline-dark" id=see-all-switch></button>
                               </td>
                           </tr>
                           <tr>
@@ -1655,6 +1661,7 @@
                 <ul id="synonyms-{{dashboardEntity.id}}">
                     <!-- here will go the synonyms -->
                 </ul>
+                <button type="button" class="btn btn-outline-dark" id=see-all-switch{{dashboardEntity.id}}></button>
             </td>
             <td>{{dashboardEntity.class}}</td>
             <td>
@@ -1682,6 +1689,7 @@
                 <ul id="synonyms-{{dashboardEntity.id}}">
                     <!-- here will go the synonyms -->
                 </ul>
+                <button type="button" class="btn btn-outline-dark" id=see-all-switch{{dashboardEntity.id}}></button>
             </td>
             <td>{{dashboardEntity.class}}</td>
             <td>
@@ -1798,7 +1806,7 @@
     </script>
 
     <script type="text/template" id="synonym-item-tmpl">
-        <li class="synonym"><small>{{displayName}}</small></li>
+        <li class="synonym {{toomany}} synonym-of-{{sid}}"><small>{{displayName}}</small></li>
     </script>
 
     <script type="text/template" id="role-item-tmpl">

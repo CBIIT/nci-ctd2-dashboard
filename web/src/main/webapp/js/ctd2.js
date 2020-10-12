@@ -1596,14 +1596,33 @@
                 role: thatModel.role ? thatModel.role : null
             })));
 
+            let count = 0;
             _.each(result.synonyms, function (aSynonym) {
                 if (aSynonym.displayName == result.displayName) return;
-
+                if (count>=3) aSynonym.toomany = 'toomany';
+                aSynonym.sid = result.id;
                 new SynonymView({
                     model: aSynonym,
                     el: $("ul.synonyms")
                 }).render();
+                count++;
             });
+            if (count > 3) {
+                const SEE_ALL = "see all";
+                $("#see-all-switch").text(SEE_ALL);
+                $(".toomany").hide();
+                $("#see-all-switch").click(function() {
+                    if ($(this).text() == SEE_ALL) {
+                        $(".toomany").show();
+                        $(this).text("hide");
+                    } else {
+                        $(".toomany").hide();
+                        $(this).text(SEE_ALL);
+                    }
+                });
+            } else {
+                $("#see-all-switch").empty();
+            }
 
             new SubjectObservationsView({
                 model: {
@@ -1762,14 +1781,33 @@
                 role: thatModel.role ? thatModel.role : null
             })));
 
+            let count = 0;
             _.each(result.synonyms, function (aSynonym) {
                 if (aSynonym.displayName == result.displayName) return;
-
+                if (count>=3) aSynonym.toomany = 'toomany';
+                aSynonym.sid = result.id;
                 new SynonymView({
                     model: aSynonym,
                     el: $("ul.synonyms")
                 }).render();
+                count++;
             });
+            if (count > 3) {
+                const SEE_ALL = "see all";
+                $("#see-all-switch").text(SEE_ALL);
+                $(".toomany").hide();
+                $("#see-all-switch").click(function() {
+                    if ($(this).text() == SEE_ALL) {
+                        $(".toomany").show();
+                        $(this).text("hide");
+                    } else {
+                        $(".toomany").hide();
+                        $(this).text(SEE_ALL);
+                    }
+                });
+            } else {
+                $("#see-all-switch").empty();
+            }
 
             $.getJSON("findProteinFromGene/" + result.id, function (proteins) {
                 _.each(proteins, function (protein) {
@@ -1817,14 +1855,33 @@
                 role: thatModel.role ? thatModel.role : null
             })));
 
+            let count = 0;
             _.each(result.synonyms, function (aSynonym) {
                 if (aSynonym.displayName == result.displayName) return;
-
+                if (count>=3) aSynonym.toomany = 'toomany';
+                aSynonym.sid = result.id;
                 new SynonymView({
                     model: aSynonym,
                     el: $("ul.synonyms")
                 }).render();
+                count++;
             });
+            if (count > 3) {
+                const SEE_ALL = "see all";
+                $("#see-all-switch").text(SEE_ALL);
+                $(".toomany").hide();
+                $("#see-all-switch").click(function() {
+                    if ($(this).text() == SEE_ALL) {
+                        $(".toomany").show();
+                        $(this).text("hide");
+                    } else {
+                        $(".toomany").hide();
+                        $(this).text(SEE_ALL);
+                    }
+                });
+            } else {
+                $("#see-all-switch").empty();
+            }
 
             _.each(result.transcripts, function (aTranscript) {
                 new TranscriptItemView({
@@ -1947,14 +2004,33 @@
             if (result.synonyms.length == 0) {
                 $(thatEl).find("#tissue-synonyms").hide();
             }
+            let count = 0;
             _.each(result.synonyms, function (aSynonym) {
                 if (aSynonym.displayName == result.displayName) return;
-
+                if (count>=3) aSynonym.toomany = 'toomany';
+                aSynonym.sid = result.id;
                 new SynonymView({
                     model: aSynonym,
                     el: $("ul.synonyms")
                 }).render();
+                count++;
             });
+            if (count > 3) {
+                const SEE_ALL = "see all";
+                $("#see-all-switch").text(SEE_ALL);
+                $(".toomany").hide();
+                $("#see-all-switch").click(function() {
+                    if ($(this).text() == SEE_ALL) {
+                        $(".toomany").show();
+                        $(this).text("hide");
+                    } else {
+                        $(".toomany").hide();
+                        $(this).text(SEE_ALL);
+                    }
+                });
+            } else {
+                $("#see-all-switch").empty();
+            }
 
             new SubjectObservationsView({
                 model: {
@@ -1980,12 +2056,13 @@
             })));
 
             if (result.synonyms != null && result.synonyms.length > 0) {
-                _.each(result.synonyms.split("|"), function (aSynonym) {
-                    if (aSynonym.displayName == result.displayName) return;
+                _.each(result.synonyms.split("|"), function (synonym) {
+                    if (synonym.displayName == result.displayName) return;
 
                     new SynonymView({
                         model: {
-                            displayName: aSynonym
+                            displayName: synonym,
+                            sid: result.id,
                         },
                         el: $("ul.synonyms")
                     }).render();
@@ -2024,14 +2101,33 @@
                 role: thatModel.role ? thatModel.role : null
             })));
 
+            let count = 0;
             _.each(result.synonyms, function (aSynonym) {
                 if (aSynonym.displayName == result.displayName) return;
-
+                if (count>=3) aSynonym.toomany = 'toomany';
+                aSynonym.sid = result.id;
                 new SynonymView({
                     model: aSynonym,
                     el: $("ul.synonyms")
                 }).render();
+                count++;
             });
+            if (count > 3) {
+                const SEE_ALL = "see all";
+                $("#see-all-switch").text(SEE_ALL);
+                $(".toomany").hide();
+                $("#see-all-switch").click(function() {
+                    if ($(this).text() == SEE_ALL) {
+                        $(".toomany").show();
+                        $(this).text("hide");
+                    } else {
+                        $(".toomany").hide();
+                        $(this).text(SEE_ALL);
+                    }
+                });
+            } else {
+                $("#see-all-switch").empty();
+            }
 
             _.each(result.annotations, function (annotation) {
                 annotation.displayName = annotation.displayName.replace(/_/g, " ");
@@ -2107,14 +2203,33 @@
                 $("#cbiolink").css("display", "none");
             }
 
+            let count = 0;
             _.each(result.synonyms, function (aSynonym) {
                 if (aSynonym.displayName == result.displayName) return;
-
+                if (count>=3) aSynonym.toomany = 'toomany';
+                aSynonym.sid = result.id;
                 new SynonymView({
                     model: aSynonym,
                     el: $("ul.synonyms")
                 }).render();
+                count++;
             });
+            if (count > 3) {
+                const SEE_ALL = "see all";
+                $("#see-all-switch").text(SEE_ALL);
+                $(".toomany").hide();
+                $("#see-all-switch").click(function() {
+                    if ($(this).text() == SEE_ALL) {
+                        $(".toomany").show();
+                        $(this).text("hide");
+                    } else {
+                        $(".toomany").hide();
+                        $(this).text(SEE_ALL);
+                    }
+                });
+            } else {
+                $("#see-all-switch").empty();
+            }
 
             _.each(result.annotations, function (annotation) {
                 annotation.displayName = annotation.displayName.replace(/_/g, " ");
@@ -2725,6 +2840,9 @@
     const SynonymView = Backbone.View.extend({
         template: _.template($("#synonym-item-tmpl").html()),
         render: function () {
+            if(this.model.toomany==undefined) {
+                this.model.toomany = '';
+            }
             $(this.el).append(this.template(this.model));
             return this;
         }
@@ -2786,12 +2904,33 @@
                     });
                 }
             }
+            let count = 0;
             _.each(synonyms, function (aSynonym) {
+                if (count>=3) aSynonym.toomany = 'toomany';
+                aSynonym.sid = result.id;
                 new SynonymView({
                     model: aSynonym,
                     el: $("#synonyms-" + result.id)
                 }).render();
+                count++;
             });
+            if (count > 3) {
+                const SEE_ALL = "see all";
+                $("#see-all-switch"+result.id).text(SEE_ALL);
+                $(".synonym-of-"+result.id+".toomany").hide();
+                $("#see-all-switch"+result.id).click(function() {
+                    if ($(this).text() == SEE_ALL) {
+                        $(".synonym-of-"+result.id+".toomany").show();
+                        $(this).text("hide");
+                    } else {
+                        $(".synonym-of-"+result.id+".toomany").hide();
+                        $(this).text(SEE_ALL);
+                    }
+                });
+                $("#see-all-switch"+result.id).show();
+            } else {
+                $("#see-all-switch"+result.id).hide();
+            }
 
             _.each(model.roles, function (aRole) {
                 new RoleView({
