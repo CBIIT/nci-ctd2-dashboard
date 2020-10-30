@@ -40,7 +40,7 @@
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 
-    <script src="//assets.adobedtm.com/6a4249cd0a2c/0890c2def00a/launch-dbd676d3af6b.min.js" async></script>
+    <script src="//assets.adobedtm.com/6a4249cd0a2c/0890c2def00a/launch-00df16147841-development.min.js" async></script>
     <!-- Fav and touch icons -->
     <link rel="shortcut icon" href="img/favicon.png" />
 </head>
