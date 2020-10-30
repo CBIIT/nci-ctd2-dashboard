@@ -194,7 +194,7 @@ const GeneListView = Backbone.View.extend({
                             if(identifiers.length==0) {
                                 showAlertMessage('no match identifer found in STRING DB');
                             } else {
-                                const network_url = 'https://string-db.org/cgi/network.pl?identifiers=' + identifiers;
+                                const network_url = 'https://version-11-0.string-db.org/cgi/network.pl?identifiers=' + identifiers;
                                 window.open(network_url, "_blank");
                             }
                         },
