@@ -2173,7 +2173,7 @@
                         <option>Enrichr - Gene Set Enrichment Analysis</option>
                         <option>STRING - Protein-Protein Interaction Networks + Functional Enrichment Analysis</option>
                     </select>
-                    <div align="left">
+                    <div align="left" style="padding-top:5px">
                         <small id=gene-cart-action-detail></small>
                     </div>
                     <br/>
