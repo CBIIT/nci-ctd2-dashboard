@@ -15,7 +15,7 @@ This project encapsulates three modules representing the whole CTD^2 Dashboard p
 
 # Install
 The code is structured as a _Maven_ project. 
-We suggest you work in an environment with `JDK 1.8.x`, `Tomcat 8.5.x`, `MySQL 5.7.x` and `Maven 3.x.x` properly installed.
+We suggest you work in an environment with `Java 11`, `Tomcat 8.5.x`, `MySQL 5.7.x` and `Maven 3.x.x` properly installed.
 You will need two databases: one for the production, by default **ctd2_dashboard**, and one for the testing, again by default **ctd2_test**.
 
 Before running any _mvn_ jobs, make sure you do the basic configuration.
@@ -23,7 +23,7 @@ Example configuration files are provided within the distribution.
 The easiest way to do the configuration is as follows:
 
 	# this is for Log4j properties, no need to edit unless you want your logs to be saved
-	cp -f core/src/main/resources/log4j.properties.example core/src/main/resources/log4j.properties
+	cp -f core/src/main/resources/log4j2.properties.example core/src/main/resources/log4j2.properties
 	# the following contains main properties (including database user/password)
 	# please make sure you edit minimally the USER/PASSWORD pair and the TEST/MAIN database URLs.
 	cp -f core/src/main/resources/META-INF/spring/dashboard.properties.example core/src/main/resources/META-INF/spring/dashboard.properties
