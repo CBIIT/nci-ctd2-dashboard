@@ -41,8 +41,9 @@ public class XrefFieldSetMapper implements FieldSetMapper<XrefData> {
 		xref.setDatabaseId(databaseId);
 		
 		List<? extends Subject> subjects = findSubject(subjectClass, subjectName);
+		// this situation is very common in the current data
 		if (subjects == null || subjects.size() == 0){
-			log.warn("Subject not found: "+subjectName+" ("+subjectClass+")");
+			log.info("Subject not found: "+subjectName+" ("+subjectClass+")");
 		}
 		return new XrefData(xref, subjects);
 	}
