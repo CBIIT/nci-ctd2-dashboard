@@ -53,7 +53,9 @@ public class SearchController {
         log.debug("number of rearch results "+results.size());
         JSONSerializer jsonSerializer = new JSONSerializer().transform(new ImplTransformer(), Class.class)
                 .transform(new DateTransformer(), Date.class);
-        return new ResponseEntity<String>(jsonSerializer.deepSerialize(results), headers, HttpStatus.OK);
+        String serializedResult = jsonSerializer.deepSerialize(results);
+        log.debug("result size " + serializedResult.length());
+        return new ResponseEntity<String>(serializedResult, headers, HttpStatus.OK);
     }
 
 }
