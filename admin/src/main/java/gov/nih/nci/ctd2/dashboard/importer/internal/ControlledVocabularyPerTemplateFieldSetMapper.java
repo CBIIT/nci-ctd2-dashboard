@@ -73,8 +73,10 @@ public class ControlledVocabularyPerTemplateFieldSetMapper implements FieldSetMa
 				submissionCenter = dashboardFactory.create(SubmissionCenter.class);
 				submissionCenter.setDisplayName(submissionCenterName);
 				String shortCenterNames = shortCenterNameMap.get(submissionCenterName);
-				if (shortCenterNames == null)
+				if (shortCenterNames == null) {
+					log.warn("short center name not found for "+submissionCenterName);
 					shortCenterNames = "";
+				}
 				submissionCenter.setStableURL("center/" + shortCenterNames.toLowerCase());
 			}
 			submissionCenterCache.put(submissionCenterName, submissionCenter);

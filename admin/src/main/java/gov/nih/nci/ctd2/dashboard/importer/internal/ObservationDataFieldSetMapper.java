@@ -30,7 +30,7 @@ public class ObservationDataFieldSetMapper implements FieldSetMapper<Observation
 	private static final int OBSERVATION_DATA_FACTORY_METHOD_INDEX = 2;
 
 	private static final String SUBMISSION_NAME = "submission_name";
-	private static final String	SUBMISSION_DATE = "submission_date";
+	private static final String SUBMISSION_DATE = "submission_date";
 	private static final String TEMPLATE_NAME = "template_name";
 
 	public static final String XREF_DELIMITER = "-";
@@ -39,12 +39,12 @@ public class ObservationDataFieldSetMapper implements FieldSetMapper<Observation
 	@Autowired
 	private ObservationDataFactory observationDataFactory;
 
-    @Autowired
-    private DashboardFactory dashboardFactory;
+	@Autowired
+	private DashboardFactory dashboardFactory;
 
 	@Autowired
 	@Qualifier("observationTemplateMap")
-	private	HashMap<String, String> observationTemplateMap;
+	private HashMap<String, String> observationTemplateMap;
 
 	private Map<String, Submission> submissionCache = new ConcurrentHashMap<String, Submission>();
 
@@ -57,14 +57,13 @@ public class ObservationDataFieldSetMapper implements FieldSetMapper<Observation
 		// create observation
 		Observation observation = dashboardFactory.create(Observation.class);
 
-		// create submission - if cache key changes, update getSubmissionCacheKey() defined above
-		synchronized(submissionCache) {
+		// create submission - if cache key changes, update getSubmissionCacheKey()
+		// defined above
+		synchronized (submissionCache) {
 			String submissionCacheKey = submissionName + TEMPLATE_DATE_FORMAT.format(submissionDate) + templateName;
 			Submission submission = submissionCache.get(submissionCacheKey);
 			if (submission == null) {
-				submission = observationDataFactory.createSubmission(submissionName,
-																	submissionDate,
-																	templateName);
+				submission = observationDataFactory.createSubmission(submissionName, submissionDate, templateName);
 				submissionCache.put(submissionCacheKey, submission);
 			}
 			observation.setSubmission(submission);
@@ -75,18 +74,19 @@ public class ObservationDataFieldSetMapper implements FieldSetMapper<Observation
 		LinkedHashSet<DashboardEntity> observedEntitiesSet = new LinkedHashSet<DashboardEntity>();
 
 		for (String columnName : fieldSet.getNames()) {
-			if (columnName.equals(SUBMISSION_DATE) ||
-				columnName.equals(TEMPLATE_NAME)) continue;
+			if (columnName.equals(SUBMISSION_DATE) || columnName.equals(TEMPLATE_NAME))
+				continue;
 			try {
 				String mapKey = templateName + MAP_DELIMITER + columnName;
-				if (!observationTemplateMap.containsKey(mapKey)) continue;
+				if (!observationTemplateMap.containsKey(mapKey))
+					continue;
 				String[] mapValues = observationTemplateMap.get(mapKey).split(MAP_DELIMITER);
 				if (mapValues[ROLE_TYPE_INDEX].equals("subject")) {
 					String subjectValue = fieldSet.readString(columnName);
-					if (subjectValue.length() == 0) continue; // motivated by gene symbol vs gene id column usage
-					ObservedSubject observedSubject = 
-						observationDataFactory.createObservedSubject(subjectValue, columnName, templateName,
-																	 observation, mapValues[SUBJECT_QUERY_METHOD_INDEX]);
+					if (subjectValue.length() == 0)
+						continue; // motivated by gene symbol vs gene id column usage
+					ObservedSubject observedSubject = observationDataFactory.createObservedSubject(subjectValue,
+							columnName, templateName, observation, mapValues[SUBJECT_QUERY_METHOD_INDEX]);
 					if (observedSubject.getSubject() == null) {
 						// cannot find underlying subject behind
 						// the observed subject, log and bail
@@ -94,30 +94,31 @@ public class ObservationDataFieldSetMapper implements FieldSetMapper<Observation
 						return new ObservationData(null, null, null);
 					}
 					observedEntitiesSet.add(observedSubject);
-				}
-				else {
-					Method observationDataFactoryMethod =
-						observationDataFactory.getClass().getMethod(mapValues[OBSERVATION_DATA_FACTORY_METHOD_INDEX],
-																	mapValues[OBSERVATION_DATA_FACTORY_METHOD_INDEX]
-																	.contains("Numeric") ? Number.class : String.class,
-																	String.class, String.class, Observation.class);
-					Method fieldSetMethod =
-						fieldSet.getClass().getMethod(mapValues[FIELDSET_METHOD_INDEX], String.class);
+				} else {
+					Method observationDataFactoryMethod = observationDataFactory.getClass().getMethod(
+							mapValues[OBSERVATION_DATA_FACTORY_METHOD_INDEX],
+							mapValues[OBSERVATION_DATA_FACTORY_METHOD_INDEX].contains("Numeric") ? Number.class
+									: String.class,
+							String.class, String.class, Observation.class);
+					Method fieldSetMethod = fieldSet.getClass().getMethod(mapValues[FIELDSET_METHOD_INDEX],
+							String.class);
+					// create the evidence value, a String or a Number
+					Object evidenceValue = fieldSetMethod.invoke(fieldSet, columnName);
 					// create observed evidence
-					ObservedEvidence observedEvidence =
-						(ObservedEvidence)observationDataFactoryMethod.invoke(observationDataFactory,
-																			  fieldSetMethod.invoke(fieldSet, columnName),
-																			  columnName, templateName, observation);
+					ObservedEvidence observedEvidence = (ObservedEvidence) observationDataFactoryMethod
+							.invoke(observationDataFactory, evidenceValue, columnName, templateName, observation);
 					if (observedEvidence.getObservedEvidenceRole() == null) {
 						log.info("Cannot find observed evidence role via column: " + templateName + ", " + columnName);
 						return new ObservationData(null, null, null);
 					}
 					observedEntitiesSet.add(observedEvidence);
-					if (observedEvidence.getEvidence() != null) evidenceSet.add(observedEvidence.getEvidence());
+					if (observedEvidence.getEvidence() != null)
+						evidenceSet.add(observedEvidence.getEvidence());
 				}
-			}
-			catch (Exception e) {
-				log.info("Exception thrown processing observation data row, skipping row: " + e.getMessage());
+			} catch (Exception e) {
+				log.warn("Exception thrown processing observation data row, skipping a row of observation.");
+				log.warn("  issue in the field of " + templateName + MAP_DELIMITER + columnName);
+				e.printStackTrace();
 				return new ObservationData(null, null, null);
 			}
 		}
