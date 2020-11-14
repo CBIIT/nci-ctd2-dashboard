@@ -607,21 +607,27 @@ public class DashboardDaoImpl implements DashboardDao {
         session.close();
     }
 
-    /*
-     * The logic to find matching observations is both primitive and complicated at
-     * the same time. It has been modified back and forth mostly based on specific
-     * rules. The latest change is made following the request as described in issue
-     * #388, which makes the logic more convoluted. The defination of 'term' here
-     * WAS the complete exact entity name that is also a substring of the original
-     * query string, not anymore. The queryString now is one re-constructed using
-     * the tokens from the original query string.
-     */
-    private static String getMatchedTerm(String queryString, String entityName) {
-        String name = entityName.toLowerCase();
-        if (queryString.toLowerCase().contains(name))
-            return name;
-        else
-            return null; // intentionally to return null if it is not a 'term' as defined above
+    /* delimited by whitespaces only, except when it is quoted. */
+    private static String[] parseWords(String str) {
+        List<String> list = new ArrayList<String>();
+        Matcher m = Pattern.compile("([^\"]\\S*|\".+?\")\\s*").matcher(str);
+        while (m.find())
+            list.add(m.group(1).replace("\"", ""));
+        return list.toArray(new String[0]);
+    }
+
+    private static Boolean matchTerm(ECOTerm ecoterm, String term) {
+        String name = ecoterm.getDisplayName().toLowerCase();
+        if (name.contains(term))
+            return true;
+        String code = ecoterm.getCode().toLowerCase();
+        if (code.contains(term))
+            return true;
+        for (String synonym : ecoterm.getSynonyms().split("\\|")) {
+            if (synonym.contains(term))
+                return true;
+        }
+        return false;
     }
 
     @Override
@@ -638,14 +644,6 @@ public class DashboardDaoImpl implements DashboardDao {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        /*
-         * The following two lines are part of the complicated logic to find 'matching'
-         * observations. See the comment for method getMatchedTerm(String queryString,
-         * String entityName), GitHub issue #388, and the part of code in this method
-         * that is commented as 'add observations'
-         */
-        String[] tokens = keyword.toLowerCase().split("\\s+");
-        String reconstructedQueryString = String.join(" ", tokens);
 
         FullTextQuery fullTextQuery = fullTextSession.createFullTextQuery(luceneQuery, searchableClasses);
         fullTextQuery.setReadOnly(true);
@@ -682,9 +680,11 @@ public class DashboardDaoImpl implements DashboardDao {
                 }
             }
         }
+        final String[] searchTerms = parseWords(keyword);
+        log.debug("search terms for observation" + String.join(",", searchTerms));
+        Map<String, Set<Observation>> observationMap = new HashMap<String, Set<Observation>>();
 
         ArrayList<DashboardEntityWithCounts> entitiesWithCounts = new ArrayList<DashboardEntityWithCounts>();
-        Map<Observation, Set<String>> matchingObservations = new HashMap<Observation, Set<String>>();
         for (DashboardEntity entity : entitiesUnique) {
             DashboardEntityWithCounts entityWithCounts = new DashboardEntityWithCounts();
             entityWithCounts.setDashboardEntity(entity);
@@ -695,14 +695,16 @@ public class DashboardDaoImpl implements DashboardDao {
                 HashSet<String> roles = new HashSet<String>();
                 for (ObservedSubject observedSubject : findObservedSubjectBySubject((Subject) entity)) {
                     Observation observation = observedSubject.getObservation();
-                    String term = getMatchedTerm(reconstructedQueryString, entity.getDisplayName());
-                    if (term != null) {
-                        Set<String> terms = matchingObservations.get(observation);
-                        if (terms == null) {
-                            terms = new HashSet<String>();
-                            matchingObservations.put(observation, terms);
+                    String subjectName = entity.getDisplayName().toLowerCase();
+                    for (String term : searchTerms) {
+                        if (subjectName.contains(term)) {
+                            Set<Observation> obset = observationMap.get(term);
+                            if (obset == null) {
+                                obset = new HashSet<Observation>();
+                            }
+                            obset.add(observation);
+                            observationMap.put(term, obset);
                         }
-                        terms.add(term);
                     }
                     observations++;
                     ObservationTemplate observationTemplate = observation.getSubmission().getObservationTemplate();
@@ -740,66 +742,50 @@ public class DashboardDaoImpl implements DashboardDao {
 
             entitiesWithCounts.add(entity);
 
-            Set<String> newTerms = new HashSet<String>();
-            String nameEntered = getMatchedTerm(reconstructedQueryString, ecoterm.getDisplayName());
-            if (nameEntered != null) {
-                newTerms.add(nameEntered);
-            }
-            String codeEntered = getMatchedTerm(reconstructedQueryString, ecoterm.getCode());
-            if (codeEntered != null) {
-                newTerms.add(codeEntered);
-            }
-            for (String synonym : ecoterm.getSynonyms().split("\\|")) {
-                String synonymEntered = getMatchedTerm(reconstructedQueryString, synonym);
-                if (synonymEntered != null) {
-                    newTerms.add(synonymEntered);
-                }
-            }
-            if (newTerms.size() == 0) {
-                continue; // nothing to do for the 'intersection search'
-            }
-
-            for (Integer obid : observationIds) {
-                Observation observation = getEntityById(Observation.class, obid);
-                Set<String> terms = matchingObservations.get(observation);
-                if (terms == null) {
-                    terms = new HashSet<String>();
-                    matchingObservations.put(observation, terms);
-                }
-                terms.addAll(newTerms);
-            }
-        }
-
-        // add observations
-        Set<String> allTerms = new HashSet<String>();
-        for (Observation ob : matchingObservations.keySet()) {
-            for (String newTerm : matchingObservations.get(ob)) {
-                Boolean add = true;
-                Set<String> toBeRemoved = new HashSet<String>();
-                for (String existingTerms : allTerms) {
-                    if (existingTerms.contains(newTerm)) {
-                        add = false;
-                        break; // ignore this new term. no more comparison.
-                    } else if (newTerm.contains(existingTerms)) {
-                        toBeRemoved.add(existingTerms); // remove this existing term
+            for (String term : searchTerms) {
+                if (matchTerm(ecoterm, term)) {
+                    Set<Observation> obset = observationMap.get(term);
+                    if (obset == null) {
+                        obset = new HashSet<Observation>();
                     }
+                    for (Integer obid : observationIds) {
+                        Observation observation = getEntityById(Observation.class, obid);
+                        obset.add(observation);
+                    }
+                    observationMap.put(term, obset);
                 }
-                if (add)
-                    allTerms.add(newTerm);
-                allTerms.removeAll(toBeRemoved);
             }
-            // allTerms.addAll(matchingObservations.get(ob)); // too simple that we have to
-            // give up this approach
         }
-        if (allTerms.size() > 1) { // do not find 'intersection' if there is only one term
-            for (Observation ob : matchingObservations.keySet()) {
-                Set<String> terms = matchingObservations.get(ob);
-                if (!terms.containsAll(allTerms))
-                    continue;
-                DashboardEntityWithCounts oneObservationResult = new DashboardEntityWithCounts();
-                oneObservationResult.setDashboardEntity(ob);
-                entitiesWithCounts.add(oneObservationResult);
+
+        if (searchTerms.length <= 1) {
+            return entitiesWithCounts;
+        }
+
+        // add intersection of observations
+        Set<Observation> set0 = observationMap.get(searchTerms[0]);
+        if (set0 == null) {
+            log.debug("no observation for " + searchTerms[0]);
+            return entitiesWithCounts;
+        }
+        log.debug("set0 size=" + set0.size());
+        for (int i = 1; i < searchTerms.length; i++) {
+            Set<Observation> obset = observationMap.get(searchTerms[i]);
+            if (obset == null) {
+                log.debug("... no observation for " + searchTerms[i]);
+                return entitiesWithCounts;
             }
+            log.debug("set " + i + " size=" + obset.size());
+            set0.retainAll(obset);
+        }
+        // set0 is now the intersection
+        if (set0.size() == 0) {
+            log.debug("no intersection of observations");
+        }
+        for (Observation ob : set0) {
+            DashboardEntityWithCounts oneObservationResult = new DashboardEntityWithCounts();
+            oneObservationResult.setDashboardEntity(ob);
+            entitiesWithCounts.add(oneObservationResult);
+            log.debug(" observation in intersection: " + ob.getStableURL());
         }
 
         return entitiesWithCounts;
@@ -849,7 +835,6 @@ public class DashboardDaoImpl implements DashboardDao {
         List<Integer> list = query.list();
         session.close();
         return list;
-
     }
 
     @Override
