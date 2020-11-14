@@ -616,20 +616,6 @@ public class DashboardDaoImpl implements DashboardDao {
         return list.toArray(new String[0]);
     }
 
-    private static Boolean matchTerm(ECOTerm ecoterm, String term) {
-        String name = ecoterm.getDisplayName().toLowerCase();
-        if (name.contains(term))
-            return true;
-        String code = ecoterm.getCode().toLowerCase();
-        if (code.contains(term))
-            return true;
-        for (String synonym : ecoterm.getSynonyms().split("\\|")) {
-            if (synonym.contains(term))
-                return true;
-        }
-        return false;
-    }
-
     @Override
     @Cacheable(value = "searchCache")
     public ArrayList<DashboardEntityWithCounts> search(String keyword) {
@@ -743,7 +729,7 @@ public class DashboardDaoImpl implements DashboardDao {
             entitiesWithCounts.add(entity);
 
             for (String term : searchTerms) {
-                if (matchTerm(ecoterm, term)) {
+                if (ecoterm.containsTerm(term)) {
                     Set<Observation> obset = observationMap.get(term);
                     if (obset == null) {
                         obset = new HashSet<Observation>();

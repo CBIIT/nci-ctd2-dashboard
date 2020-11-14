@@ -12,4 +12,7 @@ public interface ECOTerm extends DashboardEntity, HasStableURL {
     public String getSynonyms();
 
     public void setSynonyms(String synonyms);
+
+    /* Whether the name, or the code, or the synonyms contain a given term. */
+    public Boolean containsTerm(String term);
 }
