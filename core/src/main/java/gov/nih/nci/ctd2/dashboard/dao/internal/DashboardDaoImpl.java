@@ -2,6 +2,7 @@ package gov.nih.nci.ctd2.dashboard.dao.internal;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -35,6 +36,10 @@ import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
 import org.springframework.cache.annotation.Cacheable;
 
+import gov.nih.nci.ctd2.dashboard.api.EvidenceItem;
+import gov.nih.nci.ctd2.dashboard.api.ObservationItem;
+import gov.nih.nci.ctd2.dashboard.api.SubjectItem;
+import gov.nih.nci.ctd2.dashboard.api.XRefItem;
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
 import gov.nih.nci.ctd2.dashboard.impl.CompoundImpl;
 import gov.nih.nci.ctd2.dashboard.impl.DashboardEntityImpl;
@@ -73,10 +78,6 @@ import gov.nih.nci.ctd2.dashboard.util.DashboardEntityWithCounts;
 import gov.nih.nci.ctd2.dashboard.util.EcoBrowse;
 import gov.nih.nci.ctd2.dashboard.util.SubjectWithSummaries;
 import gov.nih.nci.ctd2.dashboard.util.Summary;
-import gov.nih.nci.ctd2.dashboard.api.EvidenceItem;
-import gov.nih.nci.ctd2.dashboard.api.ObservationItem;
-import gov.nih.nci.ctd2.dashboard.api.SubjectItem;
-import gov.nih.nci.ctd2.dashboard.api.XRefItem;
 
 public class DashboardDaoImpl implements DashboardDao {
     private static final Log log = LogFactory.getLog(DashboardDaoImpl.class);
@@ -618,7 +619,7 @@ public class DashboardDaoImpl implements DashboardDao {
 
     @Override
     @Cacheable(value = "searchCache")
-    public ArrayList<DashboardEntityWithCounts> search(String keyword) {
+    public ArrayList<DashboardEntityWithCounts> search(String queryString) {
         HashSet<DashboardEntity> entitiesUnique = new HashSet<DashboardEntity>();
 
         FullTextSession fullTextSession = Search.getFullTextSession(getSession());
@@ -626,7 +627,7 @@ public class DashboardDaoImpl implements DashboardDao {
         MultiFieldQueryParser multiFieldQueryParser = new MultiFieldQueryParser(defaultSearchFields, analyzer);
         Query luceneQuery = null;
         try {
-            luceneQuery = multiFieldQueryParser.parse(keyword);
+            luceneQuery = multiFieldQueryParser.parse(queryString);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -666,7 +667,7 @@ public class DashboardDaoImpl implements DashboardDao {
                 }
             }
         }
-        final String[] searchTerms = parseWords(keyword);
+        final String[] searchTerms = parseWords(queryString);
         log.debug("search terms for observation" + String.join(",", searchTerms));
         Map<String, Set<Observation>> observationMap = new HashMap<String, Set<Observation>>();
 
@@ -675,44 +676,44 @@ public class DashboardDaoImpl implements DashboardDao {
             DashboardEntityWithCounts entityWithCounts = new DashboardEntityWithCounts();
             entityWithCounts.setDashboardEntity(entity);
             if (entity instanceof Subject) {
-                int observations = 0;
+                Set<Observation> observations = new HashSet<Observation>();
                 int maxTier = 0;
                 HashSet<SubmissionCenter> submissionCenters = new HashSet<SubmissionCenter>();
                 HashSet<String> roles = new HashSet<String>();
                 for (ObservedSubject observedSubject : findObservedSubjectBySubject((Subject) entity)) {
                     Observation observation = observedSubject.getObservation();
-                    String subjectName = entity.getDisplayName().toLowerCase();
-                    for (String term : searchTerms) {
-                        if (subjectName.contains(term)) {
-                            Set<Observation> obset = observationMap.get(term);
-                            if (obset == null) {
-                                obset = new HashSet<Observation>();
-                            }
-                            obset.add(observation);
-                            observationMap.put(term, obset);
-                        }
-                    }
-                    observations++;
+                    observations.add(observation);
                     ObservationTemplate observationTemplate = observation.getSubmission().getObservationTemplate();
                     maxTier = Math.max(maxTier, observationTemplate.getTier());
                     submissionCenters.add(observationTemplate.getSubmissionCenter());
                     roles.add(observedSubject.getObservedSubjectRole().getSubjectRole().getDisplayName());
                 }
-                entityWithCounts.setObservationCount(observations);
+                entityWithCounts.setObservationCount(observations.size());
                 entityWithCounts.setMaxTier(maxTier);
                 entityWithCounts.setRoles(roles);
                 entityWithCounts.setCenterCount(submissionCenters.size());
+                Arrays.stream(searchTerms).filter(term -> entity.getDisplayName().toLowerCase().contains(term))
+                        .forEach(term -> {
+                            Set<Observation> obset = observationMap.get(term);
+                            if (obset == null) {
+                                obset = new HashSet<Observation>();
+                            }
+                            obset.addAll(observations);
+                            observationMap.put(term, obset);
+                        });
             } else if (entity instanceof Submission) {
                 entityWithCounts.setObservationCount(findObservationsBySubmission((Submission) entity).size());
                 entityWithCounts.setMaxTier(((Submission) entity).getObservationTemplate().getTier());
                 entityWithCounts.setCenterCount(1);
+            } else {
+                log.warn("unexpected type returned by searching: " + entity.getClass().getName());
             }
 
             entitiesWithCounts.add(entityWithCounts);
         }
 
         /* search ECO terms */
-        List<ECOTerm> ecoterms = findECOTerms(keyword);
+        List<ECOTerm> ecoterms = findECOTerms(queryString);
         for (ECOTerm ecoterm : ecoterms) {
             List<Integer> observationIds = observationIdsForEcoCode(ecoterm.getCode());
             int observationNumber = observationIds.size();
@@ -728,19 +729,17 @@ public class DashboardDaoImpl implements DashboardDao {
 
             entitiesWithCounts.add(entity);
 
-            for (String term : searchTerms) {
-                if (ecoterm.containsTerm(term)) {
-                    Set<Observation> obset = observationMap.get(term);
-                    if (obset == null) {
-                        obset = new HashSet<Observation>();
-                    }
-                    for (Integer obid : observationIds) {
-                        Observation observation = getEntityById(Observation.class, obid);
-                        obset.add(observation);
-                    }
-                    observationMap.put(term, obset);
+            Arrays.stream(searchTerms).filter(term -> ecoterm.containsTerm(term)).forEach(term -> {
+                Set<Observation> obset = observationMap.get(term);
+                if (obset == null) {
+                    obset = new HashSet<Observation>();
                 }
-            }
+                for (Integer obid : observationIds) {
+                    Observation observation = getEntityById(Observation.class, obid);
+                    obset.add(observation);
+                }
+                observationMap.put(term, obset);
+            });
         }
 
         if (searchTerms.length <= 1) {
@@ -767,12 +766,12 @@ public class DashboardDaoImpl implements DashboardDao {
         if (set0.size() == 0) {
             log.debug("no intersection of observations");
         }
-        for (Observation ob : set0) {
+        set0.forEach(ob -> {
             DashboardEntityWithCounts oneObservationResult = new DashboardEntityWithCounts();
             oneObservationResult.setDashboardEntity(ob);
             entitiesWithCounts.add(oneObservationResult);
             log.debug(" observation in intersection: " + ob.getStableURL());
-        }
+        });
 
         return entitiesWithCounts;
     }
