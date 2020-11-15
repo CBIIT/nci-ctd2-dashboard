@@ -30,7 +30,6 @@ import org.hibernate.ScrollMode;
 import org.hibernate.ScrollableResults;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.proxy.HibernateProxy;
 import org.hibernate.search.FullTextQuery;
 import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
@@ -620,8 +619,6 @@ public class DashboardDaoImpl implements DashboardDao {
     @Override
     @Cacheable(value = "searchCache")
     public ArrayList<DashboardEntityWithCounts> search(String queryString) {
-        HashSet<DashboardEntity> entitiesUnique = new HashSet<DashboardEntity>();
-
         FullTextSession fullTextSession = Search.getFullTextSession(getSession());
         Analyzer analyzer = new WhitespaceAnalyzer();
         MultiFieldQueryParser multiFieldQueryParser = new MultiFieldQueryParser(defaultSearchFields, analyzer);
@@ -644,71 +641,62 @@ public class DashboardDaoImpl implements DashboardDao {
                     + numberOfSearchResults);
         }
 
+        Set<Subject> subjects = new HashSet<Subject>();
+        Set<Submission> submissions = new HashSet<Submission>();
         for (Object o : list) {
-            assert o instanceof DashboardEntity;
-
             if (o instanceof ObservationTemplate) {
                 List<Submission> submissionList = queryWithClass(
                         "select o from SubmissionImpl as o where o.observationTemplate = :ot", "ot",
                         (ObservationTemplate) o);
-                for (Submission o2 : submissionList) {
-                    if (!entitiesUnique.contains(o2))
-                        entitiesUnique.add(o2);
-                }
+                submissionList.forEach(submission -> submissions.add(submission));
+            } else if (o instanceof Subject) {
+                subjects.add((Subject) o);
             } else {
-                // Some objects came in as proxies, get the actual implementations for them when
-                // necessary
-                if (o instanceof HibernateProxy) {
-                    o = ((HibernateProxy) o).getHibernateLazyInitializer().getImplementation();
-                }
-
-                if (!entitiesUnique.contains(o)) {
-                    entitiesUnique.add((DashboardEntity) o);
-                }
+                log.warn("unexpected type returned by searching: " + o.getClass().getName());
             }
         }
+        ArrayList<DashboardEntityWithCounts> entitiesWithCounts = new ArrayList<DashboardEntityWithCounts>();
+        submissions.forEach(submission -> {
+            DashboardEntityWithCounts entityWithCounts = new DashboardEntityWithCounts();
+            entityWithCounts.setDashboardEntity(submission);
+            entityWithCounts.setObservationCount(findObservationsBySubmission(submission).size());
+            entityWithCounts.setMaxTier(submission.getObservationTemplate().getTier());
+            entityWithCounts.setCenterCount(1);
+            entitiesWithCounts.add(entityWithCounts);
+        });
+
         final String[] searchTerms = parseWords(queryString);
         log.debug("search terms for observation" + String.join(",", searchTerms));
         Map<String, Set<Observation>> observationMap = new HashMap<String, Set<Observation>>();
 
-        ArrayList<DashboardEntityWithCounts> entitiesWithCounts = new ArrayList<DashboardEntityWithCounts>();
-        for (DashboardEntity entity : entitiesUnique) {
+        for (Subject subject : subjects) {
             DashboardEntityWithCounts entityWithCounts = new DashboardEntityWithCounts();
-            entityWithCounts.setDashboardEntity(entity);
-            if (entity instanceof Subject) {
-                Set<Observation> observations = new HashSet<Observation>();
-                int maxTier = 0;
-                HashSet<SubmissionCenter> submissionCenters = new HashSet<SubmissionCenter>();
-                HashSet<String> roles = new HashSet<String>();
-                for (ObservedSubject observedSubject : findObservedSubjectBySubject((Subject) entity)) {
-                    Observation observation = observedSubject.getObservation();
-                    observations.add(observation);
-                    ObservationTemplate observationTemplate = observation.getSubmission().getObservationTemplate();
-                    maxTier = Math.max(maxTier, observationTemplate.getTier());
-                    submissionCenters.add(observationTemplate.getSubmissionCenter());
-                    roles.add(observedSubject.getObservedSubjectRole().getSubjectRole().getDisplayName());
-                }
-                entityWithCounts.setObservationCount(observations.size());
-                entityWithCounts.setMaxTier(maxTier);
-                entityWithCounts.setRoles(roles);
-                entityWithCounts.setCenterCount(submissionCenters.size());
-                Arrays.stream(searchTerms).filter(term -> entity.getDisplayName().toLowerCase().contains(term))
-                        .forEach(term -> {
-                            Set<Observation> obset = observationMap.get(term);
-                            if (obset == null) {
-                                obset = new HashSet<Observation>();
-                            }
-                            obset.addAll(observations);
-                            observationMap.put(term, obset);
-                        });
-            } else if (entity instanceof Submission) {
-                entityWithCounts.setObservationCount(findObservationsBySubmission((Submission) entity).size());
-                entityWithCounts.setMaxTier(((Submission) entity).getObservationTemplate().getTier());
-                entityWithCounts.setCenterCount(1);
-            } else {
-                log.warn("unexpected type returned by searching: " + entity.getClass().getName());
+            entityWithCounts.setDashboardEntity(subject);
+            Set<Observation> observations = new HashSet<Observation>();
+            int maxTier = 0;
+            Set<SubmissionCenter> submissionCenters = new HashSet<SubmissionCenter>();
+            Set<String> roles = new HashSet<String>();
+            for (ObservedSubject observedSubject : findObservedSubjectBySubject(subject)) {
+                Observation observation = observedSubject.getObservation();
+                observations.add(observation);
+                ObservationTemplate observationTemplate = observation.getSubmission().getObservationTemplate();
+                maxTier = Math.max(maxTier, observationTemplate.getTier());
+                submissionCenters.add(observationTemplate.getSubmissionCenter());
+                roles.add(observedSubject.getObservedSubjectRole().getSubjectRole().getDisplayName());
             }
-
+            entityWithCounts.setObservationCount(observations.size());
+            entityWithCounts.setMaxTier(maxTier);
+            entityWithCounts.setRoles(roles);
+            entityWithCounts.setCenterCount(submissionCenters.size());
+            Arrays.stream(searchTerms).filter(term -> subject.getDisplayName().toLowerCase().contains(term))
+                    .forEach(term -> {
+                        Set<Observation> obset = observationMap.get(term);
+                        if (obset == null) {
+                            obset = new HashSet<Observation>();
+                        }
+                        obset.addAll(observations);
+                        observationMap.put(term, obset);
+                    });
             entitiesWithCounts.add(entityWithCounts);
         }
 
@@ -729,15 +717,14 @@ public class DashboardDaoImpl implements DashboardDao {
 
             entitiesWithCounts.add(entity);
 
+            Set<Observation> observations = new HashSet<Observation>();
+            observationIds.forEach(obid -> observations.add(getEntityById(Observation.class, obid)));
             Arrays.stream(searchTerms).filter(term -> ecoterm.containsTerm(term)).forEach(term -> {
                 Set<Observation> obset = observationMap.get(term);
                 if (obset == null) {
                     obset = new HashSet<Observation>();
                 }
-                for (Integer obid : observationIds) {
-                    Observation observation = getEntityById(Observation.class, obid);
-                    obset.add(observation);
-                }
+                obset.addAll(observations);
                 observationMap.put(term, obset);
             });
         }
