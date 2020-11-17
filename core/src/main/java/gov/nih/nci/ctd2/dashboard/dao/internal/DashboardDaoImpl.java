@@ -729,6 +729,10 @@ public class DashboardDaoImpl implements DashboardDao {
             });
         }
 
+        if (searchTerms.length <= 1) {
+            return entitiesWithCounts;
+        }
+
         // add intersection of observations
         Set<Observation> set0 = observationMap.get(searchTerms[0]);
         if (set0 == null) {
