@@ -75,6 +75,7 @@ import gov.nih.nci.ctd2.dashboard.model.Transcript;
 import gov.nih.nci.ctd2.dashboard.model.Xref;
 import gov.nih.nci.ctd2.dashboard.util.DashboardEntityWithCounts;
 import gov.nih.nci.ctd2.dashboard.util.EcoBrowse;
+import gov.nih.nci.ctd2.dashboard.util.SearchResults;
 import gov.nih.nci.ctd2.dashboard.util.SubjectWithSummaries;
 import gov.nih.nci.ctd2.dashboard.util.Summary;
 
@@ -618,7 +619,7 @@ public class DashboardDaoImpl implements DashboardDao {
 
     @Override
     @Cacheable(value = "searchCache")
-    public ArrayList<DashboardEntityWithCounts> search(String queryString) {
+    public SearchResults search(String queryString) {
         FullTextSession fullTextSession = Search.getFullTextSession(getSession());
         Analyzer analyzer = new WhitespaceAnalyzer();
         MultiFieldQueryParser multiFieldQueryParser = new MultiFieldQueryParser(defaultSearchFields, analyzer);
@@ -655,20 +656,23 @@ public class DashboardDaoImpl implements DashboardDao {
                 log.warn("unexpected type returned by searching: " + o.getClass().getName());
             }
         }
-        ArrayList<DashboardEntityWithCounts> entitiesWithCounts = new ArrayList<DashboardEntityWithCounts>();
+        SearchResults searchResults = new SearchResults();
+        ArrayList<DashboardEntityWithCounts> submission_result = new ArrayList<DashboardEntityWithCounts>();
         submissions.forEach(submission -> {
             DashboardEntityWithCounts entityWithCounts = new DashboardEntityWithCounts();
             entityWithCounts.setDashboardEntity(submission);
             entityWithCounts.setObservationCount(findObservationsBySubmission(submission).size());
             entityWithCounts.setMaxTier(submission.getObservationTemplate().getTier());
             entityWithCounts.setCenterCount(1);
-            entitiesWithCounts.add(entityWithCounts);
+            submission_result.add(entityWithCounts);
         });
+        searchResults.submission_result = submission_result;
 
         final String[] searchTerms = parseWords(queryString);
         log.debug("search terms for observation" + String.join(",", searchTerms));
         Map<String, Set<Observation>> observationMap = new HashMap<String, Set<Observation>>();
 
+        ArrayList<DashboardEntityWithCounts> subject_result = new ArrayList<DashboardEntityWithCounts>();
         for (Subject subject : subjects) {
             DashboardEntityWithCounts entityWithCounts = new DashboardEntityWithCounts();
             entityWithCounts.setDashboardEntity(subject);
@@ -697,7 +701,7 @@ public class DashboardDaoImpl implements DashboardDao {
                         obset.addAll(observations);
                         observationMap.put(term, obset);
                     });
-            entitiesWithCounts.add(entityWithCounts);
+            subject_result.add(entityWithCounts);
         }
 
         /* search ECO terms */
@@ -715,7 +719,7 @@ public class DashboardDaoImpl implements DashboardDao {
             entity.setMaxTier(x[0]);
             entity.setCenterCount(x[1]);
 
-            entitiesWithCounts.add(entity);
+            subject_result.add(entity);
 
             Set<Observation> observations = new HashSet<Observation>();
             observationIds.forEach(obid -> observations.add(getEntityById(Observation.class, obid)));
@@ -728,23 +732,24 @@ public class DashboardDaoImpl implements DashboardDao {
                 observationMap.put(term, obset);
             });
         }
+        searchResults.subject_result = subject_result;
 
         if (searchTerms.length <= 1) {
-            return entitiesWithCounts;
+            return searchResults;
         }
 
         // add intersection of observations
         Set<Observation> set0 = observationMap.get(searchTerms[0]);
         if (set0 == null) {
             log.debug("no observation for " + searchTerms[0]);
-            return entitiesWithCounts;
+            return searchResults;
         }
         log.debug("set0 size=" + set0.size());
         for (int i = 1; i < searchTerms.length; i++) {
             Set<Observation> obset = observationMap.get(searchTerms[i]);
             if (obset == null) {
                 log.debug("... no observation for " + searchTerms[i]);
-                return entitiesWithCounts;
+                return searchResults;
             }
             log.debug("set " + i + " size=" + obset.size());
             set0.retainAll(obset);
@@ -753,14 +758,16 @@ public class DashboardDaoImpl implements DashboardDao {
         if (set0.size() == 0) {
             log.debug("no intersection of observations");
         }
+        ArrayList<DashboardEntityWithCounts> observation_result = new ArrayList<DashboardEntityWithCounts>();
         set0.forEach(ob -> {
             DashboardEntityWithCounts oneObservationResult = new DashboardEntityWithCounts();
             oneObservationResult.setDashboardEntity(ob);
-            entitiesWithCounts.add(oneObservationResult);
+            observation_result.add(oneObservationResult);
             log.debug(" observation in intersection: " + ob.getStableURL());
         });
+        searchResults.observation_result = observation_result;
 
-        return entitiesWithCounts;
+        return searchResults;
     }
 
     @SuppressWarnings("unchecked")
