@@ -1438,8 +1438,6 @@ public class DashboardDaoImpl implements DashboardDao {
         } catch (javax.persistence.NoResultException e) { // exception by design
             // no-op
             log.debug("No code for " + name);
-        } catch (Exception e) {
-            e.printStackTrace();
         }
         session.close();
         return code;
