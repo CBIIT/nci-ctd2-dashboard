@@ -75,6 +75,7 @@ import gov.nih.nci.ctd2.dashboard.model.Transcript;
 import gov.nih.nci.ctd2.dashboard.model.Xref;
 import gov.nih.nci.ctd2.dashboard.util.DashboardEntityWithCounts;
 import gov.nih.nci.ctd2.dashboard.util.EcoBrowse;
+import gov.nih.nci.ctd2.dashboard.util.Hierarchy;
 import gov.nih.nci.ctd2.dashboard.util.SearchResults;
 import gov.nih.nci.ctd2.dashboard.util.SubjectWithSummaries;
 import gov.nih.nci.ctd2.dashboard.util.Summary;
@@ -86,7 +87,7 @@ public class DashboardDaoImpl implements DashboardDao {
             DashboardEntityImpl.FIELD_DISPLAYNAME_WS, DashboardEntityImpl.FIELD_DISPLAYNAME_UT,
             SubjectImpl.FIELD_SYNONYM, SubjectImpl.FIELD_SYNONYM_WS, SubjectImpl.FIELD_SYNONYM_UT,
             ObservationTemplateImpl.FIELD_DESCRIPTION, ObservationTemplateImpl.FIELD_SUBMISSIONDESC,
-            ObservationTemplateImpl.FIELD_SUBMISSIONNAME, TissueSampleImpl.FIELD_LINEAGE };
+            ObservationTemplateImpl.FIELD_SUBMISSIONNAME };
 
     private static final Class<?>[] searchableClasses = { SubjectWithOrganismImpl.class, TissueSampleImpl.class,
             CompoundImpl.class, SubmissionImpl.class, ObservationTemplateImpl.class };
@@ -669,7 +670,7 @@ public class DashboardDaoImpl implements DashboardDao {
         searchResults.submission_result = submission_result;
 
         final String[] searchTerms = parseWords(queryString);
-        log.debug("search terms for observation" + String.join(",", searchTerms));
+        log.debug("search terms for observation: " + String.join(",", searchTerms));
         Map<String, Set<Observation>> observationMap = new HashMap<String, Set<Observation>>();
 
         ArrayList<DashboardEntityWithCounts> subject_result = new ArrayList<DashboardEntityWithCounts>();
@@ -734,6 +735,8 @@ public class DashboardDaoImpl implements DashboardDao {
         }
         searchResults.subject_result = subject_result;
 
+        searchChildren(searchTerms);
+
         if (searchTerms.length <= 1) {
             return searchResults;
         }
@@ -768,6 +771,27 @@ public class DashboardDaoImpl implements DashboardDao {
         searchResults.observation_result = observation_result;
 
         return searchResults;
+    }
+
+    private void searchChildren(String[] searchTerms) {
+        for (String t : searchTerms) {
+            int code = getCodeFromTissueSampleName(t);
+            if (code == 0) // not real code
+                continue;
+            log.debug("code:" + code);
+            searchChildren(code);
+        }
+    }
+
+    private void searchChildren(int code) {
+        int[] children = Hierarchy.DISEASE_CONTEXT.getChildrenCode(code);
+        for (int child : children) {
+            int observationNumber = observationCountForTissueSample(child);
+            if (observationNumber > 1) {
+                log.debug("child found " + child);
+            }
+            searchChildren(child);
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -1399,5 +1423,36 @@ public class DashboardDaoImpl implements DashboardDao {
         }
         session.close();
         return result;
+    }
+
+    // return 0 for 'not found'
+    private int getCodeFromTissueSampleName(String name) {
+        Session session = getSession();
+        String sql = "SELECT code FROM tissue_sample JOIN dashboard_entity ON tissue_sample.id=dashboard_entity.id WHERE displayName='"
+                + name + "'";
+        @SuppressWarnings("unchecked")
+        org.hibernate.query.Query<Integer> query = session.createNativeQuery(sql);
+        int code = 0;
+        try {
+            code = query.getSingleResult();
+        } catch (javax.persistence.NoResultException e) { // exception by design
+            // no-op
+            log.debug("No code for " + name);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        session.close();
+        return code;
+    }
+
+    private int observationCountForTissueSample(int code) {
+        Session session = getSession();
+        String sql = "SELECT COUNT(DISTINCT observation_id) FROM observed_subject JOIN tissue_sample ON subject_id=tissue_sample.id WHERE code="
+                + code;
+        @SuppressWarnings("unchecked")
+        org.hibernate.query.Query<BigInteger> query = session.createNativeQuery(sql);
+        int count = query.getSingleResult().intValue();
+        session.close();
+        return count;
     }
 }

@@ -36,6 +36,7 @@ public class TissueSampleTermsDataFieldSetMapper implements FieldSetMapper<Tissu
 		tissueSample.setDisplayName(fieldSet.readString(TISSUE_SAMPLE_NAME));
         // create xref to NCI thesaurus
         String nciThesaurusCode = fieldSet.readString(NCI_THESAURUS_CODE);
+        tissueSample.setCode(Integer.parseInt(nciThesaurusCode.substring(1)));
         if (!nciThesaurusCode.isEmpty()) {
             addXrefToSample(tissueSample, nciThesaurusCode, NCI_THESAURUS_DATABASE);
         }
