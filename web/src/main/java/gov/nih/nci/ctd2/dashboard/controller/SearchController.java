@@ -1,10 +1,9 @@
 package gov.nih.nci.ctd2.dashboard.controller;
 
-import flexjson.JSONSerializer;
-import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
-import gov.nih.nci.ctd2.dashboard.util.DateTransformer;
-import gov.nih.nci.ctd2.dashboard.util.ImplTransformer;
-import gov.nih.nci.ctd2.dashboard.util.SearchResults;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.Charset;
+import java.util.Date;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -17,11 +16,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.nio.charset.Charset;
-import java.util.Date;
+import flexjson.JSONSerializer;
+import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
+import gov.nih.nci.ctd2.dashboard.util.DateTransformer;
+import gov.nih.nci.ctd2.dashboard.util.ImplTransformer;
+import gov.nih.nci.ctd2.dashboard.util.SearchResults;
 
 @Controller
 @RequestMapping("/search")
@@ -49,7 +50,7 @@ public class SearchController {
         }
 
         SearchResults results = dashboardDao.search(keyword);
-        log.debug("number of rearch results "+results.size());
+        log.debug("number of rearch results " + results.size());
         JSONSerializer jsonSerializer = new JSONSerializer().transform(new ImplTransformer(), Class.class)
                 .transform(new DateTransformer(), Date.class);
         String serializedResult = jsonSerializer.deepSerialize(results);
@@ -57,4 +58,13 @@ public class SearchController {
         return new ResponseEntity<String>(serializedResult, headers, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "ontology", method = { RequestMethod.GET }, headers = "Accept=application/json")
+    public ResponseEntity<String> ontologySearch(@RequestParam("terms") String terms) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "application/json; charset=utf-8");
+
+        String ontologyResult = dashboardDao.ontologySearch(terms);
+        JSONSerializer jsonSerializer = new JSONSerializer();
+        return new ResponseEntity<String>(jsonSerializer.serialize(ontologyResult), headers, HttpStatus.OK);
+    }
 }

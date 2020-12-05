@@ -735,8 +735,6 @@ public class DashboardDaoImpl implements DashboardDao {
         }
         searchResults.subject_result = subject_result;
 
-        searchChildren(searchTerms);
-
         if (searchTerms.length <= 1) {
             return searchResults;
         }
@@ -1452,5 +1450,12 @@ public class DashboardDaoImpl implements DashboardDao {
         int count = query.getSingleResult().intValue();
         session.close();
         return count;
+    }
+
+    @Override
+    public String ontologySearch(String queryString) {
+        final String[] searchTerms = parseWords(queryString);
+        searchChildren(searchTerms);
+        return "Ontology Search is done for " + queryString;
     }
 }

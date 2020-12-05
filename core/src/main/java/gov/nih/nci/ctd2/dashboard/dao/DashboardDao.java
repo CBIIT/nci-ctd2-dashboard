@@ -83,4 +83,6 @@ public interface DashboardDao {
     ECOTerm getEcoTerm(String ecoTermCode);
 
     void prepareAPIData();
+
+    String ontologySearch(String queryString);
 }
