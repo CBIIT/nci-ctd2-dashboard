@@ -15,6 +15,14 @@ public class DashboardEntityWithCounts implements Serializable {
     private int maxTier = 0;
     private Set<String> roles = new HashSet<String>();
 
+    public DashboardEntityWithCounts() {
+    }
+
+    public DashboardEntityWithCounts(DashboardEntity dashboardEntity, int observationCount) {
+        this.dashboardEntity = dashboardEntity;
+        this.observationCount = observationCount;
+    }
+
     public DashboardEntity getDashboardEntity() {
         return dashboardEntity;
     }

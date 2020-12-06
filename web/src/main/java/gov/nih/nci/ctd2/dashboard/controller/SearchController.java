@@ -4,6 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -20,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import flexjson.JSONSerializer;
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
+import gov.nih.nci.ctd2.dashboard.model.DashboardEntity;
+import gov.nih.nci.ctd2.dashboard.util.DashboardEntityWithCounts;
 import gov.nih.nci.ctd2.dashboard.util.DateTransformer;
 import gov.nih.nci.ctd2.dashboard.util.ImplTransformer;
 import gov.nih.nci.ctd2.dashboard.util.SearchResults;
@@ -63,8 +66,8 @@ public class SearchController {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json; charset=utf-8");
 
-        String ontologyResult = dashboardDao.ontologySearch(terms);
-        JSONSerializer jsonSerializer = new JSONSerializer();
+        List<DashboardEntityWithCounts> ontologyResult = dashboardDao.ontologySearch(terms);
+        JSONSerializer jsonSerializer = new JSONSerializer().transform(new ImplTransformer(), Class.class);
         return new ResponseEntity<String>(jsonSerializer.serialize(ontologyResult), headers, HttpStatus.OK);
     }
 }

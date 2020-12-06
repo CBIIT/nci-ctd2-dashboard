@@ -3004,13 +3004,25 @@
             $("#omni-input").val(decodeURIComponent(this.model.term));
 
             const searchQuery = this.model.term;
+            let subject_names = [];
             $("#ontology-search").click(function () {
                 $.ajax({
                     url: "search/ontology",
                     data: { terms: searchQuery }
-                }).done(function (data) {
-                    console.log("ontology search result");
-                    console.log(data);
+                }).done(function (ontology_search_results) {
+                    // subject_names.forEach(x => console.log(x));
+                    _.each(ontology_search_results, function (one_result) {
+                        if (subject_names.includes(one_result.dashboardEntity.displayName)) return;
+                        if (one_result.dashboardEntity.organism == undefined) {
+                            one_result.dashboardEntity.organism = {
+                                displayName: "-"
+                            };
+                        }
+                        new SearchResultsRowView({
+                            model: one_result,
+                            el: $(thatEl).find("tbody")
+                        }).render();
+                    });
                 });
             });
 
@@ -3025,6 +3037,7 @@
                     $("#loading-row").remove();
                     const results = searchResults.toJSON();
                     const subject_result = results.subject_result;
+                    subject_names = subject_result.map(x => x.dashboardEntity.displayName);
                     const submission_result = results.submission_result;
                     const observation_result = results.observation_result;
                     if (subject_result.length + submission_result.length == 0) {

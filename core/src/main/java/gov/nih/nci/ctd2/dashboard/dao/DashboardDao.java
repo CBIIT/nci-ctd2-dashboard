@@ -3,6 +3,7 @@ package gov.nih.nci.ctd2.dashboard.dao;
 import gov.nih.nci.ctd2.dashboard.model.*;
 import gov.nih.nci.ctd2.dashboard.util.SubjectWithSummaries;
 import gov.nih.nci.ctd2.dashboard.util.Summary;
+import gov.nih.nci.ctd2.dashboard.util.DashboardEntityWithCounts;
 import gov.nih.nci.ctd2.dashboard.util.EcoBrowse;
 import gov.nih.nci.ctd2.dashboard.util.SearchResults;
 
@@ -84,5 +85,5 @@ public interface DashboardDao {
 
     void prepareAPIData();
 
-    String ontologySearch(String queryString);
+    List<DashboardEntityWithCounts> ontologySearch(String queryString);
 }

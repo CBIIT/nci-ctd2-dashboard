@@ -771,25 +771,30 @@ public class DashboardDaoImpl implements DashboardDao {
         return searchResults;
     }
 
-    private void searchChildren(String[] searchTerms) {
+    private List<Integer> searchChildren(String[] searchTerms) {
+        List<Integer> list = new ArrayList<Integer>();
         for (String t : searchTerms) {
             int code = getCodeFromTissueSampleName(t);
             if (code == 0) // not real code
                 continue;
             log.debug("code:" + code);
-            searchChildren(code);
+            list.addAll(searchChildren(code));
         }
+        return list;
     }
 
-    private void searchChildren(int code) {
+    private List<Integer> searchChildren(int code) {
+        List<Integer> list = new ArrayList<Integer>();
         int[] children = Hierarchy.DISEASE_CONTEXT.getChildrenCode(code);
         for (int child : children) {
             int observationNumber = observationCountForTissueSample(child);
             if (observationNumber > 1) {
                 log.debug("child found " + child);
+                list.add(child);
             }
-            searchChildren(child);
+            list.addAll(searchChildren(child));
         }
+        return list;
     }
 
     @SuppressWarnings("unchecked")
@@ -1453,9 +1458,29 @@ public class DashboardDaoImpl implements DashboardDao {
     }
 
     @Override
-    public String ontologySearch(String queryString) {
+    public List<DashboardEntityWithCounts> ontologySearch(String queryString) {
         final String[] searchTerms = parseWords(queryString);
-        searchChildren(searchTerms);
-        return "Ontology Search is done for " + queryString;
+        long t1 = System.currentTimeMillis();
+        List<Integer> list = searchChildren(searchTerms);
+        List<DashboardEntityWithCounts> entities = new ArrayList<DashboardEntityWithCounts>();
+        Session session = getSession();
+        @SuppressWarnings("unchecked")
+        org.hibernate.query.Query<TissueSample> query = session.createQuery("from TissueSampleImpl where code = :code");
+        for (Integer i : list) {
+            query.setParameter("code", i);
+            TissueSample result = null;
+            try {
+                result = query.getSingleResult();
+            } catch (NoResultException e) {
+                log.info("Tissue sample not available for ECO code " + i);
+                continue;
+            }
+            System.out.println(result);
+            entities.add(new DashboardEntityWithCounts(result, 0));
+        }
+        session.close();
+        long t2 = System.currentTimeMillis();
+        log.debug((t2 - t1) + " miliseconds");
+        return entities;
     }
 }
