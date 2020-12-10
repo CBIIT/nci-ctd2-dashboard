@@ -997,24 +997,31 @@
                 <batch:chunk reader="dfciShoc2DataLocationReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	    </batch:tasklet>
 	</batch:step>
-	<batch:step id="dfciMrtVulnerablilityDataLocationStep" parent="observationDataStep" next="ucsf1KrasSlDrugScreenResistanceStep">
+	<batch:step id="dfciMrtVulnerablilityDataLocationStep" parent="observationDataStep" next="ucsf1KrasSlDrugScreenStep">
 	    <batch:tasklet>
                 <batch:chunk reader="dfciMrtVulnerablilityDataLocationReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	    </batch:tasklet>
 	</batch:step>
-
-	<batch:step id="ucsf1KrasSlDrugScreenResistanceStep" parent="observationDataStep" next="ucsf1KrasSlDrugScreenSensitivityStep">
+	<batch:step id="ucsf1KrasSlDrugScreenStep" parent="observationDataStep" next="columbiaOncosigPpiNetworksStep">
 	    <batch:tasklet>
-                <batch:chunk reader="ucsf1KrasSlDrugScreenResistanceReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+                <batch:chunk reader="ucsf1KrasSlDrugScreenReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	    </batch:tasklet>
 	</batch:step>
-	<batch:step id="ucsf1KrasSlDrugScreenSensitivityStep" parent="observationDataStep" >
+	<batch:step id="columbiaOncosigPpiNetworksStep" parent="observationDataStep" next="columbiaOncosigShrnaKnockdownStep">
 	    <batch:tasklet>
-                <batch:chunk reader="ucsf1KrasSlDrugScreenSensitivityReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+                <batch:chunk reader="columbiaOncosigPpiNetworksReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	    </batch:tasklet>
 	</batch:step>
-
-
+	<batch:step id="columbiaOncosigShrnaKnockdownStep" parent="observationDataStep" next="dfciCreb5StoryStep">
+	    <batch:tasklet>
+                <batch:chunk reader="columbiaOncosigShrnaKnockdownReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	    </batch:tasklet>
+	</batch:step>
+	<batch:step id="dfciCreb5StoryStep" parent="observationDataStep">
+	    <batch:tasklet>
+                <batch:chunk reader="dfciCreb5StoryReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	    </batch:tasklet>
+	</batch:step>
     </batch:job>
 
     <bean id="observationDataStep" class="org.springframework.batch.core.step.item.SimpleStepFactoryBean" abstract="true">
@@ -2589,8 +2596,6 @@
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,compound_1,compound_2,reference,evidence_ontology,informer_set,cosmic,depmap,story_location"/>
     </bean>
 
-
-
     <bean name="emoryInvasionLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
         <property name="fieldSetMapper" ref="observationDataMapper" />
         <property name="lineTokenizer" ref="emoryInvasionLineTokenizer" />
@@ -2734,6 +2739,7 @@
         <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_1,gene_2,model_1,tissue_1,reference,eco_term_1,eco_term_2,eco_term_3"/>
     </bean>
+
     <bean name="ucsfDdx3xMutationTumorFormationLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
         <property name="fieldSetMapper" ref="observationDataMapper" />
         <property name="lineTokenizer" ref="ucsfDdx3xMutationTumorFormationLineTokenizer" />
@@ -2742,6 +2748,7 @@
         <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,ddx3x,disease,strain,reference,evidence_ontology_term,figure_6"/>
     </bean>
+
     <bean name="ucsfGorlinNesCellTumorFormationLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
         <property name="fieldSetMapper" ref="observationDataMapper" />
         <property name="lineTokenizer" ref="ucsfGorlinNesCellTumorFormationLineTokenizer" />
@@ -2750,6 +2757,7 @@
         <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,disease,strain,reference,evidence_ontology_term,figure_4"/>
     </bean>
+
     <bean name="ucsfGse1TumorFormationLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
         <property name="fieldSetMapper" ref="observationDataMapper" />
         <property name="lineTokenizer" ref="ucsfGse1TumorFormationLineTokenizer" />
@@ -2758,6 +2766,7 @@
         <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gse1,gorlin_nes_cells,disease,reference,evidence_ontology_term,figure_7"/>
     </bean>
+
     <bean name="ucsfMycnTransformationLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
         <property name="fieldSetMapper" ref="observationDataMapper" />
         <property name="lineTokenizer" ref="ucsfMycnTransformationLineTokenizer" />
@@ -2766,6 +2775,7 @@
         <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_1,cell_line,disease,reference,evidence_ontology_term,figure_1"/>
     </bean>
+
     <bean name="broadPorLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
         <property name="fieldSetMapper" ref="observationDataMapper" />
         <property name="lineTokenizer" ref="broadPorLineTokenizer" />
@@ -2774,6 +2784,7 @@
         <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_1,gene_2,cell_line_1,cell_line_2,disease_1,disease_2,story_location,reference_1,reference_2,evidence_ontology"/>
     </bean>
+
     <bean name="dfciCreb5DataLocatonLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
         <property name="fieldSetMapper" ref="observationDataMapper" />
         <property name="lineTokenizer" ref="dfciCreb5DataLocatonLineTokenizer" />
@@ -2782,6 +2793,7 @@
         <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_1,disease_1,drug_1,gene_2,ref_1,figure_1,figure_2,figure_5,evidence_ontology_1,evidence_ontology_2,evidence_ontology_3,evidence_ontology_4,evidence_ontology_5"/>
     </bean>
+
     <bean name="dfciShoc2DataLocationLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
         <property name="fieldSetMapper" ref="observationDataMapper" />
         <property name="lineTokenizer" ref="dfciShoc2DataLocationLineTokenizer" />
@@ -2790,6 +2802,7 @@
         <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_1,disease_1,disease_2,drug_1,gene_2,gene_3,gene_4,gene_5,ref_1,figure_1,figure_4,figure_5,evidence_ontology_1,evidence_ontology_2,evidence_ontology_3,evidence_ontology_4"/>
     </bean>
+
     <bean name="dfciMrtVulnerablilityDataLocationLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
         <property name="fieldSetMapper" ref="observationDataMapper" />
         <property name="lineTokenizer" ref="dfciMrtVulnerablilityDataLocationLineTokenizer" />
@@ -2799,22 +2812,43 @@
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_1,gene_2,gene_3,disease,gene_4,drug_1,drug_2,reference,figure_2,evidence_ontology_1,evidence_ontology_2,evidence_ontology_3,evidence_ontology_4,evidence_ontology_5,figure_4,figure_1"/>
     </bean>
 
-    <bean name="ucsf1KrasSlDrugScreenResistanceLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+    <bean name="ucsf1KrasSlDrugScreenLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
         <property name="fieldSetMapper" ref="observationDataMapper" />
-        <property name="lineTokenizer" ref="ucsf1KrasSlDrugScreenResistanceLineTokenizer" />
+        <property name="lineTokenizer" ref="ucsf1KrasSlDrugScreenLineTokenizer" />
     </bean>
-    <bean name="ucsf1KrasSlDrugScreenResistanceLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+    <bean name="ucsf1KrasSlDrugScreenLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
         <property name="delimiter" value="&#9;"/>
-        <property name="names" value="dummy,submission_name,submission_date,template_name,drug_name,gene_name,percent_change_auc,reference"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,drug_name,gene_name,effect,cell_line,percent_change_auc,reference"/>
     </bean>
-    <bean name="ucsf1KrasSlDrugScreenSensitivityLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+
+    <bean name="columbiaOncosigPpiNetworksLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
         <property name="fieldSetMapper" ref="observationDataMapper" />
-        <property name="lineTokenizer" ref="ucsf1KrasSlDrugScreenSensitivityLineTokenizer" />
+        <property name="lineTokenizer" ref="columbiaOncosigPpiNetworksLineTokenizer" />
     </bean>
-    <bean name="ucsf1KrasSlDrugScreenSensitivityLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+    <bean name="columbiaOncosigPpiNetworksLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
         <property name="delimiter" value="&#9;"/>
-        <property name="names" value="dummy,submission_name,submission_date,template_name,drug_name,gene_name,percent_change_auc,reference"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,hub_oncoprotein,interactor_protein,oncosig_score,preppi_lr,interaction_type,physical,tumor_type,data_resource,reference"/>
     </bean>
+
+    <bean name="columbiaOncosigShrnaKnockdownLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="columbiaOncosigShrnaKnockdownLineTokenizer" />
+    </bean>
+    <bean name="columbiaOncosigShrnaKnockdownLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="&#9;"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,hub_oncoprotein,interactor_protein,fdr,fold_change,tumor_type,figure_3d_source_url,figure_3_url,figure_3,reference"/>
+    </bean>
+
+    <bean name="dfciCreb5StoryLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="dfciCreb5StoryLineTokenizer" />
+    </bean>
+    <bean name="dfciCreb5StoryLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="&#9;"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,gene_1,disease_1,drug_1,gene_2,publication_reference,story_location,evidence_ontology_1,evidence_ontology_2,evidence_ontology_3,evidence_ontology_4,evidence_ontology_5"/>
+    </bean>
+
+
 
     <!-- shared helper beans -->
     <bean name="observationTemplateMap" class="java.util.HashMap">
@@ -4746,105 +4780,129 @@
 		<entry key="ohsu_yong_sequential_tumor_cells:figure_5e" value="evidence:readString:createObservedFileEvidence" />
 		<entry key="ohsu_yong_sequential_tumor_cells:publication_reference" value="evidence:readString:createObservedUrlEvidence" />
 
+		<entry key="broad_por:gene_1" value="subject:findGenesBySymbol" />
+		<entry key="broad_por:gene_2" value="subject:findGenesBySymbol" />
+		<entry key="broad_por:cell_line_1" value="subject:findCellLineByName" />
+		<entry key="broad_por:cell_line_2" value="subject:findCellLineByName" />
+		<entry key="broad_por:disease_1" value="subject:findTissueSampleByName" />
+		<entry key="broad_por:disease_2" value="subject:findTissueSampleByName" />
+		<entry key="broad_por:story_location" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="broad_por:reference_1" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="broad_por:reference_2" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="broad_por:evidence_ontology" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="mdacc_pik3ca_glioma:gene_1" value="subject:findGenesBySymbol" />
+		<entry key="mdacc_pik3ca_glioma:gene_2" value="subject:findGenesBySymbol" />
+		<entry key="mdacc_pik3ca_glioma:model_1" value="subject:findAnimalModelByName" />
+		<entry key="mdacc_pik3ca_glioma:tissue_1" value="subject:findTissueSampleByName" />
+		<entry key="mdacc_pik3ca_glioma:reference" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="mdacc_pik3ca_glioma:eco_term_1" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="mdacc_pik3ca_glioma:eco_term_2" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="mdacc_pik3ca_glioma:eco_term_3" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="ucsf_ddx3x_mutation_tumor_formation:ddx3x" value="subject:findGenesBySymbol" />
+		<entry key="ucsf_ddx3x_mutation_tumor_formation:disease" value="subject:findTissueSampleByName" />
+		<entry key="ucsf_ddx3x_mutation_tumor_formation:strain" value="subject:findAnimalModelByName" />
+		<entry key="ucsf_ddx3x_mutation_tumor_formation:reference" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="ucsf_ddx3x_mutation_tumor_formation:evidence_ontology_term" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="ucsf_ddx3x_mutation_tumor_formation:figure_6" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="ucsf_gorlin_nes_cell_tumor_formation:disease" value="subject:findTissueSampleByName" />
+		<entry key="ucsf_gorlin_nes_cell_tumor_formation:strain" value="subject:findAnimalModelByName" />
+		<entry key="ucsf_gorlin_nes_cell_tumor_formation:reference" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="ucsf_gorlin_nes_cell_tumor_formation:evidence_ontology_term" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="ucsf_gorlin_nes_cell_tumor_formation:figure_4" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="ucsf_gse1_tumor_formation:gse1" value="subject:findGenesBySymbol" />
+		<entry key="ucsf_gse1_tumor_formation:gorlin_nes_cells" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="ucsf_gse1_tumor_formation:disease" value="subject:findTissueSampleByName" />
+		<entry key="ucsf_gse1_tumor_formation:reference" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="ucsf_gse1_tumor_formation:evidence_ontology_term" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="ucsf_gse1_tumor_formation:figure_7" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="ucsf_mycn_transformation:gene_1" value="subject:findGenesBySymbol" />
+		<entry key="ucsf_mycn_transformation:cell_line" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="ucsf_mycn_transformation:disease" value="subject:findTissueSampleByName" />
+		<entry key="ucsf_mycn_transformation:reference" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="ucsf_mycn_transformation:evidence_ontology_term" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="ucsf_mycn_transformation:figure_1" value="evidence:readString:createObservedFileEvidence" />
 
-<entry key="broad_por:gene_1" value="subject:findGenesBySymbol" />
-<entry key="broad_por:gene_2" value="subject:findGenesBySymbol" />
-<entry key="broad_por:cell_line_1" value="subject:findCellLineByName" />
-<entry key="broad_por:cell_line_2" value="subject:findCellLineByName" />
-<entry key="broad_por:disease_1" value="subject:findTissueSampleByName" />
-<entry key="broad_por:disease_2" value="subject:findTissueSampleByName" />
-<entry key="broad_por:story_location" value="evidence:readString:createObservedFileEvidence" />
-<entry key="broad_por:reference_1" value="evidence:readString:createObservedUrlEvidence" />
-<entry key="broad_por:reference_2" value="evidence:readString:createObservedUrlEvidence" />
-<entry key="broad_por:evidence_ontology" value="evidence:readString:createObservedUrlEvidence" />
-<entry key="mdacc_pik3ca_glioma:gene_1" value="subject:findGenesBySymbol" />
-<entry key="mdacc_pik3ca_glioma:gene_2" value="subject:findGenesBySymbol" />
-<entry key="mdacc_pik3ca_glioma:model_1" value="subject:findAnimalModelByName" />
-<entry key="mdacc_pik3ca_glioma:tissue_1" value="subject:findTissueSampleByName" />
-<entry key="mdacc_pik3ca_glioma:reference" value="evidence:readString:createObservedUrlEvidence" />
-<entry key="mdacc_pik3ca_glioma:eco_term_1" value="evidence:readString:createObservedUrlEvidence" />
-<entry key="mdacc_pik3ca_glioma:eco_term_2" value="evidence:readString:createObservedUrlEvidence" />
-<entry key="mdacc_pik3ca_glioma:eco_term_3" value="evidence:readString:createObservedUrlEvidence" />
-<entry key="ucsf_ddx3x_mutation_tumor_formation:ddx3x" value="subject:findGenesBySymbol" />
-<entry key="ucsf_ddx3x_mutation_tumor_formation:disease" value="subject:findTissueSampleByName" />
-<entry key="ucsf_ddx3x_mutation_tumor_formation:strain" value="subject:findAnimalModelByName" />
-<entry key="ucsf_ddx3x_mutation_tumor_formation:reference" value="evidence:readString:createObservedUrlEvidence" />
-<entry key="ucsf_ddx3x_mutation_tumor_formation:evidence_ontology_term" value="evidence:readString:createObservedUrlEvidence" />
-<entry key="ucsf_ddx3x_mutation_tumor_formation:figure_6" value="evidence:readString:createObservedFileEvidence" />
-<entry key="ucsf_gorlin_nes_cell_tumor_formation:disease" value="subject:findTissueSampleByName" />
-<entry key="ucsf_gorlin_nes_cell_tumor_formation:strain" value="subject:findAnimalModelByName" />
-<entry key="ucsf_gorlin_nes_cell_tumor_formation:reference" value="evidence:readString:createObservedUrlEvidence" />
-<entry key="ucsf_gorlin_nes_cell_tumor_formation:evidence_ontology_term" value="evidence:readString:createObservedUrlEvidence" />
-<entry key="ucsf_gorlin_nes_cell_tumor_formation:figure_4" value="evidence:readString:createObservedFileEvidence" />
-<entry key="ucsf_gse1_tumor_formation:gse1" value="subject:findGenesBySymbol" />
-<entry key="ucsf_gse1_tumor_formation:gorlin_nes_cells" value="evidence:readString:createObservedLabelEvidence" />
-<entry key="ucsf_gse1_tumor_formation:disease" value="subject:findTissueSampleByName" />
-<entry key="ucsf_gse1_tumor_formation:reference" value="evidence:readString:createObservedUrlEvidence" />
-<entry key="ucsf_gse1_tumor_formation:evidence_ontology_term" value="evidence:readString:createObservedUrlEvidence" />
-<entry key="ucsf_gse1_tumor_formation:figure_7" value="evidence:readString:createObservedFileEvidence" />
-<entry key="ucsf_mycn_transformation:gene_1" value="subject:findGenesBySymbol" />
-<entry key="ucsf_mycn_transformation:cell_line" value="evidence:readString:createObservedLabelEvidence" />
-<entry key="ucsf_mycn_transformation:disease" value="subject:findTissueSampleByName" />
-<entry key="ucsf_mycn_transformation:reference" value="evidence:readString:createObservedUrlEvidence" />
-<entry key="ucsf_mycn_transformation:evidence_ontology_term" value="evidence:readString:createObservedUrlEvidence" />
-<entry key="ucsf_mycn_transformation:figure_1" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="dfci_creb5:gene_1" value="subject:findGenesBySymbol" />
+		<entry key="dfci_creb5:disease_1" value="subject:findTissueSampleByName" />
+		<entry key="dfci_creb5:drug_1" value="subject:findCompoundsByName" />
+		<entry key="dfci_creb5:gene_2" value="subject:findGenesBySymbol" />
+		<entry key="dfci_creb5:ref_1" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="dfci_creb5:figure_1" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="dfci_creb5:figure_2" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="dfci_creb5:figure_5" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="dfci_creb5:evidence_ontology_1" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="dfci_creb5:evidence_ontology_2" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="dfci_creb5:evidence_ontology_3" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="dfci_creb5:evidence_ontology_4" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="dfci_creb5:evidence_ontology_5" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="dfci_mrt_vulnerability:gene_1" value="subject:findGenesBySymbol" />
+		<entry key="dfci_mrt_vulnerability:gene_2" value="subject:findGenesBySymbol" />
+		<entry key="dfci_mrt_vulnerability:gene_3" value="subject:findGenesBySymbol" />
+		<entry key="dfci_mrt_vulnerability:disease" value="subject:findTissueSampleByName" />
+		<entry key="dfci_mrt_vulnerability:gene_4" value="subject:findGenesBySymbol" />
+		<entry key="dfci_mrt_vulnerability:drug_1" value="subject:findCompoundsByName" />
+		<entry key="dfci_mrt_vulnerability:drug_2" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="dfci_mrt_vulnerability:reference" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="dfci_mrt_vulnerability:figure_2" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="dfci_mrt_vulnerability:evidence_ontology_1" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="dfci_mrt_vulnerability:evidence_ontology_2" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="dfci_mrt_vulnerability:evidence_ontology_3" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="dfci_mrt_vulnerability:evidence_ontology_4" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="dfci_mrt_vulnerability:evidence_ontology_5" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="dfci_mrt_vulnerability:figure_4" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="dfci_mrt_vulnerability:figure_1" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="dfci_shoc2:gene_1" value="subject:findGenesBySymbol" />
+		<entry key="dfci_shoc2:disease_1" value="subject:findTissueSampleByName" />
+		<entry key="dfci_shoc2:disease_2" value="subject:findTissueSampleByName" />
+		<entry key="dfci_shoc2:drug_1" value="subject:findCompoundsByName" />
+		<entry key="dfci_shoc2:gene_2" value="subject:findGenesBySymbol" />
+		<entry key="dfci_shoc2:gene_3" value="subject:findGenesBySymbol" />
+		<entry key="dfci_shoc2:gene_4" value="subject:findGenesBySymbol" />
+		<entry key="dfci_shoc2:gene_5" value="subject:findGenesBySymbol" />
+		<entry key="dfci_shoc2:ref_1" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="dfci_shoc2:figure_1" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="dfci_shoc2:figure_4" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="dfci_shoc2:figure_5" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="dfci_shoc2:evidence_ontology_1" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="dfci_shoc2:evidence_ontology_2" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="dfci_shoc2:evidence_ontology_3" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="dfci_shoc2:evidence_ontology_4" value="evidence:readString:createObservedUrlEvidence" />
 
-<entry key="dfci_creb5:gene_1" value="subject:findGenesBySymbol" />
-<entry key="dfci_creb5:disease_1" value="subject:findTissueSampleByName" />
-<entry key="dfci_creb5:drug_1" value="subject:findCompoundsByName" />
-<entry key="dfci_creb5:gene_2" value="subject:findGenesBySymbol" />
-<entry key="dfci_creb5:ref_1" value="evidence:readString:createObservedUrlEvidence" />
-<entry key="dfci_creb5:figure_1" value="evidence:readString:createObservedFileEvidence" />
-<entry key="dfci_creb5:figure_2" value="evidence:readString:createObservedFileEvidence" />
-<entry key="dfci_creb5:figure_5" value="evidence:readString:createObservedFileEvidence" />
-<entry key="dfci_creb5:evidence_ontology_1" value="evidence:readString:createObservedUrlEvidence" />
-<entry key="dfci_creb5:evidence_ontology_2" value="evidence:readString:createObservedUrlEvidence" />
-<entry key="dfci_creb5:evidence_ontology_3" value="evidence:readString:createObservedUrlEvidence" />
-<entry key="dfci_creb5:evidence_ontology_4" value="evidence:readString:createObservedUrlEvidence" />
-<entry key="dfci_creb5:evidence_ontology_5" value="evidence:readString:createObservedUrlEvidence" />
-<entry key="dfci_mrt_vulnerability:gene_1" value="subject:findGenesBySymbol" />
-<entry key="dfci_mrt_vulnerability:gene_2" value="subject:findGenesBySymbol" />
-<entry key="dfci_mrt_vulnerability:gene_3" value="subject:findGenesBySymbol" />
-<entry key="dfci_mrt_vulnerability:disease" value="subject:findTissueSampleByName" />
-<entry key="dfci_mrt_vulnerability:gene_4" value="subject:findGenesBySymbol" />
-<entry key="dfci_mrt_vulnerability:drug_1" value="subject:findCompoundsByName" />
-<entry key="dfci_mrt_vulnerability:drug_2" value="evidence:readString:createObservedLabelEvidence" />
-<entry key="dfci_mrt_vulnerability:reference" value="evidence:readString:createObservedUrlEvidence" />
-<entry key="dfci_mrt_vulnerability:figure_2" value="evidence:readString:createObservedFileEvidence" />
-<entry key="dfci_mrt_vulnerability:evidence_ontology_1" value="evidence:readString:createObservedUrlEvidence" />
-<entry key="dfci_mrt_vulnerability:evidence_ontology_2" value="evidence:readString:createObservedUrlEvidence" />
-<entry key="dfci_mrt_vulnerability:evidence_ontology_3" value="evidence:readString:createObservedUrlEvidence" />
-<entry key="dfci_mrt_vulnerability:evidence_ontology_4" value="evidence:readString:createObservedUrlEvidence" />
-<entry key="dfci_mrt_vulnerability:evidence_ontology_5" value="evidence:readString:createObservedUrlEvidence" />
-<entry key="dfci_mrt_vulnerability:figure_4" value="evidence:readString:createObservedFileEvidence" />
-<entry key="dfci_mrt_vulnerability:figure_1" value="evidence:readString:createObservedFileEvidence" />
-<entry key="dfci_shoc2:gene_1" value="subject:findGenesBySymbol" />
-<entry key="dfci_shoc2:disease_1" value="subject:findTissueSampleByName" />
-<entry key="dfci_shoc2:disease_2" value="subject:findTissueSampleByName" />
-<entry key="dfci_shoc2:drug_1" value="subject:findCompoundsByName" />
-<entry key="dfci_shoc2:gene_2" value="subject:findGenesBySymbol" />
-<entry key="dfci_shoc2:gene_3" value="subject:findGenesBySymbol" />
-<entry key="dfci_shoc2:gene_4" value="subject:findGenesBySymbol" />
-<entry key="dfci_shoc2:gene_5" value="subject:findGenesBySymbol" />
-<entry key="dfci_shoc2:ref_1" value="evidence:readString:createObservedUrlEvidence" />
-<entry key="dfci_shoc2:figure_1" value="evidence:readString:createObservedFileEvidence" />
-<entry key="dfci_shoc2:figure_4" value="evidence:readString:createObservedFileEvidence" />
-<entry key="dfci_shoc2:figure_5" value="evidence:readString:createObservedFileEvidence" />
-<entry key="dfci_shoc2:evidence_ontology_1" value="evidence:readString:createObservedUrlEvidence" />
-<entry key="dfci_shoc2:evidence_ontology_2" value="evidence:readString:createObservedUrlEvidence" />
-<entry key="dfci_shoc2:evidence_ontology_3" value="evidence:readString:createObservedUrlEvidence" />
-<entry key="dfci_shoc2:evidence_ontology_4" value="evidence:readString:createObservedUrlEvidence" />
-<entry key="ucsf1_kras_sl_drug_screen-resistance:drug_name" value="subject:findCompoundsByName" />
-<entry key="ucsf1_kras_sl_drug_screen-resistance:gene_name" value="subject:findGenesBySymbol" />
-<entry key="ucsf1_kras_sl_drug_screen-resistance:percent_change_auc" value="evidence:readDouble:createObservedNumericEvidence"  />
-<entry key="ucsf1_kras_sl_drug_screen-resistance:reference" value="evidence:readString:createObservedUrlEvidence" />
-<entry key="ucsf1_kras_sl_drug_screen-sensitivity:drug_name" value="subject:findCompoundsByName" />
-<entry key="ucsf1_kras_sl_drug_screen-sensitivity:gene_name" value="subject:findGenesBySymbol" />
-<entry key="ucsf1_kras_sl_drug_screen-sensitivity:percent_change_auc" value="evidence:readDouble:createObservedNumericEvidence"  />
-<entry key="ucsf1_kras_sl_drug_screen-sensitivity:reference" value="evidence:readString:createObservedUrlEvidence" />
-
-
-
+		<entry key="columbia_oncosig_ppi_networks:hub_oncoprotein" value="subject:findGenesBySymbol" />
+		<entry key="columbia_oncosig_ppi_networks:interactor_protein" value="subject:findGenesBySymbol" />
+		<entry key="columbia_oncosig_ppi_networks:oncosig_score" value="evidence:readDouble:createObservedNumericEvidence" /> 
+		<entry key="columbia_oncosig_ppi_networks:preppi_lr" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="columbia_oncosig_ppi_networks:interaction_type" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="columbia_oncosig_ppi_networks:physical" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="columbia_oncosig_ppi_networks:tumor_type" value="subject:findTissueSampleByName" />
+		<entry key="columbia_oncosig_ppi_networks:data_resource" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="columbia_oncosig_ppi_networks:reference" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="columbia_oncosig_shrna_knockdown:hub_oncoprotein" value="subject:findGenesBySymbol" />
+		<entry key="columbia_oncosig_shrna_knockdown:interactor_protein" value="subject:findGenesBySymbol" />
+		<entry key="columbia_oncosig_shrna_knockdown:fdr" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="columbia_oncosig_shrna_knockdown:fold_change" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="columbia_oncosig_shrna_knockdown:tumor_type" value="subject:findTissueSampleByName" />
+		<entry key="columbia_oncosig_shrna_knockdown:figure_3d_source_url" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="columbia_oncosig_shrna_knockdown:figure_3_url" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="columbia_oncosig_shrna_knockdown:figure_3" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="columbia_oncosig_shrna_knockdown:reference" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="dfci_creb5_story:gene_1" value="subject:findGenesBySymbol" />
+		<entry key="dfci_creb5_story:disease_1" value="subject:findTissueSampleByName" />
+		<entry key="dfci_creb5_story:drug_1" value="subject:findCompoundsByName" />
+		<entry key="dfci_creb5_story:gene_2" value="subject:findGenesBySymbol" />
+		<entry key="dfci_creb5_story:publication_reference" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="dfci_creb5_story:story_location" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="dfci_creb5_story:evidence_ontology_1" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="dfci_creb5_story:evidence_ontology_2" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="dfci_creb5_story:evidence_ontology_3" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="dfci_creb5_story:evidence_ontology_4" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="dfci_creb5_story:evidence_ontology_5" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="ucsf1_kras_sl_drug_screen:drug_name" value="subject:findCompoundsByName" />
+		<entry key="ucsf1_kras_sl_drug_screen:gene_name" value="subject:findGenesBySymbol" />
+		<entry key="ucsf1_kras_sl_drug_screen:effect" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="ucsf1_kras_sl_drug_screen:cell_line" value="subject:findCellLineByName" />
+		<entry key="ucsf1_kras_sl_drug_screen:percent_change_auc" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="ucsf1_kras_sl_drug_screen:reference" value="evidence:readString:createObservedUrlEvidence" />
 
             </map>
         </constructor-arg>

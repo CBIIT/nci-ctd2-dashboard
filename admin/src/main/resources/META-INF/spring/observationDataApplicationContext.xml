@@ -1765,8 +1765,6 @@
             </bean>
         </property>
     </bean>
-
-
     <bean name="dfciCreb5DataLocatonReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
         <property name="resources" value="${dfci.creb5.data.locaton}"/>
         <property name="delegate">
@@ -1794,23 +1792,40 @@
             </bean>
         </property>
     </bean>
-    <bean name="ucsf1KrasSlDrugScreenResistanceReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
-        <property name="resources" value="${ucsf1.kras.sl.drug.screen.resistance.data.location}" />
+    <bean name="ucsf1KrasSlDrugScreenReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${ucsf1.kras.sl.drug.screen.data.location}" />
         <property name="delegate">
             <bean class="org.springframework.batch.item.file.FlatFileItemReader">
-                <property name="lineMapper" ref="ucsf1KrasSlDrugScreenResistanceLineMapper" />
+                <property name="lineMapper" ref="ucsf1KrasSlDrugScreenLineMapper" />
                 <property name="linesToSkip" value="7" />
             </bean>
         </property>
     </bean>
-    <bean name="ucsf1KrasSlDrugScreenSensitivityReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
-        <property name="resources" value="${ucsf1.kras.sl.drug.screen.sensitivity.data.location}" />
+    <bean name="columbiaOncosigPpiNetworksReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${columbia.oncosig.ppi.networks.data.location}" />
         <property name="delegate">
             <bean class="org.springframework.batch.item.file.FlatFileItemReader">
-                <property name="lineMapper" ref="ucsf1KrasSlDrugScreenSensitivityLineMapper" />
+                <property name="lineMapper" ref="columbiaOncosigPpiNetworksLineMapper" />
                 <property name="linesToSkip" value="7" />
             </bean>
         </property>
     </bean>
-
+    <bean name="columbiaOncosigShrnaKnockdownReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${columbia.oncosig.shrna.knockdown.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="columbiaOncosigShrnaKnockdownLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="dfciCreb5StoryReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${dfci.creb5.story.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="dfciCreb5StoryLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
 </beans>
