@@ -771,28 +771,53 @@ public class DashboardDaoImpl implements DashboardDao {
         return searchResults;
     }
 
-    private List<Integer> searchChildren(String[] searchTerms) {
+    private List<Integer> ontologySearchDiseaseContext(String[] searchTerms) {
         List<Integer> list = new ArrayList<Integer>();
         for (String t : searchTerms) {
             int code = getCodeFromTissueSampleName(t);
             if (code == 0) // not real code
                 continue;
-            log.debug("code:" + code);
-            list.addAll(searchChildren(code));
+            log.debug("tissue sample code:" + code);
+            list.addAll(searchDCChildren(code));
         }
         return list;
     }
 
-    private List<Integer> searchChildren(int code) {
+    private List<Integer> searchDCChildren(int code) {
         List<Integer> list = new ArrayList<Integer>();
         int[] children = Hierarchy.DISEASE_CONTEXT.getChildrenCode(code);
         for (int child : children) {
             int observationNumber = observationCountForTissueSample(child);
             if (observationNumber > 1) {
-                log.debug("child found " + child);
+                log.debug("tissue sample child found " + child);
                 list.add(child);
             }
-            list.addAll(searchChildren(child));
+            list.addAll(searchDCChildren(child));
+        }
+        return list;
+    }
+
+    private List<Integer> ontologySearchExperimentalEvidence(final List<ECOTerm> ecoterms) {
+        List<Integer> list = new ArrayList<Integer>();
+        for (ECOTerm t : ecoterms) {
+            int code = Integer.parseInt(t.getCode().substring(4));
+            log.debug("eco code:" + code);
+            list.addAll(searchEEChildren(code));
+        }
+        return list;
+    }
+
+    private List<Integer> searchEEChildren(int code) {
+        List<Integer> list = new ArrayList<Integer>();
+        int[] children = Hierarchy.EXPERIMENTAL_EVIDENCE.getChildrenCode(code);
+        for (int child : children) {
+            List<Integer> observationIds = observationIdsForEcoCode(String.format("ECO:%07d", child));
+            int observationNumber = observationIds.size();
+            if (observationNumber > 1) {
+                log.debug("eco child found " + child);
+                list.add(child);
+            }
+            list.addAll(searchEEChildren(child));
         }
         return list;
     }
@@ -1461,7 +1486,7 @@ public class DashboardDaoImpl implements DashboardDao {
     public List<DashboardEntityWithCounts> ontologySearch(String queryString) {
         final String[] searchTerms = parseWords(queryString);
         long t1 = System.currentTimeMillis();
-        List<Integer> list = searchChildren(searchTerms);
+        List<Integer> list = ontologySearchDiseaseContext(searchTerms);
         List<DashboardEntityWithCounts> entities = new ArrayList<DashboardEntityWithCounts>();
         Session session = getSession();
         @SuppressWarnings("unchecked")
@@ -1472,15 +1497,28 @@ public class DashboardDaoImpl implements DashboardDao {
             try {
                 result = query.getSingleResult();
             } catch (NoResultException e) {
-                log.info("Tissue sample not available for ECO code " + i);
+                log.info("Tissue sample not available for code " + i);
                 continue;
             }
             System.out.println(result);
             entities.add(new DashboardEntityWithCounts(result, 0));
         }
-        session.close();
         long t2 = System.currentTimeMillis();
         log.debug((t2 - t1) + " miliseconds");
+
+        List<ECOTerm> ecoterms = findECOTerms(queryString);
+        List<Integer> eco_list = ontologySearchExperimentalEvidence(ecoterms);
+        log.debug("eco list size:" + eco_list.size());
+        @SuppressWarnings("unchecked")
+        org.hibernate.query.Query<ECOTerm> query2 = session.createQuery("FROM ECOTermImpl WHERE code in (:codes)");
+        List<String> codes = eco_list.stream().map(x -> String.format("ECO:%07d", x)).collect(Collectors.toList());
+        query2.setParameterList("codes", codes);
+        List<ECOTerm> list2 = query2.list();
+        for (ECOTerm x : list2) {
+            entities.add(new DashboardEntityWithCounts(x, 0));
+        }
+
+        session.close();
         return entities;
     }
 }

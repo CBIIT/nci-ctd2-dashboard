@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 public enum Hierarchy {
-    DISEASE_CONTEXT("disease_context_hierarchy.txt"), EXPERIMENTAL_EVIDENCE("");
+    DISEASE_CONTEXT("disease_context_hierarchy.txt"), EXPERIMENTAL_EVIDENCE("experimental_evidence_hierarchy.txt");
 
     final private Map<Integer, int[]> map;
 
@@ -44,6 +44,12 @@ public enum Hierarchy {
     public String[] getDiseaseContextChildrenFullCode(String parent) {
         Integer p = Integer.valueOf(parent.substring(1));
         return Stream.of(map.get(p)).map(x -> "C" + x).toArray(String[]::new);
+    }
+
+    // in case we need the full code with the leading 'ECO:' plus 7 digits
+    public String[] getExperimentalEvidenceChildrenFullCode(String parent) {
+        Integer p = Integer.valueOf(parent.substring(4));
+        return Stream.of(map.get(p)).map(x -> String.format("ECO:%07d", x)).toArray(String[]::new);
     }
 
     public int[] getChildrenCode(int parent) {
