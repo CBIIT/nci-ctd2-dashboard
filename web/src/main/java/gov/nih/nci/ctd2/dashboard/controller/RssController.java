@@ -43,6 +43,7 @@ import gov.nih.nci.ctd2.dashboard.model.ObservedSubject;
 import gov.nih.nci.ctd2.dashboard.model.Subject;
 import gov.nih.nci.ctd2.dashboard.model.Submission;
 import gov.nih.nci.ctd2.dashboard.util.DashboardEntityWithCounts;
+import gov.nih.nci.ctd2.dashboard.util.SearchResults;
 
 @Controller
 @RequestMapping("/feed")
@@ -119,9 +120,9 @@ public class RssController {
         }
 
         // Search and find the entity hits
-        List<DashboardEntityWithCounts> entitiesWithCounts = dashboardDao.search(keyword);
+        SearchResults entitiesWithCounts = dashboardDao.search(keyword);
         List<DashboardEntity> searchEntities = new ArrayList<DashboardEntity>();
-        for (DashboardEntityWithCounts entitiesWithCount : entitiesWithCounts) {
+        for (DashboardEntityWithCounts entitiesWithCount : entitiesWithCounts.subject_result) {
             searchEntities.add(entitiesWithCount.getDashboardEntity());
         }
 

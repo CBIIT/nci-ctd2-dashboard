@@ -2,9 +2,9 @@ package gov.nih.nci.ctd2.dashboard.controller;
 
 import flexjson.JSONSerializer;
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
-import gov.nih.nci.ctd2.dashboard.util.DashboardEntityWithCounts;
 import gov.nih.nci.ctd2.dashboard.util.DateTransformer;
 import gov.nih.nci.ctd2.dashboard.util.ImplTransformer;
+import gov.nih.nci.ctd2.dashboard.util.SearchResults;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -22,7 +22,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.util.Date;
-import java.util.List;
 
 @Controller
 @RequestMapping("/search")
@@ -49,7 +48,7 @@ public class SearchController {
             e.printStackTrace();
         }
 
-        List<DashboardEntityWithCounts> results = dashboardDao.search(keyword);
+        SearchResults results = dashboardDao.search(keyword);
         log.debug("number of rearch results "+results.size());
         JSONSerializer jsonSerializer = new JSONSerializer().transform(new ImplTransformer(), Class.class)
                 .transform(new DateTransformer(), Date.class);

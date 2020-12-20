@@ -249,11 +249,8 @@
         }
     });
 
-    const SearchResult = Backbone.Model.extend({});
-
-    const SearchResults = Backbone.Collection.extend({
+    const SearchResults = Backbone.Model.extend({
         url: CORE_API_URL + "search/",
-        model: SearchResult,
 
         initialize: function (attributes) {
             this.url += encodeURIComponent(attributes.term.toLowerCase());
@@ -3015,7 +3012,11 @@
             searchResults.fetch({
                 success: function () {
                     $("#loading-row").remove();
-                    if (searchResults.models.length == 0) {
+                    const results = searchResults.toJSON();
+                    const subject_result = results.subject_result;
+                    const submission_result = results.submission_result;
+                    const observation_result = results.observation_result;
+                    if (subject_result.length + submission_result.length == 0) {
                         (new EmptyResultsView({
                             el: $(thatEl).find("tbody"),
                             model: thatModel
@@ -3025,27 +3026,23 @@
                     } else {
                         const submissions = [];
                         const matching_observations = [];
-                        _.each(searchResults.models, function (aResult) {
-                            aResult = aResult.toJSON();
+                        _.each(subject_result, function (aResult) {
                             if (aResult.dashboardEntity.organism == undefined) {
                                 aResult.dashboardEntity.organism = {
                                     displayName: "-"
                                 };
                             }
-
-                            if (aResult.dashboardEntity.class == "Submission") {
-                                submissions.push(aResult);
-                                return;
-                            } else if (aResult.dashboardEntity.class == "Observation") {
-                                matching_observations.push(aResult.dashboardEntity);
-                                return;
-                            }
-
                             const searchResultsRowView = new SearchResultsRowView({
                                 model: aResult,
                                 el: $(thatEl).find("tbody")
                             });
                             searchResultsRowView.render();
+                        });
+                        _.each(submission_result, function (aResult) {
+                            submissions.push(aResult);
+                        });
+                        _.each(observation_result, function (aResult) {
+                            matching_observations.push(aResult.dashboardEntity);
                         });
 
                         $(".search-info").popover({

@@ -66,4 +66,17 @@ public class ECOTermImpl extends DashboardEntityImpl implements ECOTerm {
     public String toString() {
         return "[ECO term] name: " + getDisplayName() + ", code: " + code + ", definition: " + definition;
     }
+
+    @Override
+    public Boolean containsTerm(String term) {
+        if (this.getDisplayName().toLowerCase().contains(term))
+            return true;
+        if (code.contains(term))
+            return true;
+        for (String synonym : synonyms.split("\\|")) {
+            if (synonym.contains(term))
+                return true;
+        }
+        return false;
+    }
 }

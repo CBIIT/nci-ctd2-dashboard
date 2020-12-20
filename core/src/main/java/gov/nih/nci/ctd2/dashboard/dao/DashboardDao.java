@@ -1,13 +1,12 @@
 package gov.nih.nci.ctd2.dashboard.dao;
 
 import gov.nih.nci.ctd2.dashboard.model.*;
-import gov.nih.nci.ctd2.dashboard.util.DashboardEntityWithCounts;
 import gov.nih.nci.ctd2.dashboard.util.SubjectWithSummaries;
 import gov.nih.nci.ctd2.dashboard.util.Summary;
 import gov.nih.nci.ctd2.dashboard.util.EcoBrowse;
+import gov.nih.nci.ctd2.dashboard.util.SearchResults;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -58,7 +57,7 @@ public interface DashboardDao {
     void batchSave(Collection<? extends DashboardEntity> entities, int batchSize);
     void batchMerge(Collection<? extends Subject> entities);
     void cleanIndex(int batchSize);
-    ArrayList<DashboardEntityWithCounts> search(String keyword);
+    SearchResults search(String keyword);
     List<Submission> findSubmissionByIsStory(boolean isSubmissionStory, boolean sortByPriority);
     List<Submission> findSubmissionByObservationTemplate(ObservationTemplate observationTemplate);
     Submission findSubmissionByName(String submissionName);

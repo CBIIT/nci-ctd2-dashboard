@@ -44,7 +44,7 @@ public class SearchAPI {
         SubjectResponse.Filter filter = SubjectResponse.createFilter(center, role, tiers, maximum);
 
         List<SubjectResponse> allSubjects = new ArrayList<SubjectResponse>();
-        List<DashboardEntityWithCounts> results = dashboardDao.search(term.toLowerCase());
+        List<DashboardEntityWithCounts> results = dashboardDao.search(term.toLowerCase()).subject_result;
         for (DashboardEntityWithCounts resultWithCount : results) {
             DashboardEntity result = resultWithCount.getDashboardEntity();
             if (!(result instanceof Subject))
