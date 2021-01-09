@@ -178,7 +178,7 @@ const GeneListView = Backbone.View.extend({
                         }
                     }
                     if(counter==1) {
-                        const network_url = 'https://string-db.org/network/homo_sapiens/' + genes.substring(0,genes.length-1);
+                        const network_url = 'https://version-11-0.string-db.org/network/homo_sapiens/' + genes.substring(0,genes.length-1);
                         window.open(network_url, "_blank");
                         break;
                     }

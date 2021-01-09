@@ -3583,7 +3583,7 @@
                             content: function () {
                                 return ctd2_role_definition[$(this).text()];
                             },
-                        })
+                        });
                     });
                     $("#explore-table").parent().width("100%");
                     $("#explore-table").width("100%");
