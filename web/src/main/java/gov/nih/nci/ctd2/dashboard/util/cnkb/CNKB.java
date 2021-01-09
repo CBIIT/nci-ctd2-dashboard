@@ -280,24 +280,6 @@ public class CNKB {
 		return arrayList;
 	}
 
-	public double getThrottleValue(String geneSymbols, String context, String version, int rowLimit)
-			throws UnAuthenticatedException, ConnectException, SocketTimeoutException, IOException {
-
-		String methodAndParams = "getThrottleValue" + Constants.DEL + geneSymbols + Constants.DEL + context
-				+ Constants.DEL + version + Constants.DEL + rowLimit;
-
-		ResultSetlUtil rs = ResultSetlUtil.executeQuery(methodAndParams);
-
-		double throttle = 0;
-		while (rs.next()) {
-			throttle = rs.getDouble("confidence_value");
-			break;
-		}
-		rs.close();
-
-		return throttle;
-	}
-
 	public List<InteractionDetail> getInteractionsByGeneSymbolAndLimit(String geneSymbol, String context,
 			String version, Integer limit)
 			throws UnAuthenticatedException, ConnectException, SocketTimeoutException, IOException {
