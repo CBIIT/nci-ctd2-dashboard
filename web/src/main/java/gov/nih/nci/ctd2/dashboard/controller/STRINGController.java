@@ -1,9 +1,10 @@
 package gov.nih.nci.ctd2.dashboard.controller;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -19,46 +20,35 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class STRINGController {
 
     @Transactional
-    @RequestMapping(value="identifier", method = {RequestMethod.GET}, headers = "Accept=application/json")
+    @RequestMapping(value = "identifier", method = { RequestMethod.GET }, headers = "Accept=application/json")
     public ResponseEntity<String> getIdentifier(@RequestParam("genes") String genes) {
         String[] geneSymbols = genes.split(",");
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "text/html; charset=utf-8");
 
+        HttpClient httpClient = HttpClient.newBuilder().build();
         StringBuffer identifiers = new StringBuffer();
         try {
-            for(String g: geneSymbols) {
-                URL url = new URL("https://string-db.org/api/tsv/get_string_ids?identifiers="+g+"&species=9606");
-                HttpURLConnection con = (HttpURLConnection) url.openConnection();
-                con.setRequestMethod("GET");
-                BufferedReader in = new BufferedReader(
-                new InputStreamReader(con.getInputStream()));
-                String inputLine;
-                int line = 0;
-                while ((inputLine = in.readLine()) != null) {
-                    if(line==1) { // second line is the content
-                        String[] f = inputLine.split("\\s");
-                        if(identifiers.length()>0) {
-                            identifiers.append("%0D");
-                        }
-                        identifiers.append(f[1]); // second field is the identifier
-                        break; // skip the rest lines
-                    }
-                    line++;
+            for (String g : geneSymbols) {
+                URI uri = URI.create("https://string-db.org/api/tsv/get_string_ids?identifiers=" + g + "&species=9606");
+                HttpRequest request = HttpRequest.newBuilder().uri(uri).build();
+                HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+                String[] line = response.body().split("\n");
+                String[] f = line[1].split("\\s");
+                if (identifiers.length() > 0) {
+                    identifiers.append("%0D");
                 }
-                in.close();
-                con.disconnect();
+                identifiers.append(f[1]); // second field of the second line is the identifier
             }
-        } catch(Exception e) {
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+            return new ResponseEntity<String>(headers, HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<String>(headers, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        return new ResponseEntity<String> (
-                identifiers.toString(),
-                headers,
-                HttpStatus.OK
-        );
+        return new ResponseEntity<String>(identifiers.toString(), headers, HttpStatus.OK);
     }
 }

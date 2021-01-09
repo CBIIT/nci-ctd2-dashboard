@@ -1,17 +1,16 @@
 package gov.nih.nci.ctd2.dashboard.util.cnkb;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
- 
-
 import java.io.IOException;
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
-import java.util.HashSet;
-import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /* This is based on InteractionsConnectionImpl in CNKB (interactions) component
  * to fix the issue of dependency on 'current dataset' */
@@ -32,12 +31,11 @@ public class CNKB {
 	static private CNKB instance = null;
 
 	private CNKB() {
-		
+
 	};
 
 	public static CNKB getInstance(String interactionsServletUrl) {
-		if (instance == null)
-		{
+		if (instance == null) {
 			instance = new CNKB();
 			ResultSetlUtil.setUrl(interactionsServletUrl);
 		}
@@ -45,24 +43,19 @@ public class CNKB {
 	}
 
 	// query only by one gene
-	public List<InteractionDetail> getInteractionsByGeneSymbol(
-			String geneSymbol, String context, String version)
-			throws UnAuthenticatedException, ConnectException,
-			SocketTimeoutException, IOException {
+	public List<InteractionDetail> getInteractionsByGeneSymbol(String geneSymbol, String context, String version)
+			throws UnAuthenticatedException, ConnectException, SocketTimeoutException, IOException {
 
-		 return getInteractionsByGeneSymbolAndLimit(geneSymbol, context, version, null);
+		return getInteractionsByGeneSymbolAndLimit(geneSymbol, context, version, null);
 	}
 
-	public List<String> getInteractionsSifFormat(String context,
-			String version, String interactionType, String presentBy)
-			throws UnAuthenticatedException, ConnectException,
-			SocketTimeoutException, IOException {
+	public List<String> getInteractionsSifFormat(String context, String version, String interactionType,
+			String presentBy) throws UnAuthenticatedException, ConnectException, SocketTimeoutException, IOException {
 
 		List<String> arrayList = new ArrayList<String>();
 
-		String methodAndParams = "getInteractionsSifFormat" + Constants.DEL
-				+ context + Constants.DEL + version + Constants.DEL
-				+ interactionType + Constants.DEL + presentBy;
+		String methodAndParams = "getInteractionsSifFormat" + Constants.DEL + context + Constants.DEL + version
+				+ Constants.DEL + interactionType + Constants.DEL + presentBy;
 		ResultSetlUtil rs = ResultSetlUtil.executeQuery(methodAndParams);
 
 		String sifLine = null;
@@ -81,16 +74,13 @@ public class CNKB {
 		return arrayList;
 	}
 
-	public List<String> getInteractionsAdjFormat(String context,
-			String version, String interactionType, String presentBy)
-			throws UnAuthenticatedException, ConnectException,
-			SocketTimeoutException, IOException {
+	public List<String> getInteractionsAdjFormat(String context, String version, String interactionType,
+			String presentBy) throws UnAuthenticatedException, ConnectException, SocketTimeoutException, IOException {
 
 		List<String> arrayList = new ArrayList<String>();
 
-		String methodAndParams = "getInteractionsAdjFormat" + Constants.DEL
-				+ context + Constants.DEL + version + Constants.DEL
-				+ interactionType + Constants.DEL + presentBy;
+		String methodAndParams = "getInteractionsAdjFormat" + Constants.DEL + context + Constants.DEL + version
+				+ Constants.DEL + interactionType + Constants.DEL + presentBy;
 		ResultSetlUtil rs = ResultSetlUtil.executeQuery(methodAndParams);
 
 		String adjLine = null;
@@ -110,8 +100,7 @@ public class CNKB {
 	}
 
 	public HashMap<String, String> getInteractionTypeMap()
-			throws ConnectException, SocketTimeoutException, IOException,
-			UnAuthenticatedException {
+			throws ConnectException, SocketTimeoutException, IOException, UnAuthenticatedException {
 
 		if (interactionTypeMap != null)
 			return interactionTypeMap;
@@ -133,8 +122,7 @@ public class CNKB {
 	}
 
 	public HashMap<String, String> getInteractionEvidenceMap()
-			throws ConnectException, SocketTimeoutException, IOException,
-			UnAuthenticatedException {
+			throws ConnectException, SocketTimeoutException, IOException, UnAuthenticatedException {
 		HashMap<String, String> map = new HashMap<String, String>();
 
 		String methodAndParams = "getInteractionEvidences";
@@ -154,8 +142,7 @@ public class CNKB {
 	}
 
 	public HashMap<String, String> getConfidenceTypeMap()
-			throws ConnectException, SocketTimeoutException, IOException,
-			UnAuthenticatedException {
+			throws ConnectException, SocketTimeoutException, IOException, UnAuthenticatedException {
 		HashMap<String, String> map = new HashMap<String, String>();
 
 		String methodAndParams = "getConfidenceTypes";
@@ -174,8 +161,8 @@ public class CNKB {
 		return map;
 	}
 
-	public List<String> getInteractionTypes() throws ConnectException,
-			SocketTimeoutException, IOException, UnAuthenticatedException {
+	public List<String> getInteractionTypes()
+			throws ConnectException, SocketTimeoutException, IOException, UnAuthenticatedException {
 		List<String> arrayList = new ArrayList<String>();
 
 		String methodAndParams = "getInteractionTypes";
@@ -192,13 +179,12 @@ public class CNKB {
 		return arrayList;
 	}
 
-	public List<String> getInteractionTypesByInteractomeVersion(String context,
-			String version) throws ConnectException, SocketTimeoutException,
-			IOException, UnAuthenticatedException {
+	public List<String> getInteractionTypesByInteractomeVersion(String context, String version)
+			throws ConnectException, SocketTimeoutException, IOException, UnAuthenticatedException {
 		List<String> arrayList = new ArrayList<String>();
 
-		String methodAndParams = "getInteractionTypesByInteractomeVersion"
-				+ Constants.DEL + context + Constants.DEL + version;
+		String methodAndParams = "getInteractionTypesByInteractomeVersion" + Constants.DEL + context + Constants.DEL
+				+ version;
 		ResultSetlUtil rs = ResultSetlUtil.executeQuery(methodAndParams);
 
 		while (rs.next()) {
@@ -213,13 +199,11 @@ public class CNKB {
 	}
 
 	public String getInteractomeDescription(String interactomeName)
-			throws ConnectException, SocketTimeoutException, IOException,
-			UnAuthenticatedException {
+			throws ConnectException, SocketTimeoutException, IOException, UnAuthenticatedException {
 
 		String interactomeDesc = null;
 
-		String methodAndParams = "getInteractomeDescription" + Constants.DEL
-				+ interactomeName;
+		String methodAndParams = "getInteractomeDescription" + Constants.DEL + interactomeName;
 		ResultSetlUtil rs = ResultSetlUtil.executeQuery(methodAndParams);
 		while (rs.next()) {
 			interactomeDesc = rs.getString("description").trim();
@@ -231,8 +215,7 @@ public class CNKB {
 	}
 
 	public ArrayList<String> getDatasetAndInteractioCount()
-			throws ConnectException, SocketTimeoutException, IOException,
-			UnAuthenticatedException {
+			throws ConnectException, SocketTimeoutException, IOException, UnAuthenticatedException {
 		ArrayList<String> arrayList = new ArrayList<String>();
 
 		String datasetName = null;
@@ -245,8 +228,7 @@ public class CNKB {
 
 			datasetName = rs.getString("name").trim();
 			interactionCount = (int) rs.getDouble("interaction_count");
-			arrayList.add(datasetName + " (" + interactionCount
-					+ " interactions)");
+			arrayList.add(datasetName + " (" + interactionCount + " interactions)");
 		}
 		rs.close();
 
@@ -254,8 +236,7 @@ public class CNKB {
 	}
 
 	public ArrayList<String> getNciDatasetAndInteractioCount()
-			throws ConnectException, SocketTimeoutException, IOException,
-			UnAuthenticatedException {
+			throws ConnectException, SocketTimeoutException, IOException, UnAuthenticatedException {
 		ArrayList<String> arrayList = new ArrayList<String>();
 
 		String datasetName = null;
@@ -268,8 +249,7 @@ public class CNKB {
 
 			datasetName = rs.getString("name").trim();
 			interactionCount = (int) rs.getDouble("interaction_count");
-			arrayList.add(datasetName + " (" + interactionCount
-					+ " interactions)");
+			arrayList.add(datasetName + " (" + interactionCount + " interactions)");
 		}
 		rs.close();
 
@@ -277,12 +257,10 @@ public class CNKB {
 	}
 
 	public List<VersionDescriptor> getVersionDescriptor(String interactomeName)
-			throws ConnectException, SocketTimeoutException, IOException,
-			UnAuthenticatedException {
+			throws ConnectException, SocketTimeoutException, IOException, UnAuthenticatedException {
 		List<VersionDescriptor> arrayList = new ArrayList<VersionDescriptor>();
 
-		String methodAndParams = "getVersionDescriptor" + Constants.DEL
-				+ interactomeName;
+		String methodAndParams = "getVersionDescriptor" + Constants.DEL + interactomeName;
 		ResultSetlUtil rs = ResultSetlUtil.executeQuery(methodAndParams);
 		while (rs.next()) {
 			String version = rs.getString("version").trim();
@@ -294,8 +272,7 @@ public class CNKB {
 				needAuthentication = true;
 			}
 			String versionDesc = rs.getString("description").trim();
-			VersionDescriptor vd = new VersionDescriptor(version,
-					needAuthentication, versionDesc);
+			VersionDescriptor vd = new VersionDescriptor(version, needAuthentication, versionDesc);
 			arrayList.add(vd);
 		}
 		rs.close();
@@ -303,43 +280,21 @@ public class CNKB {
 		return arrayList;
 	}
 
-	public double getThrottleValue(String geneSymbols, String context,
-			String version, int rowLimit) throws UnAuthenticatedException,
-			ConnectException, SocketTimeoutException, IOException {
-
-		String methodAndParams = "getThrottleValue" + Constants.DEL
-				+ geneSymbols + Constants.DEL + context + Constants.DEL
-				+ version + Constants.DEL + rowLimit;
-
-		ResultSetlUtil rs = ResultSetlUtil.executeQuery(methodAndParams);
-
-		double throttle = 0;
-		while (rs.next()) {
-			throttle = rs.getDouble("confidence_value");
-			break;
-		}
-		rs.close();
-
-		return throttle;
-	}
-
-	public List<InteractionDetail> getInteractionsByGeneSymbolAndLimit(
-			String geneSymbol, String context, String version, Integer limit) throws UnAuthenticatedException, ConnectException,
-			SocketTimeoutException, IOException {
+	public List<InteractionDetail> getInteractionsByGeneSymbolAndLimit(String geneSymbol, String context,
+			String version, Integer limit)
+			throws UnAuthenticatedException, ConnectException, SocketTimeoutException, IOException {
 
 		List<InteractionDetail> arrayList = new ArrayList<InteractionDetail>();
-        Set<String> edgeIdList = new HashSet<String>();
+		Set<String> edgeIdList = new HashSet<String>();
 		String marker_geneName = geneSymbol;
 
-		String methodAndParams = "getInteractionsByGeneSymbolAndLimit"
-				+ Constants.DEL + marker_geneName + Constants.DEL + context
-				+ Constants.DEL + version;
-		
-		if (limit != null )
-			methodAndParams = methodAndParams +  Constants.DEL + limit;
-		 
-		ResultSetlUtil rs = ResultSetlUtil.executeQuery(
-				methodAndParams);
+		String methodAndParams = "getInteractionsByGeneSymbolAndLimit" + Constants.DEL + marker_geneName + Constants.DEL
+				+ context + Constants.DEL + version;
+
+		if (limit != null)
+			methodAndParams = methodAndParams + Constants.DEL + limit;
+
+		ResultSetlUtil rs = ResultSetlUtil.executeQuery(methodAndParams);
 
 		String previousInteractionId = null;
 
@@ -349,31 +304,24 @@ public class CNKB {
 				String msid2 = rs.getString("primary_accession");
 				String geneName2 = rs.getString("gene_symbol");
 
-				if (geneName2 == null || geneName2.trim().equals("")
-						|| geneName2.trim().equals("null"))
+				if (geneName2 == null || geneName2.trim().equals("") || geneName2.trim().equals("null"))
 					geneName2 = msid2;
-				String interactionType = rs.getString("interaction_type")
-						.trim();
+				String interactionType = rs.getString("interaction_type").trim();
 				String interactionId = rs.getString("interaction_id");
 				Short evidenceId = 0;
-				if (rs.getString("evidence_id") != null
-						&& !rs.getString("evidence_id").trim().equals("null")) {
+				if (rs.getString("evidence_id") != null && !rs.getString("evidence_id").trim().equals("null")) {
 					evidenceId = Short.valueOf(rs.getString("evidence_id"));
 				}
 
-				if (previousInteractionId == null
-						|| !previousInteractionId.equals(interactionId)) {
+				if (previousInteractionId == null || !previousInteractionId.equals(interactionId)) {
 					if (interactionDetail != null) {
-						if (!interactionDetail.getParticipantGeneList()
-								.contains("null"))
-						{
+						if (!interactionDetail.getParticipantGeneList().contains("null")) {
 							String edgeName = getEdgeName(interactionDetail, geneSymbol);
-							if ( !edgeIdList.contains(edgeName) )
-							{
+							if (!edgeIdList.contains(edgeName)) {
 								edgeIdList.add(edgeName);
 								arrayList.add(interactionDetail);
 							}
-							
+
 						}
 						interactionDetail = null;
 					}
@@ -382,80 +330,68 @@ public class CNKB {
 				}
 
 				if (interactionDetail == null) {
-					interactionDetail = new InteractionDetail(
-							new InteractionParticipant(msid2, geneName2),
+					interactionDetail = new InteractionDetail(new InteractionParticipant(msid2, geneName2),
 							interactionType, evidenceId);
 					float confidenceValue = 1.0f;
 					try {
-						confidenceValue = (float)rs.getDouble("confidence_value");
+						confidenceValue = (float) rs.getDouble("confidence_value");
 					} catch (NumberFormatException nfe) {
 						logger.info("there is no confidence value for this row. Default it to 1.");
 					}
 					short confidenceType = 0;
 					try {
-						confidenceType = Short.valueOf(rs.getString(
-								"confidence_type").trim());
+						confidenceType = Short.valueOf(rs.getString("confidence_type").trim());
 					} catch (NumberFormatException nfe) {
 						logger.info("there is no confidence value for this row. Default it to 0.");
 					}
-					interactionDetail.addConfidence(confidenceValue,
-							confidenceType);
-					String otherConfidenceValues = rs
-							.getString("other_confidence_values");
-					String otherConfidenceTypes = rs
-							.getString("other_confidence_types");
+					interactionDetail.addConfidence(confidenceValue, confidenceType);
+					String otherConfidenceValues = rs.getString("other_confidence_values");
+					String otherConfidenceTypes = rs.getString("other_confidence_types");
 					if (!otherConfidenceValues.equals("null")) {
 						String[] values = otherConfidenceValues.split(";");
 						String[] types = otherConfidenceTypes.split(";");
 
 						for (int i = 0; i < values.length; i++)
-							interactionDetail.addConfidence(
-									Float.valueOf(values[i]), Short.valueOf(types[i]));
+							interactionDetail.addConfidence(Float.valueOf(values[i]), Short.valueOf(types[i]));
 
 					}
 				} else {
-					interactionDetail
-							.addParticipant(new InteractionParticipant(msid2,
-									geneName2));
+					interactionDetail.addParticipant(new InteractionParticipant(msid2, geneName2));
 				}
 
 			} catch (NullPointerException npe) {
 				logger.error("db row is dropped because a NullPointerException");
 
 			} catch (NumberFormatException nfe) {
-				logger.error("db row is dropped because a NumberFormatExceptio");
+				logger.error("db row is dropped because a NumberFormatException");
+				logger.error("query string: " + methodAndParams);
 			}
 		}
 
-		if (interactionDetail != null && !interactionDetail.getParticipantGeneList()
-				.contains("null")) {
+		if (interactionDetail != null && !interactionDetail.getParticipantGeneList().contains("null")) {
 			String edgeName = getEdgeName(interactionDetail, geneSymbol);
-			if ( !edgeIdList.contains(edgeName) )
-			{
+			if (!edgeIdList.contains(edgeName)) {
 				edgeIdList.add(edgeName);
 				arrayList.add(interactionDetail);
 			}
-			 
+
 			interactionDetail = null;
 		}
 		rs.close();
 
 		return arrayList;
 	}
-	
-	private String getEdgeName(InteractionDetail d, String geneSymbol)
-	{
+
+	private String getEdgeName(InteractionDetail d, String geneSymbol) {
 		String edgeName = null;
-		List<InteractionParticipant> participants = d
-				.getParticipantList(); 
+		List<InteractionParticipant> participants = d.getParticipantList();
 		String interactionType = d.getInteractionType();
 		edgeName = geneSymbol + "." + interactionType;
-		for (int i = 0; i < participants.size(); i++)  
-		{
-		     if (!participants.get(i).getGeneName().equals(geneSymbol))
-			    edgeName += "."+ participants.get(i).getGeneName();
+		for (int i = 0; i < participants.size(); i++) {
+			if (!participants.get(i).getGeneName().equals(geneSymbol))
+				edgeName += "." + participants.get(i).getGeneName();
 		}
-		
+
 		return edgeName;
 	}
 }
