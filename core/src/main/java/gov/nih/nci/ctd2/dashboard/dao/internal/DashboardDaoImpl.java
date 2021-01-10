@@ -1508,14 +1508,17 @@ public class DashboardDaoImpl implements DashboardDao {
 
         List<ECOTerm> ecoterms = findECOTerms(queryString);
         List<Integer> eco_list = ontologySearchExperimentalEvidence(ecoterms);
-        log.debug("eco list size:" + eco_list.size());
-        @SuppressWarnings("unchecked")
-        org.hibernate.query.Query<ECOTerm> query2 = session.createQuery("FROM ECOTermImpl WHERE code in (:codes)");
-        List<String> codes = eco_list.stream().map(x -> String.format("ECO:%07d", x)).collect(Collectors.toList());
-        query2.setParameterList("codes", codes);
-        List<ECOTerm> list2 = query2.list();
-        for (ECOTerm x : list2) {
-            entities.add(new DashboardEntityWithCounts(x, 0));
+        int eco_list_size = eco_list.size();
+        log.debug("eco list size:" + eco_list_size);
+        if (eco_list_size > 0) {
+            @SuppressWarnings("unchecked")
+            org.hibernate.query.Query<ECOTerm> query2 = session.createQuery("FROM ECOTermImpl WHERE code in (:codes)");
+            List<String> codes = eco_list.stream().map(x -> String.format("ECO:%07d", x)).collect(Collectors.toList());
+            query2.setParameterList("codes", codes);
+            List<ECOTerm> list2 = query2.list();
+            for (ECOTerm x : list2) {
+                entities.add(new DashboardEntityWithCounts(x, 0));
+            }
         }
 
         session.close();

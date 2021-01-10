@@ -3007,7 +3007,7 @@
             let subject_names = [];
             $("#ontology-search").click(function () {
                 $.ajax({
-                    url: "search/ontology",
+                    url: "ontology-search",
                     data: { terms: searchQuery }
                 }).done(function (ontology_search_results) {
                     // subject_names.forEach(x => console.log(x));
