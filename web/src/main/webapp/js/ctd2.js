@@ -3023,6 +3023,7 @@
                             el: $(thatEl).find("tbody")
                         }).render();
                     });
+                    $("#ontology-search").prop('disabled', true);
                 });
             });
 
