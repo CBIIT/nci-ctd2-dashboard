@@ -164,7 +164,7 @@ const GeneListView = Backbone.View.extend({
                     document.location.href = '#cnkb-query';
                     break;
                 case 1: go_enrichr(e); break;
-                case 2: 
+                case 2:
                     let genes = '';
                     let counter = 0;
                     $('#geneNames :selected').each(function (i, selected) {
@@ -177,8 +177,8 @@ const GeneListView = Backbone.View.extend({
                             counter++;
                         }
                     }
-                    if(counter==1) {
-                        const network_url = 'https://version-11-0.string-db.org/network/homo_sapiens/' + genes.substring(0,genes.length-1);
+                    if (counter == 1) {
+                        const network_url = 'https://version-11-0.string-db.org/network/homo_sapiens/' + genes.substring(0, genes.length - 1);
                         window.open(network_url, "_blank");
                         break;
                     }
@@ -191,7 +191,7 @@ const GeneListView = Backbone.View.extend({
                         dataType: "text",
                         success: function (identifiers) {
                             console.log(identifiers);
-                            if(identifiers.length==0) {
+                            if (identifiers.length == 0) {
                                 showAlertMessage('no match identifer found in STRING DB');
                             } else {
                                 const network_url = 'https://version-11-0.string-db.org/cgi/network.pl?identifiers=' + identifiers;
@@ -288,18 +288,6 @@ const GeneListView = Backbone.View.extend({
 
 });
 
-const convertUrl = function (description) {
-    if (description.indexOf("http:") > -1) {
-        const word = description.split("http:");
-        let temp = $.trim(word[1]);
-        if (temp.match(/.$/))
-            temp = temp.substring(0, temp.length - 1);
-        temp = $.trim(temp);
-        return word[0] + "<a target=\"_blank\" href=\"" + temp + "\">" + temp + "</a>";
-    } else
-        return description;
-};
-
 const CnkbQueryView = Backbone.View.extend({
     el: $("#main-container"),
     template: _.template($("#cnkb-query-tmpl").html()),
@@ -355,7 +343,9 @@ const CnkbQueryView = Backbone.View.extend({
                 contentType: "json",
                 success: function (data) {
                     versionDescriptors = data.versionDescriptorList;
-                    $('#interactomeDescription').html(convertUrl(data.description));
+                    const URL_pattern = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&/=]*[a-zA-Z0-9/])?/g;
+                    // convert URL to an actual link
+                    $('#interactomeDescription').html(data.description.replaceAll(URL_pattern, "<a href='$&' target='_blank'>$&</a>"));
                     $('#interactomeVersionList').html("");
                     _.each(data.versionDescriptorList, function (aData) {
                         $("#interactomeVersionList").append('<option value="' + aData.version + '">' + aData.version + '</option>');
