@@ -409,6 +409,10 @@
                     else return "Show";
                 });
             });
+            $('#summary-table thead th').popover({
+                placement: "top",
+                trigger: 'hover',
+            });
 
             $("#omni-search-form").submit(function () {
                 window.location.hash = "search/" + $("#omni-search").val();
