@@ -409,6 +409,10 @@
                     else return "Show";
                 });
             });
+            $('#summary-table thead th').popover({
+                placement: "top",
+                trigger: 'hover',
+            });
 
             $("#omni-search-form").submit(function () {
                 window.location.hash = "search/" + $("#omni-search").val();
@@ -630,7 +634,7 @@
                                 $('.noclick-popover').popover({
                                     placement: "bottom",
                                     trigger: 'hover',
-                                });                    
+                                });
                             }
                         });
                     }
@@ -1596,7 +1600,7 @@
             let count = 0;
             _.each(result.synonyms, function (aSynonym) {
                 if (aSynonym.displayName == result.displayName) return;
-                if (count>=3) aSynonym.toomany = 'toomany';
+                if (count >= 3) aSynonym.toomany = 'toomany';
                 aSynonym.sid = result.id;
                 new SynonymView({
                     model: aSynonym,
@@ -1608,7 +1612,7 @@
                 const SEE_ALL = "see all";
                 $("#see-all-switch").text(SEE_ALL);
                 $(".toomany").hide();
-                $("#see-all-switch").click(function() {
+                $("#see-all-switch").click(function () {
                     if ($(this).text() == SEE_ALL) {
                         $(".toomany").show();
                         $(this).text("hide");
@@ -1782,7 +1786,7 @@
             let count = 0;
             _.each(result.synonyms, function (aSynonym) {
                 if (aSynonym.displayName == result.displayName) return;
-                if (count>=3) aSynonym.toomany = 'toomany';
+                if (count >= 3) aSynonym.toomany = 'toomany';
                 aSynonym.sid = result.id;
                 new SynonymView({
                     model: aSynonym,
@@ -1794,7 +1798,7 @@
                 const SEE_ALL = "see all";
                 $("#see-all-switch").text(SEE_ALL);
                 $(".toomany").hide();
-                $("#see-all-switch").click(function() {
+                $("#see-all-switch").click(function () {
                     if ($(this).text() == SEE_ALL) {
                         $(".toomany").show();
                         $(this).text("hide");
@@ -1857,7 +1861,7 @@
             let count = 0;
             _.each(result.synonyms, function (aSynonym) {
                 if (aSynonym.displayName == result.displayName) return;
-                if (count>=3) aSynonym.toomany = 'toomany';
+                if (count >= 3) aSynonym.toomany = 'toomany';
                 aSynonym.sid = result.id;
                 new SynonymView({
                     model: aSynonym,
@@ -1869,7 +1873,7 @@
                 const SEE_ALL = "see all";
                 $("#see-all-switch").text(SEE_ALL);
                 $(".toomany").hide();
-                $("#see-all-switch").click(function() {
+                $("#see-all-switch").click(function () {
                     if ($(this).text() == SEE_ALL) {
                         $(".toomany").show();
                         $(this).text("hide");
@@ -2007,7 +2011,7 @@
             let count = 0;
             _.each(result.synonyms, function (aSynonym) {
                 if (aSynonym.displayName == result.displayName) return;
-                if (count>=3) aSynonym.toomany = 'toomany';
+                if (count >= 3) aSynonym.toomany = 'toomany';
                 aSynonym.sid = result.id;
                 new SynonymView({
                     model: aSynonym,
@@ -2019,7 +2023,7 @@
                 const SEE_ALL = "see all";
                 $("#see-all-switch").text(SEE_ALL);
                 $(".toomany").hide();
-                $("#see-all-switch").click(function() {
+                $("#see-all-switch").click(function () {
                     if ($(this).text() == SEE_ALL) {
                         $(".toomany").show();
                         $(this).text("hide");
@@ -2105,7 +2109,7 @@
             let count = 0;
             _.each(result.synonyms, function (aSynonym) {
                 if (aSynonym.displayName == result.displayName) return;
-                if (count>=3) aSynonym.toomany = 'toomany';
+                if (count >= 3) aSynonym.toomany = 'toomany';
                 aSynonym.sid = result.id;
                 new SynonymView({
                     model: aSynonym,
@@ -2117,7 +2121,7 @@
                 const SEE_ALL = "see all";
                 $("#see-all-switch").text(SEE_ALL);
                 $(".toomany").hide();
-                $("#see-all-switch").click(function() {
+                $("#see-all-switch").click(function () {
                     if ($(this).text() == SEE_ALL) {
                         $(".toomany").show();
                         $(this).text("hide");
@@ -2208,7 +2212,7 @@
             let count = 0;
             _.each(result.synonyms, function (aSynonym) {
                 if (aSynonym.displayName == result.displayName) return;
-                if (count>=3) aSynonym.toomany = 'toomany';
+                if (count >= 3) aSynonym.toomany = 'toomany';
                 aSynonym.sid = result.id;
                 new SynonymView({
                     model: aSynonym,
@@ -2220,7 +2224,7 @@
                 const SEE_ALL = "see all";
                 $("#see-all-switch").text(SEE_ALL);
                 $(".toomany").hide();
-                $("#see-all-switch").click(function() {
+                $("#see-all-switch").click(function () {
                     if ($(this).text() == SEE_ALL) {
                         $(".toomany").show();
                         $(this).text("hide");
@@ -2843,7 +2847,7 @@
     const SynonymView = Backbone.View.extend({
         template: _.template($("#synonym-item-tmpl").html()),
         render: function () {
-            if(this.model.toomany==undefined) {
+            if (this.model.toomany == undefined) {
                 this.model.toomany = '';
             }
             $(this.el).append(this.template(this.model));
@@ -2909,7 +2913,7 @@
             }
             let count = 0;
             _.each(synonyms, function (aSynonym) {
-                if (count>=3) aSynonym.toomany = 'toomany';
+                if (count >= 3) aSynonym.toomany = 'toomany';
                 aSynonym.sid = result.id;
                 new SynonymView({
                     model: aSynonym,
@@ -2919,20 +2923,20 @@
             });
             if (count > 3) {
                 const SEE_ALL = "see all";
-                $("#see-all-switch"+result.id).text(SEE_ALL);
-                $(".synonym-of-"+result.id+".toomany").hide();
-                $("#see-all-switch"+result.id).click(function() {
+                $("#see-all-switch" + result.id).text(SEE_ALL);
+                $(".synonym-of-" + result.id + ".toomany").hide();
+                $("#see-all-switch" + result.id).click(function () {
                     if ($(this).text() == SEE_ALL) {
-                        $(".synonym-of-"+result.id+".toomany").show();
+                        $(".synonym-of-" + result.id + ".toomany").show();
                         $(this).text("hide");
                     } else {
-                        $(".synonym-of-"+result.id+".toomany").hide();
+                        $(".synonym-of-" + result.id + ".toomany").hide();
                         $(this).text(SEE_ALL);
                     }
                 });
-                $("#see-all-switch"+result.id).show();
+                $("#see-all-switch" + result.id).show();
             } else {
-                $("#see-all-switch"+result.id).hide();
+                $("#see-all-switch" + result.id).hide();
             }
 
             _.each(model.roles, function (aRole) {
@@ -3605,7 +3609,7 @@
                         trigger: 'hover',
                     }).click(function () {
                         $(this).popover('hide');
-                    });        
+                    });
                 }
             });
 

@@ -274,8 +274,12 @@
         </div>
         <table id=summary-table class="table table-bordered table-sm text-center">
             <thead>
-                <tr><th rowspan=2>Category</th><th rowspan=2>Submissions</th><th colspan=4>Observations</th></tr>
-                <tr><th>Tier 1</th><th>Tier 2</th><th>Tier 3</th><th>Total</th></tr>
+                <tr><th rowspan=2>Category</th><th rowspan=2>Submissions</th>
+                    <th colspan=4 data-content='A finding or conclusion about one or more subjects made by a Center based on submitted evidence'>Observations</th></tr>
+                <tr><th data-content='Preliminary results of a screening campaign or large-scale computational analysis'>Tier 1</th>
+                    <th data-content='Confirmation of primary results in a cancer-relevant in vitro model'>Tier 2</th>
+                    <th data-content='Validation of results in a cancer-relevant in vivo model'>Tier 3</th>
+                    <th>Total</th></tr>
             </thead>
             <tbody id='summary-table-body'>
             </tbody>
