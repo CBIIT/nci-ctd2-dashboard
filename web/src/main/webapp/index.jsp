@@ -1218,10 +1218,6 @@
             <div class="row">
                 <div class="col-9">
                     <table id="tissuesample-details-grid" class="table table-bordered table-striped">
-                        <tr>
-                            <th>Lineage</th>
-                            <td>{{lineage}}</td>
-                        </tr>
                         <tr id="tissue-synonyms">
                             <th>Synonyms</th>
                             <td>
