@@ -34,6 +34,6 @@ public class OntologySearchController {
         List<DashboardEntityWithCounts> ontologyResult = dashboardDao.ontologySearch(terms);
         log.debug("result list size=" + ontologyResult.size());
         JSONSerializer jsonSerializer = new JSONSerializer().transform(new ImplTransformer(), Class.class);
-        return new ResponseEntity<String>(jsonSerializer.serialize(ontologyResult), headers, HttpStatus.OK);
+        return new ResponseEntity<String>(jsonSerializer.deepSerialize(ontologyResult), headers, HttpStatus.OK);
     }
 }
