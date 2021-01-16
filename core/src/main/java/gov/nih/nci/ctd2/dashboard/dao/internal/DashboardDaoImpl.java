@@ -868,6 +868,19 @@ public class DashboardDaoImpl implements DashboardDao {
         return list;
     }
 
+    private int observationCountForEcoCode(String ecocode) {
+        String sql = "SELECT COUNT(observation.id) FROM observation"
+                + " JOIN submission ON observation.submission_id=submission.id"
+                + " JOIN observation_template ON submission.observationTemplate_id=observation_template.id"
+                + " WHERE ecocode='" + ecocode + "'";
+        Session session = getSession();
+        @SuppressWarnings("unchecked")
+        org.hibernate.query.Query<BigInteger> query = session.createNativeQuery(sql);
+        int count = query.getSingleResult().intValue();
+        session.close();
+        return count;
+    }
+
     @Override
     public Map<Observation, BigInteger> getOneObservationPerSubmissionByEcoCode(String ecocode, int tier) {
         String sql = "SELECT MIN(observation.id), COUNT(DISTINCT observation.id) FROM observation"
@@ -1500,8 +1513,8 @@ public class DashboardDaoImpl implements DashboardDao {
                 log.info("Tissue sample not available for code " + i);
                 continue;
             }
-            System.out.println(result);
-            entities.add(new DashboardEntityWithCounts(result, 0));
+            int observationNumber = observationCountForTissueSample(i);
+            entities.add(new DashboardEntityWithCounts(result, observationNumber));
         }
         long t2 = System.currentTimeMillis();
         log.debug((t2 - t1) + " miliseconds");
@@ -1517,7 +1530,8 @@ public class DashboardDaoImpl implements DashboardDao {
             query2.setParameterList("codes", codes);
             List<ECOTerm> list2 = query2.list();
             for (ECOTerm x : list2) {
-                entities.add(new DashboardEntityWithCounts(x, 0));
+                int observationNumber = observationCountForEcoCode(x.getCode());
+                entities.add(new DashboardEntityWithCounts(x, observationNumber));
             }
         }
 
