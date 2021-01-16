@@ -1514,7 +1514,10 @@ public class DashboardDaoImpl implements DashboardDao {
                 continue;
             }
             int observationNumber = observationCountForTissueSample(i);
-            entities.add(new DashboardEntityWithCounts(result, observationNumber));
+            DashboardEntityWithCounts x = new DashboardEntityWithCounts(result, observationNumber);
+            Set<String> roles = getRolesForSubjectId(result.getId());
+            x.setRoles(roles);
+            entities.add(x);
         }
         long t2 = System.currentTimeMillis();
         log.debug((t2 - t1) + " miliseconds");
@@ -1537,5 +1540,17 @@ public class DashboardDaoImpl implements DashboardDao {
 
         session.close();
         return entities;
+    }
+
+    private Set<String> getRolesForSubjectId(int subjectId) {
+        Session session = getSession();
+        String sql = "SELECT DISTINCT displayName FROM observed_subject "
+                + "JOIN observed_subject_role ON observedSubjectRole_id=observed_subject_role.id "
+                + "JOIN dashboard_entity ON subjectRole_id=dashboard_entity.id WHERE subject_id=" + subjectId;
+        @SuppressWarnings("unchecked")
+        org.hibernate.query.Query<String> query = session.createNativeQuery(sql);
+        List<String> list = query.getResultList();
+        session.close();
+        return Set.copyOf(list);
     }
 }
