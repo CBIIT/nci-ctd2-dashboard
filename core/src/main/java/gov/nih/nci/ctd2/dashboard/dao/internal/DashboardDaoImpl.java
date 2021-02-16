@@ -863,8 +863,8 @@ public class DashboardDaoImpl implements DashboardDao {
     }
 
     private int[] templateSummary(String ecocode) {
-        String sql = "SELECT MAX(tier), COUNT(DISTINCT submissionCenter_id) FROM observation_template WHERE ecocode='"
-                + ecocode + "'";
+        String sql = "SELECT MAX(tier), COUNT(DISTINCT submissionCenter_id) FROM observation_template WHERE ecocode LIKE '%"
+                + ecocode + "%'";
         log.debug(sql);
         Session session = getSession();
         @SuppressWarnings("unchecked")
