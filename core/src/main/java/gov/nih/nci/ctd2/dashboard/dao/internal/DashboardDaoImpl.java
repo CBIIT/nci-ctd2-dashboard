@@ -788,7 +788,7 @@ public class DashboardDaoImpl implements DashboardDao {
             query.setParameterList("codes", codes);
             list = (List<ECOTerm>) query.list();
         } else {
-            String[] words = queryString.split(" (?=([^\"]*\"[^\"]*\")*[^\"]*$)");
+            String[] words = queryString.trim().split(" (?=([^\"]*\"[^\"]*\")*[^\"]*$)");
             Set<ECOTerm> set = new HashSet<ECOTerm>();
             for (String w : words) {
                 String x = w.replaceAll("^\"|\"$", "");
