@@ -1017,9 +1017,14 @@
                 <batch:chunk reader="columbiaOncosigShrnaKnockdownReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	    </batch:tasklet>
 	</batch:step>
-	<batch:step id="dfciCreb5StoryStep" parent="observationDataStep">
+	<batch:step id="dfciCreb5StoryStep" parent="observationDataStep" next="broadPeroxisomeStep">
 	    <batch:tasklet>
                 <batch:chunk reader="dfciCreb5StoryReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	    </batch:tasklet>
+	</batch:step>
+	<batch:step id="broadPeroxisomeStep" parent="observationDataStep">
+	    <batch:tasklet>
+                <batch:chunk reader="broadPeroxisomeReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	    </batch:tasklet>
 	</batch:step>
     </batch:job>
@@ -2848,7 +2853,14 @@
         <property name="names" value="dummy,submission_name,submission_date,template_name,gene_1,disease_1,drug_1,gene_2,publication_reference,story_location,evidence_ontology_1,evidence_ontology_2,evidence_ontology_3,evidence_ontology_4,evidence_ontology_5"/>
     </bean>
 
-
+    <bean name="broadPeroxisomeLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="broadPeroxisomeLineTokenizer" />
+    </bean>
+    <bean name="broadPeroxisomeLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="&#9;"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,disease_1,disease_2,cell_line_1,cell_line_2,gene_1,gene_2,gene_3,gene_4,gene_5,gene_6,story_location,reference_1,reference_2,reference_3"/>
+    </bean>
 
     <!-- shared helper beans -->
     <bean name="observationTemplateMap" class="java.util.HashMap">
@@ -4903,7 +4915,20 @@
 		<entry key="ucsf1_kras_sl_drug_screen:cell_line" value="subject:findCellLineByName" />
 		<entry key="ucsf1_kras_sl_drug_screen:percent_change_auc" value="evidence:readDouble:createObservedNumericEvidence" />
 		<entry key="ucsf1_kras_sl_drug_screen:reference" value="evidence:readString:createObservedUrlEvidence" />
-
+		<entry key="broad_peroxisome:disease_1" value="subject:findTissueSampleByName" />
+		<entry key="broad_peroxisome:disease_2" value="subject:findTissueSampleByName" />
+		<entry key="broad_peroxisome:cell_line_1" value="subject:findCellLineByName" />
+		<entry key="broad_peroxisome:cell_line_2" value="subject:findCellLineByName" />
+		<entry key="broad_peroxisome:gene_1" value="subject:findGenesBySymbol" />
+		<entry key="broad_peroxisome:gene_2" value="subject:findGenesBySymbol" />
+		<entry key="broad_peroxisome:gene_3" value="subject:findGenesBySymbol" />
+		<entry key="broad_peroxisome:gene_4" value="subject:findGenesBySymbol" />
+		<entry key="broad_peroxisome:gene_5" value="subject:findGenesBySymbol" />
+		<entry key="broad_peroxisome:gene_6" value="subject:findGenesBySymbol" />
+		<entry key="broad_peroxisome:story_location" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="broad_peroxisome:reference_1" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="broad_peroxisome:reference_2" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="broad_peroxisome:reference_3" value="evidence:readString:createObservedUrlEvidence" />
             </map>
         </constructor-arg>
     </bean>
