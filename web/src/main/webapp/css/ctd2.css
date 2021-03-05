@@ -666,6 +666,8 @@ div.center-link-container {
 .ctd2bigbutton {
     border-radius: 1rem;
     font-size: 1.2em;
+    white-space: normal;
+    height: 100%;
 }
 
 .icon-question-sign {

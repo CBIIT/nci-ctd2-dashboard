@@ -34,7 +34,7 @@
     <link rel="stylesheet" href="css/datatables.min.css" type="text/css" />
     <link rel="stylesheet" href="css/jquery.fancybox.min.css" type="text/css" media="screen" />
     <link rel="stylesheet" href="css/jquery.contextMenu.min.css" type="text/css" />
-    <link rel="stylesheet" href="css/ctd2.css?ts=2020" type="text/css" />
+    <link rel="stylesheet" href="css/ctd2.css?ts=2021" type="text/css" />
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
