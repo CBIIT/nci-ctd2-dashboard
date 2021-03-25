@@ -1828,4 +1828,13 @@
             </bean>
         </property>
     </bean>
+    <bean name="broadPeroxisomeReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${broad.peroxisome.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="broadPeroxisomeLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
 </beans>

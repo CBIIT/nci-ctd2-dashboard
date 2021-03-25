@@ -71,7 +71,7 @@ public class ECOTermImpl extends DashboardEntityImpl implements ECOTerm {
     public Boolean containsTerm(String term) {
         if (this.getDisplayName().toLowerCase().contains(term))
             return true;
-        if (code.contains(term))
+        if (code.toLowerCase().contains(term.replace("_", ":")))
             return true;
         for (String synonym : synonyms.split("\\|")) {
             if (synonym.contains(term))

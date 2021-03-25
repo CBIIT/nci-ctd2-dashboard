@@ -618,6 +618,20 @@ public class DashboardDaoImpl implements DashboardDao {
         return list.toArray(new String[0]);
     }
 
+    /*
+     * a subject is a match when either the name contains the term or the synonyms
+     * contain the term
+     */
+    private static boolean matchSubject(String term, Subject subject) {
+        if (subject.getDisplayName().toLowerCase().contains(term))
+            return true;
+        for (Synonym s : subject.getSynonyms()) {
+            if (s.getDisplayName().toLowerCase().contains(term))
+                return true;
+        }
+        return false;
+    }
+
     @Override
     @Cacheable(value = "searchCache")
     public SearchResults search(String queryString) {
@@ -693,15 +707,14 @@ public class DashboardDaoImpl implements DashboardDao {
             entityWithCounts.setMaxTier(maxTier);
             entityWithCounts.setRoles(roles);
             entityWithCounts.setCenterCount(submissionCenters.size());
-            Arrays.stream(searchTerms).filter(term -> subject.getDisplayName().toLowerCase().contains(term))
-                    .forEach(term -> {
-                        Set<Observation> obset = observationMap.get(term);
-                        if (obset == null) {
-                            obset = new HashSet<Observation>();
-                        }
-                        obset.addAll(observations);
-                        observationMap.put(term, obset);
-                    });
+            Arrays.stream(searchTerms).filter(term -> matchSubject(term, subject)).forEach(term -> {
+                Set<Observation> obset = observationMap.get(term);
+                if (obset == null) {
+                    obset = new HashSet<Observation>();
+                }
+                obset.addAll(observations);
+                observationMap.put(term, obset);
+            });
             subject_result.add(entityWithCounts);
         }
 
@@ -840,7 +853,7 @@ public class DashboardDaoImpl implements DashboardDao {
             query.setParameterList("codes", codes);
             list = (List<ECOTerm>) query.list();
         } else {
-            String[] words = queryString.split(" (?=([^\"]*\"[^\"]*\")*[^\"]*$)");
+            String[] words = queryString.trim().split(" (?=([^\"]*\"[^\"]*\")*[^\"]*$)");
             Set<ECOTerm> set = new HashSet<ECOTerm>();
             for (String w : words) {
                 String x = w.replaceAll("^\"|\"$", "");
@@ -928,8 +941,8 @@ public class DashboardDaoImpl implements DashboardDao {
     }
 
     private int[] templateSummary(String ecocode) {
-        String sql = "SELECT MAX(tier), COUNT(DISTINCT submissionCenter_id) FROM observation_template WHERE ecocode='"
-                + ecocode + "'";
+        String sql = "SELECT MAX(tier), COUNT(DISTINCT submissionCenter_id) FROM observation_template WHERE ecocode LIKE '%"
+                + ecocode + "%'";
         log.debug(sql);
         Session session = getSession();
         @SuppressWarnings("unchecked")
