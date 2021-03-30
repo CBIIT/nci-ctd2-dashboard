@@ -3026,6 +3026,39 @@
                             model: one_result,
                             el: $(thatEl).find("tbody")
                         }).render();
+                        // search submission for one_result
+                        // then add to submission result ... new SearchSubmissionRowView
+                        console.log('ONTOLOTY SEARCH RESULT:' + one_result.dashboardEntity.displayName);
+                        $.ajax({
+                            url: "ontology-search/extra-submissions",
+                            data: { 'subject-name': one_result.dashboardEntity.displayName }
+                        }).done(function (extra_submission_results) {
+                            console.log(extra_submission_results);
+                            const submissions = extra_submission_results;
+                            // the following code is copied. TODO refactoring
+                            $("#submission-search-results").fadeIn();
+                            const centerCounter = new Set();
+                            _.each(submissions, function (submission) {
+                                const searchSubmissionRowView = new SearchSubmissionRowView({
+                                    model: submission
+                                });
+                                searchSubmissionRowView.render();
+
+                                if (submission.observationTemplate === undefined) { // TODO why does this happen?
+                                    submission.observationTemplate = {};
+                                }
+                                const tmplName = submission.observationTemplate.isSubmissionStory ?
+                                    "#count-story-tmpl" :
+                                    "#count-observations-tmpl";
+                                const cntContent = _.template(
+                                    $(tmplName).html())({
+                                        count: submission.observationCount
+                                    });
+                                $("#search-observation-count-" + submission.dashboardEntity.id).html(cntContent);
+                                const centerId = submission.dashboardEntity.observationTemplate.submissionCenter.id;
+                                centerCounter.add(centerId);
+                            });
+                        });
                     });
                     $("#ontology-search").prop('disabled', true);
                 });

@@ -997,32 +997,32 @@ public class DashboardDaoImpl implements DashboardDao {
                 b.setNumberOfSubmissions(b.getNumberOfSubmissions() + submissionCount.intValue());
                 Set<Integer> centerSet = null;
                 switch (tier) {
-                    case 1:
-                        b.setNumberOfTier1Observations(b.getNumberOfTier1Observations() + tierCount.intValue());
-                        centerSet = mapTier1centers.get(code);
-                        if (centerSet == null) {
-                            centerSet = new HashSet<Integer>();
-                            mapTier1centers.put(code, centerSet);
-                        }
-                        break;
-                    case 2:
-                        b.setNumberOfTier2Observations(b.getNumberOfTier2Observations() + tierCount.intValue());
-                        centerSet = mapTier2centers.get(code);
-                        if (centerSet == null) {
-                            centerSet = new HashSet<Integer>();
-                            mapTier2centers.put(code, centerSet);
-                        }
-                        break;
-                    case 3:
-                        b.setNumberOfTier3Observations(b.getNumberOfTier3Observations() + tierCount.intValue());
-                        centerSet = mapTier3centers.get(code);
-                        if (centerSet == null) {
-                            centerSet = new HashSet<Integer>();
-                            mapTier3centers.put(code, centerSet);
-                        }
-                        break;
-                    default:
-                        log.error("unknow tier number " + tier);
+                case 1:
+                    b.setNumberOfTier1Observations(b.getNumberOfTier1Observations() + tierCount.intValue());
+                    centerSet = mapTier1centers.get(code);
+                    if (centerSet == null) {
+                        centerSet = new HashSet<Integer>();
+                        mapTier1centers.put(code, centerSet);
+                    }
+                    break;
+                case 2:
+                    b.setNumberOfTier2Observations(b.getNumberOfTier2Observations() + tierCount.intValue());
+                    centerSet = mapTier2centers.get(code);
+                    if (centerSet == null) {
+                        centerSet = new HashSet<Integer>();
+                        mapTier2centers.put(code, centerSet);
+                    }
+                    break;
+                case 3:
+                    b.setNumberOfTier3Observations(b.getNumberOfTier3Observations() + tierCount.intValue());
+                    centerSet = mapTier3centers.get(code);
+                    if (centerSet == null) {
+                        centerSet = new HashSet<Integer>();
+                        mapTier3centers.put(code, centerSet);
+                    }
+                    break;
+                default:
+                    log.error("unknow tier number " + tier);
                 }
                 centerSet.add(centerId);
             }
@@ -1565,5 +1565,30 @@ public class DashboardDaoImpl implements DashboardDao {
         List<String> list = query.getResultList();
         session.close();
         return Set.copyOf(list);
+    }
+
+    /*
+     * get submissions if subject name is in some of four fields of its
+     * **Observation Template**: (1) DashboardEntityImpl.FIELD_DISPLAYNAME, (2)
+     * ObservationTemplateImpl.FIELD_DESCRIPTION, (3)
+     * ObservationTemplateImpl.FIELD_SUBMISSIONDESC, (4)
+     * ObservationTemplateImpl.FIELD_SUBMISSIONNAME
+     */
+    @Override
+    public List<Submission> getSubmissionsForSubjectName(String subjectName) {
+        String sql = "SELECT submission.id from submission JOIN observation_template ON submission.observationTemplate_id=observation_template.id"
+                + " JOIN dashboard_entity ON submission.id=dashboard_entity.id WHERE displayName LIKE '%" + subjectName
+                + "%'" + " OR description LIKE '%" + subjectName + "%'" + " OR submissionDescription LIKE '%"
+                + subjectName + "%'" + " OR submissionName LIKE '%" + subjectName + "%'";
+        Session session = getSession();
+        @SuppressWarnings("unchecked")
+        org.hibernate.query.Query<Integer> query = session.createNativeQuery(sql);
+        List<Submission> list = new ArrayList<Submission>();
+        for (Integer id : query.getResultList()) {
+            Submission submission = getEntityById(Submission.class, id);
+            list.add(submission);
+        }
+        session.close();
+        return list;
     }
 }
