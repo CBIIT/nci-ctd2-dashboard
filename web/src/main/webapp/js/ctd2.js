@@ -3014,7 +3014,8 @@
                     url: "ontology-search",
                     data: { terms: searchQuery }
                 }).done(function (ontology_search_results) {
-                    // subject_names.forEach(x => console.log(x));
+                    let submission_count = 0;
+                    let center_count = 0;
                     _.each(ontology_search_results, function (one_result) {
                         if (subject_names.includes(one_result.dashboardEntity.displayName)) return;
                         if (one_result.dashboardEntity.organism == undefined) {
@@ -3028,15 +3029,13 @@
                         }).render();
                         // search submission for one_result
                         // then add to submission result ... new SearchSubmissionRowView
-                        console.log('ONTOLOTY SEARCH RESULT:' + one_result.dashboardEntity.displayName);
                         $.ajax({
                             url: "ontology-search/extra-submissions",
-                            data: { 'subject-name': one_result.dashboardEntity.displayName }
-                        }).done(function (extra_submission_results) {
-                            console.log(extra_submission_results);
-                            const submissions = extra_submission_results;
+                            data: { 'subject-name': one_result.dashboardEntity.displayName },
+                            async: false,
+                        }).done(function (submissions) {
+                            submission_count += submissions.length;
                             // the following code is copied. TODO refactoring
-                            $("#submission-search-results").fadeIn();
                             const centerCounter = new Set();
                             _.each(submissions, function (submission) {
                                 const searchSubmissionRowView = new SearchSubmissionRowView({
@@ -3057,10 +3056,54 @@
                                 $("#search-observation-count-" + submission.dashboardEntity.id).html(cntContent);
                                 const centerId = submission.dashboardEntity.observationTemplate.submissionCenter.id;
                                 centerCounter.add(centerId);
+
+                                center_count += centerCounter.size;
                             });
                         });
                     });
                     $("#ontology-search").prop('disabled', true);
+
+                    if (submission_count == 0) return;
+                    // proceed only if there are additional submissions due to ontology search
+                    // if (!$("#submission-search-results").is(":visible")) {
+                    $("#submission-search-results").fadeIn();
+                    $('#submission-summary-link').show();
+                    $("#searched-submissions").dataTable({
+                        "columns": [
+                            null,
+                            {
+                                "orderDataType": "dashboard-date"
+                            },
+                            null,
+                            null,
+                            null,
+                            null
+                        ]
+                    }).fnSort([
+                        [4, 'desc'],
+                        [2, 'desc']
+                    ]);
+                    $("#searched-submissions").parent().find('input[type=search]').popover(table_filter_popover);
+                    $("#searched-submissions").find('thead th:contains("Tier")').popover({
+                        placement: "top",
+                        trigger: 'hover',
+                        html: true,
+                        content: function () {
+                            return __ctd2_hovertext.ALL_TIERS;
+                        },
+                    });
+                    if (submission_count == 1) {
+                        $('#submission-summary').text('one matched submission');
+                    } else {
+                        $('#submission-summary').text(submission_count + ' matched submissions');
+
+                    }
+                    if (center_count == 1) {
+                        $('#center-summary').text('one center');
+                    } else {
+                        $('#center-summary').text(center_count + ' centers');
+                    }
+
                 });
             });
 
