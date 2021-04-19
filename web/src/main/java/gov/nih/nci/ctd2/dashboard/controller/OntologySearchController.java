@@ -21,6 +21,7 @@ import gov.nih.nci.ctd2.dashboard.model.Submission;
 import gov.nih.nci.ctd2.dashboard.util.DashboardEntityWithCounts;
 import gov.nih.nci.ctd2.dashboard.util.DateTransformer;
 import gov.nih.nci.ctd2.dashboard.util.ImplTransformer;
+import gov.nih.nci.ctd2.dashboard.util.SearchResults;
 
 @Controller
 @RequestMapping("/ontology-search")
@@ -35,9 +36,10 @@ public class OntologySearchController {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json; charset=utf-8");
 
-        List<DashboardEntityWithCounts> ontologyResult = dashboardDao.ontologySearch(terms);
+        SearchResults ontologyResult = dashboardDao.ontologySearch(terms);
         log.debug("result list size=" + ontologyResult.size());
-        JSONSerializer jsonSerializer = new JSONSerializer().transform(new ImplTransformer(), Class.class);
+        JSONSerializer jsonSerializer = new JSONSerializer().transform(new ImplTransformer(), Class.class)
+                .transform(new DateTransformer(), Date.class);
         return new ResponseEntity<String>(jsonSerializer.deepSerialize(ontologyResult), headers, HttpStatus.OK);
     }
 

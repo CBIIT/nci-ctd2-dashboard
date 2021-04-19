@@ -1491,7 +1491,7 @@ public class DashboardDaoImpl implements DashboardDao {
             code = query.getSingleResult();
         } catch (javax.persistence.NoResultException e) { // exception by design
             // no-op
-            log.debug("No code for " + name);
+            log.debug("No tissue sample code for " + name);
         }
         session.close();
         return code;
@@ -1508,15 +1508,67 @@ public class DashboardDaoImpl implements DashboardDao {
         return count;
     }
 
+    /*
+     * To get observation 'search' results, i.e. the intersection concept, the
+     * implmentation of ontology search will be much more complex. Ideally it would
+     * be better to compeltely separate the observation part, but to avoid repeating
+     * the actual hierarchical searching, embedding observations here is the best
+     * choice. Although the previous implementation is better for searching
+     * subjects, but to cover the observation parts, we have no choice but to
+     * compromise the clarity here.
+     * 
+     * Other points of consideration for the purpose of observation 'search': (1)
+     * the ontologySearch cover the original non-ontology subject results (in
+     * principle) (2) the subjects other than TissueSample and ECO term are neither
+     * affected or covered by ontology search so it is not consistent.
+     */
     @Override
-    public List<DashboardEntityWithCounts> ontologySearch(String queryString) {
+    public SearchResults ontologySearch(String queryString) {
         final String[] searchTerms = parseWords(queryString);
+        Set<Integer> observationsIntersection = null;
+        List<DashboardEntityWithCounts> subject_result = new ArrayList<DashboardEntityWithCounts>();
+        final int termCount = searchTerms.length;
+        boolean first = true;
+        for (String oneTerm : searchTerms) {
+            if (termCount <= 1) { // prevent wasting time finding observations
+                subject_result.addAll(ontologySearchOneTerm(oneTerm, null));
+                break;
+            }
+            Set<Integer> observations = new HashSet<Integer>();
+            subject_result.addAll(ontologySearchOneTerm(oneTerm, observations));
+            if (first) {
+                observationsIntersection = observations;
+                first = false;
+            } else {
+                observationsIntersection.retainAll(observations);
+            }
+        }
+        SearchResults searchResults = new SearchResults();
+        searchResults.subject_result = subject_result;
+        if (observationsIntersection != null) {
+            searchResults.observation_result = getObservationsByIds(observationsIntersection);
+            log.debug("size of observation intersection: " + observationsIntersection.size());
+        }
+        return searchResults;
+    }
+
+    private List<DashboardEntityWithCounts> getObservationsByIds(Set<Integer> ids) {
+        List<DashboardEntityWithCounts> list = new ArrayList<DashboardEntityWithCounts>();
+        for (Integer id : ids) {
+            Observation o = this.getEntityById(Observation.class, id);
+            list.add(new DashboardEntityWithCounts(o, 0));
+        }
+        return list;
+    }
+
+    private List<DashboardEntityWithCounts> ontologySearchOneTerm(String oneTerm, final Set<Integer> observations) {
         long t1 = System.currentTimeMillis();
-        List<Integer> list = ontologySearchDiseaseContext(searchTerms);
+        List<Integer> list = ontologySearchDiseaseContext(new String[] { oneTerm });
         List<DashboardEntityWithCounts> entities = new ArrayList<DashboardEntityWithCounts>();
         Session session = getSession();
         @SuppressWarnings("unchecked")
         org.hibernate.query.Query<TissueSample> query = session.createQuery("from TissueSampleImpl where code = :code");
+        List<Integer> subjectIds = new ArrayList<Integer>();
         for (Integer i : list) {
             query.setParameter("code", i);
             TissueSample result = null;
@@ -1531,11 +1583,18 @@ public class DashboardDaoImpl implements DashboardDao {
             Set<String> roles = getRolesForSubjectId(result.getId());
             x.setRoles(roles);
             entities.add(x);
+            subjectIds.add(result.getId());
         }
         long t2 = System.currentTimeMillis();
         log.debug((t2 - t1) + " miliseconds");
+        log.debug("tissue sample results count: " + entities.size());
+        if (observations != null) {
+            List<Integer> observationIds = observationIdsForSubjectIds(subjectIds);
+            observations.addAll(observationIds);
+            log.debug("observations count: " + observations.size());
+        }
 
-        List<ECOTerm> ecoterms = findECOTerms(queryString);
+        List<ECOTerm> ecoterms = findECOTerms(oneTerm);
         List<Integer> eco_list = ontologySearchExperimentalEvidence(ecoterms);
         int eco_list_size = eco_list.size();
         log.debug("eco list size:" + eco_list_size);
@@ -1548,11 +1607,85 @@ public class DashboardDaoImpl implements DashboardDao {
             for (ECOTerm x : list2) {
                 int observationNumber = observationCountForEcoCode(x.getCode());
                 entities.add(new DashboardEntityWithCounts(x, observationNumber));
+                if (observations != null) {
+                    List<Integer> observationIdsForOneECOTerm = observationIdsForEcoCode(x.getCode());
+                    observations.addAll(observationIdsForOneECOTerm);
+                }
             }
+        }
+        log.debug("tissue sample results count after getting ECO term: " + entities.size());
+        if (observations != null) {
+            log.debug("observations count after getting ECO term: " + observations.size());
+        }
+
+        try {
+            if (observations != null) {
+                /*
+                 * otherSubjects is always empty for now, but we may want to use it in the
+                 * future development.
+                 */
+                List<DashboardEntityWithCounts> otherSubjects = searchSubjects(oneTerm, observations);
+                entities.addAll(otherSubjects);
+                log.debug("tissue sample results count after getting other subjects: " + entities.size());
+                log.debug("observationIds count after getting other subjects: " + observations.size());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         session.close();
         return entities;
+    }
+
+    /*
+     * This method does a straightforward search of subjects, not exactly the same
+     * as full-text search but similar. This is done only for the purpose of getting
+     * observatoin 'insersection' for ontology search.
+     */
+    @SuppressWarnings("unchecked")
+    private List<DashboardEntityWithCounts> searchSubjects(String oneTerm, final Set<Integer> observations) {
+        Session session = getSession();
+        String sqlForMainNameMatch = "SELECT subject.id FROM subject JOIN dashboard_entity ON dashboard_entity.id=subject.id WHERE displayName LIKE '%"
+                + oneTerm + "%'";
+        org.hibernate.query.Query<Integer> query = session.createNativeQuery(sqlForMainNameMatch);
+        List<Integer> list = query.getResultList();
+
+        String sqlForSynonymMatch = "SELECT subject.id FROM subject "
+                + "JOIN subject_synonym_map ON subject.id=subject_synonym_map.SubjectImpl_id "
+                + "JOIN dashboard_entity ON dashboard_entity.id=subject_synonym_map.synonyms_id "
+                + "WHERE displayName LIKE '%" + oneTerm + "%'";
+        org.hibernate.query.Query<Integer> query2 = session.createNativeQuery(sqlForSynonymMatch);
+        List<Integer> list2 = query2.getResultList();
+
+        session.close();
+
+        list.addAll(list2);
+        if (observations != null) {
+            List<Integer> observationIds = observationIdsForSubjectIds(list);
+            observations.addAll(observationIds);
+        }
+
+        /*
+         * We can re-create the search result of the subjects other than tissue samples
+         * and ECO terms using the list in this method. For now, we only use it to
+         * obtain the observation result. The subjects themselves are for now ignord.
+         */
+        return new ArrayList<DashboardEntityWithCounts>();
+    }
+
+    private List<Integer> observationIdsForSubjectIds(final List<Integer> subjectIds) {
+        StringBuffer idList = new StringBuffer("0"); // ID=0 is not any object
+        for (Integer id : subjectIds) {
+            idList.append("," + id);
+        }
+        String sqlForObservations = "SELECT DISTINCT observation_id FROM observed_subject WHERE subject_id IN ( "
+                + idList + " );";
+        Session session = getSession();
+        @SuppressWarnings("unchecked")
+        org.hibernate.query.Query<Integer> query3 = session.createNativeQuery(sqlForObservations);
+        List<Integer> observationIds = query3.getResultList();
+        session.close();
+        return observationIds;
     }
 
     private Set<String> getRolesForSubjectId(int subjectId) {

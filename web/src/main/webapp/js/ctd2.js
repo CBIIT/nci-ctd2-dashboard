@@ -3016,7 +3016,8 @@
                 }).done(function (ontology_search_results) {
                     let submission_count = 0;
                     let center_count = 0;
-                    _.each(ontology_search_results, function (one_result) {
+                    const subject_result = ontology_search_results.subject_result;
+                    _.each(subject_result, function (one_result) {
                         if (subject_names.includes(one_result.dashboardEntity.displayName)) return;
                         if (one_result.dashboardEntity.organism == undefined) {
                             one_result.dashboardEntity.organism = {
@@ -3062,6 +3063,21 @@
                         });
                     });
                     $("#ontology-search").prop('disabled', true);
+
+                    //redo observations
+                    const observation_result = ontology_search_results.observation_result;
+                    if (observation_result != null && observation_result.length > 0) {
+                        const matching_observations = [];
+                        _.each(observation_result, function (aResult) {
+                            matching_observations.push(aResult.dashboardEntity);
+                        });
+                        tabulate_matching_observations(matching_observations);
+                        if (matching_observations.length == 0) {
+                            $('#observation-summary-link').hide();
+                        } else {
+                            $('#observation-count').text(matching_observations.length);
+                        }
+                    }
 
                     if (submission_count == 0) return;
                     // proceed only if there are additional submissions due to ontology search

@@ -85,6 +85,6 @@ public interface DashboardDao {
 
     void prepareAPIData();
 
-    List<DashboardEntityWithCounts> ontologySearch(String queryString);
+    SearchResults ontologySearch(String queryString);
     List<Submission> getSubmissionsForSubjectName(String subjectName);
 }
