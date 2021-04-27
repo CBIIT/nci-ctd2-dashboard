@@ -409,6 +409,15 @@
                     else return "Show";
                 });
             });
+            $("#vis").hide();
+            $("#wordcloud-button").click(function (e) {
+                e.preventDefault();
+                $("#vis").toggle();
+                $("#wordcloud-toggle-word").text(function (index, content) {
+                    if (content == "Show") return "Hide";
+                    else return "Show";
+                });
+            });
             $('#summary-table thead th').popover({
                 placement: "top",
                 trigger: 'hover',
@@ -514,6 +523,8 @@
             }).click(function () {
                 $(this).popover('hide');
             });
+
+            create_wordcloud();
             return this;
         }
     });

@@ -271,7 +271,9 @@
         <div class="dark-separator"></div>
         <div style="text-align:center;display:block;padding:10px">
         <button type="button" class="btn btn-secondary" id=summary-table-label><span id=toggle-word>Show</span> Dashboard Content Summary</button>
+        <button type="button" class="btn btn-secondary" id=wordcloud-button><span id=wordcloud-toggle-word>Show</span> Word Cloud</button>
         </div>
+        <div id="vis"></div>
         <table id=summary-table class="table table-bordered table-sm text-center">
             <thead>
                 <tr><th rowspan=2>Category</th><th rowspan=2>Submissions</th>
@@ -2456,6 +2458,10 @@
     <script src="js/jquery.ui.position.min.js"></script>
     <script src="js/ctd2.constants.js"></script>
     <script src="js/gene.cart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"
+        integrity="sha512-oJp0DdQuQQrRsKVly+Ww6fAN1GwJN7d1bi8UubpEbzDUh84WrJ2CFPBnT4LqBCcfqTcHR5OGXFFhaPe3g1/bzQ=="
+        crossorigin="anonymous"></script>
+    <script src="js/wordcloud.js"></script>
     <script src="js/ctd2.js?ts=20200926"></script>
 
 <script type="text/javascript">_satellite.pageBottom();</script>
