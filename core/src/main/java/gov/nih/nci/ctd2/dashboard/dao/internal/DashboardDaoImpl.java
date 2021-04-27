@@ -79,6 +79,7 @@ import gov.nih.nci.ctd2.dashboard.util.Hierarchy;
 import gov.nih.nci.ctd2.dashboard.util.SearchResults;
 import gov.nih.nci.ctd2.dashboard.util.SubjectWithSummaries;
 import gov.nih.nci.ctd2.dashboard.util.Summary;
+import gov.nih.nci.ctd2.dashboard.util.WordCloudEntry;
 
 public class DashboardDaoImpl implements DashboardDao {
     private static final Log log = LogFactory.getLog(DashboardDaoImpl.class);
@@ -1726,20 +1727,22 @@ public class DashboardDaoImpl implements DashboardDao {
     }
 
     @Override
-    public Map<String, Integer> getSubjectCounts() {
-        Map<String, Integer> map = new HashMap<String, Integer>();
-        String sql = "SELECT displayName, count(*) AS x FROM observed_subject"
+    public WordCloudEntry[] getSubjectCounts() {
+        List<WordCloudEntry> list = new ArrayList<WordCloudEntry>();
+        String sql = "SELECT displayName, count(*) AS x, stableURL FROM observed_subject"
                 + " JOIN dashboard_entity ON observed_subject.subject_id=dashboard_entity.id"
-                + " GROUP BY displayName ORDER BY x DESC LIMIT 250";
+                + " JOIN subject ON observed_subject.subject_id=subject.id"
+                + " GROUP BY subject.id ORDER BY x DESC LIMIT 250";
         Session session = getSession();
         @SuppressWarnings("unchecked")
         org.hibernate.query.Query<Object[]> query = session.createNativeQuery(sql);
         for (Object[] obj : query.getResultList()) {
             String subject = (String) obj[0];
             Integer count = ((BigInteger) obj[1]).intValue();
-            map.put(subject, count);
+            String url = (String) obj[2];
+            list.add(new WordCloudEntry(subject, count, url));
         }
         session.close();
-        return map;
+        return list.toArray(new WordCloudEntry[0]);
     }
 }

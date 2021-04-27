@@ -1,8 +1,5 @@
 package gov.nih.nci.ctd2.dashboard.controller;
 
-import java.util.Date;
-import java.util.Map;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import flexjson.JSONSerializer;
-import gov.nih.nci.ctd2.dashboard.api.ExcludeTransformer;
-import gov.nih.nci.ctd2.dashboard.api.SimpleDateTransformer;
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
-import gov.nih.nci.ctd2.dashboard.util.ImplTransformer;
+import gov.nih.nci.ctd2.dashboard.util.WordCloudEntry;
 
 @Controller
 @RequestMapping("/wordcloud")
@@ -34,10 +29,9 @@ public class WordCloudController {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json; charset=utf-8");
 
-        Map<String, Integer> words = dashboardDao.getSubjectCounts();
+        WordCloudEntry[] words = dashboardDao.getSubjectCounts();
 
-        JSONSerializer jsonSerializer = new JSONSerializer().transform(new ImplTransformer(), Class.class)
-                .transform(new SimpleDateTransformer(), Date.class).transform(new ExcludeTransformer(), void.class);
+        JSONSerializer jsonSerializer = new JSONSerializer().exclude("class");
         String json = "{}";
         try {
             json = jsonSerializer.deepSerialize(words);

@@ -3,7 +3,7 @@ package gov.nih.nci.ctd2.dashboard.dao;
 import gov.nih.nci.ctd2.dashboard.model.*;
 import gov.nih.nci.ctd2.dashboard.util.SubjectWithSummaries;
 import gov.nih.nci.ctd2.dashboard.util.Summary;
-import gov.nih.nci.ctd2.dashboard.util.DashboardEntityWithCounts;
+import gov.nih.nci.ctd2.dashboard.util.WordCloudEntry;
 import gov.nih.nci.ctd2.dashboard.util.EcoBrowse;
 import gov.nih.nci.ctd2.dashboard.util.SearchResults;
 
@@ -87,5 +87,5 @@ public interface DashboardDao {
 
     SearchResults ontologySearch(String queryString);
     List<Submission> getSubmissionsForSubjectName(String subjectName);
-    Map<String, Integer> getSubjectCounts();
+    WordCloudEntry[] getSubjectCounts();
 }

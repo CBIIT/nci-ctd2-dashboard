@@ -8,9 +8,9 @@ const scale_type = "sqrt"; // three options: log, sqrt, linear. default log. see
 const spiral_type = "archimedean"; // two options: archimedean, rectangular. default archimedean. see https://en.wikipedia.org/wiki/Archimedean_spiral
 
 function generate(word_counts) {
-  const tags = d3.entries(word_counts).sort(function (t, e) {
+  const tags = word_counts.sort(function (t, e) {
     return e.value - t.value
-  })
+  });
   layout.font(font_name).spiral(spiral_type),
     fontSize = d3.scale[scale_type]().range([10, 70]),
     tags.length && fontSize.domain([+tags[tags.length - 1].value || 1, +tags[0].value]),
@@ -42,6 +42,9 @@ function draw(tags, bounds) {
       return t.font
     }).style("fill", function (t) {
       return fill(t.text.toLowerCase())
+    }).on("click", function(t) {
+      d3.event.stopPropagation();
+      window.location = "#" + t.url;
     }).text(function (t) {
       return t.text
     });
