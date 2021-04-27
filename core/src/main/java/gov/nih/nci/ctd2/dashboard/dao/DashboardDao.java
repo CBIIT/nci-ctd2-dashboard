@@ -87,4 +87,5 @@ public interface DashboardDao {
 
     SearchResults ontologySearch(String queryString);
     List<Submission> getSubmissionsForSubjectName(String subjectName);
+    Map<String, Integer> getSubjectCounts();
 }

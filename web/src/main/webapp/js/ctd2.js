@@ -524,7 +524,11 @@
                 $(this).popover('hide');
             });
 
-            create_wordcloud();
+            $.ajax("wordcloud").done(function (result) {
+                create_wordcloud()(result);
+            }).fail(function (err) {
+                console.log(err);
+            });
             return this;
         }
     });

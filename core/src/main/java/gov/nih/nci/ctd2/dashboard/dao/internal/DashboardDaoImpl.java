@@ -1724,4 +1724,22 @@ public class DashboardDaoImpl implements DashboardDao {
         session.close();
         return list;
     }
+
+    @Override
+    public Map<String, Integer> getSubjectCounts() {
+        Map<String, Integer> map = new HashMap<String, Integer>();
+        String sql = "SELECT displayName, count(*) AS x FROM observed_subject"
+                + " JOIN dashboard_entity ON observed_subject.subject_id=dashboard_entity.id"
+                + " GROUP BY displayName ORDER BY x DESC LIMIT 250";
+        Session session = getSession();
+        @SuppressWarnings("unchecked")
+        org.hibernate.query.Query<Object[]> query = session.createNativeQuery(sql);
+        for (Object[] obj : query.getResultList()) {
+            String subject = (String) obj[0];
+            Integer count = ((BigInteger) obj[1]).intValue();
+            map.put(subject, count);
+        }
+        session.close();
+        return map;
+    }
 }
