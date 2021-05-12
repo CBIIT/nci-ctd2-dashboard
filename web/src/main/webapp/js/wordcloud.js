@@ -1,4 +1,4 @@
-function create_wordcloud(){/* totally 7 parameters to control the picture */
+function create_wordcloud(dom_id){/* totally 7 parameters to control the picture */
 const max_word_number = 250;
 const angle_count = 5; // default 5
 const angle_from = -60; // default -60
@@ -464,7 +464,7 @@ const layout = d3.layout.cloud().timeInterval(10).size([w_cloud, h_cloud]).fontS
   }).text(function (t) {
     return t.key
   }).on("word", progress).on("end", draw);
-    svg = d3.select("#vis").append("svg").attr("width", w_cloud).attr("height", h_cloud);
+    svg = d3.select(dom_id).append("svg").attr("width", w_cloud).attr("height", h_cloud);
     background = svg.append("g");
 
 const vis = svg.append("g").attr("transform", "translate(" + [w_cloud >> 1, h_cloud >> 1] + ")");

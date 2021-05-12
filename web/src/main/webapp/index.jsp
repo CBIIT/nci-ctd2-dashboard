@@ -273,7 +273,14 @@
         <button type="button" class="btn btn-secondary" id=summary-table-label><span id=toggle-word>Show</span> Dashboard Content Summary</button>
         <button type="button" class="btn btn-secondary" id=wordcloud-button><span id=wordcloud-toggle-word>Show</span> Word Cloud</button>
         </div>
-        <div id="vis"></div>
+        <div id='wordcloud-container'>
+            <div style="text-align:center;display:block;padding:10px">
+                <button type="button" class="btn btn-secondary" id=wordcloud-all>All</button>
+                <button type="button" class="btn btn-secondary" id=wordcloud-genes>Genes and Proteins</button>
+            </div>
+            <div id="vis"></div>
+            <div id="vis-genes"></div>
+        </div>
         <table id=summary-table class="table table-bordered table-sm text-center">
             <thead>
                 <tr><th rowspan=2>Category</th><th rowspan=2>Submissions</th>

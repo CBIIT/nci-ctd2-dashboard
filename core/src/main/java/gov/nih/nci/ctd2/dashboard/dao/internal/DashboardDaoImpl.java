@@ -998,32 +998,32 @@ public class DashboardDaoImpl implements DashboardDao {
                 b.setNumberOfSubmissions(b.getNumberOfSubmissions() + submissionCount.intValue());
                 Set<Integer> centerSet = null;
                 switch (tier) {
-                case 1:
-                    b.setNumberOfTier1Observations(b.getNumberOfTier1Observations() + tierCount.intValue());
-                    centerSet = mapTier1centers.get(code);
-                    if (centerSet == null) {
-                        centerSet = new HashSet<Integer>();
-                        mapTier1centers.put(code, centerSet);
-                    }
-                    break;
-                case 2:
-                    b.setNumberOfTier2Observations(b.getNumberOfTier2Observations() + tierCount.intValue());
-                    centerSet = mapTier2centers.get(code);
-                    if (centerSet == null) {
-                        centerSet = new HashSet<Integer>();
-                        mapTier2centers.put(code, centerSet);
-                    }
-                    break;
-                case 3:
-                    b.setNumberOfTier3Observations(b.getNumberOfTier3Observations() + tierCount.intValue());
-                    centerSet = mapTier3centers.get(code);
-                    if (centerSet == null) {
-                        centerSet = new HashSet<Integer>();
-                        mapTier3centers.put(code, centerSet);
-                    }
-                    break;
-                default:
-                    log.error("unknow tier number " + tier);
+                    case 1:
+                        b.setNumberOfTier1Observations(b.getNumberOfTier1Observations() + tierCount.intValue());
+                        centerSet = mapTier1centers.get(code);
+                        if (centerSet == null) {
+                            centerSet = new HashSet<Integer>();
+                            mapTier1centers.put(code, centerSet);
+                        }
+                        break;
+                    case 2:
+                        b.setNumberOfTier2Observations(b.getNumberOfTier2Observations() + tierCount.intValue());
+                        centerSet = mapTier2centers.get(code);
+                        if (centerSet == null) {
+                            centerSet = new HashSet<Integer>();
+                            mapTier2centers.put(code, centerSet);
+                        }
+                        break;
+                    case 3:
+                        b.setNumberOfTier3Observations(b.getNumberOfTier3Observations() + tierCount.intValue());
+                        centerSet = mapTier3centers.get(code);
+                        if (centerSet == null) {
+                            centerSet = new HashSet<Integer>();
+                            mapTier3centers.put(code, centerSet);
+                        }
+                        break;
+                    default:
+                        log.error("unknow tier number " + tier);
                 }
                 centerSet.add(centerId);
             }
@@ -1739,6 +1739,36 @@ public class DashboardDaoImpl implements DashboardDao {
         for (Object[] obj : query.getResultList()) {
             String subject = (String) obj[0];
             Integer count = ((BigInteger) obj[1]).intValue();
+            String url = (String) obj[2];
+            list.add(new WordCloudEntry(subject, count, url));
+        }
+        session.close();
+        return list.toArray(new WordCloudEntry[0]);
+    }
+
+    /* this query is to emulate the explore pages */
+    @Override
+    public WordCloudEntry[] getSubjectCountsForRoles(String[] roles) {
+        if (roles == null || roles.length == 0)
+            return new WordCloudEntry[0];
+        StringBuffer role_list = new StringBuffer("(");
+        role_list.append("'" + roles[0] + "'");
+        for (int i = 1; i < roles.length; i++) {
+            role_list.append(",'" + roles[1] + "'");
+        }
+        role_list.append(")");
+        List<WordCloudEntry> list = new ArrayList<WordCloudEntry>();
+        String sql = "SELECT displayName, numberOfObservations, stableURL FROM subject_with_summaries"
+                + " JOIN subject ON subject_with_summaries.subject_id=subject.id"
+                + " JOIN dashboard_entity ON subject.id=dashboard_entity.id" + " WHERE score>1 AND role IN "
+                + role_list.toString();
+        log.debug(sql);
+        Session session = getSession();
+        @SuppressWarnings("unchecked")
+        org.hibernate.query.Query<Object[]> query = session.createNativeQuery(sql);
+        for (Object[] obj : query.getResultList()) {
+            String subject = (String) obj[0];
+            Integer count = (Integer) obj[1];
             String url = (String) obj[2];
             list.add(new WordCloudEntry(subject, count, url));
         }

@@ -409,14 +409,31 @@
                     else return "Show";
                 });
             });
-            $("#vis").hide();
+            $("#wordcloud-container").hide();
+            $("#wordcloud-all").prop('disabled', true);
+            $("#vis").show();
+            $("#vis-genes").hide();
             $("#wordcloud-button").click(function (e) {
                 e.preventDefault();
-                $("#vis").toggle();
+                $("#wordcloud-container").toggle();
                 $("#wordcloud-toggle-word").text(function (index, content) {
                     if (content == "Show") return "Hide";
                     else return "Show";
                 });
+            });
+            $("#wordcloud-genes").click(function (e) {
+                e.preventDefault();
+                $("#vis").hide();
+                $("#vis-genes").show();
+                $(this).prop('disabled', true)
+                $("#wordcloud-all").prop('disabled', false);
+            });
+            $("#wordcloud-all").click(function (e) {
+                e.preventDefault();
+                $("#vis-genes").hide();
+                $("#vis").show();
+                $(this).prop('disabled', true)
+                $("#wordcloud-genes").prop('disabled', false);
             });
             $('#summary-table thead th').popover({
                 placement: "top",
@@ -525,7 +542,12 @@
             });
 
             $.ajax("wordcloud").done(function (result) {
-                create_wordcloud()(result);
+                create_wordcloud('#vis')(result);
+            }).fail(function (err) {
+                console.log(err);
+            });
+            $.ajax("wordcloud/target,biomarker").done(function (result) {
+                create_wordcloud('#vis-genes')(result);
             }).fail(function (err) {
                 console.log(err);
             });

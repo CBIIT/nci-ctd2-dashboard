@@ -88,4 +88,5 @@ public interface DashboardDao {
     SearchResults ontologySearch(String queryString);
     List<Submission> getSubmissionsForSubjectName(String subjectName);
     WordCloudEntry[] getSubjectCounts();
+    WordCloudEntry[] getSubjectCountsForRoles(String[] roles);
 }
