@@ -410,9 +410,21 @@
                 });
             });
             $("#wordcloud-container").hide();
-            $("#wordcloud-all").prop('disabled', true);
-            $("#vis").show();
-            $("#vis-genes").hide();
+            function select_wordcloud(choice, button) {
+                $("#vis").hide();
+                $("#vis-genes").hide();
+                $("#vis-compounds").hide();
+                $("#vis-disease").hide();
+                $("#vis-cell").hide();
+                $(choice).show();
+                $("#wordcloud-all").prop('disabled', false);
+                $("#wordcloud-genes").prop('disabled', false);
+                $("#wordcloud-compounds").prop('disabled', false);
+                $("#wordcloud-disease").prop('disabled', false);
+                $("#wordcloud-cell").prop('disabled', false);
+                $(button).prop('disabled', true)
+            }
+            select_wordcloud("#vis", "#wordcloud-all");
             $("#wordcloud-button").click(function (e) {
                 e.preventDefault();
                 $("#wordcloud-container").toggle();
@@ -423,17 +435,23 @@
             });
             $("#wordcloud-genes").click(function (e) {
                 e.preventDefault();
-                $("#vis").hide();
-                $("#vis-genes").show();
-                $(this).prop('disabled', true)
-                $("#wordcloud-all").prop('disabled', false);
+                select_wordcloud("#vis-genes", this);
+            });
+            $("#wordcloud-compounds").click(function (e) {
+                e.preventDefault();
+                select_wordcloud("#vis-compounds", this);
+            });
+            $("#wordcloud-disease").click(function (e) {
+                e.preventDefault();
+                select_wordcloud("#vis-disease", this);
+            });
+            $("#wordcloud-cell").click(function (e) {
+                e.preventDefault();
+                select_wordcloud("#vis-cell", this);
             });
             $("#wordcloud-all").click(function (e) {
                 e.preventDefault();
-                $("#vis-genes").hide();
-                $("#vis").show();
-                $(this).prop('disabled', true)
-                $("#wordcloud-genes").prop('disabled', false);
+                select_wordcloud("#vis", this);
             });
             $('#summary-table thead th').popover({
                 placement: "top",
@@ -548,6 +566,21 @@
             });
             $.ajax("wordcloud/target,biomarker").done(function (result) {
                 create_wordcloud('#vis-genes')(result);
+            }).fail(function (err) {
+                console.log(err);
+            });
+            $.ajax("wordcloud/perturbagen,candidate drug").done(function (result) {
+                create_wordcloud('#vis-compounds')(result);
+            }).fail(function (err) {
+                console.log(err);
+            });
+            $.ajax("wordcloud/disease").done(function (result) {
+                create_wordcloud('#vis-disease')(result);
+            }).fail(function (err) {
+                console.log(err);
+            });
+            $.ajax("wordcloud/cell line").done(function (result) {
+                create_wordcloud('#vis-cell')(result);
             }).fail(function (err) {
                 console.log(err);
             });

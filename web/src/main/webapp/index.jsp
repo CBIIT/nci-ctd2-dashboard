@@ -277,9 +277,15 @@
             <div style="text-align:center;display:block;padding:10px">
                 <button type="button" class="btn btn-secondary" id=wordcloud-all>All</button>
                 <button type="button" class="btn btn-secondary" id=wordcloud-genes>Genes and Proteins</button>
+                <button type="button" class="btn btn-secondary" id=wordcloud-compounds>Compounds and Perturbagens</button>
+                <button type="button" class="btn btn-secondary" id=wordcloud-disease>Disease context</button>
+                <button type="button" class="btn btn-secondary" id=wordcloud-cell>Cell lines</button>
             </div>
             <div id="vis"></div>
             <div id="vis-genes"></div>
+            <div id="vis-compounds"></div>
+            <div id="vis-disease"></div>
+            <div id="vis-cell"></div>
         </div>
         <table id=summary-table class="table table-bordered table-sm text-center">
             <thead>
