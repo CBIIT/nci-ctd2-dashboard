@@ -945,7 +945,7 @@
                                          Entrez: <a href="http://www.ncbi.nlm.nih.gov/gene/{{entrezGeneId}}" target="_blank">{{entrezGeneId}} <i class="icon-share"></i></a>
                                      </li>
                                      {{genecard ? "<li>GeneCards: <a target='_blank' href='https://www.genecards.org/cgi-bin/carddisp.pl?gene=" + genecard + "'>" + genecard + " <i class='icon-share'></i></a></li>" : "" }}
-                                     {{dave ? "<li><a target='_blank' href='https://portal.gdc.cancer.gov/genes/" + genecard + "'>" + Data Analysis, Visualization, and Exploration (DAVE) + " <i class='icon-share'></i></a></li>" : "" }}
+                                     {{dave ? "<li>Data Analysis, Visualization, and Exploration (DAVE): <a target='_blank' href='https://portal.gdc.cancer.gov/genes/" + dave + "'>" + dave + " <i class='icon-share'></i></a></li>" : "" }}
                                  </ul>
                              </td>
                          </tr>
