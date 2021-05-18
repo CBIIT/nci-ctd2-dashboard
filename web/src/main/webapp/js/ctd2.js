@@ -3054,6 +3054,7 @@
                     let submission_count = 0;
                     let center_count = 0;
                     const subject_result = ontology_search_results.subject_result;
+                    $("#search-results-grid").DataTable().destroy();
                     _.each(subject_result, function (one_result) {
                         if (subject_names.includes(one_result.dashboardEntity.displayName)) return;
                         if (one_result.dashboardEntity.organism == undefined) {
@@ -3099,6 +3100,23 @@
                             });
                         });
                     });
+                    $("#search-results-grid").dataTable({
+                        "columns": [
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            {
+                                "orderDataType": "dashboard-rank",
+                                "type": 'num',
+                            },
+                        ]
+                    }).fnSort([
+                        [5, 'desc'],
+                        [1, 'asc']
+                    ]);
+                    $("#search-results-grid").parent().find('input[type=search]').popover(table_filter_popover);
                     $("#ontology-search").prop('disabled', true);
 
                     //redo observations
