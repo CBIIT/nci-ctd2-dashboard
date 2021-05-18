@@ -1771,9 +1771,13 @@
             // Find out the UniProt ID
 
             result.genecard = false;
+            result.dave = false;
             _.each(result.xrefs, function (xref) {
                 if (xref.databaseName == "GeneCards") {
                     result.genecard = xref.databaseId;
+                }
+                if (xref.databaseName == "Ensembl") {
+                    result.dave = xref.databaseId;
                 }
             });
 
