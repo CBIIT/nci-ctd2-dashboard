@@ -1761,7 +1761,7 @@ public class DashboardDaoImpl implements DashboardDao {
         String sql = "SELECT displayName, numberOfObservations, stableURL FROM subject_with_summaries"
                 + " JOIN subject ON subject_with_summaries.subject_id=subject.id"
                 + " JOIN dashboard_entity ON subject.id=dashboard_entity.id" + " WHERE score>1 AND role IN "
-                + role_list.toString();
+                + role_list.toString() + " LIMIT 250";
         log.debug(sql);
         Session session = getSession();
         @SuppressWarnings("unchecked")

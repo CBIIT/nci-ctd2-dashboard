@@ -55,7 +55,6 @@ public class WordCloudController {
         String[] role_array = roles.split(",");
         WordCloudEntry[] words = new WordCloudEntry[0];
         if (role_array.length > 0) {
-            log.debug(role_array);
             words = dashboardDao.getSubjectCountsForRoles(role_array);
         } else {
             words = dashboardDao.getSubjectCounts();
