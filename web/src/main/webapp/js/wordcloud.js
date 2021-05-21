@@ -28,6 +28,7 @@ function draw(tags, bounds) {
   var n = vis.selectAll("text").data(words, function (t) {
     return t.text.toLowerCase()
   });
+  const color = [0, 4, 8, 12];
   n.transition().duration(1e3).attr("transform", function (t) {
     return "translate(" + [t.x, t.y] + ")rotate(" + t.rotate + ")"
   }).style("font-size", function (t) {
@@ -41,7 +42,7 @@ function draw(tags, bounds) {
     n.style("font-family", function (t) {
       return t.font
     }).style("fill", function (t) {
-      return fill(t.text.toLowerCase())
+      return fill(color[t.category] + Math.floor(Math.random() * 4));
     }).on("click", function(t) {
       d3.event.stopPropagation();
       window.location = "#" + t.url;
@@ -458,7 +459,7 @@ var spirals = {
 
 // following part is outside the original source code index.js
 var words = [], max, scale = 0, complete = 0;
-const fill = d3.scale.category20b(), w_cloud = 960, h_cloud = 600;
+const fill = d3.scale.category20b().domain(d3.range(20)), w_cloud = 960, h_cloud = 600;
 const layout = d3.layout.cloud().timeInterval(10).size([w_cloud, h_cloud]).fontSize(function (t) {
     return fontSize(+t.value)
   }).text(function (t) {

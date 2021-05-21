@@ -1728,21 +1728,28 @@ public class DashboardDaoImpl implements DashboardDao {
 
     @Override
     public WordCloudEntry[] getSubjectCounts() {
+        List<WordCloudEntry> list1 = Arrays.asList(getSubjectCountsForRoles(new String[] { "target", "biomarker" }));
+        List<WordCloudEntry> list2 = Arrays
+                .asList(getSubjectCountsForRoles(new String[] { "perturbagen", "candidate drug" }));
+        List<WordCloudEntry> list3 = Arrays.asList(getSubjectCountsForRoles(new String[] { "disease" }));
+        List<WordCloudEntry> list4 = Arrays.asList(getSubjectCountsForRoles(new String[] { "cell line" }));
         List<WordCloudEntry> list = new ArrayList<WordCloudEntry>();
-        String sql = "SELECT displayName, count(*) AS x, stableURL FROM observed_subject"
-                + " JOIN dashboard_entity ON observed_subject.subject_id=dashboard_entity.id"
-                + " JOIN subject ON observed_subject.subject_id=subject.id"
-                + " GROUP BY subject.id ORDER BY x DESC LIMIT 250";
-        Session session = getSession();
-        @SuppressWarnings("unchecked")
-        org.hibernate.query.Query<Object[]> query = session.createNativeQuery(sql);
-        for (Object[] obj : query.getResultList()) {
-            String subject = (String) obj[0];
-            Integer count = ((BigInteger) obj[1]).intValue();
-            String url = (String) obj[2];
-            list.add(new WordCloudEntry(subject, count, url));
+        for (WordCloudEntry item : list1) {
+            item.category = 0;
+            list.add(item);
         }
-        session.close();
+        for (WordCloudEntry item : list2) {
+            item.category = 1;
+            list.add(item);
+        }
+        for (WordCloudEntry item : list3) {
+            item.category = 2;
+            list.add(item);
+        }
+        for (WordCloudEntry item : list4) {
+            item.category = 3;
+            list.add(item);
+        }
         return list.toArray(new WordCloudEntry[0]);
     }
 
@@ -1761,7 +1768,7 @@ public class DashboardDaoImpl implements DashboardDao {
         String sql = "SELECT displayName, numberOfObservations, stableURL FROM subject_with_summaries"
                 + " JOIN subject ON subject_with_summaries.subject_id=subject.id"
                 + " JOIN dashboard_entity ON subject.id=dashboard_entity.id" + " WHERE score>1 AND role IN "
-                + role_list.toString() + " LIMIT 250";
+                + role_list.toString() + " ORDER BY numberOfObservations DESC LIMIT 250";
         log.debug(sql);
         Session session = getSession();
         @SuppressWarnings("unchecked")
