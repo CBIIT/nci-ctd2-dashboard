@@ -42,7 +42,8 @@ function draw(tags, bounds) {
     n.style("font-family", function (t) {
       return t.font
     }).style("fill", function (t) {
-      return fill(color[t.category] + Math.floor(Math.random() * 4));
+      //return fill(color[t.category] + Math.floor(Math.random() * 4));
+      return fill(color[t.category]);
     }).on("click", function(t) {
       d3.event.stopPropagation();
       window.location = "#" + t.url;
