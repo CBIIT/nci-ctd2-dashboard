@@ -1775,32 +1775,8 @@ public class DashboardDaoImpl implements DashboardDao {
         org.hibernate.query.Query<Object[]> query = session.createNativeQuery(sql);
         for (Object[] obj : query.getResultList()) {
             String subject = (String) obj[0];
-            /* shorten the subject name using the specifc steps described in the spec */
             if (subject.length() > 12) {
-                log.debug("long name to be shortened: " + subject);
-                String[] x = subject.split("\\s");
-                if (x.length == 1)
-                    subject = subject.substring(0, 12);
-                else {
-                    int rest = 12;
-                    StringBuffer shortened = new StringBuffer();
-                    int previous_length = 7;
-                    for (String word : x) {
-                        String s = word.substring(0, Math.min(rest, word.length()));
-                        s = s.substring(0, Math.min(previous_length, s.length()));
-                        shortened.append(s);
-                        previous_length = s.length();
-                        rest -= previous_length;
-                        if (rest > 0) {
-                            rest--;
-                            shortened.append(" ");
-                        }
-                        if (rest == 0) {
-                            break;
-                        }
-                    }
-                    subject = shortened.toString();
-                }
+                subject = shorternSubjectName(subject);
             }
             Integer count = (Integer) obj[1];
             String url = (String) obj[2];
@@ -1808,6 +1784,37 @@ public class DashboardDaoImpl implements DashboardDao {
         }
         session.close();
         return list.toArray(new WordCloudEntry[0]);
+    }
+
+    /*
+     * shorten the subject name using the specifc steps described in the word-cloud
+     * spec
+     */
+    static private String shorternSubjectName(String longName) {
+        log.debug("long name to be shortened: " + longName);
+        String[] x = longName.split("\\s");
+        if (x.length == 1) {
+            return longName.substring(0, 12);
+        } else {
+            int rest = 12;
+            StringBuffer shortened = new StringBuffer();
+            int previous_length = 7;
+            for (String word : x) {
+                String s = word.substring(0, Math.min(rest, word.length()));
+                s = s.substring(0, Math.min(previous_length, s.length()));
+                shortened.append(s);
+                previous_length = s.length();
+                rest -= previous_length;
+                if (rest > 0) {
+                    rest--;
+                    shortened.append(" ");
+                }
+                if (rest == 0) {
+                    break;
+                }
+            }
+            return shortened.toString();
+        }
     }
 
     @Override
@@ -1833,6 +1840,9 @@ public class DashboardDaoImpl implements DashboardDao {
         org.hibernate.query.Query<Object[]> query = session.createNativeQuery(sql);
         for (Object[] obj : query.getResultList()) {
             String subject = (String) obj[0];
+            if (subject.length() > 12) {
+                subject = shorternSubjectName(subject);
+            }
             Integer count = ((BigInteger) obj[1]).intValue();
             String url = (String) obj[2];
             list.add(new WordCloudEntry(subject, count, url));
