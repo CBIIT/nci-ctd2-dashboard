@@ -1263,6 +1263,10 @@
             </div>
 
             <h3>Related observations <small>{{ role?"for the role of "+role:"" }} {{tier?"and tier "+tier:""}}</small></h3>
+            <div style="padding:5px">
+                <button type="button" class="btn btn-secondary" id=subject-wordcloud-button><span id=subject-wordcloud-toggle-word>Show</span> Connected Subjects Word Cloud</button>
+                <div id=subject-wordcloud></div>
+            </div>
 
             <table id="tissuesample-observation-grid" class="table table-bordered table-striped observations">
                 <thead>
@@ -1341,6 +1345,10 @@
                 </div>
             </div>
             <h3>Related observations <small>{{ role?"for the role of "+role:"" }} {{tier?"and tier "+tier:""}}</small></h3>
+            <div style="padding:5px">
+                <button type="button" class="btn btn-secondary" id=subject-wordcloud-button><span id=subject-wordcloud-toggle-word>Show</span> Connected Subjects Word Cloud</button>
+                <div id=subject-wordcloud></div>
+            </div>
 
             <table id="cellsample-observation-grid" class="table table-bordered table-striped observations">
                 <thead>
@@ -1556,6 +1564,10 @@
               </div>
 
               <h3>Related observations <small>{{ role?"for the role of "+decodeURI(role):"" }} {{tier?"and tier "+tier:""}}</small></h3>
+                <div style="padding:5px">
+                    <button type="button" class="btn btn-secondary" id=subject-wordcloud-button><span id=subject-wordcloud-toggle-word>Show</span> Connected Subjects Word Cloud</button>
+                    <div id=subject-wordcloud></div>
+                </div>
 
               <table id="compound-observation-grid" class="table table-bordered table-striped observations">
                   <thead>

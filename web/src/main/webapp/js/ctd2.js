@@ -1704,6 +1704,7 @@
                 },
                 el: "#compound-observation-grid"
             }).render();
+            create_subject_word_cloud(result.id);
 
             $("a.compound-image").fancybox({
                 titlePosition: 'inside'
@@ -1832,6 +1833,23 @@
         }
     });
 
+    function create_subject_word_cloud(subject_id) {
+        $.ajax("wordcloud/subject/" + subject_id).done(function (result) {
+            create_wordcloud('#subject-wordcloud')(result);
+        }).fail(function (err) {
+            console.log(err);
+        });
+        $("#subject-wordcloud").hide();
+        $("#subject-wordcloud-button").click(function (e) {
+            e.preventDefault();
+            $("#subject-wordcloud").toggle();
+            $("#subject-wordcloud-toggle-word").text(function (index, content) {
+                if (content == "Show") return "Hide";
+                else return "Show";
+            });
+        });
+    }
+
     const GeneView = Backbone.View.extend({
         el: $("#main-container"),
         template: _.template($("#gene-tmpl").html()),
@@ -1898,21 +1916,7 @@
                 },
                 el: "#gene-observation-grid"
             }).render();
-            // create word cloud
-            $.ajax("wordcloud/subject/" + result.id).done(function (result) {
-                create_wordcloud('#subject-wordcloud')(result);
-            }).fail(function (err) {
-                console.log(err);
-            });
-            $("#subject-wordcloud").hide();
-            $("#subject-wordcloud-button").click(function (e) {
-                e.preventDefault();
-                $("#subject-wordcloud").toggle();
-                $("#subject-wordcloud-toggle-word").text(function (index, content) {
-                    if (content == "Show") return "Hide";
-                    else return "Show";
-                });
-            });
+            create_subject_word_cloud(result.id);
 
             const currentGene = result.displayName;
             $(".addGene-" + currentGene).click(function (e) {
@@ -2130,6 +2134,7 @@
                 },
                 el: "#tissuesample-observation-grid"
             }).render();
+            create_subject_word_cloud(result.id);
 
             return this;
         }
@@ -2339,6 +2344,7 @@
                 },
                 el: "#cellsample-observation-grid"
             }).render();
+            create_subject_word_cloud(result.id);
 
             return this;
         }
