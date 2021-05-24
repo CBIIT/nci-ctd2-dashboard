@@ -1809,4 +1809,35 @@ public class DashboardDaoImpl implements DashboardDao {
         session.close();
         return list.toArray(new WordCloudEntry[0]);
     }
+
+    @Override
+    public WordCloudEntry[] getSubjectCounts(Integer associatedSubject) {
+        String sqlForObservations = "SELECT DISTINCT observation_id FROM observed_subject WHERE subject_id="
+                + associatedSubject;
+        Session session = getSession();
+        @SuppressWarnings("unchecked")
+        org.hibernate.query.Query<Integer> query3 = session.createNativeQuery(sqlForObservations);
+        List<Integer> observationIds = query3.getResultList();
+        StringBuffer idList = new StringBuffer("0"); // ID=0 is not any object
+        for (Integer observationId : observationIds) {
+            idList.append("," + observationId);
+        }
+
+        List<WordCloudEntry> list = new ArrayList<WordCloudEntry>();
+        String sql = "SELECT displayName, count(*) AS x, stableURL FROM observed_subject"
+                + " JOIN dashboard_entity ON observed_subject.subject_id=dashboard_entity.id"
+                + " JOIN subject ON observed_subject.subject_id=subject.id" + " WHERE observation_id IN (" + idList
+                + ") GROUP BY subject.id ORDER BY x DESC LIMIT 250";
+        log.debug(sql);
+        @SuppressWarnings("unchecked")
+        org.hibernate.query.Query<Object[]> query = session.createNativeQuery(sql);
+        for (Object[] obj : query.getResultList()) {
+            String subject = (String) obj[0];
+            Integer count = ((BigInteger) obj[1]).intValue();
+            String url = (String) obj[2];
+            list.add(new WordCloudEntry(subject, count, url));
+        }
+        session.close();
+        return list.toArray(new WordCloudEntry[0]);
+    }
 }

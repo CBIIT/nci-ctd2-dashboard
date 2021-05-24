@@ -89,4 +89,5 @@ public interface DashboardDao {
     List<Submission> getSubmissionsForSubjectName(String subjectName);
     WordCloudEntry[] getSubjectCounts();
     WordCloudEntry[] getSubjectCountsForRoles(String[] roles);
+    WordCloudEntry[] getSubjectCounts(Integer associatedSubject);
 }

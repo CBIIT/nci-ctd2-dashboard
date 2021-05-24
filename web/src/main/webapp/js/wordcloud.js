@@ -43,7 +43,7 @@ function draw(tags, bounds) {
       return t.font
     }).style("fill", function (t) {
       //return fill(color[t.category] + Math.floor(Math.random() * 4));
-      return fill(color[t.category]);
+      return fill(t.text.toLowerCase());
     }).on("click", function(t) {
       d3.event.stopPropagation();
       window.location = "#" + t.url;
@@ -460,7 +460,7 @@ var spirals = {
 
 // following part is outside the original source code index.js
 var words = [], max, scale = 0, complete = 0;
-const fill = d3.scale.category20c().domain(d3.range(20)), w_cloud = 960, h_cloud = 600;
+const fill = d3.scale.category20b(), w_cloud = 960, h_cloud = 600;
 const layout = d3.layout.cloud().timeInterval(10).size([w_cloud, h_cloud]).fontSize(function (t) {
     return fontSize(+t.value)
   }).text(function (t) {

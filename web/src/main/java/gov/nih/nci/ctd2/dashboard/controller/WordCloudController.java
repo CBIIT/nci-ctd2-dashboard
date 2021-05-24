@@ -71,4 +71,25 @@ public class WordCloudController {
 
         return new ResponseEntity<String>(json, headers, HttpStatus.OK);
     }
+
+    @Transactional
+    @RequestMapping(value = "subject/{subject_id}", method = { RequestMethod.GET }, headers = "Accept=application/json")
+    public ResponseEntity<String> getCountsForSubject(@PathVariable Integer subject_id) {
+        log.debug("request received for subject id: " + subject_id);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "application/json; charset=utf-8");
+
+        WordCloudEntry[] words = dashboardDao.getSubjectCounts(subject_id);
+
+        JSONSerializer jsonSerializer = new JSONSerializer().exclude("class");
+        String json = "{}";
+        try {
+            json = jsonSerializer.deepSerialize(words);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<String>(json, headers, HttpStatus.OK);
+    }
 }

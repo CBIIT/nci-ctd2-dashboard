@@ -1898,6 +1898,21 @@
                 },
                 el: "#gene-observation-grid"
             }).render();
+            // create word cloud
+            $.ajax("wordcloud/subject/" + result.id).done(function (result) {
+                create_wordcloud('#subject-wordcloud')(result);
+            }).fail(function (err) {
+                console.log(err);
+            });
+            $("#subject-wordcloud").hide();
+            $("#subject-wordcloud-button").click(function (e) {
+                e.preventDefault();
+                $("#subject-wordcloud").toggle();
+                $("#subject-wordcloud-toggle-word").text(function (index, content) {
+                    if (content == "Show") return "Hide";
+                    else return "Show";
+                });
+            });
 
             const currentGene = result.displayName;
             $(".addGene-" + currentGene).click(function (e) {
