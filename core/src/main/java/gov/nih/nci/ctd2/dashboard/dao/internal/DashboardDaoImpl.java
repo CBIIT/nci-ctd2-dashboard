@@ -21,7 +21,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.core.WhitespaceAnalyzer;
+import org.apache.lucene.analysis.core.KeywordAnalyzer;
 import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.search.Query;
@@ -633,15 +633,13 @@ public class DashboardDaoImpl implements DashboardDao {
         return false;
     }
 
-    @Override
-    @Cacheable(value = "searchCache")
-    public SearchResults search(String queryString) {
+    private void searchSingleTerm(final String singleTerm, final Map<Subject, Integer> subjects,
+            final Map<Submission, Integer> submissions) {
         FullTextSession fullTextSession = Search.getFullTextSession(getSession());
-        Analyzer analyzer = new WhitespaceAnalyzer();
-        MultiFieldQueryParser multiFieldQueryParser = new MultiFieldQueryParser(defaultSearchFields, analyzer);
+        MultiFieldQueryParser multiFieldQueryParser = new MultiFieldQueryParser(defaultSearchFields, new KeywordAnalyzer());
         Query luceneQuery = null;
         try {
-            luceneQuery = multiFieldQueryParser.parse(queryString);
+            luceneQuery = multiFieldQueryParser.parse(singleTerm);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -658,38 +656,58 @@ public class DashboardDaoImpl implements DashboardDao {
                     + numberOfSearchResults);
         }
 
-        Set<Subject> subjects = new HashSet<Subject>();
-        Set<Submission> submissions = new HashSet<Submission>();
         for (Object o : list) {
             if (o instanceof ObservationTemplate) {
                 List<Submission> submissionList = queryWithClass(
                         "select o from SubmissionImpl as o where o.observationTemplate = :ot", "ot",
                         (ObservationTemplate) o);
-                submissionList.forEach(submission -> submissions.add(submission));
+                for (Submission submission : submissionList) {
+                    if (submissions.containsKey(submission)) {
+                        submissions.put(submission, submissions.get(submission) + 1);
+                    } else {
+                        submissions.put(submission, 1);
+                    }
+                }
             } else if (o instanceof Subject) {
-                subjects.add((Subject) o);
+                Subject s = (Subject) o;
+                if (subjects.containsKey(s)) {
+                    subjects.put(s, subjects.get(s) + 1);
+                } else {
+                    subjects.put(s, 1);
+                }
             } else {
                 log.warn("unexpected type returned by searching: " + o.getClass().getName());
             }
         }
+    }
+
+    @Override
+    @Cacheable(value = "searchCache")
+    public SearchResults search(String queryString) {
+        final String[] searchTerms = parseWords(queryString);
+        log.debug("search terms: " + String.join(",", searchTerms));
+        Map<Subject, Integer> subjects = new HashMap<Subject, Integer>();
+        Map<Submission, Integer> submissions = new HashMap<Submission, Integer>();
+        for (String singleTerm : searchTerms) {
+            searchSingleTerm(singleTerm, subjects, submissions);
+        }
         SearchResults searchResults = new SearchResults();
         ArrayList<DashboardEntityWithCounts> submission_result = new ArrayList<DashboardEntityWithCounts>();
-        submissions.forEach(submission -> {
+        submissions.forEach((submission, matchNumber) -> {
             DashboardEntityWithCounts entityWithCounts = new DashboardEntityWithCounts();
             entityWithCounts.setDashboardEntity(submission);
             entityWithCounts.setObservationCount(findObservationsBySubmission(submission).size());
             entityWithCounts.setMaxTier(submission.getObservationTemplate().getTier());
             entityWithCounts.setCenterCount(1);
+            entityWithCounts.setMatchNumber(matchNumber);
             submission_result.add(entityWithCounts);
         });
         searchResults.submission_result = submission_result;
 
-        final String[] searchTerms = parseWords(queryString);
-        log.debug("search terms for observation: " + String.join(",", searchTerms));
         Map<String, Set<Observation>> observationMap = new HashMap<String, Set<Observation>>();
 
         ArrayList<DashboardEntityWithCounts> subject_result = new ArrayList<DashboardEntityWithCounts>();
-        for (Subject subject : subjects) {
+        for (Subject subject : subjects.keySet()) {
             DashboardEntityWithCounts entityWithCounts = new DashboardEntityWithCounts();
             entityWithCounts.setDashboardEntity(subject);
             Set<Observation> observations = new HashSet<Observation>();
@@ -708,6 +726,7 @@ public class DashboardDaoImpl implements DashboardDao {
             entityWithCounts.setMaxTier(maxTier);
             entityWithCounts.setRoles(roles);
             entityWithCounts.setCenterCount(submissionCenters.size());
+            entityWithCounts.setMatchNumber(subjects.get(subject));
             Arrays.stream(searchTerms).filter(term -> matchSubject(term, subject)).forEach(term -> {
                 Set<Observation> obset = observationMap.get(term);
                 if (obset == null) {

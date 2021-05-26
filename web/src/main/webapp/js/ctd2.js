@@ -3165,8 +3165,10 @@
                                 "orderDataType": "dashboard-rank",
                                 "type": 'num',
                             },
+                            {visible: false}
                         ]
                     }).fnSort([
+                        [6, 'desc'],
                         [5, 'desc'],
                         [1, 'asc']
                     ]);
@@ -3295,10 +3297,12 @@
                                     "orderDataType": "dashboard-rank",
                                     "type": 'num',
                                 },
+                                {visible: false}
                             ]
 
                         });
                         oTable.fnSort([
+                            [6, 'desc'],
                             [5, 'desc'],
                             [1, 'asc']
                         ]);

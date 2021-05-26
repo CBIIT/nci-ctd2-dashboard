@@ -1704,6 +1704,7 @@
                 <a href="#{{dashboardEntity.stableURL}}" id="subject-observation-count-{{dashboardEntity.id}}" count="{{observationCount}}">{{observationCount}}</a>
                 <i class="icon-question-sign obs-tooltip {{observationCount < 1 ? 'hide' : ''}}" data-content="{{observationCount}} observations from {{centerCount}} centers: Tier {{maxTier}}"></i>
             </td>
+            <td>{{matchNumber}}</td>
         </tr>
     </script>
 
@@ -1732,6 +1733,7 @@
                 <a href="#{{dashboardEntity.stableURL}}" id="subject-observation-count-{{dashboardEntity.id}}" count="{{observationCount}}">{{observationCount}}</a>
                 <i class="icon-question-sign obs-tooltip {{observationCount < 1 ? 'hide' : ''}}" data-content="{{observationCount}} observations from {{centerCount}} centers: Tier {{maxTier}}"></i>
             </td>
+            <td>{{matchNumber}}</td>
         </tr>
     </script>
 
@@ -1755,6 +1757,7 @@
                     <th>Class</th>
                     <th>Roles</th>
                     <th>Observations</th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
