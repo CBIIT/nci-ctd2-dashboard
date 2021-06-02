@@ -1022,9 +1022,29 @@
                 <batch:chunk reader="dfciCreb5StoryReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	    </batch:tasklet>
 	</batch:step>
-	<batch:step id="broadPeroxisomeStep" parent="observationDataStep">
+	<batch:step id="broadPeroxisomeStep" parent="observationDataStep" next="stanfordScRNAseqGastricStep">
 	    <batch:tasklet>
                 <batch:chunk reader="broadPeroxisomeReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	    </batch:tasklet>
+	</batch:step>
+	<batch:step id="stanfordScRNAseqGastricStep" parent="observationDataStep" next="UCSDAPOBECStoryStep">
+	    <batch:tasklet>
+                <batch:chunk reader="stanfordScRNAseqGastricReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	    </batch:tasklet>
+	</batch:step>
+	<batch:step id="UCSDAPOBECStoryStep" parent="observationDataStep" next="UCSDUVStoryStep">
+	    <batch:tasklet>
+                <batch:chunk reader="UCSDAPOBECStoryReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	    </batch:tasklet>
+	</batch:step>
+	<batch:step id="UCSDUVStoryStep" parent="observationDataStep" next="UCSDSYKPI3KStoryStep">
+	    <batch:tasklet>
+                <batch:chunk reader="UCSDUVStoryReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	    </batch:tasklet>
+	</batch:step>
+	<batch:step id="UCSDSYKPI3KStoryStep" parent="observationDataStep">
+	    <batch:tasklet>
+                <batch:chunk reader="UCSDSYKPI3KStoryReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	    </batch:tasklet>
 	</batch:step>
     </batch:job>
@@ -2861,6 +2881,43 @@
         <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,disease_1,disease_2,cell_line_1,cell_line_2,gene_1,gene_2,gene_3,gene_4,gene_5,gene_6,story_location,reference_1,reference_2,reference_3"/>
     </bean>
+
+    <bean name="stanfordScRNAseqGastricLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="stanfordScRNAseqGastricLineTokenizer" />
+    </bean>
+    <bean name="stanfordScRNAseqGastricLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="&#9;"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,gastric_cancer,normal_stomach,pbmc,publication_reference,story_location"/>
+    </bean>
+
+    <bean name="UCSDAPOBECStoryLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="UCSDAPOBECStoryLineTokenizer" />
+    </bean>
+    <bean name="UCSDAPOBECStoryLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="&#9;"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,biomarker_1,data_source_firehose,data_source_predict,publication_url,story_location"/>
+    </bean>
+
+    <bean name="UCSDUVStoryLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="UCSDUVStoryLineTokenizer" />
+    </bean>
+    <bean name="UCSDUVStoryLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="&#9;"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,disease_1,biomarker_1,uvmse,data_source_firehose,data_source_predict,story_location,mutational_signature_1,publication_url"/>
+    </bean>
+
+    <bean name="UCSDSYKPI3KStoryLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="UCSDSYKPI3KStoryLineTokenizer" />
+    </bean>
+    <bean name="UCSDSYKPI3KStoryLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="&#9;"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,compound_1,animal_model_1,target_1,target_2,biomarker_1,biomarker_2,biomarker_3,publication_url,story_location,srx3207_selectivity_profile,srx3207_in_vivo_effects"/>
+    </bean>
+
 
     <!-- shared helper beans -->
     <bean name="observationTemplateMap" class="java.util.HashMap">
@@ -4929,6 +4986,35 @@
 		<entry key="broad_peroxisome:reference_1" value="evidence:readString:createObservedUrlEvidence" />
 		<entry key="broad_peroxisome:reference_2" value="evidence:readString:createObservedUrlEvidence" />
 		<entry key="broad_peroxisome:reference_3" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="UCSD_APOBEC_story:biomarker_1" value="subject:findGenesBySymbol" />
+		<entry key="UCSD_APOBEC_story:data_source_firehose" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="UCSD_APOBEC_story:data_source_predict" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="UCSD_APOBEC_story:publication_url" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="UCSD_APOBEC_story:story_location" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="UCSD_SYK_PI3K_story:compound_1" value="subject:findCompoundsByName" />
+		<entry key="UCSD_SYK_PI3K_story:animal_model_1" value="subject:findAnimalModelByName" />
+		<entry key="UCSD_SYK_PI3K_story:target_1" value="subject:findGenesBySymbol" />
+		<entry key="UCSD_SYK_PI3K_story:target_2" value="subject:findGenesBySymbol" />
+		<entry key="UCSD_SYK_PI3K_story:biomarker_1" value="subject:findGenesBySymbol" />
+		<entry key="UCSD_SYK_PI3K_story:biomarker_2" value="subject:findGenesBySymbol" />
+		<entry key="UCSD_SYK_PI3K_story:biomarker_3" value="subject:findGenesBySymbol" />
+		<entry key="UCSD_SYK_PI3K_story:publication_url" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="UCSD_SYK_PI3K_story:story_location" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="UCSD_SYK_PI3K_story:srx3207_selectivity_profile" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="UCSD_SYK_PI3K_story:srx3207_in_vivo_effects" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="UCSD_UV_story:disease_1" value="subject:findTissueSampleByName" />
+		<entry key="UCSD_UV_story:biomarker_1" value="subject:findGenesBySymbol" />
+		<entry key="UCSD_UV_story:uvmse" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="UCSD_UV_story:data_source_firehose" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="UCSD_UV_story:data_source_predict" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="UCSD_UV_story:story_location" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="UCSD_UV_story:mutational_signature_1" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="UCSD_UV_story:publication_url" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="stanford_scRNAseq_gastric:gastric_cancer" value="subject:findTissueSampleByName" />
+		<entry key="stanford_scRNAseq_gastric:normal_stomach" value="subject:findTissueSampleByName" />
+		<entry key="stanford_scRNAseq_gastric:pbmc" value="subject:findTissueSampleByName" />
+		<entry key="stanford_scRNAseq_gastric:publication_reference" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="stanford_scRNAseq_gastric:story_location" value="evidence:readString:createObservedFileEvidence" />
             </map>
         </constructor-arg>
     </bean>
