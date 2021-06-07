@@ -3,7 +3,7 @@ const max_word_number = 250;
 const angle_count = 5; // default 5
 const angle_from = -60; // default -60
 const angle_to = 60; // default 60
-const font_name = "Impact"; // default Impact
+const font_name = "sans-serif"; // default Impact
 const scale_type = "sqrt"; // three options: log, sqrt, linear. default log. see https://i.stack.imgur.com/0oZZQ.png
 const spiral_type = "archimedean"; // two options: archimedean, rectangular. default archimedean. see https://en.wikipedia.org/wiki/Archimedean_spiral
 
@@ -28,7 +28,8 @@ function draw(tags, bounds) {
   var n = vis.selectAll("text").data(words, function (t) {
     return t.text.toLowerCase()
   });
-  const color = [0, 4, 8, 12];
+  // bright yellow "#F4FA06" is left out
+  const color = [ "#FF7F0E", "#D12FC2", "#0066FF", "#4ECB35",];
   n.transition().duration(1e3).attr("transform", function (t) {
     return "translate(" + [t.x, t.y] + ")rotate(" + t.rotate + ")"
   }).style("font-size", function (t) {
@@ -42,8 +43,7 @@ function draw(tags, bounds) {
     n.style("font-family", function (t) {
       return t.font
     }).style("fill", function (t) {
-      //return fill(color[t.category] + Math.floor(Math.random() * 4));
-      return fill(t.text.toLowerCase());
+      return color[(Math.floor(Math.random() * color.length))];
     }).on("click", function(t) {
       d3.event.stopPropagation();
       window.location = "#" + t.url;
@@ -460,7 +460,7 @@ var spirals = {
 
 // following part is outside the original source code index.js
 var words = [], max, scale = 0, complete = 0;
-const fill = d3.scale.category20b(), w_cloud = 960, h_cloud = 600;
+const w_cloud = 960, h_cloud = 600;
 const layout = d3.layout.cloud().timeInterval(10).size([w_cloud, h_cloud]).fontSize(function (t) {
     return fontSize(+t.value)
   }).text(function (t) {
