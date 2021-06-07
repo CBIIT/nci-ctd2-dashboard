@@ -409,7 +409,7 @@
                     else return "Show";
                 });
             });
-            $("#wordcloud-container").hide();
+            $("#wordcloud-container").show();
             function select_wordcloud(choice, button) {
                 $("#vis").hide();
                 $("#vis-genes").hide();

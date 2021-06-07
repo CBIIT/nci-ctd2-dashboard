@@ -271,7 +271,7 @@
         <div class="dark-separator"></div>
         <div style="text-align:center;display:block;padding:10px">
         <button type="button" class="btn btn-secondary" id=summary-table-label><span id=toggle-word>Show</span> Dashboard Content Summary</button>
-        <button type="button" class="btn btn-secondary" id=wordcloud-button><span id=wordcloud-toggle-word>Show</span> Word Cloud</button>
+        <button type="button" class="btn btn-secondary" id=wordcloud-button><span id=wordcloud-toggle-word>Hide</span> Word Cloud</button>
         </div>
         <div id='wordcloud-container'>
             <div style="text-align:center;display:block;padding:10px">
