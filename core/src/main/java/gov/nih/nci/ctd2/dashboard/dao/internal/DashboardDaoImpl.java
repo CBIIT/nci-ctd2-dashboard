@@ -20,7 +20,6 @@ import javax.persistence.criteria.CriteriaQuery;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.core.KeywordAnalyzer;
 import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
 import org.apache.lucene.queryparser.classic.ParseException;
@@ -636,7 +635,8 @@ public class DashboardDaoImpl implements DashboardDao {
     private void searchSingleTerm(final String singleTerm, final Map<Subject, Integer> subjects,
             final Map<Submission, Integer> submissions) {
         FullTextSession fullTextSession = Search.getFullTextSession(getSession());
-        MultiFieldQueryParser multiFieldQueryParser = new MultiFieldQueryParser(defaultSearchFields, new KeywordAnalyzer());
+        MultiFieldQueryParser multiFieldQueryParser = new MultiFieldQueryParser(defaultSearchFields,
+                new KeywordAnalyzer());
         Query luceneQuery = null;
         try {
             luceneQuery = multiFieldQueryParser.parse(singleTerm);
@@ -1852,8 +1852,8 @@ public class DashboardDaoImpl implements DashboardDao {
         List<WordCloudEntry> list = new ArrayList<WordCloudEntry>();
         String sql = "SELECT displayName, count(*) AS x, stableURL FROM observed_subject"
                 + " JOIN dashboard_entity ON observed_subject.subject_id=dashboard_entity.id"
-                + " JOIN subject ON observed_subject.subject_id=subject.id" + " WHERE observation_id IN (" + idList
-                + ") GROUP BY subject.id ORDER BY x DESC LIMIT 250";
+                + " JOIN subject ON observed_subject.subject_id=subject.id" + " WHERE subject.id!=" + associatedSubject
+                + " AND observation_id IN (" + idList + ") GROUP BY subject.id ORDER BY x DESC LIMIT 250";
         log.debug(sql);
         @SuppressWarnings("unchecked")
         org.hibernate.query.Query<Object[]> query = session.createNativeQuery(sql);
