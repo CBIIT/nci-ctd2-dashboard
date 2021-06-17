@@ -15,13 +15,14 @@ import gov.nih.nci.ctd2.dashboard.model.Subject;
 import gov.nih.nci.ctd2.dashboard.model.Synonym;
 import gov.nih.nci.ctd2.dashboard.model.Xref;
 
+/* API 2.0 */
 public class SubjectResponse {
     public final String clazz, name;
     public final String[] synonyms, roles;
     public final XRefItem[] xref;
 
     public final ObservationCount observation_count;
-    public final ObservationItem[] observations;
+    public final String[] observations;
 
     public static class Filter {
         public final int limit;
@@ -114,12 +115,12 @@ public class SubjectResponse {
                 }
             }
         }
-        SubjectResponse subjectResponse = new SubjectResponse(subject, observations.toArray(new ObservationItem[0]),
-                roles.toArray(new String[0]), tierCount);
+        String[] uris = observations.stream().map(x -> x.uri).toArray(String[]::new);
+        SubjectResponse subjectResponse = new SubjectResponse(subject, uris, roles.toArray(new String[0]), tierCount);
         return subjectResponse;
     }
 
-    public SubjectResponse(Subject subject, ObservationItem[] observations, String[] roles, int[] tierCount) {
+    public SubjectResponse(Subject subject, String[] observations, String[] roles, int[] tierCount) {
         String stableURL = subject.getStableURL();
         this.clazz = stableURL.substring(0, stableURL.indexOf("/"));
 

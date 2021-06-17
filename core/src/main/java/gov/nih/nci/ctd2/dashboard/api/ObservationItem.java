@@ -18,6 +18,8 @@ public class ObservationItem {
     @Column(length = 102400)
     public EvidenceItem[] evidence_list;
 
+    public String uri;
+
     @Id
     private Integer id;
 

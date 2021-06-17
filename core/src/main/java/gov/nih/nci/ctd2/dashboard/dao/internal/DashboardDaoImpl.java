@@ -1291,8 +1291,8 @@ public class DashboardDaoImpl implements DashboardDao {
     }
 
     /*
-     * TODO This needs to reviewed. Much complexity was introduced to handle the
-     * previous version of API.
+     * This is still necessary for API 2.0 because we need to access roles from
+     * subject.
      */
     @SuppressWarnings("unchecked")
     @Override
@@ -1308,11 +1308,13 @@ public class DashboardDaoImpl implements DashboardDao {
         for (Object[] objs : submissions) {
             Integer submission_id = (Integer) (objs[0]);
             String observationSummary = (String) (objs[1]);
-            org.hibernate.query.Query<Integer> query = session
-                    .createNativeQuery("SELECT id  FROM observation WHERE submission_id=" + submission_id);
-            List<Integer> oid = query.list();
+            org.hibernate.query.Query<Object[]> query = session
+                    .createNativeQuery("SELECT id, stableURL FROM observation WHERE submission_id=" + submission_id);
+            List<Object[]> result = query.list();
+            for (Object[] obj : result) {
+                Integer id = (Integer) obj[0];
+                String uri = (String) obj[1];
 
-            for (Integer id : oid) {
                 List<EvidenceItem> evidences = createObservedEvidenceInfo(id);
                 List<SubjectItem> subjects = createObservedSubjectInfo(id);
                 ObservationItem obsv = new ObservationItem();
@@ -1322,6 +1324,7 @@ public class DashboardDaoImpl implements DashboardDao {
                 obsv.evidence_list = evidences.toArray(new EvidenceItem[0]);
                 obsv.subject_list = subjects.toArray(new SubjectItem[0]);
                 session.save(obsv);
+                obsv.uri = uri;
             }
         }
         session.getTransaction().commit();
