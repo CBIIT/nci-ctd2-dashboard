@@ -1262,22 +1262,17 @@ public class DashboardDaoImpl implements DashboardDao {
     }
 
     @Override
-    public List<ObservationItem> findObservationInfo(Integer submissionId, int limit) {
-        Session session = getSession();
-        List<ObservationItem> list = new ArrayList<ObservationItem>();
-        @SuppressWarnings("unchecked")
-        org.hibernate.query.Query<ObservationItem> query = session
-                .createQuery("from ObservationItem where submission_id = :sid");
-        query.setParameter("sid", submissionId);
-        if (limit > 0)
-            query.setMaxResults(limit);
-        try {
-            list = query.getResultList();
-        } catch (NoResultException e) {
-            log.info("ObservationItem not available for submission ID " + submissionId);
+    public String[] findObservationURLs(Integer submissionId, int limit) {
+        String sql = "SELECT stableURL FROM observation WHERE submission_id=" + submissionId;
+        if (limit > 0) {
+            sql += " LIMIT " + limit;
         }
+        Session session = getSession();
+        @SuppressWarnings("unchecked")
+        org.hibernate.query.Query<String> query = session.createNativeQuery(sql);
+        String[] result = query.list().toArray(new String[0]);
         session.close();
-        return list;
+        return result;
     }
 
     @Override
@@ -1295,6 +1290,10 @@ public class DashboardDaoImpl implements DashboardDao {
         return list;
     }
 
+    /*
+     * TODO This needs to reviewed. Much complexity was introduced to handle the
+     * previous version of API.
+     */
     @SuppressWarnings("unchecked")
     @Override
     public void prepareAPIData() {

@@ -72,7 +72,7 @@ public interface DashboardDao {
     String expandSummary(Integer observationId, String summaryTemplate);
 
     // the following are added to support more efficient API
-    List<ObservationItem> findObservationInfo(Integer submissionId, int limit);
+    String[] findObservationURLs(Integer submissionId, int limit);
     List<ObservationItem> findObservationInfo(List<Integer> observationIds);
 
     void summarize();
