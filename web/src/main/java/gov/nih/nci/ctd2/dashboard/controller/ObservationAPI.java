@@ -35,12 +35,8 @@ public class ObservationAPI {
     public ResponseEntity<String> getSubmission(@PathVariable String id) {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json; charset=utf-8");
-        ObservationItem observation = null;
-        try {
-
-            observation = dashboardDao.getObservationInfo("observation/" + id);
-        } catch (Exception e) {
-            e.printStackTrace();
+        ObservationItem observation = dashboardDao.getObservationInfo("observation/" + id);
+        if (observation == null) {
             return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
         }
 
