@@ -23,6 +23,7 @@ import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
 import gov.nih.nci.ctd2.dashboard.model.DashboardEntity;
 import gov.nih.nci.ctd2.dashboard.util.DashboardEntityWithCounts;
 
+/* API 2.0 */
 @Controller
 @RequestMapping("/api/search")
 public class SearchAPI {

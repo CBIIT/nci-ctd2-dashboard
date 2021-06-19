@@ -24,6 +24,7 @@ import gov.nih.nci.ctd2.dashboard.model.ECOTerm;
 import gov.nih.nci.ctd2.dashboard.model.Gene;
 import gov.nih.nci.ctd2.dashboard.model.Subject;
 
+/* API 2.0 */
 @Controller
 @RequestMapping("/api/browse")
 public class BrowseAPI {
