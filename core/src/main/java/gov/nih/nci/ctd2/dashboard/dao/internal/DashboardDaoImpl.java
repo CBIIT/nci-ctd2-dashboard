@@ -75,6 +75,7 @@ import gov.nih.nci.ctd2.dashboard.model.Xref;
 import gov.nih.nci.ctd2.dashboard.util.DashboardEntityWithCounts;
 import gov.nih.nci.ctd2.dashboard.util.EcoBrowse;
 import gov.nih.nci.ctd2.dashboard.util.Hierarchy;
+import gov.nih.nci.ctd2.dashboard.util.ObservationURIsAndTiers;
 import gov.nih.nci.ctd2.dashboard.util.SearchResults;
 import gov.nih.nci.ctd2.dashboard.util.SubjectWithSummaries;
 import gov.nih.nci.ctd2.dashboard.util.Summary;
@@ -1065,6 +1066,50 @@ public class DashboardDaoImpl implements DashboardDao {
         session.close();
         log.debug("map size " + map.size());
         return new ArrayList<EcoBrowse>(map.values());
+    }
+
+    @Override
+    public ObservationURIsAndTiers ecoCode2ObservationURIsAndTiers(String ecoCode) {
+        Session session = getSession();
+        @SuppressWarnings("unchecked")
+        org.hibernate.query.Query<Object[]> ecocodeQuery = session
+                .createNativeQuery("SELECT ecocode, id, tier FROM observation_template WHERE LENGTH(ecocode)>0");
+        List<Object[]> ecocodeResult = ecocodeQuery.list();
+
+        List<String> observationURIs = new ArrayList<String>();
+        int tier1 = 0, tier2 = 0, tier3 = 0;
+
+        for (Object[] array : ecocodeResult) {
+            String allcodes = (String) array[0];
+            Integer templateId = (Integer) array[1];
+            Integer tier = (Integer) array[2];
+
+            String[] ecocodes = allcodes.split("\\|");
+            if (Arrays.asList(ecocodes).contains(ecoCode)) {
+                String sql = "SELECT observation.stableURL FROM observation"
+                        + " JOIN submission ON observation.submission_id=submission.id"
+                        + " WHERE submission.observationTemplate_id=" + templateId;
+                @SuppressWarnings("unchecked")
+                org.hibernate.query.Query<String> query = session.createNativeQuery(sql);
+                List<String> uris = query.list();
+                observationURIs.addAll(uris);
+                switch (tier) {
+                    case 1:
+                        tier1++;
+                        break;
+                    case 2:
+                        tier2++;
+                        break;
+                    case 3:
+                        tier3++;
+                        break;
+                    default:
+                        log.error("unknow tier number " + tier);
+                }
+            }
+        }
+        session.close();
+        return new ObservationURIsAndTiers(observationURIs.toArray(new String[0]), tier1, tier2, tier3);
     }
 
     @Override

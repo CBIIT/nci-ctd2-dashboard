@@ -5,6 +5,7 @@ import gov.nih.nci.ctd2.dashboard.util.SubjectWithSummaries;
 import gov.nih.nci.ctd2.dashboard.util.Summary;
 import gov.nih.nci.ctd2.dashboard.util.WordCloudEntry;
 import gov.nih.nci.ctd2.dashboard.util.EcoBrowse;
+import gov.nih.nci.ctd2.dashboard.util.ObservationURIsAndTiers;
 import gov.nih.nci.ctd2.dashboard.util.SearchResults;
 
 import java.math.BigInteger;
@@ -79,6 +80,7 @@ public interface DashboardDao {
     List<Summary> getOverallSummary();
 
     List<EcoBrowse> getEcoBrowse();
+    ObservationURIsAndTiers ecoCode2ObservationURIsAndTiers(String ecoCode);
     Map<Observation, BigInteger> getOneObservationPerSubmissionByEcoCode(String ecocode, int tier);
     List<Observation> getObservationsForSubmissionAndEcoCode(Integer submissionId, String ecocode);
     ECOTerm getEcoTerm(String ecoTermCode);
