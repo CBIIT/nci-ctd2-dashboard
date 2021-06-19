@@ -20,6 +20,7 @@ public class SubjectItem implements Serializable {
 
     private String clazz, role;
     private String name, columnName;
+    public String uri;
 
     @Column(length = 10240, columnDefinition = "BLOB")
     private String[] synonyms;
@@ -83,9 +84,9 @@ public class SubjectItem implements Serializable {
         this.clazz = clazz;
     }
 
-    public SubjectItem(String clazz, String role, String description, String name, String[] synonyms, XRefItem[] xref,
+    public SubjectItem(String stableURL, String role, String description, String name, String[] synonyms, XRefItem[] xref,
             String columnName) {
-
+        String clazz = stableURL.substring(0, stableURL.indexOf("/"));
         this.setClazz(clazz);
         this.setRole(role);
         this.setDescription(description);
@@ -93,6 +94,7 @@ public class SubjectItem implements Serializable {
         this.setSynonyms(synonyms);
         this.setXref(xref);
         this.setColumnName(columnName);
+        this.uri = stableURL;
     }
 
     public String getDescription() {

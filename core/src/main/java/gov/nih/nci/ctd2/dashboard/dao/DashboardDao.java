@@ -92,4 +92,6 @@ public interface DashboardDao {
     WordCloudEntry[] getSubjectCounts();
     WordCloudEntry[] getSubjectCountsForRoles(String[] roles);
     WordCloudEntry[] getSubjectCounts(Integer associatedSubject);
+
+    ObservationItem getObservationInfo(String uri);
 }

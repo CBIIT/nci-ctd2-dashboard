@@ -1271,7 +1271,7 @@ public class DashboardDaoImpl implements DashboardDao {
                 xrefItems.add(new XRefItem((String) x[1], (String) x[0]));
             }
 
-            SubjectItem subjectItem = new SubjectItem(stableURL.substring(0, stableURL.indexOf("/")), role, description,
+            SubjectItem subjectItem = new SubjectItem(stableURL, role, description,
                     name, synonyms.toArray(new String[0]), xrefItems.toArray(new XRefItem[0]), columnName);
             list.add(subjectItem);
         }
@@ -1915,5 +1915,21 @@ public class DashboardDaoImpl implements DashboardDao {
         }
         session.close();
         return list.toArray(new WordCloudEntry[0]);
+    }
+
+    @Override
+    public ObservationItem getObservationInfo(String uri) {
+        Session session = getSession();
+        @SuppressWarnings("unchecked")
+        org.hibernate.query.Query<ObservationItem> query = session.createQuery("FROM ObservationItem WHERE uri = :uri");
+        query.setParameter("uri", uri);
+        ObservationItem x = null;
+        try {
+            x = query.getSingleResult();
+        } catch (NoResultException e) {
+            e.printStackTrace();
+        }
+        session.close();
+        return x;
     }
 }
