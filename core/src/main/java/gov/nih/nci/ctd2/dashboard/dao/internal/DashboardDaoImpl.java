@@ -1271,8 +1271,8 @@ public class DashboardDaoImpl implements DashboardDao {
                 xrefItems.add(new XRefItem((String) x[1], (String) x[0]));
             }
 
-            SubjectItem subjectItem = new SubjectItem(stableURL, role, description,
-                    name, synonyms.toArray(new String[0]), xrefItems.toArray(new XRefItem[0]), columnName);
+            SubjectItem subjectItem = new SubjectItem(stableURL, role, description, name,
+                    synonyms.toArray(new String[0]), xrefItems.toArray(new XRefItem[0]), columnName);
             list.add(subjectItem);
         }
         session1.close();
@@ -1929,6 +1929,35 @@ public class DashboardDaoImpl implements DashboardDao {
         } catch (NoResultException e) {
             e.printStackTrace();
         }
+        session.close();
+        return x;
+    }
+
+    @Override
+    public ObservationItem[] getObservations(String submissionId, Set<Integer> indexes) {
+        Session session = getSession();
+        @SuppressWarnings("unchecked")
+        org.hibernate.query.Query<Submission> querySubmission = session
+                .createQuery("FROM SubmissionImpl WHERE stableURL = 'submission/" + submissionId + "'");
+        Submission s = querySubmission.getSingleResult();
+        Integer sid = s.getId();
+
+        List<ObservationItem> list = new ArrayList<ObservationItem>();
+        @SuppressWarnings("unchecked")
+        org.hibernate.query.Query<ObservationItem> query = session
+                .createQuery("FROM ObservationItem WHERE submission_id = :sid");
+        query.setParameter("sid", sid);
+        try {
+            list = query.getResultList();
+        } catch (NoResultException e) {
+            log.info("ObservationItem not available for submission ID " + submissionId);
+        }
+        ObservationItem[] x = list.stream().filter(c -> {
+            String uri = c.uri;
+            String str = uri.substring(uri.lastIndexOf("-") + 1, uri.length());
+            return indexes.contains(Integer.valueOf(str));
+        }).toArray(ObservationItem[]::new);
+        log.debug("count of observations:" + x.length);
         session.close();
         return x;
     }

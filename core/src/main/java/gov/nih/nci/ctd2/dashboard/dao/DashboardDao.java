@@ -12,6 +12,7 @@ import java.math.BigInteger;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import gov.nih.nci.ctd2.dashboard.api.ObservationItem;
 
@@ -94,4 +95,5 @@ public interface DashboardDao {
     WordCloudEntry[] getSubjectCounts(Integer associatedSubject);
 
     ObservationItem getObservationInfo(String uri);
+    ObservationItem[] getObservations(String submissionId, Set<Integer> indexes);
 }
