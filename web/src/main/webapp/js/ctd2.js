@@ -405,8 +405,12 @@
                 e.preventDefault();
                 $("#summary-table").toggle();
                 $("#toggle-word").text(function (index, content) {
-                    if (content == "Show") return "Hide";
-                    else return "Show";
+                    if (content == "Show") {
+                        // hide word cloud
+                        $("#wordcloud-container").hide();
+                        $("#wordcloud-toggle-word").text("Show");
+                        return "Hide";
+                    } else return "Show";
                 });
             });
             $("#wordcloud-container").show();
@@ -429,8 +433,12 @@
                 e.preventDefault();
                 $("#wordcloud-container").toggle();
                 $("#wordcloud-toggle-word").text(function (index, content) {
-                    if (content == "Show") return "Hide";
-                    else return "Show";
+                    if (content == "Show") {
+                        // hide summary table
+                        $("#summary-table").hide();
+                        $("#toggle-word").text("Show");
+                        return "Hide";
+                    } else return "Show";
                 });
             });
             $("#wordcloud-genes").click(function (e) {
