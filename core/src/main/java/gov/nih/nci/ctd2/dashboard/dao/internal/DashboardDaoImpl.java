@@ -1935,28 +1935,22 @@ public class DashboardDaoImpl implements DashboardDao {
 
     @Override
     public ObservationItem[] getObservations(String submissionId, Set<Integer> indexes) {
+        // this works because observation URIs are totally based on submission URI
+        List<String> uris = indexes.stream().map(i -> "observation/" + submissionId + "-" + i)
+                .collect(Collectors.toList());
+        // uris.forEach(System.out::println);
         Session session = getSession();
-        @SuppressWarnings("unchecked")
-        org.hibernate.query.Query<Submission> querySubmission = session
-                .createQuery("FROM SubmissionImpl WHERE stableURL = 'submission/" + submissionId + "'");
-        Submission s = querySubmission.getSingleResult();
-        Integer sid = s.getId();
-
         List<ObservationItem> list = new ArrayList<ObservationItem>();
         @SuppressWarnings("unchecked")
         org.hibernate.query.Query<ObservationItem> query = session
-                .createQuery("FROM ObservationItem WHERE submission_id = :sid");
-        query.setParameter("sid", sid);
+                .createQuery("FROM ObservationItem WHERE uri IN (:uris)");
+        query.setParameterList("uris", uris);
         try {
             list = query.getResultList();
         } catch (NoResultException e) {
             log.info("ObservationItem not available for submission ID " + submissionId);
         }
-        ObservationItem[] x = list.stream().filter(c -> {
-            String uri = c.uri;
-            String str = uri.substring(uri.lastIndexOf("-") + 1, uri.length());
-            return indexes.contains(Integer.valueOf(str));
-        }).toArray(ObservationItem[]::new);
+        ObservationItem[] x = list.stream().toArray(ObservationItem[]::new);
         log.debug("count of observations:" + x.length);
         session.close();
         return x;
