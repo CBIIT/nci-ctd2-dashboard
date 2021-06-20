@@ -32,7 +32,7 @@ public class ObservationAPI {
 
     @Transactional
     @RequestMapping(value = "{id}", method = { RequestMethod.GET }, headers = "Accept=application/json")
-    public ResponseEntity<String> getSubmission(@PathVariable String id) {
+    public ResponseEntity<String> getObservation(@PathVariable String id) {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json; charset=utf-8");
         ObservationItem observation = dashboardDao.getObservationInfo("observation/" + id);
