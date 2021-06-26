@@ -1852,6 +1852,8 @@ public class DashboardDaoImpl implements DashboardDao {
         return list.toArray(new WordCloudEntry[0]);
     }
 
+    private final static List<Character> vowels = Arrays.asList('a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U');
+
     /*
      * shorten the subject name using the specifc steps described in the word-cloud
      * spec
@@ -1862,23 +1864,47 @@ public class DashboardDaoImpl implements DashboardDao {
         if (x.length == 1) {
             return longName.substring(0, 12);
         } else {
-            int rest = 12;
+            final int N = 4;
             StringBuffer shortened = new StringBuffer();
-            int previous_length = 7;
-            for (String word : x) {
-                String s = word.substring(0, Math.min(rest, word.length()));
-                s = s.substring(0, Math.min(previous_length, s.length()));
-                shortened.append(s);
-                previous_length = s.length();
-                rest -= previous_length;
-                if (rest > 0) {
-                    rest--;
-                    shortened.append(" ");
+            for (int index = 0; index < x.length; index++) {
+                if (index > 0) {
+                    shortened.append(".");
                 }
-                if (rest == 0) {
-                    break;
+
+                String word = x[index];
+                int count = word.length();
+                int firstVowel = 1;
+                while (firstVowel < count && !vowels.contains(word.charAt(firstVowel))) {
+                    firstVowel++;
                 }
+                if (firstVowel > N) {
+                    shortened.append(word.substring(0, N));
+                    continue;
+                }
+                int afterVowelSequence = firstVowel + 1;
+                while (afterVowelSequence < count && vowels.contains(word.charAt(afterVowelSequence))) {
+                    afterVowelSequence++;
+                }
+                if (afterVowelSequence > N) {
+                    shortened.append(word.substring(0, N));
+                    continue;
+                }
+                while (count > N) { // still too long
+                    int lastVowel = count - 1;
+                    while (lastVowel >= afterVowelSequence && !vowels.contains(word.charAt(lastVowel))) {
+                        lastVowel--;
+                    }
+                    // lastVowel is the postion of the last vowel
+                    if (lastVowel > afterVowelSequence) {// remove the last vowel;
+                        word = word.substring(0, lastVowel) + word.substring(lastVowel + 1, count);
+                    } else {
+                        word = word.substring(0, count - 1); // remove the last character;
+                    }
+                    count--;
+                }
+                shortened.append(word);
             }
+            log.debug("shortened name: " + shortened);
             return shortened.toString();
         }
     }
