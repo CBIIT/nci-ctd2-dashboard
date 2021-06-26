@@ -18,9 +18,9 @@ function generate(word_counts) {
     words = [],
     layout.stop().words(tags.slice(0, max = Math.min(tags.length, max_word_number))).start()
 }
-function progress(t) {
-  console.log('word ' + (++complete) + " out of " + max);
-}
+// function progress(t) {
+//   console.log('word ' + (++complete) + " out of " + max);
+// }
 
 function draw(tags, bounds) {
   scale = bounds ? Math.min(w_cloud / Math.abs(bounds[1].x - w_cloud / 2), w_cloud / Math.abs(bounds[0].x - w_cloud / 2), h_cloud / Math.abs(bounds[1].y - h_cloud / 2), h_cloud / Math.abs(bounds[0].y - h_cloud / 2)) / 2 : 1,
@@ -465,7 +465,9 @@ const layout = d3.layout.cloud().timeInterval(10).size([w_cloud, h_cloud]).fontS
     return fontSize(+t.value)
   }).text(function (t) {
     return t.key
-  }).on("word", progress).on("end", draw);
+  })
+  //.on("word", progress)
+  .on("end", draw);
     svg = d3.select(dom_id).append("svg").attr("width", w_cloud).attr("height", h_cloud);
     background = svg.append("g");
 
