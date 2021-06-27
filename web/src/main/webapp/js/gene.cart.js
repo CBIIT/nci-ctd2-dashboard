@@ -652,8 +652,8 @@ const CnkbResultView = (function () {
         );
 
         cytoscape({
-
-            container: document.getElementById("cytoscape"),
+            container: $('#cytoscape'),
+            wheelSensitivity: 0.4,
             layout: {
                 name: $("#cytoscape-layouts").val(),
                 fit: true,

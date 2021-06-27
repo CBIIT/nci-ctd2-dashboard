@@ -1216,7 +1216,7 @@
                                 // load cytoscape
                                 cytoscape({
                                     container: $('#cytoscape-sif'),
-
+                                    wheelSensitivity: 0.4,
                                     layout: {
                                         name: 'cola',
                                         liveUpdate: false,
