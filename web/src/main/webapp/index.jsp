@@ -1334,7 +1334,7 @@
                         <tr id="cbiolink">
                             <th>Genomic alterations</th>
                             <td>
-                                <a class="btn btn-small" href="http://www.cbioportal.org/public-portal/case.do?cancer_study_id=cellline_ccle_broad&sample_id={{cbioPortalId}}" target="_blank">view in cBioPortal <i class="icon-share"></i></a>
+                                <a class="btn btn-small" href="https://www.cbioportal.org/patient?studyId=cellline_ccle_broad&sampleId={{cbioPortalId}}" target="_blank">view in cBioPortal <i class="icon-share"></i></a>
                             </td>
                         </tr>
                     </table>
