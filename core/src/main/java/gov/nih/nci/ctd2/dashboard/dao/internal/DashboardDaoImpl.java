@@ -1841,12 +1841,14 @@ public class DashboardDaoImpl implements DashboardDao {
         org.hibernate.query.Query<Object[]> query = session.createNativeQuery(sql);
         for (Object[] obj : query.getResultList()) {
             String subject = (String) obj[0];
+            String fullname = null;
             if (subject.length() > ABBREVIATION_LENGTH_LIMIT) {
+                fullname = subject;
                 subject = shorternSubjectName(subject);
             }
             Integer count = (Integer) obj[1];
             String url = (String) obj[2];
-            list.add(new WordCloudEntry(subject, count, url));
+            list.add(new WordCloudEntry(subject, count, url, fullname));
         }
         session.close();
         return list.toArray(new WordCloudEntry[0]);
@@ -1933,12 +1935,14 @@ public class DashboardDaoImpl implements DashboardDao {
         org.hibernate.query.Query<Object[]> query = session.createNativeQuery(sql);
         for (Object[] obj : query.getResultList()) {
             String subject = (String) obj[0];
+            String fullname = null;
             if (subject.length() > ABBREVIATION_LENGTH_LIMIT) {
+                fullname = subject;
                 subject = shorternSubjectName(subject);
             }
             Integer count = ((BigInteger) obj[1]).intValue();
             String url = (String) obj[2];
-            list.add(new WordCloudEntry(subject, count, url));
+            list.add(new WordCloudEntry(subject, count, url, fullname));
         }
         session.close();
         return list.toArray(new WordCloudEntry[0]);

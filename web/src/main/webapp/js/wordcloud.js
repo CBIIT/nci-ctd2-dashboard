@@ -49,6 +49,8 @@ function draw(tags, bounds) {
       window.location = "#" + t.url;
     }).text(function (t) {
       return t.text
+    }).append("title").text(function(t) {
+      return t.fullname;
     });
   var a = background.append("g").attr("transform", vis.attr("transform"))
     , r = a.node();

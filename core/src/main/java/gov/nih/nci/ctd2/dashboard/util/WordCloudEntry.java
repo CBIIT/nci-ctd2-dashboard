@@ -5,10 +5,12 @@ public class WordCloudEntry {
     final public int value;
     final public String url;
     public int category = 0;
+    final public String fullname;
 
-    public WordCloudEntry(String name, int count, String stableURL) {
+    public WordCloudEntry(String name, int count, String stableURL, String fullname) {
         key = name;
         value = count;
         url = stableURL;
+        this.fullname = fullname;
     }
 }
