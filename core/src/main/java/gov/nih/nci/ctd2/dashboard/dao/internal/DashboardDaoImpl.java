@@ -1841,7 +1841,7 @@ public class DashboardDaoImpl implements DashboardDao {
         org.hibernate.query.Query<Object[]> query = session.createNativeQuery(sql);
         for (Object[] obj : query.getResultList()) {
             String subject = (String) obj[0];
-            if (subject.length() > 12) {
+            if (subject.length() > ABBREVIATION_LENGTH_LIMIT) {
                 subject = shorternSubjectName(subject);
             }
             Integer count = (Integer) obj[1];
@@ -1852,6 +1852,7 @@ public class DashboardDaoImpl implements DashboardDao {
         return list.toArray(new WordCloudEntry[0]);
     }
 
+    private final static int ABBREVIATION_LENGTH_LIMIT = 15;
     private final static List<Character> vowels = Arrays.asList('a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U');
 
     /*
@@ -1862,7 +1863,7 @@ public class DashboardDaoImpl implements DashboardDao {
         log.debug("long name to be shortened: " + longName);
         String[] x = longName.split("\\s");
         if (x.length == 1) {
-            return longName.substring(0, 12);
+            return longName.substring(0, ABBREVIATION_LENGTH_LIMIT);
         } else {
             final int N = 4;
             StringBuffer shortened = new StringBuffer();
@@ -1932,7 +1933,7 @@ public class DashboardDaoImpl implements DashboardDao {
         org.hibernate.query.Query<Object[]> query = session.createNativeQuery(sql);
         for (Object[] obj : query.getResultList()) {
             String subject = (String) obj[0];
-            if (subject.length() > 12) {
+            if (subject.length() > ABBREVIATION_LENGTH_LIMIT) {
                 subject = shorternSubjectName(subject);
             }
             Integer count = ((BigInteger) obj[1]).intValue();
