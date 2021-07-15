@@ -63,11 +63,11 @@ public class BrowseAPI {
             if (obj instanceof Subject) {
                 subject = (Subject) obj;
             } else {
-                log.error("unexpected subject type:" + obj.getClass().getName());
+                log.error("unexpected subject type: " + (obj == null ? null : obj.getClass().getName()));
             }
         }
         if (subject == null) {
-            return new ResponseEntity<String>("{}", headers, HttpStatus.OK);
+            return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
         }
 
         SubjectResponse subjectResponse = SubjectResponse.createInstance(subject, filter, dashboardDao);
