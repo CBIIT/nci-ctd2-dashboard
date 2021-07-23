@@ -622,6 +622,24 @@
         }
     });
 
+    const ApiDocumentation = Backbone.View.extend({
+        el: $("#main-container"),
+        template: _.template($("#api-documentation-tmpl").html()),
+        render: function () {
+            $(this.el).html(this.template({}));
+            return this;
+        }
+    });
+
+    const Applications = Backbone.View.extend({
+        el: $("#main-container"),
+        template: _.template($("#applications-tmpl").html()),
+        render: function () {
+            $(this.el).html(this.template({}));
+            return this;
+        }
+    });
+
     const HelpNavigateView = Backbone.View.extend({
         template: _.template($("#help-navigate-tmpl").html()),
 
@@ -4048,6 +4066,8 @@
             "cnkb-result": viewOnlyRouter(CnkbResultView),
             "gene-cart-help": viewOnlyRouter(GeneCartHelpView),
             "cite": viewOnlyRouter(HowToCiteView),
+            "api-documentation": viewOnlyRouter(ApiDocumentation),
+            "applications": viewOnlyRouter(Applications),
             "*actions": "home",
         },
 

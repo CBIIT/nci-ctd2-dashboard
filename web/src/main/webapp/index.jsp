@@ -114,6 +114,8 @@
                                 <ul class="dropdown-menu">
                                     <li><a target="_blank" href="https://ocg.cancer.gov/programs/ctd2">OCG/CTD² Home Page</a></li>
                                     <li><a href="#cite">How to Cite</a></li>
+                                    <li><a href="#api-documentation">API Documentation</a></li>
+                                    <li><a href="#applications">Applications</a></li>
                                     <li><a target="_blank"
                                             href="https://ocg.cancer.gov/programs/ctd2/publications">Publications</a>
                                     </li>
@@ -2420,6 +2422,267 @@
         </div>
     </script>
 
+    <script type="text/template" id="api-documentation-tmpl">
+        <div class="container common-container">
+            <p>&nbsp;</p>
+            <h2>Dashboard API Documention</h2>
+            <p>We have designed and implemented the Dashboard API as an alternative route to access the content of the CDT2 Dashboard. The Dashboard data has a hierarchical structure with submission centers - members of the CTD2 network - at the top. At the next levels, each center provides multiple submissions to the Dashboard and each submission consists of one or more observations. Finally, at the bottom, each observation ties together various biological entities (subjects) and associated evidence fields. The Dashboard API allows clients to access data at any level of the hierarchy. The full specification is available in Dashboard’s GitHub repository (https://github.com/CBIIT/nci-ctd2-dashboard/blob/master/web/src/test/CTD2-Dashboard_API.yml) and can be easily browsed by pasting it to a swagger editor at https://editor.swagger.io/</p>
+            <h3>Dashboard content hierarchy</h3>
+            <h4>Centers</h4>
+            <p>Centers are the research teams that participate the CTD2 Networks. They are the entities who submit the data, thus each template belongs to one specific center.</p>
+            <h4>Submissions</h4>
+            <p>A submission is a collection of related observations from a participating CTD2 Network center, sharing the same structure and format, and representing findings from one or more experimental or/and computational investigations. Each submission can comprise multiple observations described using a submission-specific spreadsheet template, with each row corresponding to one observation and columns representing the data elements necessary for fully documenting an observation.</p>
+            <h4>Observations</h4>
+            <p>Observations are the main unit of knowledge in the Dashboard. They are statements describing subjects (e.g., genes, cell lines, compounds) and the roles they play (e.g., target, background, candidate drug) in the context of a high level investigational finding, along with links to the computational or/and experimental evidence that support this finding. The following is an example of an observation.</p>
+            <h4>Subjects and evidence</h4>
+            <p>Subjects are the primary biological entities involved in the experimental or/and computational  finding described by an observation. As the template example above shows, subjects within a submission are defined by their class and role. The subject class specifies the type of biological entity and can assume any among a predefined set of choices, namely: gene, shRNA, protein, cell sample, animal model, tissue sample, compound. Subjects can also have an associated role which further specifies their semantics in the context of an observation. E.g., in an observation from a compound screening experiment, a gene may be assigned the role of a “target” if it is the target of a screened compound; or the role of “biomarker” if it is a determinant of the cell line used for the screen. Finally, within an observation subjects assume values, typically from controlled vocabularies depending on their class.</p>
+            <p>Observations can also be associated with evidence fields which can be used to capture supporting quantitative and qualitative data that are important in interpreting a finding (e.g., details of the experimental or computational protocol used) . As is the case with subjects, at the level of the submission each evidence items is defined by a value type and an evidence type (see example template above). The class assumes values from a fixed set of options (URL, label, data numeric, and file). And similarly to subjects, at the level of the observation, evidence assumes a value, albeit less constrained, i.e., evidence values don’t usually come from controlled vocabularies (literature, measured, link, reference, background, observed, computed, written, resources, species).</p>
+            <img src="images/figure1_object.png">
+            <h4>Dashboard API calls</h4>
+            <h5>GET /centers - returns a list of centers</h5>
+            <p>output structure</p>
+            <pre>[
+                    {
+                      "center_name": "string",
+                      "center_id": "string",
+                      "principal_investigator": "string",
+                      "submissions": [
+                        {
+                          "submission_id": "string",
+                          "submission_date": "string",
+                          "tier": 0,
+                          "project": "string",
+                          "submission_description": "string",
+                          "story_title": "string",
+                          "observation_count": 0
+                        }
+                      ]
+                    }
+                  ]
+                  </pre>
+            <h5>GET /submission/{submissionId} - returns content of a submission</h5>
+            <p>required parameter:
+                    submissionId
+                    The name of the requested submission
+                    </p>
+            <p>optional parameters:
+                    maximum 
+                    The maximum number of observations returned by the query (if not specified, all observations are returned)
+                    </p>
+            <p>example: GET /submission/20170122-utsw-smarca4?maximum=100</p>
+            <p>output structure:</p>
+            <pre>{
+                    "submission_center": "string",
+                    "submission_name": "string",
+                    "submission_date": "string",
+                    "tier": 0,
+                    "project": "string",
+                    "submission_description": "string",
+                    "story_title": "string",
+                    "observation_count": 0,
+                    "observations": [
+                      {
+                        "submission_id": "string",
+                        "observation_summary": "string",
+                        "subject_list": [
+                          {
+                            "class": "string",
+                            "role": "string",
+                            "description": "string",
+                            "name": "string",
+                            "synonyms": [
+                              "string"
+                            ],
+                            "xref": [
+                              {
+                                "source": "string",
+                                "id": "string"
+                              }
+                            ]
+                          }
+                        ],
+                        "evidence_list": [
+                          {
+                            "class": "label",
+                            "type": "string",
+                            "description": "string",
+                            "value": "string",
+                            "units": "string",
+                            "mime_type": "string"
+                          }
+                        ]
+                      }
+                    ]
+                  }</pre>
+            <h5>GET /browse/{subjectClass}/{subjectName} - returns observations for a subject</h5>
+            <p>required parameters:
+                <ul>
+                    <li>subjectClass
+                            The subject class. Available values : animal-model, cell-sample, compound, gene, shrna, tissue-sample
+                            </li>
+                    <li>subjectName
+                            The name of the subject
+                            </li>
+                </ul>
+            </p>
+            <p>optional parameters:
+                    <ul>
+                        <li>center 
+                                Restrict returned observations by a comma-separated list of center ids (Broad, CSHL, Columbia, DFCI, Emory, FHCR1, FHCR2, Stanford, TGRI, UCSD, UCSF1, UCSF2, UTMDA, UTSW)
+                                </li>
+                        <li>role 
+                                Restrict returned observations by a comma-separated list of roles
+                                tier Restrict returned observations by tier(s)</li>
+                        <li>maximum 
+                                The maximum number of observations returned by the query (if not specified, all observations are returned)
+                                </li>
+                    </ul>
+                </p>
+            <p>example: GET /browse/gene/TP53?center=Broad,DFCI&tier=2,3</p>
+            <p>output structure:</p>
+            <pre>{
+                    "class": "string",
+                    "name": "string",
+                    "synonyms": [
+                      "string"
+                    ],
+                    "xref": [
+                      {
+                        "source": "string",
+                        "id": "string"
+                      }
+                    ],
+                    "roles": [
+                      "string"
+                    ],
+                    "observation_count": {
+                      "tier1": 0,
+                      "tier2": 0,
+                      "tier3": 0
+                    },
+                    "observations": [
+                      {
+                        "submission_id": "string",
+                        "observation_summary": "string",
+                        "subject_list": [
+                          {
+                            "class": "string",
+                            "role": "string",
+                            "description": "string",
+                            "name": "string",
+                            "synonyms": [
+                              "string"
+                            ],
+                            "xref": [
+                              {
+                                "source": "string",
+                                "id": "string"
+                              }
+                            ]
+                          }
+                        ],
+                        "evidence_list": [
+                          {
+                            "class": "label",
+                            "type": "string",
+                            "description": "string",
+                            "value": "string",
+                            "units": "string",
+                            "mime_type": "string"
+                          }
+                        ]
+                      }
+                    ]
+                  }</pre>
+            <h5>GET /search/{term} - search Dashboard</h5>
+            <p>required parameter:
+                    term
+                    The search term
+            </p>
+            <p>optional parameters:
+                    <ul>
+                            <li>center 
+                                    Restrict returned observations by a comma-separated list of center ids (Broad, CSHL, Columbia, DFCI, Emory, FHCR1, FHCR2, Stanford, TGRI, UCSD, UCSF1, UCSF2, UTMDA, UTSW)
+                                    </li>
+                            <li>role 
+                                    Restrict returned observations by a comma-separated list of roles</li>
+                            <li>tier
+                                Restrict returned observations by tier(s)</li>
+                            <li>maximum 
+                                    The maximum number of observations returned by the query (if not specified, all observations are returned)
+                                    </li>
+                        </ul>
+                    </P>
+            <p>example: GET /search/ALL?role=disease&tier=2,3&maximum=100</p>
+            <p>output structure:</p>
+            <pre>[
+                    {
+                      "class": "string",
+                      "name": "string",
+                      "synonyms": [
+                        "string"
+                      ],
+                      "xref": [
+                        {
+                          "source": "string",
+                          "id": "string"
+                        }
+                      ],
+                      "roles": [
+                        "string"
+                      ],
+                      "observation_count": {
+                        "tier1": 0,
+                        "tier2": 0,
+                        "tier3": 0
+                      },
+                      "observations": [
+                        {
+                          "submission_id": "string",
+                          "observation_summary": "string",
+                          "subject_list": [
+                            {
+                              "class": "string",
+                              "role": "string",
+                              "description": "string",
+                              "name": "string",
+                              "synonyms": [
+                                "string"
+                              ],
+                              "xref": [
+                                {
+                                  "source": "string",
+                                  "id": "string"
+                                }
+                              ]
+                            }
+                          ],
+                          "evidence_list": [
+                            {
+                              "class": "label",
+                              "type": "string",
+                              "description": "string",
+                              "value": "string",
+                              "units": "string",
+                              "mime_type": "string"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]</pre>
+        </div>
+    </script>
+
+    <script type="text/template" id="applications-tmpl">
+        <div class="container common-container">
+            <p>&nbsp;</p>
+            <h2>External Applications</h2>
+            <p>This page will be used for listing external applications that utilize the Dashboard API, 
+                per the specification described <a href="https://docs.google.com/open?id=1IhseLN9e0TM8iGJOusQC1Yp0boaLinNiNEYJyoxQogA" target=_blank >here</a>.
+        </div>
+    </script>
+
     <script type="text/template" id="help-navigate-tmpl">
         <div class="help-navigate-text-container">
             <h3>Navigating and Understanding Dashboard Content</h3>
@@ -2482,19 +2745,19 @@
     <script src="js/bootstrap.bundle.min.js"></script>
     <script src="js/jquery.fancybox.min.js"></script>
     <script src="js/jquery.expander.min.js"></script>
-    <script src="js/cytoscape.min.js"></script>
+    <script src="js/cytoscape.min.js?ts=2021"></script>
     <script src="js/cola.min.js"></script>
     <script src="js/cytoscape-cola.js"></script>
     <script src="js/encoder.js"></script>
     <script src="js/jquery.contextMenu.min.js"></script>
     <script src="js/jquery.ui.position.min.js"></script>
     <script src="js/ctd2.constants.js"></script>
-    <script src="js/gene.cart.js"></script>
+    <script src="js/gene.cart.js?ts=2021"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"
         integrity="sha512-oJp0DdQuQQrRsKVly+Ww6fAN1GwJN7d1bi8UubpEbzDUh84WrJ2CFPBnT4LqBCcfqTcHR5OGXFFhaPe3g1/bzQ=="
         crossorigin="anonymous"></script>
     <script src="js/wordcloud.js"></script>
-    <script src="js/ctd2.js?ts=20200926"></script>
+    <script src="js/ctd2.js?ts=2021"></script>
 
 <script type="text/javascript">_satellite.pageBottom();</script>
 </body>
