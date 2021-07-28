@@ -626,7 +626,15 @@
         el: $("#main-container"),
         template: _.template($("#api-documentation-tmpl").html()),
         render: function () {
-            $(this.el).html(this.template({}));
+            fetch("api-doc.html")
+                .then(response => {
+                    if(!response.ok) throw new Error("API Document Missing")
+                    return response.text()
+                })
+                .then(data => $(this.el).html(this.template({api_document: data})))
+                .catch(error => {
+                    $(this.el).html(this.template({api_document: error}))
+                });
             return this;
         }
     });
