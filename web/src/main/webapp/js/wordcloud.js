@@ -44,7 +44,8 @@ function draw(tags, bounds) {
       return t.font
     }).style("fill", function (t) {
       return color[(Math.floor(Math.random() * color.length))];
-    }).on("click", function(t) {
+    }).style("cursor", "pointer"
+    ).on("click", function(t) {
       d3.event.stopPropagation();
       window.location = "#" + t.url;
     }).text(function (t) {
