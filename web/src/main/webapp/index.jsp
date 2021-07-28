@@ -2430,10 +2430,7 @@
 
     <script type="text/template" id="applications-tmpl">
         <div class="container common-container">
-            <p>&nbsp;</p>
-            <h2>External Applications</h2>
-            <p>This page will be used for listing external applications that utilize the Dashboard API, 
-                per the specification described <a href="https://docs.google.com/open?id=1IhseLN9e0TM8iGJOusQC1Yp0boaLinNiNEYJyoxQogA" target=_blank >here</a>.
+            {{api_apps}}
         </div>
     </script>
 
