@@ -463,7 +463,7 @@ var spirals = {
 
 // following part is outside the original source code index.js
 var words = [], max, scale = 0, complete = 0;
-const w_cloud = 960, h_cloud = 600;
+const w_cloud = 700, h_cloud = 400;
 const layout = d3.layout.cloud().timeInterval(10).size([w_cloud, h_cloud]).fontSize(function (t) {
     return fontSize(+t.value)
   }).text(function (t) {
