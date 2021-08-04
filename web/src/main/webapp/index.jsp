@@ -279,11 +279,11 @@
         <div class=container id='wordcloud-container'>
             <div class=row style="text-align:center">
                 <div class="col-3">
-                    <button type="button" class="btn btn-secondary" id=wordcloud-all style=width:100%;margin:10px>All</button>
-                    <button type="button" class="btn btn-secondary" id=wordcloud-genes style=width:100%;margin:10px>Genes and Proteins</button>
-                    <button type="button" class="btn btn-secondary" id=wordcloud-compounds style="width:100%;margin:10px;padding:10px 0">Compounds & Perturbagens</button>
-                    <button type="button" class="btn btn-secondary" id=wordcloud-disease style=width:100%;margin:10px>Disease context</button>
-                    <button type="button" class="btn btn-secondary" id=wordcloud-cell style=width:100%;margin:10px>Cell lines</button>
+                    <button type="button" class="btn btn-outline-secondary" id=wordcloud-all style=width:100%;margin:10px>All</button>
+                    <button type="button" class="btn btn-outline-secondary" id=wordcloud-genes style=width:100%;margin:10px>Genes and Proteins</button>
+                    <button type="button" class="btn btn-outline-secondary" id=wordcloud-compounds style="width:100%;margin:10px;padding:10px 0">Compounds & Perturbagens</button>
+                    <button type="button" class="btn btn-outline-secondary" id=wordcloud-disease style=width:100%;margin:10px>Disease context</button>
+                    <button type="button" class="btn btn-outline-secondary" id=wordcloud-cell style=width:100%;margin:10px>Cell lines</button>
                 </div>
                 <div class="col-9">
                     <div id="vis"></div>
@@ -296,11 +296,11 @@
         </div>
         <div class=container id='wordcloud-container-2'>
             <div style="text-align:center;display:block;padding:10px">
-                <button type="button" class="btn btn-secondary" id=wordcloud-all-2>All</button>
-                <button type="button" class="btn btn-secondary" id=wordcloud-genes-2>Genes and Proteins</button>
-                <button type="button" class="btn btn-secondary" id=wordcloud-compounds-2>Compounds and Perturbagens</button>
-                <button type="button" class="btn btn-secondary" id=wordcloud-disease-2>Disease context</button>
-                <button type="button" class="btn btn-secondary" id=wordcloud-cell-2>Cell lines</button>
+                <button type="button" class="btn btn-outline-secondary" id=wordcloud-all-2>All</button>
+                <button type="button" class="btn btn-outline-secondary" id=wordcloud-genes-2>Genes and Proteins</button>
+                <button type="button" class="btn btn-outline-secondary" id=wordcloud-compounds-2>Compounds and Perturbagens</button>
+                <button type="button" class="btn btn-outline-secondary" id=wordcloud-disease-2>Disease context</button>
+                <button type="button" class="btn btn-outline-secondary" id=wordcloud-cell-2>Cell lines</button>
             </div>
             <div id="vis-2"></div>
             <div id="vis-genes-2"></div>
