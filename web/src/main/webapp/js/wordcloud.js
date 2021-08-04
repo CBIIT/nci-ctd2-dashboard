@@ -12,46 +12,39 @@ function create_wordcloud(dom_id, w_cloud = 700, h_cloud = 400) { /* totally 7 p
         tags.sort(function(t, e) {
             return e.value - t.value
         });
-        layout.font(font_name).spiral(spiral_type),
-            fontSize = d3.scale[scale_type]().range([10, 70]),
-            tags.length && fontSize.domain([+tags[tags.length - 1].value || 1, +tags[0].value]),
-            complete = 0,
-            layout.stop().words(tags.slice(0, max = Math.min(tags.length, max_word_number))).start()
+
+        tags.length && fontSize.domain([+tags[tags.length - 1].value || 1, +tags[0].value]);
+        layout.stop().words(tags.slice(0, max = Math.min(tags.length, max_word_number))).start();
     }
-    // function progress(t) {
-    //   console.log('word ' + (++complete) + " out of " + max);
-    // }
 
     function draw(tags, bounds) {
-        const scale = bounds ? Math.min(w_cloud / Math.abs(bounds[1].x - w_cloud / 2), w_cloud / Math.abs(bounds[0].x - w_cloud / 2), h_cloud / Math.abs(bounds[1].y - h_cloud / 2), h_cloud / Math.abs(bounds[0].y - h_cloud / 2)) / 2 : 1,
-            words = tags;
-        const n = vis.selectAll("text").data(words, function(t) {
+        const scale = bounds ? Math.min(w_cloud / Math.abs(bounds[1].x - w_cloud / 2), w_cloud / Math.abs(bounds[0].x - w_cloud / 2), h_cloud / Math.abs(bounds[1].y - h_cloud / 2), h_cloud / Math.abs(bounds[0].y - h_cloud / 2)) / 2 : 1;
+        const color = ["#FF7F0E", "#D12FC2", "#0066FF", "#4ECB35", ];
+        const n = vis.selectAll("text").data(tags, function(t) {
             return t.text.toLowerCase()
         });
-        // bright yellow "#F4FA06" is left out
-        const color = ["#FF7F0E", "#D12FC2", "#0066FF", "#4ECB35", ];
         n.transition().duration(1e3).attr("transform", function(t) {
-                return "translate(" + [t.x, t.y] + ")rotate(" + t.rotate + ")"
-            }).style("font-size", function(t) {
-                return t.size + "px"
-            }),
-            n.enter().append("text").attr("text-anchor", "middle").attr("transform", function(t) {
-                return "translate(" + [t.x, t.y] + ")rotate(" + t.rotate + ")"
-            }).style("font-size", "1px").transition().duration(1e3).style("font-size", function(t) {
-                return t.size + "px"
-            }),
-            n.style("font-family", function(t) {
-                return t.font
-            }).style("fill", function(t) {
-                return color[(Math.floor(Math.random() * color.length))];
-            }).style("cursor", "pointer").on("click", function(t) {
-                d3.event.stopPropagation();
-                window.location = "#" + t.url;
-            }).text(function(t) {
-                return t.text
-            }).append("title").text(function(t) {
-                return t.fullname;
-            });
+            return "translate(" + [t.x, t.y] + ")rotate(" + t.rotate + ")"
+        }).style("font-size", function(t) {
+            return t.size + "px"
+        });
+        n.enter().append("text").attr("text-anchor", "middle").attr("transform", function(t) {
+            return "translate(" + [t.x, t.y] + ")rotate(" + t.rotate + ")"
+        }).style("font-size", "1px").transition().duration(1e3).style("font-size", function(t) {
+            return t.size + "px"
+        }).style("font-family", function(t) {
+            return t.font
+        }).style("fill", function(t) {
+            return color[(Math.floor(Math.random() * color.length))];
+        });
+        n.style("cursor", "pointer").on("click", function(t) {
+            d3.event.stopPropagation();
+            window.location = "#" + t.url;
+        }).text(function(t) {
+            return t.text
+        }).append("title").text(function(t) {
+            return t.fullname;
+        });
         const a = background.append("g").attr("transform", vis.attr("transform")),
             r = a.node();
         n.exit().each(function() {
@@ -482,22 +475,19 @@ function create_wordcloud(dom_id, w_cloud = 700, h_cloud = 400) { /* totally 7 p
     };
 
     // following part is outside the original source code index.js
+    const fontSize = d3.scale[scale_type]().range([10, 70]);
+    const liner_scale = d3.scale.linear().domain([0, angle_count - 1]).range([angle_from, angle_to]);
     const layout = d3.layout.cloud().timeInterval(10).size([w_cloud, h_cloud]).fontSize(function(t) {
-            return fontSize(+t.value)
-        }).text(function(t) {
-            return t.key
-        })
-        //.on("word", progress)
-        .on("end", draw);
-    const svg = d3.select(dom_id).append("svg").attr("width", w_cloud).attr("height", h_cloud);
-    let background = svg.append("g");
+        return fontSize(+t.value)
+    }).text(function(t) {
+        return t.key
+    }).on("end", draw).rotate(function() {
+        return liner_scale(~~(Math.random() * angle_count))
+    }).font(font_name).spiral(spiral_type);
 
+    const svg = d3.select(dom_id).append("svg").attr("width", w_cloud).attr("height", h_cloud);
+    const background = svg.append("g");
     const vis = svg.append("g").attr("transform", "translate(" + [w_cloud >> 1, h_cloud >> 1] + ")");
-    const c = angle_count;
-    const liner_scale = d3.scale.linear();
-    liner_scale.domain([0, c - 1]).range([angle_from, angle_to]);
-    layout.rotate(function() {
-        return liner_scale(~~(Math.random() * c))
-    });
+
     return generate;
 }
