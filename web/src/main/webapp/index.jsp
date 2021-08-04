@@ -273,7 +273,8 @@
         <div class="dark-separator"></div>
         <div style="text-align:center;display:block;padding:10px">
         <button type="button" class="btn btn-secondary" id=summary-table-label><span id=toggle-word>Show</span> Dashboard Content Summary</button>
-        <button type="button" class="btn btn-secondary" id=wordcloud-button><span id=wordcloud-toggle-word>Hide</span> Word Cloud</button>
+        <button type="button" class="btn btn-secondary" id=wordcloud-button><span id=wordcloud-toggle-word>Hide</span> Word Cloud 1</button>
+        <button type="button" class="btn btn-secondary" id=wordcloud-button-2><span id=wordcloud-toggle-word-2>Show</span> Word Cloud 2</button>
         </div>
         <div class=container id='wordcloud-container'>
             <div class=row style="text-align:center">
@@ -292,6 +293,20 @@
                     <div id="vis-cell"></div>
                 </div>
             </div>
+        </div>
+        <div class=container id='wordcloud-container-2'>
+            <div style="text-align:center;display:block;padding:10px">
+                <button type="button" class="btn btn-secondary" id=wordcloud-all-2>All</button>
+                <button type="button" class="btn btn-secondary" id=wordcloud-genes-2>Genes and Proteins</button>
+                <button type="button" class="btn btn-secondary" id=wordcloud-compounds-2>Compounds and Perturbagens</button>
+                <button type="button" class="btn btn-secondary" id=wordcloud-disease-2>Disease context</button>
+                <button type="button" class="btn btn-secondary" id=wordcloud-cell-2>Cell lines</button>
+            </div>
+            <div id="vis-2"></div>
+            <div id="vis-genes-2"></div>
+            <div id="vis-compounds-2"></div>
+            <div id="vis-disease-2"></div>
+            <div id="vis-cell-2"></div>
         </div>
         <table id=summary-table class="table table-bordered table-sm text-center">
             <thead>

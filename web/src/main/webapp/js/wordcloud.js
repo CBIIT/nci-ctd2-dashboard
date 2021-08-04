@@ -1,4 +1,4 @@
-function create_wordcloud(dom_id){/* totally 7 parameters to control the picture */
+function create_wordcloud(dom_id, w_cloud = 700, h_cloud = 400){/* totally 7 parameters to control the picture */
 const max_word_number = 250;
 const angle_count = 5; // default 5
 const angle_from = -60; // default -60
@@ -8,14 +8,14 @@ const scale_type = "sqrt"; // three options: log, sqrt, linear. default log. see
 const spiral_type = "archimedean"; // two options: archimedean, rectangular. default archimedean. see https://en.wikipedia.org/wiki/Archimedean_spiral
 
 function generate(word_counts) {
-  const tags = word_counts.sort(function (t, e) {
+  const tags = JSON.parse(JSON.stringify(word_counts)); // deep copy
+  tags.sort(function (t, e) {
     return e.value - t.value
   });
   layout.font(font_name).spiral(spiral_type),
     fontSize = d3.scale[scale_type]().range([10, 70]),
     tags.length && fontSize.domain([+tags[tags.length - 1].value || 1, +tags[0].value]),
     complete = 0,
-    words = [],
     layout.stop().words(tags.slice(0, max = Math.min(tags.length, max_word_number))).start()
 }
 // function progress(t) {
@@ -23,9 +23,9 @@ function generate(word_counts) {
 // }
 
 function draw(tags, bounds) {
-  scale = bounds ? Math.min(w_cloud / Math.abs(bounds[1].x - w_cloud / 2), w_cloud / Math.abs(bounds[0].x - w_cloud / 2), h_cloud / Math.abs(bounds[1].y - h_cloud / 2), h_cloud / Math.abs(bounds[0].y - h_cloud / 2)) / 2 : 1,
+  const scale = bounds ? Math.min(w_cloud / Math.abs(bounds[1].x - w_cloud / 2), w_cloud / Math.abs(bounds[0].x - w_cloud / 2), h_cloud / Math.abs(bounds[1].y - h_cloud / 2), h_cloud / Math.abs(bounds[0].y - h_cloud / 2)) / 2 : 1,
     words = tags;
-  var n = vis.selectAll("text").data(words, function (t) {
+  const n = vis.selectAll("text").data(words, function (t) {
     return t.text.toLowerCase()
   });
   // bright yellow "#F4FA06" is left out
@@ -53,7 +53,7 @@ function draw(tags, bounds) {
     }).append("title").text(function(t) {
       return t.fullname;
     });
-  var a = background.append("g").attr("transform", vis.attr("transform"))
+  const a = background.append("g").attr("transform", vis.attr("transform"))
     , r = a.node();
   n.exit().each(function () {
     r.appendChild(this)
@@ -64,14 +64,14 @@ function draw(tags, bounds) {
 
 /* The code here is largely based on https://github.com/jasondavies/d3-cloud
 The following part is mostly a copy of the source code index.js */
-var dispatch = d3.dispatch;
+const dispatch = d3.dispatch;
 
-var cloudRadians = Math.PI / 180,
+const cloudRadians = Math.PI / 180,
   cw = 1 << 11 >> 5,
   ch = 1 << 11;
 
 d3.layout.cloud = function () {
-  var size = [256, 256],
+  let size = [256, 256],
     text = cloudText,
     font = cloudFont,
     fontSize = cloudFontSize,
@@ -93,7 +93,7 @@ d3.layout.cloud = function () {
   };
 
   cloud.start = function () {
-    var contextAndRatio = getContext(canvas()),
+    let contextAndRatio = getContext(canvas()),
       board = zeroArray((size[0] >> 5) * size[1]),
       bounds = null,
       n = words.length,
@@ -117,9 +117,9 @@ d3.layout.cloud = function () {
     return cloud;
 
     function step() {
-      var start = Date.now();
+      const start = Date.now();
       while (Date.now() - start < timeInterval && ++i < n && timer) {
-        var d = data[i];
+        const d = data[i];
         d.x = (size[0] * (random() + .5)) >> 1;
         d.y = (size[1] * (random() + .5)) >> 1;
         cloudSprite(contextAndRatio, d, data, i);
@@ -150,11 +150,11 @@ d3.layout.cloud = function () {
 
   function getContext(canvas) {
     canvas.width = canvas.height = 1;
-    var ratio = Math.sqrt(canvas.getContext("2d").getImageData(0, 0, 1, 1).data.length >> 2);
+    const ratio = Math.sqrt(canvas.getContext("2d").getImageData(0, 0, 1, 1).data.length >> 2);
     canvas.width = (cw << 5) / ratio;
     canvas.height = ch / ratio;
 
-    var context = canvas.getContext("2d");
+    const context = canvas.getContext("2d");
     context.fillStyle = context.strokeStyle = "red";
     context.textAlign = "center";
 
@@ -162,7 +162,7 @@ d3.layout.cloud = function () {
   }
 
   function place(board, tag, bounds) {
-    var perimeter = [{ x: 0, y: 0 }, { x: size[0], y: size[1] }],
+    let
       startX = tag.x,
       startY = tag.y,
       maxDelta = Math.sqrt(size[0] * size[0] + size[1] * size[1]),
@@ -187,18 +187,18 @@ d3.layout.cloud = function () {
       // TODO only check for collisions within current bounds.
       if (!bounds || !cloudCollide(tag, board, size[0])) {
         if (!bounds || collideRects(tag, bounds)) {
-          var sprite = tag.sprite,
+          const sprite = tag.sprite,
             w = tag.width >> 5,
             sw = size[0] >> 5,
             lx = tag.x - (w << 4),
             sx = lx & 0x7f,
             msx = 32 - sx,
-            h = tag.y1 - tag.y0,
-            x = (tag.y + tag.y0) * sw + (lx >> 5),
+            h = tag.y1 - tag.y0;
+          let x = (tag.y + tag.y0) * sw + (lx >> 5),
             last;
-          for (var j = 0; j < h; j++) {
+          for (let j = 0; j < h; j++) {
             last = 0;
-            for (var i = 0; i <= w; i++) {
+            for (let i = 0; i <= w; i++) {
               board[x + i] |= (last << msx) | (i < w ? (last = sprite[j * w + i]) >>> sx : 0);
             }
             x += sw;
@@ -260,7 +260,7 @@ d3.layout.cloud = function () {
   };
 
   cloud.on = function () {
-    var value = event.on.apply(event, arguments);
+    const value = event.on.apply(event, arguments);
     return value === event ? cloud : value;
   };
 
@@ -295,11 +295,11 @@ function cloudPadding() {
 // Load in batches for speed.
 function cloudSprite(contextAndRatio, d, data, di) {
   if (d.sprite) return;
-  var c = contextAndRatio.context,
+  const c = contextAndRatio.context,
     ratio = contextAndRatio.ratio;
 
   c.clearRect(0, 0, (cw << 5) / ratio, ch / ratio);
-  var x = 0,
+  let x = 0,
     y = 0,
     maxh = 0,
     n = data.length;
@@ -308,10 +308,10 @@ function cloudSprite(contextAndRatio, d, data, di) {
     d = data[di];
     c.save();
     c.font = d.style + " " + d.weight + " " + ~~((d.size + 1) / ratio) + "px " + d.font;
-    var w = c.measureText(d.text + "m").width * ratio,
+    let w = c.measureText(d.text + "m").width * ratio,
       h = d.size << 1;
     if (d.rotate) {
-      var sr = Math.sin(d.rotate * cloudRadians),
+      const sr = Math.sin(d.rotate * cloudRadians),
         cr = Math.cos(d.rotate * cloudRadians),
         wcr = w * cr,
         wsr = w * sr,
@@ -345,24 +345,24 @@ function cloudSprite(contextAndRatio, d, data, di) {
     d.hasText = true;
     x += w;
   }
-  var pixels = c.getImageData(0, 0, (cw << 5) / ratio, ch / ratio).data,
+  const pixels = c.getImageData(0, 0, (cw << 5) / ratio, ch / ratio).data,
     sprite = [];
   while (--di >= 0) {
     d = data[di];
     if (!d.hasText) continue;
-    var w = d.width,
+    let w = d.width,
       w32 = w >> 5,
       h = d.y1 - d.y0;
     // Zero the buffer
-    for (var i = 0; i < h * w32; i++) sprite[i] = 0;
+    for (let i = 0; i < h * w32; i++) sprite[i] = 0;
     x = d.xoff;
     if (x == null) return;
     y = d.yoff;
-    var seen = 0,
+    let seen = 0,
       seenRow = -1;
-    for (var j = 0; j < h; j++) {
-      for (var i = 0; i < w; i++) {
-        var k = w32 * j + (i >> 5),
+    for (let j = 0; j < h; j++) {
+      for (let i = 0; i < w; i++) {
+        const k = w32 * j + (i >> 5),
           m = pixels[((y + j) * (cw << 5) + (x + i)) << 2] ? 1 << (31 - (i % 32)) : 0;
         sprite[k] |= m;
         seen |= m;
@@ -383,17 +383,17 @@ function cloudSprite(contextAndRatio, d, data, di) {
 // Use mask-based collision detection.
 function cloudCollide(tag, board, sw) {
   sw >>= 5;
-  var sprite = tag.sprite,
+  const sprite = tag.sprite,
     w = tag.width >> 5,
     lx = tag.x - (w << 4),
     sx = lx & 0x7f,
     msx = 32 - sx,
-    h = tag.y1 - tag.y0,
-    x = (tag.y + tag.y0) * sw + (lx >> 5),
+    h = tag.y1 - tag.y0;
+  let x = (tag.y + tag.y0) * sw + (lx >> 5),
     last;
-  for (var j = 0; j < h; j++) {
+  for (let j = 0; j < h; j++) {
     last = 0;
-    for (var i = 0; i <= w; i++) {
+    for (let i = 0; i <= w; i++) {
       if (((last << msx) | (i < w ? (last = sprite[j * w + i]) >>> sx : 0))
         & board[x + i]) return true;
     }
@@ -403,7 +403,7 @@ function cloudCollide(tag, board, sw) {
 }
 
 function cloudBounds(bounds, d) {
-  var b0 = bounds[0],
+  const b0 = bounds[0],
     b1 = bounds[1];
   if (d.x + d.x0 < b0.x) b0.x = d.x + d.x0;
   if (d.y + d.y0 < b0.y) b0.y = d.y + d.y0;
@@ -416,19 +416,19 @@ function collideRects(a, b) {
 }
 
 function archimedeanSpiral(size) {
-  var e = size[0] / size[1];
+  const e = size[0] / size[1];
   return function (t) {
     return [e * (t *= .1) * Math.cos(t), t * Math.sin(t)];
   };
 }
 
 function rectangularSpiral(size) {
-  var dy = 4,
+  const dy = 4,
     dx = dy * size[0] / size[1],
     x = 0,
     y = 0;
   return function (t) {
-    var sign = t < 0 ? -1 : 1;
+    const sign = t < 0 ? -1 : 1;
     // See triangular numbers: T_n = n * (n + 1) / 2.
     switch ((Math.sqrt(1 + 4 * sign * t) - sign) & 3) {
       case 0: x += dx; break;
@@ -442,7 +442,7 @@ function rectangularSpiral(size) {
 
 // TODO reuse arrays?
 function zeroArray(n) {
-  var a = [],
+  let a = [],
     i = -1;
   while (++i < n) a[i] = 0;
   return a;
@@ -456,14 +456,12 @@ function functor(d) {
   return typeof d === "function" ? d : function () { return d; };
 }
 
-var spirals = {
+const spirals = {
   archimedean: archimedeanSpiral,
   rectangular: rectangularSpiral
 };
 
 // following part is outside the original source code index.js
-var words = [], max, scale = 0, complete = 0;
-const w_cloud = 700, h_cloud = 400;
 const layout = d3.layout.cloud().timeInterval(10).size([w_cloud, h_cloud]).fontSize(function (t) {
     return fontSize(+t.value)
   }).text(function (t) {
@@ -471,8 +469,8 @@ const layout = d3.layout.cloud().timeInterval(10).size([w_cloud, h_cloud]).fontS
   })
   //.on("word", progress)
   .on("end", draw);
-    svg = d3.select(dom_id).append("svg").attr("width", w_cloud).attr("height", h_cloud);
-    background = svg.append("g");
+  const svg = d3.select(dom_id).append("svg").attr("width", w_cloud).attr("height", h_cloud);
+  let background = svg.append("g");
 
 const vis = svg.append("g").attr("transform", "translate(" + [w_cloud >> 1, h_cloud >> 1] + ")");
 const c = angle_count;

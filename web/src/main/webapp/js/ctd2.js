@@ -408,12 +408,15 @@
                     if (content == "Show") {
                         // hide word cloud
                         $("#wordcloud-container").hide();
+                        $("#wordcloud-container-2").hide();
                         $("#wordcloud-toggle-word").text("Show");
+                        $("#wordcloud-toggle-word-2").text("Show");
                         return "Hide";
                     } else return "Show";
                 });
             });
             $("#wordcloud-container").show();
+            $("#wordcloud-container-2").hide();
             function select_wordcloud(choice, button) {
                 $("#vis").hide();
                 $("#vis-genes").hide();
@@ -428,7 +431,22 @@
                 $("#wordcloud-cell").prop('disabled', false);
                 $(button).prop('disabled', true)
             }
+            function select_wordcloud2(choice, button) {
+                $("#vis-2").hide();
+                $("#vis-genes-2").hide();
+                $("#vis-compounds-2").hide();
+                $("#vis-disease-2").hide();
+                $("#vis-cell-2").hide();
+                $(choice).show();
+                $("#wordcloud-all-2").prop('disabled', false);
+                $("#wordcloud-genes-2").prop('disabled', false);
+                $("#wordcloud-compounds-2").prop('disabled', false);
+                $("#wordcloud-disease-2").prop('disabled', false);
+                $("#wordcloud-cell-2").prop('disabled', false);
+                $(button).prop('disabled', true)
+            }
             select_wordcloud("#vis", "#wordcloud-all");
+            select_wordcloud2("#vis-2", "#wordcloud-all-2");
             $("#wordcloud-button").click(function (e) {
                 e.preventDefault();
                 $("#wordcloud-container").toggle();
@@ -437,6 +455,8 @@
                         // hide summary table
                         $("#summary-table").hide();
                         $("#toggle-word").text("Show");
+                        $("#wordcloud-container-2").hide();
+                        $("#wordcloud-toggle-word-2").text("Show");
                         return "Hide";
                     } else return "Show";
                 });
@@ -460,6 +480,40 @@
             $("#wordcloud-all").click(function (e) {
                 e.preventDefault();
                 select_wordcloud("#vis", this);
+            });
+            $("#wordcloud-button-2").click(function (e) {
+                e.preventDefault();
+                $("#wordcloud-container-2").toggle();
+                $("#wordcloud-toggle-word-2").text(function (index, content) {
+                    if (content == "Show") {
+                        // hide summary table
+                        $("#summary-table").hide();
+                        $("#toggle-word").text("Show");
+                        $("#wordcloud-container").hide();
+                        $("#wordcloud-toggle-word").text("Show");
+                        return "Hide";
+                    } else return "Show";
+                });
+            });
+            $("#wordcloud-genes-2").click(function (e) {
+                e.preventDefault();
+                select_wordcloud2("#vis-genes-2", this);
+            });
+            $("#wordcloud-compounds-2").click(function (e) {
+                e.preventDefault();
+                select_wordcloud2("#vis-compounds-2", this);
+            });
+            $("#wordcloud-disease-2").click(function (e) {
+                e.preventDefault();
+                select_wordcloud2("#vis-disease-2", this);
+            });
+            $("#wordcloud-cell-2").click(function (e) {
+                e.preventDefault();
+                select_wordcloud2("#vis-cell-2", this);
+            });
+            $("#wordcloud-all-2").click(function (e) {
+                e.preventDefault();
+                select_wordcloud2("#vis-2", this);
             });
             $('#summary-table thead th').popover({
                 placement: "top",
@@ -569,26 +623,31 @@
 
             $.ajax("wordcloud").done(function (result) {
                 create_wordcloud('#vis')(result);
+                create_wordcloud('#vis-2', 960, 600)(result);
             }).fail(function (err) {
                 console.log(err);
             });
             $.ajax("wordcloud/target,biomarker").done(function (result) {
                 create_wordcloud('#vis-genes')(result);
+                create_wordcloud('#vis-genes-2', 960, 600)(result);
             }).fail(function (err) {
                 console.log(err);
             });
             $.ajax("wordcloud/perturbagen,candidate drug").done(function (result) {
                 create_wordcloud('#vis-compounds')(result);
+                create_wordcloud('#vis-compounds-2', 960, 600)(result);
             }).fail(function (err) {
                 console.log(err);
             });
             $.ajax("wordcloud/disease").done(function (result) {
                 create_wordcloud('#vis-disease')(result);
+                create_wordcloud('#vis-disease-2', 960, 600)(result);
             }).fail(function (err) {
                 console.log(err);
             });
             $.ajax("wordcloud/cell line").done(function (result) {
                 create_wordcloud('#vis-cell')(result);
+                create_wordcloud('#vis-cell-2', 960, 600)(result);
             }).fail(function (err) {
                 console.log(err);
             });
