@@ -568,27 +568,27 @@
             });
 
             $.ajax("wordcloud").done(function (result) {
-                create_wordcloud('#vis', 960, 600)(result);
+                create_wordcloud('#vis')(result);
             }).fail(function (err) {
                 console.log(err);
             });
             $.ajax("wordcloud/target,biomarker").done(function (result) {
-                create_wordcloud('#vis-genes', 960, 600)(result);
+                create_wordcloud('#vis-genes')(result);
             }).fail(function (err) {
                 console.log(err);
             });
             $.ajax("wordcloud/perturbagen,candidate drug").done(function (result) {
-                create_wordcloud('#vis-compounds', 960, 600)(result);
+                create_wordcloud('#vis-compounds')(result);
             }).fail(function (err) {
                 console.log(err);
             });
             $.ajax("wordcloud/disease").done(function (result) {
-                create_wordcloud('#vis-disease', 960, 600)(result);
+                create_wordcloud('#vis-disease')(result);
             }).fail(function (err) {
                 console.log(err);
             });
             $.ajax("wordcloud/cell line").done(function (result) {
-                create_wordcloud('#vis-cell', 960, 600)(result);
+                create_wordcloud('#vis-cell')(result);
             }).fail(function (err) {
                 console.log(err);
             });

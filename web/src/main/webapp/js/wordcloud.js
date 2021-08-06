@@ -1,4 +1,4 @@
-function create_wordcloud(dom_id, w_cloud = 700, h_cloud = 400) { /* totally 7 parameters to control the picture */
+function create_wordcloud(dom_id, w_cloud = 960, h_cloud = 600) { /* totally 7 parameters to control the picture */
     const max_word_number = 250;
     const angle_count = 5; // default 5
     const angle_from = -60; // default -60
