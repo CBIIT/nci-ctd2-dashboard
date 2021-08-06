@@ -276,7 +276,7 @@
         <button type="button" class="btn btn-secondary" id=wordcloud-button><span id=wordcloud-toggle-word>Hide</span> Word Cloud</button>
         </div>
         <div class=container id='wordcloud-container'>
-            <div style="text-align:center;display:block;padding:10px">
+            <div style="text-align:center;display:block;padding:10px;background:rgb(253, 255, 201)">
                 <button type="button" class="btn btn-outline-secondary" id=wordcloud-all>All</button>
                 <button type="button" class="btn btn-outline-secondary" id=wordcloud-genes>Genes and Proteins</button>
                 <button type="button" class="btn btn-outline-secondary" id=wordcloud-compounds>Compounds and Perturbagens</button>
