@@ -277,11 +277,11 @@
         </div>
         <div class=container id='wordcloud-container'>
             <div style="text-align:center;display:block;padding:10px;background:rgb(253, 255, 201)">
-                <button type="button" class="btn btn-outline-secondary" id=wordcloud-all>All</button>
-                <button type="button" class="btn btn-outline-secondary" id=wordcloud-genes>Genes and Proteins</button>
-                <button type="button" class="btn btn-outline-secondary" id=wordcloud-compounds>Compounds and Perturbagens</button>
-                <button type="button" class="btn btn-outline-secondary" id=wordcloud-disease>Disease context</button>
-                <button type="button" class="btn btn-outline-secondary" id=wordcloud-cell>Cell lines</button>
+                <button type="button" class="btn btn-light" id=wordcloud-all style='border-color:#6c757d'>All</button>
+                <button type="button" class="btn btn-light" id=wordcloud-genes style='border-color:#6c757d'>Genes and Proteins</button>
+                <button type="button" class="btn btn-light" id=wordcloud-compounds style='border-color:#6c757d'>Compounds and Perturbagens</button>
+                <button type="button" class="btn btn-light" id=wordcloud-disease style='border-color:#6c757d'>Disease context</button>
+                <button type="button" class="btn btn-light" id=wordcloud-cell style='border-color:#6c757d'>Cell lines</button>
             </div>
             <div id="vis"></div>
             <div id="vis-genes"></div>
