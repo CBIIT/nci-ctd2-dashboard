@@ -29,7 +29,7 @@
     <meta name="author" content="" />
 
     <link rel="shortcut icon" href="img/favicon.ico" type="image/vnd.microsoft.icon" />
-    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
     <link rel="stylesheet" href="css/datatables.min.css" type="text/css" />
     <link rel="stylesheet" href="css/jquery.fancybox.min.css" type="text/css" media="screen" />
     <link rel="stylesheet" href="css/jquery.contextMenu.min.css" type="text/css" />
@@ -48,7 +48,7 @@
 <body>
     <!-- NAVBAR
     ================================================== -->
-    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script>
         $(function () {
             // Bind an event to window.onhashchange that, when the hash changes, 
@@ -1742,6 +1742,10 @@
     <script type="text/template" id="search-tmpl">
         <div class="container common-container" id="search-results-container">
             <button class="btn btn-primary" id="ontology-search" style="float: right;">Ontology Search</button>
+            <button class="btn btn-primary" style="position: fixed;top: 50%;left: 50%;transform: translate(-50%, -50%);z-index: 2;display:none" id='ontology-spinner'>
+                <span class="spinner-border spinner-border-sm"></span>
+                Searching...
+            </button>
             <h2>Search <small>for <i>{{decodeURIComponent(term)}}</i></small></h2>
             <div style='padding: 20px 0px; width=100%'>
             <a href="" onclick="document.getElementById('submission-search-results').scrollIntoView(); return false" id=submission-summary-link>
@@ -2489,11 +2493,11 @@
 
     <!-- end of templates -->
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
     <script src="js/datatables.min.js"></script>
     <script src="js/paging.js"></script>
     <script src="js/underscore-min.js"></script>
     <script src="js/backbone-min.js"></script>
-    <script src="js/bootstrap.bundle.min.js"></script>
     <script src="js/jquery.fancybox.min.js"></script>
     <script src="js/jquery.expander.min.js"></script>
     <script src="js/cytoscape.min.js?ts=2021"></script>

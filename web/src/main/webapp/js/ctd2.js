@@ -3216,6 +3216,7 @@
                     ]);
                     $("#search-results-grid").parent().find('input[type=search]').popover(table_filter_popover);
                     $("#ontology-search").prop('disabled', true);
+                    $("#ontology-spinner").hide();
 
                     //redo observations
                     const observation_result = ontology_search_results.observation_result;
@@ -3274,6 +3275,7 @@
                     }
 
                 });
+                $("#ontology-spinner").show();
             });
 
             const thatEl = this.el;
