@@ -276,12 +276,12 @@
         <button type="button" class="btn btn-secondary" id=wordcloud-button><span id=wordcloud-toggle-word>Hide</span> Word Cloud</button>
         </div>
         <div class=container id='wordcloud-container'>
-            <div style="text-align:center;display:block;padding:10px;background:rgb(253, 255, 201)">
-                <button type="button" class="btn btn-light" id=wordcloud-all style='border-color:#6c757d'>All</button>
-                <button type="button" class="btn btn-light" id=wordcloud-genes style='border-color:#6c757d'>Genes and Proteins</button>
-                <button type="button" class="btn btn-light" id=wordcloud-compounds style='border-color:#6c757d'>Compounds and Perturbagens</button>
-                <button type="button" class="btn btn-light" id=wordcloud-disease style='border-color:#6c757d'>Disease context</button>
-                <button type="button" class="btn btn-light" id=wordcloud-cell style='border-color:#6c757d'>Cell lines</button>
+            <div style="text-align:center;display:block;padding:10px">
+                <button type="button" class="btn btn-light" id=wordcloud-all style='background:rgb(253, 255, 201);border-color:#6c757d'>All</button>
+                <button type="button" class="btn btn-light" id=wordcloud-genes style='background:rgb(253, 255, 201);border-color:#6c757d'>Genes and Proteins</button>
+                <button type="button" class="btn btn-light" id=wordcloud-compounds style='background:rgb(253, 255, 201);border-color:#6c757d'>Compounds and Perturbagens</button>
+                <button type="button" class="btn btn-light" id=wordcloud-disease style='background:rgb(253, 255, 201);border-color:#6c757d'>Disease context</button>
+                <button type="button" class="btn btn-light" id=wordcloud-cell style='background:rgb(253, 255, 201);border-color:#6c757d'>Cell lines</button>
             </div>
             <div id="vis"></div>
             <div id="vis-genes"></div>
