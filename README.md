@@ -5,14 +5,6 @@ This project encapsulates three modules representing the whole CTD^2 Dashboard p
 * **Admin**: contains importers/normalizers/converters for populating the database (depends on _core_).
 * **Web**: provides a Web-based API for querying the database; also contains a thin-client (known as _Dashboard Web UI_) that helps with basic navigation
 
-# UPDATED 20150924 -- Process to manage and track issues of the Dashboard
-1. Subhashini Jagu will enter issues into BitBucket within 48 hrs of receipt and will not assign the issues to anyone.
-2. Broad and Columbia will go through these issues and assign them to a relevant person, and vote on issues to help prioritize.
-3. If an issue can’t be assigned to anyone or is not achievable, bring them to Dashboard monthly teleconference for discussion.
-4. Issues that are currently being worked on should also be presented during the Dashboard monthly teleconference for team input; issues that need broader input will be taken to D-HIP/SC teleconferences.
-5. Unless an issue requires major software updates, it should be completed before the 7th of each month so Leandro Hermida can push the update live by the 14th of each month.
-### **NOTE:** There are some old issues that are open and need to be reassigned to a different person because the original assigned person has left the Network. Columbia and Broad will go through these issues, mark issues that can be completed and reassign them to a relevant person.  
-
 # Install
 The code is structured as a _Maven_ project. 
 We suggest you work in an environment with `Java 11`, `Tomcat 8.5.x`, `MySQL 5.7.x` and `Maven 3.x.x` properly installed.

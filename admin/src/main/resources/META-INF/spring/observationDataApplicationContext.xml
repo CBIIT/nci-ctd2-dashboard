@@ -1837,4 +1837,40 @@
             </bean>
         </property>
     </bean>
+    <bean name="stanfordScRNAseqGastricReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${stanford.scRNAseq.gastric.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="stanfordScRNAseqGastricLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="UCSDAPOBECStoryReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${UCSD.APOBEC.story.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="UCSDAPOBECStoryLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="UCSDUVStoryReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${UCSD.UV.story.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="UCSDUVStoryLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="UCSDSYKPI3KStoryReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${UCSD.SYK.PI3K.story.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="UCSDSYKPI3KStoryLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
 </beans>
