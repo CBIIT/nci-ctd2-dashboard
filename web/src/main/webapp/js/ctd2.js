@@ -3009,6 +3009,9 @@
         template: _.template($("#search-result-row-tmpl").html()),
         render: function () {
             const model = this.model;
+            if(!model.ontology) {
+                model.ontology = false
+            }
             const result = model.dashboardEntity;
 
             if (result.class != "Gene") {
@@ -3158,6 +3161,7 @@
                                 displayName: "-"
                             };
                         }
+                        one_result.ontology = true;
                         new SearchResultsRowView({
                             model: one_result,
                             el: $(thatEl).find("tbody")

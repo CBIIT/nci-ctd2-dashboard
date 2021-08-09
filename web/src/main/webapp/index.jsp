@@ -1686,9 +1686,13 @@
     <script type="text/template" id="search-result-row-tmpl">
         <tr>
             <td id="search-image-{{dashboardEntity.id}}"></td>
-            <td>
+            <td style="position:relative">
                 <a href="#{{dashboardEntity.stableURL}}">{{dashboardEntity.displayName}}</a><br>
                 <i>{{dashboardEntity.organism.displayName != '-' ? "(" + dashboardEntity.organism.displayName + ")" : ""}}</i>
+                <svg height="10" width="10" style="position:absolute;top:0;right:0" display={{ontology?'block':'none'}}>
+                    <polygon points="10,10 0,0 10,0" style="fill:DodgerBlue;stroke:black;stroke-width:1" />
+                    Sorry, your browser does not support inline SVG.
+                </svg>
             </td>
             <td>
                 <ul id="synonyms-{{dashboardEntity.id}}">
@@ -1713,11 +1717,15 @@
     <script type="text/template" id="search-result-gene-row-tmpl">
         <tr>
             <td id="search-image-{{dashboardEntity.id}}"></td>
-            <td>
+            <td style="position:relative">
                 <a href="#{{dashboardEntity.stableURL}}">{{dashboardEntity.displayName}}</a>
                 <a href="#" class="addGene-{{dashboardEntity.displayName}} cartAddPlus" data-content="Add gene to cart" >+</a>
                 <br>
                 <i>{{dashboardEntity.organism.displayName != '-' ? "(" + dashboardEntity.organism.displayName + ")" : ""}}</i>
+                <svg height="10" width="10" style="position:absolute;top:0;right:0" display={{ontology?'block':'none'}}>
+                    <polygon points="10,10 0,0 10,0" style="fill:DodgerBlue;stroke:black;stroke-width:1" />
+                    Sorry, your browser does not support inline SVG.
+                </svg>
             </td>
             <td>
                 <ul id="synonyms-{{dashboardEntity.id}}">
