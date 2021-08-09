@@ -115,7 +115,6 @@
                                     <li><a target="_blank" href="https://ocg.cancer.gov/programs/ctd2">OCG/CTD² Home Page</a></li>
                                     <li><a href="#cite">How to Cite</a></li>
                                     <li><a href="#api-documentation">API Documentation</a></li>
-                                    <li><a href="#applications">Applications</a></li>
                                     <li><a target="_blank"
                                             href="https://ocg.cancer.gov/programs/ctd2/publications">Publications</a>
                                     </li>

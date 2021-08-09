@@ -639,23 +639,6 @@
         }
     });
 
-    const Applications = Backbone.View.extend({
-        el: $("#main-container"),
-        template: _.template($("#applications-tmpl").html()),
-        render: function () {
-            fetch("api-apps.html")
-                .then(response => {
-                    if(!response.ok) throw new Error("API Applications Page Missing")
-                    return response.text()
-                })
-                .then(data => $(this.el).html(this.template({api_apps: data})))
-                .catch(error => {
-                    $(this.el).html(this.template({api_apps: error}))
-                });
-            return this;
-        }
-    });
-
     const HelpNavigateView = Backbone.View.extend({
         template: _.template($("#help-navigate-tmpl").html()),
 
@@ -4094,7 +4077,6 @@
             "gene-cart-help": viewOnlyRouter(GeneCartHelpView),
             "cite": viewOnlyRouter(HowToCiteView),
             "api-documentation": viewOnlyRouter(ApiDocumentation),
-            "applications": viewOnlyRouter(Applications),
             "*actions": "home",
         },
 
