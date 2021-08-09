@@ -1,12 +1,9 @@
 package gov.nih.nci.ctd2.dashboard.impl;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Proxy;
-import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
 
 import gov.nih.nci.ctd2.dashboard.model.TissueSample;
@@ -18,17 +15,15 @@ import gov.nih.nci.ctd2.dashboard.model.TissueSample;
 public class TissueSampleImpl extends SubjectImpl implements TissueSample {
     private static final long serialVersionUID = 1L;
 
-	public final static String FIELD_LINEAGE = "lineage";
+    private int code;
 
-    private String lineage;
-
-    @Field(name=FIELD_LINEAGE, index = Index.YES)
-    @Column(length = 128, nullable = true)
-    public String getLineage() {
-        return lineage;
+    @Override
+    public int getCode() {
+        return code;
     }
 
-    public void setLineage(String lineage) {
-        this.lineage = lineage;
+    @Override
+    public void setCode(int code) {
+        this.code = code;
     }
 }

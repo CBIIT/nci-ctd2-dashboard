@@ -3,13 +3,16 @@ package gov.nih.nci.ctd2.dashboard.dao;
 import gov.nih.nci.ctd2.dashboard.model.*;
 import gov.nih.nci.ctd2.dashboard.util.SubjectWithSummaries;
 import gov.nih.nci.ctd2.dashboard.util.Summary;
+import gov.nih.nci.ctd2.dashboard.util.WordCloudEntry;
 import gov.nih.nci.ctd2.dashboard.util.EcoBrowse;
+import gov.nih.nci.ctd2.dashboard.util.ObservationURIsAndTiers;
 import gov.nih.nci.ctd2.dashboard.util.SearchResults;
 
 import java.math.BigInteger;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import gov.nih.nci.ctd2.dashboard.api.ObservationItem;
 
@@ -71,16 +74,26 @@ public interface DashboardDao {
     String expandSummary(Integer observationId, String summaryTemplate);
 
     // the following are added to support more efficient API
-    List<ObservationItem> findObservationInfo(Integer submissionId, int limit);
+    String[] findObservationURLs(Integer submissionId, int limit);
     List<ObservationItem> findObservationInfo(List<Integer> observationIds);
 
     void summarize();
     List<Summary> getOverallSummary();
 
     List<EcoBrowse> getEcoBrowse();
+    ObservationURIsAndTiers ecoCode2ObservationURIsAndTiers(String ecoCode);
     Map<Observation, BigInteger> getOneObservationPerSubmissionByEcoCode(String ecocode, int tier);
     List<Observation> getObservationsForSubmissionAndEcoCode(Integer submissionId, String ecocode);
     ECOTerm getEcoTerm(String ecoTermCode);
 
     void prepareAPIData();
+
+    SearchResults ontologySearch(String queryString);
+    List<Submission> getSubmissionsForSubjectName(String subjectName);
+    WordCloudEntry[] getSubjectCounts();
+    WordCloudEntry[] getSubjectCountsForRoles(String[] roles);
+    WordCloudEntry[] getSubjectCounts(Integer associatedSubject);
+
+    ObservationItem getObservationInfo(String uri);
+    ObservationItem[] getObservations(String submissionId, Set<Integer> indexes);
 }

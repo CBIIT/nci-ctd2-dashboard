@@ -18,11 +18,11 @@ import flexjson.JSONSerializer;
 import gov.nih.nci.ctd2.dashboard.api.ExcludeTransformer;
 import gov.nih.nci.ctd2.dashboard.api.SimpleDateTransformer;
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
-import gov.nih.nci.ctd2.dashboard.model.ObservationTemplate;
 import gov.nih.nci.ctd2.dashboard.model.Submission;
 import gov.nih.nci.ctd2.dashboard.model.SubmissionCenter;
 import gov.nih.nci.ctd2.dashboard.util.ImplTransformer;
 
+/* API 2.0 */
 @Controller
 @RequestMapping("/api/centers")
 public class CentersAPI {
@@ -41,13 +41,8 @@ public class CentersAPI {
         int centerIndex = 0;
         for (SubmissionCenter center : centers) {
             List<Submission> submissions = dashboardDao.findSubmissionBySubmissionCenter(center);
-            APISubmission[] ss = new APISubmission[submissions.size()];
+            String[] ss = submissions.stream().map(x -> x.getStableURL()).toArray(String[]::new);
             String pi = submissions.get(0).getObservationTemplate().getPrincipalInvestigator(); // design flaw
-            int i = 0;
-            for (Submission s : submissions) {
-                int observationCount = dashboardDao.findObservationsBySubmission(s).size();
-                ss[i++] = new APISubmission(s, observationCount);
-            }
             apiCenters[centerIndex++] = new APICenter(center, pi, ss);
         }
 
@@ -65,35 +60,11 @@ public class CentersAPI {
         return new ResponseEntity<String>(json, headers, HttpStatus.OK);
     }
 
-    public static class APISubmission {
-        public final String submission_id, project, submission_description, story_title;
-        public final Date submission_date;
-        public final Integer tier;
-        public final Integer observation_count;
-
-        public APISubmission(final Submission s, int observationCount) {
-            ObservationTemplate observationTemplate = s.getObservationTemplate();
-            // required part
-            this.submission_id = s.getStableURL().substring("submission/".length());
-            this.submission_date = s.getSubmissionDate();
-            this.tier = observationTemplate.getTier();
-            this.project = observationTemplate.getProject();
-            this.submission_description = observationTemplate.getDescription();
-            this.observation_count = Integer.valueOf(observationCount);
-
-            // not-required
-            String st = null;
-            if (observationTemplate.getIsSubmissionStory())
-                st = observationTemplate.getDescription();
-            story_title = st;
-        }
-    }
-
     public static class APICenter {
         public final String center_name, center_id, principal_investigator;
-        public final APISubmission[] submissions;
+        public final String[] submissions; // DashboardURI
 
-        public APICenter(SubmissionCenter c, String pi, APISubmission[] submissions) {
+        public APICenter(SubmissionCenter c, String pi, String[] submissions) {
             this.center_name = c.getDisplayName();
             this.center_id = c.getStableURL().substring("center/".length());
             this.principal_investigator = pi;

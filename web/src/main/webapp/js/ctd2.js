@@ -405,9 +405,61 @@
                 e.preventDefault();
                 $("#summary-table").toggle();
                 $("#toggle-word").text(function (index, content) {
-                    if (content == "Show") return "Hide";
-                    else return "Show";
+                    if (content == "Show") {
+                        // hide word cloud
+                        $("#wordcloud-container").hide();
+                        $("#wordcloud-toggle-word").text("Show");
+                        return "Hide";
+                    } else return "Show";
                 });
+            });
+            $("#wordcloud-container").show();
+            function select_wordcloud(choice, button) {
+                $("#vis").hide();
+                $("#vis-genes").hide();
+                $("#vis-compounds").hide();
+                $("#vis-disease").hide();
+                $("#vis-cell").hide();
+                $(choice).show();
+                $("#wordcloud-all").prop('disabled', false);
+                $("#wordcloud-genes").prop('disabled', false);
+                $("#wordcloud-compounds").prop('disabled', false);
+                $("#wordcloud-disease").prop('disabled', false);
+                $("#wordcloud-cell").prop('disabled', false);
+                $(button).prop('disabled', true)
+            }
+            select_wordcloud("#vis", "#wordcloud-all");
+            $("#wordcloud-button").click(function (e) {
+                e.preventDefault();
+                $("#wordcloud-container").toggle();
+                $("#wordcloud-toggle-word").text(function (index, content) {
+                    if (content == "Show") {
+                        // hide summary table
+                        $("#summary-table").hide();
+                        $("#toggle-word").text("Show");
+                        return "Hide";
+                    } else return "Show";
+                });
+            });
+            $("#wordcloud-genes").click(function (e) {
+                e.preventDefault();
+                select_wordcloud("#vis-genes", this);
+            });
+            $("#wordcloud-compounds").click(function (e) {
+                e.preventDefault();
+                select_wordcloud("#vis-compounds", this);
+            });
+            $("#wordcloud-disease").click(function (e) {
+                e.preventDefault();
+                select_wordcloud("#vis-disease", this);
+            });
+            $("#wordcloud-cell").click(function (e) {
+                e.preventDefault();
+                select_wordcloud("#vis-cell", this);
+            });
+            $("#wordcloud-all").click(function (e) {
+                e.preventDefault();
+                select_wordcloud("#vis", this);
             });
             $('#summary-table thead th').popover({
                 placement: "top",
@@ -514,6 +566,32 @@
             }).click(function () {
                 $(this).popover('hide');
             });
+
+            $.ajax("wordcloud").done(function (result) {
+                create_wordcloud('#vis')(result);
+            }).fail(function (err) {
+                console.log(err);
+            });
+            $.ajax("wordcloud/target,biomarker").done(function (result) {
+                create_wordcloud('#vis-genes')(result);
+            }).fail(function (err) {
+                console.log(err);
+            });
+            $.ajax("wordcloud/perturbagen,candidate drug").done(function (result) {
+                create_wordcloud('#vis-compounds')(result);
+            }).fail(function (err) {
+                console.log(err);
+            });
+            $.ajax("wordcloud/disease").done(function (result) {
+                create_wordcloud('#vis-disease')(result);
+            }).fail(function (err) {
+                console.log(err);
+            });
+            $.ajax("wordcloud/cell line").done(function (result) {
+                create_wordcloud('#vis-cell')(result);
+            }).fail(function (err) {
+                console.log(err);
+            });
             return this;
         }
     });
@@ -540,6 +618,40 @@
         template: _.template($("#how-to-cite-tmpl").html()),
         render: function () {
             $(this.el).html(this.template({}));
+            return this;
+        }
+    });
+
+    const ApiDocumentation = Backbone.View.extend({
+        el: $("#main-container"),
+        template: _.template($("#api-documentation-tmpl").html()),
+        render: function () {
+            fetch("api-doc.html")
+                .then(response => {
+                    if(!response.ok) throw new Error("API Document Missing")
+                    return response.text()
+                })
+                .then(data => $(this.el).html(this.template({api_document: data})))
+                .catch(error => {
+                    $(this.el).html(this.template({api_document: error}))
+                });
+            return this;
+        }
+    });
+
+    const Applications = Backbone.View.extend({
+        el: $("#main-container"),
+        template: _.template($("#applications-tmpl").html()),
+        render: function () {
+            fetch("api-apps.html")
+                .then(response => {
+                    if(!response.ok) throw new Error("API Applications Page Missing")
+                    return response.text()
+                })
+                .then(data => $(this.el).html(this.template({api_apps: data})))
+                .catch(error => {
+                    $(this.el).html(this.template({api_apps: error}))
+                });
             return this;
         }
     });
@@ -1138,7 +1250,7 @@
                                 // load cytoscape
                                 cytoscape({
                                     container: $('#cytoscape-sif'),
-
+                                    wheelSensitivity: 0.4,
                                     layout: {
                                         name: 'cola',
                                         liveUpdate: false,
@@ -1634,6 +1746,7 @@
                 },
                 el: "#compound-observation-grid"
             }).render();
+            create_subject_word_cloud(result.id);
 
             $("a.compound-image").fancybox({
                 titlePosition: 'inside'
@@ -1762,6 +1875,23 @@
         }
     });
 
+    function create_subject_word_cloud(subject_id) {
+        $.ajax("wordcloud/subject/" + subject_id).done(function (result) {
+            create_wordcloud('#subject-wordcloud')(result);
+        }).fail(function (err) {
+            console.log(err);
+        });
+        $("#subject-wordcloud").hide();
+        $("#subject-wordcloud-button").click(function (e) {
+            e.preventDefault();
+            $("#subject-wordcloud").toggle();
+            $("#subject-wordcloud-toggle-word").text(function (index, content) {
+                if (content == "Show") return "Hide";
+                else return "Show";
+            });
+        });
+    }
+
     const GeneView = Backbone.View.extend({
         el: $("#main-container"),
         template: _.template($("#gene-tmpl").html()),
@@ -1832,6 +1962,7 @@
                 },
                 el: "#gene-observation-grid"
             }).render();
+            create_subject_word_cloud(result.id);
 
             const currentGene = result.displayName;
             $(".addGene-" + currentGene).click(function (e) {
@@ -2049,6 +2180,7 @@
                 },
                 el: "#tissuesample-observation-grid"
             }).render();
+            create_subject_word_cloud(result.id);
 
             return this;
         }
@@ -2258,6 +2390,7 @@
                 },
                 el: "#cellsample-observation-grid"
             }).render();
+            create_subject_word_cloud(result.id);
 
             return this;
         }
@@ -2880,6 +3013,9 @@
         template: _.template($("#search-result-row-tmpl").html()),
         render: function () {
             const model = this.model;
+            if(!model.ontology) {
+                model.ontology = false
+            }
             const result = model.dashboardEntity;
 
             if (result.class != "Gene") {
@@ -3011,6 +3147,145 @@
             // update the search box accordingly
             $("#omni-input").val(decodeURIComponent(this.model.term));
 
+            const searchQuery = this.model.term;
+            let subject_names = [];
+            $("#ontology-search").click(function () {
+                $.ajax({
+                    url: "ontology-search",
+                    data: { terms: searchQuery }
+                }).done(function (ontology_search_results) {
+                    let submission_count = 0;
+                    let center_count = 0;
+                    const subject_result = ontology_search_results.subject_result;
+                    $("#search-results-grid").DataTable().destroy();
+                    _.each(subject_result, function (one_result) {
+                        if (subject_names.includes(one_result.dashboardEntity.displayName)) return;
+                        if (one_result.dashboardEntity.organism == undefined) {
+                            one_result.dashboardEntity.organism = {
+                                displayName: "-"
+                            };
+                        }
+                        one_result.ontology = true;
+                        new SearchResultsRowView({
+                            model: one_result,
+                            el: $(thatEl).find("tbody")
+                        }).render();
+                        // search submission for one_result
+                        // then add to submission result ... new SearchSubmissionRowView
+                        $.ajax({
+                            url: "ontology-search/extra-submissions",
+                            data: { 'subject-name': one_result.dashboardEntity.displayName },
+                            async: false,
+                        }).done(function (submissions) {
+                            submission_count += submissions.length;
+                            // the following code is copied. TODO refactoring
+                            const centerCounter = new Set();
+                            _.each(submissions, function (submission) {
+                                const searchSubmissionRowView = new SearchSubmissionRowView({
+                                    model: submission
+                                });
+                                searchSubmissionRowView.render();
+
+                                if (submission.observationTemplate === undefined) { // TODO why does this happen?
+                                    submission.observationTemplate = {};
+                                }
+                                const tmplName = submission.observationTemplate.isSubmissionStory ?
+                                    "#count-story-tmpl" :
+                                    "#count-observations-tmpl";
+                                const cntContent = _.template(
+                                    $(tmplName).html())({
+                                        count: submission.observationCount
+                                    });
+                                $("#search-observation-count-" + submission.dashboardEntity.id).html(cntContent);
+                                const centerId = submission.dashboardEntity.observationTemplate.submissionCenter.id;
+                                centerCounter.add(centerId);
+
+                                center_count += centerCounter.size;
+                            });
+                        });
+                    });
+                    $("#search-results-grid").dataTable({
+                        "columns": [
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            {
+                                "orderDataType": "dashboard-rank",
+                                "type": 'num',
+                            },
+                            {visible: false}
+                        ]
+                    }).fnSort([
+                        [6, 'desc'],
+                        [5, 'desc'],
+                        [1, 'asc']
+                    ]);
+                    $("#search-results-grid").parent().find('input[type=search]').popover(table_filter_popover);
+                    $("#ontology-search").prop('disabled', true);
+                    $("#ontology-spinner").hide();
+
+                    //redo observations
+                    const observation_result = ontology_search_results.observation_result;
+                    if (observation_result != null && observation_result.length > 0) {
+                        const matching_observations = [];
+                        _.each(observation_result, function (aResult) {
+                            matching_observations.push(aResult.dashboardEntity);
+                        });
+                        tabulate_matching_observations(matching_observations);
+                        if (matching_observations.length == 0) {
+                            $('#observation-summary-link').hide();
+                        } else {
+                            $('#observation-count').text(matching_observations.length);
+                        }
+                    }
+
+                    if (submission_count == 0) return;
+                    // proceed only if there are additional submissions due to ontology search
+                    // if (!$("#submission-search-results").is(":visible")) {
+                    $("#submission-search-results").fadeIn();
+                    $('#submission-summary-link').show();
+                    $("#searched-submissions").dataTable({
+                        "columns": [
+                            null,
+                            {
+                                "orderDataType": "dashboard-date"
+                            },
+                            null,
+                            null,
+                            null,
+                            null
+                        ]
+                    }).fnSort([
+                        [4, 'desc'],
+                        [2, 'desc']
+                    ]);
+                    $("#searched-submissions").parent().find('input[type=search]').popover(table_filter_popover);
+                    $("#searched-submissions").find('thead th:contains("Tier")').popover({
+                        placement: "top",
+                        trigger: 'hover',
+                        html: true,
+                        content: function () {
+                            return __ctd2_hovertext.ALL_TIERS;
+                        },
+                    });
+                    if (submission_count == 1) {
+                        $('#submission-summary').text('one matched submission');
+                    } else {
+                        $('#submission-summary').text(submission_count + ' matched submissions');
+
+                    }
+                    if (center_count == 1) {
+                        $('#center-summary').text('one center');
+                    } else {
+                        $('#center-summary').text(center_count + ' centers');
+                    }
+
+                });
+                $("#ontology-spinner").show();
+            });
+
             const thatEl = this.el;
             const thatModel = this.model;
             const searchResults = new SearchResults({
@@ -3022,6 +3297,7 @@
                     $("#loading-row").remove();
                     const results = searchResults.toJSON();
                     const subject_result = results.subject_result;
+                    subject_names = subject_result.map(x => x.dashboardEntity.displayName);
                     const submission_result = results.submission_result;
                     const observation_result = results.observation_result;
                     if (subject_result.length + submission_result.length == 0) {
@@ -3073,14 +3349,17 @@
                                     "orderDataType": "dashboard-rank",
                                     "type": 'num',
                                 },
+                                {visible: false}
                             ]
 
                         });
                         oTable.fnSort([
+                            [6, 'desc'],
                             [5, 'desc'],
                             [1, 'asc']
                         ]);
                         $("#search-results-grid").parent().width("100%");
+                        $("#search-results-grid").width("100%");
                         $("#search-results-grid").parent().find('input[type=search]').popover(table_filter_popover);
                         $('#search-results-grid thead th').popover({
                             placement: "top",
@@ -3814,6 +4093,8 @@
             "cnkb-result": viewOnlyRouter(CnkbResultView),
             "gene-cart-help": viewOnlyRouter(GeneCartHelpView),
             "cite": viewOnlyRouter(HowToCiteView),
+            "api-documentation": viewOnlyRouter(ApiDocumentation),
+            "applications": viewOnlyRouter(Applications),
             "*actions": "home",
         },
 
@@ -3942,7 +4223,11 @@
         Backbone.history.start();
 
         $("#omnisearch").submit(function () {
+            const previous = window.location.hash;
             window.location.hash = "search/" + encodeURI(encodeURIComponent($("#omni-input").val()));
+            if(previous==window.location.hash) {
+                window.location.reload();
+            }
             return false;
         });
 

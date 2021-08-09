@@ -21,9 +21,9 @@ import gov.nih.nci.ctd2.dashboard.api.CTD2Serializer;
 import gov.nih.nci.ctd2.dashboard.api.SubjectResponse;
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
 import gov.nih.nci.ctd2.dashboard.model.DashboardEntity;
-import gov.nih.nci.ctd2.dashboard.model.Subject;
 import gov.nih.nci.ctd2.dashboard.util.DashboardEntityWithCounts;
 
+/* API 2.0 */
 @Controller
 @RequestMapping("/api/search")
 public class SearchAPI {
@@ -47,10 +47,10 @@ public class SearchAPI {
         List<DashboardEntityWithCounts> results = dashboardDao.search(term.toLowerCase()).subject_result;
         for (DashboardEntityWithCounts resultWithCount : results) {
             DashboardEntity result = resultWithCount.getDashboardEntity();
-            if (!(result instanceof Subject))
+            SubjectResponse subjectResponse = SubjectResponse.createInstance(result, filter, dashboardDao);
+            if (subjectResponse == null) {
                 continue;
-            Subject subject = (Subject) result;
-            SubjectResponse subjectResponse = SubjectResponse.createInstance(subject, filter, dashboardDao);
+            }
             allSubjects.add(subjectResponse);
         }
 

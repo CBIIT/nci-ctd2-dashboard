@@ -7,21 +7,29 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
+import gov.nih.nci.ctd2.dashboard.model.DashboardEntity;
+import gov.nih.nci.ctd2.dashboard.model.ECOTerm;
 import gov.nih.nci.ctd2.dashboard.model.ObservationTemplate;
 import gov.nih.nci.ctd2.dashboard.model.ObservedSubject;
 import gov.nih.nci.ctd2.dashboard.model.ObservedSubjectRole;
 import gov.nih.nci.ctd2.dashboard.model.Subject;
 import gov.nih.nci.ctd2.dashboard.model.Synonym;
 import gov.nih.nci.ctd2.dashboard.model.Xref;
+import gov.nih.nci.ctd2.dashboard.util.ObservationURIsAndTiers;
 
+/* API 2.0 */
 public class SubjectResponse {
+    private static final Log log = LogFactory.getLog(SubjectResponse.class);
     public final String clazz, name;
     public final String[] synonyms, roles;
     public final XRefItem[] xref;
 
     public final ObservationCount observation_count;
-    public final ObservationItem[] observations;
+    public final String[] observations;
 
     public static class Filter {
         public final int limit;
@@ -77,7 +85,7 @@ public class SubjectResponse {
         return new Filter(limit, rolesIncluded, centerIncluded, tiersIncluded);
     }
 
-    public static SubjectResponse createInstance(final Subject subject, final Filter filter,
+    private static SubjectResponse createInstance(final Subject subject, final Filter filter,
             DashboardDao dashboardDao) {
 
         int[] tierCount = new int[3];
@@ -114,12 +122,12 @@ public class SubjectResponse {
                 }
             }
         }
-        SubjectResponse subjectResponse = new SubjectResponse(subject, observations.toArray(new ObservationItem[0]),
-                roles.toArray(new String[0]), tierCount);
+        String[] uris = observations.stream().map(x -> x.uri).toArray(String[]::new);
+        SubjectResponse subjectResponse = new SubjectResponse(subject, uris, roles.toArray(new String[0]), tierCount);
         return subjectResponse;
     }
 
-    public SubjectResponse(Subject subject, ObservationItem[] observations, String[] roles, int[] tierCount) {
+    private SubjectResponse(Subject subject, String[] observations, String[] roles, int[] tierCount) {
         String stableURL = subject.getStableURL();
         this.clazz = stableURL.substring(0, stableURL.indexOf("/"));
 
@@ -132,6 +140,39 @@ public class SubjectResponse {
         assert tierCount.length == 3;
         observation_count = new ObservationCount(tierCount[0], tierCount[1], tierCount[2]);
         this.observations = observations;
+    }
+
+    public static SubjectResponse createInstance(final DashboardEntity x, final Filter filter,
+            DashboardDao dashboardDao) {
+        if (x instanceof Subject) {
+            return createInstance((Subject) x, filter, dashboardDao);
+        } else if (x instanceof ECOTerm) {
+            ECOTerm ecoTerm = (ECOTerm) x;
+            ObservationURIsAndTiers data = dashboardDao.ecoCode2ObservationURIsAndTiers(ecoTerm.getCode());
+            return new SubjectResponse(ecoTerm, data);
+        } else {
+            log.error("unexpected subject type:" + x.getClass().getName());
+            return null;
+        }
+    }
+
+    private SubjectResponse(ECOTerm ecoTerm, ObservationURIsAndTiers data) {
+        String stableURL = ecoTerm.getStableURL();
+        this.clazz = stableURL.substring(0, stableURL.indexOf("/"));
+
+        this.name = ecoTerm.getDisplayName();
+        String synonyms = ecoTerm.getSynonyms().trim();
+        if (synonyms.length() == 0) {
+            this.synonyms = null;
+        } else {
+            this.synonyms = synonyms.split("\\|");
+        }
+
+        this.xref = null;
+        this.roles = null;
+
+        observation_count = new ObservationCount(data.tier1, data.tier2, data.tier3);
+        this.observations = data.uris;
     }
 
     private static String[] getSynomyms(Subject subject) {

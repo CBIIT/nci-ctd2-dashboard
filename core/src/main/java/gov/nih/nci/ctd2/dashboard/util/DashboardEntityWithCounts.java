@@ -14,6 +14,15 @@ public class DashboardEntityWithCounts implements Serializable {
     private int centerCount = 0;
     private int maxTier = 0;
     private Set<String> roles = new HashSet<String>();
+    private int matchNumber = 0;
+
+    public DashboardEntityWithCounts() {
+    }
+
+    public DashboardEntityWithCounts(DashboardEntity dashboardEntity, int observationCount) {
+        this.dashboardEntity = dashboardEntity;
+        this.observationCount = observationCount;
+    }
 
     public DashboardEntity getDashboardEntity() {
         return dashboardEntity;
@@ -53,5 +62,13 @@ public class DashboardEntityWithCounts implements Serializable {
 
     public void setRoles(Set<String> roles) {
         this.roles = roles;
+    }
+
+    public int getMatchNumber() {
+        return matchNumber;
+    }
+
+    public void setMatchNumber(int x) {
+        matchNumber = x;
     }
 }

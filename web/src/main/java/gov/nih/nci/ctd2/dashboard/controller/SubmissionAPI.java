@@ -1,7 +1,6 @@
 package gov.nih.nci.ctd2.dashboard.controller;
 
 import java.util.Date;
-import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -18,11 +17,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import flexjson.JSONSerializer;
 import gov.nih.nci.ctd2.dashboard.api.CTD2Serializer;
-import gov.nih.nci.ctd2.dashboard.api.ObservationItem;
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
 import gov.nih.nci.ctd2.dashboard.model.ObservationTemplate;
 import gov.nih.nci.ctd2.dashboard.model.Submission;
 
+/* API 2.0 */
 @Controller
 @RequestMapping("/api/submission")
 public class SubmissionAPI {
@@ -46,8 +45,8 @@ public class SubmissionAPI {
             }
         }
         Submission submission = dashboardDao.getEntityByStableURL("submission", "submission/" + id);
-        List<ObservationItem> observations = dashboardDao.findObservationInfo(submission.getId(), limit);
-        APISubmission apiSubmission = new APISubmission(submission, observations.toArray(new ObservationItem[0]));
+        String[] observations = dashboardDao.findObservationURLs(submission.getId(), limit);
+        APISubmission apiSubmission = new APISubmission(submission, observations);
 
         log.debug("ready to serialize");
         JSONSerializer jsonSerializer = CTD2Serializer.createJSONSerializer();
@@ -68,9 +67,9 @@ public class SubmissionAPI {
         public final Integer tier;
         public final String project, submission_description, story_title;
         public final Integer observation_count;
-        public final ObservationItem[] observations;
+        public final String[] observations;
 
-        public APISubmission(Submission submission, ObservationItem[] observations) {
+        public APISubmission(Submission submission, String[] observations) {
             ObservationTemplate template = submission.getObservationTemplate();
             this.submission_center = template.getSubmissionCenter().getDisplayName();
             this.submission_name = submission.getDisplayName();

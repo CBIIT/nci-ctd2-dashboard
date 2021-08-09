@@ -19,9 +19,12 @@ import flexjson.JSONSerializer;
 import gov.nih.nci.ctd2.dashboard.api.CTD2Serializer;
 import gov.nih.nci.ctd2.dashboard.api.SubjectResponse;
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
+import gov.nih.nci.ctd2.dashboard.model.DashboardEntity;
+import gov.nih.nci.ctd2.dashboard.model.ECOTerm;
 import gov.nih.nci.ctd2.dashboard.model.Gene;
 import gov.nih.nci.ctd2.dashboard.model.Subject;
 
+/* API 2.0 */
 @Controller
 @RequestMapping("/api/browse")
 public class BrowseAPI {
@@ -42,16 +45,29 @@ public class BrowseAPI {
 
         SubjectResponse.Filter filter = SubjectResponse.createFilter(center, role, tiers, maximum);
 
-        Subject subject = null;
-        if (subjectClass.equalsIgnoreCase("gene")) {
+        DashboardEntity subject = null;
+        if (subjectClass.equalsIgnoreCase("evidence") || subjectClass.equalsIgnoreCase("eco")) {
+            /* API spec asks for Evidence but stable URL uses eco */
+            var obj = dashboardDao.getEntityByStableURL("eco", "eco/" + subjectName);
+            if (obj instanceof ECOTerm) {
+                subject = (ECOTerm) obj;
+            } else {
+                log.error("unexpected subject type:" + obj.getClass().getName());
+            }
+        } else if (subjectClass.equalsIgnoreCase("gene")) {
             List<Gene> genes = dashboardDao.findGenesBySymbol(subjectName);
             if (genes.size() > 0)
                 subject = genes.get(0);
         } else {
-            subject = dashboardDao.getEntityByStableURL(subjectClass, subjectClass + "/" + subjectName);
+            var obj = dashboardDao.getEntityByStableURL(subjectClass, subjectClass + "/" + subjectName);
+            if (obj instanceof Subject) {
+                subject = (Subject) obj;
+            } else {
+                log.error("unexpected subject type: " + (obj == null ? null : obj.getClass().getName()));
+            }
         }
         if (subject == null) {
-            return new ResponseEntity<String>("{}", headers, HttpStatus.OK);
+            return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
         }
 
         SubjectResponse subjectResponse = SubjectResponse.createInstance(subject, filter, dashboardDao);

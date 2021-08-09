@@ -29,7 +29,7 @@
     <meta name="author" content="" />
 
     <link rel="shortcut icon" href="img/favicon.ico" type="image/vnd.microsoft.icon" />
-    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/css/bootstrap.min.css" integrity="sha256-azvvU9xKluwHFJ0Cpgtf0CYzK7zgtOznnzxV4924X1w=" crossorigin="anonymous">
     <link rel="stylesheet" href="css/datatables.min.css" type="text/css" />
     <link rel="stylesheet" href="css/jquery.fancybox.min.css" type="text/css" media="screen" />
     <link rel="stylesheet" href="css/jquery.contextMenu.min.css" type="text/css" />
@@ -48,7 +48,7 @@
 <body>
     <!-- NAVBAR
     ================================================== -->
-    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script>
         $(function () {
             // Bind an event to window.onhashchange that, when the hash changes, 
@@ -114,6 +114,8 @@
                                 <ul class="dropdown-menu">
                                     <li><a target="_blank" href="https://ocg.cancer.gov/programs/ctd2">OCG/CTD² Home Page</a></li>
                                     <li><a href="#cite">How to Cite</a></li>
+                                    <li><a href="#api-documentation">API Documentation</a></li>
+                                    <li><a href="#applications">Applications</a></li>
                                     <li><a target="_blank"
                                             href="https://ocg.cancer.gov/programs/ctd2/publications">Publications</a>
                                     </li>
@@ -271,6 +273,21 @@
         <div class="dark-separator"></div>
         <div style="text-align:center;display:block;padding:10px">
         <button type="button" class="btn btn-secondary" id=summary-table-label><span id=toggle-word>Show</span> Dashboard Content Summary</button>
+        <button type="button" class="btn btn-secondary" id=wordcloud-button><span id=wordcloud-toggle-word>Hide</span> Word Cloud</button>
+        </div>
+        <div class=container id='wordcloud-container'>
+            <div style="text-align:center;display:block;padding:10px">
+                <button type="button" class="btn btn-light" id=wordcloud-all style='background:rgb(253, 255, 201);border-color:#6c757d'>All</button>
+                <button type="button" class="btn btn-light" id=wordcloud-genes style='background:rgb(253, 255, 201);border-color:#6c757d'>Genes and Proteins</button>
+                <button type="button" class="btn btn-light" id=wordcloud-compounds style='background:rgb(253, 255, 201);border-color:#6c757d'>Compounds and Perturbagens</button>
+                <button type="button" class="btn btn-light" id=wordcloud-disease style='background:rgb(253, 255, 201);border-color:#6c757d'>Disease context</button>
+                <button type="button" class="btn btn-light" id=wordcloud-cell style='background:rgb(253, 255, 201);border-color:#6c757d'>Cell lines</button>
+            </div>
+            <div id="vis"></div>
+            <div id="vis-genes"></div>
+            <div id="vis-compounds"></div>
+            <div id="vis-disease"></div>
+            <div id="vis-cell"></div>
         </div>
         <table id=summary-table class="table table-bordered table-sm text-center">
             <thead>
@@ -952,7 +969,7 @@
                          <tr>
                              <th>Genomic alterations</th>
                              <td>
-                                 <a class="btn btn-small" href="http://cbioportal.org/ln?q={{displayName}}" target="blank">view in cBioPortal <i class="icon-share"></i></a>
+                                 <a class="btn btn-small" href="http://cbioportal.org/ln?q={{displayName}}" target="_blank">view in cBioPortal <i class="icon-share"></i></a>
                              </td>
                          </tr>
                      </table>
@@ -964,6 +981,10 @@
              </div>
 
              <h3>Related observations <small>{{ role?"for the role of "+role:"" }} {{tier?"and tier "+tier:""}}</small></h3>
+             <div style="padding:5px">
+             <button type="button" class="btn btn-secondary" id=subject-wordcloud-button><span id=subject-wordcloud-toggle-word>Show</span> Connected Subjects Word Cloud</button>
+                <div id=subject-wordcloud></div>
+             </div>
 
              <table id="gene-observation-grid" class="table table-bordered table-striped observations">
                  <thead>
@@ -1219,10 +1240,6 @@
             <div class="row">
                 <div class="col-9">
                     <table id="tissuesample-details-grid" class="table table-bordered table-striped">
-                        <tr>
-                            <th>Lineage</th>
-                            <td>{{lineage}}</td>
-                        </tr>
                         <tr id="tissue-synonyms">
                             <th>Synonyms</th>
                             <td>
@@ -1249,6 +1266,10 @@
             </div>
 
             <h3>Related observations <small>{{ role?"for the role of "+role:"" }} {{tier?"and tier "+tier:""}}</small></h3>
+            <div style="padding:5px">
+                <button type="button" class="btn btn-secondary" id=subject-wordcloud-button><span id=subject-wordcloud-toggle-word>Show</span> Connected Subjects Word Cloud</button>
+                <div id=subject-wordcloud></div>
+            </div>
 
             <table id="tissuesample-observation-grid" class="table table-bordered table-striped observations">
                 <thead>
@@ -1316,7 +1337,7 @@
                         <tr id="cbiolink">
                             <th>Genomic alterations</th>
                             <td>
-                                <a class="btn btn-small" href="http://www.cbioportal.org/public-portal/case.do?cancer_study_id=cellline_ccle_broad&sample_id={{cbioPortalId}}" target="blank">view in cBioPortal <i class="icon-share"></i></a>
+                                <a class="btn btn-small" href="https://www.cbioportal.org/patient?studyId=cellline_ccle_broad&sampleId={{cbioPortalId}}" target="_blank">view in cBioPortal <i class="icon-share"></i></a>
                             </td>
                         </tr>
                     </table>
@@ -1327,6 +1348,10 @@
                 </div>
             </div>
             <h3>Related observations <small>{{ role?"for the role of "+role:"" }} {{tier?"and tier "+tier:""}}</small></h3>
+            <div style="padding:5px">
+                <button type="button" class="btn btn-secondary" id=subject-wordcloud-button><span id=subject-wordcloud-toggle-word>Show</span> Connected Subjects Word Cloud</button>
+                <div id=subject-wordcloud></div>
+            </div>
 
             <table id="cellsample-observation-grid" class="table table-bordered table-striped observations">
                 <thead>
@@ -1542,6 +1567,10 @@
               </div>
 
               <h3>Related observations <small>{{ role?"for the role of "+decodeURI(role):"" }} {{tier?"and tier "+tier:""}}</small></h3>
+                <div style="padding:5px">
+                    <button type="button" class="btn btn-secondary" id=subject-wordcloud-button><span id=subject-wordcloud-toggle-word>Show</span> Connected Subjects Word Cloud</button>
+                    <div id=subject-wordcloud></div>
+                </div>
 
               <table id="compound-observation-grid" class="table table-bordered table-striped observations">
                   <thead>
@@ -1658,9 +1687,13 @@
     <script type="text/template" id="search-result-row-tmpl">
         <tr>
             <td id="search-image-{{dashboardEntity.id}}"></td>
-            <td>
+            <td style="position:relative">
                 <a href="#{{dashboardEntity.stableURL}}">{{dashboardEntity.displayName}}</a><br>
                 <i>{{dashboardEntity.organism.displayName != '-' ? "(" + dashboardEntity.organism.displayName + ")" : ""}}</i>
+                <svg height="10" width="10" style="position:absolute;top:0;right:0" display={{ontology?'block':'none'}}>
+                    <polygon points="10,10 0,0 10,0" style="fill:DodgerBlue;stroke:black;stroke-width:1" />
+                    Sorry, your browser does not support inline SVG.
+                </svg>
             </td>
             <td>
                 <ul id="synonyms-{{dashboardEntity.id}}">
@@ -1678,17 +1711,22 @@
                 <a href="#{{dashboardEntity.stableURL}}" id="subject-observation-count-{{dashboardEntity.id}}" count="{{observationCount}}">{{observationCount}}</a>
                 <i class="icon-question-sign obs-tooltip {{observationCount < 1 ? 'hide' : ''}}" data-content="{{observationCount}} observations from {{centerCount}} centers: Tier {{maxTier}}"></i>
             </td>
+            <td>{{matchNumber}}</td>
         </tr>
     </script>
 
     <script type="text/template" id="search-result-gene-row-tmpl">
         <tr>
             <td id="search-image-{{dashboardEntity.id}}"></td>
-            <td>
+            <td style="position:relative">
                 <a href="#{{dashboardEntity.stableURL}}">{{dashboardEntity.displayName}}</a>
                 <a href="#" class="addGene-{{dashboardEntity.displayName}} cartAddPlus" data-content="Add gene to cart" >+</a>
                 <br>
                 <i>{{dashboardEntity.organism.displayName != '-' ? "(" + dashboardEntity.organism.displayName + ")" : ""}}</i>
+                <svg height="10" width="10" style="position:absolute;top:0;right:0" display={{ontology?'block':'none'}}>
+                    <polygon points="10,10 0,0 10,0" style="fill:DodgerBlue;stroke:black;stroke-width:1" />
+                    Sorry, your browser does not support inline SVG.
+                </svg>
             </td>
             <td>
                 <ul id="synonyms-{{dashboardEntity.id}}">
@@ -1706,11 +1744,17 @@
                 <a href="#{{dashboardEntity.stableURL}}" id="subject-observation-count-{{dashboardEntity.id}}" count="{{observationCount}}">{{observationCount}}</a>
                 <i class="icon-question-sign obs-tooltip {{observationCount < 1 ? 'hide' : ''}}" data-content="{{observationCount}} observations from {{centerCount}} centers: Tier {{maxTier}}"></i>
             </td>
+            <td>{{matchNumber}}</td>
         </tr>
     </script>
 
     <script type="text/template" id="search-tmpl">
         <div class="container common-container" id="search-results-container">
+            <button class="btn btn-primary" id="ontology-search" style="float: right;">Ontology Search</button>
+            <button class="btn btn-primary" style="position: fixed;top: 50%;left: 50%;transform: translate(-50%, -50%);z-index: 2;display:none" id='ontology-spinner'>
+                <span class="spinner-border spinner-border-sm"></span>
+                Searching...
+            </button>
             <h2>Search <small>for <i>{{decodeURIComponent(term)}}</i></small></h2>
             <div style='padding: 20px 0px; width=100%'>
             <a href="" onclick="document.getElementById('submission-search-results').scrollIntoView(); return false" id=submission-summary-link>
@@ -1728,6 +1772,7 @@
                     <th>Class</th>
                     <th>Roles</th>
                     <th>Observations</th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -2390,6 +2435,18 @@
         </div>
     </script>
 
+    <script type="text/template" id="api-documentation-tmpl">
+        <div class="container common-container">
+            {{api_document}}
+        </div>
+    </script>
+
+    <script type="text/template" id="applications-tmpl">
+        <div class="container common-container">
+            {{api_apps}}
+        </div>
+    </script>
+
     <script type="text/template" id="help-navigate-tmpl">
         <div class="help-navigate-text-container">
             <h3>Navigating and Understanding Dashboard Content</h3>
@@ -2445,22 +2502,26 @@
 
     <!-- end of templates -->
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha256-MSYVjWgrr6UL/9eQfQvOyt6/gsxb6dpwI1zqM5DbLCs=" crossorigin="anonymous"></script>
     <script src="js/datatables.min.js"></script>
     <script src="js/paging.js"></script>
     <script src="js/underscore-min.js"></script>
     <script src="js/backbone-min.js"></script>
-    <script src="js/bootstrap.bundle.min.js"></script>
     <script src="js/jquery.fancybox.min.js"></script>
     <script src="js/jquery.expander.min.js"></script>
-    <script src="js/cytoscape.min.js"></script>
+    <script src="js/cytoscape.min.js?ts=2021"></script>
     <script src="js/cola.min.js"></script>
     <script src="js/cytoscape-cola.js"></script>
     <script src="js/encoder.js"></script>
     <script src="js/jquery.contextMenu.min.js"></script>
     <script src="js/jquery.ui.position.min.js"></script>
     <script src="js/ctd2.constants.js"></script>
-    <script src="js/gene.cart.js"></script>
-    <script src="js/ctd2.js?ts=20200926"></script>
+    <script src="js/gene.cart.js?ts=2021"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"
+        integrity="sha512-oJp0DdQuQQrRsKVly+Ww6fAN1GwJN7d1bi8UubpEbzDUh84WrJ2CFPBnT4LqBCcfqTcHR5OGXFFhaPe3g1/bzQ=="
+        crossorigin="anonymous"></script>
+    <script src="js/wordcloud.js"></script>
+    <script src="js/ctd2.js?ts=2021"></script>
 
 <script type="text/javascript">_satellite.pageBottom();</script>
 </body>

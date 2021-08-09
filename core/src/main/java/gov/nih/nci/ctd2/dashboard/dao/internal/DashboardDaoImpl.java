@@ -20,8 +20,7 @@ import javax.persistence.criteria.CriteriaQuery;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.core.WhitespaceAnalyzer;
+import org.apache.lucene.analysis.core.KeywordAnalyzer;
 import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.search.Query;
@@ -75,9 +74,12 @@ import gov.nih.nci.ctd2.dashboard.model.Transcript;
 import gov.nih.nci.ctd2.dashboard.model.Xref;
 import gov.nih.nci.ctd2.dashboard.util.DashboardEntityWithCounts;
 import gov.nih.nci.ctd2.dashboard.util.EcoBrowse;
+import gov.nih.nci.ctd2.dashboard.util.Hierarchy;
+import gov.nih.nci.ctd2.dashboard.util.ObservationURIsAndTiers;
 import gov.nih.nci.ctd2.dashboard.util.SearchResults;
 import gov.nih.nci.ctd2.dashboard.util.SubjectWithSummaries;
 import gov.nih.nci.ctd2.dashboard.util.Summary;
+import gov.nih.nci.ctd2.dashboard.util.WordCloudEntry;
 
 public class DashboardDaoImpl implements DashboardDao {
     private static final Log log = LogFactory.getLog(DashboardDaoImpl.class);
@@ -86,7 +88,7 @@ public class DashboardDaoImpl implements DashboardDao {
             DashboardEntityImpl.FIELD_DISPLAYNAME_WS, DashboardEntityImpl.FIELD_DISPLAYNAME_UT,
             SubjectImpl.FIELD_SYNONYM, SubjectImpl.FIELD_SYNONYM_WS, SubjectImpl.FIELD_SYNONYM_UT,
             ObservationTemplateImpl.FIELD_DESCRIPTION, ObservationTemplateImpl.FIELD_SUBMISSIONDESC,
-            ObservationTemplateImpl.FIELD_SUBMISSIONNAME, TissueSampleImpl.FIELD_LINEAGE };
+            ObservationTemplateImpl.FIELD_SUBMISSIONNAME };
 
     private static final Class<?>[] searchableClasses = { SubjectWithOrganismImpl.class, TissueSampleImpl.class,
             CompoundImpl.class, SubmissionImpl.class, ObservationTemplateImpl.class };
@@ -631,15 +633,14 @@ public class DashboardDaoImpl implements DashboardDao {
         return false;
     }
 
-    @Override
-    @Cacheable(value = "searchCache")
-    public SearchResults search(String queryString) {
+    private void searchSingleTerm(final String singleTerm, final Map<Subject, Integer> subjects,
+            final Map<Submission, Integer> submissions) {
         FullTextSession fullTextSession = Search.getFullTextSession(getSession());
-        Analyzer analyzer = new WhitespaceAnalyzer();
-        MultiFieldQueryParser multiFieldQueryParser = new MultiFieldQueryParser(defaultSearchFields, analyzer);
+        MultiFieldQueryParser multiFieldQueryParser = new MultiFieldQueryParser(defaultSearchFields,
+                new KeywordAnalyzer());
         Query luceneQuery = null;
         try {
-            luceneQuery = multiFieldQueryParser.parse(queryString);
+            luceneQuery = multiFieldQueryParser.parse(singleTerm);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -656,38 +657,58 @@ public class DashboardDaoImpl implements DashboardDao {
                     + numberOfSearchResults);
         }
 
-        Set<Subject> subjects = new HashSet<Subject>();
-        Set<Submission> submissions = new HashSet<Submission>();
         for (Object o : list) {
             if (o instanceof ObservationTemplate) {
                 List<Submission> submissionList = queryWithClass(
                         "select o from SubmissionImpl as o where o.observationTemplate = :ot", "ot",
                         (ObservationTemplate) o);
-                submissionList.forEach(submission -> submissions.add(submission));
+                for (Submission submission : submissionList) {
+                    if (submissions.containsKey(submission)) {
+                        submissions.put(submission, submissions.get(submission) + 1);
+                    } else {
+                        submissions.put(submission, 1);
+                    }
+                }
             } else if (o instanceof Subject) {
-                subjects.add((Subject) o);
+                Subject s = (Subject) o;
+                if (subjects.containsKey(s)) {
+                    subjects.put(s, subjects.get(s) + 1);
+                } else {
+                    subjects.put(s, 1);
+                }
             } else {
                 log.warn("unexpected type returned by searching: " + o.getClass().getName());
             }
         }
+    }
+
+    @Override
+    @Cacheable(value = "searchCache")
+    public SearchResults search(String queryString) {
+        final String[] searchTerms = parseWords(queryString);
+        log.debug("search terms: " + String.join(",", searchTerms));
+        Map<Subject, Integer> subjects = new HashMap<Subject, Integer>();
+        Map<Submission, Integer> submissions = new HashMap<Submission, Integer>();
+        for (String singleTerm : searchTerms) {
+            searchSingleTerm(singleTerm, subjects, submissions);
+        }
         SearchResults searchResults = new SearchResults();
         ArrayList<DashboardEntityWithCounts> submission_result = new ArrayList<DashboardEntityWithCounts>();
-        submissions.forEach(submission -> {
+        submissions.forEach((submission, matchNumber) -> {
             DashboardEntityWithCounts entityWithCounts = new DashboardEntityWithCounts();
             entityWithCounts.setDashboardEntity(submission);
             entityWithCounts.setObservationCount(findObservationsBySubmission(submission).size());
             entityWithCounts.setMaxTier(submission.getObservationTemplate().getTier());
             entityWithCounts.setCenterCount(1);
+            entityWithCounts.setMatchNumber(matchNumber);
             submission_result.add(entityWithCounts);
         });
         searchResults.submission_result = submission_result;
 
-        final String[] searchTerms = parseWords(queryString);
-        log.debug("search terms for observation" + String.join(",", searchTerms));
         Map<String, Set<Observation>> observationMap = new HashMap<String, Set<Observation>>();
 
         ArrayList<DashboardEntityWithCounts> subject_result = new ArrayList<DashboardEntityWithCounts>();
-        for (Subject subject : subjects) {
+        for (Subject subject : subjects.keySet()) {
             DashboardEntityWithCounts entityWithCounts = new DashboardEntityWithCounts();
             entityWithCounts.setDashboardEntity(subject);
             Set<Observation> observations = new HashSet<Observation>();
@@ -706,6 +727,7 @@ public class DashboardDaoImpl implements DashboardDao {
             entityWithCounts.setMaxTier(maxTier);
             entityWithCounts.setRoles(roles);
             entityWithCounts.setCenterCount(submissionCenters.size());
+            entityWithCounts.setMatchNumber(subjects.get(subject));
             Arrays.stream(searchTerms).filter(term -> matchSubject(term, subject)).forEach(term -> {
                 Set<Observation> obset = observationMap.get(term);
                 if (obset == null) {
@@ -783,6 +805,57 @@ public class DashboardDaoImpl implements DashboardDao {
         return searchResults;
     }
 
+    private List<Integer> ontologySearchDiseaseContext(String[] searchTerms) {
+        List<Integer> list = new ArrayList<Integer>();
+        for (String t : searchTerms) {
+            int code = getCodeFromTissueSampleName(t);
+            if (code == 0) // not real code
+                continue;
+            log.debug("tissue sample code:" + code);
+            list.addAll(searchDCChildren(code));
+        }
+        return list;
+    }
+
+    private List<Integer> searchDCChildren(int code) {
+        List<Integer> list = new ArrayList<Integer>();
+        int[] children = Hierarchy.DISEASE_CONTEXT.getChildrenCode(code);
+        for (int child : children) {
+            int observationNumber = observationCountForTissueSample(child);
+            if (observationNumber > 1) {
+                log.debug("tissue sample child found " + child);
+                list.add(child);
+            }
+            list.addAll(searchDCChildren(child));
+        }
+        return list;
+    }
+
+    private List<Integer> ontologySearchExperimentalEvidence(final List<ECOTerm> ecoterms) {
+        List<Integer> list = new ArrayList<Integer>();
+        for (ECOTerm t : ecoterms) {
+            int code = Integer.parseInt(t.getCode().substring(4));
+            log.debug("eco code:" + code);
+            list.addAll(searchEEChildren(code));
+        }
+        return list;
+    }
+
+    private List<Integer> searchEEChildren(int code) {
+        List<Integer> list = new ArrayList<Integer>();
+        int[] children = Hierarchy.EXPERIMENTAL_EVIDENCE.getChildrenCode(code);
+        for (int child : children) {
+            List<Integer> observationIds = observationIdsForEcoCode(String.format("ECO:%07d", child));
+            int observationNumber = observationIds.size();
+            if (observationNumber > 1) {
+                log.debug("eco child found " + child);
+                list.add(child);
+            }
+            list.addAll(searchEEChildren(child));
+        }
+        return list;
+    }
+
     @SuppressWarnings("unchecked")
     private List<ECOTerm> findECOTerms(String queryString) {
         // search ECO codes first
@@ -827,6 +900,19 @@ public class DashboardDaoImpl implements DashboardDao {
         List<Integer> list = query.list();
         session.close();
         return list;
+    }
+
+    private int observationCountForEcoCode(String ecocode) {
+        String sql = "SELECT COUNT(observation.id) FROM observation"
+                + " JOIN submission ON observation.submission_id=submission.id"
+                + " JOIN observation_template ON submission.observationTemplate_id=observation_template.id"
+                + " WHERE ecocode='" + ecocode + "'";
+        Session session = getSession();
+        @SuppressWarnings("unchecked")
+        org.hibernate.query.Query<BigInteger> query = session.createNativeQuery(sql);
+        int count = query.getSingleResult().intValue();
+        session.close();
+        return count;
     }
 
     @Override
@@ -980,6 +1066,50 @@ public class DashboardDaoImpl implements DashboardDao {
         session.close();
         log.debug("map size " + map.size());
         return new ArrayList<EcoBrowse>(map.values());
+    }
+
+    @Override
+    public ObservationURIsAndTiers ecoCode2ObservationURIsAndTiers(String ecoCode) {
+        Session session = getSession();
+        @SuppressWarnings("unchecked")
+        org.hibernate.query.Query<Object[]> ecocodeQuery = session
+                .createNativeQuery("SELECT ecocode, id, tier FROM observation_template WHERE LENGTH(ecocode)>0");
+        List<Object[]> ecocodeResult = ecocodeQuery.list();
+
+        List<String> observationURIs = new ArrayList<String>();
+        int tier1 = 0, tier2 = 0, tier3 = 0;
+
+        for (Object[] array : ecocodeResult) {
+            String allcodes = (String) array[0];
+            Integer templateId = (Integer) array[1];
+            Integer tier = (Integer) array[2];
+
+            String[] ecocodes = allcodes.split("\\|");
+            if (Arrays.asList(ecocodes).contains(ecoCode)) {
+                String sql = "SELECT observation.stableURL FROM observation"
+                        + " JOIN submission ON observation.submission_id=submission.id"
+                        + " WHERE submission.observationTemplate_id=" + templateId;
+                @SuppressWarnings("unchecked")
+                org.hibernate.query.Query<String> query = session.createNativeQuery(sql);
+                List<String> uris = query.list();
+                observationURIs.addAll(uris);
+                switch (tier) {
+                    case 1:
+                        tier1++;
+                        break;
+                    case 2:
+                        tier2++;
+                        break;
+                    case 3:
+                        tier3++;
+                        break;
+                    default:
+                        log.error("unknow tier number " + tier);
+                }
+            }
+        }
+        session.close();
+        return new ObservationURIsAndTiers(observationURIs.toArray(new String[0]), tier1, tier2, tier3);
     }
 
     @Override
@@ -1141,8 +1271,8 @@ public class DashboardDaoImpl implements DashboardDao {
                 xrefItems.add(new XRefItem((String) x[1], (String) x[0]));
             }
 
-            SubjectItem subjectItem = new SubjectItem(stableURL.substring(0, stableURL.indexOf("/")), role, description,
-                    name, synonyms.toArray(new String[0]), xrefItems.toArray(new XRefItem[0]), columnName);
+            SubjectItem subjectItem = new SubjectItem(stableURL, role, description, name,
+                    synonyms.toArray(new String[0]), xrefItems.toArray(new XRefItem[0]), columnName);
             list.add(subjectItem);
         }
         session1.close();
@@ -1177,22 +1307,17 @@ public class DashboardDaoImpl implements DashboardDao {
     }
 
     @Override
-    public List<ObservationItem> findObservationInfo(Integer submissionId, int limit) {
-        Session session = getSession();
-        List<ObservationItem> list = new ArrayList<ObservationItem>();
-        @SuppressWarnings("unchecked")
-        org.hibernate.query.Query<ObservationItem> query = session
-                .createQuery("from ObservationItem where submission_id = :sid");
-        query.setParameter("sid", submissionId);
-        if (limit > 0)
-            query.setMaxResults(limit);
-        try {
-            list = query.getResultList();
-        } catch (NoResultException e) {
-            log.info("ObservationItem not available for submission ID " + submissionId);
+    public String[] findObservationURLs(Integer submissionId, int limit) {
+        String sql = "SELECT stableURL FROM observation WHERE submission_id=" + submissionId;
+        if (limit > 0) {
+            sql += " LIMIT " + limit;
         }
+        Session session = getSession();
+        @SuppressWarnings("unchecked")
+        org.hibernate.query.Query<String> query = session.createNativeQuery(sql);
+        String[] result = query.list().toArray(new String[0]);
         session.close();
-        return list;
+        return result;
     }
 
     @Override
@@ -1210,6 +1335,10 @@ public class DashboardDaoImpl implements DashboardDao {
         return list;
     }
 
+    /*
+     * This is still necessary for API 2.0 because we need to access roles from
+     * subject.
+     */
     @SuppressWarnings("unchecked")
     @Override
     public void prepareAPIData() {
@@ -1224,11 +1353,13 @@ public class DashboardDaoImpl implements DashboardDao {
         for (Object[] objs : submissions) {
             Integer submission_id = (Integer) (objs[0]);
             String observationSummary = (String) (objs[1]);
-            org.hibernate.query.Query<Integer> query = session
-                    .createNativeQuery("SELECT id  FROM observation WHERE submission_id=" + submission_id);
-            List<Integer> oid = query.list();
+            org.hibernate.query.Query<Object[]> query = session
+                    .createNativeQuery("SELECT id, stableURL FROM observation WHERE submission_id=" + submission_id);
+            List<Object[]> result = query.list();
+            for (Object[] obj : result) {
+                Integer id = (Integer) obj[0];
+                String uri = (String) obj[1];
 
-            for (Integer id : oid) {
                 List<EvidenceItem> evidences = createObservedEvidenceInfo(id);
                 List<SubjectItem> subjects = createObservedSubjectInfo(id);
                 ObservationItem obsv = new ObservationItem();
@@ -1238,6 +1369,7 @@ public class DashboardDaoImpl implements DashboardDao {
                 obsv.evidence_list = evidences.toArray(new EvidenceItem[0]);
                 obsv.subject_list = subjects.toArray(new SubjectItem[0]);
                 session.save(obsv);
+                obsv.uri = uri;
             }
         }
         session.getTransaction().commit();
@@ -1412,5 +1544,446 @@ public class DashboardDaoImpl implements DashboardDao {
         }
         session.close();
         return result;
+    }
+
+    // return 0 for 'not found'
+    private int getCodeFromTissueSampleName(String name) {
+        Session session = getSession();
+        String sql = "SELECT code FROM tissue_sample JOIN dashboard_entity ON tissue_sample.id=dashboard_entity.id WHERE displayName='"
+                + name + "'";
+        @SuppressWarnings("unchecked")
+        org.hibernate.query.Query<Integer> query = session.createNativeQuery(sql);
+        int code = 0;
+        try {
+            code = query.getSingleResult();
+        } catch (javax.persistence.NoResultException e) { // exception by design
+            // no-op
+            log.debug("No tissue sample code for " + name);
+        }
+        session.close();
+        return code;
+    }
+
+    private int observationCountForTissueSample(int code) {
+        Session session = getSession();
+        String sql = "SELECT COUNT(DISTINCT observation_id) FROM observed_subject JOIN tissue_sample ON subject_id=tissue_sample.id WHERE code="
+                + code;
+        @SuppressWarnings("unchecked")
+        org.hibernate.query.Query<BigInteger> query = session.createNativeQuery(sql);
+        int count = query.getSingleResult().intValue();
+        session.close();
+        return count;
+    }
+
+    /*
+     * To get observation 'search' results, i.e. the intersection concept, the
+     * implmentation of ontology search will be much more complex. Ideally it would
+     * be better to compeltely separate the observation part, but to avoid repeating
+     * the actual hierarchical searching, embedding observations here is the best
+     * choice. Although the previous implementation is better for searching
+     * subjects, but to cover the observation parts, we have no choice but to
+     * compromise the clarity here.
+     * 
+     * Other points of consideration for the purpose of observation 'search': (1)
+     * the ontologySearch cover the original non-ontology subject results (in
+     * principle) (2) the subjects other than TissueSample and ECO term are neither
+     * affected or covered by ontology search so it is not consistent.
+     */
+    @Override
+    public SearchResults ontologySearch(String queryString) {
+        final String[] searchTerms = parseWords(queryString);
+        Set<Integer> observationsIntersection = null;
+        List<DashboardEntityWithCounts> subject_result = new ArrayList<DashboardEntityWithCounts>();
+        final int termCount = searchTerms.length;
+        boolean first = true;
+        for (String oneTerm : searchTerms) {
+            if (termCount <= 1) { // prevent wasting time finding observations
+                subject_result.addAll(ontologySearchOneTerm(oneTerm, null));
+                break;
+            }
+            Set<Integer> observations = new HashSet<Integer>();
+            subject_result.addAll(ontologySearchOneTerm(oneTerm, observations));
+            if (first) {
+                observationsIntersection = observations;
+                first = false;
+            } else {
+                observationsIntersection.retainAll(observations);
+            }
+        }
+        SearchResults searchResults = new SearchResults();
+        searchResults.subject_result = subject_result;
+        if (observationsIntersection != null) {
+            searchResults.observation_result = getObservationsByIds(observationsIntersection);
+            log.debug("size of observation intersection: " + observationsIntersection.size());
+        }
+        return searchResults;
+    }
+
+    private List<DashboardEntityWithCounts> getObservationsByIds(Set<Integer> ids) {
+        List<DashboardEntityWithCounts> list = new ArrayList<DashboardEntityWithCounts>();
+        for (Integer id : ids) {
+            Observation o = this.getEntityById(Observation.class, id);
+            list.add(new DashboardEntityWithCounts(o, 0));
+        }
+        return list;
+    }
+
+    private List<DashboardEntityWithCounts> ontologySearchOneTerm(String oneTerm, final Set<Integer> observations) {
+        long t1 = System.currentTimeMillis();
+        List<Integer> list = ontologySearchDiseaseContext(new String[] { oneTerm });
+        List<DashboardEntityWithCounts> entities = new ArrayList<DashboardEntityWithCounts>();
+        Session session = getSession();
+        @SuppressWarnings("unchecked")
+        org.hibernate.query.Query<TissueSample> query = session.createQuery("from TissueSampleImpl where code = :code");
+        List<Integer> subjectIds = new ArrayList<Integer>();
+        for (Integer i : list) {
+            query.setParameter("code", i);
+            TissueSample result = null;
+            try {
+                result = query.getSingleResult();
+            } catch (NoResultException e) {
+                log.info("Tissue sample not available for code " + i);
+                continue;
+            }
+            int observationNumber = observationCountForTissueSample(i);
+            DashboardEntityWithCounts x = new DashboardEntityWithCounts(result, observationNumber);
+            Set<String> roles = getRolesForSubjectId(result.getId());
+            x.setRoles(roles);
+            entities.add(x);
+            subjectIds.add(result.getId());
+        }
+        long t2 = System.currentTimeMillis();
+        log.debug((t2 - t1) + " miliseconds");
+        log.debug("tissue sample results count: " + entities.size());
+        if (observations != null) {
+            List<Integer> observationIds = observationIdsForSubjectIds(subjectIds);
+            observations.addAll(observationIds);
+            log.debug("observations count: " + observations.size());
+        }
+
+        List<ECOTerm> ecoterms = findECOTerms(oneTerm);
+        List<Integer> eco_list = ontologySearchExperimentalEvidence(ecoterms);
+        int eco_list_size = eco_list.size();
+        log.debug("eco list size:" + eco_list_size);
+        if (eco_list_size > 0) {
+            @SuppressWarnings("unchecked")
+            org.hibernate.query.Query<ECOTerm> query2 = session.createQuery("FROM ECOTermImpl WHERE code in (:codes)");
+            List<String> codes = eco_list.stream().map(x -> String.format("ECO:%07d", x)).collect(Collectors.toList());
+            query2.setParameterList("codes", codes);
+            List<ECOTerm> list2 = query2.list();
+            for (ECOTerm x : list2) {
+                int observationNumber = observationCountForEcoCode(x.getCode());
+                entities.add(new DashboardEntityWithCounts(x, observationNumber));
+                if (observations != null) {
+                    List<Integer> observationIdsForOneECOTerm = observationIdsForEcoCode(x.getCode());
+                    observations.addAll(observationIdsForOneECOTerm);
+                }
+            }
+        }
+        log.debug("tissue sample results count after getting ECO term: " + entities.size());
+        if (observations != null) {
+            log.debug("observations count after getting ECO term: " + observations.size());
+        }
+
+        try {
+            if (observations != null) {
+                /*
+                 * otherSubjects is always empty for now, but we may want to use it in the
+                 * future development.
+                 */
+                List<DashboardEntityWithCounts> otherSubjects = searchSubjects(oneTerm, observations);
+                entities.addAll(otherSubjects);
+                log.debug("tissue sample results count after getting other subjects: " + entities.size());
+                log.debug("observationIds count after getting other subjects: " + observations.size());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        session.close();
+        return entities;
+    }
+
+    /*
+     * This method does a straightforward search of subjects, not exactly the same
+     * as full-text search but similar. This is done only for the purpose of getting
+     * observatoin 'insersection' for ontology search.
+     */
+    @SuppressWarnings("unchecked")
+    private List<DashboardEntityWithCounts> searchSubjects(String oneTerm, final Set<Integer> observations) {
+        Session session = getSession();
+        String sqlForMainNameMatch = "SELECT subject.id FROM subject JOIN dashboard_entity ON dashboard_entity.id=subject.id WHERE displayName LIKE '%"
+                + oneTerm + "%'";
+        org.hibernate.query.Query<Integer> query = session.createNativeQuery(sqlForMainNameMatch);
+        List<Integer> list = query.getResultList();
+
+        String sqlForSynonymMatch = "SELECT subject.id FROM subject "
+                + "JOIN subject_synonym_map ON subject.id=subject_synonym_map.SubjectImpl_id "
+                + "JOIN dashboard_entity ON dashboard_entity.id=subject_synonym_map.synonyms_id "
+                + "WHERE displayName LIKE '%" + oneTerm + "%'";
+        org.hibernate.query.Query<Integer> query2 = session.createNativeQuery(sqlForSynonymMatch);
+        List<Integer> list2 = query2.getResultList();
+
+        session.close();
+
+        list.addAll(list2);
+        if (observations != null) {
+            List<Integer> observationIds = observationIdsForSubjectIds(list);
+            observations.addAll(observationIds);
+        }
+
+        /*
+         * We can re-create the search result of the subjects other than tissue samples
+         * and ECO terms using the list in this method. For now, we only use it to
+         * obtain the observation result. The subjects themselves are for now ignord.
+         */
+        return new ArrayList<DashboardEntityWithCounts>();
+    }
+
+    private List<Integer> observationIdsForSubjectIds(final List<Integer> subjectIds) {
+        StringBuffer idList = new StringBuffer("0"); // ID=0 is not any object
+        for (Integer id : subjectIds) {
+            idList.append("," + id);
+        }
+        String sqlForObservations = "SELECT DISTINCT observation_id FROM observed_subject WHERE subject_id IN ( "
+                + idList + " );";
+        Session session = getSession();
+        @SuppressWarnings("unchecked")
+        org.hibernate.query.Query<Integer> query3 = session.createNativeQuery(sqlForObservations);
+        List<Integer> observationIds = query3.getResultList();
+        session.close();
+        return observationIds;
+    }
+
+    private Set<String> getRolesForSubjectId(int subjectId) {
+        Session session = getSession();
+        String sql = "SELECT DISTINCT displayName FROM observed_subject "
+                + "JOIN observed_subject_role ON observedSubjectRole_id=observed_subject_role.id "
+                + "JOIN dashboard_entity ON subjectRole_id=dashboard_entity.id WHERE subject_id=" + subjectId;
+        @SuppressWarnings("unchecked")
+        org.hibernate.query.Query<String> query = session.createNativeQuery(sql);
+        List<String> list = query.getResultList();
+        session.close();
+        return Set.copyOf(list);
+    }
+
+    /*
+     * get submissions if subject name is in some of four fields of its
+     * **Observation Template**: (1) DashboardEntityImpl.FIELD_DISPLAYNAME, (2)
+     * ObservationTemplateImpl.FIELD_DESCRIPTION, (3)
+     * ObservationTemplateImpl.FIELD_SUBMISSIONDESC, (4)
+     * ObservationTemplateImpl.FIELD_SUBMISSIONNAME
+     */
+    @Override
+    public List<Submission> getSubmissionsForSubjectName(String subjectName) {
+        String sql = "SELECT submission.id from submission JOIN observation_template ON submission.observationTemplate_id=observation_template.id"
+                + " JOIN dashboard_entity ON submission.id=dashboard_entity.id WHERE displayName LIKE '%" + subjectName
+                + "%'" + " OR description LIKE '%" + subjectName + "%'" + " OR submissionDescription LIKE '%"
+                + subjectName + "%'" + " OR submissionName LIKE '%" + subjectName + "%'";
+        Session session = getSession();
+        @SuppressWarnings("unchecked")
+        org.hibernate.query.Query<Integer> query = session.createNativeQuery(sql);
+        List<Submission> list = new ArrayList<Submission>();
+        for (Integer id : query.getResultList()) {
+            Submission submission = getEntityById(Submission.class, id);
+            list.add(submission);
+        }
+        session.close();
+        return list;
+    }
+
+    @Override
+    public WordCloudEntry[] getSubjectCounts() {
+        List<WordCloudEntry> list1 = Arrays.asList(getSubjectCountsForRoles(new String[] { "target", "biomarker" }));
+        List<WordCloudEntry> list2 = Arrays
+                .asList(getSubjectCountsForRoles(new String[] { "perturbagen", "candidate drug" }));
+        List<WordCloudEntry> list3 = Arrays.asList(getSubjectCountsForRoles(new String[] { "disease" }));
+        List<WordCloudEntry> list4 = Arrays.asList(getSubjectCountsForRoles(new String[] { "cell line" }));
+        List<WordCloudEntry> list = new ArrayList<WordCloudEntry>();
+        for (WordCloudEntry item : list1) {
+            item.category = 0;
+            list.add(item);
+        }
+        for (WordCloudEntry item : list2) {
+            item.category = 1;
+            list.add(item);
+        }
+        for (WordCloudEntry item : list3) {
+            item.category = 2;
+            list.add(item);
+        }
+        for (WordCloudEntry item : list4) {
+            item.category = 3;
+            list.add(item);
+        }
+        return list.toArray(new WordCloudEntry[0]);
+    }
+
+    /* this query is to emulate the explore pages */
+    @Override
+    public WordCloudEntry[] getSubjectCountsForRoles(String[] roles) {
+        if (roles == null || roles.length == 0)
+            return new WordCloudEntry[0];
+        StringBuffer role_list = new StringBuffer("(");
+        role_list.append("'" + roles[0] + "'");
+        for (int i = 1; i < roles.length; i++) {
+            role_list.append(",'" + roles[1] + "'");
+        }
+        role_list.append(")");
+        List<WordCloudEntry> list = new ArrayList<WordCloudEntry>();
+        String sql = "SELECT displayName, numberOfObservations, stableURL FROM subject_with_summaries"
+                + " JOIN subject ON subject_with_summaries.subject_id=subject.id"
+                + " JOIN dashboard_entity ON subject.id=dashboard_entity.id" + " WHERE score>1 AND role IN "
+                + role_list.toString() + " ORDER BY numberOfObservations DESC LIMIT 250";
+        log.debug(sql);
+        Session session = getSession();
+        @SuppressWarnings("unchecked")
+        org.hibernate.query.Query<Object[]> query = session.createNativeQuery(sql);
+        for (Object[] obj : query.getResultList()) {
+            String subject = (String) obj[0];
+            String fullname = null;
+            if (subject.length() > ABBREVIATION_LENGTH_LIMIT) {
+                fullname = subject;
+                subject = shorternSubjectName(subject);
+            }
+            Integer count = (Integer) obj[1];
+            String url = (String) obj[2];
+            list.add(new WordCloudEntry(subject, count, url, fullname));
+        }
+        session.close();
+        return list.toArray(new WordCloudEntry[0]);
+    }
+
+    private final static int ABBREVIATION_LENGTH_LIMIT = 15;
+    private final static List<Character> vowels = Arrays.asList('a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U');
+
+    /*
+     * shorten the subject name using the specifc steps described in the word-cloud
+     * spec
+     */
+    static private String shorternSubjectName(String longName) {
+        log.debug("long name to be shortened: " + longName);
+        String[] x = longName.split("\\s");
+        if (x.length == 1) {
+            return longName.substring(0, ABBREVIATION_LENGTH_LIMIT);
+        } else {
+            final int N = 4;
+            StringBuffer shortened = new StringBuffer();
+            for (int index = 0; index < x.length; index++) {
+                if (index > 0) {
+                    shortened.append(".");
+                }
+
+                String word = x[index];
+                int count = word.length();
+                int firstVowel = 1;
+                while (firstVowel < count && !vowels.contains(word.charAt(firstVowel))) {
+                    firstVowel++;
+                }
+                if (firstVowel > N) {
+                    shortened.append(word.substring(0, N));
+                    continue;
+                }
+                int afterVowelSequence = firstVowel + 1;
+                while (afterVowelSequence < count && vowels.contains(word.charAt(afterVowelSequence))) {
+                    afterVowelSequence++;
+                }
+                if (afterVowelSequence > N) {
+                    shortened.append(word.substring(0, N));
+                    continue;
+                }
+                while (count > N) { // still too long
+                    int lastVowel = count - 1;
+                    while (lastVowel >= afterVowelSequence && !vowels.contains(word.charAt(lastVowel))) {
+                        lastVowel--;
+                    }
+                    // lastVowel is the postion of the last vowel
+                    if (lastVowel > afterVowelSequence) {// remove the last vowel;
+                        word = word.substring(0, lastVowel) + word.substring(lastVowel + 1, count);
+                    } else {
+                        word = word.substring(0, count - 1); // remove the last character;
+                    }
+                    count--;
+                }
+                shortened.append(word);
+            }
+            log.debug("shortened name: " + shortened);
+            return shortened.toString();
+        }
+    }
+
+    @Override
+    public WordCloudEntry[] getSubjectCounts(Integer associatedSubject) {
+        String sqlForObservations = "SELECT DISTINCT observation_id FROM observed_subject WHERE subject_id="
+                + associatedSubject;
+        Session session = getSession();
+        @SuppressWarnings("unchecked")
+        org.hibernate.query.Query<Integer> query3 = session.createNativeQuery(sqlForObservations);
+        List<Integer> observationIds = query3.getResultList();
+        StringBuffer idList = new StringBuffer("0"); // ID=0 is not any object
+        for (Integer observationId : observationIds) {
+            idList.append("," + observationId);
+        }
+
+        List<WordCloudEntry> list = new ArrayList<WordCloudEntry>();
+        String sql = "SELECT displayName, count(*) AS x, stableURL FROM observed_subject"
+                + " JOIN dashboard_entity ON observed_subject.subject_id=dashboard_entity.id"
+                + " JOIN subject ON observed_subject.subject_id=subject.id" + " WHERE subject.id!=" + associatedSubject
+                + " AND observation_id IN (" + idList + ") GROUP BY subject.id ORDER BY x DESC LIMIT 250";
+        log.debug(sql);
+        @SuppressWarnings("unchecked")
+        org.hibernate.query.Query<Object[]> query = session.createNativeQuery(sql);
+        for (Object[] obj : query.getResultList()) {
+            String subject = (String) obj[0];
+            String fullname = null;
+            if (subject.length() > ABBREVIATION_LENGTH_LIMIT) {
+                fullname = subject;
+                subject = shorternSubjectName(subject);
+            }
+            Integer count = ((BigInteger) obj[1]).intValue();
+            String url = (String) obj[2];
+            list.add(new WordCloudEntry(subject, count, url, fullname));
+        }
+        session.close();
+        return list.toArray(new WordCloudEntry[0]);
+    }
+
+    @Override
+    public ObservationItem getObservationInfo(String uri) {
+        Session session = getSession();
+        @SuppressWarnings("unchecked")
+        org.hibernate.query.Query<ObservationItem> query = session.createQuery("FROM ObservationItem WHERE uri = :uri");
+        query.setParameter("uri", uri);
+        ObservationItem x = null;
+        try {
+            x = query.getSingleResult();
+        } catch (NoResultException e) {
+            e.printStackTrace();
+        }
+        session.close();
+        return x;
+    }
+
+    @Override
+    public ObservationItem[] getObservations(String submissionId, Set<Integer> indexes) {
+        // this works because observation URIs are totally based on submission URI
+        List<String> uris = indexes.stream().map(i -> "observation/" + submissionId + "-" + i)
+                .collect(Collectors.toList());
+        // uris.forEach(System.out::println);
+        Session session = getSession();
+        List<ObservationItem> list = new ArrayList<ObservationItem>();
+        @SuppressWarnings("unchecked")
+        org.hibernate.query.Query<ObservationItem> query = session
+                .createQuery("FROM ObservationItem WHERE uri IN (:uris)");
+        query.setParameterList("uris", uris);
+        try {
+            list = query.getResultList();
+        } catch (NoResultException e) {
+            log.info("ObservationItem not available for submission ID " + submissionId);
+        }
+        ObservationItem[] x = list.stream().toArray(ObservationItem[]::new);
+        log.debug("count of observations:" + x.length);
+        session.close();
+        return x;
     }
 }
