@@ -4219,7 +4219,11 @@
         Backbone.history.start();
 
         $("#omnisearch").submit(function () {
+            const previous = window.location.hash;
             window.location.hash = "search/" + encodeURI(encodeURIComponent($("#omni-input").val()));
+            if(previous==window.location.hash) {
+                window.location.reload();
+            }
             return false;
         });
 
