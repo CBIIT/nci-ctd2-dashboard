@@ -3355,6 +3355,7 @@
                             [1, 'asc']
                         ]);
                         $("#search-results-grid").parent().width("100%");
+                        $("#search-results-grid").width("100%");
                         $("#search-results-grid").parent().find('input[type=search]').popover(table_filter_popover);
                         $('#search-results-grid thead th').popover({
                             placement: "top",
