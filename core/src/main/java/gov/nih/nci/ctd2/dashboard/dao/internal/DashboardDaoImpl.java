@@ -20,7 +20,7 @@ import javax.persistence.criteria.CriteriaQuery;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.lucene.analysis.core.KeywordAnalyzer;
+import org.apache.lucene.analysis.core.WhitespaceAnalyzer;
 import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.search.Query;
@@ -615,7 +615,7 @@ public class DashboardDaoImpl implements DashboardDao {
         List<String> list = new ArrayList<String>();
         Matcher m = Pattern.compile("([^\"]\\S*|\".+?\")\\s*").matcher(str);
         while (m.find())
-            list.add(m.group(1).replace("\"", ""));
+            list.add(m.group(1));
         return list.toArray(new String[0]);
     }
 
@@ -637,10 +637,11 @@ public class DashboardDaoImpl implements DashboardDao {
             final Map<Submission, Integer> submissions) {
         FullTextSession fullTextSession = Search.getFullTextSession(getSession());
         MultiFieldQueryParser multiFieldQueryParser = new MultiFieldQueryParser(defaultSearchFields,
-                new KeywordAnalyzer());
+                new WhitespaceAnalyzer());
         Query luceneQuery = null;
         try {
             luceneQuery = multiFieldQueryParser.parse(singleTerm);
+            log.debug(luceneQuery);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -1597,6 +1598,7 @@ public class DashboardDaoImpl implements DashboardDao {
         final int termCount = searchTerms.length;
         boolean first = true;
         for (String oneTerm : searchTerms) {
+            oneTerm = oneTerm.replace("\"", "");
             if (termCount <= 1) { // prevent wasting time finding observations
                 subject_result.addAll(ontologySearchOneTerm(oneTerm, null));
                 break;

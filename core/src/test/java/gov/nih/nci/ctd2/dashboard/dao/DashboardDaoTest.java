@@ -670,7 +670,8 @@ public class DashboardDaoTest {
         assertFalse("search cell", dashboardDao.search("cell").isEmpty());
         assertFalse("search diffuse large B-cell lymphoma", dashboardDao.search("diffuse large B-cell lymphoma").isEmpty());
         assertFalse("search diffuse large", dashboardDao.search("diffuse large").isEmpty());
-        assertFalse("search \"diffuse large B-cell lymphoma\"", dashboardDao.search("\"diffuse large B-cell lymphoma\"").isEmpty());
+        assertFalse("search \"diffuse large B-cell lymphoma\"", dashboardDao.search("\"diffuse large b-cell lymphoma\"").isEmpty());
+        assertTrue("search \"diffuse large B-cell lymphoma\"", dashboardDao.search("\"diffuse large B-cell lymphoma\"").isEmpty());
         assertFalse("search \"diffuse large\"", dashboardDao.search("\"diffuse large\"").isEmpty());
     }
 }
