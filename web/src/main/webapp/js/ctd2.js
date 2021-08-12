@@ -3140,6 +3140,16 @@
                     let submission_count = 0;
                     let center_count = 0;
                     const subject_result = ontology_search_results.subject_result;
+                    if(subject_result.length==0) {
+                        $("#ontology-search").prop('disabled', true);
+                        $("#ontology-spinner").hide();
+                        return;
+                    }
+                    if($("#no-result").is(":visible")) {
+                        $("#no-result").hide();
+                        $("#search-results-grid").parent().width("100%");
+                        $("#search-results-grid").width("100%");
+                    }
                     $("#search-results-grid").DataTable().destroy();
                     _.each(subject_result, function (one_result) {
                         if (subject_names.includes(one_result.dashboardEntity.displayName)) return;
@@ -3285,12 +3295,13 @@
                     const observation_result = results.observation_result;
                     if (subject_result.length + submission_result.length == 0) {
                         (new EmptyResultsView({
-                            el: $(thatEl).find("tbody"),
+                            el: $(thatEl).find('#no-result'),
                             model: thatModel
                         })).render();
                         $('#submission-search-results').hide();
                         $('#observation-search-results').hide();
                     } else {
+                        $(thatEl).find('#no-result').hide();
                         const submissions = [];
                         const matching_observations = [];
                         _.each(subject_result, function (aResult) {

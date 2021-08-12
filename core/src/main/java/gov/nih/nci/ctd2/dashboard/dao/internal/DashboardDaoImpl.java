@@ -823,7 +823,7 @@ public class DashboardDaoImpl implements DashboardDao {
         int[] children = Hierarchy.DISEASE_CONTEXT.getChildrenCode(code);
         for (int child : children) {
             int observationNumber = observationCountForTissueSample(child);
-            if (observationNumber > 1) {
+            if (observationNumber > 0) {
                 log.debug("tissue sample child found " + child);
                 list.add(child);
             }
@@ -880,7 +880,9 @@ public class DashboardDaoImpl implements DashboardDao {
             for (String w : words) {
                 String x = w.replaceAll("^\"|\"$", "");
                 query = session.createQuery(
-                        "FROM ECOTermImpl WHERE displayName LIKE '%" + x + "%' OR synonyms LIKE '%" + x + "%'");
+                        "FROM ECOTermImpl WHERE displayName LIKE :name OR synonyms LIKE :synonym");
+                query.setParameter("name", x);
+                query.setParameter("synonym", x);
                 set.addAll((List<ECOTerm>) query.list());
             }
             list = new ArrayList<ECOTerm>(set);
@@ -1550,10 +1552,10 @@ public class DashboardDaoImpl implements DashboardDao {
     // return 0 for 'not found'
     private int getCodeFromTissueSampleName(String name) {
         Session session = getSession();
-        String sql = "SELECT code FROM tissue_sample JOIN dashboard_entity ON tissue_sample.id=dashboard_entity.id WHERE displayName='"
-                + name + "'";
+        String sql = "SELECT code FROM tissue_sample JOIN dashboard_entity ON tissue_sample.id=dashboard_entity.id WHERE displayName=:name";
         @SuppressWarnings("unchecked")
         org.hibernate.query.Query<Integer> query = session.createNativeQuery(sql);
+        query.setParameter("name", name);
         int code = 0;
         try {
             code = query.getSingleResult();
@@ -1599,6 +1601,7 @@ public class DashboardDaoImpl implements DashboardDao {
         boolean first = true;
         for (String oneTerm : searchTerms) {
             oneTerm = oneTerm.replace("\"", "");
+            log.debug("ontology search term:" + oneTerm);
             if (termCount <= 1) { // prevent wasting time finding observations
                 subject_result.addAll(ontologySearchOneTerm(oneTerm, null));
                 break;

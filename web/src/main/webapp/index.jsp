@@ -1762,6 +1762,7 @@
                 See <span id=observation-count></span> observations matching all search terms</a>
             </div>
 
+            <div id='no-result'></div>
             <table id="search-results-grid" class="table table-bordered table-striped">
                 <thead>
                 <tr>
