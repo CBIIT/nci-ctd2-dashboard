@@ -4217,7 +4217,7 @@
 
         $("#omnisearch").submit(function () {
             const previous = window.location.hash;
-            window.location.hash = "search/" + encodeURI(encodeURIComponent($("#omni-input").val()));
+            window.location.hash = "search/" + encodeURI(encodeURIComponent($("#omni-input").val().trim()));
             if(previous==window.location.hash) {
                 window.location.reload();
             }

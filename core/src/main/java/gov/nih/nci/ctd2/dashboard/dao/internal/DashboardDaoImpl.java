@@ -644,6 +644,7 @@ public class DashboardDaoImpl implements DashboardDao {
             log.debug(luceneQuery);
         } catch (ParseException e) {
             e.printStackTrace();
+            return;
         }
 
         FullTextQuery fullTextQuery = fullTextSession.createFullTextQuery(luceneQuery, searchableClasses);
@@ -686,6 +687,7 @@ public class DashboardDaoImpl implements DashboardDao {
     @Override
     @Cacheable(value = "searchCache")
     public SearchResults search(String queryString) {
+        queryString = queryString.trim();
         final String[] searchTerms = parseWords(queryString);
         log.debug("search terms: " + String.join(",", searchTerms));
         Map<Subject, Integer> subjects = new HashMap<Subject, Integer>();
@@ -879,6 +881,9 @@ public class DashboardDaoImpl implements DashboardDao {
             Set<ECOTerm> set = new HashSet<ECOTerm>();
             for (String w : words) {
                 String x = w.replaceAll("^\"|\"$", "");
+                if (x.length() == 0) {
+                    continue;
+                }
                 query = session.createQuery(
                         "FROM ECOTermImpl WHERE displayName LIKE :name OR synonyms LIKE :synonym");
                 query.setParameter("name", x);
