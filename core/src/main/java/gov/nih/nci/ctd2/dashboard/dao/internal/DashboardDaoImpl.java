@@ -884,8 +884,7 @@ public class DashboardDaoImpl implements DashboardDao {
                 if (x.length() == 0) {
                     continue;
                 }
-                query = session.createQuery(
-                        "FROM ECOTermImpl WHERE displayName LIKE :name OR synonyms LIKE :synonym");
+                query = session.createQuery("FROM ECOTermImpl WHERE displayName LIKE :name OR synonyms LIKE :synonym");
                 query.setParameter("name", x);
                 query.setParameter("synonym", x);
                 set.addAll((List<ECOTerm>) query.list());
@@ -1787,12 +1786,13 @@ public class DashboardDaoImpl implements DashboardDao {
     @Override
     public List<Submission> getSubmissionsForSubjectName(String subjectName) {
         String sql = "SELECT submission.id from submission JOIN observation_template ON submission.observationTemplate_id=observation_template.id"
-                + " JOIN dashboard_entity ON submission.id=dashboard_entity.id WHERE displayName LIKE '%" + subjectName
-                + "%'" + " OR description LIKE '%" + subjectName + "%'" + " OR submissionDescription LIKE '%"
-                + subjectName + "%'" + " OR submissionName LIKE '%" + subjectName + "%'";
+                + " JOIN dashboard_entity ON submission.id=dashboard_entity.id WHERE displayName LIKE :subjectName"
+                + " OR description LIKE :subjectName OR submissionDescription LIKE :subjectName"
+                + " OR submissionName LIKE :subjectName";
         Session session = getSession();
         @SuppressWarnings("unchecked")
         org.hibernate.query.Query<Integer> query = session.createNativeQuery(sql);
+        query.setParameter("subjectName", "%" + subjectName + "%");
         List<Submission> list = new ArrayList<Submission>();
         for (Integer id : query.getResultList()) {
             Submission submission = getEntityById(Submission.class, id);

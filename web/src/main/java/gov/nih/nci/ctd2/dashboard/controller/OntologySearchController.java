@@ -48,19 +48,24 @@ public class OntologySearchController {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json; charset=utf-8");
 
-        List<Submission> submissions = dashboardDao.getSubmissionsForSubjectName(subjectName);
-        List<DashboardEntityWithCounts> submission_result = new ArrayList<DashboardEntityWithCounts>();
-        submissions.forEach(submission -> {
-            DashboardEntityWithCounts entityWithCounts = new DashboardEntityWithCounts();
-            entityWithCounts.setDashboardEntity(submission);
-            entityWithCounts.setObservationCount(dashboardDao.findObservationsBySubmission(submission).size());
-            entityWithCounts.setMaxTier(submission.getObservationTemplate().getTier());
-            entityWithCounts.setCenterCount(1);
-            submission_result.add(entityWithCounts);
-        });
+        try {
+            List<Submission> submissions = dashboardDao.getSubmissionsForSubjectName(subjectName);
+            List<DashboardEntityWithCounts> submission_result = new ArrayList<DashboardEntityWithCounts>();
+            submissions.forEach(submission -> {
+                DashboardEntityWithCounts entityWithCounts = new DashboardEntityWithCounts();
+                entityWithCounts.setDashboardEntity(submission);
+                entityWithCounts.setObservationCount(dashboardDao.findObservationsBySubmission(submission).size());
+                entityWithCounts.setMaxTier(submission.getObservationTemplate().getTier());
+                entityWithCounts.setCenterCount(1);
+                submission_result.add(entityWithCounts);
+            });
 
-        JSONSerializer jsonSerializer = new JSONSerializer().transform(new ImplTransformer(), Class.class)
-                .transform(new DateTransformer(), Date.class);
-        return new ResponseEntity<String>(jsonSerializer.deepSerialize(submission_result), headers, HttpStatus.OK);
+            JSONSerializer jsonSerializer = new JSONSerializer().transform(new ImplTransformer(), Class.class)
+                    .transform(new DateTransformer(), Date.class);
+            return new ResponseEntity<String>(jsonSerializer.deepSerialize(submission_result), headers, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
+        }
     }
 }
