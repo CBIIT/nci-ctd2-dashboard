@@ -954,8 +954,6 @@
 	    </batch:tasklet>
 	</batch:step>
 
-
-
 	<batch:step id="mdaccPik3caGliomaStep" parent="observationDataStep" next="ucsfDdx3xMutationTumorFormationStep">
 	    <batch:tasklet>
                 <batch:chunk reader="mdaccPik3caGliomaReader" processor="observationDataProcessor" writer="observationDataWriter"/>
@@ -1042,9 +1040,19 @@
                 <batch:chunk reader="UCSDUVStoryReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	    </batch:tasklet>
 	</batch:step>
-	<batch:step id="UCSDSYKPI3KStoryStep" parent="observationDataStep">
+	<batch:step id="UCSDSYKPI3KStoryStep" parent="observationDataStep" next="fhcrc1OCCCDependenciesStep">
 	    <batch:tasklet>
                 <batch:chunk reader="UCSDSYKPI3KStoryReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	    </batch:tasklet>
+	</batch:step>
+	<batch:step id="fhcrc1OCCCDependenciesStep" parent="observationDataStep" next="emoryHypomorphSMAD4SMAD3PPIInducerDiscoveryStep">
+	    <batch:tasklet>
+                <batch:chunk reader="fhcrc1OCCCDependenciesReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	    </batch:tasklet>
+	</batch:step>
+	<batch:step id="emoryHypomorphSMAD4SMAD3PPIInducerDiscoveryStep" parent="observationDataStep">
+	    <batch:tasklet>
+                <batch:chunk reader="emoryHypomorphSMAD4SMAD3PPIInducerDiscoveryReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	    </batch:tasklet>
 	</batch:step>
     </batch:job>
@@ -2916,6 +2924,24 @@
     <bean name="UCSDSYKPI3KStoryLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
         <property name="delimiter" value="&#9;"/>
         <property name="names" value="dummy,submission_name,submission_date,template_name,compound_1,animal_model_1,target_1,target_2,biomarker_1,biomarker_2,biomarker_3,publication_url,story_location,srx3207_selectivity_profile,srx3207_in_vivo_effects"/>
+    </bean>
+
+    <bean name="fhcrc1OCCCDependenciesLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="fhcrc1OCCCDependenciesLineTokenizer" />
+    </bean>
+    <bean name="fhcrc1OCCCDependenciesLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="&#9;"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,gene_1,disease_1,gene_2,gene_3,gene_4,gene_5,cell_1,cell_2,disease_2,cell_3,cell_4,gene_6,gene_7,gene_8,gene_9,drug_1,drug_2,drug_3,drug_4,drug_5,drug_6,drug_7,drug_8,story_location,reference_1,reference_2,reference_3,data_portal,project_link"/>
+    </bean>
+
+    <bean name="emoryHypomorphSMAD4SMAD3PPIInducerDiscoveryLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="emoryHypomorphSMAD4SMAD3PPIInducerDiscoveryLineTokenizer" />
+    </bean>
+    <bean name="emoryHypomorphSMAD4SMAD3PPIInducerDiscoveryLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="&#9;"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,compound_name,gene1,gene2,gene3,ec50,reference,story_location,data_portal"/>
     </bean>
 
 
@@ -4848,7 +4874,6 @@
 		<entry key="ohsu_yong_sequential_tumor_cells:figure_5d" value="evidence:readString:createObservedFileEvidence" />
 		<entry key="ohsu_yong_sequential_tumor_cells:figure_5e" value="evidence:readString:createObservedFileEvidence" />
 		<entry key="ohsu_yong_sequential_tumor_cells:publication_reference" value="evidence:readString:createObservedUrlEvidence" />
-
 		<entry key="broad_por:gene_1" value="subject:findGenesBySymbol" />
 		<entry key="broad_por:gene_2" value="subject:findGenesBySymbol" />
 		<entry key="broad_por:cell_line_1" value="subject:findCellLineByName" />
@@ -4890,7 +4915,6 @@
 		<entry key="ucsf_mycn_transformation:reference" value="evidence:readString:createObservedUrlEvidence" />
 		<entry key="ucsf_mycn_transformation:evidence_ontology_term" value="evidence:readString:createObservedUrlEvidence" />
 		<entry key="ucsf_mycn_transformation:figure_1" value="evidence:readString:createObservedFileEvidence" />
-
 		<entry key="dfci_creb5:gene_1" value="subject:findGenesBySymbol" />
 		<entry key="dfci_creb5:disease_1" value="subject:findTissueSampleByName" />
 		<entry key="dfci_creb5:drug_1" value="subject:findCompoundsByName" />
@@ -4936,7 +4960,6 @@
 		<entry key="dfci_shoc2:evidence_ontology_2" value="evidence:readString:createObservedUrlEvidence" />
 		<entry key="dfci_shoc2:evidence_ontology_3" value="evidence:readString:createObservedUrlEvidence" />
 		<entry key="dfci_shoc2:evidence_ontology_4" value="evidence:readString:createObservedUrlEvidence" />
-
 		<entry key="columbia_oncosig_ppi_networks:hub_oncoprotein" value="subject:findGenesBySymbol" />
 		<entry key="columbia_oncosig_ppi_networks:interactor_protein" value="subject:findGenesBySymbol" />
 		<entry key="columbia_oncosig_ppi_networks:oncosig_score" value="evidence:readDouble:createObservedNumericEvidence" /> 
@@ -5015,6 +5038,44 @@
 		<entry key="stanford_scRNAseq_gastric:pbmc" value="subject:findTissueSampleByName" />
 		<entry key="stanford_scRNAseq_gastric:publication_reference" value="evidence:readString:createObservedUrlEvidence" />
 		<entry key="stanford_scRNAseq_gastric:story_location" value="evidence:readString:createObservedFileEvidence" />
+
+		<entry key="emory_hypomorph_SMAD4_SMAD3_PPI_inducer_discovery:compound_name" value="subject:findCompoundsByName" />
+		<entry key="emory_hypomorph_SMAD4_SMAD3_PPI_inducer_discovery:gene1" value="subject:findGenesBySymbol" />
+		<entry key="emory_hypomorph_SMAD4_SMAD3_PPI_inducer_discovery:gene2" value="subject:findGenesBySymbol" />
+		<entry key="emory_hypomorph_SMAD4_SMAD3_PPI_inducer_discovery:gene3" value="subject:findGenesBySymbol" />
+		<entry key="emory_hypomorph_SMAD4_SMAD3_PPI_inducer_discovery:ec50" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="emory_hypomorph_SMAD4_SMAD3_PPI_inducer_discovery:reference" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="emory_hypomorph_SMAD4_SMAD3_PPI_inducer_discovery:story_location" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="emory_hypomorph_SMAD4_SMAD3_PPI_inducer_discovery:data_portal" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="fhcrc1_OCCC_dependencies:gene_1" value="subject:findGenesBySymbol" />
+		<entry key="fhcrc1_OCCC_dependencies:disease_1" value="subject:findTissueSampleByName" />
+		<entry key="fhcrc1_OCCC_dependencies:gene_2" value="subject:findGenesBySymbol" />
+		<entry key="fhcrc1_OCCC_dependencies:gene_3" value="subject:findGenesBySymbol" />
+		<entry key="fhcrc1_OCCC_dependencies:gene_4" value="subject:findGenesBySymbol" />
+		<entry key="fhcrc1_OCCC_dependencies:gene_5" value="subject:findGenesBySymbol" />
+		<entry key="fhcrc1_OCCC_dependencies:cell_1" value="subject:findCellLineByName" />
+		<entry key="fhcrc1_OCCC_dependencies:cell_2" value="subject:findCellLineByName" />
+		<entry key="fhcrc1_OCCC_dependencies:disease_2" value="subject:findTissueSampleByName" />
+		<entry key="fhcrc1_OCCC_dependencies:cell_3" value="subject:findCellLineByName" />
+		<entry key="fhcrc1_OCCC_dependencies:cell_4" value="subject:findCellLineByName" />
+		<entry key="fhcrc1_OCCC_dependencies:gene_6" value="subject:findGenesBySymbol" />
+		<entry key="fhcrc1_OCCC_dependencies:gene_7" value="subject:findGenesBySymbol" />
+		<entry key="fhcrc1_OCCC_dependencies:gene_8" value="subject:findGenesBySymbol" />
+		<entry key="fhcrc1_OCCC_dependencies:gene_9" value="subject:findGenesBySymbol" />
+		<entry key="fhcrc1_OCCC_dependencies:drug_1" value="subject:findCompoundsByName" />
+		<entry key="fhcrc1_OCCC_dependencies:drug_2" value="subject:findCompoundsByName" />
+		<entry key="fhcrc1_OCCC_dependencies:drug_3" value="subject:findCompoundsByName" />
+		<entry key="fhcrc1_OCCC_dependencies:drug_4" value="subject:findCompoundsByName" />
+		<entry key="fhcrc1_OCCC_dependencies:drug_5" value="subject:findCompoundsByName" />
+		<entry key="fhcrc1_OCCC_dependencies:drug_6" value="subject:findCompoundsByName" />
+		<entry key="fhcrc1_OCCC_dependencies:drug_7" value="subject:findCompoundsByName" />
+		<entry key="fhcrc1_OCCC_dependencies:drug_8" value="subject:findCompoundsByName" />
+		<entry key="fhcrc1_OCCC_dependencies:story_location" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="fhcrc1_OCCC_dependencies:reference_1" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="fhcrc1_OCCC_dependencies:reference_2" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="fhcrc1_OCCC_dependencies:reference_3" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="fhcrc1_OCCC_dependencies:data_portal" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="fhcrc1_OCCC_dependencies:project_link" value="evidence:readString:createObservedUrlEvidence" />
             </map>
         </constructor-arg>
     </bean>
