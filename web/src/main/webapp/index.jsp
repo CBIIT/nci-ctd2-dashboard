@@ -962,6 +962,7 @@
                                      </li>
                                      {{genecard ? "<li>GeneCards: <a target='_blank' href='https://www.genecards.org/cgi-bin/carddisp.pl?gene=" + genecard + "'>" + genecard + " <i class='icon-share'></i></a></li>" : "" }}
                                      {{dave ? "<li>Data Analysis, Visualization, and Exploration (DAVE): <a target='_blank' href='https://portal.gdc.cancer.gov/genes/" + dave + "'>" + dave + " <i class='icon-share'></i></a></li>" : "" }}
+                                     <li>Harmonizome: <a href="https://maayanlab.cloud/Harmonizome/gene/{{displayName}}" target="_blank">{{displayName}}</a></li>
                                  </ul>
                              </td>
                          </tr>
@@ -1049,6 +1050,9 @@
                             <th>References</th>
                             <td>
 			        UniProt ID: <a href="http://www.uniprot.org/uniprot/{{uniprotId}}" target="_blank">{{uniprotId}} <i class="icon-share"></i></a> <br>
+                    <!--
+                    Harmonizome: <a href="https://maayanlab.cloud/Harmonizome/gene/{{uniprotId}}" target="_blank">{{uniprotId}}</a>
+                    -->
                             </td>
                         </tr>
                     </table>
