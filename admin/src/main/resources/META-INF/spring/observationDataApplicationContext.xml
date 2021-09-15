@@ -1891,4 +1891,22 @@
             </bean>
         </property>
     </bean>
+    <bean name="stanfordArid1aStoryReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${stanford.arid1a.story.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="stanfordArid1aStoryLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
+    <bean name="emoryHypomorphSMAD4SMAD3PPIinducerDiscoveryStoryReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+        <property name="resources" value="${emory.hypomorph.SMAD4.SMAD3.PPI.inducer.discovery.story.data.location}" />
+        <property name="delegate">
+            <bean class="org.springframework.batch.item.file.FlatFileItemReader">
+                <property name="lineMapper" ref="emoryHypomorphSMAD4SMAD3PPIinducerDiscoveryStoryLineMapper" />
+                <property name="linesToSkip" value="7" />
+            </bean>
+        </property>
+    </bean>
 </beans>

@@ -1050,12 +1050,22 @@
                 <batch:chunk reader="fhcrc1OCCCDependenciesReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	    </batch:tasklet>
 	</batch:step>
-	<batch:step id="emoryHypomorphSMAD4SMAD3PPIInducerDiscoveryStep" parent="observationDataStep">
+	<batch:step id="emoryHypomorphSMAD4SMAD3PPIInducerDiscoveryStep" parent="observationDataStep" next="stanfordArid1aStoryStep">
 	    <batch:tasklet>
                 <batch:chunk reader="emoryHypomorphSMAD4SMAD3PPIInducerDiscoveryReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	    </batch:tasklet>
 	</batch:step>
-    </batch:job>
+	<batch:step id="stanfordArid1aStoryStep" parent="observationDataStep" next="emoryHypomorphSMAD4SMAD3PPIinducerDiscoveryStoryStep">
+	    <batch:tasklet>
+                <batch:chunk reader="stanfordArid1aStoryReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	    </batch:tasklet>
+	</batch:step>
+	<batch:step id="emoryHypomorphSMAD4SMAD3PPIinducerDiscoveryStoryStep" parent="observationDataStep">
+	    <batch:tasklet>
+                <batch:chunk reader="emoryHypomorphSMAD4SMAD3PPIinducerDiscoveryStoryReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	    </batch:tasklet>
+	</batch:step>
+   </batch:job>
 
     <bean id="observationDataStep" class="org.springframework.batch.core.step.item.SimpleStepFactoryBean" abstract="true">
         <property name="transactionManager" ref="transactionManager" />
@@ -2941,7 +2951,25 @@
     </bean>
     <bean name="emoryHypomorphSMAD4SMAD3PPIInducerDiscoveryLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
         <property name="delimiter" value="&#9;"/>
-        <property name="names" value="dummy,submission_name,submission_date,template_name,compound_name,gene1,gene2,gene3,ec50,reference,story_location,data_portal"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,compound_name,gene1,gene2,gene3,ec50,reference,data_portal"/>
+    </bean>
+
+    <bean name="stanfordArid1aStoryLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="stanfordArid1aStoryLineTokenizer" />
+    </bean>
+    <bean name="stanfordArid1aStoryLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="&#9;"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,gene_symbol_1,gene_symbol_2,compound_1,tissue_disease,story_location,reference_1,reference_2"/>
+    </bean>
+
+    <bean name="emoryHypomorphSMAD4SMAD3PPIinducerDiscoveryStoryLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="emoryHypomorphSMAD4SMAD3PPIinducerDiscoveryStoryLineTokenizer" />
+    </bean>
+    <bean name="emoryHypomorphSMAD4SMAD3PPIinducerDiscoveryStoryLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="&#9;"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,compound_name1,gene1,gene2,gene3,compound_name2,ec50_1,reference,story_location,ec50_2,data_portal"/>
     </bean>
 
 
@@ -5038,14 +5066,12 @@
 		<entry key="stanford_scRNAseq_gastric:pbmc" value="subject:findTissueSampleByName" />
 		<entry key="stanford_scRNAseq_gastric:publication_reference" value="evidence:readString:createObservedUrlEvidence" />
 		<entry key="stanford_scRNAseq_gastric:story_location" value="evidence:readString:createObservedFileEvidence" />
-
 		<entry key="emory_hypomorph_SMAD4_SMAD3_PPI_inducer_discovery:compound_name" value="subject:findCompoundsByName" />
 		<entry key="emory_hypomorph_SMAD4_SMAD3_PPI_inducer_discovery:gene1" value="subject:findGenesBySymbol" />
 		<entry key="emory_hypomorph_SMAD4_SMAD3_PPI_inducer_discovery:gene2" value="subject:findGenesBySymbol" />
 		<entry key="emory_hypomorph_SMAD4_SMAD3_PPI_inducer_discovery:gene3" value="subject:findGenesBySymbol" />
 		<entry key="emory_hypomorph_SMAD4_SMAD3_PPI_inducer_discovery:ec50" value="evidence:readString:createObservedLabelEvidence" />
 		<entry key="emory_hypomorph_SMAD4_SMAD3_PPI_inducer_discovery:reference" value="evidence:readString:createObservedUrlEvidence" />
-		<entry key="emory_hypomorph_SMAD4_SMAD3_PPI_inducer_discovery:story_location" value="evidence:readString:createObservedFileEvidence" />
 		<entry key="emory_hypomorph_SMAD4_SMAD3_PPI_inducer_discovery:data_portal" value="evidence:readString:createObservedUrlEvidence" />
 		<entry key="fhcrc1_OCCC_dependencies:gene_1" value="subject:findGenesBySymbol" />
 		<entry key="fhcrc1_OCCC_dependencies:disease_1" value="subject:findTissueSampleByName" />
@@ -5076,6 +5102,24 @@
 		<entry key="fhcrc1_OCCC_dependencies:reference_3" value="evidence:readString:createObservedUrlEvidence" />
 		<entry key="fhcrc1_OCCC_dependencies:data_portal" value="evidence:readString:createObservedUrlEvidence" />
 		<entry key="fhcrc1_OCCC_dependencies:project_link" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="emory_hypomorph_SMAD4_SMAD3_PPI_inducer_discovery_story:compound_name1" value="subject:findCompoundsByName" />
+		<entry key="emory_hypomorph_SMAD4_SMAD3_PPI_inducer_discovery_story:gene1" value="subject:findGenesBySymbol" />
+		<entry key="emory_hypomorph_SMAD4_SMAD3_PPI_inducer_discovery_story:gene2" value="subject:findGenesBySymbol" />
+		<entry key="emory_hypomorph_SMAD4_SMAD3_PPI_inducer_discovery_story:gene3" value="subject:findGenesBySymbol" />
+		<entry key="emory_hypomorph_SMAD4_SMAD3_PPI_inducer_discovery_story:compound_name2" value="subject:findCompoundsByName" />
+		<entry key="emory_hypomorph_SMAD4_SMAD3_PPI_inducer_discovery_story:ec50_1" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="emory_hypomorph_SMAD4_SMAD3_PPI_inducer_discovery_story:reference" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="emory_hypomorph_SMAD4_SMAD3_PPI_inducer_discovery_story:story_location" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="emory_hypomorph_SMAD4_SMAD3_PPI_inducer_discovery_story:ec50_2" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="emory_hypomorph_SMAD4_SMAD3_PPI_inducer_discovery_story:data_portal" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="stanford_arid1a_story:gene_symbol_1" value="subject:findGenesBySymbol" />
+		<entry key="stanford_arid1a_story:gene_symbol_2" value="subject:findGenesBySymbol" />
+		<entry key="stanford_arid1a_story:compound_1" value="subject:findCompoundsByName" />
+		<entry key="stanford_arid1a_story:tissue_disease" value="subject:findTissueSampleByName" />
+		<entry key="stanford_arid1a_story:story_location" value="evidence:readString:createObservedFileEvidence" />
+		<entry key="stanford_arid1a_story:reference_1" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="stanford_arid1a_story:reference_2" value="evidence:readString:createObservedUrlEvidence" />
+
             </map>
         </constructor-arg>
     </bean>
