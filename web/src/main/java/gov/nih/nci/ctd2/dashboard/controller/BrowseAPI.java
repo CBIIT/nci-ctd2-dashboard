@@ -19,10 +19,13 @@ import flexjson.JSONSerializer;
 import gov.nih.nci.ctd2.dashboard.api.CTD2Serializer;
 import gov.nih.nci.ctd2.dashboard.api.SubjectResponse;
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
+import gov.nih.nci.ctd2.dashboard.impl.XrefImpl;
 import gov.nih.nci.ctd2.dashboard.model.DashboardEntity;
 import gov.nih.nci.ctd2.dashboard.model.ECOTerm;
 import gov.nih.nci.ctd2.dashboard.model.Gene;
+import gov.nih.nci.ctd2.dashboard.model.Protein;
 import gov.nih.nci.ctd2.dashboard.model.Subject;
+import gov.nih.nci.ctd2.dashboard.model.Xref;
 
 /* API 2.0 */
 @Controller
@@ -56,8 +59,15 @@ public class BrowseAPI {
             }
         } else if (subjectClass.equalsIgnoreCase("gene")) {
             List<Gene> genes = dashboardDao.findGenesBySymbol(subjectName);
-            if (genes.size() > 0)
-                subject = genes.get(0);
+            if (genes.size() > 0) {
+                Gene gene = genes.get(0);
+                List<Protein> p = dashboardDao.findProteinByGene(gene);
+                Xref xref = new XrefImpl();
+                xref.setDatabaseId(p.get(0).getUniprotId());
+                xref.setDatabaseName("UniProt");
+                gene.getXrefs().add(xref);
+                subject = gene;
+            }
         } else {
             var obj = dashboardDao.getEntityByStableURL(subjectClass, subjectClass + "/" + subjectName);
             if (obj instanceof Subject) {
