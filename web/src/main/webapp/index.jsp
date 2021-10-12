@@ -2512,7 +2512,7 @@
     <script src="https://cdn.jsdelivr.net/npm/underscore@1.13.1/underscore-umd-min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.4.0/backbone-min.js" integrity="sha512-9EgQDzuYx8wJBppM4hcxK8iXc5a1rFLp/Chug4kIcSWRDEgjMiClF8Y3Ja9/0t8RDDg19IfY5rs6zaPS9eaEBw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="js/jquery.fancybox.min.js"></script>
-    <script src="js/jquery.expander.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-expander@2.0.1/jquery.expander.min.js" integrity="sha256-4Q2/KlcZXZR4sVgZhDhkN8grxZppvC0RrPJaF2JU4fQ=" crossorigin="anonymous"></script>
     <script src="js/cytoscape.min.js?ts=2021"></script>
     <script src="js/cola.min.js"></script>
     <script src="js/cytoscape-cola.js"></script>
