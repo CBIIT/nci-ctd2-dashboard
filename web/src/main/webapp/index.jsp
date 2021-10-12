@@ -2513,9 +2513,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.4.0/backbone-min.js" integrity="sha512-9EgQDzuYx8wJBppM4hcxK8iXc5a1rFLp/Chug4kIcSWRDEgjMiClF8Y3Ja9/0t8RDDg19IfY5rs6zaPS9eaEBw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="js/jquery.fancybox.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-expander@2.0.1/jquery.expander.min.js" integrity="sha256-4Q2/KlcZXZR4sVgZhDhkN8grxZppvC0RrPJaF2JU4fQ=" crossorigin="anonymous"></script>
-    <script src="js/cytoscape.min.js?ts=2021"></script>
-    <script src="js/cola.min.js"></script>
-    <script src="js/cytoscape-cola.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/cytoscape@3.19.1/dist/cytoscape.min.js" integrity="sha256-wltbgrEBSKmvqq5hNFh2x9WNiP+fORRpHWqFoZcB3o8=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/webcola@3.4.0/WebCola/cola.min.js" integrity="sha256-tF66P7AtItnqmivK0H3b7IKW+AfwXpb4ydSrvEl/Zcc=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/cytoscape-cola@2.5.0/cytoscape-cola.min.js"></script>
     <script src="js/encoder.js"></script>
     <script src="js/jquery.contextMenu.min.js"></script>
     <script src="js/jquery.ui.position.min.js"></script>
