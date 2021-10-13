@@ -1,3 +1,5 @@
+import {showAlertMessage, GeneListView, CnkbQueryView, CnkbResultView, GeneCartHelpView} from './gene.cart.js'
+
 (function ($) {
     // This is strictly coupled to the homepage design!
     const numOfStoriesHomePage = 4;
@@ -1789,7 +1791,7 @@
                     $(".subject-observations-loading", thatEl).remove();
                     _.each(observations.models, function (observationWithCount) {
                         observationWithCount = observationWithCount.toJSON();
-                        observation = observationWithCount.observation;
+                        const observation = observationWithCount.observation;
                         observation.count = observationWithCount.count;
                         observation.contextSubject = thatModel.subjectId;
                         observation.role = thatModel.role;
@@ -3989,18 +3991,6 @@
             localStorage.genelist = JSON.stringify(geneNames);
             showAlertMessage(addedGene + " added to the Gene Cart.");
         }
-    };
-
-    const showAlertMessage = function (message) {
-        $("#alertMessage").text(message);
-        $("#alertMessage").css('color', '#5a5a5a');
-        $("#alert-message-modal").modal('show');
-    };
-
-    const showInvalidMessage = function (message) {
-        $("#alertMessage").text(message);
-        $("#alertMessage").css('color', 'red');
-        $("#alert-message-modal").modal('show');
     };
 
     const viewOnlyRouter = function (View) {

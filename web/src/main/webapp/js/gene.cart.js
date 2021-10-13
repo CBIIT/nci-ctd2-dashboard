@@ -1,12 +1,18 @@
 // common utility
-const showAlertMessage = function (message) {
+export const showAlertMessage = function (message) {
     $("#alertMessage").text(message);
     $("#alertMessage").css('color', '#5a5a5a');
     $("#alert-message-modal").modal('show');
 };
 
+const showInvalidMessage = function (message) {
+    $("#alertMessage").text(message);
+    $("#alertMessage").css('color', 'red');
+    $("#alert-message-modal").modal('show');
+};
+
 //Gene List View
-const GeneListView = Backbone.View.extend({
+export const GeneListView = Backbone.View.extend({
     el: $("#main-container"),
     template: _.template($("#genelist-view-tmpl").html()),
     render: function () {
@@ -288,7 +294,7 @@ const GeneListView = Backbone.View.extend({
 
 });
 
-const CnkbQueryView = Backbone.View.extend({
+export const CnkbQueryView = Backbone.View.extend({
     el: $("#main-container"),
     template: _.template($("#cnkb-query-tmpl").html()),
     render: function () {
@@ -394,7 +400,7 @@ const CnkbQueryView = Backbone.View.extend({
 
 });
 
-const GeneCartHelpView = Backbone.View.extend({
+export const GeneCartHelpView = Backbone.View.extend({
     el: $("#main-container"),
     template: _.template($("#gene-cart-help-tmpl").html()),
     render: function () {
@@ -403,9 +409,7 @@ const GeneCartHelpView = Backbone.View.extend({
     }
 });
 
-const CnkbResultView = (function () {
-
-    const CnkbResultView = Backbone.View.extend({
+export const CnkbResultView = Backbone.View.extend({
         el: $("#main-container"),
         template: _.template($("#cnkb-result-tmpl").html()),
         render: function () {
@@ -612,7 +616,7 @@ const CnkbResultView = (function () {
 
     });
 
-    const CnkbResultRowView = Backbone.View.extend({
+const CnkbResultRowView = Backbone.View.extend({
         render: function () {
             const result = this.model;
 
@@ -626,9 +630,9 @@ const CnkbResultView = (function () {
 
             return this;
         }
-    });
+});
 
-    const drawCNKBCytoscape = function (data, description) {
+const drawCNKBCytoscape = function (data, description) {
         let svgHtml = "";
         const interactions = data.interactions;
         let x1 = 20 + 90 * (3 - interactions.length),
@@ -758,8 +762,7 @@ const CnkbResultView = (function () {
                             linkUrl = "http://www.genecards.org/cgi-bin/carddisp.pl?gene=" + sym + "&alias=yes";
                             break;
                         case 'ctd2-dashboard':
-                            linkUrl = CORE_API_URL + "#search/" + sym;
-
+                            linkUrl = "#search/" + sym;
                     }
                     window.open(linkUrl);
                     $.contextMenu('destroy', '#cytoscape');
@@ -808,7 +811,4 @@ const CnkbResultView = (function () {
 
         });
 
-    };
-
-    return CnkbResultView;
-})();
+};
