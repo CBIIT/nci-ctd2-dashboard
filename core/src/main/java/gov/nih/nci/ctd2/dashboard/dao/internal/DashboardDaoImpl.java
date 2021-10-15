@@ -1804,28 +1804,26 @@ public class DashboardDaoImpl implements DashboardDao {
 
     @Override
     public WordCloudEntry[] getSubjectCounts() {
-        List<WordCloudEntry> list1 = Arrays.asList(getSubjectCountsForRoles(new String[] { "target", "biomarker" }));
-        List<WordCloudEntry> list2 = Arrays
-                .asList(getSubjectCountsForRoles(new String[] { "perturbagen", "candidate drug" }));
-        List<WordCloudEntry> list3 = Arrays.asList(getSubjectCountsForRoles(new String[] { "disease" }));
-        List<WordCloudEntry> list4 = Arrays.asList(getSubjectCountsForRoles(new String[] { "cell line" }));
         List<WordCloudEntry> list = new ArrayList<WordCloudEntry>();
-        for (WordCloudEntry item : list1) {
-            item.category = 0;
-            list.add(item);
+        String sql = "SELECT displayName, numberOfObservations, stableURL FROM subject_with_summaries"
+                + " JOIN subject ON subject_with_summaries.subject_id=subject.id"
+                + " JOIN dashboard_entity ON subject.id=dashboard_entity.id"
+                + " WHERE score>1 ORDER BY numberOfObservations DESC LIMIT 250";
+        Session session = getSession();
+        @SuppressWarnings("unchecked")
+        org.hibernate.query.Query<Object[]> query = session.createNativeQuery(sql);
+        for (Object[] obj : query.getResultList()) {
+            String subject = (String) obj[0];
+            String fullname = null;
+            if (subject.length() > ABBREVIATION_LENGTH_LIMIT) {
+                fullname = subject;
+                subject = shorternSubjectName(subject);
+            }
+            Integer count = (Integer) obj[1];
+            String url = (String) obj[2];
+            list.add(new WordCloudEntry(subject, count, url, fullname));
         }
-        for (WordCloudEntry item : list2) {
-            item.category = 1;
-            list.add(item);
-        }
-        for (WordCloudEntry item : list3) {
-            item.category = 2;
-            list.add(item);
-        }
-        for (WordCloudEntry item : list4) {
-            item.category = 3;
-            list.add(item);
-        }
+        session.close();
         return list.toArray(new WordCloudEntry[0]);
     }
 
