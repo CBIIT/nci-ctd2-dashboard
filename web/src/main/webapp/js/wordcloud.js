@@ -1,4 +1,4 @@
-function create_wordcloud(dom_id, words, w_cloud = 960, h_cloud = 600) {
+export default function create_wordcloud(dom_id, words, w_cloud = 960, h_cloud = 600) {
     /* 7 basic parameters for the word-cloud */
     const max_word_number = 250;
     const angle_count = 5; // default 5

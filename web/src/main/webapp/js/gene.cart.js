@@ -1,3 +1,4 @@
+import {__ctd2_hovertext, gene_cart_actions} from './ctd2.constants.js'
 // common utility
 export const showAlertMessage = function (message) {
     $("#alertMessage").text(message);

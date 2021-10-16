@@ -1,9 +1,9 @@
-const gene_cart_actions = [
+export const gene_cart_actions = [
     "Retrieve molecular interactions involving the selected genes from the Cellular Networks Knowledge Base (CNKB). The CNKB is a database of gene and protein interaction networks maintained at Columbia University.  It includes PREPPI, a large database of predicted and experimentally confirmed protein-protein interactions.", // CNKB
     "Send the contents of the gene cart to the external Enrichr web service for gene set enrichment analysis.  Enrichment analysis is a computational method for inferring knowledge about an input gene set by comparing it to annotated gene sets representing prior biological knowledge. Enrichment analysis checks whether an input set of genes significantly overlaps with annotated gene sets.", // Enrichr
     "STRING is a database of known and predicted protein-protein interactions. The interactions include direct (physical) and indirect (functional) associations; they stem from computational prediction, from knowledge transfer between organisms, and from interactions aggregated from other (primary) databases.", // STRING
 ];
-const ctd2_ocg_dash = {
+export const ctd2_ocg_dash = {
     "Broad Institute": "broad-institute",
     "Cold Spring Harbor Laboratory": "cold-spring-harbor-laboratory",
     "Columbia University": "columbia-university",
@@ -22,7 +22,7 @@ const ctd2_ocg_dash = {
     "Oregon Health and Science University (2)": "oregon-health-and-science-university-2",
     "University of California San Diego": "university-of-california-san-diego",
 };
-const wildcard_evidence_codes = {
+export const wildcard_evidence_codes = {
     measured: {
         eco_term: 'direct assay evidence',
         eco_id: 'ECO:0000002'
@@ -60,7 +60,7 @@ const wildcard_evidence_codes = {
         eco_id: 'ECO:0000311'
     },
 };
-const __ctd2_hovertext = {
+export const __ctd2_hovertext = {
     BROWSE_GENES: "Browse experimental evidence implicating targets in a cancer model",
     BROWSE_COMPOUNDS: "Browse experimental evidence for agents that show activity in a cancer model",
     BROWSE_DISEASE: "Browse experimental evidence for disease-specific targets or agents",
@@ -94,7 +94,7 @@ const __ctd2_hovertext = {
     GENE_CART: 'Build or edit a list of genes and query for molecular interactions',
     ALL_TIERS: 'Tier 1: Preliminary results of a screening campaign or large-scale computational analysis.<br/>Tier 2: Confirmation of primary results in a cancer-relevant in vitro model.<br/>Tier 3: Validation of results in a cancer relevant in vivo model.',
 };
-const ctd2_role_definition = {
+export const ctd2_role_definition = {
     'target': 'a gene or protein targeted by chemical or genetic perturbagens',
     'biomarker': 'a gene product or other signal whose presence is an indication of a phenotype or activity',
     'oncogene': 'a gene known to be involved in causing cancer',
