@@ -60,7 +60,7 @@ export const wildcard_evidence_codes = {
         eco_id: 'ECO:0000311'
     },
 };
-export const __ctd2_hovertext = {
+export const ctd2_hovertext = {
     BROWSE_GENES: "Browse experimental evidence implicating targets in a cancer model",
     BROWSE_COMPOUNDS: "Browse experimental evidence for agents that show activity in a cancer model",
     BROWSE_DISEASE: "Browse experimental evidence for disease-specific targets or agents",
@@ -113,3 +113,43 @@ export const ctd2_role_definition = {
     'strain': 'strain of an animal model',
     'tumor suppressor': '"a gene which regulates a cell during cell division and replication. Loss of function can lead to cells growing abnormally',
 };
+export const class2imageData = {
+    AnimalModel: {
+        image: 'img/animalmodel.png',
+        label: 'Animal model'
+    },
+    CellSample: {
+        image: 'img/cellsample.png',
+        label: 'Cell sample'
+    },
+    Compound: {
+        image: 'img/unknown.png',
+        label: 'compound'
+    },
+    Gene: {
+        image: 'img/gene.png',
+        label: 'Gene'
+    },
+    Protein: {
+        image: 'img/protein.png',
+        label: 'Protein'
+    },
+    ShRna: {
+        image: 'img/shrna.png',
+        label: 'shRNA'
+    },
+    TissueSample: {
+        image: 'img/tissuesample.png',
+        label: 'Tissue sample'
+    },
+    ECOTerm: {
+        image: 'img/eco_logo.png',
+        label: "ECO Term"
+    }
+};
+// To make URL constructing more configurable
+export const BASE_URL = "./";
+
+// These seperators are for replacing items within the observation summary
+export const leftSep = "<";
+export const rightSep = ">";

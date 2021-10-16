@@ -1,4 +1,4 @@
-import {__ctd2_hovertext, gene_cart_actions} from './ctd2.constants.js'
+import {ctd2_hovertext, gene_cart_actions} from './ctd2.constants.js'
 // common utility
 export const showAlertMessage = function (message) {
     $("#alertMessage").text(message);
@@ -422,7 +422,7 @@ export const CnkbResultView = Backbone.View.extend({
             const table_filter_popover = {
                 placement: "top",
                 trigger: 'hover',
-                content: __ctd2_hovertext.TABLE_FILTER,
+                content: ctd2_hovertext.TABLE_FILTER,
             };
             if (selectedgenes.length > numOfCartGene) {
                 selectedgenes.slice(numOfCartGene, selectedgenes.length - 1);
@@ -467,7 +467,7 @@ export const CnkbResultView = Backbone.View.extend({
                         trigger: 'hover',
                         content: function () {
                             const hovertext_id = 'CNKB_' + $(this).text().toUpperCase().replace('-', '_');
-                            const t = __ctd2_hovertext[hovertext_id];
+                            const t = ctd2_hovertext[hovertext_id];
                             if (!t) return null; // only null is automatically hidden
                             return t;
                         },
@@ -538,12 +538,12 @@ export const CnkbResultView = Backbone.View.extend({
             }).popover({
                 placement: "top",
                 trigger: 'hover',
-                content: __ctd2_hovertext.CNKB_LIMIT,
+                content: ctd2_hovertext.CNKB_LIMIT,
             });
             $("#cytoscape-layouts").popover({
                 placement: "top",
                 trigger: 'hover',
-                content: __ctd2_hovertext.CNKB_LAYOUT,
+                content: ctd2_hovertext.CNKB_LAYOUT,
             });
 
             $('#checkbox_selectall').click(function (event) { //on click
@@ -603,7 +603,7 @@ export const CnkbResultView = Backbone.View.extend({
             $('#createnetwork').popover({
                 placement: 'top',
                 trigger: 'hover',
-                content: __ctd2_hovertext.CNKB_CREATE_NETWORK,
+                content: ctd2_hovertext.CNKB_CREATE_NETWORK,
             });
             $('.clickable-popover').popover({
                 placement: "bottom",

@@ -1,18 +1,14 @@
-import {__ctd2_hovertext, ctd2_role_definition, ctd2_ocg_dash, wildcard_evidence_codes} from './ctd2.constants.js'
+import {BASE_URL, leftSep, rightSep, ctd2_hovertext, ctd2_role_definition, ctd2_ocg_dash, class2imageData} from './ctd2.constants.js'
 import {showAlertMessage, GeneListView, CnkbQueryView, CnkbResultView, GeneCartHelpView} from './gene.cart.js'
 import create_wordcloud from './wordcloud.js'
+import {ECOTerm} from './ecoterm.js'
+import {ObservedSubjects, ObservedEvidences, ObservedEvidence} from './observed.js'
+import ObservationView from './observation.view.js'
 
 (function ($) {
     // This is strictly coupled to the homepage design!
     const numOfStoriesHomePage = 4;
     const numOfCartGene = 25;
-
-    // These seperators are for replacing items within the observation summary
-    const leftSep = "<";
-    const rightSep = ">";
-
-    // To make URL constructing more configurable
-    const CORE_API_URL = "./";
 
     // This is for the moustache-like templates
     // prevents collisions with JSP tags <%...%>
@@ -114,23 +110,23 @@ import create_wordcloud from './wordcloud.js'
 
     /* Models */
     const HomepageText = Backbone.Model.extend({
-        urlRoot: CORE_API_URL + "get/homepage-text"
+        urlRoot: BASE_URL + "get/homepage-text"
     });
 
     const SubmissionCenter = Backbone.Model.extend({
-        urlRoot: CORE_API_URL + "get/center"
+        urlRoot: BASE_URL + "get/center"
     });
     const SubmissionCenters = Backbone.Collection.extend({
-        url: CORE_API_URL + "list/center/?filterBy=",
+        url: BASE_URL + "list/center/?filterBy=",
         model: SubmissionCenter
     });
 
     const Submission = Backbone.Model.extend({
-        urlRoot: CORE_API_URL + "get/submission"
+        urlRoot: BASE_URL + "get/submission"
     });
 
     const CenterSubmissions = Backbone.Collection.extend({
-        url: CORE_API_URL + "list/submission/?filterBy=",
+        url: BASE_URL + "list/submission/?filterBy=",
         model: Submission,
 
         initialize: function (attributes) {
@@ -139,7 +135,7 @@ import create_wordcloud from './wordcloud.js'
     });
 
     const StorySubmissions = Backbone.Collection.extend({
-        url: CORE_API_URL + "stories/?limit=",
+        url: BASE_URL + "stories/?limit=",
         model: Submission,
 
         initialize: function (attributes) {
@@ -153,11 +149,11 @@ import create_wordcloud from './wordcloud.js'
     });
 
     const Observation = Backbone.Model.extend({
-        urlRoot: CORE_API_URL + "get/observation"
+        urlRoot: BASE_URL + "get/observation"
     });
 
     const ObservationsBySubmission = Backbone.Collection.extend({
-        url: CORE_API_URL + "observations/bySubmission/?submissionId=",
+        url: BASE_URL + "observations/bySubmission/?submissionId=",
         model: Observation,
 
         initialize: function (attributes) {
@@ -170,7 +166,7 @@ import create_wordcloud from './wordcloud.js'
     });
 
     const OneObservationsPerSubmissionBySubject = Backbone.Collection.extend({
-        url: CORE_API_URL + "observations/onePerSubmissionBySubject/?subjectId=",
+        url: BASE_URL + "observations/onePerSubmissionBySubject/?subjectId=",
         model: Observation,
 
         initialize: function (attributes) {
@@ -185,7 +181,7 @@ import create_wordcloud from './wordcloud.js'
     });
 
     const OneObservationsPerSubmissionByECOTerm = Backbone.Collection.extend({
-        url: CORE_API_URL + "observations/onePerSubmissionByEcoTerm/?ecocode=",
+        url: BASE_URL + "observations/onePerSubmissionByEcoTerm/?ecocode=",
         model: Observation,
 
         initialize: function (attributes) {
@@ -197,7 +193,7 @@ import create_wordcloud from './wordcloud.js'
     });
 
     const ObservationsBySubmissionAndSubject = Backbone.Collection.extend({
-        url: CORE_API_URL + "observations/bySubmissionAndSubject/?",
+        url: BASE_URL + "observations/bySubmissionAndSubject/?",
         model: Observation, // in fact observation with summary
 
         initialize: function (attributes) {
@@ -209,7 +205,7 @@ import create_wordcloud from './wordcloud.js'
     });
 
     const ObservationsBySubmissionAndEcoTerm = Backbone.Collection.extend({
-        url: CORE_API_URL + "observations/bySubmissionAndEcoTerm/?",
+        url: BASE_URL + "observations/bySubmissionAndEcoTerm/?",
         model: Observation, // in fact observation with summary
 
         initialize: function (attributes) {
@@ -219,54 +215,20 @@ import create_wordcloud from './wordcloud.js'
 
     const SubjectRole = Backbone.Model.extend({});
     const SubjectRoles = Backbone.Collection.extend({
-        url: CORE_API_URL + "list/role?filterBy=",
+        url: BASE_URL + "list/role?filterBy=",
         model: SubjectRole
     });
 
-    const ObservedEvidence = Backbone.Model.extend({
-        urlRoot: CORE_API_URL + "get/observedevidence"
-    });
-
-    const ObservedEvidences = Backbone.Collection.extend({
-        url: CORE_API_URL + "list/observedevidence/?filterBy=",
-        model: ObservedEvidence,
-
-        initialize: function (attributes) {
-            this.url += attributes.observationId;
-        }
-    });
-
-    const ObservedSubject = Backbone.Model.extend({
-        urlRoot: CORE_API_URL + "get/observedsubject"
-    });
-
-    const ObservedSubjects = Backbone.Collection.extend({
-        url: CORE_API_URL + "list/observedsubject/?filterBy=",
-        model: ObservedSubject,
-
-        initialize: function (attributes) {
-            if (attributes.subjectId != undefined) {
-                this.url += attributes.subjectId;
-            } else {
-                this.url += attributes.observationId;
-            }
-        }
-    });
-
     const SearchResults = Backbone.Model.extend({
-        url: CORE_API_URL + "search/",
+        url: BASE_URL + "search/",
 
         initialize: function (attributes) {
             this.url += encodeURIComponent(attributes.term.toLowerCase());
         }
     });
 
-    const ECOTerm = Backbone.Model.extend({
-        urlRoot: CORE_API_URL + "eco/term"
-    });
-
     const AnimalModel = Backbone.Model.extend({
-        urlRoot: CORE_API_URL + "get/animal-model"
+        urlRoot: BASE_URL + "get/animal-model"
     });
 
     const Gene = Backbone.Model.extend({
@@ -278,35 +240,31 @@ import create_wordcloud from './wordcloud.js'
     });
 
     const CellSample = Backbone.Model.extend({
-        urlRoot: CORE_API_URL + "get/cell-sample",
+        urlRoot: BASE_URL + "get/cell-sample",
     });
 
     const Compound = Backbone.Model.extend({
-        urlRoot: CORE_API_URL + "get/compound",
+        urlRoot: BASE_URL + "get/compound",
     });
 
     const Protein = Backbone.Model.extend({
-        urlRoot: CORE_API_URL + "get/protein",
+        urlRoot: BASE_URL + "get/protein",
     });
 
     const ShRna = Backbone.Model.extend({
-        urlRoot: CORE_API_URL + "get/rna",
+        urlRoot: BASE_URL + "get/rna",
     });
 
     const TissueSample = Backbone.Model.extend({
-        urlRoot: CORE_API_URL + "get/tissue",
+        urlRoot: BASE_URL + "get/tissue",
     });
 
     const Transcript = Backbone.Model.extend({
-        urlRoot: CORE_API_URL + "get/transcript",
-    });
-
-    const Subject = Backbone.Model.extend({
-        urlRoot: CORE_API_URL + "get/subject"
+        urlRoot: BASE_URL + "get/transcript",
     });
 
     const SubjectWithSummaryCollection = Backbone.Collection.extend({
-        url: CORE_API_URL + "explore/",
+        url: BASE_URL + "explore/",
 
         initialize: function (attributes) {
             this.url += attributes.roles;
@@ -314,11 +272,11 @@ import create_wordcloud from './wordcloud.js'
     });
 
     const EcoBrowse = Backbone.Collection.extend({
-        url: CORE_API_URL + "eco/browse",
+        url: BASE_URL + "eco/browse",
     });
 
     const Summary = Backbone.Collection.extend({
-        url: CORE_API_URL + "api/summary",
+        url: BASE_URL + "api/summary",
     });
 
     /* Views */
@@ -523,42 +481,42 @@ import create_wordcloud from './wordcloud.js'
             $('#explore-gene-button').popover({
                 placement: "bottom",
                 trigger: 'hover',
-                content: __ctd2_hovertext.BROWSE_GENES,
+                content: ctd2_hovertext.BROWSE_GENES,
             }).click(function () {
                 $(this).popover('hide');
             });
             $('#explore-compound-button').popover({
                 placement: "bottom",
                 trigger: 'hover',
-                content: __ctd2_hovertext.BROWSE_COMPOUNDS,
+                content: ctd2_hovertext.BROWSE_COMPOUNDS,
             }).click(function () {
                 $(this).popover('hide');
             });
             $('#explore-disease-button').popover({
                 placement: "bottom",
                 trigger: 'hover',
-                content: __ctd2_hovertext.BROWSE_DISEASE,
+                content: ctd2_hovertext.BROWSE_DISEASE,
             }).click(function () {
                 $(this).popover('hide');
             });
             $('#explore-stories-button').popover({
                 placement: "bottom",
                 trigger: 'hover',
-                content: __ctd2_hovertext.BROWSE_STORIES,
+                content: ctd2_hovertext.BROWSE_STORIES,
             }).click(function () {
                 $(this).popover('hide');
             });
             $('#explore-celllines-button').popover({
                 placement: "bottom",
                 trigger: 'hover',
-                content: __ctd2_hovertext.BROWSE_CELLLINES,
+                content: ctd2_hovertext.BROWSE_CELLLINES,
             }).click(function () {
                 $(this).popover('hide');
             });
             $('#explore-eco-button').popover({
                 placement: "bottom",
                 trigger: 'hover',
-                content: __ctd2_hovertext.BROWSE_ECO,
+                content: ctd2_hovertext.BROWSE_ECO,
             }).click(function () {
                 $(this).popover('hide');
             });
@@ -566,7 +524,7 @@ import create_wordcloud from './wordcloud.js'
             $('#navlink-genecart').popover({
                 placement: "bottom",
                 trigger: 'hover',
-                content: __ctd2_hovertext.GENE_CART,
+                content: ctd2_hovertext.GENE_CART,
             }).click(function () {
                 $(this).popover('hide');
             });
@@ -876,545 +834,6 @@ import create_wordcloud from './wordcloud.js'
         }
     });
 
-    /// TODO: encode these into the DB instead
-    const ecoMappings = [{
-        "evidence": "file",
-        "role": "background",
-        "eco_term": "inference from background scientific knowledge",
-        "eco_id": "ECO:0000001"
-    },
-    {
-        "evidence": "file",
-        "role": "computed",
-        "eco_term": "computational combinatorial evidence",
-        "eco_id": "ECO:0000053"
-    },
-    {
-        "evidence": "file",
-        "role": "literature",
-        "eco_term": "traceable author statement",
-        "eco_id": "ECO:0000033"
-    },
-    {
-        "evidence": "file",
-        "role": "measured",
-        "eco_term": "direct assay evidence",
-        "eco_id": "ECO:0000002"
-    },
-    {
-        "evidence": "file",
-        "role": "observed",
-        "eco_term": "experimental phenotypic evidence",
-        "eco_id": "ECO:0000059"
-    },
-    {
-        "evidence": "file",
-        "role": "written",
-        "eco_term": "author statement",
-        "eco_id": "ECO:0000204"
-    },
-    {
-        "evidence": "label",
-        "role": "background",
-        "eco_term": "inference from background scientific knowledge",
-        "eco_id": "ECO:0000001"
-    },
-    {
-        "evidence": "label",
-        "role": "computed",
-        "eco_term": "computational combinatorial evidence",
-        "eco_id": "ECO:0000053"
-    },
-    {
-        "evidence": "label",
-        "role": "observed",
-        "eco_term": "ad-hoc qualitative phenotype observation evidence",
-        "eco_id": "ECO:0005673"
-    },
-    {
-        "evidence": "label",
-        "role": "species",
-        "eco_term": "biological system reconstruction evidence by experimental evidence from single species",
-        "eco_id": "ECO:0005553"
-    },
-    {
-        "evidence": "numeric",
-        "role": "background",
-        "eco_term": "inference from background scientific knowledge",
-        "eco_id": "ECO:0000001"
-    },
-    {
-        "evidence": "numeric",
-        "role": "computed",
-        "eco_term": "computational combinatorial evidence",
-        "eco_id": "ECO:0000053"
-    },
-    {
-        "evidence": "numeric",
-        "role": "measured",
-        "eco_term": "experimental phenotypic evidence",
-        "eco_id": "ECO:0000059"
-    },
-    {
-        "evidence": "numeric",
-        "role": "observed",
-        "eco_term": "ad-hoc quantitative phenotype observation evidence",
-        "eco_id": "ECO:0005675"
-    },
-    {
-        "evidence": "url",
-        "role": "computed",
-        "eco_term": "computational combinatorial evidence",
-        "eco_id": "ECO:0000053"
-    },
-    {
-        "evidence": "url",
-        "role": "link",
-        "eco_term": "combinatorial evidence",
-        "eco_id": "ECO:0000212"
-    },
-    {
-        "evidence": "url",
-        "role": "measured",
-        "eco_term": "experimental phenotypic evidence",
-        "eco_id": "ECO:0000059"
-    },
-    {
-        "evidence": "url",
-        "role": "reference",
-        "eco_term": "traceable author statement",
-        "eco_id": "ECO:0000033"
-    },
-    {
-        "evidence": "url",
-        "role": "resource",
-        "eco_term": "imported information",
-        "eco_id": "ECO:0000311"
-    }
-    ];
-
-    const class2imageData = {
-        AnimalModel: {
-            image: 'img/animalmodel.png',
-            label: 'Animal model'
-        },
-        CellSample: {
-            image: 'img/cellsample.png',
-            label: 'Cell sample'
-        },
-        Compound: {
-            image: 'img/unknown.png',
-            label: 'compound'
-        },
-        Gene: {
-            image: 'img/gene.png',
-            label: 'Gene'
-        },
-        Protein: {
-            image: 'img/protein.png',
-            label: 'Protein'
-        },
-        ShRna: {
-            image: 'img/shrna.png',
-            label: 'shRNA'
-        },
-        TissueSample: {
-            image: 'img/tissuesample.png',
-            label: 'Tissue sample'
-        },
-        ECOTerm: {
-            image: 'img/eco_logo.png',
-            label: "ECO Term"
-        }
-    };
-
-    const ObservationView = Backbone.View.extend({
-        el: $("#main-container"),
-        template: _.template($("#observation-tmpl").html()),
-        render: function () {
-            const result = this.model.toJSON();
-            $(this.el).html(this.template(result));
-
-            $(this.el).find("h2 > small").popover({
-                placement: "top",
-                trigger: 'hover',
-                content: function () {
-                    const hovertext_id = 'EXPLORE_' + $(this).text().toUpperCase().replace(' ', '_').replace(/\(|\)/g, '');
-                    return __ctd2_hovertext[hovertext_id];
-                },
-            });
-
-            // We will replace the values in this summary
-            let summary = result.submission.observationTemplate.observationSummary;
-
-            // Load Subjects
-            const observedSubjects = new ObservedSubjects({
-                observationId: result.id
-            });
-            const thatEl = $("#observed-subjects-grid");
-            observedSubjects.fetch({
-                success: function () {
-                    _.each(observedSubjects.models, function (observedSubject) {
-                        observedSubject = observedSubject.toJSON();
-
-                        const observedSubjectRowView = new ObservedSubjectSummaryRowView({
-                            el: $(thatEl).find("tbody"),
-                            model: observedSubject
-                        });
-                        observedSubjectRowView.render();
-
-                        const subject = observedSubject.subject;
-                        const imageData = class2imageData[subject.class];
-                        imageData.stableURL = subject.stableURL;
-                        const thatEl2 = $("#subject-image-" + observedSubject.id);
-                        const imgTemplate = $("#search-results-image-tmpl");
-                        if (subject.class == "Compound") {
-                            const compound = new Subject({
-                                id: subject.id
-                            });
-                            compound.fetch({
-                                success: function () {
-                                    _.each(compound.toJSON().xrefs, function (xref) {
-                                        if (xref.databaseName == "IMAGE") {
-                                            imageData.image = $("#explore-tmpl").attr("data-url") + "compounds/" + xref.databaseId;
-                                        }
-                                    });
-                                    thatEl2.append(_.template(imgTemplate.html())(imageData));
-                                }
-                            });
-                        } else {
-                            if (subject.type.toLowerCase() == "sirna") {
-                                imageData.image = 'img/sirna.png';
-                                imageData.label = "siRNA";
-                            }
-                            thatEl2.append(_.template(imgTemplate.html())(imageData));
-                        }
-
-                        if (observedSubject.observedSubjectRole == null || observedSubject.subject == null)
-                            return;
-
-                        summary = summary.replace(
-                            new RegExp(leftSep + observedSubject.observedSubjectRole.columnName + rightSep, "g"),
-                            _.template($("#summary-subject-replacement-tmpl").html())(observedSubject.subject)
-                        );
-
-                        $("#observation-summary").html(summary);
-                    });
-                    $(".subject_role").popover({
-                        placement: "top",
-                        trigger: 'hover',
-                        content: function () {
-                            return ctd2_role_definition[$(this).text()];
-                        },
-                    });
-                }
-            });
-
-            const ecoTable = $("#eco-grid");
-            const ecocodes = result.submission.observationTemplate.ECOCode;
-            if (ecocodes.length == 0) {
-                ecoTable.hide();
-            } else {
-                const ecos = ecocodes.split('|');
-                const ecodata = [];
-                ecos.forEach(function (ecocode) {
-                    if (ecocode == '') return;
-                    const ecourl = ecocode.replace(':', '-').toLowerCase();
-                    const eco_model = new ECOTerm({
-                        id: ecourl,
-                    });
-                    eco_model.fetch({
-                        async: false,
-                        success: function () { // no-op 
-                        },
-                        error: function () {
-                            console.log('ECO term not found for' + ecocode);
-                        },
-                    });
-                    const econame = eco_model.toJSON().displayName;
-                    ecodata.push(['<a href="#eco/' + ecourl + '">' + ecocode + '</a>', econame]);
-                });
-
-                ecoTable.DataTable({
-                    data: ecodata,
-                    paging: false,
-                    ordering: false,
-                    info: false,
-                    searching: false,
-                });
-            }
-
-            // Load evidences
-            const observedEvidences = new ObservedEvidences({
-                observationId: result.id
-            });
-            const thatEl2 = $("#observed-evidences-grid");
-            observedEvidences.fetch({
-                success: function () {
-                    let storyFilePath = "";
-                    _.each(observedEvidences.models, function (observedEvidence) {
-                        observedEvidence = observedEvidence.toJSON();
-
-                        const observedEvidenceRowView = new ObservedEvidenceRowView({
-                            el: $(thatEl2).find("tbody"),
-                            model: observedEvidence
-                        });
-
-                        observedEvidenceRowView.render();
-                        summary = summary.replace(
-                            new RegExp(leftSep + observedEvidence.observedEvidenceRole.columnName + rightSep, "g"),
-                            _.template($("#summary-evidence-replacement-tmpl").html())(observedEvidence.evidence)
-                        );
-
-                        $("#observation-summary").html(summary);
-                        if (observedEvidence.evidence.class == "FileEvidence") {
-                            // observedEvidence.observedEvidenceRole.attribute is always text/html in known cases
-                            if (observedEvidence.observedEvidenceRole.columnName == "story_location") {
-                                storyFilePath = observedEvidence.evidence.filePath;
-                            }
-                        }
-                    });
-
-                    const tableLength = (observedEvidences.models.length > 25 ? 10 : 25);
-                    const oTable = $('#observed-evidences-grid').dataTable({
-                        "iDisplayLength": tableLength
-                    });
-
-                    oTable.fnSort([
-                        [1, 'asc'],
-                        [2, 'asc']
-                    ]);
-
-                    $('.desc-tooltip').popover({
-                        placement: "left",
-                        trigger: "hover",
-                    });
-
-                    $("a.evidence-images").fancybox({
-                        titlePosition: 'inside'
-                    });
-                    $("div.expandable").expander({
-                        slicePoint: 50,
-                        expandText: '[...]',
-                        expandPrefix: ' ',
-                        userCollapseText: '[^]'
-                    });
-
-                    $(".numeric-value").each(function (idx) {
-                        const val = $(this).html();
-                        const vals = val.split("e"); // capture scientific notation
-                        if (vals.length > 1) {
-                            $(this).html(_.template($("#observeddatanumericevidence-val-tmpl").html())({
-                                firstPart: vals[0],
-                                secondPart: vals[1].replace("+", "")
-                            }));
-                        }
-                    });
-                    $(".cytoscape-view").click(function (event) {
-                        event.preventDefault();
-
-                        const sifUrl = $(this).attr("data-sif-url");
-                        const sifDesc = $(this).attr("data-description");
-                        $.ajax({
-                            url: "sif/",
-                            data: {
-                                url: sifUrl
-                            },
-                            dataType: "json",
-                            contentType: "json",
-                            success: function (data) {
-                                $.fancybox.open(
-                                    _.template($("#cytoscape-tmpl").html())({
-                                        description: sifDesc
-                                    }), {
-                                    touch: false,
-                                    'autoDimensions': false,
-                                    'transitionIn': 'none',
-                                    'transitionOut': 'none'
-                                }
-                                );
-
-                                // load cytoscape
-                                cytoscape({
-                                    container: $('#cytoscape-sif'),
-                                    wheelSensitivity: 0.4,
-                                    layout: {
-                                        name: 'cola',
-                                        liveUpdate: false,
-                                        maxSimulationTime: 1000,
-                                        stop: function () {
-                                            this.stop();
-                                        } // callback on layoutstop 
-                                    },
-                                    elements: data,
-                                    style: cytoscape.stylesheet()
-                                        .selector("node")
-                                        .css({
-                                            "content": "data(id)",
-                                            "border-width": 3,
-                                            "background-color": "#DDD",
-                                            "border-color": "#555"
-                                        })
-                                        .selector("edge")
-                                        .css({
-                                            "width": 1,
-                                            "target-arrow-shape": "triangle",
-                                            "source-arrow-shape": "circle",
-                                            "line-color": "#444"
-                                        })
-                                        .selector(":selected")
-                                        .css({
-                                            "background-color": "#000",
-                                            "line-color": "#000",
-                                            "source-arrow-color": "#000",
-                                            "target-arrow-color": "#000"
-                                        })
-                                        .selector(".ui-cytoscape-edgehandles-source")
-                                        .css({
-                                            "border-color": "#5CC2ED",
-                                            "border-width": 3
-                                        })
-                                        .selector(".ui-cytoscape-edgehandles-target, node.ui-cytoscape-edgehandles-preview")
-                                        .css({
-                                            "background-color": "#5CC2ED"
-                                        })
-                                        .selector("edge.ui-cytoscape-edgehandles-preview")
-                                        .css({
-                                            "line-color": "#5CC2ED"
-                                        })
-                                        .selector("node.ui-cytoscape-edgehandles-preview, node.intermediate")
-                                        .css({
-                                            "shape": "rectangle",
-                                            "width": 15,
-                                            "height": 15
-                                        }),
-
-                                    ready: function () {
-                                        // for debugging
-                                    }
-                                });
-                                // end load cytoscape
-                            }
-                        });
-
-                    }); // END OF .cytoscape-view").click
-
-                    if (result.submission.observationTemplate.isSubmissionStory && storyFilePath.length > 0) {
-                        // show the link
-                    } else {
-                        $("#view-full-story").hide();
-                    }
-                }
-            });
-
-            $("#small-show-sub-details").click(function (event) {
-                event.preventDefault();
-                $("#obs-submission-details").slideDown();
-                $("#small-show-sub-details").hide();
-                $("#small-hide-sub-details").show();
-            });
-
-            const hide_submission_detail = function () {
-                $("#obs-submission-details").slideUp();
-                $("#small-hide-sub-details").hide();
-                $("#small-show-sub-details").show();
-            };
-            $("#small-hide-sub-details").click(function (event) {
-                event.preventDefault();
-                hide_submission_detail();
-            });
-            hide_submission_detail();
-
-            if (result.submission.observationTemplate.submissionDescription == "") {
-                $("#obs-submission-summary").hide();
-            }
-
-            return this;
-        }
-    });
-
-    const ObservedEvidenceRowView = Backbone.View.extend({
-        render: function () {
-            const result = this.model;
-            const type = result.evidence.class;
-            result.evidence.type = type;
-
-            if (result.observedEvidenceRole == null) {
-                result.observedEvidenceRole = {
-                    displayText: "-",
-                    evidenceRole: {
-                        displayName: "unknown"
-                    }
-                };
-            }
-
-            let templateId = "#observedevidence-row-tmpl";
-            let isHtmlStory = false;
-            let mEvidence = "";
-
-            if (type == "FileEvidence") {
-                result.evidence.filePath = result.evidence.filePath.replace(/\\/g, "/");
-                if (result.evidence.mimeType.toLowerCase().search("image") > -1) {
-                    templateId = "#observedimageevidence-row-tmpl";
-                } else if (result.evidence.mimeType.toLowerCase().search("gct") > -1) {
-                    templateId = "#observedgctfileevidence-row-tmpl";
-                } else if (result.evidence.mimeType.toLowerCase().search("pdf") > -1) {
-                    templateId = "#observedpdffileevidence-row-tmpl";
-                } else if (result.evidence.mimeType.toLowerCase().search("sif") > -1) {
-                    templateId = "#observedsiffileevidence-row-tmpl";
-                } else if (result.evidence.mimeType.toLowerCase().search("mra") > -1) {
-                    templateId = "#observedmrafileevidence-row-tmpl";
-                } else if (result.evidence.mimeType.toLowerCase().search("html") > -1) {
-                    templateId = "#observedhtmlfileevidence-row-tmpl";
-                    isHtmlStory = true;
-                } else {
-                    templateId = "#observedfileevidence-row-tmpl";
-                }
-
-                mEvidence = "file";
-            } else if (type == "UrlEvidence") {
-                templateId = "#observedurlevidence-row-tmpl";
-                mEvidence = "url";
-            } else if (type == "LabelEvidence") {
-                templateId = "#observedlabelevidence-row-tmpl";
-                mEvidence = "label";
-            } else if (type == "DataNumericValue") {
-                templateId = "#observeddatanumericevidence-row-tmpl";
-                mEvidence = "numeric";
-            }
-
-            result.eco =
-                _.chain(ecoMappings)
-                    .filter(function (m) {
-                        return m.evidence == mEvidence && m.role == result.observedEvidenceRole.evidenceRole.displayName;
-                    })
-                    .first()
-                    .value();
-            if (result.eco == undefined) {
-                result.eco = wildcard_evidence_codes[result.observedEvidenceRole.evidenceRole.displayName];
-            }
-            if (result.eco == undefined) {
-                result.eco = {
-                    eco_term: '',
-                    eco_id: ''
-                };
-            }
-
-            this.template = _.template($(templateId).html());
-            $(this.el).append(this.template(result));
-
-            if (isHtmlStory) {
-                $(this.el).find(".html-story-link").attr("href", "#" + result.observation.submission.stableURL.replace("submission", "story"));
-            }
-
-            $(".img-rounded").popover({
-                placement: "left",
-                trigger: "hover",
-            });
-            return this;
-        }
-    });
-
     const CenterListRowView = Backbone.View.extend({
         template: _.template($("#centers-tbl-row-tmpl").html()),
         render: function () {
@@ -1502,7 +921,7 @@ import create_wordcloud from './wordcloud.js'
                     $('th.submission-count').popover({
                         placement: "top",
                         trigger: 'hover',
-                        content: __ctd2_hovertext.CENTER_LIST,
+                        content: ctd2_hovertext.CENTER_LIST,
                     });
                 }
             });
@@ -1616,14 +1035,14 @@ import create_wordcloud from './wordcloud.js'
                         trigger: 'hover',
                         content: function () {
                             const hovertext_id = 'EXPLORE_' + $(this).text().toUpperCase().replace(' ', '_');
-                            return __ctd2_hovertext[hovertext_id];
+                            return ctd2_hovertext[hovertext_id];
                         },
                     });
 
                     $("#reset-ordering").popover({
                         placement: "top",
                         trigger: 'hover',
-                        content: __ctd2_hovertext.EXPLORE_RESET_ORDER,
+                        content: ctd2_hovertext.EXPLORE_RESET_ORDER,
                     });
                     $("#reset-ordering").click(function () {
                         $("#explore-table").DataTable().order.neutral().draw();
@@ -1807,7 +1226,7 @@ import create_wordcloud from './wordcloud.js'
                         trigger: 'hover',
                         html: true, // because we need multiple lines
                         content: function () {
-                            return __ctd2_hovertext.ALL_TIERS;
+                            return ctd2_hovertext.ALL_TIERS;
                         },
                     });
 
@@ -1834,7 +1253,7 @@ import create_wordcloud from './wordcloud.js'
                     $(".subject-observations-loading", thatEl).remove();
                     _.each(observations.models, function (observationWithCount) {
                         observationWithCount = observationWithCount.toJSON();
-                        observation = observationWithCount.observation;
+                        const observation = observationWithCount.observation;
                         observation.count = observationWithCount.count;
                         observation.contextSubject = thatModel.subjectId;
                         observation.role = thatModel.role;
@@ -1849,7 +1268,7 @@ import create_wordcloud from './wordcloud.js'
                         trigger: 'hover',
                         html: true, // because we need multiple lines
                         content: function () {
-                            return __ctd2_hovertext.ALL_TIERS;
+                            return ctd2_hovertext.ALL_TIERS;
                         },
                     });
 
@@ -2568,40 +1987,6 @@ import create_wordcloud from './wordcloud.js'
         }
     });
 
-    const ObservedSubjectSummaryRowView = Backbone.View.extend({
-        template: _.template($("#observedsubject-summary-row-tmpl").html()),
-        render: function () {
-            const result = this.model;
-            if (result.subject == null) return;
-            if (result.subject.type == undefined) {
-                result.subject.type = result.subject.class;
-            }
-
-            if (result.subject.class != "Gene") {
-                this.template = _.template($("#observedsubject-summary-row-tmpl").html());
-                $(this.el).append(this.template(result));
-            } else {
-                this.template = _.template($("#observedsubject-gene-summary-row-tmpl").html());
-                $(this.el).append(this.template(result));
-                const currentGene = result.subject.displayName;
-
-                $(".addGene-" + currentGene).click(function (e) {
-                    e.preventDefault();
-                    updateGeneList(currentGene);
-                    return this;
-                }); //end addGene
-                $('.cartAddPlus').popover({
-                    placement: "bottom",
-                    trigger: 'hover',
-                }).click(function () {
-                    $(this).popover('hide');
-                });
-            }
-
-            return this;
-        }
-    });
-
     const CenterView = Backbone.View.extend({
         el: $("#main-container"),
         template: _.template($("#center-tmpl").html()),
@@ -2694,7 +2079,7 @@ import create_wordcloud from './wordcloud.js'
                         trigger: 'hover',
                         html: true,
                         content: function () {
-                            return __ctd2_hovertext.ALL_TIERS;
+                            return ctd2_hovertext.ALL_TIERS;
                         },
                     });
 
@@ -2806,7 +2191,7 @@ import create_wordcloud from './wordcloud.js'
                 trigger: 'hover',
                 content: function () {
                     const hovertext_id = 'EXPLORE_' + $(this).text().toUpperCase().replace(' ', '_');
-                    return __ctd2_hovertext[hovertext_id];
+                    return ctd2_hovertext[hovertext_id];
                 },
             });
 
@@ -3120,7 +2505,7 @@ import create_wordcloud from './wordcloud.js'
             trigger: 'hover',
             html: true,
             content: function () {
-                return __ctd2_hovertext.ALL_TIERS;
+                return ctd2_hovertext.ALL_TIERS;
             },
         });
     };
@@ -3264,7 +2649,7 @@ import create_wordcloud from './wordcloud.js'
                         trigger: 'hover',
                         html: true,
                         content: function () {
-                            return __ctd2_hovertext.ALL_TIERS;
+                            return ctd2_hovertext.ALL_TIERS;
                         },
                     });
                     if (submission_count == 1) {
@@ -3364,7 +2749,7 @@ import create_wordcloud from './wordcloud.js'
                             trigger: 'hover',
                             content: function () {
                                 const hovertext_id = 'SEARCH_' + $(this).text().toUpperCase();
-                                const t = __ctd2_hovertext[hovertext_id];
+                                const t = ctd2_hovertext[hovertext_id];
                                 if (!t) return null; // only null is automatically hidden
                                 return t;
                             },
@@ -3419,7 +2804,7 @@ import create_wordcloud from './wordcloud.js'
                                 trigger: 'hover',
                                 html: true,
                                 content: function () {
-                                    return __ctd2_hovertext.ALL_TIERS;
+                                    return ctd2_hovertext.ALL_TIERS;
                                 },
                             });
                             if (submissions.length == 1) {
@@ -3756,7 +3141,7 @@ import create_wordcloud from './wordcloud.js'
     const table_filter_popover = {
         placement: "top",
         trigger: 'hover',
-        content: __ctd2_hovertext.TABLE_FILTER,
+        content: ctd2_hovertext.TABLE_FILTER,
     };
 
     const ExploreView = Backbone.View.extend({
@@ -3862,7 +3247,7 @@ import create_wordcloud from './wordcloud.js'
                         trigger: 'hover',
                         content: function () {
                             const hovertext_id = 'EXPLORE_' + $(this).text().toUpperCase().replace(' ', '_');
-                            return __ctd2_hovertext[hovertext_id];
+                            return ctd2_hovertext[hovertext_id];
                         },
                     });
 
@@ -3880,7 +3265,7 @@ import create_wordcloud from './wordcloud.js'
                     $("#reset-ordering").popover({
                         placement: "top",
                         trigger: 'hover',
-                        content: __ctd2_hovertext.EXPLORE_RESET_ORDER,
+                        content: ctd2_hovertext.EXPLORE_RESET_ORDER,
                     });
                     $("#reset-ordering").click(function () {
                         $("#explore-table").DataTable().order.neutral().draw();
@@ -3897,7 +3282,7 @@ import create_wordcloud from './wordcloud.js'
             $("#customize-roles").popover({
                 placement: "top",
                 trigger: 'hover',
-                content: __ctd2_hovertext["EXPLORE_SELECT_ROLES_" + thatModel.type.toUpperCase()],
+                content: ctd2_hovertext["EXPLORE_SELECT_ROLES_" + thatModel.type.toUpperCase()],
             });
             $("#customize-roles").click(function (e) {
                 e.preventDefault();
