@@ -530,27 +530,27 @@ import ObservationView from './observation.view.js'
             });
 
             $.ajax("wordcloud").done(function (result) {
-                create_wordcloud('#vis', result);
+                create_wordcloud('#vis', result, 940);
             }).fail(function (err) {
                 console.log(err);
             });
             $.ajax("wordcloud/target,biomarker").done(function (result) {
-                create_wordcloud('#vis-genes', result);
+                create_wordcloud('#vis-genes', result, 940);
             }).fail(function (err) {
                 console.log(err);
             });
             $.ajax("wordcloud/perturbagen,candidate drug").done(function (result) {
-                create_wordcloud('#vis-compounds', result);
+                create_wordcloud('#vis-compounds', result, 940);
             }).fail(function (err) {
                 console.log(err);
             });
             $.ajax("wordcloud/disease").done(function (result) {
-                create_wordcloud('#vis-disease', result);
+                create_wordcloud('#vis-disease', result, 940);
             }).fail(function (err) {
                 console.log(err);
             });
             $.ajax("wordcloud/cell line").done(function (result) {
-                create_wordcloud('#vis-cell', result);
+                create_wordcloud('#vis-cell', result, 940);
             }).fail(function (err) {
                 console.log(err);
             });
@@ -1283,7 +1283,7 @@ import ObservationView from './observation.view.js'
 
     function create_subject_word_cloud(subject_id) {
         $.ajax("wordcloud/subject/" + subject_id).done(function (result) {
-            create_wordcloud('#subject-wordcloud', result);
+            create_wordcloud('#subject-wordcloud', result, 930);
         }).fail(function (err) {
             console.log(err);
         });

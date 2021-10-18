@@ -33,7 +33,7 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.11.3/b-2.0.1/b-html5-2.0.1/datatables.min.css"/>
     <link rel="stylesheet" href="css/jquery.fancybox.min.css" type="text/css" media="screen" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.9.2/jquery.contextMenu.min.css" integrity="sha512-SWjZLElR5l3FxoO9Bt9Dy3plCWlBi1Mc9/OlojDPwryZxO0ydpZgvXMLhV6jdEyULGNWjKgZWiX/AMzIvZ4JuA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="css/ctd2.css?ts=2021" type="text/css" />
+    <link rel="stylesheet" href="css/ctd2.css?ts=202110" type="text/css" />
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
@@ -981,7 +981,7 @@
              </div>
 
              <h3>Related observations <small>{{ role?"for the role of "+role:"" }} {{tier?"and tier "+tier:""}}</small></h3>
-             <div style="padding:5px">
+             <div>
              <button type="button" class="btn btn-secondary" id=subject-wordcloud-button><span id=subject-wordcloud-toggle-word>Show</span> Connected Subjects Word Cloud</button>
                 <div id=subject-wordcloud></div>
              </div>
@@ -1269,7 +1269,7 @@
             </div>
 
             <h3>Related observations <small>{{ role?"for the role of "+role:"" }} {{tier?"and tier "+tier:""}}</small></h3>
-            <div style="padding:5px">
+            <div>
                 <button type="button" class="btn btn-secondary" id=subject-wordcloud-button><span id=subject-wordcloud-toggle-word>Show</span> Connected Subjects Word Cloud</button>
                 <div id=subject-wordcloud></div>
             </div>
@@ -1351,7 +1351,7 @@
                 </div>
             </div>
             <h3>Related observations <small>{{ role?"for the role of "+role:"" }} {{tier?"and tier "+tier:""}}</small></h3>
-            <div style="padding:5px">
+            <div>
                 <button type="button" class="btn btn-secondary" id=subject-wordcloud-button><span id=subject-wordcloud-toggle-word>Show</span> Connected Subjects Word Cloud</button>
                 <div id=subject-wordcloud></div>
             </div>
@@ -1570,7 +1570,7 @@
               </div>
 
               <h3>Related observations <small>{{ role?"for the role of "+decodeURI(role):"" }} {{tier?"and tier "+tier:""}}</small></h3>
-                <div style="padding:5px">
+                <div>
                     <button type="button" class="btn btn-secondary" id=subject-wordcloud-button><span id=subject-wordcloud-toggle-word>Show</span> Connected Subjects Word Cloud</button>
                     <div id=subject-wordcloud></div>
                 </div>

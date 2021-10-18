@@ -689,3 +689,7 @@ td.wrapok {
 #centers-list-table img {
     max-height: 25px;
 }
+
+#subject-wordcloud-button {
+    margin: 10px
+}
