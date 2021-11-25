@@ -3,7 +3,7 @@ package gov.nih.nci.ctd2.dashboard.impl;
 import gov.nih.nci.ctd2.dashboard.model.Gene;
 import gov.nih.nci.ctd2.dashboard.model.Transcript;
 import org.hibernate.annotations.Proxy;
-import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
 
 import javax.persistence.*;
 

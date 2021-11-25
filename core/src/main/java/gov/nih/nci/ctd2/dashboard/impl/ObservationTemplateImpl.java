@@ -6,9 +6,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Proxy;
-import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Index;
-import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.engine.backend.types.Searchable;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
 
 import gov.nih.nci.ctd2.dashboard.model.ObservationTemplate;
 import gov.nih.nci.ctd2.dashboard.model.SubmissionCenter;
@@ -36,7 +36,7 @@ public class ObservationTemplateImpl extends DashboardEntityImpl implements Obse
     private String principalInvestigator;
     private String ecoCode = "";
 
-    @Field(name=FIELD_DESCRIPTION, index = Index.YES)
+    @FullTextField(name=FIELD_DESCRIPTION, searchable = Searchable.YES)
     @Column(length = 1024)
     public String getDescription() {
         return description;
@@ -63,7 +63,7 @@ public class ObservationTemplateImpl extends DashboardEntityImpl implements Obse
         this.tier = tier;
     }
 
-    @Field(name=FIELD_SUBMISSIONNAME, index = Index.YES)
+    @FullTextField(name=FIELD_SUBMISSIONNAME, searchable = Searchable.YES)
     @Column(length = 128)
     public String getSubmissionName() {
         return submissionName;
@@ -73,7 +73,7 @@ public class ObservationTemplateImpl extends DashboardEntityImpl implements Obse
         this.submissionName = submissionName;
     }
 
-    @Field(name=FIELD_SUBMISSIONDESC, index = Index.YES)
+    @FullTextField(name=FIELD_SUBMISSIONDESC, searchable = Searchable.YES)
     @Column(length = 1024)
     public String getSubmissionDescription() {
         return submissionDescription;
@@ -83,7 +83,7 @@ public class ObservationTemplateImpl extends DashboardEntityImpl implements Obse
         this.submissionDescription = submissionDescription;
     }
     
-    @Field(name=FIELD_PROJECT, index = Index.YES)
+    @FullTextField(name=FIELD_PROJECT, searchable = Searchable.YES)
     @Column(length = 1024)
     public String getProject() {
         return project;

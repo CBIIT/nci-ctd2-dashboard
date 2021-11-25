@@ -4,7 +4,7 @@ import gov.nih.nci.ctd2.dashboard.model.ShRna;
 import gov.nih.nci.ctd2.dashboard.model.Transcript;
 import javax.persistence.Index;
 import org.hibernate.annotations.Proxy;
-import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

@@ -29,9 +29,10 @@ import org.hibernate.ScrollMode;
 import org.hibernate.ScrollableResults;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.search.FullTextQuery;
-import org.hibernate.search.FullTextSession;
-import org.hibernate.search.Search;
+import org.hibernate.search.backend.lucene.LuceneExtension;
+import org.hibernate.search.engine.search.query.SearchResult;
+import org.hibernate.search.mapper.orm.Search;
+import org.hibernate.search.mapper.orm.session.SearchSession;
 import org.springframework.cache.annotation.Cacheable;
 
 import gov.nih.nci.ctd2.dashboard.api.EvidenceItem;
@@ -591,21 +592,19 @@ public class DashboardDaoImpl implements DashboardDao {
                 "SELECT id FROM subject WHERE id NOT IN (SELECT DISTINCT subject_id FROM observed_subject)");
         ScrollableResults scrollableResults = query.scroll(ScrollMode.FORWARD_ONLY);
 
-        FullTextSession fullTextSession = Search.getFullTextSession(getSession());
-        fullTextSession.setHibernateFlushMode(FlushMode.MANUAL);
+        SearchSession fullTextSession = Search.session(getSession());
 
         int cnt = 0;
         while (scrollableResults.next()) {
             Integer id = (Integer) scrollableResults.get(0);
-            fullTextSession.purge(DashboardEntityImpl.class, id);
+            fullTextSession.indexingPlan().purge(DashboardEntityImpl.class, id, null);
 
             if (++cnt % batchSize == 0) {
-                fullTextSession.flushToIndexes();
+                fullTextSession.indexingPlan().execute();
             }
         }
 
-        fullTextSession.flushToIndexes();
-        fullTextSession.clear();
+        fullTextSession.indexingPlan().execute();
 
         session.close();
     }
@@ -635,7 +634,7 @@ public class DashboardDaoImpl implements DashboardDao {
 
     private void searchSingleTerm(final String singleTerm, final Map<Subject, Integer> subjects,
             final Map<Submission, Integer> submissions) {
-        FullTextSession fullTextSession = Search.getFullTextSession(getSession());
+        SearchSession searchSession = Search.session( getSession() );
         MultiFieldQueryParser multiFieldQueryParser = new MultiFieldQueryParser(defaultSearchFields,
                 new WhitespaceAnalyzer());
         Query luceneQuery = null;
@@ -647,10 +646,11 @@ public class DashboardDaoImpl implements DashboardDao {
             return;
         }
 
-        FullTextQuery fullTextQuery = fullTextSession.createFullTextQuery(luceneQuery, searchableClasses);
-        fullTextQuery.setReadOnly(true);
-        List<?> list = fullTextQuery.list();
-        fullTextSession.close();
+        final Query luceneQueryFinal = luceneQuery;
+        SearchResult<?> result = searchSession.search(Arrays.asList(searchableClasses))
+            .extension( LuceneExtension.get() )
+            .where( f -> f.fromLuceneQuery( luceneQueryFinal ) ).fetchAll();
+        List<?> list = result.hits();
 
         Integer numberOfSearchResults = getMaxNumberOfSearchResults();
         if (numberOfSearchResults > 0 && list.size() > numberOfSearchResults) {

@@ -3,7 +3,7 @@ package gov.nih.nci.ctd2.dashboard.impl;
 import gov.nih.nci.ctd2.dashboard.model.CellSample;
 import gov.nih.nci.ctd2.dashboard.model.Annotation;
 import org.hibernate.annotations.Proxy;
-import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 

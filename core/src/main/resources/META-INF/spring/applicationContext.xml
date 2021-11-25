@@ -31,9 +31,10 @@
                 <prop key="hibernate.default_catalog">ctd2_dashboard</prop>
                 <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
                 <prop key="hibernate.connection.charSet">${hibernate.connection.charSet}</prop>
-                <prop key="hibernate.search.default.indexBase">${search.indexDir}</prop>
+                <prop key="hibernate.search.backend.directory.root">${search.indexDir}</prop>
                 <prop key="hibernate.temp.use_jdbc_metadata_defaults">false</prop>
-                <prop key="hibernate.search.lucene_version">LUCENE_CURRENT</prop>
+                <prop key="hibernate.search.backend.lucene_version">LUCENE_CURRENT</prop>
+                <prop key="hibernate.search.backend.analysis.configurer">class:gov.nih.nci.ctd2.dashboard.impl.CTD2AnalysisConfigurer</prop>
             </props>
         </property>
 

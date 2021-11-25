@@ -5,8 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Proxy;
-import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Index;
+import org.hibernate.search.engine.backend.types.Searchable;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
 
 import gov.nih.nci.ctd2.dashboard.model.Organism;
 
@@ -20,7 +20,7 @@ public class OrganismImpl extends DashboardEntityImpl implements Organism {
 
     private String taxonomyId;
 
-    @Field(name=FIELD_TAXID, index = Index.YES)
+    @FullTextField(name=FIELD_TAXID, searchable = Searchable.YES)
     @Column(length = 32, nullable = false)
     public String getTaxonomyId() {
         return taxonomyId;

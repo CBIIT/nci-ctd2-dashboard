@@ -5,8 +5,9 @@ import gov.nih.nci.ctd2.dashboard.model.GeneType;
 
 import javax.persistence.Index;
 import org.hibernate.annotations.Proxy;
-import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.engine.backend.types.Searchable;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -30,7 +31,7 @@ public class GeneImpl extends SubjectWithOrganismImpl implements Gene {
     private GeneType geneType;
     private String mapLocation;
 
-    @Field(name=FIELD_ENTREZID, index = org.hibernate.search.annotations.Index.YES)
+    @FullTextField(name=FIELD_ENTREZID, searchable = Searchable.YES)
     @Column(length = 32, nullable = false, unique = true)
     public String getEntrezGeneId() {
         return entrezGeneId;
@@ -40,7 +41,7 @@ public class GeneImpl extends SubjectWithOrganismImpl implements Gene {
         this.entrezGeneId = entrezGeneId;
     }
 
-    @Field(name=FIELD_HGNCID, index = org.hibernate.search.annotations.Index.YES)
+    @FullTextField(name=FIELD_HGNCID, searchable = Searchable.YES)
     @Column(length = 32, nullable = true)
     public String getHGNCId() {
         return hgncId;

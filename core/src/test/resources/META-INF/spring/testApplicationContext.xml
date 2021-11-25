@@ -30,9 +30,10 @@
                 <prop key="hibernate.dialect">${hibernate.dialect}</prop>
                 <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto.test}</prop>
                 <prop key="hibernate.connection.charSet">${hibernate.connection.charSet}</prop>
-                <prop key="hibernate.search.default.indexBase">${search.test.indexDir}</prop>
-                <prop key="hibernate.search.default.locking_strategy">single</prop>
-                <prop key="hibernate.search.lucene_version">LUCENE_CURRENT</prop>
+                <prop key="hibernate.search.backend.directory.root">${search.test.indexDir}</prop>
+                <prop key="hibernate.search.backend.directory.locking.strategy">single-instance</prop>
+                <prop key="hibernate.search.backend.lucene_version">LUCENE_CURRENT</prop>
+                <prop key="hibernate.search.backend.analysis.configurer">class:gov.nih.nci.ctd2.dashboard.impl.CTD2AnalysisConfigurer</prop>
             </props>
         </property>
 

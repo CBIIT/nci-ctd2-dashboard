@@ -5,31 +5,18 @@ import gov.nih.nci.ctd2.dashboard.model.DashboardEntity;
 import org.apache.lucene.analysis.core.LowerCaseFilterFactory;
 import org.apache.lucene.analysis.core.StopFilterFactory;
 import org.apache.lucene.analysis.core.WhitespaceTokenizerFactory;
-import org.hibernate.search.annotations.TokenFilterDef;
-import org.hibernate.search.annotations.Parameter;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import javax.persistence.Index;
 import org.hibernate.annotations.Proxy;
-import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Fields;
-import org.hibernate.search.annotations.Indexed;
-import org.hibernate.search.annotations.Analyze;
-import org.hibernate.search.annotations.Analyzer;
-import org.hibernate.search.annotations.AnalyzerDef;
-import org.hibernate.search.annotations.Store;
-import org.hibernate.search.annotations.TokenizerDef;
+import org.hibernate.search.engine.backend.types.Projectable;
+import org.hibernate.search.engine.backend.types.Searchable;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.GenericField;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
 
 import javax.persistence.*;
 
-@AnalyzerDef(name="ctd2analyzer",
-  tokenizer = @TokenizerDef(factory = WhitespaceTokenizerFactory.class),
-  filters = {
-    @TokenFilterDef(factory = LowerCaseFilterFactory.class),
-    @TokenFilterDef(factory = StopFilterFactory.class, params = {
-      @Parameter(name="ignoreCase", value="true")
-    })
-})
 @Entity
 @Proxy(proxyClass= DashboardEntity.class)
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -48,11 +35,9 @@ public class DashboardEntityImpl implements DashboardEntity {
     private Integer id;
     private String displayName;
 
-    @Fields({
-        @Field(name = FIELD_DISPLAYNAME, index = org.hibernate.search.annotations.Index.YES, store = Store.YES),
-        @Field(name = FIELD_DISPLAYNAME_WS, index = org.hibernate.search.annotations.Index.YES, store = Store.YES, analyzer = @Analyzer(definition = "ctd2analyzer")),
-        @Field(name = FIELD_DISPLAYNAME_UT, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO)
-    })
+    @FullTextField(name = FIELD_DISPLAYNAME, searchable = Searchable.YES, projectable = Projectable.YES)
+    @FullTextField(name = FIELD_DISPLAYNAME_WS, searchable = Searchable.YES, projectable = Projectable.YES, analyzer = "ctd2analyzer")
+    @GenericField(name = FIELD_DISPLAYNAME_UT, searchable = Searchable.YES)
     public String getDisplayName() {
         return displayName;
     }
