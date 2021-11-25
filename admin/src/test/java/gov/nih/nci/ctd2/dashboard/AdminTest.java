@@ -7,6 +7,9 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.batch.core.Job;
@@ -38,6 +41,8 @@ import gov.nih.nci.ctd2.dashboard.model.Transcript;
 import gov.nih.nci.ctd2.dashboard.model.Xref;
 
 public class AdminTest {
+    private static final Log log = LogFactory.getLog(AdminTest.class);
+
     private DashboardDao dashboardDao;
     private DashboardFactory dashboardFactory;
     private ApplicationContext appContext;
@@ -60,6 +65,18 @@ public class AdminTest {
 				"classpath*:META-INF/spring/taxonomyDataApplicationContext.xml", // and this is for taxonomy data importer beans
 				"classpath*:META-INF/spring/testXrefApplicationContext.xml" // and this is for xref importer beans
         );
+        if(log.isDebugEnabled()) {
+            org.hibernate.internal.SessionFactoryImpl sf = (org.hibernate.internal.SessionFactoryImpl)appContext.getBean("sessionFactory");
+            java.util.Map<String, Object> properties = sf.getProperties();
+            for(String name: properties.keySet()) {
+                String p = properties.get(name).toString();
+                if(name.equals("java.class.path") || name.equals("surefire.test.class.path")) { // too long to read
+                    p = p.substring(0, p.indexOf(":")) + "... ..." + p.split(":").length;
+                }
+                System.out.println(name+" "+p);
+            }
+            System.out.println("hibernate.search.background_failure_handler "+properties.get("hibernate.search.background_failure_handler"));
+        }
 
         this.dashboardDao = (DashboardDao) appContext.getBean("dashboardDao");
         this.dashboardFactory = (DashboardFactory) appContext.getBean("dashboardFactory");
