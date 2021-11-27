@@ -2716,10 +2716,6 @@ import ObservationView from './observation.view.js'
                             placement: "left",
                             trigger: "hover",
                         });
-                        $(".obs-tooltip").popover({
-                            placement: "bottom",
-                            trigger: "hover",
-                        });
 
                         const oTable = $("#search-results-grid").dataTable({
                             "columns": [
@@ -2753,6 +2749,13 @@ import ObservationView from './observation.view.js'
                                 if (!t) return null; // only null is automatically hidden
                                 return t;
                             },
+                        });
+                        // hack into datatables element
+                        const table_info = document.getElementById("search-results-grid_info")
+                        table_info.innerHTML += ' <i class="icon-question-sign obs-tooltip " data-content="Subjects are listed in decreasing order of the count of matched terms. Ties are broken by total observation count." data-original-title="" title=""></i>'
+                        $(".obs-tooltip").popover({
+                            placement: "bottom",
+                            trigger: "hover",
                         });
 
                         // OK done with the subjects; let's build the submissions table
