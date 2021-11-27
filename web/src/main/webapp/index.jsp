@@ -1709,7 +1709,7 @@
             </td>
             <td class="nonewline">
                 <a href="#{{dashboardEntity.stableURL}}" id="subject-observation-count-{{dashboardEntity.id}}" count="{{observationCount}}">{{observationCount}}</a>
-                <i class="icon-question-sign obs-tooltip {{observationCount < 1 ? 'hide' : ''}}" data-content="{{observationCount}} observations from {{centerCount}} centers: Tier {{maxTier}}"></i>
+                <br/>(from {{centerCount}} Center{{centerCount > 1 ? 's' : ''}})
             </td>
             <td>{{matchNumber}}</td>
         </tr>
@@ -1742,7 +1742,7 @@
             </td>
             <td class="nonewline">
                 <a href="#{{dashboardEntity.stableURL}}" id="subject-observation-count-{{dashboardEntity.id}}" count="{{observationCount}}">{{observationCount}}</a>
-                <i class="icon-question-sign obs-tooltip {{observationCount < 1 ? 'hide' : ''}}" data-content="{{observationCount}} observations from {{centerCount}} centers: Tier {{maxTier}}"></i>
+                <br/>(from {{centerCount}} Center{{centerCount > 1 ? 's' : ''}})
             </td>
             <td>{{matchNumber}}</td>
         </tr>
