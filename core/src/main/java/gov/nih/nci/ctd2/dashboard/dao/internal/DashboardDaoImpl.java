@@ -850,7 +850,7 @@ public class DashboardDaoImpl implements DashboardDao {
         for (int child : children) {
             List<Integer> observationIds = observationIdsForEcoCode(String.format("ECO:%07d", child));
             int observationNumber = observationIds.size();
-            if (observationNumber > 1) {
+            if (observationNumber > 0) {
                 log.debug("eco child found " + child);
                 list.add(child);
             }
@@ -913,7 +913,20 @@ public class DashboardDaoImpl implements DashboardDao {
         String sql = "SELECT COUNT(observation.id) FROM observation"
                 + " JOIN submission ON observation.submission_id=submission.id"
                 + " JOIN observation_template ON submission.observationTemplate_id=observation_template.id"
-                + " WHERE ecocode='" + ecocode + "'";
+                + " WHERE ecocode LIKE '%" + ecocode + "%'";
+        Session session = getSession();
+        @SuppressWarnings("unchecked")
+        org.hibernate.query.Query<BigInteger> query = session.createNativeQuery(sql);
+        int count = query.getSingleResult().intValue();
+        session.close();
+        return count;
+    }
+
+    private int centerCountForEcoCode(String ecocode) {
+        String sql = "SELECT COUNT(DISTINCT submissionCenter_id) FROM observation"
+                + " JOIN submission ON observation.submission_id=submission.id"
+                + " JOIN observation_template ON submission.observationTemplate_id=observation_template.id"
+                + " WHERE ecocode LIKE '%" + ecocode + "%'";
         Session session = getSession();
         @SuppressWarnings("unchecked")
         org.hibernate.query.Query<BigInteger> query = session.createNativeQuery(sql);
@@ -1582,6 +1595,21 @@ public class DashboardDaoImpl implements DashboardDao {
         return count;
     }
 
+    private int centerCountForTissueSample(int code) {
+        Session session = getSession();
+        String sql = "SELECT COUNT(DISTINCT submissionCenter_id) FROM observed_subject "
+        + "JOIN tissue_sample ON subject_id=tissue_sample.id "
+        + "JOIN observation ON observed_subject.observation_id=observation.id "
+        + "JOIN submission ON observation.submission_id=submission.id "
+        + "JOIN observation_template ON submission.observationTemplate_id=observation_template.id "
+        + "WHERE code=" + code;
+        @SuppressWarnings("unchecked")
+        org.hibernate.query.Query<BigInteger> query = session.createNativeQuery(sql);
+        int count = query.getSingleResult().intValue();
+        session.close();
+        return count;
+    }
+
     /*
      * To get observation 'search' results, i.e. the intersection concept, the
      * implmentation of ontology search will be much more complex. Ideally it would
@@ -1632,7 +1660,7 @@ public class DashboardDaoImpl implements DashboardDao {
         List<DashboardEntityWithCounts> list = new ArrayList<DashboardEntityWithCounts>();
         for (Integer id : ids) {
             Observation o = this.getEntityById(Observation.class, id);
-            list.add(new DashboardEntityWithCounts(o, 0));
+            list.add(new DashboardEntityWithCounts(o, 0, 0));
         }
         return list;
     }
@@ -1655,7 +1683,8 @@ public class DashboardDaoImpl implements DashboardDao {
                 continue;
             }
             int observationNumber = observationCountForTissueSample(i);
-            DashboardEntityWithCounts x = new DashboardEntityWithCounts(result, observationNumber);
+            int centerCount = centerCountForTissueSample(i);
+            DashboardEntityWithCounts x = new DashboardEntityWithCounts(result, observationNumber, centerCount);
             Set<String> roles = getRolesForSubjectId(result.getId());
             x.setRoles(roles);
             entities.add(x);
@@ -1682,7 +1711,8 @@ public class DashboardDaoImpl implements DashboardDao {
             List<ECOTerm> list2 = query2.list();
             for (ECOTerm x : list2) {
                 int observationNumber = observationCountForEcoCode(x.getCode());
-                entities.add(new DashboardEntityWithCounts(x, observationNumber));
+                int centerCount = centerCountForEcoCode(x.getCode());
+                entities.add(new DashboardEntityWithCounts(x, observationNumber, centerCount));
                 if (observations != null) {
                     List<Integer> observationIdsForOneECOTerm = observationIdsForEcoCode(x.getCode());
                     observations.addAll(observationIdsForOneECOTerm);

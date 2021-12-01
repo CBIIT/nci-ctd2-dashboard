@@ -19,9 +19,10 @@ public class DashboardEntityWithCounts implements Serializable {
     public DashboardEntityWithCounts() {
     }
 
-    public DashboardEntityWithCounts(DashboardEntity dashboardEntity, int observationCount) {
+    public DashboardEntityWithCounts(DashboardEntity dashboardEntity, int observationCount, int centerCount) {
         this.dashboardEntity = dashboardEntity;
         this.observationCount = observationCount;
+        this.centerCount = centerCount;
     }
 
     public DashboardEntity getDashboardEntity() {
