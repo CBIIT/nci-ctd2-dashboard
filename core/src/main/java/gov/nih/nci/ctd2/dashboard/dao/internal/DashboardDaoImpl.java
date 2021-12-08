@@ -4,6 +4,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -710,7 +711,7 @@ public class DashboardDaoImpl implements DashboardDao {
 
         Map<String, Set<Observation>> observationMap = new HashMap<String, Set<Observation>>();
 
-        ArrayList<DashboardEntityWithCounts> subject_result = new ArrayList<DashboardEntityWithCounts>();
+        List<DashboardEntityWithCounts> subject_result = new ArrayList<DashboardEntityWithCounts>();
         for (Subject subject : subjects.keySet()) {
             DashboardEntityWithCounts entityWithCounts = new DashboardEntityWithCounts();
             entityWithCounts.setDashboardEntity(subject);
@@ -741,6 +742,15 @@ public class DashboardDaoImpl implements DashboardDao {
             });
             subject_result.add(entityWithCounts);
         }
+        /* Limit the size. This should be done more efficiently during the process of builing up of the list. 
+        Because the limit needs to be based on 'match number' ranking, which depends on all terms, an efficient algorithm is obviously. 
+        Unfortunately we also have to do this after processing all results because we also need (in fact more often) observation number in ranking. TODO */
+        System.out.println("size before limiting "+subject_result.size());
+        subject_result.stream().sorted(Comparator.comparingInt(DashboardEntityWithCounts::getObservationCount).reversed())
+            .limit(maxNumberOfSearchResults).map(e->e.getDashboardEntity().getDisplayName()).forEach(System.out::println);
+        subject_result = subject_result.stream().sorted(Comparator.comparingInt(DashboardEntityWithCounts::getObservationCount).reversed())
+            .limit(maxNumberOfSearchResults).collect(Collectors.toList());
+        System.out.println("size after limiting "+subject_result.size());
 
         /* search ECO terms */
         List<ECOTerm> ecoterms = findECOTerms(queryString);
