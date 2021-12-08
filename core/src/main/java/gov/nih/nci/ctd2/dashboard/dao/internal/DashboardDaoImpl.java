@@ -4,7 +4,6 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -742,15 +741,18 @@ public class DashboardDaoImpl implements DashboardDao {
             });
             subject_result.add(entityWithCounts);
         }
-        /* Limit the size. This should be done more efficiently during the process of builing up of the list. 
-        Because the limit needs to be based on 'match number' ranking, which depends on all terms, an efficient algorithm is obviously. 
-        Unfortunately we also have to do this after processing all results because we also need (in fact more often) observation number in ranking. TODO */
-        System.out.println("size before limiting "+subject_result.size());
-        subject_result.stream().sorted(Comparator.comparingInt(DashboardEntityWithCounts::getObservationCount).reversed())
-            .limit(maxNumberOfSearchResults).map(e->e.getDashboardEntity().getDisplayName()).forEach(System.out::println);
-        subject_result = subject_result.stream().sorted(Comparator.comparingInt(DashboardEntityWithCounts::getObservationCount).reversed())
-            .limit(maxNumberOfSearchResults).collect(Collectors.toList());
-        System.out.println("size after limiting "+subject_result.size());
+        /*
+         * Limit the size. This should be done more efficiently during the process of
+         * builing up of the list.
+         * Because the limit needs to be based on 'match number' ranking, which depends
+         * on all terms, an efficient algorithm is not obvious.
+         * Unfortunately, we also have to do this after processing all results because
+         * we need (in fact more often) observation numbers as well in ranking. TODO
+         */
+        log.debug("size before limiting: " + subject_result.size());
+        subject_result = subject_result.stream().sorted(new SearchResultComparator())
+                .limit(maxNumberOfSearchResults).collect(Collectors.toList());
+        log.debug("size after limiting: " + subject_result.size());
 
         /* search ECO terms */
         List<ECOTerm> ecoterms = findECOTerms(queryString);
@@ -1608,11 +1610,11 @@ public class DashboardDaoImpl implements DashboardDao {
     private int centerCountForTissueSample(int code) {
         Session session = getSession();
         String sql = "SELECT COUNT(DISTINCT submissionCenter_id) FROM observed_subject "
-        + "JOIN tissue_sample ON subject_id=tissue_sample.id "
-        + "JOIN observation ON observed_subject.observation_id=observation.id "
-        + "JOIN submission ON observation.submission_id=submission.id "
-        + "JOIN observation_template ON submission.observationTemplate_id=observation_template.id "
-        + "WHERE code=" + code;
+                + "JOIN tissue_sample ON subject_id=tissue_sample.id "
+                + "JOIN observation ON observed_subject.observation_id=observation.id "
+                + "JOIN submission ON observation.submission_id=submission.id "
+                + "JOIN observation_template ON submission.observationTemplate_id=observation_template.id "
+                + "WHERE code=" + code;
         @SuppressWarnings("unchecked")
         org.hibernate.query.Query<BigInteger> query = session.createNativeQuery(sql);
         int count = query.getSingleResult().intValue();
