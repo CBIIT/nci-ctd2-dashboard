@@ -19,4 +19,7 @@ public class SearchResults {
         else
             return subject_result.size();
     }
+
+    public int oversized = 0; // if greater 0, it shows the total number of results when the return size is
+                              // limited
 }

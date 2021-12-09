@@ -1764,6 +1764,13 @@
             </div>
 
             <div id='no-result'></div>
+            <div class="alert alert-warning" style="display:none" id="oversize-message">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <p>
+                    Only top 100 of <span id=oversized></span> subjects are listed in the table below.
+                    Please make the query string more specific, e.g., quote the multi-word phrases.
+                </p>
+            </div>
             <table id="search-results-grid" class="table table-bordered table-striped">
                 <thead>
                 <tr>

@@ -2686,6 +2686,11 @@ import ObservationView from './observation.view.js'
                 success: function () {
                     $("#loading-row").remove();
                     const results = searchResults.toJSON();
+                    console.log(`oversized %c ${results.oversized}`, "color:red")
+                    if(results.oversized>0) {
+                        $("#oversized").text(results.oversized)
+                        $("#oversize-message").show()
+                    }
                     const subject_result = results.subject_result;
                     subject_names = subject_result.map(x => x.dashboardEntity.displayName);
                     const submission_result = results.submission_result;

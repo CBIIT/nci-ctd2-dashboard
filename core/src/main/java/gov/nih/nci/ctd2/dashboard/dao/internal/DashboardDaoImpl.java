@@ -749,10 +749,12 @@ public class DashboardDaoImpl implements DashboardDao {
          * Unfortunately, we also have to do this after processing all results because
          * we need (in fact more often) observation numbers as well in ranking. TODO
          */
-        log.debug("size before limiting: " + subject_result.size());
-        subject_result = subject_result.stream().sorted(new SearchResultComparator())
-                .limit(maxNumberOfSearchResults).collect(Collectors.toList());
-        log.debug("size after limiting: " + subject_result.size());
+        if (subject_result.size() > maxNumberOfSearchResults) {
+            searchResults.oversized = subject_result.size();
+            subject_result = subject_result.stream().sorted(new SearchResultComparator())
+                    .limit(maxNumberOfSearchResults).collect(Collectors.toList());
+            log.debug("size after limiting: " + subject_result.size());
+        }
 
         /* search ECO terms */
         List<ECOTerm> ecoterms = findECOTerms(queryString);
