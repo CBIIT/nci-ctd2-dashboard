@@ -34,6 +34,7 @@
                 <prop key="hibernate.search.default.indexBase">${search.indexDir}</prop>
                 <prop key="hibernate.temp.use_jdbc_metadata_defaults">false</prop>
                 <prop key="hibernate.search.lucene_version">LUCENE_CURRENT</prop>
+                <prop key="hibernate.search.lucene.analysis_definition_provider">gov.nih.nci.ctd2.dashboard.impl.CTD2AnalyzerProvider</prop>
             </props>
         </property>
 

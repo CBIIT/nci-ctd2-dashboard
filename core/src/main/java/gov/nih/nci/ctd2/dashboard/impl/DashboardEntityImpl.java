@@ -2,11 +2,6 @@ package gov.nih.nci.ctd2.dashboard.impl;
 
 import gov.nih.nci.ctd2.dashboard.model.DashboardEntity;
 
-import org.apache.lucene.analysis.core.LowerCaseFilterFactory;
-import org.apache.lucene.analysis.core.StopFilterFactory;
-import org.apache.lucene.analysis.core.WhitespaceTokenizerFactory;
-import org.hibernate.search.annotations.TokenFilterDef;
-import org.hibernate.search.annotations.Parameter;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import javax.persistence.Index;
@@ -16,20 +11,10 @@ import org.hibernate.search.annotations.Fields;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Analyzer;
-import org.hibernate.search.annotations.AnalyzerDef;
 import org.hibernate.search.annotations.Store;
-import org.hibernate.search.annotations.TokenizerDef;
 
 import javax.persistence.*;
 
-@AnalyzerDef(name="ctd2analyzer",
-  tokenizer = @TokenizerDef(factory = WhitespaceTokenizerFactory.class),
-  filters = {
-    @TokenFilterDef(factory = LowerCaseFilterFactory.class),
-    @TokenFilterDef(factory = StopFilterFactory.class, params = {
-      @Parameter(name="ignoreCase", value="true")
-    })
-})
 @Entity
 @Proxy(proxyClass= DashboardEntity.class)
 @Inheritance(strategy = InheritanceType.JOINED)
