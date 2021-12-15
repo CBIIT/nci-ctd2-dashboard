@@ -741,20 +741,6 @@ public class DashboardDaoImpl implements DashboardDao {
             });
             subject_result.add(entityWithCounts);
         }
-        /*
-         * Limit the size. This should be done more efficiently during the process of
-         * builing up of the list.
-         * Because the limit needs to be based on 'match number' ranking, which depends
-         * on all terms, an efficient algorithm is not obvious.
-         * Unfortunately, we also have to do this after processing all results because
-         * we need (in fact more often) observation numbers as well in ranking. TODO
-         */
-        if (subject_result.size() > maxNumberOfSearchResults) {
-            searchResults.oversized = subject_result.size();
-            subject_result = subject_result.stream().sorted(new SearchResultComparator())
-                    .limit(maxNumberOfSearchResults).collect(Collectors.toList());
-            log.debug("size after limiting: " + subject_result.size());
-        }
 
         /* search ECO terms */
         List<ECOTerm> ecoterms = findECOTerms(queryString);
@@ -784,6 +770,21 @@ public class DashboardDaoImpl implements DashboardDao {
                 observationMap.put(term, obset);
             });
         }
+        /*
+         * Limit the size. This should be done more efficiently during the process of
+         * builing up of the list.
+         * Because the limit needs to be based on 'match number' ranking, which depends
+         * on all terms, an efficient algorithm is not obvious.
+         * Unfortunately, we also have to do this after processing all results because
+         * we need (in fact more often) observation numbers as well in ranking. TODO
+         */
+        if (subject_result.size() > maxNumberOfSearchResults) {
+            searchResults.oversized = subject_result.size();
+            subject_result = subject_result.stream().sorted(new SearchResultComparator())
+                    .limit(maxNumberOfSearchResults).collect(Collectors.toList());
+            log.debug("size after limiting: " + subject_result.size());
+        }
+
         searchResults.subject_result = subject_result;
 
         if (searchTerms.length <= 1) {
