@@ -2838,6 +2838,11 @@ import ObservationView from './observation.view.js'
                             $('#submission-summary-link').hide();
                         }
 
+                        console.log(`oversized observations %c ${results.oversized_observations}`, "color:green")
+                        if(results.oversized_observations>0) {
+                            $("#oversized-observations").text(results.oversized_observations)
+                            $("#oversize-message-observations").show()
+                        }
                         tabulate_matching_observations(matching_observations);
                         if (matching_observations.length == 0) {
                             $('#observation-summary-link').hide();

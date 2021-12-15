@@ -1816,6 +1816,12 @@
 
             <div id="observation-search-results">
                 <h3>Observations matching all search terms</h3>
+                <div class="alert alert-warning" style="display:none" id="oversize-message-observations">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    <p>
+                        Only 100 of <span id=oversized-observations></span> observations are listed in the table below.
+                    </p>
+                </div>
                 <table id="searched-observation-grid" class="table table-bordered table-striped observations">
                     <thead>
                     <tr>

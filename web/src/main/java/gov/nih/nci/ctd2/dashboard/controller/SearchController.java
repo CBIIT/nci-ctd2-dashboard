@@ -49,7 +49,7 @@ public class SearchController {
         }
 
         SearchResults results = dashboardDao.search(keyword);
-        log.debug("number of rearch results " + results.size());
+        log.debug("number of subject results from search " + results.size());
         JSONSerializer jsonSerializer = new JSONSerializer().transform(new ImplTransformer(), Class.class)
                 .transform(new DateTransformer(), Date.class);
         String serializedResult = jsonSerializer.deepSerialize(results);

@@ -20,6 +20,8 @@ public class SearchResults {
             return subject_result.size();
     }
 
-    public int oversized = 0; // if greater 0, it shows the total number of results when the return size is
-                              // limited
+    // if greater 0, it shows the total number of results when the return size is
+    // limited
+    public int oversized = 0; // 'subjects', including ECO terms
+    public int oversized_observations = 0;
 }

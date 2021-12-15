@@ -811,6 +811,12 @@ public class DashboardDaoImpl implements DashboardDao {
         if (set0.size() == 0) {
             log.debug("no intersection of observations");
         }
+        if (set0.size() > maxNumberOfSearchResults) {
+            searchResults.oversized_observations = set0.size();
+            // no particular ranking is enforced when limiting
+            set0 = set0.stream().limit(maxNumberOfSearchResults).collect(Collectors.toSet());
+            log.debug("observation results count after limiting: " + set0.size());
+        }
         ArrayList<DashboardEntityWithCounts> observation_result = new ArrayList<DashboardEntityWithCounts>();
         set0.forEach(ob -> {
             DashboardEntityWithCounts oneObservationResult = new DashboardEntityWithCounts();
