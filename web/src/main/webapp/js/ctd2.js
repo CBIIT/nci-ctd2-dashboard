@@ -2532,8 +2532,10 @@ import ObservationView from './observation.view.js'
                     if(subject_result.length==0) {
                         $("#ontology-search").prop('disabled', true);
                         $("#ontology-spinner").hide();
+                        $("#no-onto-legend").show();
                         return;
                     }
+                    $("#onto-legend").show();
                     if($("#no-result").is(":visible")) {
                         $("#no-result").hide();
                         $("#search-results-grid").parent().width("100%");

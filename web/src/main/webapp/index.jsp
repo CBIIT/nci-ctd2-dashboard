@@ -1687,13 +1687,10 @@
     <script type="text/template" id="search-result-row-tmpl">
         <tr>
             <td id="search-image-{{dashboardEntity.id}}"></td>
-            <td style="position:relative">
+            <td>
+                <img src="img/onto.png" style="float: right;display:{{ontology?'block':'none'}}">
                 <a href="#{{dashboardEntity.stableURL}}">{{dashboardEntity.displayName}}</a><br>
                 <i>{{dashboardEntity.organism.displayName != '-' ? "(" + dashboardEntity.organism.displayName + ")" : ""}}</i>
-                <svg height="10" width="10" style="position:absolute;top:0;right:0" display={{ontology?'block':'none'}}>
-                    <polygon points="10,10 0,0 10,0" style="fill:DodgerBlue;stroke:black;stroke-width:1" />
-                    Sorry, your browser does not support inline SVG.
-                </svg>
             </td>
             <td>
                 <ul id="synonyms-{{dashboardEntity.id}}">
@@ -1718,15 +1715,12 @@
     <script type="text/template" id="search-result-gene-row-tmpl">
         <tr>
             <td id="search-image-{{dashboardEntity.id}}"></td>
-            <td style="position:relative">
+            <td>
+                <img src="img/onto.png" style="float: right;display:{{ontology?'block':'none'}}">
                 <a href="#{{dashboardEntity.stableURL}}">{{dashboardEntity.displayName}}</a>
                 <a href="#" class="addGene-{{dashboardEntity.displayName}} cartAddPlus" data-content="Add gene to cart" >+</a>
                 <br>
                 <i>{{dashboardEntity.organism.displayName != '-' ? "(" + dashboardEntity.organism.displayName + ")" : ""}}</i>
-                <svg height="10" width="10" style="position:absolute;top:0;right:0" display={{ontology?'block':'none'}}>
-                    <polygon points="10,10 0,0 10,0" style="fill:DodgerBlue;stroke:black;stroke-width:1" />
-                    Sorry, your browser does not support inline SVG.
-                </svg>
             </td>
             <td>
                 <ul id="synonyms-{{dashboardEntity.id}}">
@@ -1771,6 +1765,8 @@
                     Please make the query string more specific, e.g., quote the multi-word phrases.
                 </p>
             </div>
+            <div id=onto-legend style="display:none">Ontology search results flagged in Names column with <img src="img/onto.png"></div>
+            <div id=no-onto-legend style="display:none">Ontology search found no additional terms</div>
             <table id="search-results-grid" class="table table-bordered table-striped">
                 <thead>
                 <tr>
