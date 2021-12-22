@@ -2274,8 +2274,7 @@
                        <medium>Select Interactome:</medium>
                        <small id="queryDescription" class="cnkbDescription"></small> 
                        <br/>
-                       <select id="interactomeList" name="interactomes"
-                            class="cnkbSelectList" size="4"></select>
+                       <select id="interactomeList" class="cnkbSelectList" size="10"></select>
                        <br/>
                        <small id="interactomeDescription" class="cnkbDescription">
                         &nbsp;&nbsp;
