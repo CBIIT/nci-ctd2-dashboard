@@ -529,6 +529,12 @@ import ObservationView from './observation.view.js'
                 $(this).popover('hide');
             });
 
+            $('.search-button').popover({
+                placement: "bottom",
+                trigger: 'hover',
+                content: "Use of quotes to surround multi-word search terms is advised to avoid a large number of hits",
+            })
+
             $.ajax("wordcloud").done(function (result) {
                 create_wordcloud('#vis', result, 940);
             }).fail(function (err) {
@@ -2677,6 +2683,11 @@ import ObservationView from './observation.view.js'
                 });
                 $("#ontology-spinner").show();
             });
+            $('#ontology-search').popover({
+                placement: "bottom",
+                trigger: 'hover',
+                content: "Expand result set to include subjects that are ontology children of original hits",
+            })
 
             const thatEl = this.el;
             const thatModel = this.model;
