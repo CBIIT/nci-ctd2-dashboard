@@ -1664,7 +1664,7 @@
                     <h3>Sorry, no results found</h3>
                     <p>
                         Would you like to extend your search with a wildcard?
-                        (<i>e.g.</i> <a href="#/search/{{encodeURIComponent(term)}}*">{{decodeURIComponent(term)}}*</a>)
+                        (<i>e.g.</i> <a href="#/search/{{term}}*">{{decodeURIComponent(decodeURI(this.model.term)).replaceAll(/\%25/g,"%").replaceAll(/\%27/g,"'")}}*</a>)
                     </p>
                 </div>
             </td>
@@ -1749,7 +1749,7 @@
                 <span class="spinner-border spinner-border-sm"></span>
                 Searching...
             </button>
-            <h2>Search <small>for <i>{{decodeURIComponent(term)}}</i></small></h2>
+            <h2>Search <small>for <i>{{decodeURIComponent(decodeURI(this.model.term)).replaceAll(/\%25/g,"%").replaceAll(/\%27/g,"'")}}</i></small></h2>
             <div style='padding: 20px 0px; width=100%'>
             <a href="" onclick="document.getElementById('submission-search-results').scrollIntoView(); return false" id=submission-summary-link>
                 See <span id=submission-summary></span> from <span id=center-summary></span></a> 
