@@ -428,11 +428,6 @@ import ObservationView from './observation.view.js'
                 trigger: 'hover',
             });
 
-            $("#omni-search-form").submit(function () {
-                window.location.hash = "search/" + $("#omni-search").val();
-                return false;
-            });
-
             $("#homepage-help-navigate").click(function (e) {
                 e.preventDefault();
                 (new HelpNavigateView()).render();
@@ -2517,7 +2512,7 @@ import ObservationView from './observation.view.js'
             $(this.el).html(this.template(this.model));
 
             // update the search box accordingly
-            $("#omni-input").val(decodeURIComponent(this.model.term));
+            $("#omni-input").val(decodeURIComponent(decodeURI(this.model.term)).replaceAll(/\%25/g,"%").replaceAll(/\%27/g,"'"));
 
             const searchQuery = this.model.term;
             let subject_names = [];
@@ -3482,7 +3477,7 @@ import ObservationView from './observation.view.js'
         search: function (term) {
             new SearchView({
                 model: {
-                    term: decodeURI(term)
+                    term: term
                         .replace(new RegExp("<", "g"), "")
                         .replace(new RegExp(">", "g"), "")
                 }
@@ -3594,7 +3589,7 @@ import ObservationView from './observation.view.js'
 
         $("#omnisearch").submit(function () {
             const previous = window.location.hash;
-            window.location.hash = "search/" + encodeURI(encodeURIComponent($("#omni-input").val().trim().replace("'", "%27")));
+            window.location.hash = "search/" + encodeURI(encodeURIComponent($("#omni-input").val().trim().replaceAll("%", "%25").replaceAll("'", "%27")));
             if(previous==window.location.hash) {
                 window.location.reload();
             }

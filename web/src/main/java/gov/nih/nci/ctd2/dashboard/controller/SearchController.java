@@ -42,11 +42,8 @@ public class SearchController {
         // This is to prevent unnecessary server loads
         if (keyword.length() < 2)
             return new ResponseEntity<String>(headers, HttpStatus.BAD_REQUEST);
-        try {
-            keyword = URLDecoder.decode(keyword, Charset.defaultCharset().displayName());
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+
+        keyword = URLDecoder.decode(URLDecoder.decode(keyword, Charset.defaultCharset()), Charset.defaultCharset());
 
         SearchResults results = dashboardDao.search(keyword);
         log.debug("number of rearch results " + results.size());
