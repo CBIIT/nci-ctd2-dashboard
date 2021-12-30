@@ -1,6 +1,5 @@
 package gov.nih.nci.ctd2.dashboard.controller;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.util.Date;

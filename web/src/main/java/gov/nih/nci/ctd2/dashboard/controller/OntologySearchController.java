@@ -1,5 +1,7 @@
 package gov.nih.nci.ctd2.dashboard.controller;
 
+import java.net.URLDecoder;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -36,7 +38,7 @@ public class OntologySearchController {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json; charset=utf-8");
 
-        SearchResults ontologyResult = dashboardDao.ontologySearch(terms);
+        SearchResults ontologyResult = dashboardDao.ontologySearch(URLDecoder.decode(terms, Charset.defaultCharset()));
         log.debug("result list size=" + ontologyResult.size());
         JSONSerializer jsonSerializer = new JSONSerializer().transform(new ImplTransformer(), Class.class)
                 .transform(new DateTransformer(), Date.class);
