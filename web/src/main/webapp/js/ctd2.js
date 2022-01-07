@@ -524,12 +524,6 @@ import ObservationView from './observation.view.js'
                 $(this).popover('hide');
             });
 
-            $('.search-button').popover({
-                placement: "bottom",
-                trigger: 'hover',
-                content: "Use of quotes to surround multi-word search terms is advised to avoid a large number of hits",
-            })
-
             $.ajax("wordcloud").done(function (result) {
                 create_wordcloud('#vis', result, 940);
             }).fail(function (err) {

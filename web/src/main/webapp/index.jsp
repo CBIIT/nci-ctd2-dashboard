@@ -164,7 +164,7 @@
                                         placeholder="e.g. CTNNB1 or dasatinib" aria-label="search">
                                     <button type="submit" class="btn search-button">Search</button>
                                     <span class="d-none" id="search-help-content">
-                                        <p>Please enter the keyword(s) you would like to search on the website. You may
+                                        <p>Please enter the keyword(s) you would like to search on the website. Use of quotes to surround multi-word search terms is advised to avoid a large number of hits. You may
                                             enter multiple search terms, but do not use "AND" or "OR".</p>
                                         <strong>Examples:</strong>
                                         <ul>
