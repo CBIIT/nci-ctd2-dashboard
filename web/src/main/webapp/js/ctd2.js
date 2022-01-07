@@ -117,7 +117,7 @@ import ObservationView from './observation.view.js'
         urlRoot: BASE_URL + "get/center"
     });
     const SubmissionCenters = Backbone.Collection.extend({
-        url: BASE_URL + "list/center/?filterBy=",
+        url: BASE_URL + "list/center",
         model: SubmissionCenter
     });
 
@@ -215,7 +215,7 @@ import ObservationView from './observation.view.js'
 
     const SubjectRole = Backbone.Model.extend({});
     const SubjectRoles = Backbone.Collection.extend({
-        url: BASE_URL + "list/role?filterBy=",
+        url: BASE_URL + "list/role",
         model: SubjectRole
     });
 

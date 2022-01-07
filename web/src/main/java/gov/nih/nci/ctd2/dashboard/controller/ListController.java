@@ -52,7 +52,7 @@ public class ListController {
     @RequestMapping(value="{type}", method = {RequestMethod.GET, RequestMethod.POST}, headers = "Accept=application/json")
     public ResponseEntity<String> getSearchResultsInJson(
             @PathVariable String type,
-            @RequestParam("filterBy") Integer filterBy,
+            @RequestParam(value = "filterBy", required = false) Integer filterBy,
             @RequestParam(value = "getAll", required = false, defaultValue = "false") Boolean getAll
             ) {
         HttpHeaders headers = new HttpHeaders();
