@@ -2526,6 +2526,7 @@ import ObservationView from './observation.view.js'
                     const subject_result = ontology_search_results.subject_result;
                     if(subject_result.length==0) {
                         $("#ontology-search").prop('disabled', true);
+                        $("#ontology-search").css("pointer-events", "none");
                         $("#ontology-spinner").hide();
                         $("#no-onto-legend").show();
                         return;
@@ -2603,6 +2604,7 @@ import ObservationView from './observation.view.js'
                     ]);
                     $("#search-results-grid").parent().find('input[type=search]').popover(table_filter_popover);
                     $("#ontology-search").prop('disabled', true);
+                    $("#ontology-search").css("pointer-events", "none");
                     // hack into datatables element - re-create explanatory hover text after ontology search
                     const table_info = document.getElementById("search-results-grid_info")
                     table_info.innerHTML += ' <i class="icon-question-sign obs-tooltip " data-content="Subjects are listed in decreasing order of the count of matched terms. Ties are broken by total observation count." data-original-title="" title=""></i>'
@@ -2672,7 +2674,7 @@ import ObservationView from './observation.view.js'
                 });
                 $("#ontology-spinner").show();
             });
-            $('#ontology-search').popover({
+            $('#ontology-search-wrapper').popover({
                 placement: "bottom",
                 trigger: 'hover',
                 content: "Expand result set to include subjects that are ontology children of original hits",

@@ -1744,7 +1744,9 @@
 
     <script type="text/template" id="search-tmpl">
         <div class="container common-container" id="search-results-container">
-            <button class="btn btn-primary" id="ontology-search" style="float: right;">Ontology Search</button>
+            <span class="d-inline-block" tabindex="0" id=ontology-search-wrapper style="float: right;">
+            <button class="btn btn-primary" id="ontology-search">Ontology Search</button>
+            </span>
             <button class="btn btn-primary" style="position: fixed;top: 50%;left: 50%;transform: translate(-50%, -50%);z-index: 2;display:none" id='ontology-spinner'>
                 <span class="spinner-border spinner-border-sm"></span>
                 Searching...
@@ -2527,7 +2529,7 @@
         integrity="sha512-oJp0DdQuQQrRsKVly+Ww6fAN1GwJN7d1bi8UubpEbzDUh84WrJ2CFPBnT4LqBCcfqTcHR5OGXFFhaPe3g1/bzQ=="
         crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-cloud/1.2.5/d3.layout.cloud.min.js" integrity="sha512-HjKxWye8lJGPu5q1u/ZYkHlJrJdm6KGr89E6tOrXeKm1mItb1xusPU8QPcKVhP8F9LjpZT7vsu1Fa+dQywP4eg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script type='module' src="js/ctd2.js?ts=2021"></script>
+    <script type='module' src="js/ctd2.js?ts=2022"></script>
 
 <script type="text/javascript">_satellite.pageBottom();</script>
 </body>
