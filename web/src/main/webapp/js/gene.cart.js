@@ -146,23 +146,6 @@ export const GeneListView = Backbone.View.extend({
             form.submit();
             document.body.removeChild(form);
         }
-        const go_enrichr = function (e) {
-            e.preventDefault();
-            let genes = '';
-            $('#geneNames :selected').each(function (i, selected) {
-                genes += $(selected).text() + "\n";
-            });
-            if (genes == '') {
-                for (let index = 0; index < geneList.length; index++) {
-                    genes += geneList[index] + "\n";
-                }
-            }
-            enrich({
-                list: genes,
-                description: "CTD2 Dashboard Query",
-                popup: true,
-            });
-        };
         $("#gene-cart-action").click(function (e) {
             const selected = $('#gene-cart-action-list :selected');
             const action_index = selected[0].index;
@@ -181,30 +164,25 @@ export const GeneListView = Backbone.View.extend({
                     }
                     document.location.href = '#cnkb-query';
                     break;
-                case 1: go_enrichr(e); break;
-                case 2:
-                    let genes = '';
-                    let counter = 0;
-                    $('#geneNames :selected').each(function (i, selected) {
-                        genes += $(selected).text() + ",";
-                        counter++;
+                case 1:
+                    e.preventDefault();
+                    enrich({
+                        list: $('#geneNames :selected').toArray().map(x=>x.value).join("\n") || geneList.join("\n"),
+                        description: "CTD2 Dashboard Query",
+                        popup: true,
                     });
-                    if (genes == '') {
-                        for (let index = 0; index < geneList.length; index++) {
-                            genes += geneList[index] + ",";
-                            counter++;
-                        }
-                    }
-                    if (counter == 1) {
-                        const network_url = 'https://version-11-0.string-db.org/network/homo_sapiens/' + genes.substring(0, genes.length - 1);
-                        window.open(network_url, "_blank");
+                    break;
+                case 2:
+                    const count = $('#geneNames :selected').length || geneList.length;
+                    if (count == 1) {
+                        window.open(`https://version-11-0.string-db.org/network/homo_sapiens/${selected_genes}`, "_blank");
                         break;
                     }
                     $.ajax({
                         url: "string/identifier",
                         method: 'GET',
                         data: {
-                            genes: genes,
+                            genes: selected_genes,
                         },
                         dataType: "text",
                         success: function (identifiers) {
@@ -212,12 +190,11 @@ export const GeneListView = Backbone.View.extend({
                             if (identifiers.length == 0) {
                                 showAlertMessage('no match identifer found in STRING DB');
                             } else {
-                                const network_url = 'https://version-11-0.string-db.org/cgi/network.pl?identifiers=' + identifiers;
-                                window.open(network_url, "_blank");
+                                window.open(`https://version-11-0.string-db.org/cgi/network.pl?identifiers=${identifiers}`, "_blank");
                             }
                         },
                         error: function (jqXHR, textStatus, errorThrown) {
-                            console.log(JSON);
+                            console.log(textStatus);
                         },
                     });
                     break;
