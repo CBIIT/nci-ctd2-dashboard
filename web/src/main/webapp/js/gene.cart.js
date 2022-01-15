@@ -1,4 +1,14 @@
-import {ctd2_hovertext, gene_cart_actions} from './ctd2.constants.js'
+import {ctd2_hovertext} from './ctd2.constants.js'
+
+const action_explanatory = [
+    "Retrieve molecular interactions involving the selected genes from the Cellular Networks Knowledge Base (CNKB). The CNKB is a database of gene and protein interaction networks maintained at Columbia University.  It includes PREPPI, a large database of predicted and experimentally confirmed protein-protein interactions.", // CNKB
+    "Send the contents of the gene cart to the external Enrichr web service for gene set enrichment analysis.  Enrichment analysis is a computational method for inferring knowledge about an input gene set by comparing it to annotated gene sets representing prior biological knowledge. Enrichment analysis checks whether an input set of genes significantly overlaps with annotated gene sets.", // Enrichr
+    "STRING is a database of known and predicted protein-protein interactions. The interactions include direct (physical) and indirect (functional) associations; they stem from computational prediction, from knowledge transfer between organisms, and from interactions aggregated from other (primary) databases.", // STRING
+    "Pathway Commons collects and integrates data from public pathway and interactions databases. Pathway Commons is a collaboration between the Bader Lab at the University of Toronto, the Sander Lab at the Dana-Farber Cancer Institute and Harvard Medical School and the Demir Lab at Oregon Health & Science University.", // text only option "Pathway Commons"
+    "Search Pathway Commons for pathways involving genes in the gene cart.", // Pathway search
+    "Display and explore gene interaction network involving genes in the gene cart.", // Interaction viewer text
+];
+
 // common utility
 export const showAlertMessage = function (message) {
     $("#alertMessage").text(message);
@@ -156,6 +166,7 @@ export const GeneListView = Backbone.View.extend({
         $("#gene-cart-action").click(function (e) {
             const selected = $('#gene-cart-action-list :selected');
             const action_index = selected[0].index;
+            const selected_genes = $('#geneNames :selected').toArray().map(x=>x.value).join(",") || geneList.join(",")
             switch (action_index) {
                 case 0:
                     const selectedGenes = [];
@@ -210,6 +221,15 @@ export const GeneListView = Backbone.View.extend({
                         },
                     });
                     break;
+                case 3:
+                    console.log("do nothing")
+                    break
+                case 4:
+                    window.open(`https://apps.pathwaycommons.org/search?type=Pathway&q=${selected_genes}`, "_blank");
+                    break
+                case 5:
+                    window.open(`https://www.pathwaycommons.org/pcviz/#pathsbetween/${selected_genes}`, "_blank");
+                    break
             }
         });
         $("#gene-cart-action").attr("disabled", true);
@@ -217,9 +237,10 @@ export const GeneListView = Backbone.View.extend({
             const selected = $('#gene-cart-action-list :selected');
             if (selected.length == 1) {
                 $("#gene-cart-action").attr("disabled", false);
-                const action_index = selected[0].index;
-                const detail = gene_cart_actions[action_index];
-                $("#gene-cart-action-detail").text(detail);
+                $("#gene-cart-action-detail").text(action_explanatory[selected[0].index]);
+                if (selected[0].index == 3) { // text only option "Pathway Commons"
+                    $("#gene-cart-action").attr("disabled", true);
+                }
             } else {
                 $("#gene-cart-action").attr("disabled", true);
                 $("#gene-cart-action-detail").empty();

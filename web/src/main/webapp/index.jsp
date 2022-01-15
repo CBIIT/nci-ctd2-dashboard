@@ -2230,10 +2230,13 @@
                     <br/><input id="geneFileInput" type="file" style="visibility:hidden" />
                     <br/><br/>
                     <h5>Select Action</h5>
-                    <select multiple class="form-control" id="gene-cart-action-list" name="sellist2">
+                    <select multiple class="form-control" id="gene-cart-action-list" name="sellist2" size=6>
                         <option>CNKB - Find Gene Interactions in Networks</option>
                         <option>Enrichr - Gene Set Enrichment Analysis</option>
                         <option>STRING - Protein-Protein Interaction Networks + Functional Enrichment Analysis</option>
+                        <option>Pathway Commons - Data integrated from public pathway and interactions databases</option>
+                        <option>- Pathway search: Find pathways</option>
+                        <option>- Interactions search: Display network of gene interactions</option>
                     </select>
                     <div align="left" style="padding-top:5px">
                         <small id=gene-cart-action-detail></small>
