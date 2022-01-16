@@ -2,11 +2,8 @@ package gov.nih.nci.ctd2.dashboard.controller;
 
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
 import java.util.stream.Collectors;
 
 import org.apache.commons.logging.Log;
@@ -23,8 +20,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import flexjson.JSONSerializer;
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
 import gov.nih.nci.ctd2.dashboard.model.ObservationTemplate;
-import gov.nih.nci.ctd2.dashboard.model.Submission;
-import gov.nih.nci.ctd2.dashboard.util.DashboardEntityWithCounts;
 import gov.nih.nci.ctd2.dashboard.util.DateTransformer;
 import gov.nih.nci.ctd2.dashboard.util.ImplTransformer;
 import gov.nih.nci.ctd2.dashboard.util.SearchResults;
