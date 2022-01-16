@@ -1669,7 +1669,14 @@ public class DashboardDaoImpl implements DashboardDao {
             }
         }
         SearchResults searchResults = new SearchResults();
-        searchResults.subject_result = new ArrayList<DashboardEntityWithCounts>(subject_result);
+        if (subject_result.size() > maxNumberOfSearchResults) {
+            searchResults.oversized = subject_result.size();
+            searchResults.subject_result = subject_result.stream().sorted(new SearchResultComparator())
+                    .limit(maxNumberOfSearchResults).collect(Collectors.toList());
+            log.debug("size after limiting: " + subject_result.size());
+        } else {
+            searchResults.subject_result = new ArrayList<DashboardEntityWithCounts>(subject_result);
+        }
         if (observationsIntersection != null) {
             searchResults.observation_result = getObservationsByIds(observationsIntersection);
             log.debug("size of observation intersection: " + observationsIntersection.size());
