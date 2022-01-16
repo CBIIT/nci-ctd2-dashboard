@@ -696,17 +696,18 @@ public class DashboardDaoImpl implements DashboardDao {
             searchSingleTerm(singleTerm, subjects, submissions);
         }
         SearchResults searchResults = new SearchResults();
-        ArrayList<DashboardEntityWithCounts> submission_result = new ArrayList<DashboardEntityWithCounts>();
-        submissions.forEach((submission, matchNumber) -> {
-            DashboardEntityWithCounts entityWithCounts = new DashboardEntityWithCounts();
-            entityWithCounts.setDashboardEntity(submission);
-            entityWithCounts.setObservationCount(findObservationsBySubmission(submission).size());
-            entityWithCounts.setMaxTier(submission.getObservationTemplate().getTier());
-            entityWithCounts.setCenterCount(1);
-            entityWithCounts.setMatchNumber(matchNumber);
-            submission_result.add(entityWithCounts);
-        });
-        searchResults.submission_result = submission_result;
+        searchResults.submission_result = submissions.keySet().stream().map(submission -> {
+            ObservationTemplate template = submission.getObservationTemplate();
+            return new SearchResults.SubmissionResult(
+                    submission.getStableURL(),
+                    submission.getSubmissionDate(),
+                    template.getDescription(),
+                    template.getTier(),
+                    template.getSubmissionCenter().getDisplayName(),
+                    submission.getId(),
+                    findObservationsBySubmission(submission).size(),
+                    template.getIsSubmissionStory());
+        }).collect(Collectors.toList());
 
         Map<String, Set<Observation>> observationMap = new HashMap<String, Set<Observation>>();
 
@@ -1671,7 +1672,8 @@ public class DashboardDaoImpl implements DashboardDao {
             searchResults.subject_result = new ArrayList<DashboardEntityWithCounts>(subject_result);
         }
         if (observationsIntersection != null) {
-            searchResults.observation_result = observationsIntersection.stream().map(id->this.getEntityById(Observation.class, id)).collect(Collectors.toList());
+            searchResults.observation_result = observationsIntersection.stream()
+                    .map(id -> this.getEntityById(Observation.class, id)).collect(Collectors.toList());
             log.debug("size of observation intersection: " + observationsIntersection.size());
         }
         return searchResults;

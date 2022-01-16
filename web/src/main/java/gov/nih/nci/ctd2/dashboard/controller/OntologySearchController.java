@@ -5,6 +5,9 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.stream.Collectors;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -19,11 +22,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import flexjson.JSONSerializer;
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
+import gov.nih.nci.ctd2.dashboard.model.ObservationTemplate;
 import gov.nih.nci.ctd2.dashboard.model.Submission;
 import gov.nih.nci.ctd2.dashboard.util.DashboardEntityWithCounts;
 import gov.nih.nci.ctd2.dashboard.util.DateTransformer;
 import gov.nih.nci.ctd2.dashboard.util.ImplTransformer;
 import gov.nih.nci.ctd2.dashboard.util.SearchResults;
+import gov.nih.nci.ctd2.dashboard.util.SearchResults.SubmissionResult;
 
 @Controller
 @RequestMapping("/ontology-search")
@@ -51,16 +56,19 @@ public class OntologySearchController {
         headers.add("Content-Type", "application/json; charset=utf-8");
 
         try {
-            List<Submission> submissions = dashboardDao.getSubmissionsForSubjectName(subjectName);
-            List<DashboardEntityWithCounts> submission_result = new ArrayList<DashboardEntityWithCounts>();
-            submissions.forEach(submission -> {
-                DashboardEntityWithCounts entityWithCounts = new DashboardEntityWithCounts();
-                entityWithCounts.setDashboardEntity(submission);
-                entityWithCounts.setObservationCount(dashboardDao.findObservationsBySubmission(submission).size());
-                entityWithCounts.setMaxTier(submission.getObservationTemplate().getTier());
-                entityWithCounts.setCenterCount(1);
-                submission_result.add(entityWithCounts);
-            });
+            List<SubmissionResult> submission_result = dashboardDao.getSubmissionsForSubjectName(subjectName).stream()
+                    .map(submission -> {
+                        ObservationTemplate template = submission.getObservationTemplate();
+                        return new SearchResults.SubmissionResult(
+                                submission.getStableURL(),
+                                submission.getSubmissionDate(),
+                                template.getDescription(),
+                                template.getTier(),
+                                template.getSubmissionCenter().getDisplayName(),
+                                submission.getId(),
+                                dashboardDao.findObservationsBySubmission(submission).size(),
+                                template.getIsSubmissionStory());
+                    }).collect(Collectors.toList());
 
             JSONSerializer jsonSerializer = new JSONSerializer().transform(new ImplTransformer(), Class.class)
                     .transform(new DateTransformer(), Date.class);

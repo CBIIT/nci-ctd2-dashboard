@@ -2566,19 +2566,15 @@ import ObservationView from './observation.view.js'
                                 });
                                 searchSubmissionRowView.render();
 
-                                if (submission.observationTemplate === undefined) { // TODO why does this happen?
-                                    submission.observationTemplate = {};
-                                }
-                                const tmplName = submission.observationTemplate.isSubmissionStory ?
+                                const tmplName = submission.isStory ?
                                     "#count-story-tmpl" :
                                     "#count-observations-tmpl";
                                 const cntContent = _.template(
                                     $(tmplName).html())({
                                         count: submission.observationCount
                                     });
-                                $("#search-observation-count-" + submission.dashboardEntity.id).html(cntContent);
-                                const centerId = submission.dashboardEntity.observationTemplate.submissionCenter.id;
-                                centerCounter.add(centerId);
+                                $("#search-observation-count-" + submission.id).html(cntContent);
+                                centerCounter.add(submission.centerName);
 
                                 center_count += centerCounter.size;
                             });
@@ -2787,19 +2783,15 @@ import ObservationView from './observation.view.js'
                                 });
                                 searchSubmissionRowView.render();
 
-                                if (submission.observationTemplate === undefined) { // TODO why does this happen?
-                                    submission.observationTemplate = {};
-                                }
-                                const tmplName = submission.observationTemplate.isSubmissionStory ?
+                                const tmplName = submission.isStory ?
                                     "#count-story-tmpl" :
                                     "#count-observations-tmpl";
                                 const cntContent = _.template(
                                     $(tmplName).html())({
                                         count: submission.observationCount
                                     });
-                                $("#search-observation-count-" + submission.dashboardEntity.id).html(cntContent);
-                                const centerId = submission.dashboardEntity.observationTemplate.submissionCenter.id;
-                                centerCounter.add(centerId);
+                                $("#search-observation-count-" + submission.id).html(cntContent);
+                                centerCounter.add(submission.centerName);
                             });
 
                             const sTable = $("#searched-submissions").dataTable({
