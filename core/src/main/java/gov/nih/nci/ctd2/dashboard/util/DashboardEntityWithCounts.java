@@ -72,4 +72,21 @@ public class DashboardEntityWithCounts implements Serializable {
     public void setMatchNumber(int x) {
         matchNumber = x;
     }
+
+    @Override
+    public int hashCode() {
+        return dashboardEntity.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof DashboardEntityWithCounts))
+            return false;
+
+        DashboardEntityWithCounts e = (DashboardEntityWithCounts) o;
+        if (e.dashboardEntity.equals(this.dashboardEntity))
+            return true;
+        else
+            return false;
+    }
 }

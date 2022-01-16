@@ -1649,7 +1649,7 @@ public class DashboardDaoImpl implements DashboardDao {
     public SearchResults ontologySearch(String queryString) {
         final String[] searchTerms = parseWords(queryString);
         Set<Integer> observationsIntersection = null;
-        List<DashboardEntityWithCounts> subject_result = new ArrayList<DashboardEntityWithCounts>();
+        Set<DashboardEntityWithCounts> subject_result = new HashSet<DashboardEntityWithCounts>();
         final int termCount = searchTerms.length;
         boolean first = true;
         for (String oneTerm : searchTerms) {
@@ -1669,7 +1669,7 @@ public class DashboardDaoImpl implements DashboardDao {
             }
         }
         SearchResults searchResults = new SearchResults();
-        searchResults.subject_result = subject_result;
+        searchResults.subject_result = new ArrayList<DashboardEntityWithCounts>(subject_result);
         if (observationsIntersection != null) {
             searchResults.observation_result = getObservationsByIds(observationsIntersection);
             log.debug("size of observation intersection: " + observationsIntersection.size());
