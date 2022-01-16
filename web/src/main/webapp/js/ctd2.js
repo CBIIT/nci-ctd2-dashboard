@@ -2620,7 +2620,7 @@ import ObservationView from './observation.view.js'
                     if (observation_result != null && observation_result.length > 0) {
                         const matching_observations = [];
                         _.each(observation_result, function (aResult) {
-                            matching_observations.push(aResult.dashboardEntity);
+                            matching_observations.push(aResult);
                         });
                         tabulate_matching_observations(matching_observations);
                         if (matching_observations.length == 0) {
@@ -2726,7 +2726,7 @@ import ObservationView from './observation.view.js'
                             submissions.push(aResult);
                         });
                         _.each(observation_result, function (aResult) {
-                            matching_observations.push(aResult.dashboardEntity);
+                            matching_observations.push(aResult);
                         });
 
                         $(".search-info").popover({

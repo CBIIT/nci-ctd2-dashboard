@@ -45,7 +45,7 @@ public class SearchController {
         keyword = URLDecoder.decode(URLDecoder.decode(keyword, Charset.defaultCharset()), Charset.defaultCharset());
 
         SearchResults results = dashboardDao.search(keyword);
-        log.debug("number of subject results from search " + results.size());
+        log.debug("number of subject results from search " + results.numberOfSubjects());
         JSONSerializer jsonSerializer = new JSONSerializer().transform(new ImplTransformer(), Class.class)
                 .transform(new DateTransformer(), Date.class);
         String serializedResult = jsonSerializer.deepSerialize(results);

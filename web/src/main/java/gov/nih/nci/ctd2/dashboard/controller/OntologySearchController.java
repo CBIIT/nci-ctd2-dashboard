@@ -39,7 +39,7 @@ public class OntologySearchController {
         headers.add("Content-Type", "application/json; charset=utf-8");
 
         SearchResults ontologyResult = dashboardDao.ontologySearch(URLDecoder.decode(terms, Charset.defaultCharset()));
-        log.debug("result list size=" + ontologyResult.size());
+        log.debug("number of subject results from search " + ontologyResult.numberOfSubjects());
         JSONSerializer jsonSerializer = new JSONSerializer().transform(new ImplTransformer(), Class.class)
                 .transform(new DateTransformer(), Date.class);
         return new ResponseEntity<String>(jsonSerializer.deepSerialize(ontologyResult), headers, HttpStatus.OK);

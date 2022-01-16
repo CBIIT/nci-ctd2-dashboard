@@ -817,14 +817,7 @@ public class DashboardDaoImpl implements DashboardDao {
             set0 = set0.stream().limit(maxNumberOfSearchResults).collect(Collectors.toSet());
             log.debug("observation results count after limiting: " + set0.size());
         }
-        ArrayList<DashboardEntityWithCounts> observation_result = new ArrayList<DashboardEntityWithCounts>();
-        set0.forEach(ob -> {
-            DashboardEntityWithCounts oneObservationResult = new DashboardEntityWithCounts();
-            oneObservationResult.setDashboardEntity(ob);
-            observation_result.add(oneObservationResult);
-            log.debug(" observation in intersection: " + ob.getStableURL());
-        });
-        searchResults.observation_result = observation_result;
+        searchResults.observation_result = new ArrayList<Observation>(set0);
 
         return searchResults;
     }
@@ -1678,19 +1671,10 @@ public class DashboardDaoImpl implements DashboardDao {
             searchResults.subject_result = new ArrayList<DashboardEntityWithCounts>(subject_result);
         }
         if (observationsIntersection != null) {
-            searchResults.observation_result = getObservationsByIds(observationsIntersection);
+            searchResults.observation_result = observationsIntersection.stream().map(id->this.getEntityById(Observation.class, id)).collect(Collectors.toList());
             log.debug("size of observation intersection: " + observationsIntersection.size());
         }
         return searchResults;
-    }
-
-    private List<DashboardEntityWithCounts> getObservationsByIds(Set<Integer> ids) {
-        List<DashboardEntityWithCounts> list = new ArrayList<DashboardEntityWithCounts>();
-        for (Integer id : ids) {
-            Observation o = this.getEntityById(Observation.class, id);
-            list.add(new DashboardEntityWithCounts(o, 0, 0));
-        }
-        return list;
     }
 
     private List<DashboardEntityWithCounts> ontologySearchOneTerm(String oneTerm, final Set<Integer> observations) {
