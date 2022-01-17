@@ -1738,19 +1738,9 @@ public class DashboardDaoImpl implements DashboardDao {
             log.debug("observations count after getting ECO term: " + observations.size());
         }
 
-        try {
-            if (observations != null) {
-                /*
-                 * otherSubjects is always empty for now, but we may want to use it in the
-                 * future development.
-                 */
-                List<DashboardEntityWithCounts> otherSubjects = searchSubjects(oneTerm, observations);
-                entities.addAll(otherSubjects);
-                log.debug("tissue sample results count after getting other subjects: " + entities.size());
-                log.debug("observationIds count after getting other subjects: " + observations.size());
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (observations != null) {
+            searchSubjectsToUpdateObservations(oneTerm, observations);
+            log.debug("observationIds count after getting other subjects: " + observations.size());
         }
 
         session.close();
@@ -1763,7 +1753,7 @@ public class DashboardDaoImpl implements DashboardDao {
      * observatoin 'insersection' for ontology search.
      */
     @SuppressWarnings("unchecked")
-    private List<DashboardEntityWithCounts> searchSubjects(String oneTerm, final Set<Integer> observations) {
+    private void searchSubjectsToUpdateObservations(String oneTerm, final Set<Integer> observations) {
         Session session = getSession();
         String sqlForMainNameMatch = "SELECT subject.id FROM subject JOIN dashboard_entity ON dashboard_entity.id=subject.id WHERE displayName LIKE '%"
                 + oneTerm + "%'";
@@ -1790,7 +1780,6 @@ public class DashboardDaoImpl implements DashboardDao {
          * and ECO terms using the list in this method. For now, we only use it to
          * obtain the observation result. The subjects themselves are for now ignord.
          */
-        return new ArrayList<DashboardEntityWithCounts>();
     }
 
     private List<Integer> observationIdsForSubjectIds(final List<Integer> subjectIds) {
