@@ -1686,26 +1686,26 @@
 
     <script type="text/template" id="search-result-row-tmpl">
         <tr>
-            <td id="search-image-{{dashboardEntity.id}}"></td>
+            <td id="search-image-{{id}}"></td>
             <td>
                 <img src="img/onto.png" style="float: right;display:{{ontology?'block':'none'}}">
-                <a href="#{{dashboardEntity.stableURL}}">{{dashboardEntity.displayName}}</a><br>
-                <i>{{dashboardEntity.organism.displayName != '-' ? "(" + dashboardEntity.organism.displayName + ")" : ""}}</i>
+                <a href="#{{stableURL}}">{{subjectName}}</a><br>
+                <i>{{organismName ? "(" + organismName + ")" : ""}}</i>
             </td>
             <td>
-                <ul id="synonyms-{{dashboardEntity.id}}">
+                <ul id="synonyms-{{id}}">
                     <!-- here will go the synonyms -->
                 </ul>
-                <button type="button" class="btn btn-outline-dark" id=see-all-switch{{dashboardEntity.id}}></button>
+                <button type="button" class="btn btn-outline-dark" id=see-all-switch{{id}}></button>
             </td>
-            <td>{{dashboardEntity.class}}</td>
+            <td>{{className}}</td>
             <td>
-                <ul id="roles-{{dashboardEntity.id}}">
+                <ul id="roles-{{id}}">
                     <!-- here will go the roles -->
                 </ul>
             </td>
             <td class="nonewline">
-                <a href="#{{dashboardEntity.stableURL}}" id="subject-observation-count-{{dashboardEntity.id}}" count="{{observationCount}}">{{observationCount}}</a>
+                <a href="#{{stableURL}}" id="subject-observation-count-{{id}}" count="{{observationCount}}">{{observationCount}}</a>
                 <br/>(from {{centerCount}} Center{{centerCount > 1 ? 's' : ''}})
             </td>
             <td>{{matchNumber}}</td>
@@ -1714,28 +1714,28 @@
 
     <script type="text/template" id="search-result-gene-row-tmpl">
         <tr>
-            <td id="search-image-{{dashboardEntity.id}}"></td>
+            <td id="search-image-{{id}}"></td>
             <td>
                 <img src="img/onto.png" style="float: right;display:{{ontology?'block':'none'}}">
-                <a href="#{{dashboardEntity.stableURL}}">{{dashboardEntity.displayName}}</a>
-                <a href="#" class="addGene-{{dashboardEntity.displayName}} cartAddPlus" data-content="Add gene to cart" >+</a>
+                <a href="#{{stableURL}}">{{subjectName}}</a>
+                <a href="#" class="addGene-{{subjectName}} cartAddPlus" data-content="Add gene to cart" >+</a>
                 <br>
-                <i>{{dashboardEntity.organism.displayName != '-' ? "(" + dashboardEntity.organism.displayName + ")" : ""}}</i>
+                <i>{{organismName ? "(" + organismName + ")" : ""}}</i>
             </td>
             <td>
-                <ul id="synonyms-{{dashboardEntity.id}}">
+                <ul id="synonyms-{{id}}">
                     <!-- here will go the synonyms -->
                 </ul>
-                <button type="button" class="btn btn-outline-dark" id=see-all-switch{{dashboardEntity.id}}></button>
+                <button type="button" class="btn btn-outline-dark" id=see-all-switch{{id}}></button>
             </td>
-            <td>{{dashboardEntity.class}}</td>
+            <td>{{className}}</td>
             <td>
-                <ul id="roles-{{dashboardEntity.id}}">
+                <ul id="roles-{{id}}">
                     <!-- here will go the roles -->
                 </ul>
             </td>
             <td class="nonewline">
-                <a href="#{{dashboardEntity.stableURL}}" id="subject-observation-count-{{dashboardEntity.id}}" count="{{observationCount}}">{{observationCount}}</a>
+                <a href="#{{stableURL}}" id="subject-observation-count-{{id}}" count="{{observationCount}}">{{observationCount}}</a>
                 <br/>(from {{centerCount}} Center{{centerCount > 1 ? 's' : ''}})
             </td>
             <td>{{matchNumber}}</td>

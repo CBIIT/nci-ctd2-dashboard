@@ -2383,15 +2383,14 @@ import ObservationView from './observation.view.js'
             if(!model.ontology) {
                 model.ontology = false
             }
-            const result = model.dashboardEntity;
 
-            if (result.class != "Gene") {
+            if (model.className != "Gene") {
                 this.template = _.template($("#search-result-row-tmpl").html());
                 $(this.el).append(this.template(model));
             } else {
                 this.template = _.template($("#search-result-gene-row-tmpl").html());
                 $(this.el).append(this.template(model));
-                const currentGene = result.displayName;
+                const currentGene = model.subjectName;
 
                 $(".addGene-" + currentGene).click(function (e) {
                     e.preventDefault();
@@ -2406,12 +2405,12 @@ import ObservationView from './observation.view.js'
                 });
             }
 
-            let synonyms = result.synonyms;
-            if (result.class == "ECOTerm") {
+            let synonyms = model.synonyms;
+            if (model.subjectClass == "ECOTerm") {
                 synonyms = [];
-                if (result.synonyms != null && result.synonyms.length > 0) {
-                    _.each(result.synonyms.split("|"), function (aSynonym) {
-                        if (aSynonym.displayName == result.displayName) return;
+                if (model.synonyms != null && model.synonyms.length > 0) {
+                    _.each(model.synonyms.split("|"), function (aSynonym) {
+                        if (aSynonym.displayName == model.subjectName) return;
                         synonyms.push({
                             displayName: aSynonym
                         });
@@ -2419,31 +2418,31 @@ import ObservationView from './observation.view.js'
                 }
             }
             let count = 0;
-            _.each(synonyms, function (aSynonym) {
+            _.each(synonyms, function (s) {
+                const aSynonym = {displayName: s, sid: model.id}
                 if (count >= 3) aSynonym.toomany = 'toomany';
-                aSynonym.sid = result.id;
                 new SynonymView({
                     model: aSynonym,
-                    el: $("#synonyms-" + result.id)
+                    el: $("#synonyms-" + model.id)
                 }).render();
                 count++;
             });
             if (count > 3) {
                 const SEE_ALL = "see all";
-                $("#see-all-switch" + result.id).text(SEE_ALL);
-                $(".synonym-of-" + result.id + ".toomany").hide();
-                $("#see-all-switch" + result.id).click(function () {
+                $("#see-all-switch" + model.id).text(SEE_ALL);
+                $(".synonym-of-" + model.id + ".toomany").hide();
+                $("#see-all-switch" + model.id).click(function () {
                     if ($(this).text() == SEE_ALL) {
-                        $(".synonym-of-" + result.id + ".toomany").show();
+                        $(".synonym-of-" + model.id + ".toomany").show();
                         $(this).text("hide");
                     } else {
-                        $(".synonym-of-" + result.id + ".toomany").hide();
+                        $(".synonym-of-" + model.id + ".toomany").hide();
                         $(this).text(SEE_ALL);
                     }
                 });
-                $("#see-all-switch" + result.id).show();
+                $("#see-all-switch" + model.id).show();
             } else {
-                $("#see-all-switch" + result.id).hide();
+                $("#see-all-switch" + model.id).hide();
             }
 
             _.each(model.roles, function (aRole) {
@@ -2451,31 +2450,31 @@ import ObservationView from './observation.view.js'
                     model: {
                         role: aRole
                     },
-                    el: $("#roles-" + result.id)
+                    el: $("#roles-" + model.id)
                 }).render();
             });
 
-            const imageData = class2imageData[result.class];
-            imageData.stableURL = result.stableURL;
+            const imageData = class2imageData[model.className];
+            imageData.stableURL = model.stableURL;
             const imgTemplate = $("#search-results-image-tmpl");
-            if (result.class == "Compound") {
-                _.each(result.xrefs, function (xref) {
+            if (model.className == "Compound") {
+                _.each(model.xrefs, function (xref) {
                     if (xref.databaseName == "IMAGE") {
                         imageData.image = $("#explore-tmpl").attr("data-url") + "compounds/" + xref.databaseId;
                     }
                 });
-            } else if (result.class == "ShRna" && result.type.toLowerCase() == "sirna") {
+            } else if (model.className == "ShRna" && model.type.toLowerCase() == "sirna") {
                 imageData.image = "img/sirna.png";
                 imageData.label = "siRNA";
             }
-            $("#search-image-" + result.id).append(_.template(imgTemplate.html())(imageData));
+            $("#search-image-" + model.id).append(_.template(imgTemplate.html())(imageData));
 
             // some of the elements will be hidden in the pagination. Use magic-scoping!
             const cntContent = _.template(
                 $("#count-observations-tmpl").html())({
                     count: model.observationCount
                 });
-            $("#subject-observation-count-" + result.id).html(cntContent);
+            $("#subject-observation-count-" + model.id).html(cntContent);
 
             return this;
         }
@@ -2539,12 +2538,7 @@ import ObservationView from './observation.view.js'
                     }
                     $("#search-results-grid").DataTable().destroy();
                     _.each(subject_result, function (one_result) {
-                        if (subject_names.includes(one_result.dashboardEntity.displayName)) return;
-                        if (one_result.dashboardEntity.organism == undefined) {
-                            one_result.dashboardEntity.organism = {
-                                displayName: "-"
-                            };
-                        }
+                        if (subject_names.includes(one_result.subjectName)) return;
                         one_result.ontology = true;
                         new SearchResultsRowView({
                             model: one_result,
@@ -2554,7 +2548,7 @@ import ObservationView from './observation.view.js'
                         // then add to submission result ... new SearchSubmissionRowView
                         $.ajax({
                             url: "ontology-search/extra-submissions",
-                            data: { 'subject-name': one_result.dashboardEntity.displayName },
+                            data: { 'subject-name': one_result.subjectName },
                             async: false,
                         }).done(function (submissions) {
                             submission_count += submissions.length;
@@ -2692,7 +2686,7 @@ import ObservationView from './observation.view.js'
                         $("#oversize-message").show()
                     }
                     const subject_result = results.subject_result;
-                    subject_names = subject_result.map(x => x.dashboardEntity.displayName);
+                    subject_names = subject_result.map(x => x.subjectName);
                     const submission_result = results.submission_result;
                     const observation_result = results.observation_result;
                     if (subject_result.length + submission_result.length == 0) {
@@ -2707,11 +2701,6 @@ import ObservationView from './observation.view.js'
                         const submissions = [];
                         const matching_observations = [];
                         _.each(subject_result, function (aResult) {
-                            if (aResult.dashboardEntity.organism == undefined) {
-                                aResult.dashboardEntity.organism = {
-                                    displayName: "-"
-                                };
-                            }
                             const searchResultsRowView = new SearchResultsRowView({
                                 model: aResult,
                                 el: $(thatEl).find("tbody")

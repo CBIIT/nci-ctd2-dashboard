@@ -72,7 +72,6 @@ import gov.nih.nci.ctd2.dashboard.model.Synonym;
 import gov.nih.nci.ctd2.dashboard.model.TissueSample;
 import gov.nih.nci.ctd2.dashboard.model.Transcript;
 import gov.nih.nci.ctd2.dashboard.model.Xref;
-import gov.nih.nci.ctd2.dashboard.util.DashboardEntityWithCounts;
 import gov.nih.nci.ctd2.dashboard.util.EcoBrowse;
 import gov.nih.nci.ctd2.dashboard.util.Hierarchy;
 import gov.nih.nci.ctd2.dashboard.util.ObservationURIsAndTiers;
@@ -80,6 +79,7 @@ import gov.nih.nci.ctd2.dashboard.util.SearchResults;
 import gov.nih.nci.ctd2.dashboard.util.SubjectWithSummaries;
 import gov.nih.nci.ctd2.dashboard.util.Summary;
 import gov.nih.nci.ctd2.dashboard.util.WordCloudEntry;
+import gov.nih.nci.ctd2.dashboard.util.SubjectResult;
 
 public class DashboardDaoImpl implements DashboardDao {
     private static final Log log = LogFactory.getLog(DashboardDaoImpl.class);
@@ -711,10 +711,8 @@ public class DashboardDaoImpl implements DashboardDao {
 
         Map<String, Set<Observation>> observationMap = new HashMap<String, Set<Observation>>();
 
-        List<DashboardEntityWithCounts> subject_result = new ArrayList<DashboardEntityWithCounts>();
+        List<SubjectResult> subject_result = new ArrayList<SubjectResult>();
         for (Subject subject : subjects.keySet()) {
-            DashboardEntityWithCounts entityWithCounts = new DashboardEntityWithCounts();
-            entityWithCounts.setDashboardEntity(subject);
             Set<Observation> observations = new HashSet<Observation>();
             int maxTier = 0;
             Set<SubmissionCenter> submissionCenters = new HashSet<SubmissionCenter>();
@@ -727,11 +725,7 @@ public class DashboardDaoImpl implements DashboardDao {
                 submissionCenters.add(observationTemplate.getSubmissionCenter());
                 roles.add(observedSubject.getObservedSubjectRole().getSubjectRole().getDisplayName());
             }
-            entityWithCounts.setObservationCount(observations.size());
-            entityWithCounts.setMaxTier(maxTier);
-            entityWithCounts.setRoles(roles);
-            entityWithCounts.setCenterCount(submissionCenters.size());
-            entityWithCounts.setMatchNumber(subjects.get(subject));
+            SubjectResult x = new SubjectResult(subject, observations.size(), submissionCenters.size(), subjects.get(subject), roles);
             Arrays.stream(searchTerms).filter(term -> matchSubject(term, subject)).forEach(term -> {
                 Set<Observation> obset = observationMap.get(term);
                 if (obset == null) {
@@ -740,7 +734,7 @@ public class DashboardDaoImpl implements DashboardDao {
                 obset.addAll(observations);
                 observationMap.put(term, obset);
             });
-            subject_result.add(entityWithCounts);
+            subject_result.add(x);
         }
 
         /* search ECO terms */
@@ -751,12 +745,8 @@ public class DashboardDaoImpl implements DashboardDao {
             if (observationNumber == 0)
                 continue;
 
-            DashboardEntityWithCounts entity = new DashboardEntityWithCounts();
-            entity.setDashboardEntity(ecoterm);
-            entity.setObservationCount(observationNumber);
             int[] x = templateSummary(ecoterm.getCode());
-            entity.setMaxTier(x[0]);
-            entity.setCenterCount(x[1]);
+            SubjectResult entity = new SubjectResult(ecoterm, observationNumber, x[1], null, null); // no matchNumber, no roles
 
             subject_result.add(entity);
 
@@ -1643,7 +1633,7 @@ public class DashboardDaoImpl implements DashboardDao {
     public SearchResults ontologySearch(String queryString) {
         final String[] searchTerms = parseWords(queryString);
         Set<Integer> observationsIntersection = null;
-        Set<DashboardEntityWithCounts> subject_result = new HashSet<DashboardEntityWithCounts>();
+        Set<SubjectResult> subject_result = new HashSet<SubjectResult>();
         final int termCount = searchTerms.length;
         boolean first = true;
         for (String oneTerm : searchTerms) {
@@ -1669,7 +1659,7 @@ public class DashboardDaoImpl implements DashboardDao {
                     .limit(maxNumberOfSearchResults).collect(Collectors.toList());
             log.debug("size after limiting: " + subject_result.size());
         } else {
-            searchResults.subject_result = new ArrayList<DashboardEntityWithCounts>(subject_result);
+            searchResults.subject_result = new ArrayList<SubjectResult>(subject_result);
         }
         if (observationsIntersection != null) {
             searchResults.observation_result = observationsIntersection.stream()
@@ -1679,10 +1669,10 @@ public class DashboardDaoImpl implements DashboardDao {
         return searchResults;
     }
 
-    private List<DashboardEntityWithCounts> ontologySearchOneTerm(String oneTerm, final Set<Integer> observations) {
+    private List<SubjectResult> ontologySearchOneTerm(String oneTerm, final Set<Integer> observations) {
         long t1 = System.currentTimeMillis();
         List<Integer> list = ontologySearchDiseaseContext(new String[] { oneTerm });
-        List<DashboardEntityWithCounts> entities = new ArrayList<DashboardEntityWithCounts>();
+        List<SubjectResult> entities = new ArrayList<SubjectResult>();
         Session session = getSession();
         @SuppressWarnings("unchecked")
         org.hibernate.query.Query<TissueSample> query = session.createQuery("from TissueSampleImpl where code = :code");
@@ -1698,9 +1688,8 @@ public class DashboardDaoImpl implements DashboardDao {
             }
             int observationNumber = observationCountForTissueSample(i);
             int centerCount = centerCountForTissueSample(i);
-            DashboardEntityWithCounts x = new DashboardEntityWithCounts(result, observationNumber, centerCount);
             Set<String> roles = getRolesForSubjectId(result.getId());
-            x.setRoles(roles);
+            SubjectResult x = new SubjectResult(result, observationNumber, centerCount, null, roles); // no matchNumer
             entities.add(x);
             subjectIds.add(result.getId());
         }
@@ -1726,7 +1715,8 @@ public class DashboardDaoImpl implements DashboardDao {
             for (ECOTerm x : list2) {
                 int observationNumber = observationCountForEcoCode(x.getCode());
                 int centerCount = centerCountForEcoCode(x.getCode());
-                entities.add(new DashboardEntityWithCounts(x, observationNumber, centerCount));
+                SubjectResult subjectResult = new SubjectResult(x, observationNumber, centerCount, null, null); // no matchNumber, no roles
+                entities.add(subjectResult);
                 if (observations != null) {
                     List<Integer> observationIdsForOneECOTerm = observationIdsForEcoCode(x.getCode());
                     observations.addAll(observationIdsForOneECOTerm);

@@ -21,7 +21,7 @@ import gov.nih.nci.ctd2.dashboard.api.CTD2Serializer;
 import gov.nih.nci.ctd2.dashboard.api.SubjectResponse;
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
 import gov.nih.nci.ctd2.dashboard.model.DashboardEntity;
-import gov.nih.nci.ctd2.dashboard.util.DashboardEntityWithCounts;
+import gov.nih.nci.ctd2.dashboard.util.SubjectResult;
 
 /* API 2.0 */
 @Controller
@@ -44,14 +44,21 @@ public class SearchAPI {
         SubjectResponse.Filter filter = SubjectResponse.createFilter(center, role, tiers, maximum);
 
         List<SubjectResponse> allSubjects = new ArrayList<SubjectResponse>();
-        List<DashboardEntityWithCounts> results = dashboardDao.search(term.toLowerCase()).subject_result;
-        for (DashboardEntityWithCounts resultWithCount : results) {
-            DashboardEntity result = resultWithCount.getDashboardEntity();
-            SubjectResponse subjectResponse = SubjectResponse.createInstance(result, filter, dashboardDao);
-            if (subjectResponse == null) {
+        List<SubjectResult> results = dashboardDao.search(term.toLowerCase()).subject_result;
+        for (SubjectResult subjectResult : results) {
+            try {
+                Class<? extends DashboardEntity> clazz = (Class<? extends DashboardEntity>) Class
+                        .forName("gov.nih.nci.ctd2.dashboard.model." + subjectResult.className);
+                DashboardEntity result = dashboardDao.getEntityById(clazz, subjectResult.id);
+                SubjectResponse subjectResponse = SubjectResponse.createInstance(result, filter, dashboardDao);
+                if (subjectResponse == null) {
+                    continue;
+                }
+                allSubjects.add(subjectResponse);
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
                 continue;
             }
-            allSubjects.add(subjectResponse);
         }
 
         log.debug("ready to serialize");

@@ -42,8 +42,8 @@ import gov.nih.nci.ctd2.dashboard.model.ObservationTemplate;
 import gov.nih.nci.ctd2.dashboard.model.ObservedSubject;
 import gov.nih.nci.ctd2.dashboard.model.Subject;
 import gov.nih.nci.ctd2.dashboard.model.Submission;
-import gov.nih.nci.ctd2.dashboard.util.DashboardEntityWithCounts;
 import gov.nih.nci.ctd2.dashboard.util.SearchResults;
+import gov.nih.nci.ctd2.dashboard.util.SubjectResult;
 
 @Controller
 @RequestMapping("/feed")
@@ -122,8 +122,16 @@ public class RssController {
         // Search and find the entity hits
         SearchResults entitiesWithCounts = dashboardDao.search(keyword);
         List<DashboardEntity> searchEntities = new ArrayList<DashboardEntity>();
-        for (DashboardEntityWithCounts entitiesWithCount : entitiesWithCounts.subject_result) {
-            searchEntities.add(entitiesWithCount.getDashboardEntity());
+        for (SubjectResult subjectResult : entitiesWithCounts.subject_result) {
+            try {
+                Class<? extends DashboardEntity> clazz = (Class<? extends DashboardEntity>) Class
+                        .forName("gov.nih.nci.ctd2.dashboard.model." + subjectResult.className);
+                DashboardEntity entity = dashboardDao.getEntityById(clazz, subjectResult.id);
+                searchEntities.add(entity);
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+                continue;
+            }
         }
 
         String titlePostfix = keyword;

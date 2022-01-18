@@ -5,7 +5,7 @@ import java.util.List;
 import gov.nih.nci.ctd2.dashboard.model.Observation;
 
 public class SearchResults {
-    public List<DashboardEntityWithCounts> subject_result;
+    public List<SubjectResult> subject_result;
     public List<SubmissionResult> submission_result;
     public List<Observation> observation_result;
 
