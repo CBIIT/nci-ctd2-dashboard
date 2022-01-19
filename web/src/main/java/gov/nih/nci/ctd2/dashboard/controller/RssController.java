@@ -124,8 +124,7 @@ public class RssController {
         List<DashboardEntity> searchEntities = new ArrayList<DashboardEntity>();
         for (SubjectResult subjectResult : entitiesWithCounts.subject_result) {
             try {
-                Class<? extends DashboardEntity> clazz = (Class<? extends DashboardEntity>) Class
-                        .forName("gov.nih.nci.ctd2.dashboard.model." + subjectResult.className);
+                Class<? extends DashboardEntity> clazz = Class.forName("gov.nih.nci.ctd2.dashboard.model." + subjectResult.className).asSubclass(DashboardEntity.class);
                 DashboardEntity entity = dashboardDao.getEntityById(clazz, subjectResult.id);
                 searchEntities.add(entity);
             } catch (ClassNotFoundException e) {

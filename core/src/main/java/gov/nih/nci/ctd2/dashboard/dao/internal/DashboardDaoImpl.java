@@ -76,10 +76,10 @@ import gov.nih.nci.ctd2.dashboard.util.EcoBrowse;
 import gov.nih.nci.ctd2.dashboard.util.Hierarchy;
 import gov.nih.nci.ctd2.dashboard.util.ObservationURIsAndTiers;
 import gov.nih.nci.ctd2.dashboard.util.SearchResults;
+import gov.nih.nci.ctd2.dashboard.util.SubjectResult;
 import gov.nih.nci.ctd2.dashboard.util.SubjectWithSummaries;
 import gov.nih.nci.ctd2.dashboard.util.Summary;
 import gov.nih.nci.ctd2.dashboard.util.WordCloudEntry;
-import gov.nih.nci.ctd2.dashboard.util.SubjectResult;
 
 public class DashboardDaoImpl implements DashboardDao {
     private static final Log log = LogFactory.getLog(DashboardDaoImpl.class);
@@ -714,18 +714,17 @@ public class DashboardDaoImpl implements DashboardDao {
         List<SubjectResult> subject_result = new ArrayList<SubjectResult>();
         for (Subject subject : subjects.keySet()) {
             Set<Observation> observations = new HashSet<Observation>();
-            int maxTier = 0;
             Set<SubmissionCenter> submissionCenters = new HashSet<SubmissionCenter>();
             Set<String> roles = new HashSet<String>();
             for (ObservedSubject observedSubject : findObservedSubjectBySubject(subject)) {
                 Observation observation = observedSubject.getObservation();
                 observations.add(observation);
                 ObservationTemplate observationTemplate = observation.getSubmission().getObservationTemplate();
-                maxTier = Math.max(maxTier, observationTemplate.getTier());
                 submissionCenters.add(observationTemplate.getSubmissionCenter());
                 roles.add(observedSubject.getObservedSubjectRole().getSubjectRole().getDisplayName());
             }
-            SubjectResult x = new SubjectResult(subject, observations.size(), submissionCenters.size(), subjects.get(subject), roles);
+            SubjectResult x = new SubjectResult(subject, observations.size(), submissionCenters.size(),
+                    subjects.get(subject), roles);
             Arrays.stream(searchTerms).filter(term -> matchSubject(term, subject)).forEach(term -> {
                 Set<Observation> obset = observationMap.get(term);
                 if (obset == null) {
@@ -745,8 +744,8 @@ public class DashboardDaoImpl implements DashboardDao {
             if (observationNumber == 0)
                 continue;
 
-            int[] x = templateSummary(ecoterm.getCode());
-            SubjectResult entity = new SubjectResult(ecoterm, observationNumber, x[1], null, null); // no matchNumber, no roles
+            SubjectResult entity = new SubjectResult(ecoterm, observationNumber, centerCount(ecoterm.getCode()), null,
+                    null); // no matchNumber, no roles
 
             subject_result.add(entity);
 
@@ -986,17 +985,15 @@ public class DashboardDaoImpl implements DashboardDao {
         return list;
     }
 
-    private int[] templateSummary(String ecocode) {
-        String sql = "SELECT MAX(tier), COUNT(DISTINCT submissionCenter_id) FROM observation_template WHERE ecocode LIKE '%"
+    private int centerCount(String ecocode) {
+        String sql = "SELECT COUNT(DISTINCT submissionCenter_id) FROM observation_template WHERE ecocode LIKE '%"
                 + ecocode + "%'";
         log.debug(sql);
         Session session = getSession();
         @SuppressWarnings("unchecked")
-        org.hibernate.query.Query<Object[]> query = session.createNativeQuery(sql);
-        Object[] result = query.getSingleResult();
-        int[] x = new int[2];
-        x[0] = result[0] == null ? 0 : ((Integer) result[0]).intValue();
-        x[1] = result[1] == null ? 0 : ((BigInteger) result[1]).intValue();
+        org.hibernate.query.Query<BigInteger> query = session.createNativeQuery(sql);
+        BigInteger result = query.getSingleResult();
+        int x = result.intValue();
         session.close();
         return x;
     }

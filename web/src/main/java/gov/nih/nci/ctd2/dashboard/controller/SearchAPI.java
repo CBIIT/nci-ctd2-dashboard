@@ -47,8 +47,10 @@ public class SearchAPI {
         List<SubjectResult> results = dashboardDao.search(term.toLowerCase()).subject_result;
         for (SubjectResult subjectResult : results) {
             try {
-                Class<? extends DashboardEntity> clazz = (Class<? extends DashboardEntity>) Class
-                        .forName("gov.nih.nci.ctd2.dashboard.model." + subjectResult.className);
+                Class<? extends DashboardEntity> clazz = Class
+                        .forName("gov.nih.nci.ctd2.dashboard.model." + subjectResult.className)
+                        .asSubclass(DashboardEntity.class);
+                ;
                 DashboardEntity result = dashboardDao.getEntityById(clazz, subjectResult.id);
                 SubjectResponse subjectResponse = SubjectResponse.createInstance(result, filter, dashboardDao);
                 if (subjectResponse == null) {
