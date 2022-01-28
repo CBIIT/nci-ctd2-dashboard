@@ -812,16 +812,12 @@ public class DashboardDaoImpl implements DashboardDao {
         return searchResults;
     }
 
-    private List<Integer> ontologySearchDiseaseContext(String[] searchTerms) {
-        List<Integer> list = new ArrayList<Integer>();
-        for (String t : searchTerms) {
-            int code = getCodeFromTissueSampleName(t);
-            if (code == 0) // not real code
-                continue;
-            log.debug("tissue sample code:" + code);
-            list.addAll(searchDCChildren(code));
-        }
-        return list;
+    private List<Integer> ontologySearchDiseaseContext(String searchTerm) {
+        int code = getCodeFromTissueSampleName(searchTerm);
+        if (code == 0) // not real code
+            return new ArrayList<Integer>();
+        log.debug("tissue sample code:" + code);
+        return searchDCChildren(code);
     }
 
     private List<Integer> searchDCChildren(int code) {
@@ -1668,7 +1664,7 @@ public class DashboardDaoImpl implements DashboardDao {
 
     private List<SubjectResult> ontologySearchOneTerm(String oneTerm, final Set<Integer> observations) {
         long t1 = System.currentTimeMillis();
-        List<Integer> list = ontologySearchDiseaseContext(new String[] { oneTerm });
+        List<Integer> list = ontologySearchDiseaseContext(oneTerm);
         List<SubjectResult> entities = new ArrayList<SubjectResult>();
         Session session = getSession();
         @SuppressWarnings("unchecked")
