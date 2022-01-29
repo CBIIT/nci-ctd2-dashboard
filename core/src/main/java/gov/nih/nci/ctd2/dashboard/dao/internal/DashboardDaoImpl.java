@@ -813,11 +813,15 @@ public class DashboardDaoImpl implements DashboardDao {
     }
 
     private List<Integer> ontologySearchDiseaseContext(String searchTerm) {
-        int code = getCodeFromTissueSampleName(searchTerm);
-        if (code == 0) // not real code
-            return new ArrayList<Integer>();
-        log.debug("tissue sample code:" + code);
-        return searchDCChildren(code);
+        List<Integer> list = new ArrayList<Integer>();
+        List<Integer> codes = getCodesFromTissueSampleName(searchTerm);
+        for (int code : codes) {
+            if (code == 0) // not real code
+                continue;
+            log.debug("tissue sample code to start ontology search:" + code);
+            list.addAll(searchDCChildren(code));
+        }
+        return list;
     }
 
     private List<Integer> searchDCChildren(int code) {
@@ -1565,21 +1569,22 @@ public class DashboardDaoImpl implements DashboardDao {
     }
 
     // return 0 for 'not found'
-    private int getCodeFromTissueSampleName(String name) {
+    private List<Integer> getCodesFromTissueSampleName(String name) {
         Session session = getSession();
-        String sql = "SELECT code FROM tissue_sample JOIN dashboard_entity ON tissue_sample.id=dashboard_entity.id WHERE displayName=:name";
+        String sql = "SELECT code FROM tissue_sample JOIN dashboard_entity ON tissue_sample.id=dashboard_entity.id WHERE displayName LIKE :name";
         @SuppressWarnings("unchecked")
         org.hibernate.query.Query<Integer> query = session.createNativeQuery(sql);
-        query.setParameter("name", name);
-        int code = 0;
+        query.setParameter("name", "%"+name+"%");
+        List<Integer> list = new ArrayList<Integer>();
         try {
-            code = query.getSingleResult();
+            list = query.list();
+            log.debug("number of matching tissue samples: "+list.size());
         } catch (javax.persistence.NoResultException e) { // exception by design
             // no-op
             log.debug("No tissue sample code for " + name);
         }
         session.close();
-        return code;
+        return list;
     }
 
     private int observationCountForTissueSample(int code) {
