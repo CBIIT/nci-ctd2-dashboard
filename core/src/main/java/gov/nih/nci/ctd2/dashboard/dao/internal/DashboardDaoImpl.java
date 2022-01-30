@@ -813,6 +813,7 @@ public class DashboardDaoImpl implements DashboardDao {
     }
 
     private List<Integer> ontologySearchDiseaseContext(String searchTerm) {
+        pruneDiseaseContextTree();
         final List<Integer> observed = new ArrayList<Integer>();
         final Set<Integer> searched = new HashSet<Integer>();
         List<Integer> codes = searchTissueSampleCodes(searchTerm);
@@ -824,6 +825,20 @@ public class DashboardDaoImpl implements DashboardDao {
             searchDCChildren(code, observed, searched);
         }
         return observed;
+    }
+
+    private void pruneDiseaseContextTree() {
+        if (Hierarchy.DISEASE_CONTEXT.isPruned())
+            return;
+        Session session = getSession();
+        @SuppressWarnings("unchecked")
+        org.hibernate.query.Query<Integer> query = session.createNativeQuery(
+                "SELECT DISTINCT code FROM observed_subject JOIN tissue_sample ON observed_subject.subject_id=tissue_sample.id");
+        List<Integer> observed = query.list();
+        session.close();
+        log.debug("number of observed tissue samples " + observed.size());
+        Hierarchy.DISEASE_CONTEXT.prune(observed);
+        log.debug("after pruning - " + Hierarchy.DISEASE_CONTEXT);
     }
 
     private void searchDCChildren(int code, final List<Integer> observed, final Set<Integer> searched) {
