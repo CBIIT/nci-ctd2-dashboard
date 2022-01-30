@@ -813,29 +813,33 @@ public class DashboardDaoImpl implements DashboardDao {
     }
 
     private List<Integer> ontologySearchDiseaseContext(String searchTerm) {
-        List<Integer> list = new ArrayList<Integer>();
-        List<Integer> codes = getCodesFromTissueSampleName(searchTerm);
+        final List<Integer> observed = new ArrayList<Integer>();
+        final Set<Integer> searched = new HashSet<Integer>();
+        List<Integer> codes = searchTissueSampleCodes(searchTerm);
         for (int code : codes) {
-            if (code == 0) // not real code
+            if (searched.contains(code))
                 continue;
+            searched.add(code);
             log.debug("tissue sample code to start ontology search:" + code);
-            list.addAll(searchDCChildren(code));
+            searchDCChildren(code, observed, searched);
         }
-        return list;
+        return observed;
     }
 
-    private List<Integer> searchDCChildren(int code) {
-        List<Integer> list = new ArrayList<Integer>();
+    private void searchDCChildren(int code, final List<Integer> observed, final Set<Integer> searched) {
         int[] children = Hierarchy.DISEASE_CONTEXT.getChildrenCode(code);
         for (int child : children) {
+            if (searched.contains(child))
+                continue;
+            searched.add(child);
+
             int observationNumber = observationCountForTissueSample(child);
             if (observationNumber > 0) {
                 log.debug("tissue sample child found " + child);
-                list.add(child);
+                observed.add(child);
             }
-            list.addAll(searchDCChildren(child));
+            searchDCChildren(child, observed, searched);
         }
-        return list;
     }
 
     private List<Integer> ontologySearchExperimentalEvidence(final List<ECOTerm> ecoterms) {
@@ -1568,20 +1572,19 @@ public class DashboardDaoImpl implements DashboardDao {
         return result;
     }
 
-    // return 0 for 'not found'
-    private List<Integer> getCodesFromTissueSampleName(String name) {
+    private List<Integer> searchTissueSampleCodes(String searchTerm) {
         Session session = getSession();
         String sql = "SELECT code FROM tissue_sample JOIN dashboard_entity ON tissue_sample.id=dashboard_entity.id WHERE displayName LIKE :name";
         @SuppressWarnings("unchecked")
         org.hibernate.query.Query<Integer> query = session.createNativeQuery(sql);
-        query.setParameter("name", "%"+name+"%");
+        query.setParameter("name", "%" + searchTerm + "%");
         List<Integer> list = new ArrayList<Integer>();
         try {
             list = query.list();
-            log.debug("number of matching tissue samples: "+list.size());
+            log.debug("number of matching tissue samples: " + list.size());
         } catch (javax.persistence.NoResultException e) { // exception by design
             // no-op
-            log.debug("No tissue sample code for " + name);
+            log.debug("No tissue sample code for " + searchTerm);
         }
         session.close();
         return list;
@@ -1713,7 +1716,8 @@ public class DashboardDaoImpl implements DashboardDao {
             for (ECOTerm x : list2) {
                 int observationNumber = observationCountForEcoCode(x.getCode());
                 int centerCount = centerCountForEcoCode(x.getCode());
-                SubjectResult subjectResult = new SubjectResult(x, observationNumber, centerCount, null, null); // no matchNumber, no roles
+                // no matchNumber, no roles
+                SubjectResult subjectResult = new SubjectResult(x, observationNumber, centerCount, null, null);
                 entities.add(subjectResult);
                 if (observations != null) {
                     List<Integer> observationIdsForOneECOTerm = observationIdsForEcoCode(x.getCode());
