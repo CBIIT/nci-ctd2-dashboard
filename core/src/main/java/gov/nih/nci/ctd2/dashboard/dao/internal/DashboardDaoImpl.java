@@ -821,7 +821,6 @@ public class DashboardDaoImpl implements DashboardDao {
             if (searched.contains(code))
                 continue;
             searched.add(code);
-            log.debug("tissue sample code to start ontology search:" + code);
             searchDCChildren(code, observed, searched);
         }
         return observed;
@@ -1596,7 +1595,8 @@ public class DashboardDaoImpl implements DashboardDao {
         List<Integer> list = new ArrayList<Integer>();
         try {
             list = query.list();
-            log.debug("number of matching tissue samples: " + list.size());
+            log.debug(
+                    "number of tissue samples matching '" + searchTerm + "' to start ontology search: " + list.size());
         } catch (javax.persistence.NoResultException e) { // exception by design
             // no-op
             log.debug("No tissue sample code for " + searchTerm);
@@ -1710,7 +1710,7 @@ public class DashboardDaoImpl implements DashboardDao {
             subjectIds.add(result.getId());
         }
         long t2 = System.currentTimeMillis();
-        log.debug((t2 - t1) + " miliseconds");
+        log.debug("disease context ontology search for '" + oneTerm + "' took " + (t2 - t1) + " milliseconds");
         log.debug("tissue sample results count: " + entities.size());
         if (observations != null) {
             List<Integer> observationIds = observationIdsForSubjectIds(subjectIds);

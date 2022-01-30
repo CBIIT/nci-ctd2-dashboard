@@ -48,8 +48,6 @@ public class SearchController {
         log.debug("number of subject results from search " + results.numberOfSubjects());
         JSONSerializer jsonSerializer = new JSONSerializer().transform(new ImplTransformer(), Class.class)
                 .transform(new DateTransformer(), Date.class);
-        String serializedResult = jsonSerializer.deepSerialize(results);
-        log.debug("result size " + serializedResult.length());
-        return new ResponseEntity<String>(serializedResult, headers, HttpStatus.OK);
+        return new ResponseEntity<String>(jsonSerializer.deepSerialize(results), headers, HttpStatus.OK);
     }
 }
