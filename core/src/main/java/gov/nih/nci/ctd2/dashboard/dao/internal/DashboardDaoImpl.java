@@ -813,21 +813,22 @@ public class DashboardDaoImpl implements DashboardDao {
     }
 
     private List<Integer> ontologySearchDiseaseContext(String searchTerm) {
-        pruneDiseaseContextTree();
-        final List<Integer> observed = new ArrayList<Integer>();
-        final Set<Integer> searched = new HashSet<Integer>();
+        flattenDiseaseContextTree();
+        final Set<Integer> observed = new HashSet<Integer>();
         List<Integer> codes = searchTissueSampleCodes(searchTerm);
         for (int code : codes) {
-            if (searched.contains(code))
+            List<Integer> observedDescendants = flatDiseaseContextMap.get(code);
+            if (observedDescendants == null)
                 continue;
-            searched.add(code);
-            searchDCChildren(code, observed, searched);
+            observed.addAll(observedDescendants);
         }
-        return observed;
+        return new ArrayList<Integer>(observed);
     }
 
-    private void pruneDiseaseContextTree() {
-        if (Hierarchy.DISEASE_CONTEXT.isPruned())
+    private Map<Integer, List<Integer>> flatDiseaseContextMap = new HashMap<Integer, List<Integer>>();
+
+    private void flattenDiseaseContextTree() {
+        if (flatDiseaseContextMap.size() > 0) // it takes about 0.1 second to redo it
             return;
         Session session = getSession();
         @SuppressWarnings("unchecked")
@@ -836,8 +837,8 @@ public class DashboardDaoImpl implements DashboardDao {
         List<Integer> observed = query.list();
         session.close();
         log.debug("number of observed tissue samples " + observed.size());
-        Hierarchy.DISEASE_CONTEXT.prune(observed);
-        log.debug("after pruning - " + Hierarchy.DISEASE_CONTEXT);
+        flatDiseaseContextMap = Hierarchy.DISEASE_CONTEXT.flatten(observed);
+        log.debug("disease context map size " + flatDiseaseContextMap.size());
     }
 
     private void searchDCChildren(int code, final List<Integer> observed, final Set<Integer> searched) {
@@ -849,7 +850,6 @@ public class DashboardDaoImpl implements DashboardDao {
 
             int observationNumber = observationCountForTissueSample(child);
             if (observationNumber > 0) {
-                log.debug("tissue sample child found " + child);
                 observed.add(child);
             }
             searchDCChildren(child, observed, searched);

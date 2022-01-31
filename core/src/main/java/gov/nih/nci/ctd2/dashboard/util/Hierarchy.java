@@ -5,9 +5,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -46,43 +49,37 @@ public enum Hierarchy {
                 + map.values().stream().reduce(0, (total, x) -> total + x.length, Integer::sum);
     }
 
-    private boolean pruned = false;
-
-    public boolean isPruned() {
-        return pruned;
+    // create a flat map for looking up all descendants quickly
+    public Map<Integer, List<Integer>> flatten(final List<Integer> observed) {
+        final Map<Integer, List<Integer>> flatMap = new HashMap<Integer, List<Integer>>();
+        for (int key : map.keySet()) {
+            // *searched* set is parent-specific. we do need to search even if it has been
+            // searched for another parent
+            final Set<Integer> searched = new HashSet<Integer>();
+            final List<Integer> observedDescendants = new ArrayList<Integer>();
+            observed(key, observedDescendants, observed, searched);
+            if (observedDescendants.size() > 0)
+                flatMap.put(key, observedDescendants);
+        }
+        return flatMap;
     }
 
-    public void prune(final List<Integer> observed) {
-        // even if we do this every time, it is not too bad. (under 20 milliseconds)
-        if (pruned)
+    private void observed(int x, final List<Integer> observedDescendants, final List<Integer> allObserved,
+            final Set<Integer> searched) {
+        if (searched.contains(x)) {
             return;
-
-        final Map<Integer, Boolean> searched = new HashMap<Integer, Boolean>();
-        map.keySet().stream().filter(k -> !observed(k, observed, searched)).collect(Collectors.toList())
-                .forEach(x -> map.remove(x));
-        pruned = true;
-    }
-
-    private boolean observed(int x, final List<Integer> observed, final Map<Integer, Boolean> searched) {
-        Boolean known = searched.get(x);
-        if (known != null)
-            return known;
-        if (observed.contains(x)) {
-            searched.put(x, true);
-            return true;
+        }
+        searched.add(x);
+        if (allObserved.contains(x)) {
+            observedDescendants.add(x);
         }
         int[] v = map.get(x);
         if (v == null) { // x is a leaf
-            searched.put(x, false);
-            return false;
+            return;
         }
         for (int a : v) {
-            if (observed(a, observed, searched))
-                return true;
+            observed(a, observedDescendants, allObserved, searched);
         }
-        // now all children are not observed
-        searched.put(x, false);
-        return false;
     }
 
     // just in case we care of the full code with the leading 'C' for some reason
