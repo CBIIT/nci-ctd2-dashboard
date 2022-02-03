@@ -3,7 +3,6 @@ package gov.nih.nci.ctd2.dashboard.impl;
 import gov.nih.nci.ctd2.dashboard.model.ObservationTemplate;
 import gov.nih.nci.ctd2.dashboard.model.Submission;
 import org.hibernate.annotations.Proxy;
-import org.hibernate.search.annotations.Indexed;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -12,7 +11,6 @@ import java.util.Date;
 @Entity
 @Proxy(proxyClass = Submission.class)
 @Table(name = "submission")
-@Indexed
 public class SubmissionImpl extends DashboardEntityImpl implements Submission {
     private static final long serialVersionUID = -6902361235500057743L;
 	private ObservationTemplate observationTemplate;

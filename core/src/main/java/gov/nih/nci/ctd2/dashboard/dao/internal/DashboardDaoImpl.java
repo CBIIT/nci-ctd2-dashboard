@@ -91,7 +91,7 @@ public class DashboardDaoImpl implements DashboardDao {
             ObservationTemplateImpl.FIELD_SUBMISSIONNAME };
 
     private static final Class<?>[] searchableClasses = { SubjectWithOrganismImpl.class, TissueSampleImpl.class,
-            CompoundImpl.class, SubmissionImpl.class, ObservationTemplateImpl.class };
+            CompoundImpl.class, ObservationTemplateImpl.class };
 
     private SessionFactory sessionFactory;
 

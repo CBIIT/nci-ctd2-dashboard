@@ -5,14 +5,12 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Proxy;
-import org.hibernate.search.annotations.Indexed;
 
 import gov.nih.nci.ctd2.dashboard.model.ECOTerm;
 
 @Entity
 @Proxy(proxyClass = ECOTerm.class)
 @Table(name = "ecoterm")
-@Indexed
 public class ECOTermImpl extends DashboardEntityImpl implements ECOTerm {
 
     private static final long serialVersionUID = 1L;

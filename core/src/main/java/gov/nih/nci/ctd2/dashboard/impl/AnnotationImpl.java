@@ -2,14 +2,12 @@ package gov.nih.nci.ctd2.dashboard.impl;
 
 import gov.nih.nci.ctd2.dashboard.model.Annotation;
 import org.hibernate.annotations.Proxy;
-import org.hibernate.search.annotations.Indexed;
 
 import javax.persistence.*;
 
 @Entity
 @Proxy(proxyClass = Annotation.class)
 @Table(name = "annotation")
-@Indexed
 public class AnnotationImpl extends SubjectImpl implements Annotation {
     private static final long serialVersionUID = -6638963618040537372L;
     private String source;
