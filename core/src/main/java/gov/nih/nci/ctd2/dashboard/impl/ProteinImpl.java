@@ -5,7 +5,6 @@ import gov.nih.nci.ctd2.dashboard.model.Transcript;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.Proxy;
-import org.hibernate.search.annotations.Indexed;
 
 import javax.persistence.*;
 
@@ -15,7 +14,6 @@ import java.util.HashSet;
 @Entity
 @Proxy(proxyClass = Protein.class)
 @Table(name = "protein")
-@Indexed
 public class ProteinImpl extends SubjectWithOrganismImpl implements Protein {
     private static final long serialVersionUID = -2908682202730022719L;
 	private String uniprotId;
