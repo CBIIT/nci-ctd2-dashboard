@@ -8,7 +8,6 @@ import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.Proxy;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Fields;
-import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Store;
@@ -20,7 +19,6 @@ import java.util.Set;
 @Entity
 @Proxy(proxyClass = Subject.class)
 @Table(name = "subject")
-@Indexed
 public class SubjectImpl extends DashboardEntityImpl implements Subject {
     private static final long serialVersionUID = 1L;
     public final static String FIELD_SYNONYM = "synonym";

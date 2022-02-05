@@ -8,7 +8,6 @@ import javax.persistence.Index;
 import org.hibernate.annotations.Proxy;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Fields;
-import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Store;
@@ -23,7 +22,6 @@ import javax.persistence.*;
 @Table(name = "dashboard_entity",
         indexes = { @Index(name = "entityNameIdx", columnList = "displayName" )
 })
-@Indexed
 public class DashboardEntityImpl implements DashboardEntity {
     private static final long serialVersionUID = 7796821976089294032L;
 	public final static String FIELD_DISPLAYNAME = "keyword";
