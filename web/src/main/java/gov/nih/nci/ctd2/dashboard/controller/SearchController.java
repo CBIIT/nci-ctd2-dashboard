@@ -42,7 +42,7 @@ public class SearchController {
         if (keyword.length() < 2)
             return new ResponseEntity<String>(headers, HttpStatus.BAD_REQUEST);
 
-        keyword = URLDecoder.decode(URLDecoder.decode(keyword, Charset.defaultCharset()), Charset.defaultCharset());
+        keyword = keyword.replaceAll("`", "'");
 
         SearchResults results = dashboardDao.search(keyword);
         log.debug("number of subject results from search " + results.numberOfSubjects());

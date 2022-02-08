@@ -2511,7 +2511,7 @@ import ObservationView from './observation.view.js'
             $(this.el).html(this.template(this.model));
 
             // update the search box accordingly
-            $("#omni-input").val(decodeURIComponent(decodeURI(this.model.term)).replaceAll(/\%25/g,"%").replaceAll(/\%27/g,"'"));
+            $("#omni-input").val(this.model.term.replaceAll("`","'"));
 
             const searchQuery = this.model.term;
             let subject_names = [];
@@ -3600,7 +3600,12 @@ import ObservationView from './observation.view.js'
 
         $("#omnisearch").submit(function () {
             const previous = window.location.hash;
-            window.location.hash = "search/" + encodeURI(encodeURIComponent($("#omni-input").val().trim().replaceAll("%", "%25").replaceAll("'", "%27")));
+            const search_term = ($("#omni-input").val().trim().replaceAll("'", "`"));
+            if(search_term.length < 2) {
+                showAlertMessage("You cannot search for a single character.");
+                return false;
+            }
+            window.location.hash = "search/" + encodeURIComponent(search_term);
             if(previous==window.location.hash) {
                 window.location.reload();
             }
