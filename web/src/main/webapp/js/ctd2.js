@@ -2684,6 +2684,8 @@ import ObservationView from './observation.view.js'
                     if(results.oversized>0) {
                         $("#oversized").text(results.oversized)
                         $("#oversize-message").show()
+                        $("#ontology-search").prop('disabled', true)
+                        $("#ontology-search").css("pointer-events", "none")
                     }
                     const subject_result = results.subject_result;
                     subject_names = subject_result.map(x => x.subjectName);
