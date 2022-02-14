@@ -533,7 +533,7 @@
                     <table id="submission-details-grid" class="table table-bordered table-striped">
                         <tr>
                             <th>Project</th>
-                            <td>{{observationTemplate.project}}</td>
+                            <td><a href="#{{observationTemplate.submissionCenter.stableURL}}/{{observationTemplate.project.toLowerCase().replace(/[^a-zA-Z0-9]/g, '-')}}">{{observationTemplate.project}}</a></td>
                         </tr>
                         <tr>
                             <th>Description</th>
@@ -660,7 +660,7 @@
                 <table class="table table-bordered table-striped">
                     <tr>
                         <th>Project</th>
-                        <td>{{submission.observationTemplate.project}}</td>
+                        <td><a href="#{{submission.observationTemplate.submissionCenter.stableURL}}/{{submission.observationTemplate.project.toLowerCase().replace(/[^a-zA-Z0-9]/g, '-')}}">{{submission.observationTemplate.project}}</a></td>
                     </tr>
                     <tr>
                         <th>Description</th>
