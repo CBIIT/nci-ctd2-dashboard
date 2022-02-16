@@ -3603,6 +3603,12 @@ import ObservationView from './observation.view.js'
         $("#omnisearch").submit(function () {
             const previous = window.location.hash;
             const search_term = ($("#omni-input").val().trim().replaceAll("'", "`"));
+            const too_short = Array.from(search_term.matchAll(/([^"]\S*|".+?")\s*/g), m => m[1].replace(/^"/, "").replace(/"$/, ""))
+                .some(x => x.length<=2);
+            if(too_short) {
+                showAlertMessage("Search queries containing terms with one or two letters are not allowed as they may return too many results.  Please enclose search terms in quotes or reformulate it. E.g. B cell should be submitted as \"B Cell\".");
+                return false;
+            }
             if(search_term.length < 2) {
                 showAlertMessage("You cannot search for a single character.");
                 return false;
