@@ -2625,6 +2625,7 @@ import ObservationView from './observation.view.js'
                     // if (!$("#submission-search-results").is(":visible")) {
                     $("#submission-search-results").fadeIn();
                     $('#submission-summary-link').show();
+                    $("#searched-submissions").DataTable().destroy();
                     $("#searched-submissions").dataTable({
                         "columns": [
                             null,
