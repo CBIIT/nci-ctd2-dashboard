@@ -2585,13 +2585,17 @@ import ObservationView from './observation.view.js'
                                 "orderDataType": "dashboard-rank",
                                 "type": 'num',
                             },
+                            {visible: false},
                             {visible: false}
                         ]
                     }).fnSort([
+                        [7, 'desc'],
                         [6, 'desc'],
                         [5, 'desc'],
                         [1, 'asc']
                     ]);
+                    $("#search-results-grid").parent().width("100%");
+                    $("#search-results-grid").width("100%");
                     $("#search-results-grid").parent().find('input[type=search]').popover(table_filter_popover);
                     $("#ontology-search").prop('disabled', true);
                     $("#ontology-search").css("pointer-events", "none");
@@ -2733,11 +2737,13 @@ import ObservationView from './observation.view.js'
                                     "orderDataType": "dashboard-rank",
                                     "type": 'num',
                                 },
+                                {visible: false},
                                 {visible: false}
                             ]
 
                         });
                         oTable.fnSort([
+                            [7, 'desc'],
                             [6, 'desc'],
                             [5, 'desc'],
                             [1, 'asc']

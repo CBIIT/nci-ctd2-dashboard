@@ -1709,6 +1709,7 @@
                 <br/>(from {{centerCount}} Center{{centerCount > 1 ? 's' : ''}})
             </td>
             <td>{{matchNumber}}</td>
+            <td>{{ontology}}</td>
         </tr>
     </script>
 
@@ -1739,6 +1740,7 @@
                 <br/>(from {{centerCount}} Center{{centerCount > 1 ? 's' : ''}})
             </td>
             <td>{{matchNumber}}</td>
+            <td>{{ontology}}</td>
         </tr>
     </script>
 
@@ -1778,6 +1780,7 @@
                     <th>Class</th>
                     <th>Roles</th>
                     <th>Observations</th>
+                    <th></th>
                     <th></th>
                 </tr>
                 </thead>

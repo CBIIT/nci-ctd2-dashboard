@@ -1648,24 +1648,33 @@ public class DashboardDaoImpl implements DashboardDao {
     public SearchResults ontologySearch(String queryString) {
         final String[] searchTerms = parseWords(queryString);
         Set<Integer> observationsIntersection = null;
-        Set<SubjectResult> subject_result = new HashSet<SubjectResult>();
+        Set<SubjectResult> subject_result = null;
         final int termCount = searchTerms.length;
-        boolean first = true;
-        for (String oneTerm : searchTerms) {
-            oneTerm = oneTerm.replace("\"", "");
-            log.debug("ontology search term:" + oneTerm);
-            if (termCount <= 1) { // prevent wasting time finding observations
-                subject_result.addAll(ontologySearchOneTerm(oneTerm, null));
-                break;
+        if (termCount <= 1) { // prevent wasting time finding observations
+            subject_result = new HashSet<SubjectResult>(ontologySearchOneTerm(searchTerms[0].replace("\"", ""), null));
+        } else {
+            boolean first = true;
+            Map<SubjectResult, Integer> subjectResultMap = new HashMap<SubjectResult, Integer>();
+            for (String oneTerm : searchTerms) {
+                oneTerm = oneTerm.replace("\"", "");
+                log.debug("ontology search term:" + oneTerm);
+                Set<Integer> observations = new HashSet<Integer>();
+                List<SubjectResult> oneTermList = ontologySearchOneTerm(oneTerm, observations);
+                for (SubjectResult s : oneTermList) {
+                    Integer matchNumber = subjectResultMap.get(s);
+                    if (matchNumber != null) {
+                        s.matchNumber = matchNumber + 1;
+                    }
+                    subjectResultMap.put(s, s.getMatchNumber());
+                }
+                if (first) {
+                    observationsIntersection = observations;
+                    first = false;
+                } else {
+                    observationsIntersection.retainAll(observations);
+                }
             }
-            Set<Integer> observations = new HashSet<Integer>();
-            subject_result.addAll(ontologySearchOneTerm(oneTerm, observations));
-            if (first) {
-                observationsIntersection = observations;
-                first = false;
-            } else {
-                observationsIntersection.retainAll(observations);
-            }
+            subject_result = subjectResultMap.keySet();
         }
         SearchResults searchResults = new SearchResults();
         if (subject_result.size() > maxNumberOfSearchResults) {
@@ -1704,7 +1713,7 @@ public class DashboardDaoImpl implements DashboardDao {
             int observationNumber = observationCountForTissueSample(i);
             int centerCount = centerCountForTissueSample(i);
             Set<String> roles = getRolesForSubjectId(result.getId());
-            SubjectResult x = new SubjectResult(result, observationNumber, centerCount, null, roles); // no matchNumer
+            SubjectResult x = new SubjectResult(result, observationNumber, centerCount, 1, roles);
             entities.add(x);
             subjectIds.add(result.getId());
         }

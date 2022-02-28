@@ -21,7 +21,7 @@ public class SubjectResult {
     final public String className;
     final public Integer observationCount;
     final public Integer centerCount;
-    final public Integer matchNumber;
+    public Integer matchNumber;
     final public Integer id;
     final public String stableURL;
     final public Set<String> synonyms;
