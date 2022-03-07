@@ -2559,6 +2559,7 @@ import ObservationView from './observation.view.js'
                             // the following code is copied. TODO refactoring
                             const centerCounter = new Set();
                             _.each(submissions, function (submission) {
+                                submission.ontology = true;
                                 const searchSubmissionRowView = new SearchSubmissionRowView({
                                     model: submission
                                 });
@@ -2781,6 +2782,7 @@ import ObservationView from './observation.view.js'
 
                             const centerCounter = new Set();
                             _.each(submissions, function (submission) {
+                                submission.ontology = false;
                                 const searchSubmissionRowView = new SearchSubmissionRowView({
                                     model: submission
                                 });

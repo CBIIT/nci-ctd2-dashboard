@@ -1864,7 +1864,7 @@
         <tr>
             <td><a href="#{{stableURL}}"><img src="img/submission.png" width="50" alt="Submission" class=clickable-popover data-content="Submission"></a></td>
             <td><a href="#{{stableURL}}">{{submissionDate}}</a></td>
-            <td>{{description}}</td>
+            <td>{{description}} <img src="img/onto.png" style="float: right;display:{{ontology?'block':'none'}}"></img></td>
             <td><a href="#{{stableURL}}"><img src="img/{{centerName}}.png" class=clickable-popover data-content="{{centerName}}" alt="{{centerName}}" height="50"></a></td>
             <td><span class="badge tier-badge">Tier {{tier}}</span></td>
             <td width=150>
