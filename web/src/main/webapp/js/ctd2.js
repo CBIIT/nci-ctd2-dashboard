@@ -1804,6 +1804,10 @@ import ObservationView from './observation.view.js'
             const thatModel = this.model; // observation
             const ecocode = thatModel.ecocode;
 
+            if(thatModel.ontology == undefined || thatModel.ontology == null) {
+                thatModel.ontology = false
+            }
+
             if (thatModel.extra === undefined) {
                 thatModel.extra = null;
                 $(tableEl).append(this.template(thatModel));
@@ -2614,6 +2618,7 @@ import ObservationView from './observation.view.js'
                     if (observation_result != null && observation_result.length > 0) {
                         const matching_observations = [];
                         _.each(observation_result, function (aResult) {
+                            aResult.ontology = true;
                             matching_observations.push(aResult);
                         });
                         tabulate_matching_observations(matching_observations);

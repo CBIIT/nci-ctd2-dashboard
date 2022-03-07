@@ -1642,8 +1642,11 @@
                     {{submission.submissionDate}}
                 </a>
             </td>
-            <td id="observation-summary-{{id}}">
+            <td>
+                <div id="observation-summary-{{id}}">
                 Loading...
+                </div>
+                <img src="img/onto.png" style="float: right;display:{{ontology?'block':'none'}}"></img>
             </td>
             <td><span class="badge tier-badge">Tier {{submission.observationTemplate.tier}}</span></td>
             <td>
