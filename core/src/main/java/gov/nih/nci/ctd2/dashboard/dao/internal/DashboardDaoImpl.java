@@ -20,7 +20,7 @@ import javax.persistence.criteria.CriteriaQuery;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.lucene.analysis.core.WhitespaceAnalyzer;
+import org.apache.lucene.analysis.core.KeywordAnalyzer;
 import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.search.Query;
@@ -636,7 +636,7 @@ public class DashboardDaoImpl implements DashboardDao {
             final Map<Submission, Integer> submissions) {
         FullTextSession fullTextSession = Search.getFullTextSession(getSession());
         MultiFieldQueryParser multiFieldQueryParser = new MultiFieldQueryParser(defaultSearchFields,
-                new WhitespaceAnalyzer());
+                new KeywordAnalyzer());
         Query luceneQuery = null;
         try {
             luceneQuery = multiFieldQueryParser.parse(singleTerm);
