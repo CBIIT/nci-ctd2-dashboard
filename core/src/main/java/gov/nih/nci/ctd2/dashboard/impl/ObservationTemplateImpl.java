@@ -21,7 +21,6 @@ public class ObservationTemplateImpl extends DashboardEntityImpl implements Obse
     private static final long serialVersionUID = -5431169591039311937L;
     public final static String FIELD_DESCRIPTION = "description";
     public final static String FIELD_SUBMISSIONDESC = "submissionDesc";
-    public final static String FIELD_PROJECT = "project";
     public final static String FIELD_SUBMISSIONNAME = "submissionName";
 
     private String description;
@@ -82,8 +81,7 @@ public class ObservationTemplateImpl extends DashboardEntityImpl implements Obse
     public void setSubmissionDescription(String submissionDescription) {
         this.submissionDescription = submissionDescription;
     }
-    
-    @Field(name=FIELD_PROJECT, index = Index.YES)
+
     @Column(length = 1024)
     public String getProject() {
         return project;
