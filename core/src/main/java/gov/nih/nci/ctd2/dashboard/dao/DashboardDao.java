@@ -96,4 +96,6 @@ public interface DashboardDao {
 
     ObservationItem getObservationInfo(String uri);
     ObservationItem[] getObservations(String submissionId, Set<Integer> indexes);
+
+    void masterExport(String filename);
 }

@@ -112,6 +112,7 @@
                                 <a class="dropdown-toggle navlink" href="#" data-toggle="dropdown">Resources <b
                                         class="caret"></b></a>
                                 <ul class="dropdown-menu">
+                                    <li><a href="#master-export">Master Observation Export</a></li>
                                     <li><a target="_blank" href="https://ocg.cancer.gov/programs/ctd2">OCG/CTD² Home Page</a></li>
                                     <li><a href="#cite">How to Cite</a></li>
                                     <li><a href="#api-documentation">API Documentation</a></li>
@@ -2464,6 +2465,13 @@
     <script type="text/template" id="applications-tmpl">
         <div class="container common-container">
             {{api_apps}}
+        </div>
+    </script>
+
+    <script type="text/template" id="master-export-tmpl">
+        <div class="container common-container">
+            <p>The full set of the observations available in the Dashboard is available in a tabular form, to support downstream analyses and machine learning applications. Each observation is represented with multiple rows, one row per observation subject. Observation- and submission-level data is replicated in each subject row.</p>
+            <a target=_blank href="./master-export.txt">Download file</a>
         </div>
     </script>
 

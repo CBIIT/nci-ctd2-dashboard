@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
 import gov.nih.nci.ctd2.dashboard.importer.internal.SampleImporter;
 import gov.nih.nci.ctd2.dashboard.util.APIDataBuilder;
+import gov.nih.nci.ctd2.dashboard.util.ExportBuilder;
 import gov.nih.nci.ctd2.dashboard.util.OverallSummary;
 import gov.nih.nci.ctd2.dashboard.util.SubjectScorer;
 
@@ -64,7 +65,8 @@ public class DashboardAdminMain {
                 .addOption("o", "observation-data", false, "imports dashboard observation data.")
                 .addOption("s", "sample-data", false, "imports sample data.")
                 .addOption("t", "taxonomy-data", false, "imports organism data.")
-                .addOption("i", "index", false, "creates lucene index.");
+                .addOption("i", "index", false, "creates lucene index.")
+                .addOption("x", "prepare-export", false, "prepare master export file.");
 
         // Here goes the parsing attempt
         try {
@@ -120,6 +122,12 @@ public class DashboardAdminMain {
                 String dataURL = (String) appContext.getBean("dataURL");
                 APIDataBuilder b = (APIDataBuilder) appContext.getBean("apiDataBuilder");
                 b.prepareData(dataURL);
+            }
+
+            if (commandLine.hasOption("x")) {
+                String downloadFileLocation = (String) appContext.getBean("downloadFileLocation");
+                ExportBuilder e = (ExportBuilder) appContext.getBean("exportBuilder");
+                e.prepareData(downloadFileLocation);
             }
 
             if (commandLine.hasOption("s")) {

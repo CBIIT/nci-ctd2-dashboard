@@ -1,6 +1,10 @@
 package gov.nih.nci.ctd2.dashboard.dao.internal;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.math.BigInteger;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -39,13 +43,9 @@ import gov.nih.nci.ctd2.dashboard.api.ObservationItem;
 import gov.nih.nci.ctd2.dashboard.api.SubjectItem;
 import gov.nih.nci.ctd2.dashboard.api.XRefItem;
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
-import gov.nih.nci.ctd2.dashboard.impl.CompoundImpl;
 import gov.nih.nci.ctd2.dashboard.impl.DashboardEntityImpl;
 import gov.nih.nci.ctd2.dashboard.impl.ObservationTemplateImpl;
 import gov.nih.nci.ctd2.dashboard.impl.SubjectImpl;
-import gov.nih.nci.ctd2.dashboard.impl.SubjectWithOrganismImpl;
-import gov.nih.nci.ctd2.dashboard.impl.SubmissionImpl;
-import gov.nih.nci.ctd2.dashboard.impl.TissueSampleImpl;
 import gov.nih.nci.ctd2.dashboard.model.AnimalModel;
 import gov.nih.nci.ctd2.dashboard.model.Annotation;
 import gov.nih.nci.ctd2.dashboard.model.CellSample;
@@ -2041,5 +2041,67 @@ public class DashboardDaoImpl implements DashboardDao {
         log.debug("count of observations:" + x.length);
         session.close();
         return x;
+    }
+
+    @Override
+    public void masterExport(String filename) {
+        try (PrintWriter out = new PrintWriter(new FileWriter(filename))) {
+            out.println(
+                    "ID\tSubmission title\tProject title\tSubmissting center\tSubmission date\tObservation tier\tObservation summary\tObservation URL\tSubject class\tSubject name\tSubject role");
+
+            Session session = getSession();
+            // queries in four layers:
+            // (1) template;
+            // (2) submission (submission-vs-template is modeled as many-to-one, but in real
+            // data they are one-to-one)
+            String sql = "SELECT description, project, displayName, submissionDate, tier, observationSummary, submission.id FROM observation_template "
+                    + "JOIN dashboard_entity ON submissionCenter_id=dashboard_entity.id "
+                    + "JOIN submission ON observation_template.id=observationTemplate_id";
+            @SuppressWarnings("unchecked")
+            org.hibernate.query.Query<Object[]> query = session.createNativeQuery(sql);
+            for (Object[] obj : query.getResultList()) {
+                String submissionTitle = (String) obj[0];
+                String projectTitle = (String) obj[1];
+                String submittingCenter = (String) obj[2];
+                Timestamp submissionDate = (Timestamp) obj[3];
+                Integer observationTier = (Integer) obj[4];
+                String observationSummary = (String) obj[5];
+                Integer submissionId = (Integer) obj[6];
+                // (3) observation
+                String observationSql = "SELECT stableURL, id from observation WHERE submission_id=" + submissionId;
+                @SuppressWarnings("unchecked")
+                org.hibernate.query.Query<Object[]> observationQuery = session.createNativeQuery(observationSql);
+                for (Object[] observationObj : observationQuery.getResultList()) {
+                    String observationURL = (String) observationObj[0];
+                    /* the 'ID' to export */
+                    String ID = observationURL.substring(observationURL.indexOf("/") + 1);
+                    Integer observationId = (Integer) observationObj[1]; /* the actual internal ID */
+                    // (4) observed subject
+                    String observedSubjectSql = "SELECT id FROM observed_subject WHERE observation_id=" + observationId;
+                    @SuppressWarnings("unchecked")
+                    org.hibernate.query.Query<Integer> observedSubjectQuery = session
+                            .createNativeQuery(observedSubjectSql);
+                    for (Integer id : observedSubjectQuery.getResultList()) {
+                        ObservedSubject observedSubject = getEntityById(ObservedSubject.class, id);
+                        Subject subject = observedSubject.getSubject();
+                        String subjectClass = subject.getClass().getSimpleName();
+                        if (subjectClass.endsWith("Impl")) {
+                            subjectClass = subjectClass.substring(0, subjectClass.length() - 4);
+                        } else {
+                            log.warn("unexpected class name: " + subjectClass);
+                        }
+                        String subjectName = subject.getDisplayName();
+                        String subjectRole = observedSubject.getObservedSubjectRole().getSubjectRole().getDisplayName();
+                        out.println(String.format("%s\t%s\t%s\t%s\t%s\t%d\t%s\t%s\t%s\t%s\t%s", ID, submissionTitle,
+                                projectTitle, submittingCenter, submissionDate, observationTier, observationSummary,
+                                observationURL, subjectClass, subjectName, subjectRole));
+                    }
+                }
+            }
+            session.close();
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

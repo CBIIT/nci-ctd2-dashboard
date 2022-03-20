@@ -596,6 +596,15 @@ import ObservationView from './observation.view.js'
         }
     });
 
+    const MasterExportView = Backbone.View.extend({
+        el: $("#main-container"),
+        template: _.template($("#master-export-tmpl").html()),
+        render: function () {
+            $(this.el).html(this.template({}));
+            return this;
+        }
+    });
+
     const HelpNavigateView = Backbone.View.extend({
         template: _.template($("#help-navigate-tmpl").html()),
 
@@ -3487,6 +3496,7 @@ import ObservationView from './observation.view.js'
             "gene-cart-help": viewOnlyRouter(GeneCartHelpView),
             "cite": viewOnlyRouter(HowToCiteView),
             "api-documentation": viewOnlyRouter(ApiDocumentation),
+            "master-export": viewOnlyRouter(MasterExportView),
             "*actions": "home",
         },
 

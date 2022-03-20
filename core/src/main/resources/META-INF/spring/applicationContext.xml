@@ -54,6 +54,9 @@
     <bean id="dataURL" class="java.lang.String">
         <constructor-arg index="0" value="${web.data.url}"/>
     </bean>
+    <bean id="downloadFileLocation" class="java.lang.String">
+        <constructor-arg index="0" value="${download.file.location}"/>
+    </bean>
     
     <bean id="cnkbDataURL" class="java.lang.String">
         <constructor-arg index="0" value="${cnkb.data.url}"/>
