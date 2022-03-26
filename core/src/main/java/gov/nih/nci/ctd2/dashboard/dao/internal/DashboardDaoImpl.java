@@ -581,13 +581,13 @@ public class DashboardDaoImpl implements DashboardDao {
         return queryWithClass("from ObservedEvidenceImpl where observation = :observation", "observation", observation);
     }
 
-    /* purge the index if there is no observation having this subject */
+    /* purge the index if there is no observation having this subject and not an tissue sample */
     @SuppressWarnings("unchecked")
     @Override
     public void cleanIndex(int batchSize) {
         Session session = getSession();
         org.hibernate.query.Query<BigInteger> query = session.createNativeQuery(
-                "SELECT id FROM subject WHERE id NOT IN (SELECT DISTINCT subject_id FROM observed_subject)");
+                "SELECT id FROM subject WHERE id NOT IN (SELECT DISTINCT subject_id FROM observed_subject UNION SELECT id FROM tissue_sample)");
         ScrollableResults scrollableResults = query.scroll(ScrollMode.FORWARD_ONLY);
 
         FullTextSession fullTextSession = Search.getFullTextSession(getSession());
@@ -637,6 +637,7 @@ public class DashboardDaoImpl implements DashboardDao {
         FullTextSession fullTextSession = Search.getFullTextSession(getSession());
         MultiFieldQueryParser multiFieldQueryParser = new MultiFieldQueryParser(defaultSearchFields,
                 new KeywordAnalyzer());
+        multiFieldQueryParser.setAllowLeadingWildcard(true);
         Query luceneQuery = null;
         try {
             luceneQuery = multiFieldQueryParser.parse(singleTerm);
@@ -672,6 +673,10 @@ public class DashboardDaoImpl implements DashboardDao {
                 }
             } else if (o instanceof Subject) {
                 Subject s = (Subject) o;
+                // if s is a tissue sample, check whether it is observed. if not, skip.
+                if(s instanceof TissueSample && notObserved(s.getId())) {
+                    continue;
+                }
                 if (subjects.containsKey(s)) {
                     subjects.put(s, subjects.get(s) + 1);
                 } else {
@@ -1585,23 +1590,44 @@ public class DashboardDaoImpl implements DashboardDao {
         return result;
     }
 
-    private List<Integer> searchTissueSampleCodes(String searchTerm) {
-        Session session = getSession();
-        String sql = "SELECT code FROM tissue_sample JOIN dashboard_entity ON tissue_sample.id=dashboard_entity.id WHERE displayName LIKE :name";
-        @SuppressWarnings("unchecked")
-        org.hibernate.query.Query<Integer> query = session.createNativeQuery(sql);
-        query.setParameter("name", "%" + searchTerm + "%");
-        List<Integer> list = new ArrayList<Integer>();
+    /* this is similar to regular search except (1) only for tissue sample (2) retain the result even if there is no observation */
+    private List<Integer> searchTissueSampleCodes(final String singleTerm) {
+        FullTextSession fullTextSession = Search.getFullTextSession(getSession());
+        MultiFieldQueryParser multiFieldQueryParser = new MultiFieldQueryParser(defaultSearchFields,
+            new KeywordAnalyzer());
+        multiFieldQueryParser.setAllowLeadingWildcard(true);
+        Query luceneQuery = null;
         try {
-            list = query.list();
-            log.debug(
-                    "number of tissue samples matching '" + searchTerm + "' to start ontology search: " + list.size());
-        } catch (javax.persistence.NoResultException e) { // exception by design
-            // no-op
-            log.debug("No tissue sample code for " + searchTerm);
+            luceneQuery = multiFieldQueryParser.parse(singleTerm);
+            log.debug(luceneQuery);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return new ArrayList<Integer>();
         }
+
+        FullTextQuery fullTextQuery = fullTextSession.createFullTextQuery(luceneQuery, searchableClasses);
+        fullTextQuery.setReadOnly(true);
+        List<?> list = fullTextQuery.list();
+        fullTextSession.close();
+
+        List<Integer> resultList = new ArrayList<Integer>();
+        list.forEach(object -> {
+            if(object instanceof TissueSample) {
+                TissueSample s = (TissueSample) object;
+                resultList.add(s.getCode());
+            }
+        });
+        return resultList;
+    }
+
+    /* this is meant to check whether a subject is observed or not in the most efficient way */
+    private boolean notObserved(int id) {
+        Session session = getSession();
+        @SuppressWarnings("unchecked")
+        org.hibernate.query.Query<Integer> query = session.createNativeQuery("SELECT 1 FROM observed_subject WHERE subject_id=" + id + " LIMIT 1");
+        boolean no = query.uniqueResult() == null;
         session.close();
-        return list;
+        return no;
     }
 
     private int observationCountForTissueSample(int code) {
