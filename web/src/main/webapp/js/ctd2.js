@@ -2850,6 +2850,7 @@ import ObservationView from './observation.view.js'
                         } else {
                             $('#observation-count').text(matching_observations.length);
                         }
+                        $("#ontology-search").prop('disabled', false);
                     }
                     $('.clickable-popover').popover({
                         placement: "bottom",
@@ -2859,6 +2860,7 @@ import ObservationView from './observation.view.js'
                     });
                 }
             });
+            $("#ontology-search").prop('disabled', true);
 
             return this;
         }
