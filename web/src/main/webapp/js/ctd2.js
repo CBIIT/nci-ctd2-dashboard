@@ -2535,7 +2535,8 @@ import ObservationView from './observation.view.js'
                 }).done(function (ontology_search_results) {
                     let submission_count = 0;
                     let center_count = 0;
-                    const subject_result = ontology_search_results.subject_result;
+                    const subject_result = ontology_search_results.subject_result
+                        .filter(s => !subject_names.includes(s.subjectName));
                     if(subject_result.length==0) {
                         $("#ontology-search").prop('disabled', true);
                         $("#ontology-search").css("pointer-events", "none");
@@ -2551,7 +2552,6 @@ import ObservationView from './observation.view.js'
                     }
                     $("#search-results-grid").DataTable().destroy();
                     _.each(subject_result, function (one_result) {
-                        if (subject_names.includes(one_result.subjectName)) return;
                         one_result.ontology = true;
                         new SearchResultsRowView({
                             model: one_result,
@@ -2859,6 +2859,7 @@ import ObservationView from './observation.view.js'
                         } else {
                             $('#observation-count').text(matching_observations.length);
                         }
+                        $("#ontology-search").prop('disabled', false);
                     }
                     $('.clickable-popover').popover({
                         placement: "bottom",
@@ -2868,6 +2869,7 @@ import ObservationView from './observation.view.js'
                     });
                 }
             });
+            $("#ontology-search").prop('disabled', true);
 
             return this;
         }

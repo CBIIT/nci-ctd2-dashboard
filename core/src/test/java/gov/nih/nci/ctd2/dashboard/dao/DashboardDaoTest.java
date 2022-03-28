@@ -661,7 +661,28 @@ public class DashboardDaoTest {
     public void hyphenSearchTest() {
         TissueSample ts = dashboardFactory.create(TissueSample.class);
         ts.setDisplayName("diffuse large B-cell lymphoma");
+        /* make all these settings to make a subject an 'observed subject' */
+        ObservedSubject observedSubject = dashboardFactory.create(ObservedSubject.class);
+        Observation observation = dashboardFactory.create(Observation.class);
+        ObservationTemplate template = dashboardFactory.create(ObservationTemplate.class);
+        template.setPrincipalInvestigator("");
+        Submission submission = dashboardFactory.create(Submission.class);
+        submission.setObservationTemplate(template);
+        observation.setSubmission(submission);
+        SubjectRole subjectRole = dashboardFactory.create(SubjectRole.class);
+        subjectRole.setDisplayName("");
+        ObservedSubjectRole observedSubjectRole = dashboardFactory.create(ObservedSubjectRole.class);
+        observedSubjectRole.setSubjectRole(subjectRole);
+        observedSubject.setObservedSubjectRole(observedSubjectRole);
+        observedSubject.setObservation(observation);
+        observedSubject.setSubject(ts);
         dashboardDao.save(ts);
+        dashboardDao.save(template);
+        dashboardDao.save(submission);
+        dashboardDao.save(observation);
+        dashboardDao.save(subjectRole);
+        dashboardDao.save(observedSubjectRole);
+        dashboardDao.save(observedSubject);
 
         assertTrue("search B-CELL", dashboardDao.search("B-CELL").isEmpty());
         assertFalse("search b cell", dashboardDao.search("b cell").isEmpty());
