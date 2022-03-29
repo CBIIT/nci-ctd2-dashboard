@@ -581,7 +581,10 @@ public class DashboardDaoImpl implements DashboardDao {
         return queryWithClass("from ObservedEvidenceImpl where observation = :observation", "observation", observation);
     }
 
-    /* purge the index if there is no observation having this subject and not an tissue sample */
+    /*
+     * purge the index if there is no observation having this subject and not an
+     * tissue sample
+     */
     @SuppressWarnings("unchecked")
     @Override
     public void cleanIndex(int batchSize) {
@@ -674,7 +677,7 @@ public class DashboardDaoImpl implements DashboardDao {
             } else if (o instanceof Subject) {
                 Subject s = (Subject) o;
                 // if s is a tissue sample, check whether it is observed. if not, skip.
-                if(s instanceof TissueSample && notObserved(s.getId())) {
+                if (s instanceof TissueSample && notObserved(s.getId())) {
                     continue;
                 }
                 if (subjects.containsKey(s)) {
@@ -1590,11 +1593,14 @@ public class DashboardDaoImpl implements DashboardDao {
         return result;
     }
 
-    /* this is similar to regular search except (1) only for tissue sample (2) retain the result even if there is no observation */
+    /*
+     * this is similar to regular search except (1) only for tissue sample (2)
+     * retain the result even if there is no observation
+     */
     private List<Integer> searchTissueSampleCodes(final String singleTerm) {
         FullTextSession fullTextSession = Search.getFullTextSession(getSession());
         MultiFieldQueryParser multiFieldQueryParser = new MultiFieldQueryParser(defaultSearchFields,
-            new KeywordAnalyzer());
+                new KeywordAnalyzer());
         multiFieldQueryParser.setAllowLeadingWildcard(true);
         Query luceneQuery = null;
         try {
@@ -1612,7 +1618,7 @@ public class DashboardDaoImpl implements DashboardDao {
 
         List<Integer> resultList = new ArrayList<Integer>();
         list.forEach(object -> {
-            if(object instanceof TissueSample) {
+            if (object instanceof TissueSample) {
                 TissueSample s = (TissueSample) object;
                 resultList.add(s.getCode());
             }
@@ -1620,11 +1626,15 @@ public class DashboardDaoImpl implements DashboardDao {
         return resultList;
     }
 
-    /* this is meant to check whether a subject is observed or not in the most efficient way */
+    /*
+     * this is meant to check whether a subject is observed or not in the most
+     * efficient way
+     */
     private boolean notObserved(int id) {
         Session session = getSession();
         @SuppressWarnings("unchecked")
-        org.hibernate.query.Query<Integer> query = session.createNativeQuery("SELECT 1 FROM observed_subject WHERE subject_id=" + id + " LIMIT 1");
+        org.hibernate.query.Query<Integer> query = session
+                .createNativeQuery("SELECT 1 FROM observed_subject WHERE subject_id=" + id + " LIMIT 1");
         boolean no = query.uniqueResult() == null;
         session.close();
         return no;
@@ -2102,6 +2112,35 @@ public class DashboardDaoImpl implements DashboardDao {
                     /* the 'ID' to export */
                     String ID = observationURL.substring(observationURL.indexOf("/") + 1);
                     Integer observationId = (Integer) observationObj[1]; /* the actual internal ID */
+                    String summary = observationSummary;
+                    String observedEvidenceSql = "SELECT columnName, displayName FROM observed_evidence "
+                            + "JOIN observed_evidence_role ON observed_evidence.observedEvidenceRole_id=observed_evidence_role.id "
+                            + "JOIN dashboard_entity ON observed_evidence.evidence_id=dashboard_entity.id "
+                            + "WHERE observation_id=" + observationId;
+                    @SuppressWarnings("unchecked")
+                    org.hibernate.query.Query<Object[]> observedEvidenceQuery = session
+                            .createNativeQuery(observedEvidenceSql);
+                    for (Object[] evidenceObj : observedEvidenceQuery.getResultList()) {
+                        String columnName = (String) evidenceObj[0];
+                        String evidenceName = (String) evidenceObj[1];
+                        summary = summary.replace("<" + columnName + ">", evidenceName);
+                    }
+                    String obsSubjectSql = "SELECT columnName, displayName FROM observed_subject "
+                            + "JOIN observed_subject_role ON observed_subject.observedSubjectRole_id=observed_subject_role.id "
+                            + "JOIN dashboard_entity ON observed_subject.subject_id=dashboard_entity.id "
+                            + "WHERE observation_id=" + observationId;
+                    @SuppressWarnings("unchecked")
+                    org.hibernate.query.Query<Object[]> obsSubjectQuery = session
+                            .createNativeQuery(obsSubjectSql);
+                    /*
+                     * this appears redundant to observedSubjectQuery, but it is necessary and
+                     * intended because the summary template must be populated for all subjects
+                     */
+                    for (Object[] subjectObj : obsSubjectQuery.getResultList()) {
+                        String columnName = (String) subjectObj[0];
+                        String subjectName = (String) subjectObj[1];
+                        summary = summary.replace("<" + columnName + ">", subjectName);
+                    }
                     // (4) observed subject
                     String observedSubjectSql = "SELECT id FROM observed_subject WHERE observation_id=" + observationId;
                     @SuppressWarnings("unchecked")
@@ -2119,7 +2158,7 @@ public class DashboardDaoImpl implements DashboardDao {
                         String subjectName = subject.getDisplayName();
                         String subjectRole = observedSubject.getObservedSubjectRole().getSubjectRole().getDisplayName();
                         out.println(String.format("%s\t%s\t%s\t%s\t%s\t%d\t%s\t%s\t%s\t%s\t%s", ID, submissionTitle,
-                                projectTitle, submittingCenter, submissionDate, observationTier, observationSummary,
+                                projectTitle, submittingCenter, submissionDate, observationTier, summary,
                                 observationURL, subjectClass, subjectName, subjectRole));
                     }
                 }
