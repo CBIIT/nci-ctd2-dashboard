@@ -2519,6 +2519,8 @@ import ObservationView from './observation.view.js'
 
             const searchQuery = this.model.term;
             let subject_names = [];
+            let submission_count_from_basis_search = 0;
+            const centerCounter = new Set();
             $("#ontology-search").click(function () {
                 $.ajax({
                     url: "ontology-search",
@@ -2556,8 +2558,8 @@ import ObservationView from './observation.view.js'
                             async: false,
                         }).done(function (submissions) {
                             submission_count += submissions.length;
-                            // the following code is copied. TODO refactoring
-                            const centerCounter = new Set();
+                            // this happens only when there is additional submission result
+                            $("#searched-submissions").DataTable().destroy();
                             _.each(submissions, function (submission) {
                                 submission.ontology = true;
                                 const searchSubmissionRowView = new SearchSubmissionRowView({
@@ -2632,10 +2634,10 @@ import ObservationView from './observation.view.js'
 
                     if (submission_count == 0) return;
                     // proceed only if there are additional submissions due to ontology search
-                    // if (!$("#submission-search-results").is(":visible")) {
+                    // if there is already submission result from basic search, 
+                    // the follow two lines are unneccessary, but they don't affect anything
                     $("#submission-search-results").fadeIn();
                     $('#submission-summary-link').show();
-                    $("#searched-submissions").DataTable().destroy();
                     $("#searched-submissions").dataTable({
                         "columns": [
                             null,
@@ -2660,10 +2662,11 @@ import ObservationView from './observation.view.js'
                             return ctd2_hovertext.ALL_TIERS;
                         },
                     });
-                    if (submission_count == 1) {
+                    const total_submission = submission_count + submission_count_from_basis_search;
+                    if (total_submission == 1) {
                         $('#submission-summary').text('one matched submission');
                     } else {
-                        $('#submission-summary').text(submission_count + ' matched submissions');
+                        $('#submission-summary').text(total_submission + ' matched submissions');
 
                     }
                     if (center_count == 1) {
@@ -2723,6 +2726,7 @@ import ObservationView from './observation.view.js'
                         _.each(submission_result, function (aResult) {
                             submissions.push(aResult);
                         });
+                        submission_count_from_basis_search = submissions.length;
                         _.each(observation_result, function (aResult) {
                             matching_observations.push(aResult);
                         });
@@ -2780,7 +2784,6 @@ import ObservationView from './observation.view.js'
                         if (submissions.length > 0) {
                             $("#submission-search-results").fadeIn();
 
-                            const centerCounter = new Set();
                             _.each(submissions, function (submission) {
                                 submission.ontology = false;
                                 const searchSubmissionRowView = new SearchSubmissionRowView({
