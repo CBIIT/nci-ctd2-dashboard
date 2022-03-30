@@ -2527,7 +2527,6 @@ import ObservationView from './observation.view.js'
                     data: { terms: searchQuery }
                 }).done(function (ontology_search_results) {
                     let submission_count = 0;
-                    let center_count = 0;
                     const subject_result = ontology_search_results.subject_result
                         .filter(s => !subject_names.includes(s.subjectName));
                     if(subject_result.length==0) {
@@ -2576,8 +2575,6 @@ import ObservationView from './observation.view.js'
                                     });
                                 $("#search-observation-count-" + submission.id).html(cntContent);
                                 centerCounter.add(submission.centerName);
-
-                                center_count += centerCounter.size;
                             });
                         });
                     });
@@ -2673,10 +2670,10 @@ import ObservationView from './observation.view.js'
                         $('#submission-summary').text(total_submission + ' matched submissions');
 
                     }
-                    if (center_count == 1) {
+                    if (centerCounter.size == 1) {
                         $('#center-summary').text('one center');
                     } else {
-                        $('#center-summary').text(center_count + ' centers');
+                        $('#center-summary').text(centerCounter.size + ' centers');
                     }
 
                 });
