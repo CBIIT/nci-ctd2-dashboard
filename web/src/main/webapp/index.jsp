@@ -1811,6 +1811,7 @@
                         <th>Center</th>
                         <th>Tier</th>
                         <th>Details</th>
+                        <th></th><!--hidden-->
                     </tr>
                     </thead>
                     <tbody>
@@ -1870,6 +1871,7 @@
             <td width=150>
                 <a href="#{{stableURL}}" id="search-observation-count-{{id}}">{{observationCount}} observations</a>
             </td>
+            <td>{{ontology}}</td>
         </tr>
     </script>
 

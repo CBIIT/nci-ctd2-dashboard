@@ -2647,12 +2647,16 @@ import ObservationView from './observation.view.js'
                             null,
                             null,
                             null,
-                            null
+                            null,
+                            {visible: false}
                         ]
                     }).fnSort([
+                        [6, 'desc'], // sort by 'is-ontology'
                         [4, 'desc'],
                         [2, 'desc']
                     ]);
+                    $("#searched-submissions").parent().width("100%");
+                    $("#searched-submissions").width("100%");
                     $("#searched-submissions").parent().find('input[type=search]').popover(table_filter_popover);
                     $("#searched-submissions").find('thead th:contains("Tier")').popover({
                         placement: "top",
@@ -2811,7 +2815,8 @@ import ObservationView from './observation.view.js'
                                     null,
                                     null,
                                     null,
-                                    null
+                                    null,
+                                    {visible: false}
                                 ]
                             });
                             sTable.fnSort([
