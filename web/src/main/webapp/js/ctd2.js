@@ -2621,6 +2621,10 @@ import ObservationView from './observation.view.js'
                             aResult.ontology = true;
                             matching_observations.push(aResult);
                         });
+                        if (basic_search_observation_number > 0) {
+                            // do this only if there are basic search results of observation
+                            $("#searched-observation-grid").DataTable().destroy();
+                        }
                         tabulate_matching_observations(matching_observations);
                         if (matching_observations.length == 0) {
                             $('#observation-summary-link').hide();
@@ -2691,6 +2695,8 @@ import ObservationView from './observation.view.js'
                 term: this.model.term
             });
 
+            let basic_search_observation_number = 0;
+            /* the 'basic' (non-ontology) search */
             searchResults.fetch({
                 success: function () {
                     $("#loading-row").remove();
@@ -2856,6 +2862,7 @@ import ObservationView from './observation.view.js'
                             $('#observation-count').text(matching_observations.length);
                         }
                         $("#ontology-search").prop('disabled', false);
+                        basic_search_observation_number = matching_observations.length;
                     }
                     $('.clickable-popover').popover({
                         placement: "bottom",
