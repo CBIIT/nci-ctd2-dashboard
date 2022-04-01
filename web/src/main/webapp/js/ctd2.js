@@ -2618,6 +2618,9 @@ import ObservationView from './observation.view.js'
                     if (observation_result != null && observation_result.length > 0) {
                         const matching_observations = [];
                         _.each(observation_result, function (aResult) {
+                            if (observation_ids.includes(aResult.id)) {
+                                return // existing result
+                            }
                             aResult.ontology = true;
                             matching_observations.push(aResult);
                         });
@@ -2626,10 +2629,10 @@ import ObservationView from './observation.view.js'
                             $("#searched-observation-grid").DataTable().destroy();
                         }
                         tabulate_matching_observations(matching_observations);
-                        if (matching_observations.length == 0) {
+                        if (observation_result.length == 0) {
                             $('#observation-summary-link').hide();
                         } else {
-                            $('#observation-count').text(matching_observations.length);
+                            $('#observation-count').text(observation_result.length);
                         }
                     }
 
@@ -2696,6 +2699,7 @@ import ObservationView from './observation.view.js'
             });
 
             let basic_search_observation_number = 0;
+            let observation_ids = [];
             /* the 'basic' (non-ontology) search */
             searchResults.fetch({
                 success: function () {
@@ -2736,6 +2740,7 @@ import ObservationView from './observation.view.js'
                         submission_count_from_basis_search = submissions.length;
                         _.each(observation_result, function (aResult) {
                             matching_observations.push(aResult);
+                            observation_ids.push(aResult.id);
                         });
 
                         $(".search-info").popover({
