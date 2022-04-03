@@ -1170,7 +1170,8 @@ import ObservationView from './observation.view.js'
         },
             null,
             null,
-            null
+            null,
+            {visible: false},
         ],
         'buttons': [{
             extend: 'excelHtml5',
@@ -1856,9 +1857,19 @@ import ObservationView from './observation.view.js'
 
                             summary += _.template($("#submission-obs-tbl-row-tmpl").html())(thatModel);
                             $(thatEl).html(summary);
-                            const dataTable = $(tableEl).parent().DataTable();
+                            const dataTable = $(tableEl).parent().DataTable({
+                                columns: [{
+                                    "orderDataType": "dashboard-date"
+                                },
+                                    null,
+                                    null,
+                                    null,
+                                    {visible: false},
+                                ],
+                            });
                             dataTable.cells(cellId).invalidate();
                             dataTable.order([
+                                [4, 'desc'],
                                 [2, 'desc'],
                                 [0, 'desc'],
                                 [1, 'asc']
@@ -2629,6 +2640,8 @@ import ObservationView from './observation.view.js'
                             $("#searched-observation-grid").DataTable().destroy();
                         }
                         tabulate_matching_observations(matching_observations);
+                        $("#searched-observation-grid").parent().width("100%");
+                        $("#searched-observation-grid").width("100%");
                         if (observation_result.length == 0) {
                             $('#observation-summary-link').hide();
                         } else {

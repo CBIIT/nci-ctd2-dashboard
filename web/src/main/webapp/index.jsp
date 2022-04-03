@@ -1654,8 +1654,8 @@
                     <img alt="{{submission.observationTemplate.submissionCenter.displayName}}" data-content="{{submission.observationTemplate.submissionCenter.displayName}}" class="clickable-popover" width="150" src="img/{{submission.observationTemplate.submissionCenter.displayName}}.png">
                 </a>
                 <span class="hide-text">{{submission.observationTemplate.submissionCenter.displayName}}</span>
-
             </td>
+            <td>{{ontology}}</td>
         </tr>
     </script>
 
@@ -1834,6 +1834,7 @@
                         <th width=500>Observation Summary</th>
                         <th>Tier</th>
                         <th>Center</th>
+                        <th></th><!-- hidden -->
                     </tr>
                     </thead>
                     <tbody>
