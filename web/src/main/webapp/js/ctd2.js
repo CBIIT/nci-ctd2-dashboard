@@ -1856,6 +1856,9 @@ import ObservationView from './observation.view.js'
                             });
 
                             summary += _.template($("#submission-obs-tbl-row-tmpl").html())(thatModel);
+                            if(thatModel.ontology) {
+                                summary += '<img src="img/onto.png" style="float: right;"></img>'
+                            }
                             $(thatEl).html(summary);
                             const dataTable = $(tableEl).parent().DataTable({
                                 retrieve: true,
@@ -1927,6 +1930,8 @@ import ObservationView from './observation.view.js'
                                             });
                                             extraObservationRowView.render();
                                         });
+                                        $(tableEl).parent().width("100%");
+                                        $(tableEl).width("100%");
                                         const dataTable = $(tableEl).parent().dataTable(observationTableOptions);
                                         dataTable.api().page(page_before_expanding).draw(false);
                                         $(btn).text("Hide additional observations from the same submission");
@@ -1972,6 +1977,10 @@ import ObservationView from './observation.view.js'
             const tableEl = this.el;
             const thatModel = this.model; // observation with summary
             const observation = thatModel.observation;
+
+            if(observation.ontology == undefined || observation.ontology == null) {
+                observation.ontology = false
+            }
 
             observation.extra = "extra";
             thatModel.parentRow.after(this.template(observation));

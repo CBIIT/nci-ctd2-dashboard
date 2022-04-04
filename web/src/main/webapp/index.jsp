@@ -990,6 +990,7 @@
                      <th width=500>Observation Summary</th>
                      <th>Tier</th>
                      <th>Center</th>
+                     <th></th><!--hidden-->
                  </tr>
                  </thead>
                  <tbody>
@@ -1069,6 +1070,7 @@
                     <th width=500>Observation Summary</th>
                     <th>Tier</th>
                     <th>Center</th>
+                    <th></th><!--hidden-->
                 </tr>
                 </thead>
                 <tbody>
@@ -1141,6 +1143,7 @@
                     <th width=500>Observation Summary</th>
                     <th>Tier</th>
                     <th>Center</th>
+                    <th></th><!--hidden-->
                 </tr>
                 </thead>
                 <tbody>
@@ -1207,6 +1210,7 @@
                     <th width=500>Observation Summary</th>
                     <th>Tier</th>
                     <th>Center</th>
+                    <th></th><!--hidden-->
                 </tr>
                 </thead>
                 <tbody>
@@ -1278,6 +1282,7 @@
                     <th width=500>Observation Summary</th>
                     <th>Tier</th>
                     <th>Center</th>
+                    <th></th><!--hidden-->
                 </tr>
                 </thead>
                 <tbody>
@@ -1360,6 +1365,7 @@
                     <th width=500>Observation Summary</th>
                     <th>Tier</th>
                     <th>Center</th>
+                    <th></th><!--hidden-->
                 </tr>
                 </thead>
                 <tbody>
@@ -1430,6 +1436,7 @@
                     <th width=500>Observation Summary</th>
                     <th>Tier</th>
                     <th>Center</th>
+                    <th></th><!--hidden-->
                 </tr>
                 </thead>
                 <tbody>
@@ -1494,6 +1501,7 @@
                     <th width=500>Observation Summary</th>
                     <th>Tier</th>
                     <th>Center</th>
+                    <th></th><!--hidden-->
                 </tr>
                 </thead>
                 <tbody>
@@ -1579,6 +1587,7 @@
                       <th width=500>Observation Summary</th>
                       <th>Tier</th>
                       <th>Center</th>
+                      <th></th><!--hidden-->
                   </tr>
                   </thead>
                   <tbody>
@@ -1642,11 +1651,8 @@
                     {{submission.submissionDate}}
                 </a>
             </td>
-            <td>
-                <div id="observation-summary-{{id}}">
+            <td id="observation-summary-{{id}}">
                 Loading...
-                </div>
-                <img src="img/onto.png" style="float: right;display:{{ontology?'block':'none'}}"></img>
             </td>
             <td><span class="badge tier-badge">Tier {{submission.observationTemplate.tier}}</span></td>
             <td>
