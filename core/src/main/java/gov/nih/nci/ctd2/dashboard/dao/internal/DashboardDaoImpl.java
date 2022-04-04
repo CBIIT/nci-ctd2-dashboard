@@ -581,7 +581,10 @@ public class DashboardDaoImpl implements DashboardDao {
         return queryWithClass("from ObservedEvidenceImpl where observation = :observation", "observation", observation);
     }
 
-    /* purge the index if there is no observation having this subject and not an tissue sample */
+    /*
+     * purge the index if there is no observation having this subject and not an
+     * tissue sample
+     */
     @SuppressWarnings("unchecked")
     @Override
     public void cleanIndex(int batchSize) {
@@ -674,7 +677,7 @@ public class DashboardDaoImpl implements DashboardDao {
             } else if (o instanceof Subject) {
                 Subject s = (Subject) o;
                 // if s is a tissue sample, check whether it is observed. if not, skip.
-                if(s instanceof TissueSample && notObserved(s.getId())) {
+                if (s instanceof TissueSample && notObserved(s.getId())) {
                     continue;
                 }
                 if (subjects.containsKey(s)) {
@@ -1590,11 +1593,14 @@ public class DashboardDaoImpl implements DashboardDao {
         return result;
     }
 
-    /* this is similar to regular search except (1) only for tissue sample (2) retain the result even if there is no observation */
+    /*
+     * this is similar to regular search except (1) only for tissue sample (2)
+     * retain the result even if there is no observation
+     */
     private List<Integer> searchTissueSampleCodes(final String singleTerm) {
         FullTextSession fullTextSession = Search.getFullTextSession(getSession());
         MultiFieldQueryParser multiFieldQueryParser = new MultiFieldQueryParser(defaultSearchFields,
-            new KeywordAnalyzer());
+                new KeywordAnalyzer());
         multiFieldQueryParser.setAllowLeadingWildcard(true);
         Query luceneQuery = null;
         try {
@@ -1612,7 +1618,7 @@ public class DashboardDaoImpl implements DashboardDao {
 
         List<Integer> resultList = new ArrayList<Integer>();
         list.forEach(object -> {
-            if(object instanceof TissueSample) {
+            if (object instanceof TissueSample) {
                 TissueSample s = (TissueSample) object;
                 resultList.add(s.getCode());
             }
@@ -1620,11 +1626,15 @@ public class DashboardDaoImpl implements DashboardDao {
         return resultList;
     }
 
-    /* this is meant to check whether a subject is observed or not in the most efficient way */
+    /*
+     * this is meant to check whether a subject is observed or not in the most
+     * efficient way
+     */
     private boolean notObserved(int id) {
         Session session = getSession();
         @SuppressWarnings("unchecked")
-        org.hibernate.query.Query<Integer> query = session.createNativeQuery("SELECT 1 FROM observed_subject WHERE subject_id=" + id + " LIMIT 1");
+        org.hibernate.query.Query<Integer> query = session
+                .createNativeQuery("SELECT 1 FROM observed_subject WHERE subject_id=" + id + " LIMIT 1");
         boolean no = query.uniqueResult() == null;
         session.close();
         return no;
@@ -1712,9 +1722,14 @@ public class DashboardDaoImpl implements DashboardDao {
             searchResults.subject_result = new ArrayList<SubjectResult>(subject_result);
         }
         if (observationsIntersection != null) {
-            searchResults.observation_result = observationsIntersection.stream()
+            var stream = observationsIntersection.stream();
+            if (observationsIntersection.size() > maxNumberOfSearchResults) {
+                searchResults.oversized_observations = observationsIntersection.size();
+                // no particular ranking is enforced when limiting
+                stream = stream.limit(maxNumberOfSearchResults);
+            }
+            searchResults.observation_result = stream
                     .map(id -> this.getEntityById(Observation.class, id)).collect(Collectors.toList());
-            log.debug("size of observation intersection: " + observationsIntersection.size());
         }
         return searchResults;
     }

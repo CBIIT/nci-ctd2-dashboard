@@ -2637,17 +2637,28 @@ import ObservationView from './observation.view.js'
                     //redo observations
                     const observation_result = ontology_search_results.observation_result;
                     if (observation_result != null && observation_result.length > 0) {
+                        // because the limited result does not enforce the order, so the 'basic' result may be outside the limited result.
+                        const enforced_limit = 100
+                        const limit_of_addtional_ones = enforced_limit - observation_ids.length
+                        let counter = 0
                         const matching_observations = [];
                         _.each(observation_result, function (aResult) {
                             if (observation_ids.includes(aResult.id)) {
                                 return // existing result
                             }
+                            counter++
+                            if (counter>limit_of_addtional_ones) return
                             aResult.ontology = true;
                             matching_observations.push(aResult);
                         });
                         if (basic_search_observation_number > 0) {
                             // do this only if there are basic search results of observation
                             $("#searched-observation-grid").DataTable().destroy();
+                        }
+                        console.log(`oversized observations %c ${ontology_search_results.oversized_observations}`, "font-weight: bold; color: blue")
+                        if (ontology_search_results.oversized_observations > 0) {
+                            $("#oversized-observations").text(ontology_search_results.oversized_observations)
+                            $("#oversize-message-observations").show()
                         }
                         tabulate_matching_observations(matching_observations);
                         $("#searched-observation-grid").parent().width("100%");
