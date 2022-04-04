@@ -1858,6 +1858,7 @@ import ObservationView from './observation.view.js'
                             summary += _.template($("#submission-obs-tbl-row-tmpl").html())(thatModel);
                             $(thatEl).html(summary);
                             const dataTable = $(tableEl).parent().DataTable({
+                                retrieve: true,
                                 columns: [{
                                     "orderDataType": "dashboard-date"
                                 },
