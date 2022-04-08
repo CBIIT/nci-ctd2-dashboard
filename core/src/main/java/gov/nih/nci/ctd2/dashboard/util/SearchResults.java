@@ -53,4 +53,31 @@ public class SearchResults {
             this.isStory = isStory;
         }
     }
+
+    @Override
+    public String toString() {
+        StringBuffer sb = new StringBuffer("Search results:\n");
+        if (subject_result != null) {
+            sb.append(subject_result.size()).append(" subject result(s):\n");
+            for (SubjectResult x : subject_result) {
+                sb.append("  ").append(x.subjectName).append("|");
+            }
+            sb.append("\n");
+        }
+        if (submission_result != null) {
+            sb.append(submission_result.size()).append(" subimssion result(s):\n");
+            for (SubmissionResult x : submission_result) {
+                sb.append("  ").append(x.stableURL).append("|");
+            }
+            sb.append("\n");
+        }
+        if (observation_result != null) {
+            sb.append(observation_result.size()).append(" subject result(s)\n");
+            for (Observation x : observation_result) {
+                sb.append("  ").append(x.getStableURL()).append("|");
+            }
+            sb.append("\n");
+        }
+        return sb.toString();
+    }
 }

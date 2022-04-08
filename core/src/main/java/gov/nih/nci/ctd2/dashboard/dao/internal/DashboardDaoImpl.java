@@ -45,6 +45,7 @@ import gov.nih.nci.ctd2.dashboard.impl.ObservationTemplateImpl;
 import gov.nih.nci.ctd2.dashboard.impl.SubjectImpl;
 import gov.nih.nci.ctd2.dashboard.impl.SubjectWithOrganismImpl;
 import gov.nih.nci.ctd2.dashboard.impl.SubmissionImpl;
+import gov.nih.nci.ctd2.dashboard.impl.SynonymImpl;
 import gov.nih.nci.ctd2.dashboard.impl.TissueSampleImpl;
 import gov.nih.nci.ctd2.dashboard.model.AnimalModel;
 import gov.nih.nci.ctd2.dashboard.model.Annotation;
@@ -90,7 +91,7 @@ public class DashboardDaoImpl implements DashboardDao {
             ObservationTemplateImpl.FIELD_DESCRIPTION, ObservationTemplateImpl.FIELD_SUBMISSIONDESC,
             ObservationTemplateImpl.FIELD_SUBMISSIONNAME };
 
-    private static final Class<?>[] searchableClasses = { SubjectImpl.class, ObservationTemplateImpl.class };
+    private static final Class<?>[] searchableClasses = { SubjectImpl.class, ObservationTemplateImpl.class, SynonymImpl.class };
 
     private SessionFactory sessionFactory;
 
@@ -590,7 +591,7 @@ public class DashboardDaoImpl implements DashboardDao {
     public void cleanIndex(int batchSize) {
         Session session = getSession();
         org.hibernate.query.Query<BigInteger> query = session.createNativeQuery(
-                "SELECT id FROM subject WHERE id NOT IN (SELECT DISTINCT subject_id FROM observed_subject UNION SELECT id FROM tissue_sample)");
+                "SELECT id FROM subject WHERE id NOT IN (SELECT DISTINCT subject_id FROM observed_subject UNION SELECT id FROM tissue_sample UNION SELECT id FROM synonym)");
         ScrollableResults scrollableResults = query.scroll(ScrollMode.FORWARD_ONLY);
 
         FullTextSession fullTextSession = Search.getFullTextSession(getSession());
@@ -684,6 +685,22 @@ public class DashboardDaoImpl implements DashboardDao {
                     subjects.put(s, subjects.get(s) + 1);
                 } else {
                     subjects.put(s, 1);
+                }
+            } else if (o instanceof Synonym) {
+                Synonym s = (Synonym)o;
+                System.out.println("synonym found:"+s.getDisplayName());
+                List<Subject> ss = findSubjectsBySynonym(s.getDisplayName(), true);
+                System.out.println("subject count:"+ss.size());
+                for(Subject subject: ss) {
+                    if (notObserved(subject.getId())) {
+                        continue;
+                    }
+                    if (subjects.containsKey(subject)) {
+                        subjects.put(subject, subjects.get(subject) + 1); // FIXME this is not correct because we may end up with the same subject multiple times within this one search
+                    } else {
+                        subjects.put(subject, 1);
+                    }
+                    System.out.println(subject.getDisplayName()+":"+subject.getClass().getSimpleName());
                 }
             } else {
                 log.warn("unexpected type returned by searching: " + o.getClass().getName());

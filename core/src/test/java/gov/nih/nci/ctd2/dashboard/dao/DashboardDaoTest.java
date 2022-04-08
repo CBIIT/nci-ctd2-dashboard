@@ -582,6 +582,19 @@ public class DashboardDaoTest {
     }
 
     @Test
+    public void searchSynonym() {
+        Synonym synonym1 = dashboardFactory.create(Synonym.class);
+        synonym1.setDisplayName("Synonym001");
+        Gene gene1 = dashboardFactory.create(Gene.class);
+        gene1.setDisplayName("Gene1");
+        gene1.setEntrezGeneId("");
+        gene1.getSynonyms().add(synonym1);
+        dashboardDao.save(gene1);
+        var x = dashboardDao.search("Synonym001");
+        System.out.println(x);
+    }
+
+    //@Test
     public void indexTest() {
         String synonymStr = "Synonym";
 
@@ -657,7 +670,7 @@ public class DashboardDaoTest {
         assertFalse(dashboardDao.search("ABT*").isEmpty());
     }
 
-    @Test
+    //@Test
     public void hyphenSearchTest() {
         TissueSample ts = dashboardFactory.create(TissueSample.class);
         ts.setDisplayName("diffuse large B-cell lymphoma");

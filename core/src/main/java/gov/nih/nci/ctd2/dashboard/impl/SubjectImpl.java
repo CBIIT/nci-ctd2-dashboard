@@ -40,6 +40,7 @@ public class SubjectImpl extends DashboardEntityImpl implements Subject {
         this.synonyms = synonyms;
     }
 
+    /*
     @Fields({ @Field(name = FIELD_SYNONYM, index = org.hibernate.search.annotations.Index.YES, store = Store.YES),
             @Field(name = FIELD_SYNONYM_WS, index = org.hibernate.search.annotations.Index.YES, store = Store.YES, analyzer = @Analyzer(definition = "ctd2analyzer")),
             @Field(name = FIELD_SYNONYM_UT, index = org.hibernate.search.annotations.Index.YES, analyze = Analyze.NO) })
@@ -50,7 +51,7 @@ public class SubjectImpl extends DashboardEntityImpl implements Subject {
             builder.append(synonym.getDisplayName()).append(" ");
         }
         return builder.toString();
-    }
+    }*/
 
     @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(targetEntity = XrefImpl.class, cascade = CascadeType.ALL)
