@@ -20,7 +20,7 @@ import javax.persistence.criteria.CriteriaQuery;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.lucene.analysis.core.KeywordAnalyzer;
+import org.apache.lucene.analysis.core.WhitespaceAnalyzer;
 import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.search.Query;
@@ -639,7 +639,7 @@ public class DashboardDaoImpl implements DashboardDao {
             final Map<Submission, Integer> submissions) {
         FullTextSession fullTextSession = Search.getFullTextSession(getSession());
         MultiFieldQueryParser multiFieldQueryParser = new MultiFieldQueryParser(defaultSearchFields,
-                new KeywordAnalyzer());
+                new WhitespaceAnalyzer());
         multiFieldQueryParser.setAllowLeadingWildcard(true);
         Query luceneQuery = null;
         try {
@@ -1600,7 +1600,7 @@ public class DashboardDaoImpl implements DashboardDao {
     private List<Integer> searchTissueSampleCodes(final String singleTerm) {
         FullTextSession fullTextSession = Search.getFullTextSession(getSession());
         MultiFieldQueryParser multiFieldQueryParser = new MultiFieldQueryParser(defaultSearchFields,
-                new KeywordAnalyzer());
+                new WhitespaceAnalyzer());
         multiFieldQueryParser.setAllowLeadingWildcard(true);
         Query luceneQuery = null;
         try {
