@@ -2740,11 +2740,9 @@ import ObservationView from './observation.view.js'
                     $("#loading-row").remove();
                     const results = searchResults.toJSON();
                     console.log(`oversized %c ${results.oversized}`, "color:red")
-                    if(results.oversized>0) {
+                    if (results.oversized > 0) {
                         $("#oversized").text(results.oversized)
                         $("#oversize-message").show()
-                        $("#ontology-search").prop('disabled', true)
-                        $("#ontology-search").css("pointer-events", "none")
                     }
                     const subject_result = results.subject_result;
                     subject_names = subject_result.map(x => x.subjectName);
@@ -2901,7 +2899,9 @@ import ObservationView from './observation.view.js'
                         } else {
                             $('#observation-count').text(matching_observations.length);
                         }
-                        $("#ontology-search").prop('disabled', false);
+                        if (results.oversized <= 0) {
+                            $("#ontology-search").prop('disabled', false);
+                        }
                         basic_search_observation_number = matching_observations.length;
                     }
                     $('.clickable-popover').popover({
