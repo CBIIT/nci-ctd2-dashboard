@@ -1179,7 +1179,8 @@ import ObservationView from './observation.view.js'
         },
             null,
             null,
-            null
+            null,
+            {visible: false},
         ],
         'buttons': [{
             extend: 'excelHtml5',
@@ -1864,10 +1865,24 @@ import ObservationView from './observation.view.js'
                             });
 
                             summary += _.template($("#submission-obs-tbl-row-tmpl").html())(thatModel);
+                            if(thatModel.ontology) {
+                                summary += '<img src="img/onto.png" style="float: right;"></img>'
+                            }
                             $(thatEl).html(summary);
-                            const dataTable = $(tableEl).parent().DataTable();
+                            const dataTable = $(tableEl).parent().DataTable({
+                                retrieve: true,
+                                columns: [{
+                                    "orderDataType": "dashboard-date"
+                                },
+                                    null,
+                                    null,
+                                    null,
+                                    {visible: false},
+                                ],
+                            });
                             dataTable.cells(cellId).invalidate();
                             dataTable.order([
+                                [4, 'desc'],
                                 [2, 'desc'],
                                 [0, 'desc'],
                                 [1, 'asc']
@@ -1924,6 +1939,8 @@ import ObservationView from './observation.view.js'
                                             });
                                             extraObservationRowView.render();
                                         });
+                                        $(tableEl).parent().width("100%");
+                                        $(tableEl).width("100%");
                                         const dataTable = $(tableEl).parent().dataTable(observationTableOptions);
                                         dataTable.api().page(page_before_expanding).draw(false);
                                         $(btn).text("Hide additional observations from the same submission");
@@ -1969,6 +1986,10 @@ import ObservationView from './observation.view.js'
             const tableEl = this.el;
             const thatModel = this.model; // observation with summary
             const observation = thatModel.observation;
+
+            if(observation.ontology == undefined || observation.ontology == null) {
+                observation.ontology = false
+            }
 
             observation.extra = "extra";
             thatModel.parentRow.after(this.template(observation));
@@ -2528,13 +2549,14 @@ import ObservationView from './observation.view.js'
 
             const searchQuery = this.model.term;
             let subject_names = [];
+            let submission_count_from_basis_search = 0;
+            const centerCounter = new Set();
             $("#ontology-search").click(function () {
                 $.ajax({
                     url: "ontology-search",
                     data: { terms: searchQuery }
                 }).done(function (ontology_search_results) {
                     let submission_count = 0;
-                    let center_count = 0;
                     const subject_result = ontology_search_results.subject_result
                         .filter(s => !subject_names.includes(s.subjectName));
                     if(subject_result.length==0) {
@@ -2547,8 +2569,6 @@ import ObservationView from './observation.view.js'
                     $("#onto-legend").show();
                     if($("#no-result").is(":visible")) {
                         $("#no-result").hide();
-                        $("#search-results-grid").parent().width("100%");
-                        $("#search-results-grid").width("100%");
                     }
                     $("#search-results-grid").DataTable().destroy();
                     _.each(subject_result, function (one_result) {
@@ -2565,8 +2585,8 @@ import ObservationView from './observation.view.js'
                             async: false,
                         }).done(function (submissions) {
                             submission_count += submissions.length;
-                            // the following code is copied. TODO refactoring
-                            const centerCounter = new Set();
+                            // this happens only when there is additional submission result
+                            $("#searched-submissions").DataTable().destroy();
                             _.each(submissions, function (submission) {
                                 submission.ontology = true;
                                 const searchSubmissionRowView = new SearchSubmissionRowView({
@@ -2583,8 +2603,6 @@ import ObservationView from './observation.view.js'
                                     });
                                 $("#search-observation-count-" + submission.id).html(cntContent);
                                 centerCounter.add(submission.centerName);
-
-                                center_count += centerCounter.size;
                             });
                         });
                     });
@@ -2626,25 +2644,45 @@ import ObservationView from './observation.view.js'
                     //redo observations
                     const observation_result = ontology_search_results.observation_result;
                     if (observation_result != null && observation_result.length > 0) {
+                        // because the limited result does not enforce the order, so the 'basic' result may be outside the limited result.
+                        const enforced_limit = 100
+                        const limit_of_addtional_ones = enforced_limit - observation_ids.length
+                        let counter = 0
                         const matching_observations = [];
                         _.each(observation_result, function (aResult) {
+                            if (observation_ids.includes(aResult.id)) {
+                                return // existing result
+                            }
+                            counter++
+                            if (counter>limit_of_addtional_ones) return
                             aResult.ontology = true;
                             matching_observations.push(aResult);
                         });
+                        if (basic_search_observation_number > 0) {
+                            // do this only if there are basic search results of observation
+                            $("#searched-observation-grid").DataTable().destroy();
+                        }
+                        console.log(`oversized observations %c ${ontology_search_results.oversized_observations}`, "font-weight: bold; color: blue")
+                        if (ontology_search_results.oversized_observations > 0) {
+                            $("#oversized-observations").text(ontology_search_results.oversized_observations)
+                            $("#oversize-message-observations").show()
+                        }
                         tabulate_matching_observations(matching_observations);
-                        if (matching_observations.length == 0) {
+                        $("#searched-observation-grid").parent().width("100%");
+                        $("#searched-observation-grid").width("100%");
+                        if (observation_result.length == 0) {
                             $('#observation-summary-link').hide();
                         } else {
-                            $('#observation-count').text(matching_observations.length);
+                            $('#observation-count').text(observation_result.length);
                         }
                     }
 
                     if (submission_count == 0) return;
                     // proceed only if there are additional submissions due to ontology search
-                    // if (!$("#submission-search-results").is(":visible")) {
+                    // if there is already submission result from basic search, 
+                    // the follow two lines are unneccessary, but they don't affect anything
                     $("#submission-search-results").fadeIn();
                     $('#submission-summary-link').show();
-                    $("#searched-submissions").DataTable().destroy();
                     $("#searched-submissions").dataTable({
                         "columns": [
                             null,
@@ -2654,12 +2692,16 @@ import ObservationView from './observation.view.js'
                             null,
                             null,
                             null,
-                            null
+                            null,
+                            {visible: false}
                         ]
                     }).fnSort([
+                        [6, 'desc'], // sort by 'is-ontology'
                         [4, 'desc'],
                         [2, 'desc']
                     ]);
+                    $("#searched-submissions").parent().width("100%");
+                    $("#searched-submissions").width("100%");
                     $("#searched-submissions").parent().find('input[type=search]').popover(table_filter_popover);
                     $("#searched-submissions").find('thead th:contains("Tier")').popover({
                         placement: "top",
@@ -2669,16 +2711,17 @@ import ObservationView from './observation.view.js'
                             return ctd2_hovertext.ALL_TIERS;
                         },
                     });
-                    if (submission_count == 1) {
+                    const total_submission = submission_count + submission_count_from_basis_search;
+                    if (total_submission == 1) {
                         $('#submission-summary').text('one matched submission');
                     } else {
-                        $('#submission-summary').text(submission_count + ' matched submissions');
+                        $('#submission-summary').text(total_submission + ' matched submissions');
 
                     }
-                    if (center_count == 1) {
+                    if (centerCounter.size == 1) {
                         $('#center-summary').text('one center');
                     } else {
-                        $('#center-summary').text(center_count + ' centers');
+                        $('#center-summary').text(centerCounter.size + ' centers');
                     }
 
                 });
@@ -2696,16 +2739,17 @@ import ObservationView from './observation.view.js'
                 term: this.model.term
             });
 
+            let basic_search_observation_number = 0;
+            let observation_ids = [];
+            /* the 'basic' (non-ontology) search */
             searchResults.fetch({
                 success: function () {
                     $("#loading-row").remove();
                     const results = searchResults.toJSON();
                     console.log(`oversized %c ${results.oversized}`, "color:red")
-                    if(results.oversized>0) {
+                    if (results.oversized > 0) {
                         $("#oversized").text(results.oversized)
                         $("#oversize-message").show()
-                        $("#ontology-search").prop('disabled', true)
-                        $("#ontology-search").css("pointer-events", "none")
                     }
                     const subject_result = results.subject_result;
                     subject_names = subject_result.map(x => x.subjectName);
@@ -2718,6 +2762,7 @@ import ObservationView from './observation.view.js'
                         })).render();
                         $('#submission-search-results').hide();
                         $('#observation-search-results').hide();
+                        $("#ontology-search").prop('disabled', false);
                     } else {
                         $(thatEl).find('#no-result').hide();
                         const submissions = [];
@@ -2732,8 +2777,10 @@ import ObservationView from './observation.view.js'
                         _.each(submission_result, function (aResult) {
                             submissions.push(aResult);
                         });
+                        submission_count_from_basis_search = submissions.length;
                         _.each(observation_result, function (aResult) {
                             matching_observations.push(aResult);
+                            observation_ids.push(aResult.id);
                         });
 
                         $(".search-info").popover({
@@ -2789,7 +2836,6 @@ import ObservationView from './observation.view.js'
                         if (submissions.length > 0) {
                             $("#submission-search-results").fadeIn();
 
-                            const centerCounter = new Set();
                             _.each(submissions, function (submission) {
                                 submission.ontology = false;
                                 const searchSubmissionRowView = new SearchSubmissionRowView({
@@ -2817,7 +2863,8 @@ import ObservationView from './observation.view.js'
                                     null,
                                     null,
                                     null,
-                                    null
+                                    null,
+                                    {visible: false}
                                 ]
                             });
                             sTable.fnSort([
@@ -2859,7 +2906,10 @@ import ObservationView from './observation.view.js'
                         } else {
                             $('#observation-count').text(matching_observations.length);
                         }
-                        $("#ontology-search").prop('disabled', false);
+                        if (results.oversized <= 0) {
+                            $("#ontology-search").prop('disabled', false);
+                        }
+                        basic_search_observation_number = matching_observations.length;
                     }
                     $('.clickable-popover').popover({
                         placement: "bottom",

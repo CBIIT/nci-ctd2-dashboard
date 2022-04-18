@@ -24,7 +24,7 @@ import javax.persistence.criteria.CriteriaQuery;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.lucene.analysis.core.KeywordAnalyzer;
+import org.apache.lucene.analysis.core.WhitespaceAnalyzer;
 import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.search.Query;
@@ -635,11 +635,80 @@ public class DashboardDaoImpl implements DashboardDao {
         return false;
     }
 
+    private void directTextSearch(final String singleTerm, final Map<Subject, Integer> subjects,
+            final Map<Submission, Integer> submissions) {
+        Session session = getSession();
+        String sql = "SELECT DISTINCT subject_id FROM observed_subject JOIN dashboard_entity ON observed_subject.subject_id=dashboard_entity.id WHERE displayName LIKE :name";
+        @SuppressWarnings("unchecked")
+        org.hibernate.query.Query<Integer> query = session.createNativeQuery(sql);
+        query.setParameter("name", "%" + singleTerm + "%");
+        List<Integer> list = new ArrayList<Integer>();
+        try {
+            list = query.list();
+            log.debug(
+                    "number of subjects matching '" + singleTerm + "' in displayName: " + list.size());
+        } catch (javax.persistence.NoResultException e) { // exception by design
+            // no-op
+            log.debug("No subject found for " + singleTerm);
+        }
+        Set<Integer> matchedSubjects = new HashSet<Integer>();
+        matchedSubjects.addAll(list);
+        query = null;
+        list = null; // just to prevent accidental usage after this
+
+        String synonymBasedQuery = "SELECT DISTINCT SubjectImpl_id FROM subject_synonym_map "
+                + "JOIN dashboard_entity ON subject_synonym_map.synonyms_id=dashboard_entity.id "
+                + "WHERE displayName LIKE '%" + singleTerm + "%'";
+        @SuppressWarnings("unchecked")
+        org.hibernate.query.Query<Integer> query2 = session.createNativeQuery(synonymBasedQuery);
+        List<Integer> list2 = new ArrayList<Integer>();
+        try {
+            list2 = query2.list();
+            log.debug(
+                    "number of subjects with synonyms matching '" + singleTerm + "' in displayName: " + list2.size());
+        } catch (javax.persistence.NoResultException e) { // exception by design
+            // no-op
+            log.debug("No subject found with synonyms matching " + singleTerm);
+        }
+        session.close();
+        for (Integer id : list2) {
+            if (notObserved(id)) {
+                continue;
+            }
+            matchedSubjects.add(id);
+        }
+        list2 = null;
+
+        for (Integer id : matchedSubjects) {
+            Subject s = getEntityById(Subject.class, id);
+            if (subjects.containsKey(s)) {
+                subjects.put(s, subjects.get(s) + 1);
+            } else {
+                subjects.put(s, 1);
+            }
+        }
+
+        // theoretically three other fields should be considered as well for historical
+        // consistency (displayName, submissionName, submissionDescription)
+        // but having them was not a good idea in the first place
+        List<Submission> submissionList = queryWithClass(
+                "SELECT obj FROM SubmissionImpl AS obj WHERE obj.observationTemplate.description LIKE :description",
+                "description",
+                "%" + singleTerm + "%");
+        for (Submission submission : submissionList) {
+            if (submissions.containsKey(submission)) {
+                submissions.put(submission, submissions.get(submission) + 1);
+            } else {
+                submissions.put(submission, 1);
+            }
+        }
+    }
+
     private void searchSingleTerm(final String singleTerm, final Map<Subject, Integer> subjects,
             final Map<Submission, Integer> submissions) {
         FullTextSession fullTextSession = Search.getFullTextSession(getSession());
         MultiFieldQueryParser multiFieldQueryParser = new MultiFieldQueryParser(defaultSearchFields,
-                new KeywordAnalyzer());
+                new WhitespaceAnalyzer());
         multiFieldQueryParser.setAllowLeadingWildcard(true);
         Query luceneQuery = null;
         try {
@@ -699,8 +768,15 @@ public class DashboardDaoImpl implements DashboardDao {
         log.debug("search terms: " + String.join(",", searchTerms));
         Map<Subject, Integer> subjects = new HashMap<Subject, Integer>();
         Map<Submission, Integer> submissions = new HashMap<Submission, Integer>();
+        final Pattern quoted = Pattern.compile("\"([^\"]+)\"");
         for (String singleTerm : searchTerms) {
-            searchSingleTerm(singleTerm, subjects, submissions);
+            Matcher matcher = quoted.matcher(singleTerm);
+            // two search strategies: original index-based search, and direct text search.
+            if (matcher.matches()) {
+                directTextSearch(matcher.group(1), subjects, submissions);
+            } else {
+                searchSingleTerm(singleTerm, subjects, submissions);
+            }
         }
         SearchResults searchResults = new SearchResults();
         searchResults.submission_result = submissions.keySet().stream().map(submission -> {
@@ -822,7 +898,13 @@ public class DashboardDaoImpl implements DashboardDao {
     private List<Integer> ontologySearchDiseaseContext(String searchTerm) {
         flattenDiseaseContextTree();
         final Set<Integer> observed = new HashSet<Integer>();
-        List<Integer> codes = searchTissueSampleCodes(searchTerm);
+        List<Integer> codes = null;
+        Matcher quotedMatcher = Pattern.compile("\"([^\"]+)\"").matcher(searchTerm);
+        if (quotedMatcher.matches()) {
+            codes = directTextSearchTissueSampleCodes(quotedMatcher.group(1));
+        } else {
+            codes = searchTissueSampleCodes(searchTerm);
+        }
         for (int code : codes) {
             List<Integer> observedDescendants = flatDiseaseContextMap.get(code);
             if (observedDescendants == null)
@@ -1593,6 +1675,47 @@ public class DashboardDaoImpl implements DashboardDao {
         return result;
     }
 
+    private List<Integer> directTextSearchTissueSampleCodes(String searchTerm) {
+        Session session = getSession();
+        String sql = "SELECT code FROM tissue_sample JOIN dashboard_entity ON tissue_sample.id=dashboard_entity.id WHERE displayName LIKE :name";
+        @SuppressWarnings("unchecked")
+        org.hibernate.query.Query<Integer> query = session.createNativeQuery(sql);
+        query.setParameter("name", "%" + searchTerm + "%");
+        List<Integer> list = new ArrayList<Integer>();
+        try {
+            list = query.list();
+            log.debug(
+                    "number of tissue samples matching '" + searchTerm + "' to start ontology search: " + list.size());
+        } catch (javax.persistence.NoResultException e) { // exception by design
+            // no-op
+            log.debug("No tissue sample code for " + searchTerm);
+        }
+
+        String synonymBasedQuery = "SELECT DISTINCT SubjectImpl_id FROM subject_synonym_map "
+                + "JOIN dashboard_entity ON subject_synonym_map.synonyms_id=dashboard_entity.id "
+                + "WHERE displayName LIKE '%" + searchTerm + "%'";
+        @SuppressWarnings("unchecked")
+        org.hibernate.query.Query<Integer> query2 = session.createNativeQuery(synonymBasedQuery);
+        List<Integer> list2 = new ArrayList<Integer>();
+        try {
+            list2 = query2.list();
+            for (Integer id : list2) {
+                Subject s = getEntityById(Subject.class, id);
+                if (s instanceof TissueSample) {
+                    TissueSample t = (TissueSample) s;
+                    list.add(t.getCode());
+                }
+            }
+            log.debug(
+                    "number of subjects with synonyms matching '" + searchTerm + "' in displayName: " + list2.size());
+        } catch (javax.persistence.NoResultException e) { // exception by design
+            // no-op
+            log.debug("No subject found with synonyms matching " + searchTerm);
+        }
+        session.close();
+        return list;
+    }
+
     /*
      * this is similar to regular search except (1) only for tissue sample (2)
      * retain the result even if there is no observation
@@ -1600,7 +1723,7 @@ public class DashboardDaoImpl implements DashboardDao {
     private List<Integer> searchTissueSampleCodes(final String singleTerm) {
         FullTextSession fullTextSession = Search.getFullTextSession(getSession());
         MultiFieldQueryParser multiFieldQueryParser = new MultiFieldQueryParser(defaultSearchFields,
-                new KeywordAnalyzer());
+                new WhitespaceAnalyzer());
         multiFieldQueryParser.setAllowLeadingWildcard(true);
         Query luceneQuery = null;
         try {
@@ -1687,12 +1810,11 @@ public class DashboardDaoImpl implements DashboardDao {
         Set<SubjectResult> subject_result = null;
         final int termCount = searchTerms.length;
         if (termCount <= 1) { // prevent wasting time finding observations
-            subject_result = new HashSet<SubjectResult>(ontologySearchOneTerm(searchTerms[0].replace("\"", ""), null));
+            subject_result = new HashSet<SubjectResult>(ontologySearchOneTerm(searchTerms[0], null));
         } else {
             boolean first = true;
             Map<SubjectResult, Integer> subjectResultMap = new HashMap<SubjectResult, Integer>();
             for (String oneTerm : searchTerms) {
-                oneTerm = oneTerm.replace("\"", "");
                 log.debug("ontology search term:" + oneTerm);
                 Set<Integer> observations = new HashSet<Integer>();
                 List<SubjectResult> oneTermList = ontologySearchOneTerm(oneTerm, observations);
@@ -1722,9 +1844,14 @@ public class DashboardDaoImpl implements DashboardDao {
             searchResults.subject_result = new ArrayList<SubjectResult>(subject_result);
         }
         if (observationsIntersection != null) {
-            searchResults.observation_result = observationsIntersection.stream()
+            var stream = observationsIntersection.stream();
+            if (observationsIntersection.size() > maxNumberOfSearchResults) {
+                searchResults.oversized_observations = observationsIntersection.size();
+                // no particular ranking is enforced when limiting
+                stream = stream.limit(maxNumberOfSearchResults);
+            }
+            searchResults.observation_result = stream
                     .map(id -> this.getEntityById(Observation.class, id)).collect(Collectors.toList());
-            log.debug("size of observation intersection: " + observationsIntersection.size());
         }
         return searchResults;
     }

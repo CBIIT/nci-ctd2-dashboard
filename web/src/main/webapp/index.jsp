@@ -991,6 +991,7 @@
                      <th width=500>Observation Summary</th>
                      <th>Tier</th>
                      <th>Center</th>
+                     <th></th><!--hidden-->
                  </tr>
                  </thead>
                  <tbody>
@@ -1070,6 +1071,7 @@
                     <th width=500>Observation Summary</th>
                     <th>Tier</th>
                     <th>Center</th>
+                    <th></th><!--hidden-->
                 </tr>
                 </thead>
                 <tbody>
@@ -1142,6 +1144,7 @@
                     <th width=500>Observation Summary</th>
                     <th>Tier</th>
                     <th>Center</th>
+                    <th></th><!--hidden-->
                 </tr>
                 </thead>
                 <tbody>
@@ -1208,6 +1211,7 @@
                     <th width=500>Observation Summary</th>
                     <th>Tier</th>
                     <th>Center</th>
+                    <th></th><!--hidden-->
                 </tr>
                 </thead>
                 <tbody>
@@ -1279,6 +1283,7 @@
                     <th width=500>Observation Summary</th>
                     <th>Tier</th>
                     <th>Center</th>
+                    <th></th><!--hidden-->
                 </tr>
                 </thead>
                 <tbody>
@@ -1361,6 +1366,7 @@
                     <th width=500>Observation Summary</th>
                     <th>Tier</th>
                     <th>Center</th>
+                    <th></th><!--hidden-->
                 </tr>
                 </thead>
                 <tbody>
@@ -1431,6 +1437,7 @@
                     <th width=500>Observation Summary</th>
                     <th>Tier</th>
                     <th>Center</th>
+                    <th></th><!--hidden-->
                 </tr>
                 </thead>
                 <tbody>
@@ -1495,6 +1502,7 @@
                     <th width=500>Observation Summary</th>
                     <th>Tier</th>
                     <th>Center</th>
+                    <th></th><!--hidden-->
                 </tr>
                 </thead>
                 <tbody>
@@ -1580,6 +1588,7 @@
                       <th width=500>Observation Summary</th>
                       <th>Tier</th>
                       <th>Center</th>
+                      <th></th><!--hidden-->
                   </tr>
                   </thead>
                   <tbody>
@@ -1643,11 +1652,8 @@
                     {{submission.submissionDate}}
                 </a>
             </td>
-            <td>
-                <div id="observation-summary-{{id}}">
+            <td id="observation-summary-{{id}}">
                 Loading...
-                </div>
-                <img src="img/onto.png" style="float: right;display:{{ontology?'block':'none'}}"></img>
             </td>
             <td><span class="badge tier-badge">Tier {{submission.observationTemplate.tier}}</span></td>
             <td>
@@ -1655,8 +1661,8 @@
                     <img alt="{{submission.observationTemplate.submissionCenter.displayName}}" data-content="{{submission.observationTemplate.submissionCenter.displayName}}" class="clickable-popover" width="150" src="img/{{submission.observationTemplate.submissionCenter.displayName}}.png">
                 </a>
                 <span class="hide-text">{{submission.observationTemplate.submissionCenter.displayName}}</span>
-
             </td>
+            <td>{{ontology}}</td>
         </tr>
     </script>
 
@@ -1812,6 +1818,7 @@
                         <th>Center</th>
                         <th>Tier</th>
                         <th>Details</th>
+                        <th></th><!--hidden-->
                     </tr>
                     </thead>
                     <tbody>
@@ -1834,6 +1841,7 @@
                         <th width=500>Observation Summary</th>
                         <th>Tier</th>
                         <th>Center</th>
+                        <th></th><!-- hidden -->
                     </tr>
                     </thead>
                     <tbody>
@@ -1871,6 +1879,7 @@
             <td width=150>
                 <a href="#{{stableURL}}" id="search-observation-count-{{id}}">{{observationCount}} observations</a>
             </td>
+            <td>{{ontology}}</td>
         </tr>
     </script>
 
