@@ -2757,6 +2757,7 @@ import ObservationView from './observation.view.js'
                         })).render();
                         $('#submission-search-results').hide();
                         $('#observation-search-results').hide();
+                        $("#ontology-search").prop('disabled', false);
                     } else {
                         $(thatEl).find('#no-result').hide();
                         const submissions = [];
