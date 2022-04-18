@@ -2560,8 +2560,6 @@ import ObservationView from './observation.view.js'
                     $("#onto-legend").show();
                     if($("#no-result").is(":visible")) {
                         $("#no-result").hide();
-                        $("#search-results-grid").parent().width("100%");
-                        $("#search-results-grid").width("100%");
                     }
                     $("#search-results-grid").DataTable().destroy();
                     _.each(subject_result, function (one_result) {
