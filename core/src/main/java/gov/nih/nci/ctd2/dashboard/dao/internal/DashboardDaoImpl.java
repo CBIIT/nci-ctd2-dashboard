@@ -1,9 +1,13 @@
 package gov.nih.nci.ctd2.dashboard.dao.internal;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.FileOutputStream;
 import java.math.BigInteger;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,6 +20,8 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
@@ -2207,7 +2213,12 @@ public class DashboardDaoImpl implements DashboardDao {
     }
 
     @Override
-    public void masterExport(String filename) {
+    public void masterExport(String downloadFileLocation, Boolean zipExport) {
+        if (downloadFileLocation.charAt(downloadFileLocation.length() - 1) != File.separatorChar) {
+            downloadFileLocation += File.separatorChar;
+        }
+        final String filename = downloadFileLocation + "master-export.txt";
+
         try (PrintWriter out = new PrintWriter(new FileWriter(filename))) {
             out.println(
                     "ID\tSubmission title\tProject title\tSubmissting center\tSubmission date\tObservation tier\tObservation summary\tObservation URL\tSubject class\tSubject name\tSubject role");
@@ -2225,6 +2236,10 @@ public class DashboardDaoImpl implements DashboardDao {
             for (Object[] obj : query.getResultList()) {
                 String submissionTitle = (String) obj[0];
                 String projectTitle = (String) obj[1];
+                /*
+                TODO for the detail about multi-center submission, see https://github.com/CBIIT/nci-ctd2-dashboard/issues/444
+                For now, there is no "CTD² Network Collaboration" in real data.
+                */
                 String submittingCenter = (String) obj[2];
                 Timestamp submissionDate = (Timestamp) obj[3];
                 Integer observationTier = (Integer) obj[4];
@@ -2292,6 +2307,16 @@ public class DashboardDaoImpl implements DashboardDao {
             }
             session.close();
             out.close();
+
+            if(zipExport) {
+                try (ZipOutputStream zipOutputStream = new ZipOutputStream(new FileOutputStream(filename + ".zip"))) {
+                    zipOutputStream.putNextEntry(new ZipEntry("master-export.txt"));
+                    zipOutputStream.write(Files.readAllBytes(Paths.get(filename)));
+                    zipOutputStream.closeEntry();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

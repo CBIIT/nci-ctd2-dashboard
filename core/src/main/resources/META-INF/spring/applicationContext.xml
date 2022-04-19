@@ -57,6 +57,9 @@
     <bean id="downloadFileLocation" class="java.lang.String">
         <constructor-arg index="0" value="${download.file.location}"/>
     </bean>
+    <bean id="zipExport" class="java.lang.Boolean">
+        <constructor-arg index="0" value="${zip.export}"/>
+    </bean>
     
     <bean id="cnkbDataURL" class="java.lang.String">
         <constructor-arg index="0" value="${cnkb.data.url}"/>

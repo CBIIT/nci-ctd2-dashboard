@@ -26,6 +26,7 @@ allowed.hosts=https://ctd2-dashboard.nci.nih.gov,https://localhost
 web.data.url=https://ctd2-dashboard.nci.nih.gov/data/
 
 download.file.location=./web/src/main/webapp
+zip.export=true
 
 # this is to cap the number obs/results we want to show on a subject/submission page
 # If you make this too high and the client will suffer a lot to load details for each observation

@@ -126,8 +126,9 @@ public class DashboardAdminMain {
 
             if (commandLine.hasOption("x")) {
                 String downloadFileLocation = (String) appContext.getBean("downloadFileLocation");
+                Boolean zipExport = (Boolean) appContext.getBean("zipExport");
                 ExportBuilder e = (ExportBuilder) appContext.getBean("exportBuilder");
-                e.prepareData(downloadFileLocation);
+                e.prepareData(downloadFileLocation, zipExport);
             }
 
             if (commandLine.hasOption("s")) {

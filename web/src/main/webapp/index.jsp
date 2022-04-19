@@ -2480,7 +2480,7 @@
     <script type="text/template" id="master-export-tmpl">
         <div class="container common-container">
             <p>The full set of the observations available in the Dashboard is available in a tabular form, to support downstream analyses and machine learning applications. Each observation is represented with multiple rows, one row per observation subject. Observation- and submission-level data is replicated in each subject row.</p>
-            <a target=_blank href="./master-export.txt">Download file</a>
+            <a target=_blank href="./master-export.txt.zip">Download file</a>
         </div>
     </script>
 

@@ -1,7 +1,5 @@
 package gov.nih.nci.ctd2.dashboard.util;
 
-import java.io.File;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +20,8 @@ public class ExportBuilder {
         this.dashboardDao = dashboardDao;
     }
 
-    public void prepareData(String downloadFileLocation) {
-        if (downloadFileLocation.charAt(downloadFileLocation.length() - 1) != File.separatorChar) {
-            downloadFileLocation += File.separatorChar;
-        }
-        dashboardDao.masterExport(downloadFileLocation + "master-export.txt");
+    public void prepareData(String downloadFileLocation, Boolean zipExport) {
+        dashboardDao.masterExport(downloadFileLocation, zipExport);
         log.debug("finish preparing download data");
     }
 }

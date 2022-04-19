@@ -17,6 +17,7 @@ search.max.number.results=100
 list.max.observations=100
 
 download.file.location=./web/src/main/webapp
+zip.export=true
 
 # this is the URL for CNKB query
 cnkb.data.url=http://34.74.237.111:8080/cnkb/InteractionsServlet
