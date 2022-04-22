@@ -2665,6 +2665,7 @@ import ObservationView from './observation.view.js'
                             $('#observation-summary-link').hide();
                         } else {
                             $('#observation-count').text(observation_result.length);
+                            $('#observation-summary-link').show()
                         }
                     }
 
@@ -2754,6 +2755,8 @@ import ObservationView from './observation.view.js'
                         $('#submission-search-results').hide();
                         $('#observation-search-results').hide();
                         $("#ontology-search").prop('disabled', false);
+                        $('#submission-summary-link').hide()
+                        $('#observation-summary-link').hide()
                     } else {
                         $(thatEl).find('#no-result').hide();
                         const submissions = [];
