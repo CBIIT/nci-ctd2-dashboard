@@ -2396,7 +2396,10 @@ import ObservationView from './observation.view.js'
         template: _.template($("#search-empty-tmpl").html()),
         render: function () {
             $(this.el).append(this.template(this.model));
-
+            if (this.model.term.endsWith('"')) {
+                $("#suggesting-wildcard").hide()
+                $("#suggesting-wildcard").parent().width("100%")
+            }
             return this;
         }
     });
