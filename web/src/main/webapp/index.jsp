@@ -1672,7 +1672,7 @@
                 <div class="alert alert-error">
                     <button type="button" class="close" data-dismiss="alert">&times;</button>
                     <h3>Sorry, no results found</h3>
-                    <p>
+                    <p id=suggesting-wildcard>
                         Would you like to extend your search with a wildcard?
                         (<i>e.g.</i> <a href="#/search/{{encodeURIComponent(term)}}*">{{term.replaceAll("`","'")}}*</a>)
                     </p>
