@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -2237,11 +2238,11 @@ public class DashboardDaoImpl implements DashboardDao {
                 String submissionTitle = (String) obj[0];
                 String projectTitle = (String) obj[1];
                 /*
-                TODO for the detail about multi-center submission, see https://github.com/CBIIT/nci-ctd2-dashboard/issues/444
+                for the detail about multi-center submission, see https://github.com/CBIIT/nci-ctd2-dashboard/issues/444
                 For now, there is no "CTD² Network Collaboration" in real data.
                 */
                 String submittingCenter = (String) obj[2];
-                Timestamp submissionDate = (Timestamp) obj[3];
+                String submissionDate = new SimpleDateFormat("yyyy-MM-dd").format((Timestamp) obj[3]);
                 Integer observationTier = (Integer) obj[4];
                 String observationSummary = (String) obj[5];
                 Integer submissionId = (Integer) obj[6];
