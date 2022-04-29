@@ -2251,9 +2251,10 @@ public class DashboardDaoImpl implements DashboardDao {
                 @SuppressWarnings("unchecked")
                 org.hibernate.query.Query<Object[]> observationQuery = session.createNativeQuery(observationSql);
                 for (Object[] observationObj : observationQuery.getResultList()) {
-                    String observationURL = "https://ctd2-dashboard.nci.nih.gov/dashboard/#" + observationObj[0];
+                    String stableURL = (String) observationObj[0];
+                    String observationURL = "https://ctd2-dashboard.nci.nih.gov/dashboard/#" + stableURL;
                     /* the 'ID' to export */
-                    String ID = observationURL.substring(observationURL.indexOf("/") + 1);
+                    String ID = stableURL.substring(stableURL.lastIndexOf("/") + 1);
                     Integer observationId = (Integer) observationObj[1]; /* the actual internal ID */
                     String summary = observationSummary;
                     String observedEvidenceSql = "SELECT columnName, displayName FROM observed_evidence "
