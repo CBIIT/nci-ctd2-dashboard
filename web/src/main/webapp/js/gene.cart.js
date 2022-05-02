@@ -306,18 +306,11 @@ export const CnkbQueryView = Backbone.View.extend({
         $('#queryDescription').html("");
         $('#queryDescription').html("Query with " + count + " genes from cart");
         $.ajax({
-            url: "cnkb/query",
-            data: {
-                dataType: "interactome-context",
-                interactome: "",
-                selectedGenes: "",
-                interactionLimit: 0,
-                throttle: ""
-            },
+            url: "cnkb/interactome-list",
             dataType: "json",
             contentType: "json",
-            success: function (data) {
-                _.each(data.interactomeList, function (aData) {
+            success: function (interactomeList) {
+                _.each(interactomeList, function (aData) {
                     const option = '<option value="' + aData + '">' + aData + '</option>';
                     if (aData.toLowerCase().startsWith("preppi")) {
                         $("#interactomeList").prepend(option);
@@ -333,22 +326,17 @@ export const CnkbQueryView = Backbone.View.extend({
 
         $('#interactomeList').change(function () {
             $.ajax({
-                url: "cnkb/query",
+                url: "cnkb/interactome-descriptions",
                 data: {
-                    dataType: "interactome-version",
                     interactome: $('#interactomeList option:selected').text().split("(")[0].trim(),
-                    selectedGenes: "",
-                    interactionLimit: 0,
-                    throttle: ""
                 },
                 dataType: "json",
                 contentType: "json",
-                success: function (data) {
+                success: function (descriptions) {
                     const URL_pattern = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&/=]*[a-zA-Z0-9/])?/g;
                     // convert URL to an actual link
-                    $('#interactomeDescription').html(data.description.replaceAll(URL_pattern, "<a href='$&' target='_blank'>$&</a>"));
-                    $('#versionDescription').html(data.versionDescriptor);
-
+                    $('#interactomeDescription').html(descriptions[0].replaceAll(URL_pattern, "<a href='$&' target='_blank'>$&</a>"));
+                    $('#versionDescription').html(descriptions[1]);
                 }
             }); //ajax
 
@@ -401,13 +389,10 @@ export const CnkbResultView = Backbone.View.extend({
 
             $(this.el).html(this.template({}));
             $.ajax({
-                url: "cnkb/query",
+                url: "cnkb/interaction-result",
                 data: {
-                    dataType: "interaction-result",
                     interactome: selectedInteractome,
                     selectedGenes: JSON.stringify(selectedgenes),
-                    interactionLimit: 0,
-                    throttle: ""
                 },
                 dataType: "json",
                 contentType: "json",
@@ -472,13 +457,11 @@ export const CnkbResultView = Backbone.View.extend({
                 });
 
                 $.ajax({
-                    url: "cnkb/query",
+                    url: "cnkb/interaction-throttle",
                     data: {
-                        dataType: "interaction-throttle",
                         interactome: selectedInteractome,
                         selectedGenes: filters,
                         interactionLimit: $("#cytoscape-node-limit").val(),
-                        throttle: ""
                     },
                     dataType: "json",
                     contentType: "json",

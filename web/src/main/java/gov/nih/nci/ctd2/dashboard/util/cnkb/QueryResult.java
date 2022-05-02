@@ -10,7 +10,7 @@ import java.util.List;
  * This is based on the class from geWorkbench core that has the same name.
  * Dependency on bison types is removed; name is kept to avoid too much immediate change of other code.
  */
-public class QueryResult extends CnkbObject {
+public class QueryResult {
 
 	private static final long serialVersionUID = -4163326138016520667L;
 
