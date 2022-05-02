@@ -256,9 +256,12 @@ public class CNKB {
 		return arrayList;
 	}
 
-	public List<VersionDescriptor> getVersionDescriptor(String interactomeName)
+	// "only the most recent version of each interactome will be supported" - the requirement document
+	// The only interactome that has more than one version is HGi_TCGA. There are about 34 interactome totally.
+	public String getVersionDescriptor(String interactomeName)
 			throws ConnectException, SocketTimeoutException, IOException, UnAuthenticatedException {
-		List<VersionDescriptor> arrayList = new ArrayList<VersionDescriptor>();
+		String latestVersionDescription = null;
+		float versionValue = 0;
 
 		String methodAndParams = "getVersionDescriptor" + Constants.DEL + interactomeName;
 		ResultSetlUtil rs = ResultSetlUtil.executeQuery(methodAndParams);
@@ -267,17 +270,46 @@ public class CNKB {
 			if (version.equalsIgnoreCase("DEL"))
 				continue;
 			String value = rs.getString("authentication_yn").trim();
-			boolean needAuthentication = false;
 			if (value.equalsIgnoreCase("Y")) {
-				needAuthentication = true;
+				continue;
 			}
 			String versionDesc = rs.getString("description").trim();
-			VersionDescriptor vd = new VersionDescriptor(version, needAuthentication, versionDesc);
-			arrayList.add(vd);
+			float v = Float.parseFloat(version);
+			if (v > versionValue) {
+				versionValue = v;
+				latestVersionDescription = versionDesc;
+			}
 		}
 		rs.close();
 
-		return arrayList;
+		return latestVersionDescription;
+	}
+
+	/* get the latest version number for an interactome */
+	public String getLatestVersionNumber(String interactomeName)
+			throws ConnectException, SocketTimeoutException, IOException, UnAuthenticatedException {
+		String latestVersion = null;
+		float versionValue = 0;
+
+		String methodAndParams = "getVersionDescriptor" + Constants.DEL + interactomeName;
+		ResultSetlUtil rs = ResultSetlUtil.executeQuery(methodAndParams);
+		while (rs.next()) {
+			String version = rs.getString("version").trim();
+			if (version.equalsIgnoreCase("DEL"))
+				continue;
+			String value = rs.getString("authentication_yn").trim();
+			if (value.equalsIgnoreCase("Y")) {
+				continue;
+			}
+			float v = Float.parseFloat(version);
+			if (v > versionValue) {
+				versionValue = v;
+				latestVersion = version;
+			}
+		}
+		rs.close();
+
+		return latestVersion;
 	}
 
 	public List<InteractionDetail> getInteractionsByGeneSymbolAndLimit(String geneSymbol, String context,

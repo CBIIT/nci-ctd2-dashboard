@@ -2297,16 +2297,13 @@
                        <br/>
                        <select id="interactomeList" class="cnkbSelectList" size="10"></select>
                        <br/>
+                       <medium>Network Description: </medium>
                        <small id="interactomeDescription" class="cnkbDescription">
                         &nbsp;&nbsp;
                        </small>
                      <br/><br/>
                       
-                    <medium class="labelDisable" id="selectVersion"> Select Version: </medium>
-                    <br/>
-                    <select id="interactomeVersionList" name="interactomeVersions"
-                         class="cnkbSelectList" size="4"></select>
-                     <br/>
+                    <medium>Version Documentation: </medium>
                     <small id="versionDescription" class="cnkbDescription">
                         &nbsp;&nbsp;
                     </small>
@@ -2332,7 +2329,6 @@
                      <br>
                      <form method="POST" action="cnkb/download" id="cnkbExport-form" style="display: none;">
                              <input type="hidden" name="interactome" id="interactome">
-                             <input type="hidden" name="version" id="version">
                              <input type="hidden" name="selectedGenes" id="selectedGenes">  
                              <input type="hidden" name="interactionLimit" id="interactionLimit">
                              <input type="hidden" name="throttle" id="throttle">

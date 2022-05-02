@@ -40,7 +40,6 @@ import gov.nih.nci.ctd2.dashboard.util.cnkb.InteractionParticipant;
 import gov.nih.nci.ctd2.dashboard.util.cnkb.InteractomeInfo;
 import gov.nih.nci.ctd2.dashboard.util.cnkb.QueryResult;
 import gov.nih.nci.ctd2.dashboard.util.cnkb.UnAuthenticatedException;
-import gov.nih.nci.ctd2.dashboard.util.cnkb.VersionDescriptor;
 import gov.nih.nci.ctd2.dashboard.util.cytoscape.CyEdge;
 import gov.nih.nci.ctd2.dashboard.util.cytoscape.CyElement;
 import gov.nih.nci.ctd2.dashboard.util.cytoscape.CyInteraction;
@@ -87,7 +86,11 @@ public class CnkbController {
 
 	}
 
-	 
+	/*
+	TODO This mapping would better be refactored into four different mappings.
+	Unnecessary parameters should be removed.
+	The names should better reflect what they really do.
+	*/
 	@SuppressWarnings("unchecked")
 	@Transactional
 	@RequestMapping(value = "query", method = { RequestMethod.POST,
@@ -95,7 +98,6 @@ public class CnkbController {
 	public ResponseEntity<String> getCnkbObject(
 			@RequestParam("dataType") String dataType,
 			@RequestParam("interactome") String interactome,
-			@RequestParam("version") String version,
 			@RequestParam("selectedGenes") String selectedGenes,
 			@RequestParam("interactionLimit") int interactionLimit,
 			@RequestParam("throttle") String throttle) {
@@ -117,19 +119,17 @@ public class CnkbController {
 				((InteractomeInfo) cnkbObject)
 						.setDescription(interactionsConnection
 								.getInteractomeDescription(interactome));
-				List<VersionDescriptor> versionDescriptors = interactionsConnection
+				String versionDescriptor = interactionsConnection
 						.getVersionDescriptor(interactome);
-				for (VersionDescriptor versionDescriptor : versionDescriptors) {
-					if (versionDescriptor.getRequiresAuthentication() == false)
-						((InteractomeInfo) cnkbObject)
-								.addVersionDescriptor(versionDescriptor);
-				}
+				((InteractomeInfo) cnkbObject)
+								.setVersionDescriptor(versionDescriptor);
 
 			} else if (dataType.equals("interaction-result")) {
 				cnkbObject = new QueryResult();
+				String latestVersion = interactionsConnection.getLatestVersionNumber(interactome);
 				List<String> interactionTypes = interactionsConnection
 						.getInteractionTypesByInteractomeVersion(interactome,
-								version);
+						latestVersion);
 				((QueryResult) cnkbObject)
 						.setInteractionTypeList(interactionTypes);
 
@@ -145,7 +145,7 @@ public class CnkbController {
 								gene.trim());
 						interactionDetails = interactionsConnection
 								.getInteractionsByGeneSymbol(gene.trim(),
-										interactome, version);
+										interactome, latestVersion);
 						if (confidenceType == null
 								&& interactionDetails != null
 								&& interactionDetails.size() > 0)
@@ -163,6 +163,7 @@ public class CnkbController {
 				}
 
 			} else if (dataType.equals("interaction-throttle")) {
+				String latestVersion = interactionsConnection.getLatestVersionNumber(interactome);
 				cnkbObject = new QueryResult();			 
 				List<InteractionDetail> interactionDetails = null;
 				List<String> selectedGenesList = convertStringToList(selectedGenes);
@@ -172,7 +173,7 @@ public class CnkbController {
 					for (String gene : selectedGenesList) {
 						interactionDetails = interactionsConnection
 								.getInteractionsByGeneSymbolAndLimit(
-										gene.trim(), interactome, version,
+										gene.trim(), interactome, latestVersion,
 										interactionLimit);
 						if (interactionDetails != null) {
 							if (confidenceType == null
@@ -222,7 +223,6 @@ public class CnkbController {
 			RequestMethod.GET }, headers = "Accept=application/json")
 	public ResponseEntity<String> getCnkbCyNetwork(
 			@RequestParam("interactome") String interactome,
-			@RequestParam("version") String version,
 			@RequestParam("selectedGenes") String selectedGenes,
 			@RequestParam("interactionLimit") int interactionLimit,
 			@RequestParam("throttle") String throttle) {
@@ -247,10 +247,11 @@ public class CnkbController {
 			List<CyEdge> edgeList = new ArrayList<CyEdge>();
 			Short confidenceType = null;
 			if (selectedGenesList != null && selectedGenesList.size() != 0) {
+				String latestVersion = interactionsConnection.getLatestVersionNumber(interactome);
 				for (String gene : selectedGenesList) {
 					interactionDetails = interactionsConnection
 							.getInteractionsByGeneSymbolAndLimit(gene.trim(),
-									interactome, version, interactionLimit);
+									interactome, latestVersion, interactionLimit);
 					if (interactionDetails != null) {
 						if (confidenceType == null
 								&& interactionDetails.size() > 0)
@@ -289,7 +290,6 @@ public class CnkbController {
 	@RequestMapping(value = "download", method = { RequestMethod.POST })
 	public void downloadCnkbResult(
 			@RequestParam("interactome") String interactome,
-			@RequestParam("version") String version,
 			@RequestParam("selectedGenes") String selectedGenes,
 			@RequestParam("interactionLimit") int interactionLimit,
 			@RequestParam("throttle") String throttle,
@@ -307,6 +307,7 @@ public class CnkbController {
 		try {
 
 			cnkbObject = new QueryResult();
+			String version = interactionsConnection.getLatestVersionNumber(interactome);
 			List<String> interactionTypes = interactionsConnection
 					.getInteractionTypesByInteractomeVersion(interactome,
 							version);
@@ -685,7 +686,7 @@ public class CnkbController {
 	public static void main(String[] args) {
 
 		CnkbController cnknController = new CnkbController();
-		cnknController.getCnkbCyNetwork("BCi", "1.0", "NFIX, FOSL2", 100, "");
+		cnknController.getCnkbCyNetwork("BCi", "NFIX, FOSL2", 100, "");
 		//cnknController.convertCNKBtoJSON("interaction-result", "BCi", "1.0",
 		// "NFIX, NCOA1", 100, "");
 		

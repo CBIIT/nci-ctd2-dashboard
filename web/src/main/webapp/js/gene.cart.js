@@ -310,7 +310,6 @@ export const CnkbQueryView = Backbone.View.extend({
             data: {
                 dataType: "interactome-context",
                 interactome: "",
-                version: "",
                 selectedGenes: "",
                 interactionLimit: 0,
                 throttle: ""
@@ -332,14 +331,12 @@ export const CnkbQueryView = Backbone.View.extend({
             }
         });
 
-        let versionDescriptors;
         $('#interactomeList').change(function () {
             $.ajax({
                 url: "cnkb/query",
                 data: {
                     dataType: "interactome-version",
                     interactome: $('#interactomeList option:selected').text().split("(")[0].trim(),
-                    version: "",
                     selectedGenes: "",
                     interactionLimit: 0,
                     throttle: ""
@@ -347,49 +344,25 @@ export const CnkbQueryView = Backbone.View.extend({
                 dataType: "json",
                 contentType: "json",
                 success: function (data) {
-                    versionDescriptors = data.versionDescriptorList;
                     const URL_pattern = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&/=]*[a-zA-Z0-9/])?/g;
                     // convert URL to an actual link
                     $('#interactomeDescription').html(data.description.replaceAll(URL_pattern, "<a href='$&' target='_blank'>$&</a>"));
-                    $('#interactomeVersionList').html("");
-                    _.each(data.versionDescriptorList, function (aData) {
-                        $("#interactomeVersionList").append('<option value="' + aData.version + '">' + aData.version + '</option>');
-                    });
-                    $('#interactomeVersionList').disabled = false;
-                    $('#selectVersion').css('color', '#5a5a5a');
-                    $('#versionDescription').html("");
+                    $('#versionDescription').html(data.versionDescriptor);
 
                 }
             }); //ajax
 
         }); //end $('#interactomeList').change()
 
-        $('#interactomeVersionList').change(function () {
-            const selectedVersion = $('#interactomeVersionList option:selected').text().trim();
-            _.each(versionDescriptors, function (aData) {
-                if (aData.version === selectedVersion) {
-                    $('#versionDescription').html("");
-                    $('#versionDescription').html(aData.versionDesc);
-                }
-            });
-
-        }); //end $('#interactomeList').change()
-
         $("#cnkb-result").click(function (e) {
 
             const selectedInteractome = $('#interactomeList option:selected').text().split("(")[0].trim();
-            const selectedVersion = $('#interactomeVersionList option:selected').text().trim();
 
             if (selectedInteractome == null || $.trim(selectedInteractome).length == 0) {
                 e.preventDefault();
                 showAlertMessage("Please select an interactome name");
-
-            } else if (selectedVersion == null || $.trim(selectedVersion).length == 0) {
-                e.preventDefault();
-                showAlertMessage("Please select an interactome version.");
             } else {
                 sessionStorage.selectedInteractome = JSON.stringify(selectedInteractome);
-                sessionStorage.selectedVersion = JSON.stringify(selectedVersion);
             }
 
         });
@@ -414,7 +387,6 @@ export const CnkbResultView = Backbone.View.extend({
         render: function () {
             const selectedgenes = JSON.parse(sessionStorage.getItem("selectedGenes"));
             const selectedInteractome = JSON.parse(sessionStorage.getItem("selectedInteractome"));
-            const selectedVersion = JSON.parse(sessionStorage.getItem("selectedVersion"));
 
             const numOfCartGene = 25; // this should match the numOfCartGene in ctd2.js
             const table_filter_popover = {
@@ -433,7 +405,6 @@ export const CnkbResultView = Backbone.View.extend({
                 data: {
                     dataType: "interaction-result",
                     interactome: selectedInteractome,
-                    version: selectedVersion,
                     selectedGenes: JSON.stringify(selectedgenes),
                     interactionLimit: 0,
                     throttle: ""
@@ -486,7 +457,6 @@ export const CnkbResultView = Backbone.View.extend({
                 }
 
                 $("#interactome").val(selectedInteractome);
-                $("#version").val(selectedVersion);
                 $("#selectedGenes").val(filters);
                 $("#interactionLimit").val("0");
                 $("#throttle").val("");
@@ -506,7 +476,6 @@ export const CnkbResultView = Backbone.View.extend({
                     data: {
                         dataType: "interaction-throttle",
                         interactome: selectedInteractome,
-                        version: selectedVersion,
                         selectedGenes: filters,
                         interactionLimit: $("#cytoscape-node-limit").val(),
                         throttle: ""
@@ -579,7 +548,6 @@ export const CnkbResultView = Backbone.View.extend({
                     url: "cnkb/network",
                     data: {
                         interactome: selectedInteractome,
-                        version: selectedVersion,
                         selectedGenes: filters,
                         interactionLimit: interactionLimit,
                         throttle: throttle
@@ -592,7 +560,7 @@ export const CnkbResultView = Backbone.View.extend({
                             showAlertMessage("The network is empty.");
                             return;
                         }
-                        drawCNKBCytoscape(data, Encoder.htmlEncode(selectedInteractome + " (v" + selectedVersion + ")"));
+                        drawCNKBCytoscape(data, Encoder.htmlEncode(selectedInteractome));
 
                     } //end success
                 }); //end ajax

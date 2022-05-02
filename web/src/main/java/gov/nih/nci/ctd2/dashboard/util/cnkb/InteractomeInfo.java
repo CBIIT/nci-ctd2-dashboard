@@ -3,12 +3,16 @@ package gov.nih.nci.ctd2.dashboard.util.cnkb;
 import java.util.ArrayList;
 import java.util.List;
 
+/* TODO
+This class seems to be used a catch-all object for various different queries.
+This should be replaced by some more specific, more concise objects.
+*/
 public class InteractomeInfo extends CnkbObject {
 
 	private static final long serialVersionUID = -6965453484961096930L;
 
-	private List<String> interactomeList = new ArrayList<String>();	 
-	private List<VersionDescriptor> versionDescriptorList = new ArrayList<VersionDescriptor>();
+	private List<String> interactomeList = new ArrayList<String>();
+	private String versionDescription = null;
 	private String description = null;
 	 
 
@@ -22,13 +26,12 @@ public class InteractomeInfo extends CnkbObject {
 	
 	
 
-	public List<VersionDescriptor> getVersionDescriptorList() {
-		return this.versionDescriptorList;
+	public String getVersionDescriptor() {
+		return this.versionDescription;
 	}
 
-	public void setVersionDescriptorList(
-			List<VersionDescriptor> versionDescriptorList) {
-		this.versionDescriptorList = versionDescriptorList;
+	public void setVersionDescriptor(String versionDescriptor) {
+		this.versionDescription = versionDescriptor;
 	}
 
 	public String getDescription() {
@@ -44,8 +47,4 @@ public class InteractomeInfo extends CnkbObject {
 	}
 	
 	
-	public boolean addVersionDescriptor(VersionDescriptor versionDescriptor) {
-		return getVersionDescriptorList().add(versionDescriptor);
-	}
-
 }
