@@ -403,38 +403,13 @@ export const CnkbResultView = Backbone.View.extend({
                         $("#throttle").val("");
                         $('#cnkbExport-form').submit();
                     })
-                    getThrottleValue(geneNames)
                 }
 
             }); //ajax cnkb/interaction-result end
 
             const interactionLimit = 200;
 
-            const getThrottleValue = function (geneNames) {
-                $.ajax({
-                    url: "cnkb/interaction-throttle",
-                    data: {
-                        interactome: selectedInteractome,
-                        selectedGenes: geneNames,
-                        interactionLimit: interactionLimit,
-                    },
-                    dataType: "json",
-                    contentType: "json",
-                    success: function (data) {
-                        if (data != null && data.threshold != -1) {
-                            if (data.threshold == 0)
-                                $("#throttle-input").text("0.0");
-                            else
-                                $("#throttle-input").text(data.threshold);
-                        } else
-                            $("#throttle-input").text("e.g. 0.01");
-                        $("#throttle-input").css('color', 'grey');
-                    }
-                });
-            };
-
             const createNetwork = function (geneNames) {
-                const throttle = $("#throttle-input").text();
                 $('#createnw_progress_indicator').show();
                 $.ajax({
                     url: "cnkb/network",
@@ -442,7 +417,6 @@ export const CnkbResultView = Backbone.View.extend({
                         interactome: selectedInteractome,
                         selectedGenes: geneNames,
                         interactionLimit: interactionLimit,
-                        throttle: throttle
                     },
                     dataType: "json",
                     contentType: "json",

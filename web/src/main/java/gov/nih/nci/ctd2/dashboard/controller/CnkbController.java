@@ -270,8 +270,7 @@ public class CnkbController {
 	public ResponseEntity<String> getCnkbCyNetwork(
 			@RequestParam("interactome") String interactome,
 			@RequestParam("selectedGenes") String selectedGenes,
-			@RequestParam("interactionLimit") int interactionLimit,
-			@RequestParam("throttle") String throttle) {
+			@RequestParam("interactionLimit") int interactionLimit) {
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
@@ -282,12 +281,6 @@ public class CnkbController {
 
 			List<InteractionDetail> interactionDetails = null;
 			List<String> selectedGenesList = convertStringToList(selectedGenes);
-			float throttleValue = 0;
-			try {
-				throttleValue = Float.valueOf(throttle);
-			} catch (NumberFormatException ne) {
-				// set throttleValue = 0;
-			}
 
 			List<CyEdge> edgeList = new ArrayList<CyEdge>();
 			Short confidenceType = null;
@@ -302,8 +295,7 @@ public class CnkbController {
 								&& interactionDetails.size() > 0)
 							confidenceType = interactionDetails.get(0)
 									.getConfidenceTypes().get(0);
-						getCyEdgeList(interactionDetails, throttleValue,
-								confidenceType, edgeList);
+						getCyEdgeList(interactionDetails, confidenceType, edgeList);
 					}
 				}
 			}
@@ -411,84 +403,6 @@ public class CnkbController {
 	}
 
 	@Transactional
-	@RequestMapping(value = "upload", method = RequestMethod.POST)
-	public ResponseEntity<String> getCnkbCyNetwork(
-			@RequestParam("sifData") String data) {
-
-		HashMap<String, String> interactionTypeMap = getInteractionTypeMap();
-		HttpHeaders headers = new HttpHeaders();
-		headers.add("Content-Type", "application/json; charset=utf-8");
-		JSONSerializer jsonSerializer = new JSONSerializer().exclude("*.class");
-
-		HashSet<String> nodeNames = new HashSet<String>();
-		HashSet<String> interactionTypes = new HashSet<String>();
-		CyNetwork cyNetwork = new CyNetwork();
-		boolean validGFormat = true;
-		String lines[] = data.split("\n");
-
-		for (int i = 0; i < lines.length; i++) {
-			String tokens[] = lines[i].split("\\s+");
-			if (tokens.length < 3)
-				continue;
-			String source = tokens[0].trim();
-
-			String interactionType = tokens[1].trim();
-			for (int j = 2; j < tokens.length; j++) {
-				String target = tokens[j].trim();
-				CyEdge cyEdge = new CyEdge();
-				cyEdge.setProperty(CyElement.ID, source + "." + interactionType
-						+ "." + target);
-				cyEdge.setProperty(CyElement.SOURCE, source);
-				cyEdge.setProperty(CyElement.TARGET, target);
-				cyEdge.setProperty(CyElement.COLOR,
-						colorMap.get(interactionTypeMap.get(interactionType)));
-				if (colorMap.get(interactionTypeMap.get(interactionType)) == null) {
-					validGFormat = false;
-					break;
-				}
-				cyNetwork.addEdge(cyEdge);
-				interactionTypes.add(interactionTypeMap.get(interactionType));
-				nodeNames.add(source);
-				nodeNames.add(target);
-
-				if (nodeNames.size() > 500) {
-					String message = "The number of nodes to be displayed is limited to 500.";
-					return new ResponseEntity<String>(
-							jsonSerializer.deepSerialize(message), headers,
-							HttpStatus.OK);
-
-				}
-
-			}
-		}
-
-		if (validGFormat == false) {
-			String message = "your file is not sif format.";
-			return new ResponseEntity<String>(
-					jsonSerializer.deepSerialize(message), headers,
-					HttpStatus.OK);
-
-		}
-
-		for (String nodeName : nodeNames) {
-			CyNode cyNode = new CyNode();
-			cyNode.setProperty(CyElement.ID, nodeName);
-			cyNetwork.addNode(cyNode);
-		}
-
-		List<CyInteraction> cyInteractions = new ArrayList<CyInteraction>();
-		for (String interactionType : interactionTypes) {
-			cyInteractions.add(new CyInteraction(interactionType, colorMap
-					.get(interactionType)));
-		}
-		cyNetwork.setInteractions(cyInteractions);
-
-		return new ResponseEntity<String>(
-				jsonSerializer.deepSerialize(cyNetwork), headers, HttpStatus.OK);
-
-	}
-
-	@Transactional
 	@RequestMapping(value = "validation", method = { RequestMethod.POST,
 			RequestMethod.GET }, headers = "Accept=application/json")
 	public ResponseEntity<String> getInvalidGeneSymbols(
@@ -583,17 +497,14 @@ public class CnkbController {
 	}
 
 	private void getCyEdgeList(List<InteractionDetail> interactionDetails,
-			float throttle, Short confidenceType, List<CyEdge> edgeList) {
+			Short confidenceType, List<CyEdge> edgeList) {
 		CyNode source = null;
 		CyNode target = null;
 
 		for (InteractionDetail interactionDetail : interactionDetails) {
-
-			if (!interactionDetail.getConfidenceTypes()
-					.contains(confidenceType)
-					|| interactionDetail.getConfidenceValue(confidenceType)
-							.floatValue() < throttle)
+			if (!interactionDetail.getConfidenceTypes().contains(confidenceType)) {
 				continue;
+			}
 			List<InteractionParticipant> participants = interactionDetail
 					.getParticipantList();
 			String interactionType = interactionDetail.getInteractionType();
@@ -619,9 +530,7 @@ public class CnkbController {
 
 				}
 			}
-
 		}
-
 	}
 
 	private CyNetwork convertToCyNetwork(List<CyEdge> edgeList,
@@ -710,15 +619,5 @@ public class CnkbController {
 		}
 
 		return invalidGenes;
-	}
-
-	// test
-	public static void main(String[] args) {
-
-		CnkbController cnknController = new CnkbController();
-		cnknController.getCnkbCyNetwork("BCi", "NFIX, FOSL2", 100, "");
-		// cnknController.convertCNKBtoJSON("interaction-result", "BCi", "1.0",
-		// "NFIX, NCOA1", 100, "");
-
 	}
 }
