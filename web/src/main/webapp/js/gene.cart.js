@@ -398,17 +398,13 @@ export const CnkbResultView = Backbone.View.extend({
                 contentType: "json",
                 success: function (data) {
                     $("#cnkb_data_progress").hide();
-                    _.each(data.interactionTypeList, function (aData) {
-                        $('#cnkb-result-grid thead tr').append('<th>' + aData.toUpperCase() + '</th>');
-                    });
+                    // other field not used: data.interactionTypeList
 
                     const thatEl = $("#cnkb-result-grid");
+                    let geneNames = ""
                     _.each(data.cnkbElementList, function (aData) {
-                        new CnkbResultRowView({
-                            el: $(thatEl).find("tbody"),
-                            model: aData
-                        }).render();
-
+                        geneNames += aData.geneName + ","
+                        // other field not used: aData.interactionNumlist
                     });
 
                     $(thatEl).dataTable({
@@ -426,42 +422,30 @@ export const CnkbResultView = Backbone.View.extend({
                             return t;
                         },
                     });
+                    createNetwork(geneNames)
+                    $('#cnkbExport').click(function (e) {
+                        e.preventDefault();
+                        $("#interactome").val(selectedInteractome);
+                        $("#selectedGenes").val(geneNames);
+                        $("#interactionLimit").val("0");
+                        $("#throttle").val("");
+                        $('#cnkbExport-form').submit();
+                    })
+                    getThrottleValue(geneNames)
                 }
 
-            }); //ajax  
+            }); //ajax cnkb/interaction-result end
 
-            $('#cnkbExport').click(function (e) {
-                e.preventDefault();
-                let filters = "";
-                $('input[type="checkbox"]:checked').each(function () {
-                    filters = filters + ($(this).val() + ',');
-                });
-                if (filters.length == 0 || $.trim(filters) === 'on,') {
-                    showAlertMessage("Please select at least one row to export to a SIF file.");
-                    return;
-                }
+            const interactionLimit = 200;
 
-                $("#interactome").val(selectedInteractome);
-                $("#selectedGenes").val(filters);
-                $("#interactionLimit").val("0");
-                $("#throttle").val("");
-                $('#cnkbExport-form').submit();
-
-            }); //end $('#interactomeList').change()
-
-            const getThrottleValue = function () {
-
-                let filters = "";
-                $('input[type="checkbox"]:checked').each(function () {
-                    filters = filters + ($(this).val() + ',');
-                });
+            const getThrottleValue = function (geneNames) {
 
                 $.ajax({
                     url: "cnkb/interaction-throttle",
                     data: {
                         interactome: selectedInteractome,
-                        selectedGenes: filters,
-                        interactionLimit: $("#cytoscape-node-limit").val(),
+                        selectedGenes: geneNames,
+                        interactionLimit: interactionLimit,
                     },
                     dataType: "json",
                     contentType: "json",
@@ -479,59 +463,16 @@ export const CnkbResultView = Backbone.View.extend({
 
             };
 
-            $("#cnkb-result-grid").on("change", ":checkbox", function () {
-                getThrottleValue();
-            }); //end cnkb-checked
 
-            $("#cytoscape-node-limit").change(function (evt) {
-                getThrottleValue();
-            }).popover({
-                placement: "top",
-                trigger: 'hover',
-                content: ctd2_hovertext.CNKB_LIMIT,
-            });
-            $("#cytoscape-layouts").popover({
-                placement: "top",
-                trigger: 'hover',
-                content: ctd2_hovertext.CNKB_LAYOUT,
-            });
-
-            $('#checkbox_selectall').click(function (event) { //on click
-                if (this.checked) { // check select status
-                    $('.cnkb_checkbox').each(function () { //loop through each checkbox
-                        this.checked = true; //select all checkboxes with class "checkbox1"
-                    });
-                    getThrottleValue();
-                } else {
-                    $('.cnkb_checkbox').each(function () { //loop through each checkbox
-                        this.checked = false; //deselect all checkboxes with class "checkbox1"
-                    });
-                    $("#throttle-input").text("e.g. 0.01");
-                    $("#throttle-input").css('color', 'grey');
-                }
-            });
-
-            $('#createnetwork').click(function (event) {
-                event.preventDefault();
+            const createNetwork = function (geneNames) {
                 const throttle = $("#throttle-input").text();
-                const interactionLimit = $("#cytoscape-node-limit").val();
 
-                let filters = "";
-                $('input[type="checkbox"]:checked').each(function () {
-                    filters = filters + ($(this).val() + ',');
-
-                });
-
-                if (filters.length == 0 || $.trim(filters) === 'on,') {
-                    showAlertMessage("Please select at least one row to create a network.");
-                    return;
-                }
                 $('#createnw_progress_indicator').show();
                 $.ajax({
                     url: "cnkb/network",
                     data: {
                         interactome: selectedInteractome,
-                        selectedGenes: filters,
+                        selectedGenes: geneNames,
                         interactionLimit: interactionLimit,
                         throttle: throttle
                     },
@@ -548,12 +489,7 @@ export const CnkbResultView = Backbone.View.extend({
                     } //end success
                 }); //end ajax
 
-            }); //end createnetwork.click
-            $('#createnetwork').popover({
-                placement: 'top',
-                trigger: 'hover',
-                content: ctd2_hovertext.CNKB_CREATE_NETWORK,
-            });
+            } //end createnetwork
             $('.clickable-popover').popover({
                 placement: "bottom",
                 trigger: 'hover',
@@ -566,22 +502,6 @@ export const CnkbResultView = Backbone.View.extend({
 
     });
 
-const CnkbResultRowView = Backbone.View.extend({
-        render: function () {
-            const result = this.model;
-
-            this.template = _.template($("#cnkb-result-row-tmpl").html());
-            $(this.el).append(this.template(result));
-
-            _.each(result.interactionNumlist, function (aData) {
-                $("#tr_" + Encoder.htmlEncode(result.geneName)).append('<td>' + aData + '</td>');
-            });
-
-
-            return this;
-        }
-});
-
 const drawCNKBCytoscape = function (data, description) {
         let svgHtml = "";
         const interactions = data.interactions;
@@ -593,23 +513,14 @@ const drawCNKBCytoscape = function (data, description) {
             x2 = x2 + aData.type.length * 11;
         });
 
-        $.fancybox.open(
-            _.template($("#cnkb-cytoscape-tmpl").html())({
-                description: description,
-                svgHtml: svgHtml
-            }), {
-            touch: false,
-            'autoDimensions': false,
-            'transitionIn': 'none',
-            'transitionOut': 'none'
-        }
-        );
+        $("#network-description").text(description)
+        $("#legend-svg").html(svgHtml)
 
         cytoscape({
             container: $('#cytoscape'),
             wheelSensitivity: 0.4,
             layout: {
-                name: $("#cytoscape-layouts").val(),
+                name: 'cola',
                 fit: true,
                 liveUpdate: false,
                 maxSimulationTime: 4000, // max length in ms to run the layout

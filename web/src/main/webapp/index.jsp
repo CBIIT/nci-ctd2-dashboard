@@ -2117,7 +2117,7 @@
                            <option value="circle">Circle</option>
                       </select>
                       <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
-                      <a href="#" id="createnetwork" data-description="{{observedEvidenceRole.displayText}}" target="_blank" data-content="please select master regulator to create network" class="mra-cytoscape-view clickable-popover">Create Network</a>   				 
+                      <a href="#" data-description="{{observedEvidenceRole.displayText}}" target="_blank" data-content="please select master regulator to create network" class="mra-cytoscape-view clickable-popover">Create Network</a>   				 
                       <br/>
                       <small><font color="grey">Threshold: </font></small>
                       <small id="throttle-input"><font color="grey">e.g. 0.01 </font></small>
@@ -2333,16 +2333,6 @@
                              <input type="hidden" name="interactionLimit" id="interactionLimit">
                              <input type="hidden" name="throttle" id="throttle">
                      </form>
-                     <table id="cnkb-result-grid" class="table table-bordered table-striped ">
-                        <thead> 
-                            <tr>
-                            <th><input type="checkbox" id="checkbox_selectall" class=clickable-popover data-content="select or deselect all checkboxes"></th>
-                            <th>GENE</th>
-                            </tr>
-                         </thead>
-                         <tbody>
-                         </tbody>
-                      </table>  
                    </div>
                    <div class="col-1">
                    </div>
@@ -2354,30 +2344,24 @@
                     <br/><br/><br/>
                 </div>
                 <div>
-                    <b>Interactions Limit:</b>	
-                    <select id="cytoscape-node-limit">
-                           <option value="25">25</option>
-                           <option value="50">50</option>
-                           <option value="100" selected="selected">100</option>
-                           <option value="200">200</option>
-                           <option value="300">300</option>
-                           <option value="400">400</option>
-                     </select>
-
-                     <b>Layout:</b>	
-                     <select id="cytoscape-layouts">
-                           <option value="cola" selected="selected">Cola</option>
-                           <option value="grid">Grid</option>
-                           <option value="random">Random</option>
-                           <option value="circle">Circle</option>
-                     </select>
-                     
-                     <a href="#" id="createnetwork"  target="_blank">Create Network</a>
-                     <br/>
                      <small><font color="grey">Confidence threshold: </font></small>
                      <small id="throttle-input"><font color="grey">e.g. 0.01 </font></small>
                    	 <div id="createnw_progress_indicator" align="center" style="display: none;">data is loading ......
                          <img id="cnkb_data_progress_indicator" src="img/progress_indicator.gif" width="20" height="20" alt="Please wait ......"><br>
+                     </div>
+                     <div class="cytoscape-container" style="height:600px">
+                        <div id="cnkb_cytoscape_progress">
+                            <img id="cnkb_cytoscape_progress_indicator" class="centeredImage" src="img/progress_indicator.gif" width="30" height="30" alt="Please wait ......">
+                        </div>
+                        <div id="cytoscape" style="height:90%">
+                        </div>
+                        <div id="cnkb-cytoscape-legend" class="well cytoscape-legend">
+                            <svg  width="500" height="30" xmlns="http://www.w3.org/2000/svg" id=legend-svg>
+                               {{svgHtml}}
+                            </svg>
+                            <br/>
+                            <span id=network-description></span>
+                        </div>
                      </div>
                   </div>
                   <br/>	
@@ -2389,23 +2373,6 @@
             <td><input type="checkbox" id="checkbox_{{geneName}}" value="{{geneName}}" class="cnkb_checkbox"></td> 
             <td>{{geneName}}</td>; 
         </tr>
-      </script>
-
-    <script type="text/template" id="cnkb-cytoscape-tmpl">
-        <div class="cytoscape-container">
-        <div id="cnkb_cytoscape_progress">
-            <img id="cnkb_cytoscape_progress_indicator" class="centeredImage" src="img/progress_indicator.gif" width="30" height="30" alt="Please wait ......">
-        </div>
-        <div id="cytoscape">
-        </div>
-        <div id="cnkb-cytoscape-legend" class="well cytoscape-legend">
-            <svg  width="500" height="30"xmlns="http://www.w3.org/2000/svg">
-               {{svgHtml}}
-            </svg>
-            <br/>
-            {{description}}
-        </div>
-        </div>
       </script>
 
     <script type="text/template" id="gene-cart-help-tmpl">
