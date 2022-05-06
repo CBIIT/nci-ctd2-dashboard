@@ -334,7 +334,6 @@ public class CnkbController {
 	public void downloadCnkbResult(
 			@RequestParam("interactome") String interactome,
 			@RequestParam("selectedGenes") String selectedGenes,
-			@RequestParam("interactionLimit") int interactionLimit,
 			@RequestParam("throttle") String throttle,
 			HttpServletResponse response) {
 

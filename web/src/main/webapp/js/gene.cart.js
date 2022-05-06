@@ -377,11 +377,6 @@ export const CnkbResultView = Backbone.View.extend({
             const selectedInteractome = JSON.parse(sessionStorage.getItem("selectedInteractome"));
 
             const numOfCartGene = 25; // this should match the numOfCartGene in ctd2.js
-            const table_filter_popover = {
-                placement: "top",
-                trigger: 'hover',
-                content: ctd2_hovertext.TABLE_FILTER,
-            };
             if (selectedgenes.length > numOfCartGene) {
                 selectedgenes.slice(numOfCartGene, selectedgenes.length - 1);
                 sessionStorage.selectedGenes = JSON.stringify(selectedgenes);
@@ -398,36 +393,13 @@ export const CnkbResultView = Backbone.View.extend({
                 contentType: "json",
                 success: function (data) {
                     $("#cnkb_data_progress").hide();
-                    // other field not used: data.interactionTypeList
-
-                    const thatEl = $("#cnkb-result-grid");
-                    let geneNames = ""
-                    _.each(data.cnkbElementList, function (aData) {
-                        geneNames += aData.geneName + ","
-                        // other field not used: aData.interactionNumlist
-                    });
-
-                    $(thatEl).dataTable({
-                        "dom": "<'fullwidth'ifrtlp>",
-                        "paging": false
-                    }); // return value ignored
-                    $(thatEl).parents("#cnkb-result-grid_wrapper").find('input[type=search]').popover(table_filter_popover);
-                    $(thatEl).find('thead th').popover({
-                        placement: "top",
-                        trigger: 'hover',
-                        content: function () {
-                            const hovertext_id = 'CNKB_' + $(this).text().toUpperCase().replace('-', '_');
-                            const t = ctd2_hovertext[hovertext_id];
-                            if (!t) return null; // only null is automatically hidden
-                            return t;
-                        },
-                    });
+                    // other field not used: data.interactionTypeList, aData.interactionNumlist
+                    const geneNames = data.cnkbElementList.map(x=>x.geneName).toString()
                     createNetwork(geneNames)
                     $('#cnkbExport').click(function (e) {
                         e.preventDefault();
                         $("#interactome").val(selectedInteractome);
                         $("#selectedGenes").val(geneNames);
-                        $("#interactionLimit").val("0");
                         $("#throttle").val("");
                         $('#cnkbExport-form').submit();
                     })
@@ -439,7 +411,6 @@ export const CnkbResultView = Backbone.View.extend({
             const interactionLimit = 200;
 
             const getThrottleValue = function (geneNames) {
-
                 $.ajax({
                     url: "cnkb/interaction-throttle",
                     data: {
@@ -460,13 +431,10 @@ export const CnkbResultView = Backbone.View.extend({
                         $("#throttle-input").css('color', 'grey');
                     }
                 });
-
             };
-
 
             const createNetwork = function (geneNames) {
                 const throttle = $("#throttle-input").text();
-
                 $('#createnw_progress_indicator').show();
                 $.ajax({
                     url: "cnkb/network",
@@ -485,7 +453,6 @@ export const CnkbResultView = Backbone.View.extend({
                             return;
                         }
                         drawCNKBCytoscape(data, Encoder.htmlEncode(selectedInteractome));
-
                     } //end success
                 }); //end ajax
 
