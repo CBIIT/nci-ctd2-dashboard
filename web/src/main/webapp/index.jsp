@@ -2325,8 +2325,6 @@
                   </div>
                   <div class="col-10">
                      <h3>Cellular Network Knowledge Base</h2>
-                     <a href="#" id="cnkbExport"  target="_blank" class=clickable-popover data-content="Export all selected interactions to a SIF file."> Export </a>
-                     <br>
                      <form method="POST" action="cnkb/download" id="cnkbExport-form" style="display: none;">
                              <input type="hidden" name="interactome" id="interactome">
                              <input type="hidden" name="selectedGenes" id="selectedGenes">  
@@ -2344,14 +2342,17 @@
                     <br/><br/><br/>
                 </div>
                 <div>
-                   	 <div id="createnw_progress_indicator" align="center" style="display: none;">data is loading ......
-                         <img id="cnkb_data_progress_indicator" src="img/progress_indicator.gif" width="20" height="20" alt="Please wait ......"><br>
-                     </div>
-                     <div class="cytoscape-container" style="height:600px">
+                    <div id="createnw_progress_indicator" align="center" style="display: none;">data is loading ......
+                        <img id="cnkb_data_progress_indicator" src="img/progress_indicator.gif" width="20" height="20" alt="Please wait ......"><br>
+                    </div>
+                    <div style="padding:10px"><b>Gene cart genes:</b> <span>FOXM1, TP53</span></div>
+                    <div style="padding:10px"><b>Interactome:</b> <span>PrepPPI</span></div>
+                    <div id=interaction-viewer style="display: flex;">
+                        <div class="cytoscape-container" ">
                         <div id="cnkb_cytoscape_progress">
                             <img id="cnkb_cytoscape_progress_indicator" class="centeredImage" src="img/progress_indicator.gif" width="30" height="30" alt="Please wait ......">
                         </div>
-                        <div id="cytoscape" style="height:90%">
+                        <div id="cytoscape" style="height:600px">
                         </div>
                         <div id="cnkb-cytoscape-legend" class="well cytoscape-legend">
                             <svg  width="500" height="30" xmlns="http://www.w3.org/2000/svg" id=legend-svg>
@@ -2359,6 +2360,34 @@
                             </svg>
                             <br/>
                             <span id=network-description></span>
+                        </div>
+                        <div style="text-align: center"><button style="margin:5px;" id=cnkbExport>Export all interactions</button>
+                            <button style="margin:5px;">Export currently displayed</button></div>
+                        </div>
+                        <div style="width: 200px">
+                            <div id=network-detail-viewer style="margin:10px; padding:5px; border-style: solid; border-width:1px; height: 400px;">
+                                <h5>Network details</h5>
+                                <div>
+                                    <div><b>Gene symbol:</b> ...</div>
+                                    <div><b>Gene name:</b> ...</div>
+                                    <div><b>References:</b> ...</div>
+                                </div>
+                                <div>
+                                    <div><b>Interaction genes:</b> ...</div>
+                                    <div><b>Interaction values:</b> ...</div>
+                                </div>
+                            </div>
+                            <div id=filtering-interactions style="margin:10px; padding:5px; border-style: solid; border-width:1px">
+                                <div style="padding:5px;">Showing <span>xyz</span> out of <span>abc</span> total interactions.</div>
+                                <div style="padding:5px;">Confidence type
+                                    <select>
+                                    <option>type1</option>
+                                    <option>type2</option>
+                                    <option>type3</option>
+                                    </select>
+                                </div>
+                                <div style="padding:5px;">Show fewer/more interactions <input type="range" min="1" max="100" value="50" style="width:100%"></div>
+                            </div>
                         </div>
                      </div>
                   </div>
