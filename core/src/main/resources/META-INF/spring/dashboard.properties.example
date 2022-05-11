@@ -25,7 +25,7 @@ allowed.hosts=https://ctd2-dashboard.nci.nih.gov,https://localhost
 # this is the URL of where the downloadable data files are located
 web.data.url=https://ctd2-dashboard.nci.nih.gov/data/
 
-download.file.location=./web/src/main/webapp
+download.file.location=${CTD2_DATA_HOME}/submissions/master_export
 zip.export=true
 
 # this is to cap the number obs/results we want to show on a subject/submission page

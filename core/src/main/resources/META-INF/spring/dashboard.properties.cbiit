@@ -16,7 +16,7 @@ search.max.number.results=100
 # If you make this too high and the client will suffer a lot to load details for each observation
 list.max.observations=100
 
-download.file.location=./web/src/main/webapp
+download.file.location=${CTD2_DATA_HOME}/submissions/master_export
 zip.export=true
 
 # this is the URL for CNKB query
