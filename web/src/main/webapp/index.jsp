@@ -2368,9 +2368,9 @@
                             <div id=network-detail-viewer style="margin:10px; padding:5px; border-style: solid; border-width:1px; height: 400px;">
                                 <h5>Network details</h5>
                                 <div>
-                                    <div><b>Gene symbol:</b> ...</div>
-                                    <div><b>Gene name:</b> ...</div>
-                                    <div><b>References:</b> ...</div>
+                                    <div><b>Gene symbol:</b> <span id=gene-symbol></span></div>
+                                    <div><b>Gene name:</b> <span id=gene-name></span></div>
+                                    <div><b>References:</b> <span id=references></span></div>
                                 </div>
                                 <div>
                                     <div><b>Interaction genes:</b> ...</div>

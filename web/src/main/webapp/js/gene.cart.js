@@ -611,6 +611,19 @@ const drawCNKBCytoscape = function (data, description) {
 
             });
 
+        }).on('tap', 'node', function (event) {
+            const gene_symbol = event.target.data("id")
+            const gene_name = "gene name goes here"
+            const references = "references go here"
+            $("#gene-symbol").text(gene_symbol)
+            $("#gene-name").text(gene_name)
+            $("#references").text(references)
+        }).on('tap', 'edge', function (event) {
+            console.log("==============edge clicked=================")
+            console.log(event.target);
+            console.log(event.target.data("id"));
+            console.log(event.target.data("source"));
+            console.log(event.target.data("target"));
         });
 
 };
