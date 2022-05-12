@@ -435,11 +435,19 @@ public class CnkbController {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
 		List<Gene> genes = dashboardDao.findGenesBySymbol(geneSymbol);
-		if (genes.size() != 1) {
-			log.warn("gene symbol " + geneSymbol + " matches zero or more than one gene in database");
+		// only return human gene. Returning two genes with the same symbol, one for
+		// human and one for mouse, does not make sense.
+		Gene gene = null;
+		for (Gene g : genes) {
+			if (g.getOrganism().getTaxonomyId().equals("9606")) {
+				gene = g;
+				break;
+			}
+		}
+		if (gene == null) {
+			log.warn("gene symbol " + geneSymbol + " not found in database");
 			return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
 		}
-		Gene gene = genes.get(0);
 		Set<Xref> xrefs = gene.getXrefs();
 		String genecards = null;
 		String dave = null;
@@ -456,6 +464,7 @@ public class CnkbController {
 		String uniprot = null;
 		if (proteinByGene.size() != 1) {
 			log.warn("protein found for gene symbol " + geneSymbol + " is not unique");
+		} else {
 			uniprot = proteinByGene.get(0).getUniprotId();
 		}
 		GeneDetail geneDetail = new GeneDetail(gene.getFullName(), gene.getEntrezGeneId(), genecards, dave,
