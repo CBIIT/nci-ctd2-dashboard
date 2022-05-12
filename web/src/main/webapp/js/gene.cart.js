@@ -391,7 +391,9 @@ export const CnkbResultView = Backbone.View.extend({
                 contentType: "json",
                 success: function (data) {
                     $("#cnkb_data_progress").hide();
-                    // other field not used: data.interactionTypeList, aData.interactionNumlist
+                    // other field not used: data.interactionTypeList
+                    const total_interactions = data.cnkbElementList.map(x=>x.interactionNumlist).reduce((total, val_array) => total + val_array.reduce((acc, val) => acc + val, 0), 0)
+                    $("#total-interaction-number").text(total_interactions)
                     const geneNames = data.cnkbElementList.map(x=>x.geneName).toString()
                     $("#genecart-genes").text(geneNames);
                     $("#interactome-selected").text(selectedInteractome)
@@ -426,6 +428,7 @@ export const CnkbResultView = Backbone.View.extend({
                             showAlertMessage("The network is empty.");
                             return;
                         }
+                        $("#displayed-interaction-number").text(data.edges.length)
                         drawCNKBCytoscape(data, Encoder.htmlEncode(selectedInteractome));
                     } //end success
                 }); //end ajax
