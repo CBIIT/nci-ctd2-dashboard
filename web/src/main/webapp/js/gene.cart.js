@@ -393,6 +393,8 @@ export const CnkbResultView = Backbone.View.extend({
                     $("#cnkb_data_progress").hide();
                     // other field not used: data.interactionTypeList, aData.interactionNumlist
                     const geneNames = data.cnkbElementList.map(x=>x.geneName).toString()
+                    $("#genecart-genes").text(geneNames);
+                    $("#interactome-selected").text(selectedInteractome)
                     createNetwork(geneNames)
                     $('#cnkbExport').click(function (e) {
                         e.preventDefault();
