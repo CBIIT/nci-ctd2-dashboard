@@ -625,6 +625,13 @@ const drawCNKBCytoscape = function (data, description) {
                     $("#gene-name").text(gene_detail.geneName)
                     const template = _.template($("#gene-detail-references-tmpl").html())
                     $("#references").html(template({...gene_detail.references, gene_symbol: gene_symbol}))
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.debug(jqXHR)
+                    console.debug(textStatus)
+                    console.debug(errorThrown)
+                    $("#gene-name").text("")
+                    $("#references").html("")
                 }
             });
             $("#gene-symbol").text(gene_symbol)
