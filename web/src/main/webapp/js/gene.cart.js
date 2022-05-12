@@ -1,5 +1,3 @@
-import {ctd2_hovertext} from './ctd2.constants.js'
-
 const action_explanatory = [
     "Retrieve molecular interactions involving the selected genes from the Cellular Networks Knowledge Base (CNKB). The CNKB is a database of gene and protein interaction networks maintained at Columbia University.  It includes PREPPI, a large database of predicted and experimentally confirmed protein-protein interactions.", // CNKB
     "Send the contents of the gene cart to the external Enrichr web service for gene set enrichment analysis.  Enrichment analysis is a computational method for inferring knowledge about an input gene set by comparing it to annotated gene sets representing prior biological knowledge. Enrichment analysis checks whether an input set of genes significantly overlaps with annotated gene sets.", // Enrichr
@@ -457,6 +455,9 @@ const drawCNKBCytoscape = function (data, description) {
         $("#network-description").text(description)
         $("#legend-svg").html(svgHtml)
 
+        $("#gene-detail").hide()
+        $("#interaction-detail").hide()
+
         cytoscape({
             container: $('#cytoscape'),
             wheelSensitivity: 0.4,
@@ -613,17 +614,30 @@ const drawCNKBCytoscape = function (data, description) {
 
         }).on('tap', 'node', function (event) {
             const gene_symbol = event.target.data("id")
-            const gene_name = "gene name goes here"
-            const references = "references go here"
+            $.ajax({
+                url: "cnkb/gene-detail",
+                data: {
+                    gene_symbol: gene_symbol,
+                },
+                dataType: "json",
+                contentType: "json",
+                success: function (gene_detail) {
+                    $("#gene-name").text(gene_detail.geneName)
+                    const template = _.template($("#gene-detail-references-tmpl").html())
+                    $("#references").html(template({...gene_detail.references, gene_symbol: gene_symbol}))
+                }
+            });
             $("#gene-symbol").text(gene_symbol)
-            $("#gene-name").text(gene_name)
-            $("#references").text(references)
+            $("#interaction-detail").hide()
+            $("#gene-detail").show()
         }).on('tap', 'edge', function (event) {
             console.log("==============edge clicked=================")
             console.log(event.target);
             console.log(event.target.data("id"));
             console.log(event.target.data("source"));
             console.log(event.target.data("target"));
+            $("#gene-detail").hide()
+            $("#interaction-detail").show()
         });
 
 };

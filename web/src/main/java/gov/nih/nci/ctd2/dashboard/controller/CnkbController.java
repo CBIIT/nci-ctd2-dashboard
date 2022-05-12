@@ -3,6 +3,9 @@ package gov.nih.nci.ctd2.dashboard.controller;
 import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
@@ -27,11 +30,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletResponse;
 
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
 import gov.nih.nci.ctd2.dashboard.model.Gene;
+import gov.nih.nci.ctd2.dashboard.model.Protein;
+import gov.nih.nci.ctd2.dashboard.model.Xref;
 import gov.nih.nci.ctd2.dashboard.util.cnkb.CNKB;
 import gov.nih.nci.ctd2.dashboard.util.cnkb.CellularNetWorkElementInformation;
 import gov.nih.nci.ctd2.dashboard.util.cnkb.InteractionDetail;
@@ -47,6 +53,7 @@ import gov.nih.nci.ctd2.dashboard.util.cytoscape.CyNode;
 @Controller
 @RequestMapping("/cnkb")
 public class CnkbController {
+	private static final Log log = LogFactory.getLog(CnkbController.class);
 
 	@Autowired
 	private DashboardDao dashboardDao;
@@ -420,6 +427,44 @@ public class CnkbController {
 
 	}
 
+	@Transactional
+	@RequestMapping(value = "gene-detail", method = { RequestMethod.POST,
+			RequestMethod.GET }, headers = "Accept=application/json")
+	public ResponseEntity<String> getGeneDetail(
+			@RequestParam("gene_symbol") String geneSymbol) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "application/json; charset=utf-8");
+		List<Gene> genes = dashboardDao.findGenesBySymbol(geneSymbol);
+		if (genes.size() != 1) {
+			log.warn("gene symbol " + geneSymbol + " matches zero or more than one gene in database");
+			return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
+		}
+		Gene gene = genes.get(0);
+		Set<Xref> xrefs = gene.getXrefs();
+		String genecards = null;
+		String dave = null;
+		if (xrefs.size() > 1) {
+			Xref x = xrefs.iterator().next();
+			if (x.getDatabaseName().equals("GeneCards")) {
+				genecards = x.getDatabaseId();
+			}
+			if (x.getDatabaseName().equals("Ensembl")) {
+				dave = x.getDatabaseId();
+			}
+		}
+		List<Protein> proteinByGene = dashboardDao.findProteinByGene(gene);
+		String uniprot = null;
+		if (proteinByGene.size() != 1) {
+			log.warn("protein found for gene symbol " + geneSymbol + " is not unique");
+			uniprot = proteinByGene.get(0).getUniprotId();
+		}
+		GeneDetail geneDetail = new GeneDetail(gene.getFullName(), gene.getEntrezGeneId(), genecards, dave,
+				uniprot);
+		JSONSerializer jsonSerializer = new JSONSerializer().exclude("*.class");
+		return new ResponseEntity<String>(
+				jsonSerializer.deepSerialize(geneDetail), headers, HttpStatus.OK);
+	}
+
 	private float getDivisorValue(float maxValue, float minValue) {
 		float divisor = (float) (maxValue - minValue) / 100;
 
@@ -598,7 +643,6 @@ public class CnkbController {
 		cyNetwork.setInteractions(cyInteractions);
 
 		return cyNetwork;
-
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })

@@ -924,6 +924,14 @@
         </li>
     </script>
 
+    <script type="text/template" id="gene-detail-references-tmpl">
+        Entrez: <a href="http://www.ncbi.nlm.nih.gov/gene/{{entrez}}" target="_blank">{{entrez}} <i class="icon-share"></i></a>
+        {{genecards ? "GeneCards: <a target='_blank' href='https://www.genecards.org/cgi-bin/carddisp.pl?gene=" + genecards + "'>" + genecards + " <i class='icon-share'></i></a>" : "" }}
+        {{dave ? "Data Analysis, Visualization, and Exploration (DAVE): <a target='_blank' href='https://portal.gdc.cancer.gov/genes/" + dave + "'>" + dave + " <i class='icon-share'></i></a>" : "" }}
+        Harmonizome: <a href="https://maayanlab.cloud/Harmonizome/gene/{{gene_symbol}}" target="_blank">{{gene_symbol}}</a>
+        UniProt: <a href="https://www.uniprot.org/uniprot/{{uniprot}}" target="_blank">{{uniprot}} <i class="icon-share"></i></a>
+    </script>
+
     <script type="text/template" id="gene-tmpl">
          <div class="container common-container" id="gene-container">
              <h2>{{displayName}}</h2>
@@ -2356,7 +2364,6 @@
                         </div>
                         <div id="cnkb-cytoscape-legend" class="well cytoscape-legend">
                             <svg  width="500" height="30" xmlns="http://www.w3.org/2000/svg" id=legend-svg>
-                               {{svgHtml}}
                             </svg>
                             <br/>
                             <span id=network-description></span>
@@ -2367,12 +2374,12 @@
                         <div style="width: 200px">
                             <div id=network-detail-viewer style="margin:10px; padding:5px; border-style: solid; border-width:1px; height: 400px;">
                                 <h5>Network details</h5>
-                                <div>
+                                <div id=gene-detail>
                                     <div><b>Gene symbol:</b> <span id=gene-symbol></span></div>
                                     <div><b>Gene name:</b> <span id=gene-name></span></div>
                                     <div><b>References:</b> <span id=references></span></div>
                                 </div>
-                                <div>
+                                <div id=interaction-detail>
                                     <div><b>Interaction genes:</b> ...</div>
                                     <div><b>Interaction values:</b> ...</div>
                                 </div>
