@@ -630,6 +630,7 @@ const drawCNKBCytoscape = function (data, description) {
                     $("#gene-name").text(gene_detail.geneName)
                     const template = _.template($("#gene-detail-references-tmpl").html())
                     $("#references").html(template({...gene_detail.references, gene_symbol: gene_symbol}))
+                    $("#gene-symbol").html(gene_symbol + " (<a href='https://ctd2-dashboard.nci.nih.gov/dashboard/#gene/h/" + gene_symbol + "'>dashboard entry</a>)")
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.debug(jqXHR)
@@ -637,9 +638,9 @@ const drawCNKBCytoscape = function (data, description) {
                     console.debug(errorThrown)
                     $("#gene-name").text("")
                     $("#references").html("")
+                    $("#gene-symbol").text(gene_symbol)
                 }
             });
-            $("#gene-symbol").text(gene_symbol)
             $("#interaction-detail").hide()
             $("#gene-detail").show()
         }).on('tap', 'edge', function (event) {
@@ -651,5 +652,4 @@ const drawCNKBCytoscape = function (data, description) {
             $("#gene-detail").hide()
             $("#interaction-detail").show()
         });
-
 };
