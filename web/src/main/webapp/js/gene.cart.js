@@ -644,11 +644,11 @@ const drawCNKBCytoscape = function (data, description) {
             $("#interaction-detail").hide()
             $("#gene-detail").show()
         }).on('tap', 'edge', function (event) {
-            console.log("==============edge clicked=================")
-            console.log(event.target);
+            const edge_data = event.target;
+            console.debug(edge_data)
             console.log(event.target.data("id"));
-            console.log(event.target.data("source"));
-            console.log(event.target.data("target"));
+            $("#interaction-source").text(edge_data.data("source"))
+            $("#interaction-target").text(edge_data.data("target"))
             $("#gene-detail").hide()
             $("#interaction-detail").show()
         });
