@@ -1,7 +1,7 @@
 package gov.nih.nci.ctd2.dashboard.controller;
 
 import flexjson.JSONSerializer;
-import gov.nih.nci.ctd2.dashboard.util.cytoscape.CyEdge;
+import gov.nih.nci.ctd2.dashboard.util.cytoscape.Edge;
 import gov.nih.nci.ctd2.dashboard.util.cytoscape.CyElement;
 import gov.nih.nci.ctd2.dashboard.util.cytoscape.CyNetwork;
 import gov.nih.nci.ctd2.dashboard.util.cytoscape.CyNode;
@@ -62,7 +62,7 @@ public class SifProxyController {
                     String source = tokens[0].trim();
                     String target = tokens[2].trim();
 
-                    CyEdge cyEdge = new CyEdge();
+                    Edge cyEdge = new Edge();
                     cyEdge.setProperty(CyElement.ID, source + tokens[1].trim() + target);
                     cyEdge.setProperty(CyElement.SOURCE, source);
                     cyEdge.setProperty(CyElement.TARGET, target);

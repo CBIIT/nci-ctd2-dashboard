@@ -5,7 +5,7 @@ import java.util.List;
 
 public class CyNetwork {
     List<CyNode> nodes = new ArrayList<CyNode>();
-    List<CyEdge> edges = new ArrayList<CyEdge>();
+    List<Edge> edges = new ArrayList<Edge>();
     List<CyInteraction> interactions =  new ArrayList<CyInteraction>();
 
     public List<CyNode> getNodes() {
@@ -16,11 +16,11 @@ public class CyNetwork {
         this.nodes = nodes;
     }
 
-    public List<CyEdge> getEdges() {
+    public List<Edge> getEdges() {
         return edges;
     }
 
-    public void setEdges(List<CyEdge> edges) {
+    public void setEdges(List<Edge> edges) {
         this.edges = edges;
     }
     
@@ -32,7 +32,7 @@ public class CyNetwork {
         this.interactions = interactions;
     }
     
-    public boolean addEdge(CyEdge edge) {
+    public boolean addEdge(Edge edge) {
         return getEdges().add(edge);
     }
 

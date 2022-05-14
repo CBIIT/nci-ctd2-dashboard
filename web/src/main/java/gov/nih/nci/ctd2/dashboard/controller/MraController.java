@@ -2,7 +2,7 @@ package gov.nih.nci.ctd2.dashboard.controller;
 
 import flexjson.JSONSerializer;
 
-import gov.nih.nci.ctd2.dashboard.util.cytoscape.CyEdge;
+import gov.nih.nci.ctd2.dashboard.util.cytoscape.Edge;
 import gov.nih.nci.ctd2.dashboard.util.cytoscape.CyElement;
 import gov.nih.nci.ctd2.dashboard.util.cytoscape.CyNetwork;
 import gov.nih.nci.ctd2.dashboard.util.cytoscape.CyNode;
@@ -208,41 +208,41 @@ public class MraController {
 		Object[] edgeNodeList = getEdgeNodeList(scanner, filterBy, nodeNumLimit, throttle);
 		CyNetwork cyNetwork = new CyNetwork();
 		@SuppressWarnings("unchecked")
-		List<CyEdge> edgeList = (List<CyEdge>) edgeNodeList[0];
+		List<Edge> edgeList = (List<Edge>) edgeNodeList[0];
 		@SuppressWarnings("unchecked")
 		Map<String, CyNode> nodeList = (Map<String, CyNode>) edgeNodeList[1];
 
 		if (edgeList == null || edgeList.size() == 0)
 			return null;
 		// sort genes by value
-		Collections.sort(edgeList, new Comparator<CyEdge>() {
-			public int compare(CyEdge e1, CyEdge e2) {
-				return ((Float) e1.getData().get(CyElement.WEIGHT))
-						.compareTo((Float) e2.getData().get(CyElement.WEIGHT));
+		Collections.sort(edgeList, new Comparator<Edge>() {
+			public int compare(Edge e1, Edge e2) {
+				return ((Float) e1.getProperty(Edge.WEIGHT))
+						.compareTo((Float) e2.getProperty(Edge.WEIGHT));
 			}
 		});
 
 		float minValue = getMinValue(edgeList, nodeNumLimit);
-		float maxValue = (Float) edgeList.get(edgeList.size() - 1).getData()
-				.get(CyElement.WEIGHT);
+		float maxValue = (Float) edgeList.get(edgeList.size() - 1)
+				.getProperty(Edge.WEIGHT);
 		float divisor = getDivisorValue(maxValue, minValue);
 		HashSet<String> nodeNames = new HashSet<String>();
 		for (int i = 1; i <= edgeList.size(); i++) {
 			if (nodeNames.size() >= nodeNumLimit)
 				break;
 			int index = edgeList.size() - i;
-			float confValue = Float.valueOf(edgeList.get(index).getData()
-					.get(CyElement.WEIGHT).toString());
+			float confValue = Float.valueOf(edgeList.get(index)
+					.getProperty(Edge.WEIGHT).toString());
 			if (divisor != 0)
-				edgeList.get(index).setProperty(CyElement.WEIGHT,
+				edgeList.get(index).setProperty(Edge.WEIGHT,
 						(int) ((confValue - minValue) / divisor));
 			else
-				edgeList.get(index).setProperty(CyElement.WEIGHT, 50);
+				edgeList.get(index).setProperty(Edge.WEIGHT, 50);
 			cyNetwork.addEdge(edgeList.get(index));
-			String sourceId = (String) edgeList.get(index).getData()
-					.get(CyElement.SOURCE);
-			String targetId = (String) edgeList.get(index).getData()
-					.get(CyElement.TARGET);
+			String sourceId = (String) edgeList.get(index)
+					.getProperty(Edge.SOURCE);
+			String targetId = (String) edgeList.get(index)
+					.getProperty(Edge.TARGET);
 			if (!nodeNames.contains(sourceId)) {
 				cyNetwork.addNode(nodeList.get(sourceId));
 				nodeNames.add(sourceId);
@@ -264,13 +264,13 @@ public class MraController {
 		Object[] edgeNodeList = getEdgeNodeList(scanner, filterBy, nodeNumLimit, null);
 
 		@SuppressWarnings("unchecked")
-		List<CyEdge> edgeList = (List<CyEdge>) edgeNodeList[0];
+		List<Edge> edgeList = (List<Edge>) edgeNodeList[0];
 
 		// sort genes by value
-		Collections.sort(edgeList, new Comparator<CyEdge>() {
-			public int compare(CyEdge e1, CyEdge e2) {
-				return ((Float) e1.getData().get(CyElement.WEIGHT))
-						.compareTo((Float) e2.getData().get(CyElement.WEIGHT));
+		Collections.sort(edgeList, new Comparator<Edge>() {
+			public int compare(Edge e1, Edge e2) {
+				return ((Float) e1.getProperty(Edge.WEIGHT))
+						.compareTo((Float) e2.getProperty(Edge.WEIGHT));
 			}
 		});
 
@@ -284,7 +284,7 @@ public class MraController {
 			int  nodeNumLimit, String throttle) {
 		double absMaxDeScore = 0;
 		Object[] edgeNodeList = new Object[2];
-		List<CyEdge> edgeList = new ArrayList<CyEdge>();
+		List<Edge> edgeList = new ArrayList<Edge>();
 		Map<String, CyNode> nodeList = new HashMap<String, CyNode>();
 
 		List<String> filters = new ArrayList<String>();
@@ -346,7 +346,7 @@ public class MraController {
 					float confValue = Float.valueOf(tokens[3]);
 					if (confValue < throttleVal)
 						continue;
-					CyEdge cyEdge = new CyEdge();
+					Edge cyEdge = new Edge();
 					CyNode target = new CyNode();
 
 					assert tokens.length == 7;
@@ -381,23 +381,23 @@ public class MraController {
 
 	}
 
-	private float getMinValue(List<CyEdge> edgeList, int nodeNumLimit) {
+	private float getMinValue(List<Edge> edgeList, int nodeNumLimit) {
 		HashSet<String> nodeNames = new HashSet<String>();
 		int index = 0;
 		for (int i = 1; i <= edgeList.size(); i++) {
 			if (nodeNames.size() > nodeNumLimit)
 				break;
 			index = edgeList.size() - i;
-			String sourceId = (String) edgeList.get(index).getData()
-					.get(CyElement.SOURCE);
-			String targetId = (String) edgeList.get(index).getData()
-					.get(CyElement.TARGET);
+			String sourceId = (String) edgeList.get(index)
+					.getProperty(Edge.SOURCE);
+			String targetId = (String) edgeList.get(index)
+					.getProperty(Edge.TARGET);
 
 			nodeNames.add(sourceId);
 			nodeNames.add(targetId);
 
 		}
-		return Float.valueOf(edgeList.get(index).getData().get(CyElement.WEIGHT)
+		return Float.valueOf(edgeList.get(index).getProperty(Edge.WEIGHT)
 				.toString());
 	}
 

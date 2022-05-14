@@ -647,6 +647,8 @@ const drawCNKBCytoscape = function (data, description) {
             const edge_data = event.target;
             console.debug(edge_data)
             console.log(event.target.data("id"));
+            const weight =edge_data.data("weight")
+            console.debug(`weight=${weight}`)
             $("#interaction-source").text(edge_data.data("source"))
             $("#interaction-target").text(edge_data.data("target"))
             $("#gene-detail").hide()

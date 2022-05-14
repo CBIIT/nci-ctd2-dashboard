@@ -44,7 +44,7 @@ import gov.nih.nci.ctd2.dashboard.util.cnkb.InteractionDetail;
 import gov.nih.nci.ctd2.dashboard.util.cnkb.InteractionParticipant;
 import gov.nih.nci.ctd2.dashboard.util.cnkb.QueryResult;
 import gov.nih.nci.ctd2.dashboard.util.cnkb.UnAuthenticatedException;
-import gov.nih.nci.ctd2.dashboard.util.cytoscape.CyEdge;
+import gov.nih.nci.ctd2.dashboard.util.cytoscape.Edge;
 import gov.nih.nci.ctd2.dashboard.util.cytoscape.CyElement;
 import gov.nih.nci.ctd2.dashboard.util.cytoscape.CyInteraction;
 import gov.nih.nci.ctd2.dashboard.util.cytoscape.CyNetwork;
@@ -289,7 +289,7 @@ public class CnkbController {
 			List<InteractionDetail> interactionDetails = null;
 			List<String> selectedGenesList = convertStringToList(selectedGenes);
 
-			List<CyEdge> edgeList = new ArrayList<CyEdge>();
+			List<Edge> edgeList = new ArrayList<Edge>();
 			Short confidenceType = null;
 			if (selectedGenesList != null && selectedGenesList.size() != 0) {
 				String latestVersion = interactionsConnection.getLatestVersionNumber(interactome);
@@ -302,7 +302,7 @@ public class CnkbController {
 								&& interactionDetails.size() > 0)
 							confidenceType = interactionDetails.get(0)
 									.getConfidenceTypes().get(0);
-						getCyEdgeList(interactionDetails, confidenceType, edgeList);
+						getEdgeList(interactionDetails, confidenceType, edgeList);
 					}
 				}
 			}
@@ -550,10 +550,8 @@ public class CnkbController {
 		return list;
 	}
 
-	private void getCyEdgeList(List<InteractionDetail> interactionDetails,
-			Short confidenceType, List<CyEdge> edgeList) {
-		CyNode source = null;
-		CyNode target = null;
+	private void getEdgeList(List<InteractionDetail> interactionDetails,
+			Short confidenceType, final List<Edge> edgeList) {
 
 		for (InteractionDetail interactionDetail : interactionDetails) {
 			if (!interactionDetail.getConfidenceTypes().contains(confidenceType)) {
@@ -563,42 +561,41 @@ public class CnkbController {
 					.getParticipantList();
 			String interactionType = interactionDetail.getInteractionType();
 			for (int i = 0; i < participants.size(); i++) {
-				source = new CyNode();
+				CyNode source = new CyNode();
 				String sName = participants.get(i).getGeneName();
 				source.setProperty(CyElement.ID, sName);
 				for (int j = i + 1; j < participants.size(); j++) {
-					target = new CyNode();
+					CyNode target = new CyNode();
 					String tName = participants.get(j).getGeneName();
 					target.setProperty(CyElement.ID, tName);
-					CyEdge cyEdge = new CyEdge();
-					cyEdge.setProperty(CyElement.ID, sName + "."
+					Edge cyEdge = new Edge();
+					cyEdge.setProperty(Edge.ID, sName + "."
 							+ getInteractionTypeMap().get(interactionType)
 							+ "." + tName);
-					cyEdge.setProperty(CyElement.SOURCE, sName);
-					cyEdge.setProperty(CyElement.TARGET, tName);
-					cyEdge.setProperty(CyElement.WEIGHT, interactionDetail
+					cyEdge.setProperty(Edge.SOURCE, sName);
+					cyEdge.setProperty(Edge.TARGET, tName);
+					cyEdge.setProperty(Edge.WEIGHT, interactionDetail
 							.getConfidenceValue(confidenceType));
-					cyEdge.setProperty(CyElement.COLOR,
+					cyEdge.setProperty(Edge.COLOR,
 							colorMap.get(interactionType));
 					edgeList.add(cyEdge);
-
 				}
 			}
 		}
 	}
 
-	private CyNetwork convertToCyNetwork(List<CyEdge> edgeList,
+	private CyNetwork convertToCyNetwork(List<Edge> edgeList,
 			int interactionLimit, List<String> selectedGenesList) {
 
 		CyNetwork cyNetwork = new CyNetwork();
-		Collections.sort(edgeList, new Comparator<CyEdge>() {
-			public int compare(CyEdge e1, CyEdge e2) {
-				return ((Float) e2.getData().get(CyElement.WEIGHT))
-						.compareTo((Float) e1.getData().get(CyElement.WEIGHT));
+		Collections.sort(edgeList, new Comparator<Edge>() {
+			public int compare(Edge e1, Edge e2) {
+				return ((Float) e2.getProperty(Edge.WEIGHT))
+						.compareTo((Float) e1.getProperty(Edge.WEIGHT));
 			}
 		});
 
-		List<CyEdge> cyEdgeList = new ArrayList<CyEdge>();
+		List<Edge> cyEdgeList = new ArrayList<Edge>();
 		HashSet<String> nodeNames = new HashSet<String>();
 		HashSet<String> interactionTypes = new HashSet<String>();
 
@@ -606,27 +603,27 @@ public class CnkbController {
 			if (i >= interactionLimit)
 				break;
 			cyEdgeList.add(edgeList.get(i));
-			nodeNames.add(edgeList.get(i).getData().get(CyElement.SOURCE)
+			nodeNames.add(edgeList.get(i).getProperty(Edge.SOURCE)
 					.toString());
-			nodeNames.add(edgeList.get(i).getData().get(CyElement.TARGET)
+			nodeNames.add(edgeList.get(i).getProperty(Edge.TARGET)
 					.toString());
-			String interactionType = edgeList.get(i).getData()
-					.get(CyElement.ID).toString().split("\\.")[1].trim();
+			String interactionType = edgeList.get(i)
+					.getProperty(Edge.ID).toString().split("\\.")[1].trim();
 			interactionTypes.add(getInteractionTypeMap().get(interactionType));
 		}
 
 		float minValue = (Float) cyEdgeList.get(cyEdgeList.size() - 1)
-				.getData().get(CyElement.WEIGHT);
-		float maxValue = (Float) cyEdgeList.get(0).getData()
-				.get(CyElement.WEIGHT);
+				.getProperty(Edge.WEIGHT);
+		float maxValue = (Float) cyEdgeList.get(0)
+				.getProperty(Edge.WEIGHT);
 		float divisor = getDivisorValue(maxValue, minValue);
 
 		for (int i = 0; i < cyEdgeList.size(); i++) {
 
-			float confValue = Float.valueOf(edgeList.get(i).getData()
-					.get(CyElement.WEIGHT).toString());
+			float confValue = Float.valueOf(edgeList.get(i)
+					.getProperty(Edge.WEIGHT).toString());
 			if (divisor != 0)
-				edgeList.get(i).setProperty(CyElement.WEIGHT,
+				edgeList.get(i).setProperty(Edge.WEIGHT,
 						(int) ((confValue - minValue) / divisor));
 			else
 				edgeList.get(i).setProperty(CyElement.WEIGHT, 50);
