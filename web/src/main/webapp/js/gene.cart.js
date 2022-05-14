@@ -649,9 +649,29 @@ const drawCNKBCytoscape = function (data, description) {
             console.log(event.target.data("id"));
             const weight =edge_data.data("weight")
             console.debug(`weight=${weight}`)
-            $("#interaction-source").text(edge_data.data("source"))
-            $("#interaction-target").text(edge_data.data("target"))
+            gene_and_link(edge_data.data("source"), $("#interaction-source"))
+            gene_and_link(edge_data.data("target"), $("#interaction-target"))
             $("#gene-detail").hide()
             $("#interaction-detail").show()
         });
 };
+
+const gene_and_link = function(gene_symbol, html_element) {
+    $.ajax({
+        url: "cnkb/gene-detail",
+        data: {
+            gene_symbol: gene_symbol,
+        },
+        dataType: "json",
+        contentType: "json",
+        success: function (gene_detail) {
+            html_element.html(gene_symbol + " (<a href='https://ctd2-dashboard.nci.nih.gov/dashboard/#gene/h/" + gene_symbol + "'>dashboard entry</a>)")
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.debug(jqXHR)
+            console.debug(textStatus)
+            console.debug(errorThrown)
+            html_element.text(gene_symbol)
+        }
+    })
+}
