@@ -44,11 +44,9 @@ import gov.nih.nci.ctd2.dashboard.util.cnkb.InteractionDetail;
 import gov.nih.nci.ctd2.dashboard.util.cnkb.InteractionParticipant;
 import gov.nih.nci.ctd2.dashboard.util.cnkb.QueryResult;
 import gov.nih.nci.ctd2.dashboard.util.cnkb.UnAuthenticatedException;
-import gov.nih.nci.ctd2.dashboard.util.cytoscape.Edge;
-import gov.nih.nci.ctd2.dashboard.util.cytoscape.CyElement;
 import gov.nih.nci.ctd2.dashboard.util.cytoscape.CyInteraction;
 import gov.nih.nci.ctd2.dashboard.util.cytoscape.CyNetwork;
-import gov.nih.nci.ctd2.dashboard.util.cytoscape.CyNode;
+import gov.nih.nci.ctd2.dashboard.util.cytoscape.Element;
 
 @Controller
 @RequestMapping("/cnkb")
@@ -289,7 +287,7 @@ public class CnkbController {
 			List<InteractionDetail> interactionDetails = null;
 			List<String> selectedGenesList = convertStringToList(selectedGenes);
 
-			List<Edge> edgeList = new ArrayList<Edge>();
+			List<Element> edgeList = new ArrayList<Element>();
 			Short confidenceType = null;
 			if (selectedGenesList != null && selectedGenesList.size() != 0) {
 				String latestVersion = interactionsConnection.getLatestVersionNumber(interactome);
@@ -551,7 +549,7 @@ public class CnkbController {
 	}
 
 	private void getEdgeList(List<InteractionDetail> interactionDetails,
-			Short confidenceType, final List<Edge> edgeList) {
+			Short confidenceType, final List<Element> edgeList) {
 
 		for (InteractionDetail interactionDetail : interactionDetails) {
 			if (!interactionDetail.getConfidenceTypes().contains(confidenceType)) {
@@ -561,41 +559,35 @@ public class CnkbController {
 					.getParticipantList();
 			String interactionType = interactionDetail.getInteractionType();
 			for (int i = 0; i < participants.size(); i++) {
-				CyNode source = new CyNode();
 				String sName = participants.get(i).getGeneName();
-				source.setProperty(CyElement.ID, sName);
+				Element source = Element.createNode(sName);
 				for (int j = i + 1; j < participants.size(); j++) {
-					CyNode target = new CyNode();
 					String tName = participants.get(j).getGeneName();
-					target.setProperty(CyElement.ID, tName);
-					Edge cyEdge = new Edge();
-					cyEdge.setProperty(Edge.ID, sName + "."
-							+ getInteractionTypeMap().get(interactionType)
-							+ "." + tName);
-					cyEdge.setProperty(Edge.SOURCE, sName);
-					cyEdge.setProperty(Edge.TARGET, tName);
-					cyEdge.setProperty(Edge.WEIGHT, interactionDetail
-							.getConfidenceValue(confidenceType));
-					cyEdge.setProperty(Edge.COLOR,
-							colorMap.get(interactionType));
+					Element target = Element.createNode(tName);
+					Element cyEdge = Element.createEdge(
+						sName + "." + getInteractionTypeMap().get(interactionType)	+ "." + tName,
+						sName,
+						tName);
+					cyEdge.setProperty(Element.WEIGHT, interactionDetail.getConfidenceValue(confidenceType));
+					cyEdge.setProperty(Element.COLOR, colorMap.get(interactionType));
 					edgeList.add(cyEdge);
 				}
 			}
 		}
 	}
 
-	private CyNetwork convertToCyNetwork(List<Edge> edgeList,
+	private CyNetwork convertToCyNetwork(List<Element> edgeList,
 			int interactionLimit, List<String> selectedGenesList) {
 
 		CyNetwork cyNetwork = new CyNetwork();
-		Collections.sort(edgeList, new Comparator<Edge>() {
-			public int compare(Edge e1, Edge e2) {
-				return ((Float) e2.getProperty(Edge.WEIGHT))
-						.compareTo((Float) e1.getProperty(Edge.WEIGHT));
+		Collections.sort(edgeList, new Comparator<Element>() {
+			public int compare(Element e1, Element e2) {
+				return ((Float) e2.getProperty(Element.WEIGHT))
+						.compareTo((Float) e1.getProperty(Element.WEIGHT));
 			}
 		});
 
-		List<Edge> cyEdgeList = new ArrayList<Edge>();
+		List<Element> cyEdgeList = new ArrayList<Element>();
 		HashSet<String> nodeNames = new HashSet<String>();
 		HashSet<String> interactionTypes = new HashSet<String>();
 
@@ -603,41 +595,40 @@ public class CnkbController {
 			if (i >= interactionLimit)
 				break;
 			cyEdgeList.add(edgeList.get(i));
-			nodeNames.add(edgeList.get(i).getProperty(Edge.SOURCE)
+			nodeNames.add(edgeList.get(i).getProperty(Element.SOURCE)
 					.toString());
-			nodeNames.add(edgeList.get(i).getProperty(Edge.TARGET)
+			nodeNames.add(edgeList.get(i).getProperty(Element.TARGET)
 					.toString());
 			String interactionType = edgeList.get(i)
-					.getProperty(Edge.ID).toString().split("\\.")[1].trim();
+					.getProperty(Element.ID).toString().split("\\.")[1].trim();
 			interactionTypes.add(getInteractionTypeMap().get(interactionType));
 		}
 
 		float minValue = (Float) cyEdgeList.get(cyEdgeList.size() - 1)
-				.getProperty(Edge.WEIGHT);
+				.getProperty(Element.WEIGHT);
 		float maxValue = (Float) cyEdgeList.get(0)
-				.getProperty(Edge.WEIGHT);
+				.getProperty(Element.WEIGHT);
 		float divisor = getDivisorValue(maxValue, minValue);
 
 		for (int i = 0; i < cyEdgeList.size(); i++) {
 
 			float confValue = Float.valueOf(edgeList.get(i)
-					.getProperty(Edge.WEIGHT).toString());
+					.getProperty(Element.WEIGHT).toString());
 			if (divisor != 0)
-				edgeList.get(i).setProperty(Edge.WEIGHT,
+				edgeList.get(i).setProperty(Element.WEIGHT,
 						(int) ((confValue - minValue) / divisor));
 			else
-				edgeList.get(i).setProperty(CyElement.WEIGHT, 50);
+				edgeList.get(i).setProperty(Element.WEIGHT, 50);
 			cyNetwork.addEdge(edgeList.get(i));
 
 		}
 
 		for (String nodeName : nodeNames) {
-			CyNode cyNode = new CyNode();
-			cyNode.setProperty(CyElement.ID, nodeName);
+			Element cyNode = Element.createNode(nodeName);
 			if (selectedGenesList.contains(nodeName))
-				cyNode.setProperty(CyElement.COLOR, "yellow");
+				cyNode.setProperty(Element.COLOR, "yellow");
 			else
-				cyNode.setProperty(CyElement.COLOR, "#DDD");
+				cyNode.setProperty(Element.COLOR, "#DDD");
 			cyNetwork.addNode(cyNode);
 		}
 

@@ -2,10 +2,8 @@ package gov.nih.nci.ctd2.dashboard.controller;
 
 import flexjson.JSONSerializer;
 
-import gov.nih.nci.ctd2.dashboard.util.cytoscape.Edge;
-import gov.nih.nci.ctd2.dashboard.util.cytoscape.CyElement;
 import gov.nih.nci.ctd2.dashboard.util.cytoscape.CyNetwork;
-import gov.nih.nci.ctd2.dashboard.util.cytoscape.CyNode;
+import gov.nih.nci.ctd2.dashboard.util.cytoscape.Element;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
@@ -208,23 +206,23 @@ public class MraController {
 		Object[] edgeNodeList = getEdgeNodeList(scanner, filterBy, nodeNumLimit, throttle);
 		CyNetwork cyNetwork = new CyNetwork();
 		@SuppressWarnings("unchecked")
-		List<Edge> edgeList = (List<Edge>) edgeNodeList[0];
+		List<Element> edgeList = (List<Element>) edgeNodeList[0];
 		@SuppressWarnings("unchecked")
-		Map<String, CyNode> nodeList = (Map<String, CyNode>) edgeNodeList[1];
+		Map<String, Element> nodeList = (Map<String, Element>) edgeNodeList[1];
 
 		if (edgeList == null || edgeList.size() == 0)
 			return null;
 		// sort genes by value
-		Collections.sort(edgeList, new Comparator<Edge>() {
-			public int compare(Edge e1, Edge e2) {
-				return ((Float) e1.getProperty(Edge.WEIGHT))
-						.compareTo((Float) e2.getProperty(Edge.WEIGHT));
+		Collections.sort(edgeList, new Comparator<Element>() {
+			public int compare(Element e1, Element e2) {
+				return ((Float) e1.getProperty(Element.WEIGHT))
+						.compareTo((Float) e2.getProperty(Element.WEIGHT));
 			}
 		});
 
 		float minValue = getMinValue(edgeList, nodeNumLimit);
 		float maxValue = (Float) edgeList.get(edgeList.size() - 1)
-				.getProperty(Edge.WEIGHT);
+				.getProperty(Element.WEIGHT);
 		float divisor = getDivisorValue(maxValue, minValue);
 		HashSet<String> nodeNames = new HashSet<String>();
 		for (int i = 1; i <= edgeList.size(); i++) {
@@ -232,17 +230,17 @@ public class MraController {
 				break;
 			int index = edgeList.size() - i;
 			float confValue = Float.valueOf(edgeList.get(index)
-					.getProperty(Edge.WEIGHT).toString());
+					.getProperty(Element.WEIGHT).toString());
 			if (divisor != 0)
-				edgeList.get(index).setProperty(Edge.WEIGHT,
+				edgeList.get(index).setProperty(Element.WEIGHT,
 						(int) ((confValue - minValue) / divisor));
 			else
-				edgeList.get(index).setProperty(Edge.WEIGHT, 50);
+				edgeList.get(index).setProperty(Element.WEIGHT, 50);
 			cyNetwork.addEdge(edgeList.get(index));
 			String sourceId = (String) edgeList.get(index)
-					.getProperty(Edge.SOURCE);
+					.getProperty(Element.SOURCE);
 			String targetId = (String) edgeList.get(index)
-					.getProperty(Edge.TARGET);
+					.getProperty(Element.TARGET);
 			if (!nodeNames.contains(sourceId)) {
 				cyNetwork.addNode(nodeList.get(sourceId));
 				nodeNames.add(sourceId);
@@ -255,7 +253,6 @@ public class MraController {
 		}
 
 		return cyNetwork;
-
 	}
 
 	private Float getThrottleValue(Scanner scanner, String filterBy, 
@@ -264,13 +261,13 @@ public class MraController {
 		Object[] edgeNodeList = getEdgeNodeList(scanner, filterBy, nodeNumLimit, null);
 
 		@SuppressWarnings("unchecked")
-		List<Edge> edgeList = (List<Edge>) edgeNodeList[0];
+		List<Element> edgeList = (List<Element>) edgeNodeList[0];
 
 		// sort genes by value
-		Collections.sort(edgeList, new Comparator<Edge>() {
-			public int compare(Edge e1, Edge e2) {
-				return ((Float) e1.getProperty(Edge.WEIGHT))
-						.compareTo((Float) e2.getProperty(Edge.WEIGHT));
+		Collections.sort(edgeList, new Comparator<Element>() {
+			public int compare(Element e1, Element e2) {
+				return ((Float) e1.getProperty(Element.WEIGHT))
+						.compareTo((Float) e2.getProperty(Element.WEIGHT));
 			}
 		});
 
@@ -284,8 +281,8 @@ public class MraController {
 			int  nodeNumLimit, String throttle) {
 		double absMaxDeScore = 0;
 		Object[] edgeNodeList = new Object[2];
-		List<Edge> edgeList = new ArrayList<Edge>();
-		Map<String, CyNode> nodeList = new HashMap<String, CyNode>();
+		List<Element> edgeList = new ArrayList<Element>();
+		Map<String, Element> nodeList = new HashMap<String, Element>();
 
 		List<String> filters = new ArrayList<String>();
 		if (filterBy != null && !filterBy.trim().equals("")) {
@@ -298,8 +295,7 @@ public class MraController {
 		if (throttle != null && throttle.trim().length() > 0)
 			throttleVal = Float.valueOf(throttle);
 
-		CyNode source = null;
-	 
+		Element source = null;
 
 		while (scanner.hasNextLine()) {
 			String line = scanner.nextLine();
@@ -312,7 +308,7 @@ public class MraController {
 			if (line.contains("^MRA_ENTREZ_ID")) {
 				String entrezId = getStringValue(line);
 				if (filters.contains(entrezId)) {
-					source = new CyNode();
+					source = new Element();
 				} else
 					source = null;
 			}
@@ -321,22 +317,22 @@ public class MraController {
 
 			if (line.contains("!mra_gene_symbol")) {
 				String geneSymbol = getStringValue(line);
-				source.setProperty(CyElement.ID, geneSymbol);
+				source.setProperty(Element.ID, geneSymbol);
 			} else if (line.contains("!mra_gene_type")) {
-				source.setProperty(CyElement.SHAPE,
+				source.setProperty(Element.SHAPE,
 						shapeMap.get(getStringValue(line)));
 			} else if (line.contains("!mra_de")
 					&& !line.contains("!mra_de_rank")) {
 				if (absMaxDeScore != 0) {
 
-					source.setProperty(CyElement.COLOR,
+					source.setProperty(Element.COLOR,
 							calculateColor(absMaxDeScore, getDoubleValue(line)));
 
 				}
 			} else if (line.contains("!target_table_begin")) {
 				line = scanner.nextLine();// skip header
 				// cyNetwork.addNode(source);
-				String sourceId = (String) source.getData().get(CyElement.ID);
+				String sourceId = (String) source.getProperty(Element.ID);
 				nodeList.put(sourceId, source);
 				while (scanner.hasNextLine()) {
 					line = scanner.nextLine();
@@ -346,31 +342,28 @@ public class MraController {
 					float confValue = Float.valueOf(tokens[3]);
 					if (confValue < throttleVal)
 						continue;
-					Edge cyEdge = new Edge();
-					CyNode target = new CyNode();
+					Element cyEdge = new Element();
+					Element target = new Element();
 
 					assert tokens.length == 7;
 
-					cyEdge.setProperty(CyElement.ID, sourceId + "." + tokens[1]);
-					cyEdge.setProperty(CyElement.SOURCE, sourceId);
-					cyEdge.setProperty(CyElement.TARGET, tokens[1]);
-					cyEdge.setProperty(CyElement.WEIGHT, confValue);
+					cyEdge.setProperty(Element.ID, sourceId + "." + tokens[1]);
+					cyEdge.setProperty(Element.SOURCE, sourceId);
+					cyEdge.setProperty(Element.TARGET, tokens[1]);
+					cyEdge.setProperty(Element.WEIGHT, confValue);
 					// cyNetwork.addEdge(cyEdge);
 					edgeList.add(cyEdge);
 					if (!nodeList.keySet().contains(tokens[1])) {
-						target.setProperty(CyElement.ID, tokens[1]);
-						target.setProperty(CyElement.SHAPE,
+						target.setProperty(Element.ID, tokens[1]);
+						target.setProperty(Element.SHAPE,
 								shapeMap.get(tokens[2]));
 						target.setProperty(
-								CyElement.COLOR,
+								Element.COLOR,
 								calculateColor(absMaxDeScore, Double.valueOf(
 										tokens[4])));
 						nodeList.put(tokens[1], target);
-
 					}
-
 				}
-
 			} // end !target_table_begin
 
 		}// end while
@@ -381,7 +374,7 @@ public class MraController {
 
 	}
 
-	private float getMinValue(List<Edge> edgeList, int nodeNumLimit) {
+	private float getMinValue(List<Element> edgeList, int nodeNumLimit) {
 		HashSet<String> nodeNames = new HashSet<String>();
 		int index = 0;
 		for (int i = 1; i <= edgeList.size(); i++) {
@@ -389,15 +382,15 @@ public class MraController {
 				break;
 			index = edgeList.size() - i;
 			String sourceId = (String) edgeList.get(index)
-					.getProperty(Edge.SOURCE);
+					.getProperty(Element.SOURCE);
 			String targetId = (String) edgeList.get(index)
-					.getProperty(Edge.TARGET);
+					.getProperty(Element.TARGET);
 
 			nodeNames.add(sourceId);
 			nodeNames.add(targetId);
 
 		}
-		return Float.valueOf(edgeList.get(index).getProperty(Edge.WEIGHT)
+		return Float.valueOf(edgeList.get(index).getProperty(Element.WEIGHT)
 				.toString());
 	}
 

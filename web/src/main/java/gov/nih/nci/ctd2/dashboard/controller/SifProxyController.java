@@ -1,10 +1,8 @@
 package gov.nih.nci.ctd2.dashboard.controller;
 
 import flexjson.JSONSerializer;
-import gov.nih.nci.ctd2.dashboard.util.cytoscape.Edge;
-import gov.nih.nci.ctd2.dashboard.util.cytoscape.CyElement;
 import gov.nih.nci.ctd2.dashboard.util.cytoscape.CyNetwork;
-import gov.nih.nci.ctd2.dashboard.util.cytoscape.CyNode;
+import gov.nih.nci.ctd2.dashboard.util.cytoscape.Element;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
@@ -62,10 +60,7 @@ public class SifProxyController {
                     String source = tokens[0].trim();
                     String target = tokens[2].trim();
 
-                    Edge cyEdge = new Edge();
-                    cyEdge.setProperty(CyElement.ID, source + tokens[1].trim() + target);
-                    cyEdge.setProperty(CyElement.SOURCE, source);
-                    cyEdge.setProperty(CyElement.TARGET, target);
+                    Element cyEdge = Element.createEdge(source + tokens[1].trim() + target, source, target);
                     cyNetwork.addEdge(cyEdge);
 
                     nodeNames.add(source);
@@ -75,8 +70,7 @@ public class SifProxyController {
                 inputStream.close();
 
                 for (String nodeName : nodeNames) {
-                    CyNode cyNode = new CyNode();
-                    cyNode.setProperty(CyElement.ID, nodeName);
+                    Element cyNode = Element.createNode(nodeName);
                     cyNetwork.addNode(cyNode);
                 }
             } catch (IOException e) {
