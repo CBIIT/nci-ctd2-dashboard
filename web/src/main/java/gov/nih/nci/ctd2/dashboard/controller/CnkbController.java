@@ -40,6 +40,7 @@ import gov.nih.nci.ctd2.dashboard.model.Protein;
 import gov.nih.nci.ctd2.dashboard.model.Xref;
 import gov.nih.nci.ctd2.dashboard.util.cnkb.CNKB;
 import gov.nih.nci.ctd2.dashboard.util.cnkb.CellularNetWorkElementInformation;
+import gov.nih.nci.ctd2.dashboard.util.cnkb.InteractionAndCount;
 import gov.nih.nci.ctd2.dashboard.util.cnkb.InteractionDetail;
 import gov.nih.nci.ctd2.dashboard.util.cnkb.InteractionParticipant;
 import gov.nih.nci.ctd2.dashboard.util.cnkb.QueryResult;
@@ -95,7 +96,7 @@ public class CnkbController {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
 		final CNKB interactionsConnection = CNKB.getInstance(getCnkbDataURL());
-		List<String> list = null;
+		List<InteractionAndCount> list = null;
 		try {
 			list = interactionsConnection
 					.getNciDatasetAndInteractioCount();

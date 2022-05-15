@@ -235,29 +235,22 @@ public class CNKB {
 		return arrayList;
 	}
 
-	public ArrayList<String> getNciDatasetAndInteractioCount()
+	public List<InteractionAndCount> getNciDatasetAndInteractioCount()
 			throws ConnectException, SocketTimeoutException, IOException, UnAuthenticatedException {
-		ArrayList<String> arrayList = new ArrayList<String>();
-
-		String datasetName = null;
-		int interactionCount = 0;
-
-		String methodAndParams = "getNciDatasetNames";
-		ResultSetlUtil rs = ResultSetlUtil.executeQuery(methodAndParams);
-
+		List<InteractionAndCount> arrayList = new ArrayList<InteractionAndCount>();
+		ResultSetlUtil rs = ResultSetlUtil.executeQuery("getNciDatasetNames");
 		while (rs.next()) {
-
-			datasetName = rs.getString("name").trim();
-			interactionCount = (int) rs.getDouble("interaction_count");
-			arrayList.add(datasetName + " (" + interactionCount + " interactions)");
+			arrayList
+					.add(new InteractionAndCount(rs.getString("name").trim(), (int) rs.getDouble("interaction_count")));
 		}
 		rs.close();
-
 		return arrayList;
 	}
 
-	// "only the most recent version of each interactome will be supported" - the requirement document
-	// The only interactome that has more than one version is HGi_TCGA. There are about 34 interactome totally.
+	// "only the most recent version of each interactome will be supported" - the
+	// requirement document
+	// The only interactome that has more than one version is HGi_TCGA. There are
+	// about 34 interactome totally.
 	public String getVersionDescriptor(String interactomeName)
 			throws ConnectException, SocketTimeoutException, IOException, UnAuthenticatedException {
 		String latestVersionDescription = null;

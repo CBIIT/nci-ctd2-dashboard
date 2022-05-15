@@ -1,3 +1,5 @@
+import {supported_interactomes, supported_confidence_types} from './supported.interactomes.js'
+
 const action_explanatory = [
     "Retrieve molecular interactions involving the selected genes from the Cellular Networks Knowledge Base (CNKB). The CNKB is a database of gene and protein interaction networks maintained at Columbia University.  It includes PREPPI, a large database of predicted and experimentally confirmed protein-protein interactions.", // CNKB
     "Send the contents of the gene cart to the external Enrichr web service for gene set enrichment analysis.  Enrichment analysis is a computational method for inferring knowledge about an input gene set by comparing it to annotated gene sets representing prior biological knowledge. Enrichment analysis checks whether an input set of genes significantly overlaps with annotated gene sets.", // Enrichr
@@ -303,14 +305,18 @@ export const CnkbQueryView = Backbone.View.extend({
         $(this.el).html(this.template({}));
         $('#queryDescription').html("");
         $('#queryDescription').html("Query with " + count + " genes from cart");
+        const names = supported_interactomes.map(x=>x.name)
         $.ajax({
             url: "cnkb/interactome-list",
             dataType: "json",
             contentType: "json",
             success: function (interactomeList) {
-                _.each(interactomeList, function (aData) {
-                    const option = '<option value="' + aData + '">' + aData + '</option>';
-                    if (aData.toLowerCase().startsWith("preppi")) {
+                _.each(interactomeList, function ({name, count}) {
+                    if(!names.includes(name.toLowerCase())) {
+                        return;
+                    }
+                    const option = `<option value="${name}">${name} (${count} interactions)</option>`;
+                    if (name.toLowerCase()==="preppi") {
                         $("#interactomeList").prepend(option);
                     } else {
                         $("#interactomeList").append(option);
@@ -326,7 +332,7 @@ export const CnkbQueryView = Backbone.View.extend({
             $.ajax({
                 url: "cnkb/interactome-descriptions",
                 data: {
-                    interactome: $('#interactomeList option:selected').text().split("(")[0].trim(),
+                    interactome: $('#interactomeList option:selected').val(),
                 },
                 dataType: "json",
                 contentType: "json",
@@ -341,8 +347,7 @@ export const CnkbQueryView = Backbone.View.extend({
         }); //end $('#interactomeList').change()
 
         $("#cnkb-result").click(function (e) {
-
-            const selectedInteractome = $('#interactomeList option:selected').text().split("(")[0].trim();
+            const selectedInteractome = $('#interactomeList option:selected').val();
 
             if (selectedInteractome == null || $.trim(selectedInteractome).length == 0) {
                 e.preventDefault();
@@ -350,7 +355,6 @@ export const CnkbQueryView = Backbone.View.extend({
             } else {
                 sessionStorage.selectedInteractome = JSON.stringify(selectedInteractome);
             }
-
         });
 
         return this;
@@ -381,6 +385,11 @@ export const CnkbResultView = Backbone.View.extend({
             }
 
             $(this.el).html(this.template({}));
+            supported_interactomes.find(x => x.name==selectedInteractome.toLowerCase())
+                .confidence_types
+                .forEach(x => {
+                    $("#supported-confidence-types").append(`<option>${x}</option>`)
+                })
             $.ajax({
                 url: "cnkb/interaction-result",
                 data: {
