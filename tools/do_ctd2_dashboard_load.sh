@@ -1,6 +1,8 @@
 #!/bin/bash
 
 LOAD_OPTS=('t' 'am' 'cl' 'ts' 'cp' 'g' 'p' 'sh' 'si'  'e' 'cv' 'o' 'i' 'r' 'x')
+#LOAD_OPTS=('x')
+
 for opt in "${LOAD_OPTS[@]}"
 do
 #    CMD="time java $JAVA_OPTS -jar $CTD2_HOME/admin/target/dashboard-admin.jar -$opt"
