@@ -284,24 +284,17 @@ public class CnkbController {
 		CNKB interactionsConnection = CNKB.getInstance(getCnkbDataURL());
 		CyNetwork cyNetwork = null;
 		try {
-
-			List<InteractionDetail> interactionDetails = null;
 			List<String> selectedGenesList = convertStringToList(selectedGenes);
 
 			List<Element> edgeList = new ArrayList<Element>();
-			Short confidenceType = null;
 			if (selectedGenesList != null && selectedGenesList.size() != 0) {
 				String latestVersion = interactionsConnection.getLatestVersionNumber(interactome);
 				for (String gene : selectedGenesList) {
-					interactionDetails = interactionsConnection
+					List<InteractionDetail> interactionDetails = interactionsConnection
 							.getInteractionsByGeneSymbolAndLimit(gene.trim(),
 									interactome, latestVersion, interactionLimit);
 					if (interactionDetails != null) {
-						if (confidenceType == null
-								&& interactionDetails.size() > 0)
-							confidenceType = interactionDetails.get(0)
-									.getConfidenceTypes().get(0);
-						getEdgeList(interactionDetails, confidenceType, edgeList);
+						getEdgeList(interactionDetails, edgeList);
 					}
 				}
 			}
@@ -473,12 +466,6 @@ public class CnkbController {
 				jsonSerializer.deepSerialize(geneDetail), headers, HttpStatus.OK);
 	}
 
-	private float getDivisorValue(float maxValue, float minValue) {
-		float divisor = (float) (maxValue - minValue) / 100;
-
-		return divisor;
-	}
-
 	private HashMap<String, String> getInteractionTypeMap() {
 		HashMap<String, String> map = null;
 		try {
@@ -549,13 +536,9 @@ public class CnkbController {
 		return list;
 	}
 
-	private void getEdgeList(List<InteractionDetail> interactionDetails,
-			Short confidenceType, final List<Element> edgeList) {
+	private void getEdgeList(List<InteractionDetail> interactionDetails, final List<Element> edgeList) {
 
 		for (InteractionDetail interactionDetail : interactionDetails) {
-			if (!interactionDetail.getConfidenceTypes().contains(confidenceType)) {
-				continue;
-			}
 			List<InteractionParticipant> participants = interactionDetail
 					.getParticipantList();
 			String interactionType = interactionDetail.getInteractionType();
@@ -566,11 +549,11 @@ public class CnkbController {
 					String tName = participants.get(j).getGeneName();
 					Element target = Element.createNode(tName);
 					Element cyEdge = Element.createEdge(
-						sName + "." + getInteractionTypeMap().get(interactionType)	+ "." + tName,
-						sName,
-						tName);
-					cyEdge.setProperty(Element.WEIGHT, interactionDetail.getConfidenceValue(confidenceType));
+							sName + "." + getInteractionTypeMap().get(interactionType) + "." + tName,
+							sName,
+							tName);
 					cyEdge.setProperty(Element.COLOR, colorMap.get(interactionType));
+					cyEdge.setProperty(Element.CONFIDENCES, interactionDetail.getConfidences());
 					edgeList.add(cyEdge);
 				}
 			}
@@ -581,21 +564,14 @@ public class CnkbController {
 			int interactionLimit, List<String> selectedGenesList) {
 
 		CyNetwork cyNetwork = new CyNetwork();
-		Collections.sort(edgeList, new Comparator<Element>() {
-			public int compare(Element e1, Element e2) {
-				return ((Float) e2.getProperty(Element.WEIGHT))
-						.compareTo((Float) e1.getProperty(Element.WEIGHT));
-			}
-		});
 
-		List<Element> cyEdgeList = new ArrayList<Element>();
 		HashSet<String> nodeNames = new HashSet<String>();
 		HashSet<String> interactionTypes = new HashSet<String>();
 
 		for (int i = 0; i < edgeList.size(); i++) {
 			if (i >= interactionLimit)
 				break;
-			cyEdgeList.add(edgeList.get(i));
+			cyNetwork.addEdge(edgeList.get(i));
 			nodeNames.add(edgeList.get(i).getProperty(Element.SOURCE)
 					.toString());
 			nodeNames.add(edgeList.get(i).getProperty(Element.TARGET)
@@ -603,25 +579,6 @@ public class CnkbController {
 			String interactionType = edgeList.get(i)
 					.getProperty(Element.ID).toString().split("\\.")[1].trim();
 			interactionTypes.add(getInteractionTypeMap().get(interactionType));
-		}
-
-		float minValue = (Float) cyEdgeList.get(cyEdgeList.size() - 1)
-				.getProperty(Element.WEIGHT);
-		float maxValue = (Float) cyEdgeList.get(0)
-				.getProperty(Element.WEIGHT);
-		float divisor = getDivisorValue(maxValue, minValue);
-
-		for (int i = 0; i < cyEdgeList.size(); i++) {
-
-			float confValue = Float.valueOf(edgeList.get(i)
-					.getProperty(Element.WEIGHT).toString());
-			if (divisor != 0)
-				edgeList.get(i).setProperty(Element.WEIGHT,
-						(int) ((confValue - minValue) / divisor));
-			else
-				edgeList.get(i).setProperty(Element.WEIGHT, 50);
-			cyNetwork.addEdge(edgeList.get(i));
-
 		}
 
 		for (String nodeName : nodeNames) {

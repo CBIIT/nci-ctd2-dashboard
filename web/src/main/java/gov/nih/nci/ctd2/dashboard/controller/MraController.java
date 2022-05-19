@@ -35,6 +35,8 @@ import gov.nih.nci.ctd2.dashboard.util.mra.MraTargetBarcode;
 @RequestMapping("/mra-data")
 public class MraController {
 
+	private static final String WEIGHT = "weight";
+
 	@Autowired
 	@Qualifier("allowedProxyHosts")
 	private String allowedProxyHosts = "";
@@ -215,14 +217,14 @@ public class MraController {
 		// sort genes by value
 		Collections.sort(edgeList, new Comparator<Element>() {
 			public int compare(Element e1, Element e2) {
-				return ((Float) e1.getProperty(Element.WEIGHT))
-						.compareTo((Float) e2.getProperty(Element.WEIGHT));
+				return ((Float) e1.getProperty(WEIGHT))
+						.compareTo((Float) e2.getProperty(WEIGHT));
 			}
 		});
 
 		float minValue = getMinValue(edgeList, nodeNumLimit);
 		float maxValue = (Float) edgeList.get(edgeList.size() - 1)
-				.getProperty(Element.WEIGHT);
+				.getProperty(WEIGHT);
 		float divisor = getDivisorValue(maxValue, minValue);
 		HashSet<String> nodeNames = new HashSet<String>();
 		for (int i = 1; i <= edgeList.size(); i++) {
@@ -230,12 +232,12 @@ public class MraController {
 				break;
 			int index = edgeList.size() - i;
 			float confValue = Float.valueOf(edgeList.get(index)
-					.getProperty(Element.WEIGHT).toString());
+					.getProperty(WEIGHT).toString());
 			if (divisor != 0)
-				edgeList.get(index).setProperty(Element.WEIGHT,
+				edgeList.get(index).setProperty(WEIGHT,
 						(int) ((confValue - minValue) / divisor));
 			else
-				edgeList.get(index).setProperty(Element.WEIGHT, 50);
+				edgeList.get(index).setProperty(WEIGHT, 50);
 			cyNetwork.addEdge(edgeList.get(index));
 			String sourceId = (String) edgeList.get(index)
 					.getProperty(Element.SOURCE);
@@ -266,8 +268,8 @@ public class MraController {
 		// sort genes by value
 		Collections.sort(edgeList, new Comparator<Element>() {
 			public int compare(Element e1, Element e2) {
-				return ((Float) e1.getProperty(Element.WEIGHT))
-						.compareTo((Float) e2.getProperty(Element.WEIGHT));
+				return ((Float) e1.getProperty(WEIGHT))
+						.compareTo((Float) e2.getProperty(WEIGHT));
 			}
 		});
 
@@ -350,7 +352,7 @@ public class MraController {
 					cyEdge.setProperty(Element.ID, sourceId + "." + tokens[1]);
 					cyEdge.setProperty(Element.SOURCE, sourceId);
 					cyEdge.setProperty(Element.TARGET, tokens[1]);
-					cyEdge.setProperty(Element.WEIGHT, confValue);
+					cyEdge.setProperty(WEIGHT, confValue);
 					// cyNetwork.addEdge(cyEdge);
 					edgeList.add(cyEdge);
 					if (!nodeList.keySet().contains(tokens[1])) {
@@ -390,7 +392,7 @@ public class MraController {
 			nodeNames.add(targetId);
 
 		}
-		return Float.valueOf(edgeList.get(index).getProperty(Element.WEIGHT)
+		return Float.valueOf(edgeList.get(index).getProperty(WEIGHT)
 				.toString());
 	}
 

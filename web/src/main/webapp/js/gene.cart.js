@@ -437,11 +437,12 @@ export const CnkbResultView = Backbone.View.extend({
                             showAlertMessage("The network is empty.");
                             return;
                         }
+                        // the default type here is arbitrary
+                        const confidence_type = Object.keys(data.edges[0].data.confidences)[0];
                         $("#displayed-interaction-number").text(data.edges.length)
-                        drawCNKBCytoscape(data, Encoder.htmlEncode(selectedInteractome));
+                        drawCNKBCytoscape(data, Encoder.htmlEncode(selectedInteractome), confidence_type);
                     } //end success
                 }); //end ajax
-
             } //end createnetwork
             $('.clickable-popover').popover({
                 placement: "bottom",
@@ -452,10 +453,9 @@ export const CnkbResultView = Backbone.View.extend({
 
             return this;
         }
-
     });
 
-const drawCNKBCytoscape = function (data, description) {
+const drawCNKBCytoscape = function (data, description, confidence_type) {
         let svgHtml = "";
         const interactions = data.interactions;
         let x1 = 20 + 90 * (3 - interactions.length),
@@ -483,9 +483,7 @@ const drawCNKBCytoscape = function (data, description) {
                 stop: function () {
                     $("#cnkb_cytoscape_progress").remove();
                     this.stop();
-
                 } // callback on layoutstop 
-
             },
             elements: data,
             style: cytoscape.stylesheet()
@@ -502,7 +500,7 @@ const drawCNKBCytoscape = function (data, description) {
                 })
                 .selector("edge")
                 .css({
-                    "width": "mapData(weight, 0, 100, 1, 3)",
+                    "width": "mapData(confidences[confidence_type], 0, 1, 1, 3)",
                     "target-arrow-shape": "circle",
                     "source-arrow-shape": "circle",
                     "line-color": "data(color)"
@@ -656,8 +654,11 @@ const drawCNKBCytoscape = function (data, description) {
             const edge_data = event.target;
             console.debug(edge_data)
             console.log(event.target.data("id"));
-            const weight =edge_data.data("weight")
-            console.debug(`weight=${weight}`)
+            console.debug('confidences:')
+            console.debug(edge_data.data("confidences"))
+            console.debug(`confidence type: ${confidence_type}`)
+            const value = edge_data.data("confidences")[confidence_type]
+            console.debug(`confidence value: ${value}`)
             gene_and_link(edge_data.data("source"), $("#interaction-source"))
             gene_and_link(edge_data.data("target"), $("#interaction-target"))
             $("#gene-detail").hide()

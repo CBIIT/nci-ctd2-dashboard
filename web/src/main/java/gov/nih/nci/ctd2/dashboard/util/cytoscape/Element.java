@@ -8,8 +8,8 @@ public class Element {
     public static final String ID = "id";
     public static final String SOURCE = "source";
     public static final String TARGET = "target";
-    public static final String WEIGHT = "weight";
     public static final String COLOR = "color";
+    public static final String CONFIDENCES = "confidences";
     public static final String SHAPE = "shape"; // only used in MRA view
 
     private Map<String, Object> data = new HashMap<String, Object>();
