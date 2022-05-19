@@ -3,8 +3,7 @@ package gov.nih.nci.ctd2.dashboard.controller;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.net.URLConnection;
-import java.util.Scanner;
+import java.nio.charset.StandardCharsets;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -33,50 +32,31 @@ public class StoryProxyController {
     }
 
     @Transactional
-    @RequestMapping(method = {RequestMethod.POST, RequestMethod.GET}, headers = "Accept=application/json")
+    @RequestMapping(method = { RequestMethod.POST, RequestMethod.GET }, headers = "Accept=application/json")
     public ResponseEntity<String> convertSIFtoJSON(@RequestParam("url") String url) {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "text/html; charset=utf-8");
-        StringBuilder proxiedHtml = new StringBuilder();
-        if(isURLValid(url)) {
-            // The following is a standard way to convert a SIF to a JSON Cytoscape.js model
-            URLConnection urlConnection = null;
-            try {
-                urlConnection = new URL(url).openConnection();
-                InputStream inputStream = urlConnection.getInputStream();
-                Scanner scanner = new Scanner(inputStream);
-                while(scanner.hasNextLine()) {
-                    String line = scanner.nextLine();
-                    if(line.isEmpty()) continue;
-
-                    proxiedHtml.append(line);
-                    proxiedHtml.append("\n");
-                }
-                scanner.close();
-                inputStream.close();
-
+        if (isURLValid(url)) {
+            try (InputStream in = new URL(url).openStream()) {
+                return new ResponseEntity<String>(new String(in.readAllBytes(), StandardCharsets.UTF_8), headers,
+                        HttpStatus.OK);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
 
-        return new ResponseEntity<String>(
-                proxiedHtml.toString(),
-                headers,
-                HttpStatus.OK
-        );
+        return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
     }
 
     private boolean isURLValid(String url) {
-        if(!url.toLowerCase().endsWith(".html")) return false;
+        if (!url.toLowerCase().endsWith(".html"))
+            return false;
 
         String[] hosts = allowedProxyHosts.split(",", -1);
         for (String host : hosts)
-            if(url.toLowerCase().startsWith(host.toLowerCase()))
+            if (url.toLowerCase().startsWith(host.toLowerCase()))
                 return true;
 
         return false;
     }
-
-
 }
