@@ -1,8 +1,8 @@
-import {BASE_URL, leftSep, rightSep, ctd2_hovertext, ctd2_role_definition, ctd2_ocg_dash, class2imageData} from './ctd2.constants.js'
-import {showAlertMessage, GeneListView, CnkbQueryView, CnkbResultView, GeneCartHelpView} from './gene.cart.js'
+import { BASE_URL, leftSep, rightSep, ctd2_hovertext, ctd2_role_definition, ctd2_ocg_dash, class2imageData } from './ctd2.constants.js'
+import { showAlertMessage, GeneListView, CnkbQueryView, CnkbResultView, GeneCartHelpView } from './gene.cart.js'
 import create_wordcloud from './wordcloud.js'
-import {ECOTerm} from './ecoterm.js'
-import {ObservedSubjects, ObservedEvidences, ObservedEvidence} from './observed.js'
+import { ECOTerm } from './ecoterm.js'
+import { ObservedSubjects, ObservedEvidences, ObservedEvidence } from './observed.js'
 import ObservationView from './observation.view.js'
 
 (function ($) {
@@ -585,12 +585,12 @@ import ObservationView from './observation.view.js'
         render: function () {
             fetch("api-doc.html")
                 .then(response => {
-                    if(!response.ok) throw new Error("API Document Missing")
+                    if (!response.ok) throw new Error("API Document Missing")
                     return response.text()
                 })
-                .then(data => $(this.el).html(this.template({api_document: data})))
+                .then(data => $(this.el).html(this.template({ api_document: data })))
                 .catch(error => {
-                    $(this.el).html(this.template({api_document: error}))
+                    $(this.el).html(this.template({ api_document: error }))
                 });
             return this;
         }
@@ -1174,13 +1174,12 @@ import ObservationView from './observation.view.js'
     const observationTableOptions = {
         'dom': '<iBfrtlp>',
         "sPaginationType": "bootstrap",
-        "columns": [{
-            "orderDataType": "dashboard-date"
-        },
+        "columns": [
+            { "orderDataType": "dashboard-date" },
             null,
             null,
             null,
-            {visible: false},
+            { visible: false },
         ],
         'buttons': [{
             extend: 'excelHtml5',
@@ -1814,7 +1813,7 @@ import ObservationView from './observation.view.js'
             const thatModel = this.model; // observation
             const ecocode = thatModel.ecocode;
 
-            if(thatModel.ontology == undefined || thatModel.ontology == null) {
+            if (thatModel.ontology == undefined || thatModel.ontology == null) {
                 thatModel.ontology = false
             }
 
@@ -1865,19 +1864,18 @@ import ObservationView from './observation.view.js'
                             });
 
                             summary += _.template($("#submission-obs-tbl-row-tmpl").html())(thatModel);
-                            if(thatModel.ontology) {
+                            if (thatModel.ontology) {
                                 summary += '<img src="img/onto.png" style="float: right;"></img>'
                             }
                             $(thatEl).html(summary);
                             const dataTable = $(tableEl).parent().DataTable({
                                 retrieve: true,
-                                columns: [{
-                                    "orderDataType": "dashboard-date"
-                                },
+                                columns: [
+                                    { "orderDataType": "dashboard-date" },
                                     null,
                                     null,
                                     null,
-                                    {visible: false},
+                                    { visible: false },
                                 ],
                             });
                             dataTable.cells(cellId).invalidate();
@@ -1987,7 +1985,7 @@ import ObservationView from './observation.view.js'
             const thatModel = this.model; // observation with summary
             const observation = thatModel.observation;
 
-            if(observation.ontology == undefined || observation.ontology == null) {
+            if (observation.ontology == undefined || observation.ontology == null) {
                 observation.ontology = false
             }
 
@@ -2417,7 +2415,7 @@ import ObservationView from './observation.view.js'
         template: _.template($("#search-result-row-tmpl").html()),
         render: function () {
             const model = this.model;
-            if(!model.ontology) {
+            if (!model.ontology) {
                 model.ontology = false
             }
 
@@ -2456,7 +2454,7 @@ import ObservationView from './observation.view.js'
             }
             let count = 0;
             _.each(synonyms, function (s) {
-                const aSynonym = {displayName: s, sid: model.id}
+                const aSynonym = { displayName: s, sid: model.id }
                 if (count >= 3) aSynonym.toomany = 'toomany';
                 new SynonymView({
                     model: aSynonym,
@@ -2548,7 +2546,7 @@ import ObservationView from './observation.view.js'
             $(this.el).html(this.template(this.model));
 
             // update the search box accordingly
-            $("#omni-input").val(this.model.term.replaceAll("`","'"));
+            $("#omni-input").val(this.model.term.replaceAll("`", "'"));
 
             const searchQuery = this.model.term;
             let subject_names = [];
@@ -2562,7 +2560,7 @@ import ObservationView from './observation.view.js'
                     let submission_count = 0;
                     const subject_result = ontology_search_results.subject_result
                         .filter(s => !subject_names.includes(s.subjectName));
-                    if(subject_result.length==0) {
+                    if (subject_result.length == 0) {
                         $("#ontology-search").prop('disabled', true);
                         $("#ontology-search").css("pointer-events", "none");
                         $("#ontology-spinner").hide();
@@ -2570,7 +2568,7 @@ import ObservationView from './observation.view.js'
                         return;
                     }
                     $("#onto-legend").show();
-                    if($("#no-result").is(":visible")) {
+                    if ($("#no-result").is(":visible")) {
                         $("#no-result").hide();
                     }
                     $("#search-results-grid").DataTable().destroy();
@@ -2620,8 +2618,8 @@ import ObservationView from './observation.view.js'
                                 "orderDataType": "dashboard-rank",
                                 "type": 'num',
                             },
-                            {visible: false},
-                            {visible: false}
+                            { visible: false },
+                            { visible: false }
                         ]
                     }).fnSort([
                         [7, 'desc'],
@@ -2657,7 +2655,7 @@ import ObservationView from './observation.view.js'
                                 return // existing result
                             }
                             counter++
-                            if (counter>limit_of_addtional_ones) return
+                            if (counter > limit_of_addtional_ones) return
                             aResult.ontology = true;
                             matching_observations.push(aResult);
                         });
@@ -2697,7 +2695,7 @@ import ObservationView from './observation.view.js'
                             null,
                             null,
                             null,
-                            {visible: false}
+                            { visible: false }
                         ]
                     }).fnSort([
                         [6, 'desc'], // sort by 'is-ontology'
@@ -2805,8 +2803,8 @@ import ObservationView from './observation.view.js'
                                     "orderDataType": "dashboard-rank",
                                     "type": 'num',
                                 },
-                                {visible: false},
-                                {visible: false}
+                                { visible: false },
+                                { visible: false }
                             ]
 
                         });
@@ -2870,7 +2868,7 @@ import ObservationView from './observation.view.js'
                                     null,
                                     null,
                                     null,
-                                    {visible: false}
+                                    { visible: false }
                                 ]
                             });
                             sTable.fnSort([
@@ -2902,7 +2900,7 @@ import ObservationView from './observation.view.js'
                         }
 
                         console.log(`oversized observations %c ${results.oversized_observations}`, "color:green")
-                        if(results.oversized_observations>0) {
+                        if (results.oversized_observations > 0) {
                             $("#oversized-observations").text(results.oversized_observations)
                             $("#oversize-message-observations").show()
                         }
@@ -3098,7 +3096,7 @@ import ObservationView from './observation.view.js'
 
             }); //end .cytoscape-view
 
-            const update_throttle = function() {
+            const update_throttle = function () {
                 let filters = "";
                 $('input[type="checkbox"]:checked').each(function () {
                     filters = filters + ($(this).val() + ',');
@@ -3651,17 +3649,17 @@ import ObservationView from './observation.view.js'
             const previous = window.location.hash;
             const search_term = ($("#omni-input").val().trim().replaceAll("'", "`"));
             const too_short = Array.from(search_term.matchAll(/([^"]\S*|".+?")\s*/g), m => m[1].replace(/^"/, "").replace(/"$/, ""))
-                .some(x => x.length<=2);
-            if(too_short) {
+                .some(x => x.length <= 2);
+            if (too_short) {
                 showAlertMessage("Search queries containing terms with one or two letters are not allowed as they may return too many results.  Please enclose search terms in quotes or reformulate it. E.g. B cell should be submitted as \"B Cell\".");
                 return false;
             }
-            if(search_term.length < 2) {
+            if (search_term.length < 2) {
                 showAlertMessage("You cannot search for a single character.");
                 return false;
             }
             window.location.hash = "search/" + encodeURIComponent(search_term);
-            if(previous==window.location.hash) {
+            if (previous == window.location.hash) {
                 window.location.reload();
             }
             return false;
