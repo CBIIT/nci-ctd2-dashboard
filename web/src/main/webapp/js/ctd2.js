@@ -2950,10 +2950,8 @@ import ObservationView from './observation.view.js'
                 url: "mra-data/",
                 data: {
                     url: mra_data_url,
-                    dataType: "mra",
                     filterBy: "none",
                     nodeNumLimit: 0,
-                    throttle: ""
                 },
                 dataType: "json",
                 contentType: "json",
@@ -3001,13 +2999,11 @@ import ObservationView from './observation.view.js'
                 }
 
                 $.ajax({
-                    url: "mra-data/",
+                    url: "mra-data/cytoscape",
                     data: {
                         url: mra_data_url,
-                        dataType: "cytoscape",
                         filterBy: filters,
                         nodeNumLimit: nodeLimit,
-                        throttle: ""
                     },
                     dataType: "json",
                     contentType: "json",
@@ -3102,20 +3098,18 @@ import ObservationView from './observation.view.js'
 
             }); //end .cytoscape-view
 
-            $("#master-regulator-grid").on("change", ":checkbox", function () {
+            const update_throttle = function() {
                 let filters = "";
                 $('input[type="checkbox"]:checked').each(function () {
                     filters = filters + ($(this).val() + ',');
                 });
 
                 $.ajax({
-                    url: "mra-data/",
+                    url: "mra-data/throttle",
                     data: {
                         url: mra_data_url,
-                        dataType: "throttle",
                         filterBy: filters,
                         nodeNumLimit: $("#cytoscape-node-limit").val(),
-                        throttle: ""
                     },
                     dataType: "json",
                     contentType: "json",
@@ -3127,39 +3121,10 @@ import ObservationView from './observation.view.js'
                         $("#throttle-input").css('color', 'grey');
                     }
                 });
+            }
+            $("#master-regulator-grid").on("change", ":checkbox", update_throttle);
+            $("#cytoscape-node-limit").change(update_throttle);
 
-
-            }); //end mra-checked  
-
-            $("#cytoscape-node-limit").change(function (evt) {
-                //the following block code is same as above, shall make it as function,
-                //but for somehow the function call does not work here for me. 
-                let filters = "";
-                $('input[type="checkbox"]:checked').each(function () {
-                    filters = filters + ($(this).val() + ',');
-                });
-
-                $.ajax({
-                    url: "mra-data/",
-                    data: {
-                        url: mra_data_url,
-                        dataType: "throttle",
-                        filterBy: filters,
-                        nodeNumLimit: $("#cytoscape-node-limit").val(),
-                        throttle: ""
-                    },
-                    dataType: "json",
-                    contentType: "json",
-                    success: function (data) {
-                        if (data != null)
-                            $("#throttle-input").text(data);
-                        else
-                            $("#throttle-input").text("e.g. 0.01");
-                        $("#throttle-input").css('color', 'grey');
-                    }
-                });
-
-            });
             $('.clickable-popover').popover({
                 placement: "bottom",
                 trigger: 'hover',

@@ -4,6 +4,10 @@ import flexjson.JSONSerializer;
 
 import gov.nih.nci.ctd2.dashboard.util.cytoscape.CyNetwork;
 import gov.nih.nci.ctd2.dashboard.util.cytoscape.Element;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
@@ -34,6 +38,7 @@ import gov.nih.nci.ctd2.dashboard.util.mra.MraTargetBarcode;
 @Controller
 @RequestMapping("/mra-data")
 public class MraController {
+	private static final Log log = LogFactory.getLog(MraController.class);
 
 	private static final String WEIGHT = "weight";
 
@@ -48,7 +53,7 @@ public class MraController {
 		shapeMap.put("P", "hexagon");
 		shapeMap.put("none", "triangle");
 	}
- 
+
 	public String getAllowedProxyHosts() {
 		return allowedProxyHosts;
 	}
@@ -61,62 +66,91 @@ public class MraController {
 	@RequestMapping(method = { RequestMethod.POST, RequestMethod.GET }, headers = "Accept=application/json")
 	public ResponseEntity<String> convertMRAtoJSON(
 			@RequestParam("url") String url,
-			@RequestParam("dataType") String dataType,
 			@RequestParam("filterBy") String filterBy,
-			@RequestParam("nodeNumLimit") int nodeNumLimit,
-			@RequestParam("throttle") String throttle) {
+			@RequestParam("nodeNumLimit") int nodeNumLimit) {
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
 
-		CyNetwork cyNetwork = null;
 		List<MasterRegulator> masterRegulators = null;
-		Float throttleValue = null;
 
 		if (isURLValid(url)) {
-			URLConnection urlConnection = null;
-			try {			 
-				urlConnection = new URL(url).openConnection();
+			try {
+				URLConnection urlConnection = new URL(url).openConnection();
 				InputStream inputStream = urlConnection.getInputStream();
 				Scanner scanner = new Scanner(inputStream);
-				if (dataType != null && dataType.trim().equals("cytoscape"))
-					cyNetwork = convertToCyNetwork(scanner, filterBy, nodeNumLimit, throttle);
-				else if (dataType != null && dataType.trim().equals("mra"))
-					masterRegulators = convertToMasterRegulator(scanner);
-				else
-					throttleValue = getThrottleValue(scanner, filterBy, nodeNumLimit);							 
+				masterRegulators = convertToMasterRegulator(scanner);
 				inputStream.close();
-
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-
 		}
 
 		JSONSerializer jsonSerializer = new JSONSerializer().exclude("*.class");
-		if (dataType != null && dataType.trim().equals("cytoscape")) {
-			return new ResponseEntity<String>(
-					jsonSerializer.deepSerialize(cyNetwork), headers,
-					HttpStatus.OK);
-		} else if (dataType != null && dataType.trim().equals("mra")) {
-			return new ResponseEntity<String>(
-					jsonSerializer.deepSerialize(masterRegulators), headers,
-					HttpStatus.OK
+		return new ResponseEntity<String>(
+				jsonSerializer.deepSerialize(masterRegulators), headers,
+				HttpStatus.OK);
+	}
 
-			);
-		} else {
-			// System.out.println(jsonSerializer.deepSerialize(throttleValue));
-			return new ResponseEntity<String>(
-					jsonSerializer.deepSerialize(throttleValue), headers,
-					HttpStatus.OK
+	@Transactional
+	@RequestMapping(value = "cytoscape", method = { RequestMethod.POST,
+			RequestMethod.GET }, headers = "Accept=application/json")
+	public ResponseEntity<String> getNetwork(@RequestParam("url") String url,
+			@RequestParam("filterBy") String filterBy,
+			@RequestParam("nodeNumLimit") int nodeNumLimit) {
 
-			);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "application/json; charset=utf-8");
+
+		if (isURLValid(url)) {
+			try {
+				Object[] edgeNodeList = getEdgeNodeList(url, filterBy, nodeNumLimit);
+				@SuppressWarnings("unchecked")
+				List<Element> edgeList = (List<Element>) edgeNodeList[0];
+				@SuppressWarnings("unchecked")
+				Map<String, Element> nodeList = (Map<String, Element>) edgeNodeList[1];
+
+				CyNetwork cyNetwork = convertToCyNetwork(edgeList, nodeList, nodeNumLimit);
+				return new ResponseEntity<String>(
+						new JSONSerializer().exclude("*.class").deepSerialize(cyNetwork), headers,
+						HttpStatus.OK);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
+		return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
+	}
+
+	@Transactional
+	@RequestMapping(value = "throttle", method = { RequestMethod.POST,
+			RequestMethod.GET }, headers = "Accept=application/json")
+	public ResponseEntity<String> getThrottle(
+			@RequestParam("url") String url,
+			@RequestParam("filterBy") String filterBy,
+			@RequestParam("nodeNumLimit") int nodeNumLimit) {
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "application/json; charset=utf-8");
+
+		if (isURLValid(url)) {
+			try {
+				Object[] edgeNodeList = getEdgeNodeList(url, filterBy, nodeNumLimit);
+				@SuppressWarnings("unchecked")
+				List<Element> edgeList = (List<Element>) edgeNodeList[0];
+				Float throttleValue = getThrottleValue(edgeList, nodeNumLimit);
+				return new ResponseEntity<String>(
+						new JSONSerializer().exclude("*.class").serialize(throttleValue), headers,
+						HttpStatus.OK);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
 	}
 
 	private boolean isURLValid(String url) {
-		
-		String[] hosts = allowedProxyHosts.split(",", -1);	 
+
+		String[] hosts = allowedProxyHosts.split(",", -1);
 		for (String host : hosts)
 			if (url.toLowerCase().startsWith(host.toLowerCase()))
 				return true;
@@ -202,15 +236,8 @@ public class MraController {
 
 	}
 
-	private CyNetwork convertToCyNetwork(Scanner scanner, String filterBy, int nodeNumLimit, 
-			String throttle) {
-
-		Object[] edgeNodeList = getEdgeNodeList(scanner, filterBy, nodeNumLimit, throttle);
+	private CyNetwork convertToCyNetwork(List<Element> edgeList, Map<String, Element> nodeList, int nodeNumLimit) {
 		CyNetwork cyNetwork = new CyNetwork();
-		@SuppressWarnings("unchecked")
-		List<Element> edgeList = (List<Element>) edgeNodeList[0];
-		@SuppressWarnings("unchecked")
-		Map<String, Element> nodeList = (Map<String, Element>) edgeNodeList[1];
 
 		if (edgeList == null || edgeList.size() == 0)
 			return null;
@@ -257,14 +284,7 @@ public class MraController {
 		return cyNetwork;
 	}
 
-	private Float getThrottleValue(Scanner scanner, String filterBy, 
-			int nodeNumLimit) {
-
-		Object[] edgeNodeList = getEdgeNodeList(scanner, filterBy, nodeNumLimit, null);
-
-		@SuppressWarnings("unchecked")
-		List<Element> edgeList = (List<Element>) edgeNodeList[0];
-
+	private Float getThrottleValue(List<Element> edgeList, int nodeNumLimit) {
 		// sort genes by value
 		Collections.sort(edgeList, new Comparator<Element>() {
 			public int compare(Element e1, Element e2) {
@@ -279,8 +299,11 @@ public class MraController {
 		return minValue;
 	}
 
-	private Object[] getEdgeNodeList(Scanner scanner, String filterBy,
-			int  nodeNumLimit, String throttle) {
+	private Object[] getEdgeNodeList(String url, String filterBy, int nodeNumLimit) throws IOException {
+		URLConnection urlConnection = new URL(url).openConnection();
+		InputStream inputStream = urlConnection.getInputStream();
+		Scanner scanner = new Scanner(inputStream);
+
 		double absMaxDeScore = 0;
 		Object[] edgeNodeList = new Object[2];
 		List<Element> edgeList = new ArrayList<Element>();
@@ -293,9 +316,7 @@ public class MraController {
 				filters.add(token.trim());
 		}
 
-		float throttleVal = 0;
-		if (throttle != null && throttle.trim().length() > 0)
-			throttleVal = Float.valueOf(throttle);
+		final float throttleVal = 0;
 
 		Element source = null;
 
@@ -368,7 +389,9 @@ public class MraController {
 				}
 			} // end !target_table_begin
 
-		}// end while
+		} // end while
+		inputStream.close();
+
 		edgeNodeList[0] = edgeList;
 		edgeNodeList[1] = nodeList;
 
@@ -451,22 +474,10 @@ public class MraController {
 			return "rgb(255, " + (255 - colorindex) + ", " + (255 - colorindex)
 					+ ")";
 	}
-	 
+
 	private float getDivisorValue(float maxValue, float minValue) {
 		float divisor = (float) (maxValue - minValue) / 100;
 
 		return divisor;
-	}
-
-	// test
-	public static void main(String[] args) {
-
-		MraController mraController = new MraController();
-		String dataUrl = "http://localhost:8080/ctd2-dashboard/submissions/MRA_Combine-gbm-filtered.txt";
-	   //  mraController.convertMRAtoJSON(dataUrl, "mra", "", "");
-
-		mraController.convertMRAtoJSON(dataUrl, "cytoscape", "2355,1051", 1000, "");
-		//mraController.convertMRAtoJSON(dataUrl, "throttle", "", 150, null);
-
 	}
 }
