@@ -271,13 +271,10 @@ public class CnkbController {
 		response.addHeader("Content-Transfer-Encoding", "binary");
 
 		try {
-
-			QueryResult cnkbObject = new QueryResult();
 			String version = interactionsConnection.getLatestVersionNumber(interactome);
 			List<String> interactionTypes = interactionsConnection
 					.getInteractionTypesByInteractomeVersion(interactome,
 							version);
-			((QueryResult) cnkbObject).setInteractionTypeList(interactionTypes);
 			List<InteractionDetail> interactionDetails = null;
 
 			List<String> selectedGenesList = convertStringToList(selectedGenes);
