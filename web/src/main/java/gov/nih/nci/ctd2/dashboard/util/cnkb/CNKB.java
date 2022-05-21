@@ -42,63 +42,6 @@ public class CNKB {
 		return instance;
 	}
 
-	// query only by one gene
-	public List<InteractionDetail> getInteractionsByGeneSymbol(String geneSymbol, String context, String version)
-			throws UnAuthenticatedException, ConnectException, SocketTimeoutException, IOException {
-
-		return getInteractionsByGeneSymbolAndLimit(geneSymbol, context, version, null);
-	}
-
-	public List<String> getInteractionsSifFormat(String context, String version, String interactionType,
-			String presentBy) throws UnAuthenticatedException, ConnectException, SocketTimeoutException, IOException {
-
-		List<String> arrayList = new ArrayList<String>();
-
-		String methodAndParams = "getInteractionsSifFormat" + Constants.DEL + context + Constants.DEL + version
-				+ Constants.DEL + interactionType + Constants.DEL + presentBy;
-		ResultSetlUtil rs = ResultSetlUtil.executeQuery(methodAndParams);
-
-		String sifLine = null;
-		while (rs.next()) {
-			try {
-				sifLine = rs.getString("sif format data");
-				arrayList.add(sifLine);
-			} catch (NullPointerException npe) {
-				if (logger.isErrorEnabled()) {
-					logger.error("db row is dropped because a NullPointerException");
-				}
-			}
-		}
-		rs.close();
-
-		return arrayList;
-	}
-
-	public List<String> getInteractionsAdjFormat(String context, String version, String interactionType,
-			String presentBy) throws UnAuthenticatedException, ConnectException, SocketTimeoutException, IOException {
-
-		List<String> arrayList = new ArrayList<String>();
-
-		String methodAndParams = "getInteractionsAdjFormat" + Constants.DEL + context + Constants.DEL + version
-				+ Constants.DEL + interactionType + Constants.DEL + presentBy;
-		ResultSetlUtil rs = ResultSetlUtil.executeQuery(methodAndParams);
-
-		String adjLine = null;
-		while (rs.next()) {
-			try {
-				adjLine = rs.getString("adj format data");
-				arrayList.add(adjLine);
-			} catch (NullPointerException npe) {
-				if (logger.isErrorEnabled()) {
-					logger.error("db row is dropped because a NullPointerException");
-				}
-			}
-		}
-		rs.close();
-
-		return arrayList;
-	}
-
 	public HashMap<String, String> getInteractionTypeMap()
 			throws ConnectException, SocketTimeoutException, IOException, UnAuthenticatedException {
 
@@ -305,8 +248,7 @@ public class CNKB {
 		return latestVersion;
 	}
 
-	public List<InteractionDetail> getInteractionsByGeneSymbolAndLimit(String geneSymbol, String context,
-			String version, Integer limit)
+	public List<InteractionDetail> getInteractionsByGeneSymbol(String geneSymbol, String context, String version)
 			throws UnAuthenticatedException, ConnectException, SocketTimeoutException, IOException {
 
 		List<InteractionDetail> arrayList = new ArrayList<InteractionDetail>();
@@ -315,9 +257,6 @@ public class CNKB {
 
 		String methodAndParams = "getInteractionsByGeneSymbolAndLimit" + Constants.DEL + marker_geneName + Constants.DEL
 				+ context + Constants.DEL + version;
-
-		if (limit != null)
-			methodAndParams = methodAndParams + Constants.DEL + limit;
 
 		ResultSetlUtil rs = ResultSetlUtil.executeQuery(methodAndParams);
 

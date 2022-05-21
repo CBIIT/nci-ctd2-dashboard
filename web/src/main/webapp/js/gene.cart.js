@@ -390,6 +390,12 @@ export const CnkbResultView = Backbone.View.extend({
             .forEach(x => {
                 $("#supported-confidence-types").append(`<option>${x}</option>`)
             })
+        $("#supported-confidence-types").change(function (event) {
+            const confidence_type = $(event.target).val()
+            const code = { "p-value": 7, "likelihood ratio": 1, "mutual information": 3, "mode of action": 6, "probability": 4 }
+            const selected = code[confidence_type]
+            console.debug(`selected confidence type code ${selected}`)
+        })
         $.ajax({
             url: "cnkb/interaction-result",
             data: {
@@ -418,7 +424,7 @@ export const CnkbResultView = Backbone.View.extend({
 
         }); //ajax cnkb/interaction-result end
 
-        const interactionLimit = 200;
+        const default_limit = 200;
 
         const createNetwork = function (geneNames) {
             $('#createnw_progress_indicator').show();
@@ -427,7 +433,7 @@ export const CnkbResultView = Backbone.View.extend({
                 data: {
                     interactome: selectedInteractome,
                     selectedGenes: geneNames,
-                    interactionLimit: interactionLimit,
+                    interactionLimit: default_limit,
                 },
                 dataType: "json",
                 contentType: "json",
@@ -454,6 +460,49 @@ export const CnkbResultView = Backbone.View.extend({
         return this;
     }
 });
+
+const cytoscape_context_menu = {
+    linkout: { name: 'LinkOut' },
+    sep1: "---------",
+    entrez: {
+        name: "Entrez",
+        items: {
+            gene: { name: "Gene" },
+            protein: { name: "Protein" },
+            pubmed: { name: "PubMed" },
+            nucleotide: { name: "Nucleotide" },
+            alldatabases: { name: "All Databases" },
+            structure: { name: "Structure" },
+            omim: { name: "OMIM" }
+        }
+    },
+    genecards: { name: "GeneCards" },
+    ctd2_dashboard: { name: "CTD2-Dashboard" }
+}
+
+const context_menu_callback = sym => function (key, options) {
+    if (!key || 0 === key.length) {
+        $.contextMenu('destroy', '#cytoscape');
+        return;
+    }
+
+    const links = {
+        gene: "http://www.ncbi.nlm.nih.gov/gene?cmd=Search&term=" + sym,
+        protein: "http://www.ncbi.nlm.nih.gov/protein?cmd=Search&term=" + sym + "&doptcmdl=GenPept",
+        pubmed: "http://www.ncbi.nlm.nih.gov/pubmed?cmd=Search&term=" + sym + "&doptcmdl=Abstract",
+        nucleotide: "http://www.ncbi.nlm.nih.gov/nucleotide?cmd=Search&term=" + sym + "&doptcmdl=GenBank",
+        alldatabases: "http://www.ncbi.nlm.nih.gov/gquery/?term=" + sym,
+        structure: "http://www.ncbi.nlm.nih.gov/structure?cmd=Search&term=" + sym + "&doptcmdl=Brief",
+        omim: "http://www.ncbi.nlm.nih.gov/omim?cmd=Search&term=" + sym + "&doptcmdl=Synopsis",
+        genecards: "http://www.genecards.org/cgi-bin/carddisp.pl?gene=" + sym + "&alias=yes",
+        ctd2_dashboard: "#search/" + sym,
+    }
+    const linkUrl = links[key]
+    if (linkUrl !== undefined) {
+        window.open(links[key])
+    }
+    $.contextMenu('destroy', '#cytoscape');
+}
 
 const drawCNKBCytoscape = function (data, description, confidence_type) {
     let svgHtml = "";
@@ -541,87 +590,8 @@ const drawCNKBCytoscape = function (data, description, confidence_type) {
         const sym = this.data('id');
         $.contextMenu({
             selector: '#cytoscape',
-
-            callback: function (key, options) {
-                if (!key || 0 === key.length) {
-                    $.contextMenu('destroy', '#cytoscape');
-                    return;
-                }
-
-                let linkUrl = "";
-                switch (key) {
-                    case 'linkout':
-                        return;
-                    case 'gene':
-                        linkUrl = "http://www.ncbi.nlm.nih.gov/gene?cmd=Search&term=" + sym;
-                        break;
-                    case 'protein':
-                        linkUrl = "http://www.ncbi.nlm.nih.gov/protein?cmd=Search&term=" + sym + "&doptcmdl=GenPept";
-                        break;
-                    case 'pubmed':
-                        linkUrl = "http://www.ncbi.nlm.nih.gov/pubmed?cmd=Search&term=" + sym + "&doptcmdl=Abstract";
-                        break;
-                    case 'nucleotide':
-                        linkUrl = "http://www.ncbi.nlm.nih.gov/nucleotide?cmd=Search&term=" + sym + "&doptcmdl=GenBank";
-                        break;
-                    case 'alldatabases':
-                        linkUrl = "http://www.ncbi.nlm.nih.gov/gquery/?term=" + sym;
-                        break;
-                    case 'structure':
-                        linkUrl = "http://www.ncbi.nlm.nih.gov/structure?cmd=Search&term=" + sym + "&doptcmdl=Brief";
-                        break;
-                    case 'omim':
-                        linkUrl = "http://www.ncbi.nlm.nih.gov/omim?cmd=Search&term=" + sym + "&doptcmdl=Synopsis";
-                        break;
-                    case 'genecards':
-                        linkUrl = "http://www.genecards.org/cgi-bin/carddisp.pl?gene=" + sym + "&alias=yes";
-                        break;
-                    case 'ctd2-dashboard':
-                        linkUrl = "#search/" + sym;
-                }
-                window.open(linkUrl);
-                $.contextMenu('destroy', '#cytoscape');
-            },
-            items: {
-                "linkout": {
-                    "name": 'LinkOut'
-                },
-                "sep1": "---------",
-                "entrez": {
-                    "name": "Entrez",
-                    "items": {
-                        "gene": {
-                            "name": "Gene"
-                        },
-                        "protein": {
-                            "name": "Protein"
-                        },
-                        "pubmed": {
-                            "name": "PubMed"
-                        },
-                        "nucleotide": {
-                            "name": "Nucleotide"
-                        },
-                        "alldatabases": {
-                            "name": "All Databases"
-                        },
-                        "structure": {
-                            "name": "Structure"
-                        },
-                        "omim": {
-                            "name": "OMIM"
-                        }
-                    }
-                },
-                "genecards": {
-                    "name": "GeneCards"
-                },
-                "ctd2-dashboard": {
-                    "name": "CTD2-Dashboard"
-                }
-
-            }
-
+            callback: context_menu_callback(sym),
+            items: cytoscape_context_menu,
         });
 
     }).on('tap', 'node', function (event) {

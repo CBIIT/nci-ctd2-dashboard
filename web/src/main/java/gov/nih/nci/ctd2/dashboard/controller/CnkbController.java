@@ -206,77 +206,12 @@ public class CnkbController {
 	}
 
 	@Transactional
-	@RequestMapping(value = "interaction-throttle", method = { RequestMethod.POST,
-			RequestMethod.GET }, headers = "Accept=application/text")
-	public ResponseEntity<String> getCnkbObject(
-			@RequestParam("interactome") String interactome,
-			@RequestParam("selectedGenes") String selectedGenes,
-			@RequestParam("interactionLimit") int interactionLimit) {
-
-		HttpHeaders headers = new HttpHeaders();
-		headers.add("Content-Type", "application/json; charset=utf-8");
-
-		final CNKB interactionsConnection = CNKB.getInstance(getCnkbDataURL());
-		QueryResult queryResult = new QueryResult();
-		try {
-			String latestVersion = interactionsConnection.getLatestVersionNumber(interactome);
-			List<InteractionDetail> interactionDetails = null;
-			List<String> selectedGenesList = convertStringToList(selectedGenes);
-			List<Float> confidentList = new ArrayList<Float>();
-			Short confidenceType = null;
-			if (selectedGenesList != null && selectedGenesList.size() != 0) {
-				for (String gene : selectedGenesList) {
-					interactionDetails = interactionsConnection
-							.getInteractionsByGeneSymbolAndLimit(
-									gene.trim(), interactome, latestVersion,
-									interactionLimit);
-					if (interactionDetails != null) {
-						if (confidenceType == null
-								&& interactionDetails.size() > 0)
-							confidenceType = interactionDetails.get(0)
-									.getConfidenceTypes().get(0);
-						for (InteractionDetail interactionDetail : interactionDetails)
-							confidentList.add(interactionDetail
-									.getConfidenceValue(confidenceType));
-					}
-				}
-				// sort genes by value
-				Collections.sort(confidentList, new Comparator<Float>() {
-					public int compare(Float f1, Float f2) {
-						return f2.compareTo(f1);
-					}
-				});
-				if (confidentList.size() > interactionLimit)
-					queryResult.setThreshold(confidentList
-							.get(interactionLimit));
-				else if (confidentList.size() > 0)
-					queryResult.setThreshold(confidentList
-							.get(confidentList.size() - 1));
-			}
-		} catch (UnAuthenticatedException uae) {
-			uae.printStackTrace();
-		} catch (ConnectException e1) {
-			e1.printStackTrace();
-		} catch (SocketTimeoutException e1) {
-			e1.printStackTrace();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-
-		JSONSerializer jsonSerializer = new JSONSerializer().exclude("*.class");
-
-		return new ResponseEntity<String>(
-				jsonSerializer.deepSerialize(queryResult), headers,
-				HttpStatus.OK);
-	}
-
-	@Transactional
 	@RequestMapping(value = "network", method = { RequestMethod.POST,
 			RequestMethod.GET }, headers = "Accept=application/json")
 	public ResponseEntity<String> getCnkbCyNetwork(
 			@RequestParam("interactome") String interactome,
 			@RequestParam("selectedGenes") String selectedGenes,
-			@RequestParam("interactionLimit") int interactionLimit) {
+			@RequestParam(value = "interactionLimit", required = false, defaultValue = "10000") int interactionLimit) {
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
@@ -291,8 +226,7 @@ public class CnkbController {
 				String latestVersion = interactionsConnection.getLatestVersionNumber(interactome);
 				for (String gene : selectedGenesList) {
 					List<InteractionDetail> interactionDetails = interactionsConnection
-							.getInteractionsByGeneSymbolAndLimit(gene.trim(),
-									interactome, latestVersion, interactionLimit);
+							.getInteractionsByGeneSymbol(gene.trim(), interactome, latestVersion);
 					if (interactionDetails != null) {
 						getEdgeList(interactionDetails, edgeList);
 					}
@@ -455,7 +389,7 @@ public class CnkbController {
 		List<Protein> proteinByGene = dashboardDao.findProteinByGene(gene);
 		String uniprot = null;
 		if (proteinByGene.size() != 1) {
-			log.warn("protein found for gene symbol " + geneSymbol + " is not unique");
+			log.warn("no single protein found for gene symbol " + geneSymbol + ": " + proteinByGene.size());
 		} else {
 			uniprot = proteinByGene.get(0).getUniprotId();
 		}
