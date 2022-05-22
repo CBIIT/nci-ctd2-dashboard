@@ -397,17 +397,17 @@ export const CnkbResultView = Backbone.View.extend({
             console.debug(`selected confidence type code ${selected}`)
         })
         $.ajax({
-            url: "cnkb/interaction-result",
+            url: "cnkb/interaction-total-number",
             data: {
                 interactome: selectedInteractome,
                 selectedGenes: JSON.stringify(selectedgenes),
             },
             dataType: "json",
             contentType: "json",
-            success: function (summary) {
+            success: function (totalNumber) {
                 $("#cnkb_data_progress").hide();
-                $("#total-interaction-number").text(summary.totalNumber)
-                const geneNames = summary.geneNames.toString()
+                $("#total-interaction-number").text(totalNumber)
+                const geneNames = selectedgenes.toString()
                 $("#genecart-genes").text(geneNames);
                 $("#interactome-selected").text(selectedInteractome)
                 createNetwork(geneNames)

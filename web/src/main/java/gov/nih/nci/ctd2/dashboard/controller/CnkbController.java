@@ -42,7 +42,6 @@ import gov.nih.nci.ctd2.dashboard.util.cnkb.CNKB;
 import gov.nih.nci.ctd2.dashboard.util.cnkb.InteractionAndCount;
 import gov.nih.nci.ctd2.dashboard.util.cnkb.InteractionDetail;
 import gov.nih.nci.ctd2.dashboard.util.cnkb.InteractionParticipant;
-import gov.nih.nci.ctd2.dashboard.util.cnkb.InteractionSummary;
 import gov.nih.nci.ctd2.dashboard.util.cnkb.UnAuthenticatedException;
 import gov.nih.nci.ctd2.dashboard.util.cytoscape.CyInteraction;
 import gov.nih.nci.ctd2.dashboard.util.cytoscape.CyNetwork;
@@ -145,44 +144,25 @@ public class CnkbController {
 	}
 
 	@Transactional
-	@RequestMapping(value = "interaction-result", method = { RequestMethod.POST,
+	@RequestMapping(value = "interaction-total-number", method = { RequestMethod.POST,
 			RequestMethod.GET }, headers = "Accept=application/text")
 	public ResponseEntity<String> getInteractionResult(@RequestParam("interactome") String interactome,
 			@RequestParam("selectedGenes") String selectedGenes) {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
 		final CNKB interactionsConnection = CNKB.getInstance(getCnkbDataURL());
-		InteractionSummary summary = null;
 		try {
 			String latestVersion = interactionsConnection.getLatestVersionNumber(interactome);
-			List<String> interactionTypes = interactionsConnection
-					.getInteractionTypesByInteractomeVersion(interactome,
-							latestVersion);
-
-			List<InteractionDetail> interactionDetails = null;
-			Short confidenceType = null;
 			@SuppressWarnings("unchecked")
 			List<String> selectedGenesList = (List<String>) new JSONDeserializer()
 					.deserialize(selectedGenes);
-			if (selectedGenesList != null && selectedGenesList.size() != 0) {
-
-				int c = 0;
+			if (selectedGenesList != null) {
+				int total = 0;
 				for (String gene : selectedGenesList) {
-					interactionDetails = interactionsConnection
-							.getInteractionsByGeneSymbol(gene.trim(),
-									interactome, latestVersion);
-					if (confidenceType == null
-							&& interactionDetails != null
-							&& interactionDetails.size() > 0)
-						confidenceType = interactionDetails.get(0)
-								.getConfidenceTypes().get(0);
-					for (int i = 0; i < interactionTypes.size(); i++) {
-						c += getInteractionNumber(
-								interactionDetails,
-								interactionTypes.get(i), confidenceType);
-					}
+					total += interactionsConnection
+							.getInteractionsByGeneSymbol(gene.trim(), interactome, latestVersion).size();
 				}
-				summary = new InteractionSummary(selectedGenesList, c);
+				return new ResponseEntity<String>(Integer.toString(total), headers, HttpStatus.OK);
 			}
 		} catch (ConnectException e) {
 			e.printStackTrace();
@@ -193,11 +173,8 @@ public class CnkbController {
 		} catch (UnAuthenticatedException e) {
 			e.printStackTrace();
 		}
-		JSONSerializer jsonSerializer = new JSONSerializer().exclude("*.class");
 
-		return new ResponseEntity<String>(
-				jsonSerializer.deepSerialize(summary), headers,
-				HttpStatus.OK);
+		return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
 	}
 
 	@Transactional
@@ -407,26 +384,6 @@ public class CnkbController {
 		}
 
 		return map;
-	}
-
-	private int getInteractionNumber(
-			List<InteractionDetail> interactionDetails, String interactionType,
-			Short confidenceType) {
-		int count = 0;
-		if (interactionDetails != null && interactionDetails.size() > 0) {
-			for (int i = 0; i < interactionDetails.size(); i++) {
-				InteractionDetail interactionDetail = interactionDetails.get(i);
-				if (interactionDetail != null
-						&& interactionType.equals(interactionDetail
-								.getInteractionType())
-						&& interactionDetail.getConfidenceTypes().contains(
-								confidenceType)) {
-					count++;
-				}
-
-			}
-		}
-		return count;
 	}
 
 	public ArrayList<InteractionDetail> getSelectedInteractions(
