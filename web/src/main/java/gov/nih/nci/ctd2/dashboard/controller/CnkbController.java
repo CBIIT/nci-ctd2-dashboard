@@ -39,11 +39,10 @@ import gov.nih.nci.ctd2.dashboard.model.Gene;
 import gov.nih.nci.ctd2.dashboard.model.Protein;
 import gov.nih.nci.ctd2.dashboard.model.Xref;
 import gov.nih.nci.ctd2.dashboard.util.cnkb.CNKB;
-import gov.nih.nci.ctd2.dashboard.util.cnkb.CellularNetWorkElementInformation;
 import gov.nih.nci.ctd2.dashboard.util.cnkb.InteractionAndCount;
 import gov.nih.nci.ctd2.dashboard.util.cnkb.InteractionDetail;
 import gov.nih.nci.ctd2.dashboard.util.cnkb.InteractionParticipant;
-import gov.nih.nci.ctd2.dashboard.util.cnkb.QueryResult;
+import gov.nih.nci.ctd2.dashboard.util.cnkb.InteractionSummary;
 import gov.nih.nci.ctd2.dashboard.util.cnkb.UnAuthenticatedException;
 import gov.nih.nci.ctd2.dashboard.util.cytoscape.CyInteraction;
 import gov.nih.nci.ctd2.dashboard.util.cytoscape.CyNetwork;
@@ -153,13 +152,12 @@ public class CnkbController {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
 		final CNKB interactionsConnection = CNKB.getInstance(getCnkbDataURL());
-		QueryResult queryResult = new QueryResult();
+		InteractionSummary summary = null;
 		try {
 			String latestVersion = interactionsConnection.getLatestVersionNumber(interactome);
 			List<String> interactionTypes = interactionsConnection
 					.getInteractionTypesByInteractomeVersion(interactome,
 							latestVersion);
-			queryResult.setInteractionTypeList(interactionTypes);
 
 			List<InteractionDetail> interactionDetails = null;
 			Short confidenceType = null;
@@ -168,9 +166,8 @@ public class CnkbController {
 					.deserialize(selectedGenes);
 			if (selectedGenesList != null && selectedGenesList.size() != 0) {
 
+				int c = 0;
 				for (String gene : selectedGenesList) {
-					CellularNetWorkElementInformation c = new CellularNetWorkElementInformation(
-							gene.trim());
 					interactionDetails = interactionsConnection
 							.getInteractionsByGeneSymbol(gene.trim(),
 									interactome, latestVersion);
@@ -180,14 +177,12 @@ public class CnkbController {
 						confidenceType = interactionDetails.get(0)
 								.getConfidenceTypes().get(0);
 					for (int i = 0; i < interactionTypes.size(); i++) {
-						c.addInteractionNum(getInteractionNumber(
+						c += getInteractionNumber(
 								interactionDetails,
-								interactionTypes.get(i), confidenceType));
+								interactionTypes.get(i), confidenceType);
 					}
-
-					queryResult.addCnkbElement(c);
 				}
-
+				summary = new InteractionSummary(selectedGenesList, c);
 			}
 		} catch (ConnectException e) {
 			e.printStackTrace();
@@ -201,7 +196,7 @@ public class CnkbController {
 		JSONSerializer jsonSerializer = new JSONSerializer().exclude("*.class");
 
 		return new ResponseEntity<String>(
-				jsonSerializer.deepSerialize(queryResult), headers,
+				jsonSerializer.deepSerialize(summary), headers,
 				HttpStatus.OK);
 	}
 

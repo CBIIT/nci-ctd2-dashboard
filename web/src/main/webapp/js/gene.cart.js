@@ -404,12 +404,10 @@ export const CnkbResultView = Backbone.View.extend({
             },
             dataType: "json",
             contentType: "json",
-            success: function (data) {
+            success: function (summary) {
                 $("#cnkb_data_progress").hide();
-                // other field not used: data.interactionTypeList
-                const total_interactions = data.cnkbElementList.map(x => x.interactionNumlist).reduce((total, val_array) => total + val_array.reduce((acc, val) => acc + val, 0), 0)
-                $("#total-interaction-number").text(total_interactions)
-                const geneNames = data.cnkbElementList.map(x => x.geneName).toString()
+                $("#total-interaction-number").text(summary.totalNumber)
+                const geneNames = summary.geneNames.toString()
                 $("#genecart-genes").text(geneNames);
                 $("#interactome-selected").text(selectedInteractome)
                 createNetwork(geneNames)
