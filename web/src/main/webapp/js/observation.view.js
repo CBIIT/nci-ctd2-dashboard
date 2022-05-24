@@ -230,6 +230,12 @@ export default Backbone.View.extend({
                                 }
                             );
 
+                            const node_set = data.edges.reduce((prev, curr) => {
+                                prev.add(curr.data.source)
+                                prev.add(curr.data.target)
+                                return prev
+                            }, new Set())
+                            data.nodes = [...node_set].map(x => { return { data: { id: x} } })
                             // load cytoscape
                             cytoscape({
                                 container: $('#cytoscape-sif'),

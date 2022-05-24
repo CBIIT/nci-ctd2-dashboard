@@ -443,34 +443,18 @@ public class CnkbController {
 		}
 	}
 
-	private CyNetwork convertToCyNetwork(List<Element> edgeList,
-			int interactionLimit, List<String> selectedGenesList) {
+	private CyNetwork convertToCyNetwork(List<Element> edgeList, int interactionLimit, List<String> selectedGenesList) {
 
 		CyNetwork cyNetwork = new CyNetwork();
-
-		HashSet<String> nodeNames = new HashSet<String>();
-		HashSet<String> interactionTypes = new HashSet<String>();
+		Set<String> interactionTypes = new HashSet<String>();
 
 		for (int i = 0; i < edgeList.size(); i++) {
 			if (i >= interactionLimit)
 				break;
 			cyNetwork.addEdge(edgeList.get(i));
-			nodeNames.add(edgeList.get(i).getProperty(Element.SOURCE)
-					.toString());
-			nodeNames.add(edgeList.get(i).getProperty(Element.TARGET)
-					.toString());
 			String interactionType = edgeList.get(i)
 					.getProperty(Element.ID).toString().split("\\.")[1].trim();
 			interactionTypes.add(getInteractionTypeMap().get(interactionType));
-		}
-
-		for (String nodeName : nodeNames) {
-			Element cyNode = Element.createNode(nodeName);
-			if (selectedGenesList.contains(nodeName))
-				cyNode.setProperty(Element.COLOR, "yellow");
-			else
-				cyNode.setProperty(Element.COLOR, "#DDD");
-			cyNetwork.addNode(cyNode);
 		}
 
 		List<CyInteraction> cyInteractions = new ArrayList<CyInteraction>();
@@ -483,7 +467,7 @@ public class CnkbController {
 		return cyNetwork;
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings({ "unchecked" })
 	private List<String> getInvalidNames(String geneSymbols) {
 		List<String> invalidGenes = new ArrayList<String>();
 		List<String> geneSymbolList = null;

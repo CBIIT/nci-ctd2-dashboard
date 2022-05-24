@@ -41,7 +41,6 @@ public class SifProxyController {
     public ResponseEntity<String> convertSIFtoJSON(@RequestParam("url") String url) {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json; charset=utf-8");
-        HashSet<String> nodeNames = new HashSet<String>();
         CyNetwork cyNetwork = new CyNetwork();
 
         if(isURLValid(url)) {
@@ -62,17 +61,9 @@ public class SifProxyController {
 
                     Element cyEdge = Element.createEdge(source + tokens[1].trim() + target, source, target);
                     cyNetwork.addEdge(cyEdge);
-
-                    nodeNames.add(source);
-                    nodeNames.add(target);
                 }
                 scanner.close();
                 inputStream.close();
-
-                for (String nodeName : nodeNames) {
-                    Element cyNode = Element.createNode(nodeName);
-                    cyNetwork.addNode(cyNode);
-                }
             } catch (IOException e) {
                 e.printStackTrace();
             }

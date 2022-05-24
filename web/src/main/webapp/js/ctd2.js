@@ -3023,6 +3023,20 @@ import ObservationView from './observation.view.js'
                         }
                         );
 
+                        const node_shape = {}
+                        const node_color = {}
+                        const node_set = data.edges.reduce((prev, curr) => {
+                            const source = curr.data.source
+                            const target = curr.data.target
+                            prev.add(source)
+                            prev.add(target)
+                            node_shape[source] = curr.data.source_shape
+                            node_color[source] = curr.data.source_color
+                            node_shape[target] = curr.data.target_shape
+                            node_color[target] = curr.data.target_color
+                            return prev
+                        }, new Set())
+                        data.nodes = [...node_set].map(x => { return { data: { id: x, shape: node_shape[x], color: node_color[x] } } })
                         window.cy = this;
                         cytoscape({
                             container: $('#mra-cytoscape'),

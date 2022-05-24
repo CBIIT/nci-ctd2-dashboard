@@ -1,13 +1,21 @@
 package gov.nih.nci.ctd2.dashboard.controller;
 
-import flexjson.JSONSerializer;
-
-import gov.nih.nci.ctd2.dashboard.util.cytoscape.CyNetwork;
-import gov.nih.nci.ctd2.dashboard.util.cytoscape.Element;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
@@ -19,19 +27,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Scanner;
-
+import flexjson.JSONSerializer;
+import gov.nih.nci.ctd2.dashboard.util.cytoscape.CyNetwork;
+import gov.nih.nci.ctd2.dashboard.util.cytoscape.Element;
 import gov.nih.nci.ctd2.dashboard.util.mra.MasterRegulator;
 import gov.nih.nci.ctd2.dashboard.util.mra.MraTargetBarcode;
 
@@ -104,13 +102,8 @@ public class MraController {
 
 		if (isURLValid(url)) {
 			try {
-				Object[] edgeNodeList = getEdgeNodeList(url, filterBy, nodeNumLimit);
-				@SuppressWarnings("unchecked")
-				List<Element> edgeList = (List<Element>) edgeNodeList[0];
-				@SuppressWarnings("unchecked")
-				Map<String, Element> nodeList = (Map<String, Element>) edgeNodeList[1];
-
-				CyNetwork cyNetwork = convertToCyNetwork(edgeList, nodeList, nodeNumLimit);
+				List<Element> edgeList = getEdgeList(url, filterBy, nodeNumLimit);
+				CyNetwork cyNetwork = convertToCyNetwork(edgeList, nodeNumLimit);
 				return new ResponseEntity<String>(
 						new JSONSerializer().exclude("*.class").deepSerialize(cyNetwork), headers,
 						HttpStatus.OK);
@@ -134,9 +127,7 @@ public class MraController {
 
 		if (isURLValid(url)) {
 			try {
-				Object[] edgeNodeList = getEdgeNodeList(url, filterBy, nodeNumLimit);
-				@SuppressWarnings("unchecked")
-				List<Element> edgeList = (List<Element>) edgeNodeList[0];
+				List<Element> edgeList = getEdgeList(url, filterBy, nodeNumLimit);
 				Float throttleValue = getThrottleValue(edgeList, nodeNumLimit);
 				return new ResponseEntity<String>(
 						new JSONSerializer().exclude("*.class").serialize(throttleValue), headers,
@@ -236,7 +227,7 @@ public class MraController {
 
 	}
 
-	private CyNetwork convertToCyNetwork(List<Element> edgeList, Map<String, Element> nodeList, int nodeNumLimit) {
+	private CyNetwork convertToCyNetwork(List<Element> edgeList, int nodeNumLimit) {
 		CyNetwork cyNetwork = new CyNetwork();
 
 		if (edgeList == null || edgeList.size() == 0)
@@ -253,7 +244,7 @@ public class MraController {
 		float maxValue = (Float) edgeList.get(edgeList.size() - 1)
 				.getProperty(WEIGHT);
 		float divisor = getDivisorValue(maxValue, minValue);
-		HashSet<String> nodeNames = new HashSet<String>();
+		Set<String> nodeNames = new HashSet<String>();
 		for (int i = 1; i <= edgeList.size(); i++) {
 			if (nodeNames.size() >= nodeNumLimit)
 				break;
@@ -270,15 +261,8 @@ public class MraController {
 					.getProperty(Element.SOURCE);
 			String targetId = (String) edgeList.get(index)
 					.getProperty(Element.TARGET);
-			if (!nodeNames.contains(sourceId)) {
-				cyNetwork.addNode(nodeList.get(sourceId));
-				nodeNames.add(sourceId);
-			}
-			if (!nodeNames.contains(targetId)) {
-				cyNetwork.addNode(nodeList.get(targetId));
-				nodeNames.add(targetId);
-			}
-
+			nodeNames.add(sourceId);
+			nodeNames.add(targetId);
 		}
 
 		return cyNetwork;
@@ -299,15 +283,13 @@ public class MraController {
 		return minValue;
 	}
 
-	private Object[] getEdgeNodeList(String url, String filterBy, int nodeNumLimit) throws IOException {
+	private List<Element> getEdgeList(String url, String filterBy, int nodeNumLimit) throws IOException {
 		URLConnection urlConnection = new URL(url).openConnection();
 		InputStream inputStream = urlConnection.getInputStream();
 		Scanner scanner = new Scanner(inputStream);
 
 		double absMaxDeScore = 0;
-		Object[] edgeNodeList = new Object[2];
 		List<Element> edgeList = new ArrayList<Element>();
-		Map<String, Element> nodeList = new HashMap<String, Element>();
 
 		List<String> filters = new ArrayList<String>();
 		if (filterBy != null && !filterBy.trim().equals("")) {
@@ -354,9 +336,7 @@ public class MraController {
 				}
 			} else if (line.contains("!target_table_begin")) {
 				line = scanner.nextLine();// skip header
-				// cyNetwork.addNode(source);
 				String sourceId = (String) source.getProperty(Element.ID);
-				nodeList.put(sourceId, source);
 				while (scanner.hasNextLine()) {
 					line = scanner.nextLine();
 					if (line.contains("!target_table_end"))
@@ -374,29 +354,18 @@ public class MraController {
 					cyEdge.setProperty(Element.SOURCE, sourceId);
 					cyEdge.setProperty(Element.TARGET, tokens[1]);
 					cyEdge.setProperty(WEIGHT, confValue);
-					// cyNetwork.addEdge(cyEdge);
+					cyEdge.setProperty("source_shape", source.getProperty(Element.SHAPE));
+					cyEdge.setProperty("source_color", source.getProperty(Element.COLOR));
+					cyEdge.setProperty("target_shape", shapeMap.get(tokens[2]));
+					cyEdge.setProperty("target_color", calculateColor(absMaxDeScore, Double.valueOf(tokens[4])));
 					edgeList.add(cyEdge);
-					if (!nodeList.keySet().contains(tokens[1])) {
-						target.setProperty(Element.ID, tokens[1]);
-						target.setProperty(Element.SHAPE,
-								shapeMap.get(tokens[2]));
-						target.setProperty(
-								Element.COLOR,
-								calculateColor(absMaxDeScore, Double.valueOf(
-										tokens[4])));
-						nodeList.put(tokens[1], target);
-					}
 				}
 			} // end !target_table_begin
 
 		} // end while
 		inputStream.close();
 
-		edgeNodeList[0] = edgeList;
-		edgeNodeList[1] = nodeList;
-
-		return edgeNodeList;
-
+		return edgeList;
 	}
 
 	private float getMinValue(List<Element> edgeList, int nodeNumLimit) {
