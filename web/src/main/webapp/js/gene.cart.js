@@ -390,11 +390,15 @@ export const CnkbResultView = Backbone.View.extend({
             .forEach(x => {
                 $("#supported-confidence-types").append(`<option>${x}</option>`)
             })
+        const network_data = {}
         $("#supported-confidence-types").change(function (event) {
             const confidence_type = $(event.target).val()
             const code = { "p-value": 7, "likelihood ratio": 1, "mutual information": 3, "mode of action": 6, "probability": 4 }
-            const selected = code[confidence_type]
-            console.debug(`selected confidence type code ${selected}`)
+            const confidence_type_code = code[confidence_type]
+            console.debug(`selected confidence type code ${confidence_type_code}`)
+            const new_size = 100 // TODO for test only
+            $("#displayed-interaction-number").text(new_size)
+            drawCNKBCytoscape(select_data(new_size), Encoder.htmlEncode(selectedInteractome), confidence_type_code)
         })
         $.ajax({
             url: "cnkb/interaction-total-number",
@@ -410,7 +414,7 @@ export const CnkbResultView = Backbone.View.extend({
                 const geneNames = selectedgenes.toString()
                 $("#genecart-genes").text(geneNames);
                 $("#interactome-selected").text(selectedInteractome)
-                createNetwork(geneNames)
+                createNetwork()
                 $('#cnkbExport').click(function (e) {
                     e.preventDefault();
                     $("#interactome").val(selectedInteractome);
@@ -424,14 +428,27 @@ export const CnkbResultView = Backbone.View.extend({
 
         const default_limit = 200;
 
-        const createNetwork = function (geneNames) {
+        const select_data = function (limit) {
+            const data = {}
+            data.edges = network_data.edges.slice(0, limit)
+            const node_set = data.edges.reduce((prev, curr) => {
+                prev.add(curr.data.source)
+                prev.add(curr.data.target)
+                return prev
+            }, new Set())
+            data.nodes = [...node_set].map(x => { return { data: { id: x, color: selectedgenes.includes(x) ? "yellow" : "#DDD" } } })
+            data.interactions = network_data.interactions
+            return data
+        }
+
+        const createNetwork = function () {
             $('#createnw_progress_indicator').show();
             $.ajax({
                 url: "cnkb/network",
                 data: {
                     interactome: selectedInteractome,
-                    selectedGenes: geneNames,
-                    interactionLimit: default_limit,
+                    selectedGenes: selectedgenes.toString(),
+                    //interactionLimit: default_limit,
                 },
                 dataType: "json",
                 contentType: "json",
@@ -441,10 +458,11 @@ export const CnkbResultView = Backbone.View.extend({
                         showAlertMessage("The network is empty.");
                         return;
                     }
+                    Object.assign(network_data, data)
                     // the default type here is arbitrary
                     const confidence_type = Object.keys(data.edges[0].data.confidences)[0];
-                    $("#displayed-interaction-number").text(data.edges.length)
-                    drawCNKBCytoscape(data, Encoder.htmlEncode(selectedInteractome), confidence_type);
+                    $("#displayed-interaction-number").text(default_limit)
+                    drawCNKBCytoscape(select_data(default_limit), Encoder.htmlEncode(selectedInteractome), confidence_type);
                 } //end success
             }); //end ajax
         } //end createnetwork
@@ -519,6 +537,8 @@ const drawCNKBCytoscape = function (data, description, confidence_type) {
     $("#gene-detail").hide()
     $("#interaction-detail").hide()
 
+    const CYTOSCAPE_TIMER = "cytoscape_timer"
+    console.time(CYTOSCAPE_TIMER)
     cytoscape({
         container: $('#cytoscape'),
         wheelSensitivity: 0.4,
@@ -530,6 +550,7 @@ const drawCNKBCytoscape = function (data, description, confidence_type) {
             stop: function () {
                 $("#cnkb_cytoscape_progress").remove();
                 this.stop();
+                console.timeEnd(CYTOSCAPE_TIMER)
             } // callback on layoutstop 
         },
         elements: data,
@@ -632,6 +653,7 @@ const drawCNKBCytoscape = function (data, description, confidence_type) {
         $("#gene-detail").hide()
         $("#interaction-detail").show()
     });
+    console.timeLog(CYTOSCAPE_TIMER)
 };
 
 const gene_and_link = function (gene_symbol, html_element) {
