@@ -399,9 +399,7 @@ public class CnkbController {
 						&& interactionDetail
 								.getConfidenceValue(selectedConfidenceType) != null) {
 					arrayList.add(interactionDetail);
-
 				}
-
 			}
 		}
 		return arrayList;

@@ -13,16 +13,12 @@ public class InteractionDetail {
 	private List<InteractionParticipant> participantList;
 	private final String interactionType;
 	private final Map<Short, Float> confidence;
-	private Short evidenceId;
 
-	public InteractionDetail(InteractionParticipant participant,
-			String interactionType,
-			Short evidenceId) {
+	public InteractionDetail(InteractionParticipant participant, String interactionType) {
 
 		participantList = new ArrayList<InteractionParticipant>();
 		participantList.add(participant);
 		this.interactionType = interactionType;
-		this.evidenceId = evidenceId;
 		confidence = new HashMap<Short, Float>();
 	}
 
@@ -61,10 +57,6 @@ public class InteractionDetail {
 
 	public String getInteractionType() {
 		return this.interactionType;
-	}
-
-	public Short getEvidenceId() {
-		return this.evidenceId;
 	}
 
 	public Map<Short, Float> getConfidences() {

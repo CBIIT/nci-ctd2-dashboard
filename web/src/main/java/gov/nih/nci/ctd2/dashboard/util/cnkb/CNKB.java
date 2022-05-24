@@ -272,10 +272,6 @@ public class CNKB {
 					geneName2 = msid2;
 				String interactionType = rs.getString("interaction_type").trim();
 				String interactionId = rs.getString("interaction_id");
-				Short evidenceId = 0;
-				if (rs.getString("evidence_id") != null && !rs.getString("evidence_id").trim().equals("null")) {
-					evidenceId = Short.valueOf(rs.getString("evidence_id"));
-				}
 
 				if (previousInteractionId == null || !previousInteractionId.equals(interactionId)) {
 					if (interactionDetail != null) {
@@ -286,17 +282,15 @@ public class CNKB {
 								if (interactionDetail.getParticipantList().size() > 1)
 									arrayList.add(interactionDetail);
 							}
-
 						}
 						interactionDetail = null;
 					}
 					previousInteractionId = interactionId;
-
 				}
 
 				if (interactionDetail == null) {
 					interactionDetail = new InteractionDetail(new InteractionParticipant(msid2, geneName2),
-							interactionType, evidenceId);
+							interactionType);
 					float confidenceValue = 1.0f;
 					try {
 						confidenceValue = (float) rs.getDouble("confidence_value");
@@ -318,7 +312,6 @@ public class CNKB {
 
 						for (int i = 0; i < values.length; i++)
 							interactionDetail.addConfidence(Float.valueOf(values[i]), Short.valueOf(types[i]));
-
 					}
 				} else {
 					interactionDetail.addParticipant(new InteractionParticipant(msid2, geneName2));
