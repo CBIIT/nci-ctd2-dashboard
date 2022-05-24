@@ -283,7 +283,8 @@ public class CNKB {
 							String edgeName = getEdgeName(interactionDetail, geneSymbol);
 							if (!edgeIdList.contains(edgeName)) {
 								edgeIdList.add(edgeName);
-								arrayList.add(interactionDetail);
+								if (interactionDetail.getParticipantList().size() > 1)
+									arrayList.add(interactionDetail);
 							}
 
 						}
@@ -336,7 +337,8 @@ public class CNKB {
 			String edgeName = getEdgeName(interactionDetail, geneSymbol);
 			if (!edgeIdList.contains(edgeName)) {
 				edgeIdList.add(edgeName);
-				arrayList.add(interactionDetail);
+				if (interactionDetail.getParticipantList().size() > 1)
+					arrayList.add(interactionDetail);
 			}
 
 			interactionDetail = null;
