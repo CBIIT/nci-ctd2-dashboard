@@ -396,9 +396,7 @@ export const CnkbResultView = Backbone.View.extend({
             const code = { "p-value": 7, "likelihood ratio": 1, "mutual information": 3, "mode of action": 6, "probability": 4 }
             const confidence_type_code = code[confidence_type]
             console.debug(`selected confidence type code ${confidence_type_code}`)
-            const new_size = 100 // TODO for test only
-            $("#displayed-interaction-number").text(new_size)
-            drawCNKBCytoscape(select_data(new_size), confidence_type_code)
+            drawCNKBCytoscape(select_data(confidence_type_code), confidence_type_code)
         })
         $.ajax({
             url: "cnkb/interaction-total-number",
@@ -423,14 +421,13 @@ export const CnkbResultView = Backbone.View.extend({
                     $('#cnkbExport-form').submit();
                 })
             }
+        });
 
-        }); //ajax cnkb/interaction-result end
+        const network_limit = 200;
 
-        const default_limit = 200;
-
-        const select_data = function (limit) {
+        const select_data = function (confidence_type) {
             const data = {}
-            data.edges = network_data.edges.slice(0, limit)
+            data.edges = network_data.edges.sort((a, b) => b.data.confidences[confidence_type] - a.data.confidences[confidence_type]).slice(0, network_limit)
             const node_set = data.edges.reduce((prev, curr) => {
                 prev.add(curr.data.source)
                 prev.add(curr.data.target)
@@ -461,8 +458,8 @@ export const CnkbResultView = Backbone.View.extend({
                     Object.assign(network_data, data)
                     // the default type here is arbitrary
                     const confidence_type = Object.keys(data.edges[0].data.confidences)[0];
-                    $("#displayed-interaction-number").text(default_limit)
-                    drawCNKBCytoscape(select_data(default_limit), confidence_type);
+                    $("#displayed-interaction-number").text(network_limit)
+                    drawCNKBCytoscape(select_data(confidence_type), confidence_type)
                 } //end success
             }); //end ajax
         } //end createnetwork
