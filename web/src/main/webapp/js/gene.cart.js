@@ -398,7 +398,7 @@ export const CnkbResultView = Backbone.View.extend({
             console.debug(`selected confidence type code ${confidence_type_code}`)
             const new_size = 100 // TODO for test only
             $("#displayed-interaction-number").text(new_size)
-            drawCNKBCytoscape(select_data(new_size), Encoder.htmlEncode(selectedInteractome), confidence_type_code)
+            drawCNKBCytoscape(select_data(new_size), confidence_type_code)
         })
         $.ajax({
             url: "cnkb/interaction-total-number",
@@ -437,7 +437,6 @@ export const CnkbResultView = Backbone.View.extend({
                 return prev
             }, new Set())
             data.nodes = [...node_set].map(x => { return { data: { id: x, color: selectedgenes.includes(x) ? "yellow" : "#DDD" } } })
-            data.interactions = network_data.interactions
             return data
         }
 
@@ -458,11 +457,12 @@ export const CnkbResultView = Backbone.View.extend({
                         showAlertMessage("The network is empty.");
                         return;
                     }
+                    make_legend(data.interactionTypes, Encoder.htmlEncode(selectedInteractome))
                     Object.assign(network_data, data)
                     // the default type here is arbitrary
                     const confidence_type = Object.keys(data.edges[0].data.confidences)[0];
                     $("#displayed-interaction-number").text(default_limit)
-                    drawCNKBCytoscape(select_data(default_limit), Encoder.htmlEncode(selectedInteractome), confidence_type);
+                    drawCNKBCytoscape(select_data(default_limit), confidence_type);
                 } //end success
             }); //end ajax
         } //end createnetwork
@@ -520,20 +520,25 @@ const context_menu_callback = sym => function (key, options) {
     $.contextMenu('destroy', '#cytoscape');
 }
 
-const drawCNKBCytoscape = function (data, description, confidence_type) {
+const make_legend = function (interaction_types, description) {
+    const edge_type_color = {
+        "protein-dna": "cyan",
+        "protein-protein": "orange",
+    }
     let svgHtml = "";
-    const interactions = data.interactions;
-    let x1 = 20 + 90 * (3 - interactions.length),
-        x2 = 53 + 90 * (3 - interactions.length);
-    _.each(interactions, function (aData) {
-        svgHtml = svgHtml + '<rect x="' + x1 + '" y="15" width="30" height="2" fill="' + aData.color + '" stroke="grey" stroke-width="0"/><text x="' + x2 + '" y="20" fill="grey">' + aData.type + '</text>';
-        x1 = x1 + aData.type.length * 11;
-        x2 = x2 + aData.type.length * 11;
+    let x1 = 20 + 90 * (3 - interaction_types.length),
+        x2 = 53 + 90 * (3 - interaction_types.length);
+    _.each(interaction_types, function (type) {
+        svgHtml = svgHtml + '<rect x="' + x1 + '" y="15" width="30" height="2" fill="' + edge_type_color[type] + '" stroke="grey" stroke-width="0"/><text x="' + x2 + '" y="20" fill="grey">' + type + '</text>';
+        x1 = x1 + type.length * 11;
+        x2 = x2 + type.length * 11;
     });
 
     $("#network-description").text(description)
     $("#legend-svg").html(svgHtml)
+}
 
+const drawCNKBCytoscape = function (data, confidence_type) {
     $("#gene-detail").hide()
     $("#interaction-detail").hide()
 

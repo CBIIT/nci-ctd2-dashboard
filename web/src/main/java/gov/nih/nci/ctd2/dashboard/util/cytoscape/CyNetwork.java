@@ -5,7 +5,7 @@ import java.util.List;
 
 public class CyNetwork {
     List<Element> edges = new ArrayList<Element>();
-    List<CyInteraction> interactions = new ArrayList<CyInteraction>();
+    List<String> interactionTypes = new ArrayList<String>();
 
     public List<Element> getEdges() {
         return edges;
@@ -15,12 +15,12 @@ public class CyNetwork {
         this.edges = edges;
     }
 
-    public List<CyInteraction> getInteractions() {
-        return this.interactions;
+    public List<String> getInteractionTypes() {
+        return this.interactionTypes;
     }
 
-    public void setInteractions(List<CyInteraction> interactions) {
-        this.interactions = interactions;
+    public void setInteractions(List<String> interactionTypes) {
+        this.interactionTypes = interactionTypes;
     }
 
     public boolean addEdge(Element edge) {

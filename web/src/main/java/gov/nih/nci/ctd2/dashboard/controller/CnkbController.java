@@ -43,7 +43,6 @@ import gov.nih.nci.ctd2.dashboard.util.cnkb.InteractionAndCount;
 import gov.nih.nci.ctd2.dashboard.util.cnkb.InteractionDetail;
 import gov.nih.nci.ctd2.dashboard.util.cnkb.InteractionParticipant;
 import gov.nih.nci.ctd2.dashboard.util.cnkb.UnAuthenticatedException;
-import gov.nih.nci.ctd2.dashboard.util.cytoscape.CyInteraction;
 import gov.nih.nci.ctd2.dashboard.util.cytoscape.CyNetwork;
 import gov.nih.nci.ctd2.dashboard.util.cytoscape.Element;
 
@@ -455,12 +454,7 @@ public class CnkbController {
 			interactionTypes.add(getInteractionTypeMap().get(interactionType));
 		}
 
-		List<CyInteraction> cyInteractions = new ArrayList<CyInteraction>();
-		for (String interactionType : interactionTypes) {
-			cyInteractions.add(new CyInteraction(interactionType, colorMap
-					.get(interactionType)));
-		}
-		cyNetwork.setInteractions(cyInteractions);
+		cyNetwork.setInteractions(new ArrayList<String>(interactionTypes));
 
 		return cyNetwork;
 	}
