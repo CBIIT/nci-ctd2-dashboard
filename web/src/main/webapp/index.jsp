@@ -2390,7 +2390,7 @@
                                     <select id=supported-confidence-types>
                                     </select>
                                 </div>
-                                <div style="padding:5px;">Show fewer/more interactions <input type="range" min="1" max="100" value="50" style="width:100%"></div>
+                                <div style="padding:5px;">Show fewer/more interactions <input type="range" min="10" max="100" style="width:100%" id=interaction-limit></div>
                             </div>
                         </div>
                      </div>

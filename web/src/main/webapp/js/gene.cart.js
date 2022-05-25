@@ -409,6 +409,7 @@ export const CnkbResultView = Backbone.View.extend({
             success: function (totalNumber) {
                 $("#cnkb_data_progress").hide();
                 $("#total-interaction-number").text(totalNumber)
+                $("#interaction-limit").attr("max", totalNumber)
                 const geneNames = selectedgenes.toString()
                 $("#genecart-genes").text(geneNames);
                 $("#interactome-selected").text(selectedInteractome)
@@ -423,7 +424,7 @@ export const CnkbResultView = Backbone.View.extend({
             }
         });
 
-        const network_limit = 200;
+        let network_limit = 200;
 
         const select_data = function (confidence_type) {
             const data = {}
@@ -460,6 +461,12 @@ export const CnkbResultView = Backbone.View.extend({
                     const confidence_type = Object.keys(data.edges[0].data.confidences)[0];
                     $("#displayed-interaction-number").text(network_limit)
                     drawCNKBCytoscape(select_data(confidence_type), confidence_type)
+                    $("#interaction-limit").val(network_limit).on("input", function () {
+                        $("#displayed-interaction-number").text(this.value)
+                    }).on("change", function () {
+                        network_limit = this.value
+                        drawCNKBCytoscape(select_data(confidence_type), confidence_type)
+                    })
                 } //end success
             }); //end ajax
         } //end createnetwork
