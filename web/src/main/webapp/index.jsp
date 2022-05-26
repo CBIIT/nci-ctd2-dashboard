@@ -2337,7 +2337,6 @@
                              <input type="hidden" name="interactome" id="interactome">
                              <input type="hidden" name="selectedGenes" id="selectedGenes">  
                              <input type="hidden" name="interactionLimit" id="interactionLimit">
-                             <input type="hidden" name="throttle" id="throttle">
                      </form>
                    </div>
                    <div class="col-1">
@@ -2368,8 +2367,8 @@
                             <br/>
                             <span id=network-description></span>
                         </div>
-                        <div style="text-align: center"><button style="margin:5px;" id=cnkbExport>Export all interactions</button>
-                            <button style="margin:5px;">Export currently displayed</button></div>
+                        <div style="text-align: center"><button style="margin:5px;" id=cnkb-export-all>Export all interactions</button>
+                            <button style="margin:5px;" id=cnkb-export-displayed>Export currently displayed</button></div>
                         </div>
                         <div style="width: 200px">
                             <div id=network-detail-viewer style="margin:10px; padding:5px; border-style: solid; border-width:1px; height: 400px;">

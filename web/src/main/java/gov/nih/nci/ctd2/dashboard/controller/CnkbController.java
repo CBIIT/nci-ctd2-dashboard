@@ -230,65 +230,49 @@ public class CnkbController {
 	public void downloadCnkbResult(
 			@RequestParam("interactome") String interactome,
 			@RequestParam("selectedGenes") String selectedGenes,
-			@RequestParam("throttle") String throttle,
 			HttpServletResponse response) {
 
 		CNKB interactionsConnection = CNKB.getInstance(getCnkbDataURL());
 		String filename = "cnkbResult";
 
 		response.setContentType("application/octet-stream");
-		response.addHeader("Content-Disposition", "attachment; filename=\""
-				+ filename + ".sif\"");
+		response.addHeader("Content-Disposition", "attachment; filename=\"" + filename + ".sif\"");
 		response.addHeader("Content-Transfer-Encoding", "binary");
 
 		try {
 			String version = interactionsConnection.getLatestVersionNumber(interactome);
-			List<String> interactionTypes = interactionsConnection
-					.getInteractionTypesByInteractomeVersion(interactome,
-							version);
-			List<InteractionDetail> interactionDetails = null;
+			List<String> interactionTypes = interactionsConnection.getInteractionTypesByInteractomeVersion(interactome,
+					version);
 
 			List<String> selectedGenesList = convertStringToList(selectedGenes);
 
 			OutputStream outputStream = response.getOutputStream();
 
-			if (selectedGenesList.size() != 0) {
-				Short confidenceType = null;
-				HashMap<String, String> map = interactionsConnection
-						.getInteractionTypeMap();
-				for (String gene : selectedGenesList) {
-					interactionDetails = interactionsConnection
-							.getInteractionsByGeneSymbol(gene.trim(),
-									interactome, version);
-					if (interactionDetails == null
-							|| interactionDetails.size() == 0)
+			Short confidenceType = null;
+			Map<String, String> map = interactionsConnection.getInteractionTypeMap();
+			for (String gene : selectedGenesList) {
+				List<InteractionDetail> interactionDetails = interactionsConnection
+						.getInteractionsByGeneSymbol(gene.trim(), interactome, version);
+				if (interactionDetails == null || interactionDetails.size() == 0)
+					continue;
+				if (confidenceType == null)
+					confidenceType = interactionDetails.get(0).getConfidenceTypes().get(0);
+				for (int i = 0; i < interactionTypes.size(); i++) {
+					List<InteractionDetail> interactionDetailList = getSelectedInteractions(interactionDetails,
+							interactionTypes.get(i), confidenceType);
+					if (interactionDetailList.size() == 0)
 						continue;
-					if (confidenceType == null)
-						confidenceType = interactionDetails.get(0)
-								.getConfidenceTypes().get(0);
-					for (int i = 0; i < interactionTypes.size(); i++) {
-						List<InteractionDetail> interactionDetailList = getSelectedInteractions(
-								interactionDetails, interactionTypes.get(i),
-								confidenceType);
-						if (interactionDetailList.size() == 0)
-							continue;
-						StringBuffer buf = new StringBuffer(gene + " "
-								+ map.get(interactionTypes.get(i)));
-						for (InteractionDetail interactionDetail : interactionDetailList) {
-							List<InteractionParticipant> pList = interactionDetail
-									.getParticipantList();
-							for (int j = 0; j < pList.size(); j++) {
-								if (!pList.get(j).getGeneName().equals(gene))
-									buf.append(" " + pList.get(j).getGeneName());
-							}
-
+					StringBuffer buf = new StringBuffer(gene + " " + map.get(interactionTypes.get(i)));
+					for (InteractionDetail interactionDetail : interactionDetailList) {
+						List<InteractionParticipant> pList = interactionDetail.getParticipantList();
+						for (int j = 0; j < pList.size(); j++) {
+							if (!pList.get(j).getGeneName().equals(gene))
+								buf.append(" " + pList.get(j).getGeneName());
 						}
-						buf.append("\n");
-						outputStream.write(buf.toString().getBytes());
 					}
-
+					buf.append("\n");
+					outputStream.write(buf.toString().getBytes());
 				}
-
 			}
 			outputStream.close();
 		} catch (UnAuthenticatedException uae) {
@@ -300,7 +284,6 @@ public class CnkbController {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	@Transactional
@@ -385,10 +368,14 @@ public class CnkbController {
 		return map;
 	}
 
-	public ArrayList<InteractionDetail> getSelectedInteractions(
+	/*
+	 * given a list of interactions, filter based on interactionType and
+	 * confidenceType
+	 */
+	private List<InteractionDetail> getSelectedInteractions(
 			List<InteractionDetail> interactionDetails, String interactionType,
 			short selectedConfidenceType) {
-		ArrayList<InteractionDetail> arrayList = new ArrayList<InteractionDetail>();
+		List<InteractionDetail> arrayList = new ArrayList<InteractionDetail>();
 		if (interactionDetails != null && interactionDetails.size() > 0) {
 			for (int i = 0; i < interactionDetails.size(); i++) {
 				InteractionDetail interactionDetail = interactionDetails.get(i);

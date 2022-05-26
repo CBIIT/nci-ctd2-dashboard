@@ -414,11 +414,10 @@ export const CnkbResultView = Backbone.View.extend({
                 $("#genecart-genes").text(geneNames);
                 $("#interactome-selected").text(selectedInteractome)
                 createNetwork()
-                $('#cnkbExport').click(function (e) {
+                $('#cnkb-export-all').click(function (e) {
                     e.preventDefault();
                     $("#interactome").val(selectedInteractome);
                     $("#selectedGenes").val(geneNames);
-                    $("#throttle").val("");
                     $('#cnkbExport-form').submit();
                 })
             }
