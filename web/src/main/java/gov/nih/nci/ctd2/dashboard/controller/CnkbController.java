@@ -1,11 +1,20 @@
 package gov.nih.nci.ctd2.dashboard.controller;
 
-import flexjson.JSONDeserializer;
-import flexjson.JSONSerializer;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.ConnectException;
+import java.net.SocketTimeoutException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
@@ -17,23 +26,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.io.IOException;
-import java.io.OutputStream;
-
-import java.net.ConnectException;
-import java.net.SocketTimeoutException;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletResponse;
-
+import flexjson.JSONDeserializer;
+import flexjson.JSONSerializer;
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
 import gov.nih.nci.ctd2.dashboard.model.Gene;
 import gov.nih.nci.ctd2.dashboard.model.Protein;
@@ -230,6 +224,9 @@ public class CnkbController {
 	public void downloadCnkbResult(
 			@RequestParam("interactome") String interactome,
 			@RequestParam("selectedGenes") String selectedGenes,
+			@RequestParam(value = "all", required = false, defaultValue = "true") Boolean all,
+			@RequestParam(value = "confidenceType", required = false, defaultValue = "1") int confidenceType,
+			@RequestParam(value = "interactionLimit", required = false, defaultValue = "100") int limit,
 			HttpServletResponse response) {
 
 		CNKB interactionsConnection = CNKB.getInstance(getCnkbDataURL());
@@ -241,38 +238,31 @@ public class CnkbController {
 
 		try {
 			String version = interactionsConnection.getLatestVersionNumber(interactome);
-			List<String> interactionTypes = interactionsConnection.getInteractionTypesByInteractomeVersion(interactome,
-					version);
 
 			List<String> selectedGenesList = convertStringToList(selectedGenes);
 
 			OutputStream outputStream = response.getOutputStream();
 
-			Short confidenceType = null;
 			Map<String, String> map = interactionsConnection.getInteractionTypeMap();
 			for (String gene : selectedGenesList) {
 				List<InteractionDetail> interactionDetails = interactionsConnection
 						.getInteractionsByGeneSymbol(gene.trim(), interactome, version);
 				if (interactionDetails == null || interactionDetails.size() == 0)
 					continue;
-				if (confidenceType == null)
-					confidenceType = interactionDetails.get(0).getConfidenceTypes().get(0);
-				for (int i = 0; i < interactionTypes.size(); i++) {
-					List<InteractionDetail> interactionDetailList = getSelectedInteractions(interactionDetails,
-							interactionTypes.get(i), confidenceType);
-					if (interactionDetailList.size() == 0)
-						continue;
-					StringBuffer buf = new StringBuffer(gene + " " + map.get(interactionTypes.get(i)));
-					for (InteractionDetail interactionDetail : interactionDetailList) {
-						List<InteractionParticipant> pList = interactionDetail.getParticipantList();
-						for (int j = 0; j < pList.size(); j++) {
-							if (!pList.get(j).getGeneName().equals(gene))
-								buf.append(" " + pList.get(j).getGeneName());
-						}
-					}
-					buf.append("\n");
-					outputStream.write(buf.toString().getBytes());
+				if (!all) {
+					interactionDetails = filter(interactionDetails, confidenceType, limit);
 				}
+				StringBuffer buf = new StringBuffer(
+						gene + " " + map.get(interactionDetails.get(0).getInteractionType()));
+				for (InteractionDetail interactionDetail : interactionDetails) {
+					List<InteractionParticipant> pList = interactionDetail.getParticipantList();
+					for (int j = 0; j < pList.size(); j++) {
+						if (!pList.get(j).getGeneName().equals(gene))
+							buf.append(" " + pList.get(j).getGeneName());
+					}
+				}
+				buf.append("\n");
+				outputStream.write(buf.toString().getBytes());
 			}
 			outputStream.close();
 		} catch (UnAuthenticatedException uae) {
@@ -284,6 +274,13 @@ public class CnkbController {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private List<InteractionDetail> filter(List<InteractionDetail> all, int confidenceType, int limit) {
+		all.sort(
+				(InteractionDetail h1, InteractionDetail h2) -> -h1.getConfidenceValue(confidenceType)
+						.compareTo(h2.getConfidenceValue(confidenceType)));
+		return all.subList(0, limit);
 	}
 
 	@Transactional
@@ -366,29 +363,6 @@ public class CnkbController {
 		}
 
 		return map;
-	}
-
-	/*
-	 * given a list of interactions, filter based on interactionType and
-	 * confidenceType
-	 */
-	private List<InteractionDetail> getSelectedInteractions(
-			List<InteractionDetail> interactionDetails, String interactionType,
-			short selectedConfidenceType) {
-		List<InteractionDetail> arrayList = new ArrayList<InteractionDetail>();
-		if (interactionDetails != null && interactionDetails.size() > 0) {
-			for (int i = 0; i < interactionDetails.size(); i++) {
-				InteractionDetail interactionDetail = interactionDetails.get(i);
-
-				if (interactionType.equals(interactionDetail
-						.getInteractionType())
-						&& interactionDetail
-								.getConfidenceValue(selectedConfidenceType) != null) {
-					arrayList.add(interactionDetail);
-				}
-			}
-		}
-		return arrayList;
 	}
 
 	private List<String> convertStringToList(String str) {

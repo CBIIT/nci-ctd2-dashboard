@@ -390,10 +390,10 @@ export const CnkbResultView = Backbone.View.extend({
             .forEach(x => {
                 $("#supported-confidence-types").append(`<option>${x}</option>`)
             })
+        const code = { "p-value": 7, "likelihood ratio": 1, "mutual information": 3, "mode of action": 6, "probability": 4 }
         const network_data = {}
         $("#supported-confidence-types").change(function (event) {
             const confidence_type = $(event.target).val()
-            const code = { "p-value": 7, "likelihood ratio": 1, "mutual information": 3, "mode of action": 6, "probability": 4 }
             const confidence_type_code = code[confidence_type]
             console.debug(`selected confidence type code ${confidence_type_code}`)
             drawCNKBCytoscape(select_data(confidence_type_code), confidence_type_code)
@@ -418,6 +418,16 @@ export const CnkbResultView = Backbone.View.extend({
                     e.preventDefault();
                     $("#interactome").val(selectedInteractome);
                     $("#selectedGenes").val(geneNames);
+                    $('#cnkbExport-form').submit();
+                })
+                $('#cnkb-export-displayed').click(function (e) {
+                    e.preventDefault();
+                    $("#interactome").val(selectedInteractome);
+                    $("#selectedGenes").val(geneNames);
+                    $("#all").val(false);
+                    const confidence_type_code = code[$("#supported-confidence-types").val()]
+                    $("#confidenceType").val(confidence_type_code);
+                    $("#interactionLimit").val(network_limit);
                     $('#cnkbExport-form').submit();
                 })
             }

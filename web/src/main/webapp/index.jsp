@@ -2336,6 +2336,8 @@
                      <form method="POST" action="cnkb/download" id="cnkbExport-form" style="display: none;">
                              <input type="hidden" name="interactome" id="interactome">
                              <input type="hidden" name="selectedGenes" id="selectedGenes">  
+                             <input type="hidden" name="all" id="all">
+                             <input type="hidden" name="confidenceType" id="confidenceType">
                              <input type="hidden" name="interactionLimit" id="interactionLimit">
                      </form>
                    </div>
