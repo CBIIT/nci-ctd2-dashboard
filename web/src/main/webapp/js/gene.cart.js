@@ -659,15 +659,14 @@ const drawCNKBCytoscape = function (data, confidence_type) {
         $("#gene-detail").show()
     }).on('tap', 'edge', function (event) {
         const edge_data = event.target;
-        console.debug(edge_data)
-        console.log(event.target.data("id"));
-        console.debug('confidences:')
-        console.debug(edge_data.data("confidences"))
-        console.debug(`confidence type: ${confidence_type}`)
-        const value = edge_data.data("confidences")[confidence_type]
-        console.debug(`confidence value: ${value}`)
         gene_and_link(edge_data.data("source"), $("#interaction-source"))
         gene_and_link(edge_data.data("target"), $("#interaction-target"))
+        const confidences = edge_data.data("confidences")
+        const types = { 7: "p-value", 1: "likelihood ratio", 3: "mutual information", 6: "mode of action", 4: "probability" }
+        $("#interaction-values").empty()
+        for (const type in confidences) {
+            $("#interaction-values").append(`<li>${types[type]}: ${confidences[type]}</li>`)
+        }
         $("#gene-detail").hide()
         $("#interaction-detail").show()
     });

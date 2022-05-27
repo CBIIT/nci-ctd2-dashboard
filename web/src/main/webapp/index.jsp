@@ -2382,7 +2382,7 @@
                                 </div>
                                 <div id=interaction-detail>
                                     <div><b>Interaction genes:</b> <span id=interaction-source></span> <span id=interaction-target></span></div>
-                                    <div><b>Interaction values:</b> p-value <span id=interaction-pvalue></span>; Likelihood <span id=interaction-likelihood></span>; Mutual information <span id=interaction-mutualinformation></span></div>
+                                    <div><b>Interaction values:</b> <ul id=interaction-values></ul></div>
                                 </div>
                             </div>
                             <div id=filtering-interactions style="margin:10px; padding:5px; border-style: solid; border-width:1px">
