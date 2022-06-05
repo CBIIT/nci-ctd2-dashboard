@@ -235,8 +235,11 @@ public class CNKB {
 		return arrayList;
 	}
 
+	public Set<String> interactionNames = null;
+
 	public ArrayList<String> getNciDatasetAndInteractioCount()
 			throws ConnectException, SocketTimeoutException, IOException, UnAuthenticatedException {
+		interactionNames = new HashSet<String>();
 		ArrayList<String> arrayList = new ArrayList<String>();
 
 		String datasetName = null;
@@ -248,6 +251,7 @@ public class CNKB {
 		while (rs.next()) {
 
 			datasetName = rs.getString("name").trim();
+			interactionNames.add(datasetName);
 			interactionCount = (int) rs.getDouble("interaction_count");
 			arrayList.add(datasetName + " (" + interactionCount + " interactions)");
 		}

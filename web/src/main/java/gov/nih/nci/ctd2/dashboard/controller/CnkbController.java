@@ -106,12 +106,15 @@ public class CnkbController {
 		final CNKB interactionsConnection = CNKB.getInstance(getCnkbDataURL());
 		CnkbObject cnkbObject = null;
 		try {
+			List<String> interactomeList = interactionsConnection.getNciDatasetAndInteractioCount();
+			if(interactome!=null && interactome.trim().length()>0 && !interactionsConnection.interactionNames.contains(interactome.trim())) {
+				return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
+			}
  
 			if (dataType.equals("interactome-context")) {
 				cnkbObject = new InteractomeInfo();
 				((InteractomeInfo) cnkbObject)
-						.setInteractomeList(interactionsConnection
-								.getNciDatasetAndInteractioCount());
+						.setInteractomeList(interactomeList);
 			} else if (dataType.equals("interactome-version")) {
 				cnkbObject = new InteractomeInfo();
 				((InteractomeInfo) cnkbObject)
@@ -234,6 +237,12 @@ public class CnkbController {
 		CNKB interactionsConnection = CNKB.getInstance(getCnkbDataURL());
 		CyNetwork cyNetwork = null;
 		try {
+			if(interactionsConnection.interactionNames==null) {
+				interactionsConnection.getNciDatasetAndInteractioCount(); // ignore the return value
+			}
+			if(!interactionsConnection.interactionNames.contains(interactome)) {
+				return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
+			}
 
 			List<InteractionDetail> interactionDetails = null;
 			List<String> selectedGenesList = convertStringToList(selectedGenes);
