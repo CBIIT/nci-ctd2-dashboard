@@ -196,10 +196,6 @@ public class ObservationController {
         final private String summary;
     }
 
-    /*
-     * For a given submission, tier is decided so there is point of further
-     * specifiying tier.
-     */
     @Transactional
     @RequestMapping(value = "bySubmissionAndSubject", method = { RequestMethod.GET,
             RequestMethod.POST }, headers = "Accept=application/json")
