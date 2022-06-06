@@ -248,6 +248,12 @@ public class ObservationController {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json; charset=utf-8");
 
+        // ecocode is from the application, not the end user, so it always match the
+        // exact pattern
+        if (!ecocode.matches("ECO:\\d{7}")) {
+            return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
+        }
+
         String summaryTemplate = dashboardDao.getEntityById(Submission.class, submissionId).getObservationTemplate()
                 .getObservationSummary();
 

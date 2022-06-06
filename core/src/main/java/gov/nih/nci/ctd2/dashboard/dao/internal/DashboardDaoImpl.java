@@ -1082,13 +1082,21 @@ public class DashboardDaoImpl implements DashboardDao {
 
     @Override
     public List<Observation> getObservationsForSubmissionAndEcoCode(Integer submissionId, String ecocode) {
+        // ecocode is from the application, not the end user, so it always match the
+        // exact pattern
+        if (!ecocode.matches("ECO:\\d{7}")) {
+            return new ArrayList<Observation>();
+        }
+
         String sql = "SELECT observation.id FROM observation"
                 + " JOIN submission ON observation.submission_id=submission.id"
                 + " JOIN observation_template ON submission.observationTemplate_id=observation_template.id"
-                + " WHERE submission.id=" + submissionId + " AND ecocode LIKE '%" + ecocode + "%'";
+                + " WHERE submission.id=:sid AND ecocode LIKE :eco";
         Session session = getSession();
         @SuppressWarnings("unchecked")
         org.hibernate.query.Query<Integer> query = session.createNativeQuery(sql);
+        query.setParameter("sid", submissionId);
+        query.setParameter("eco", "%" + ecocode + "%");
         List<Integer> idList = query.list();
         List<Observation> list = new ArrayList<Observation>();
         for (Integer id : idList) {
@@ -2238,9 +2246,10 @@ public class DashboardDaoImpl implements DashboardDao {
                 String submissionTitle = (String) obj[0];
                 String projectTitle = (String) obj[1];
                 /*
-                for the detail about multi-center submission, see https://github.com/CBIIT/nci-ctd2-dashboard/issues/444
-                For now, there is no "CTD² Network Collaboration" in real data.
-                */
+                 * for the detail about multi-center submission, see
+                 * https://github.com/CBIIT/nci-ctd2-dashboard/issues/444
+                 * For now, there is no "CTD² Network Collaboration" in real data.
+                 */
                 String submittingCenter = (String) obj[2];
                 String submissionDate = new SimpleDateFormat("yyyy-MM-dd").format((Timestamp) obj[3]);
                 Integer observationTier = (Integer) obj[4];
@@ -2310,7 +2319,7 @@ public class DashboardDaoImpl implements DashboardDao {
             session.close();
             out.close();
 
-            if(zipExport) {
+            if (zipExport) {
                 try (ZipOutputStream zipOutputStream = new ZipOutputStream(new FileOutputStream(filename + ".zip"))) {
                     zipOutputStream.putNextEntry(new ZipEntry("master-export.txt"));
                     zipOutputStream.write(Files.readAllBytes(Paths.get(filename)));
