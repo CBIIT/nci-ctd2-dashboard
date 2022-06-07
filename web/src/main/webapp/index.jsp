@@ -2381,7 +2381,7 @@
                                     <div><b>References:</b> <span id=references></span></div>
                                 </div>
                                 <div id=interaction-detail>
-                                    <div><b>Interaction genes:</b> <span id=interaction-source></span> <span id=interaction-target></span></div>
+                                    <div><b>Interaction genes:</b><ul><li id=interaction-source></li> <li id=interaction-target></li></ul></div>
                                     <div><b>Interaction values:</b> <ul id=interaction-values></ul></div>
                                 </div>
                             </div>
