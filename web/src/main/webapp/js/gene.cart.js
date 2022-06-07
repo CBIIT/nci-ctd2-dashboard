@@ -554,6 +554,16 @@ const make_legend = function (interaction_types, description) {
 const drawCNKBCytoscape = function (data, confidence_type) {
     $("#gene-detail").hide()
     $("#interaction-detail").hide()
+    let min_w = 1
+    let max_w = -1
+    data.edges.forEach(x => {
+        x.data.weight = x.data.confidences[confidence_type]
+        if (x.data.weight > max_w) max_w = x.data.weight
+        if (x.data.weight < min_w) min_w = x.data.weight
+    })
+    let range_w = max_w - min_w
+    if (range_w <= 0) range_w = 1
+    data.edges.forEach(x => x.data.weight = (x.data.weight - min_w) / range_w)
 
     const CYTOSCAPE_TIMER = "cytoscape_timer"
     console.time(CYTOSCAPE_TIMER)
@@ -586,7 +596,7 @@ const drawCNKBCytoscape = function (data, confidence_type) {
             })
             .selector("edge")
             .css({
-                "width": "mapData(confidences[confidence_type], 0, 1, 1, 3)",
+                "width": "mapData(weight, 0, 1, 1, 3)",
                 "target-arrow-shape": "circle",
                 "source-arrow-shape": "circle",
                 "line-color": "data(color)"
