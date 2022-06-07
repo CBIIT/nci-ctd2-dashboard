@@ -2386,11 +2386,11 @@
                                 </div>
                             </div>
                             <div id=filtering-interactions style="margin:10px; padding:5px; border-style: solid; border-width:1px">
-                                <div style="padding:5px;">Showing <span id=displayed-interaction-number></span> out of <span id=total-interaction-number></span> total interactions.</div>
                                 <div style="padding:5px;">Confidence type
                                     <select id=supported-confidence-types>
                                     </select>
                                 </div>
+                                <div style="padding:5px;">Showing <span id=displayed-interaction-number></span> out of <span id=total-interaction-number></span> total interactions.</div>
                                 <div style="padding:5px;">Show fewer/more interactions <input type="range" min="10" max="100" style="width:100%" id=interaction-limit></div>
                             </div>
                         </div>
