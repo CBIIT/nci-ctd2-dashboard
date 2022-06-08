@@ -244,22 +244,23 @@ public class CnkbController {
 			OutputStream outputStream = response.getOutputStream();
 
 			Map<String, String> map = interactionsConnection.getInteractionTypeMap();
+			List<InteractionDetail> interactionDetails = new ArrayList<InteractionDetail>();
 			for (String gene : selectedGenesList) {
-				List<InteractionDetail> interactionDetails = interactionsConnection
-						.getInteractionsByGeneSymbol(gene.trim(), interactome, version);
-				if (interactionDetails == null || interactionDetails.size() == 0)
-					continue;
-				if (!all) {
-					interactionDetails = filter(interactionDetails, confidenceType, limit);
-				}
+				interactionDetails
+						.addAll(interactionsConnection.getInteractionsByGeneSymbol(gene.trim(), interactome, version));
+			}
+			if (!all && interactionDetails.size() > limit) {
+				interactionDetails = filter(interactionDetails, confidenceType, limit);
+			}
+			for (String gene : selectedGenesList) {
 				StringBuffer buf = new StringBuffer(
 						gene + " " + map.get(interactionDetails.get(0).getInteractionType()));
 				for (InteractionDetail interactionDetail : interactionDetails) {
 					List<InteractionParticipant> pList = interactionDetail.getParticipantList();
-					for (int j = 0; j < pList.size(); j++) {
-						if (!pList.get(j).getGeneName().equals(gene))
-							buf.append(" " + pList.get(j).getGeneName());
-					}
+					if (pList.get(0).getGeneName().equals(gene))
+						buf.append(" " + pList.get(1).getGeneName());
+					if (pList.get(1).getGeneName().equals(gene))
+						buf.append(" " + pList.get(0).getGeneName());
 				}
 				buf.append("\n");
 				outputStream.write(buf.toString().getBytes());

@@ -418,6 +418,7 @@ export const CnkbResultView = Backbone.View.extend({
                     e.preventDefault();
                     $("#interactome").val(selectedInteractome);
                     $("#selectedGenes").val(geneNames);
+                    $("#all").val(true);
                     $('#cnkbExport-form').submit();
                 })
                 $('#cnkb-export-displayed').click(function (e) {
