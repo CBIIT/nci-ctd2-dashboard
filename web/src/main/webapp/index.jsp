@@ -2392,6 +2392,8 @@
                                 </div>
                                 <div style="padding:5px;">Showing <span id=displayed-interaction-number></span> out of <span id=total-interaction-number></span> total interactions.</div>
                                 <div style="padding:5px;">Show fewer/more interactions <input type="range" min="10" max="100" style="width:100%" id=interaction-limit></div>
+                                <div style="margin:1px;height:1.5em;"><button style="float:left" id=decre1>-</button><button style="float:right" id=incre1>+</button></div>
+                                <div style="margin:1px;height:1.5em;"><button style="float:left" id=decre25>--</button><button style="float:right" id=incre25>++</button></div>
                             </div>
                         </div>
                      </div>

@@ -474,9 +474,23 @@ export const CnkbResultView = Backbone.View.extend({
                     $("#interaction-limit").val(network_limit).on("input", function () {
                         $("#displayed-interaction-number").text(this.value)
                     }).on("change", function () {
-                        network_limit = this.value
+                        network_limit = parseInt(this.value)
                         drawCNKBCytoscape(select_data(confidence_type), confidence_type)
                     })
+                    function stepwise(change) {
+                        const max_number = parseInt($("#total-interaction-number").text())
+                        return function () {
+                            network_limit += change
+                            if (network_limit < 10) network_limit = 10
+                            if (network_limit > max_number) network_limit = max_number
+                            $("#displayed-interaction-number").text(network_limit)
+                            drawCNKBCytoscape(select_data(confidence_type), confidence_type)
+                        }
+                    }
+                    $("#incre25").click(stepwise(25))
+                    $("#decre25").click(stepwise(-25))
+                    $("#incre1").click(stepwise(1))
+                    $("#decre1").click(stepwise(-1))
                 } //end success
             }); //end ajax
         } //end createnetwork
