@@ -2354,8 +2354,8 @@
                     <div id="createnw_progress_indicator" align="center" style="display: none;">data is loading ......
                         <img id="cnkb_data_progress_indicator" src="img/progress_indicator.gif" width="20" height="20" alt="Please wait ......"><br>
                     </div>
-                    <div style="padding:10px"><b>Gene cart genes:</b> <span id=genecart-genes></span></div>
-                    <div style="padding:10px"><b>Interactome:</b> <span id=interactome-selected></span></div>
+                    <div style="padding:10px;font-size:larger;text-align:center"><b>Gene cart genes:</b> <span id=genecart-genes></span></div>
+                    <div style="padding:10px;font-size:larger;text-align:center"><b>Interactome:</b> <span id=interactome-selected></span></div>
                     <div id=interaction-viewer style="display: flex;">
                         <div class="cytoscape-container" ">
                         <div id="cnkb_cytoscape_progress">
