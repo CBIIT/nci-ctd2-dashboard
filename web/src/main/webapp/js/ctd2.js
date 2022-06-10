@@ -3376,6 +3376,12 @@ import MraView from './mra.js'
                             role: role
                         }
                     }).render();
+                },
+                error: function (model, xhr, options) {
+                    console.debug(xhr.status)
+                    new SearchView({
+                        model: { term: symbol }
+                    }).render();
                 }
             });
         },

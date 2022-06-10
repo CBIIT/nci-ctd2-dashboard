@@ -563,7 +563,7 @@ const context_menu_callback = sym => function (key, options) {
         structure: "http://www.ncbi.nlm.nih.gov/structure?cmd=Search&term=" + sym + "&doptcmdl=Brief",
         omim: "http://www.ncbi.nlm.nih.gov/omim?cmd=Search&term=" + sym + "&doptcmdl=Synopsis",
         genecards: "http://www.genecards.org/cgi-bin/carddisp.pl?gene=" + sym + "&alias=yes",
-        ctd2_dashboard: "#search/" + sym,
+        ctd2_dashboard: "#gene/h/" + sym,
     }
     const linkUrl = links[key]
     if (linkUrl !== undefined) {
