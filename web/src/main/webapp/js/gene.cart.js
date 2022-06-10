@@ -414,22 +414,46 @@ export const CnkbResultView = Backbone.View.extend({
                 $("#genecart-genes").text(geneNames);
                 $("#interactome-selected").text(selectedInteractome)
                 createNetwork()
+                function download(filename) {
+                    return function (data, textStatus, jqXHR) {
+                        const url = window.URL.createObjectURL(new Blob([data]));
+                        const a = document.createElement('a');
+                        a.style.display = 'none';
+                        a.href = url;
+                        a.download = filename;
+                        document.body.appendChild(a);
+                        a.click();
+                        window.URL.revokeObjectURL(url);
+                    }
+                }
                 $('#cnkb-export-all').click(function (e) {
-                    e.preventDefault();
-                    $("#interactome").val(selectedInteractome);
-                    $("#selectedGenes").val(geneNames);
-                    $("#all").val(true);
-                    $('#cnkbExport-form').submit();
+                    $(this).prop("disabled", true)
+                    $("#export-spinner").show()
+                    $.post("cnkb/download", {
+                        interactome: selectedInteractome,
+                        selectedGenes: geneNames,
+                        all: true,
+                    },
+                    ).done(download("all-interactions.sif")).always(function () {
+                        $("#export-spinner").hide()
+                        $("#cnkb-export-all").prop("disabled", false)
+                    })
                 })
                 $('#cnkb-export-displayed').click(function (e) {
-                    e.preventDefault();
-                    $("#interactome").val(selectedInteractome);
-                    $("#selectedGenes").val(geneNames);
-                    $("#all").val(false);
                     const confidence_type_code = code[$("#supported-confidence-types").val()]
-                    $("#confidenceType").val(confidence_type_code);
-                    $("#interactionLimit").val(network_limit);
-                    $('#cnkbExport-form').submit();
+                    $(this).prop("disabled", true)
+                    $("#export-spinner").show()
+                    $.post("cnkb/download", {
+                        interactome: selectedInteractome,
+                        selectedGenes: geneNames,
+                        all: false,
+                        confidenceType: confidence_type_code,
+                        interactionLimit: network_limit
+                    },
+                    ).done(download("displayed-interactions.sif")).always(function () {
+                        $("#export-spinner").hide()
+                        $("#cnkb-export-displayed").prop("disabled", false)
+                    })
                 })
             }
         });

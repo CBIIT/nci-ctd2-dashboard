@@ -2333,13 +2333,6 @@
                   </div>
                   <div class="col-10">
                      <h3>Cellular Network Knowledge Base</h2>
-                     <form method="POST" action="cnkb/download" id="cnkbExport-form" style="display: none;">
-                             <input type="hidden" name="interactome" id="interactome">
-                             <input type="hidden" name="selectedGenes" id="selectedGenes">  
-                             <input type="hidden" name="all" id="all">
-                             <input type="hidden" name="confidenceType" id="confidenceType">
-                             <input type="hidden" name="interactionLimit" id="interactionLimit">
-                     </form>
                    </div>
                    <div class="col-1">
                    </div>
@@ -2372,6 +2365,10 @@
                         <div style="text-align: center"><button style="margin:5px;" id=cnkb-export-all>Export all interactions</button>
                             <button style="margin:5px;" id=cnkb-export-displayed>Export currently displayed</button></div>
                         </div>
+                        <button class="btn btn-primary" style="position: fixed;top: 50%;left: 50%;transform: translate(-50%, -50%);z-index: 2;display:none" id='export-spinner'>
+                            <span class="spinner-border spinner-border-sm"></span>
+                            Downloading...
+                        </button>
                         <div style="width: 200px">
                             <div id=network-detail-viewer style="margin:10px; padding:5px; border-style: solid; border-width:1px; height: 400px;">
                                 <h5>Network details</h5>
