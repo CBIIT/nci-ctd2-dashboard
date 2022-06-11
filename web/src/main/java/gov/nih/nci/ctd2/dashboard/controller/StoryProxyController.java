@@ -2,6 +2,7 @@ package gov.nih.nci.ctd2.dashboard.controller;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Scanner;
@@ -33,21 +34,21 @@ public class StoryProxyController {
     }
 
     @Transactional
-    @RequestMapping(method = {RequestMethod.POST, RequestMethod.GET}, headers = "Accept=application/json")
+    @RequestMapping(method = { RequestMethod.POST, RequestMethod.GET }, headers = "Accept=application/json")
     public ResponseEntity<String> convertSIFtoJSON(@RequestParam("url") String url) {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "text/html; charset=utf-8");
         StringBuilder proxiedHtml = new StringBuilder();
-        if(isURLValid(url)) {
-            // The following is a standard way to convert a SIF to a JSON Cytoscape.js model
+        if (isURLValid(url)) {
             URLConnection urlConnection = null;
             try {
                 urlConnection = new URL(url).openConnection();
                 InputStream inputStream = urlConnection.getInputStream();
                 Scanner scanner = new Scanner(inputStream);
-                while(scanner.hasNextLine()) {
+                while (scanner.hasNextLine()) {
                     String line = scanner.nextLine();
-                    if(line.isEmpty()) continue;
+                    if (line.isEmpty())
+                        continue;
 
                     proxiedHtml.append(line);
                     proxiedHtml.append("\n");
@@ -63,20 +64,24 @@ public class StoryProxyController {
         return new ResponseEntity<String>(
                 proxiedHtml.toString(),
                 headers,
-                HttpStatus.OK
-        );
+                HttpStatus.OK);
     }
 
     private boolean isURLValid(String url) {
-        if(!url.toLowerCase().endsWith(".html")) return false;
+        if (!url.toLowerCase().endsWith(".html"))
+            return false;
 
-        String[] hosts = allowedProxyHosts.split(",", -1);
-        for (String host : hosts)
-            if(url.toLowerCase().startsWith(host.toLowerCase()))
-                return true;
-
+        try {
+            URL x = new URL(url);
+            for (String host : allowedProxyHosts.split(",")) {
+                URL allowed = new URL(host);
+                if (allowed.getHost().equals(x.getHost()))
+                    return true;
+            }
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
         return false;
     }
-
 
 }

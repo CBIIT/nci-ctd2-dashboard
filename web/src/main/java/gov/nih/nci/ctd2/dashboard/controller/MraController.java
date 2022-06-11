@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
@@ -116,10 +117,16 @@ public class MraController {
 
 	private boolean isURLValid(String url) {
 		
-		String[] hosts = allowedProxyHosts.split(",", -1);	 
-		for (String host : hosts)
-			if (url.toLowerCase().startsWith(host.toLowerCase()))
-				return true;
+		try {
+            URL x = new URL(url);
+            for (String host : allowedProxyHosts.split(",")) {
+                URL allowed = new URL(host);
+                if (allowed.getHost().equals(x.getHost()))
+                    return true;
+            }
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
 
 		return false;
 	}
