@@ -35,15 +35,15 @@ CENTERS = {
 }
 
 ROLES = {
-    'gene': {'target','biomarker','oncogene','perturbagen','master regulator','candidate master regulator','interactor','background'},
+    'gene': {'target','biomarker','oncogene','perturbagen','regulator','interactor','context'},
     'shrna': {'perturbagen'},
     'tissue_sample': {'metastasis','disease','tissue'},
     'cell_sample': {'cell line'},
-    'compound': {'candidate drug','perturbagen','metabolite','control compound'},
+    'compound': {'drug','perturbagen','metabolite','control'},
     'animal_model': {'strain'},
-    'numeric': {'measured','observed','computed','background'},
-    'label': {'measured','observed','computed','species','background'},
-    'file': {'literature','measured','observed','computed','written','background'},
+    'numeric': {'measured','observed','computed','context'},
+    'label': {'measured','observed','computed','species','context'},
+    'file': {'literature','measured','observed','computed','written','context'},
     'url': {'measured','computed','reference','resource','link'}
 }
 
@@ -443,6 +443,7 @@ def checkSubmission(submissionFolder, submissionName, storyTitle, tier, submissi
         return
     columnMap = columns[templateName]
     columnsBySubm = columnsBySubmission(submissions, columns)
+    emptyValueCounts = {}
     print("INFO: Processing "+submissionName)
     CHECK_URL_CACHE.clear()
     submissionFile = submissionFolder+'/submissions/'+submissionName+'/'+submissionName+'.txt'
@@ -460,8 +461,11 @@ def checkSubmission(submissionFolder, submissionName, storyTitle, tier, submissi
                 if 1 <= rowIndex and rowIndex <= 6:
                     checkSubmissionMetadata(row, METADATA[rowIndex], headers, columnMap, submissionName)
                 if rowIndex >= 7:
-                    checkSubmissionData(row, headers, rowIndex, columnMap, submissionFolder, submissionName, templateName, storyTitle, tier, backgroundData, columnsBySubm)
+                    checkSubmissionData(row, headers, rowIndex, columnMap, submissionFolder, submissionName, templateName, storyTitle, tier, backgroundData, columnsBySubm, emptyValueCounts)
                 rowIndex = rowIndex+1
+        for header, count in emptyValueCounts.items():
+            if count > 1:
+                print('WARNING: '+submissionName+': Missing value for '+header+' in '+str(count)+' rows', file=sys.stderr)
     except Exception as e:
         print('ERROR: Unable to load '+submissionFile+': ' + str(e), file=sys.stderr)
 
@@ -506,14 +510,18 @@ def checkSubmissionMetadata(row, metadata, headers, columnMap, submissionName):
                 print('WARNING: '+submissionName+': Different '+metadata+' in '+header+': '+value, file=sys.stderr)
 
 
-def checkSubmissionData(row, headers, rowIndex, columnMap, submissionFolder, submissionName, templateName, storyTitle, tier, backgroundData, columns):
+def checkSubmissionData(row, headers, rowIndex, columnMap, submissionFolder, submissionName, templateName, storyTitle, tier, backgroundData, columns, emptyValueCounts):
     if row[0] != '':
         print('WARNING: '+submissionName+': First column expected to be empty @ row ' + str(rowIndex), file=sys.stderr)
     for header, value in zip(headers[1:],row[1:]):
         header = header.strip()
         value = value.strip()
         if value == '':
-            print('WARNING: '+submissionName+': Missing value for '+header+' @ row ' + str(rowIndex), file=sys.stderr)
+            if header in emptyValueCounts:
+                emptyValueCounts[header] = emptyValueCounts[header] + 1
+            else:
+                emptyValueCounts[header] = 1
+                print('WARNING: '+submissionName+': Missing value for '+header+' @ row ' + str(rowIndex), file=sys.stderr)
         else:
             if header == SUBMISSION_NAME_HEADER and value != submissionName:
                 print('ERROR: '+submissionName+': Wrong submission_name @ row ' + str(rowIndex) + ': ' + value, file=sys.stderr)
