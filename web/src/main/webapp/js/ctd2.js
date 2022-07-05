@@ -3416,8 +3416,8 @@ import ObservationView from './observation.view.js'
     });
 
     const browseRole = {
-        target: ["background", "biomarker", "candidate master regulator", "interactor", "master regulator", "oncogene", "target"],
-        compound: ["candidate drug", "control compound", "perturbagen"],
+        target: ["context", "biomarker", "regulator", "interactor", "oncogene", "target"],
+        compound: ["drug", "control", "perturbagen", "probe"],
         context: ["disease", "metastasis", "tissue"],
         cellline: ["cell line",],
     };
