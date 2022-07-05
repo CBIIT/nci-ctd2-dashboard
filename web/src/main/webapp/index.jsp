@@ -101,7 +101,7 @@
     <div class="navbar-wrapper">
         <!-- Wrap the .navbar in .container to center it within the absolutely positioned parent. -->
         <div class="container">
-            <a href="https://ocg.cancer.gov/" target="_blank"><img src="img/logos/ocg.png"></a>
+            <a href="https://ocg.cancer.gov/" target="_blank"><img src="img/logos/ccg.png"></a>
             <div class="navbar">
                 <div class="navbar-inner">
                     <div class="nav-collapse collapse show">
