@@ -94,7 +94,7 @@ export const ctd2_role_definition = {
     'biomarker': 'a gene product or other signal whose presence is an indication of a phenotype or activity',
     'oncogene': 'a gene known to be involved in causing cancer',
     'perturbagen': 'a substance (small molecule, shRNA, peptide, etc.) designed to disrupt intracellular processes',
-    'regulator': 'a gene for a transcription factor or signaling protein controlling the expression or repression of a number of direct target genes',
+    'regulator': 'a gene for a transcription factor or signaling protein controlling the expression or repression of direct target genes',
     'interactor': 'a Dashboard "subject" involved in an interaction network',
     'context': 'a Dashboard "subject" necessary to understand the importance of the study but not part of that particular study',
     'drug': 'a compound investigated as a potential new drug or for a new indication',
