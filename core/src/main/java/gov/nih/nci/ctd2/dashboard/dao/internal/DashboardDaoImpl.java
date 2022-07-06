@@ -665,9 +665,10 @@ public class DashboardDaoImpl implements DashboardDao {
 
         String synonymBasedQuery = "SELECT DISTINCT SubjectImpl_id FROM subject_synonym_map "
                 + "JOIN dashboard_entity ON subject_synonym_map.synonyms_id=dashboard_entity.id "
-                + "WHERE displayName LIKE '%" + singleTerm + "%'";
+                + "WHERE displayName LIKE :name";
         @SuppressWarnings("unchecked")
         org.hibernate.query.Query<Integer> query2 = session.createNativeQuery(synonymBasedQuery);
+        query2.setParameter("name", "%" + singleTerm + "%");
         List<Integer> list2 = new ArrayList<Integer>();
         try {
             list2 = query2.list();
