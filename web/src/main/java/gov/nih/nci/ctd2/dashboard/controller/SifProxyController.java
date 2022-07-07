@@ -1,10 +1,8 @@
 package gov.nih.nci.ctd2.dashboard.controller;
 
 import flexjson.JSONSerializer;
-import gov.nih.nci.ctd2.dashboard.util.cytoscape.CyEdge;
-import gov.nih.nci.ctd2.dashboard.util.cytoscape.CyElement;
 import gov.nih.nci.ctd2.dashboard.util.cytoscape.CyNetwork;
-import gov.nih.nci.ctd2.dashboard.util.cytoscape.CyNode;
+import gov.nih.nci.ctd2.dashboard.util.cytoscape.Element;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
@@ -44,7 +42,6 @@ public class SifProxyController {
     public ResponseEntity<String> convertSIFtoJSON(@RequestParam("url") String url) {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json; charset=utf-8");
-        HashSet<String> nodeNames = new HashSet<String>();
         CyNetwork cyNetwork = new CyNetwork();
 
         if(isURLValid(url)) {
@@ -63,23 +60,11 @@ public class SifProxyController {
                     String source = tokens[0].trim();
                     String target = tokens[2].trim();
 
-                    CyEdge cyEdge = new CyEdge();
-                    cyEdge.setProperty(CyElement.ID, source + tokens[1].trim() + target);
-                    cyEdge.setProperty(CyElement.SOURCE, source);
-                    cyEdge.setProperty(CyElement.TARGET, target);
+                    Element cyEdge = Element.createEdge(source + tokens[1].trim() + target, source, target);
                     cyNetwork.addEdge(cyEdge);
-
-                    nodeNames.add(source);
-                    nodeNames.add(target);
                 }
                 scanner.close();
                 inputStream.close();
-
-                for (String nodeName : nodeNames) {
-                    CyNode cyNode = new CyNode();
-                    cyNode.setProperty(CyElement.ID, nodeName);
-                    cyNetwork.addNode(cyNode);
-                }
             } catch (IOException e) {
                 e.printStackTrace();
             }

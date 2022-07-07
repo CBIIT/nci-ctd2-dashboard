@@ -1,11 +1,21 @@
 package gov.nih.nci.ctd2.dashboard.controller;
 
-import flexjson.JSONSerializer;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
+import java.util.Set;
 
-import gov.nih.nci.ctd2.dashboard.util.cytoscape.CyEdge;
-import gov.nih.nci.ctd2.dashboard.util.cytoscape.CyElement;
-import gov.nih.nci.ctd2.dashboard.util.cytoscape.CyNetwork;
-import gov.nih.nci.ctd2.dashboard.util.cytoscape.CyNode;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
@@ -31,12 +41,18 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Scanner;
 
+import flexjson.JSONSerializer;
+import gov.nih.nci.ctd2.dashboard.util.cytoscape.CyNetwork;
+import gov.nih.nci.ctd2.dashboard.util.cytoscape.Element;
 import gov.nih.nci.ctd2.dashboard.util.mra.MasterRegulator;
 import gov.nih.nci.ctd2.dashboard.util.mra.MraTargetBarcode;
 
 @Controller
 @RequestMapping("/mra-data")
 public class MraController {
+	private static final Log log = LogFactory.getLog(MraController.class);
+
+	private static final String WEIGHT = "weight";
 
 	@Autowired
 	@Qualifier("allowedProxyHosts")
@@ -49,7 +65,7 @@ public class MraController {
 		shapeMap.put("P", "hexagon");
 		shapeMap.put("none", "triangle");
 	}
- 
+
 	public String getAllowedProxyHosts() {
 		return allowedProxyHosts;
 	}
@@ -62,57 +78,79 @@ public class MraController {
 	@RequestMapping(method = { RequestMethod.POST, RequestMethod.GET }, headers = "Accept=application/json")
 	public ResponseEntity<String> convertMRAtoJSON(
 			@RequestParam("url") String url,
-			@RequestParam("dataType") String dataType,
 			@RequestParam("filterBy") String filterBy,
-			@RequestParam("nodeNumLimit") int nodeNumLimit,
-			@RequestParam("throttle") String throttle) {
+			@RequestParam("nodeNumLimit") int nodeNumLimit) {
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
 
-		CyNetwork cyNetwork = null;
 		List<MasterRegulator> masterRegulators = null;
-		Float throttleValue = null;
 
 		if (isURLValid(url)) {
-			URLConnection urlConnection = null;
-			try {			 
-				urlConnection = new URL(url).openConnection();
+			try {
+				URLConnection urlConnection = new URL(url).openConnection();
 				InputStream inputStream = urlConnection.getInputStream();
 				Scanner scanner = new Scanner(inputStream);
-				if (dataType != null && dataType.trim().equals("cytoscape"))
-					cyNetwork = convertToCyNetwork(scanner, filterBy, nodeNumLimit, throttle);
-				else if (dataType != null && dataType.trim().equals("mra"))
-					masterRegulators = convertToMasterRegulator(scanner);
-				else
-					throttleValue = getThrottleValue(scanner, filterBy, nodeNumLimit);							 
+				masterRegulators = convertToMasterRegulator(scanner);
 				inputStream.close();
-
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-
 		}
 
 		JSONSerializer jsonSerializer = new JSONSerializer().exclude("*.class");
-		if (dataType != null && dataType.trim().equals("cytoscape")) {
-			return new ResponseEntity<String>(
-					jsonSerializer.deepSerialize(cyNetwork), headers,
-					HttpStatus.OK);
-		} else if (dataType != null && dataType.trim().equals("mra")) {
-			return new ResponseEntity<String>(
-					jsonSerializer.deepSerialize(masterRegulators), headers,
-					HttpStatus.OK
+		return new ResponseEntity<String>(
+				jsonSerializer.deepSerialize(masterRegulators), headers,
+				HttpStatus.OK);
+	}
 
-			);
-		} else {
-			// System.out.println(jsonSerializer.deepSerialize(throttleValue));
-			return new ResponseEntity<String>(
-					jsonSerializer.deepSerialize(throttleValue), headers,
-					HttpStatus.OK
+	@Transactional
+	@RequestMapping(value = "cytoscape", method = { RequestMethod.POST,
+			RequestMethod.GET }, headers = "Accept=application/json")
+	public ResponseEntity<String> getNetwork(@RequestParam("url") String url,
+			@RequestParam("filterBy") String filterBy,
+			@RequestParam("nodeNumLimit") int nodeNumLimit) {
 
-			);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "application/json; charset=utf-8");
+
+		if (isURLValid(url)) {
+			try {
+				List<Element> edgeList = getEdgeList(url, filterBy, nodeNumLimit);
+				CyNetwork cyNetwork = convertToCyNetwork(edgeList, nodeNumLimit);
+				return new ResponseEntity<String>(
+						new JSONSerializer().exclude("*.class").deepSerialize(cyNetwork), headers,
+						HttpStatus.OK);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
+		return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
+	}
+
+	@Transactional
+	@RequestMapping(value = "throttle", method = { RequestMethod.POST,
+			RequestMethod.GET }, headers = "Accept=application/json")
+	public ResponseEntity<String> getThrottle(
+			@RequestParam("url") String url,
+			@RequestParam("filterBy") String filterBy,
+			@RequestParam("nodeNumLimit") int nodeNumLimit) {
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "application/json; charset=utf-8");
+
+		if (isURLValid(url)) {
+			try {
+				List<Element> edgeList = getEdgeList(url, filterBy, nodeNumLimit);
+				Float throttleValue = getThrottleValue(edgeList, nodeNumLimit);
+				return new ResponseEntity<String>(
+						new JSONSerializer().exclude("*.class").serialize(throttleValue), headers,
+						HttpStatus.OK);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
 	}
 
 	private boolean isURLValid(String url) {
@@ -209,75 +247,53 @@ public class MraController {
 
 	}
 
-	private CyNetwork convertToCyNetwork(Scanner scanner, String filterBy, int nodeNumLimit, 
-			String throttle) {
-
-		Object[] edgeNodeList = getEdgeNodeList(scanner, filterBy, nodeNumLimit, throttle);
+	private CyNetwork convertToCyNetwork(List<Element> edgeList, int nodeNumLimit) {
 		CyNetwork cyNetwork = new CyNetwork();
-		@SuppressWarnings("unchecked")
-		List<CyEdge> edgeList = (List<CyEdge>) edgeNodeList[0];
-		@SuppressWarnings("unchecked")
-		Map<String, CyNode> nodeList = (Map<String, CyNode>) edgeNodeList[1];
 
 		if (edgeList == null || edgeList.size() == 0)
 			return null;
 		// sort genes by value
-		Collections.sort(edgeList, new Comparator<CyEdge>() {
-			public int compare(CyEdge e1, CyEdge e2) {
-				return ((Float) e1.getData().get(CyElement.WEIGHT))
-						.compareTo((Float) e2.getData().get(CyElement.WEIGHT));
+		Collections.sort(edgeList, new Comparator<Element>() {
+			public int compare(Element e1, Element e2) {
+				return ((Float) e1.getProperty(WEIGHT))
+						.compareTo((Float) e2.getProperty(WEIGHT));
 			}
 		});
 
 		float minValue = getMinValue(edgeList, nodeNumLimit);
-		float maxValue = (Float) edgeList.get(edgeList.size() - 1).getData()
-				.get(CyElement.WEIGHT);
+		float maxValue = (Float) edgeList.get(edgeList.size() - 1)
+				.getProperty(WEIGHT);
 		float divisor = getDivisorValue(maxValue, minValue);
-		HashSet<String> nodeNames = new HashSet<String>();
+		Set<String> nodeNames = new HashSet<String>();
 		for (int i = 1; i <= edgeList.size(); i++) {
 			if (nodeNames.size() >= nodeNumLimit)
 				break;
 			int index = edgeList.size() - i;
-			float confValue = Float.valueOf(edgeList.get(index).getData()
-					.get(CyElement.WEIGHT).toString());
+			float confValue = Float.valueOf(edgeList.get(index)
+					.getProperty(WEIGHT).toString());
 			if (divisor != 0)
-				edgeList.get(index).setProperty(CyElement.WEIGHT,
+				edgeList.get(index).setProperty(WEIGHT,
 						(int) ((confValue - minValue) / divisor));
 			else
-				edgeList.get(index).setProperty(CyElement.WEIGHT, 50);
+				edgeList.get(index).setProperty(WEIGHT, 50);
 			cyNetwork.addEdge(edgeList.get(index));
-			String sourceId = (String) edgeList.get(index).getData()
-					.get(CyElement.SOURCE);
-			String targetId = (String) edgeList.get(index).getData()
-					.get(CyElement.TARGET);
-			if (!nodeNames.contains(sourceId)) {
-				cyNetwork.addNode(nodeList.get(sourceId));
-				nodeNames.add(sourceId);
-			}
-			if (!nodeNames.contains(targetId)) {
-				cyNetwork.addNode(nodeList.get(targetId));
-				nodeNames.add(targetId);
-			}
-
+			String sourceId = (String) edgeList.get(index)
+					.getProperty(Element.SOURCE);
+			String targetId = (String) edgeList.get(index)
+					.getProperty(Element.TARGET);
+			nodeNames.add(sourceId);
+			nodeNames.add(targetId);
 		}
 
 		return cyNetwork;
-
 	}
 
-	private Float getThrottleValue(Scanner scanner, String filterBy, 
-			int nodeNumLimit) {
-
-		Object[] edgeNodeList = getEdgeNodeList(scanner, filterBy, nodeNumLimit, null);
-
-		@SuppressWarnings("unchecked")
-		List<CyEdge> edgeList = (List<CyEdge>) edgeNodeList[0];
-
+	private Float getThrottleValue(List<Element> edgeList, int nodeNumLimit) {
 		// sort genes by value
-		Collections.sort(edgeList, new Comparator<CyEdge>() {
-			public int compare(CyEdge e1, CyEdge e2) {
-				return ((Float) e1.getData().get(CyElement.WEIGHT))
-						.compareTo((Float) e2.getData().get(CyElement.WEIGHT));
+		Collections.sort(edgeList, new Comparator<Element>() {
+			public int compare(Element e1, Element e2) {
+				return ((Float) e1.getProperty(WEIGHT))
+						.compareTo((Float) e2.getProperty(WEIGHT));
 			}
 		});
 
@@ -287,12 +303,13 @@ public class MraController {
 		return minValue;
 	}
 
-	private Object[] getEdgeNodeList(Scanner scanner, String filterBy,
-			int  nodeNumLimit, String throttle) {
+	private List<Element> getEdgeList(String url, String filterBy, int nodeNumLimit) throws IOException {
+		URLConnection urlConnection = new URL(url).openConnection();
+		InputStream inputStream = urlConnection.getInputStream();
+		Scanner scanner = new Scanner(inputStream);
+
 		double absMaxDeScore = 0;
-		Object[] edgeNodeList = new Object[2];
-		List<CyEdge> edgeList = new ArrayList<CyEdge>();
-		Map<String, CyNode> nodeList = new HashMap<String, CyNode>();
+		List<Element> edgeList = new ArrayList<Element>();
 
 		List<String> filters = new ArrayList<String>();
 		if (filterBy != null && !filterBy.trim().equals("")) {
@@ -301,12 +318,9 @@ public class MraController {
 				filters.add(token.trim());
 		}
 
-		float throttleVal = 0;
-		if (throttle != null && throttle.trim().length() > 0)
-			throttleVal = Float.valueOf(throttle);
+		final float throttleVal = 0;
 
-		CyNode source = null;
-	 
+		Element source = null;
 
 		while (scanner.hasNextLine()) {
 			String line = scanner.nextLine();
@@ -319,7 +333,7 @@ public class MraController {
 			if (line.contains("^MRA_ENTREZ_ID")) {
 				String entrezId = getStringValue(line);
 				if (filters.contains(entrezId)) {
-					source = new CyNode();
+					source = new Element();
 				} else
 					source = null;
 			}
@@ -328,23 +342,21 @@ public class MraController {
 
 			if (line.contains("!mra_gene_symbol")) {
 				String geneSymbol = getStringValue(line);
-				source.setProperty(CyElement.ID, geneSymbol);
+				source.setProperty(Element.ID, geneSymbol);
 			} else if (line.contains("!mra_gene_type")) {
-				source.setProperty(CyElement.SHAPE,
+				source.setProperty(Element.SHAPE,
 						shapeMap.get(getStringValue(line)));
 			} else if (line.contains("!mra_de")
 					&& !line.contains("!mra_de_rank")) {
 				if (absMaxDeScore != 0) {
 
-					source.setProperty(CyElement.COLOR,
+					source.setProperty(Element.COLOR,
 							calculateColor(absMaxDeScore, getDoubleValue(line)));
 
 				}
 			} else if (line.contains("!target_table_begin")) {
 				line = scanner.nextLine();// skip header
-				// cyNetwork.addNode(source);
-				String sourceId = (String) source.getData().get(CyElement.ID);
-				nodeList.put(sourceId, source);
+				String sourceId = (String) source.getProperty(Element.ID);
 				while (scanner.hasNextLine()) {
 					line = scanner.nextLine();
 					if (line.contains("!target_table_end"))
@@ -353,58 +365,46 @@ public class MraController {
 					float confValue = Float.valueOf(tokens[3]);
 					if (confValue < throttleVal)
 						continue;
-					CyEdge cyEdge = new CyEdge();
-					CyNode target = new CyNode();
+					Element cyEdge = new Element();
+					Element target = new Element();
 
 					assert tokens.length == 7;
 
-					cyEdge.setProperty(CyElement.ID, sourceId + "." + tokens[1]);
-					cyEdge.setProperty(CyElement.SOURCE, sourceId);
-					cyEdge.setProperty(CyElement.TARGET, tokens[1]);
-					cyEdge.setProperty(CyElement.WEIGHT, confValue);
-					// cyNetwork.addEdge(cyEdge);
+					cyEdge.setProperty(Element.ID, sourceId + "." + tokens[1]);
+					cyEdge.setProperty(Element.SOURCE, sourceId);
+					cyEdge.setProperty(Element.TARGET, tokens[1]);
+					cyEdge.setProperty(WEIGHT, confValue);
+					cyEdge.setProperty("source_shape", source.getProperty(Element.SHAPE));
+					cyEdge.setProperty("source_color", source.getProperty(Element.COLOR));
+					cyEdge.setProperty("target_shape", shapeMap.get(tokens[2]));
+					cyEdge.setProperty("target_color", calculateColor(absMaxDeScore, Double.valueOf(tokens[4])));
 					edgeList.add(cyEdge);
-					if (!nodeList.keySet().contains(tokens[1])) {
-						target.setProperty(CyElement.ID, tokens[1]);
-						target.setProperty(CyElement.SHAPE,
-								shapeMap.get(tokens[2]));
-						target.setProperty(
-								CyElement.COLOR,
-								calculateColor(absMaxDeScore, Double.valueOf(
-										tokens[4])));
-						nodeList.put(tokens[1], target);
-
-					}
-
 				}
-
 			} // end !target_table_begin
 
-		}// end while
-		edgeNodeList[0] = edgeList;
-		edgeNodeList[1] = nodeList;
+		} // end while
+		inputStream.close();
 
-		return edgeNodeList;
-
+		return edgeList;
 	}
 
-	private float getMinValue(List<CyEdge> edgeList, int nodeNumLimit) {
+	private float getMinValue(List<Element> edgeList, int nodeNumLimit) {
 		HashSet<String> nodeNames = new HashSet<String>();
 		int index = 0;
 		for (int i = 1; i <= edgeList.size(); i++) {
 			if (nodeNames.size() > nodeNumLimit)
 				break;
 			index = edgeList.size() - i;
-			String sourceId = (String) edgeList.get(index).getData()
-					.get(CyElement.SOURCE);
-			String targetId = (String) edgeList.get(index).getData()
-					.get(CyElement.TARGET);
+			String sourceId = (String) edgeList.get(index)
+					.getProperty(Element.SOURCE);
+			String targetId = (String) edgeList.get(index)
+					.getProperty(Element.TARGET);
 
 			nodeNames.add(sourceId);
 			nodeNames.add(targetId);
 
 		}
-		return Float.valueOf(edgeList.get(index).getData().get(CyElement.WEIGHT)
+		return Float.valueOf(edgeList.get(index).getProperty(WEIGHT)
 				.toString());
 	}
 
@@ -463,22 +463,10 @@ public class MraController {
 			return "rgb(255, " + (255 - colorindex) + ", " + (255 - colorindex)
 					+ ")";
 	}
-	 
+
 	private float getDivisorValue(float maxValue, float minValue) {
 		float divisor = (float) (maxValue - minValue) / 100;
 
 		return divisor;
-	}
-
-	// test
-	public static void main(String[] args) {
-
-		MraController mraController = new MraController();
-		String dataUrl = "http://localhost:8080/ctd2-dashboard/submissions/MRA_Combine-gbm-filtered.txt";
-	   //  mraController.convertMRAtoJSON(dataUrl, "mra", "", "");
-
-		mraController.convertMRAtoJSON(dataUrl, "cytoscape", "2355,1051", 1000, "");
-		//mraController.convertMRAtoJSON(dataUrl, "throttle", "", 150, null);
-
 	}
 }

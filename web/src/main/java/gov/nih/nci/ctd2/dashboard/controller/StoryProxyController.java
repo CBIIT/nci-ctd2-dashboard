@@ -4,8 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
-import java.util.Scanner;
+import java.nio.charset.StandardCharsets;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -38,33 +37,16 @@ public class StoryProxyController {
     public ResponseEntity<String> convertSIFtoJSON(@RequestParam("url") String url) {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "text/html; charset=utf-8");
-        StringBuilder proxiedHtml = new StringBuilder();
         if (isURLValid(url)) {
-            URLConnection urlConnection = null;
-            try {
-                urlConnection = new URL(url).openConnection();
-                InputStream inputStream = urlConnection.getInputStream();
-                Scanner scanner = new Scanner(inputStream);
-                while (scanner.hasNextLine()) {
-                    String line = scanner.nextLine();
-                    if (line.isEmpty())
-                        continue;
-
-                    proxiedHtml.append(line);
-                    proxiedHtml.append("\n");
-                }
-                scanner.close();
-                inputStream.close();
-
+            try (InputStream in = new URL(url).openStream()) {
+                return new ResponseEntity<String>(new String(in.readAllBytes(), StandardCharsets.UTF_8), headers,
+                        HttpStatus.OK);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
 
-        return new ResponseEntity<String>(
-                proxiedHtml.toString(),
-                headers,
-                HttpStatus.OK);
+        return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
     }
 
     private boolean isURLValid(String url) {
@@ -83,5 +65,4 @@ public class StoryProxyController {
         }
         return false;
     }
-
 }

@@ -925,6 +925,14 @@
         </li>
     </script>
 
+    <script type="text/template" id="gene-detail-references-tmpl">
+        Entrez: <a href="http://www.ncbi.nlm.nih.gov/gene/{{entrez}}" target="_blank">{{entrez}} <i class="icon-share"></i></a>
+        {{genecards ? "GeneCards: <a target='_blank' href='https://www.genecards.org/cgi-bin/carddisp.pl?gene=" + genecards + "'>" + genecards + " <i class='icon-share'></i></a>" : "" }}
+        {{dave ? "Data Analysis, Visualization, and Exploration (DAVE): <a target='_blank' href='https://portal.gdc.cancer.gov/genes/" + dave + "'>" + dave + " <i class='icon-share'></i></a>" : "" }}
+        Harmonizome: <a href="https://maayanlab.cloud/Harmonizome/gene/{{gene_symbol}}" target="_blank">{{gene_symbol}}</a>
+        UniProt: <a href="https://www.uniprot.org/uniprot/{{uniprot}}" target="_blank">{{uniprot}} <i class="icon-share"></i></a>
+    </script>
+
     <script type="text/template" id="gene-tmpl">
          <div class="container common-container" id="gene-container">
              <h2>{{displayName}}</h2>
@@ -2118,7 +2126,7 @@
                            <option value="circle">Circle</option>
                       </select>
                       <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
-                      <a href="#" id="createnetwork" data-description="{{observedEvidenceRole.displayText}}" target="_blank" data-content="please select master regulator to create network" class="mra-cytoscape-view clickable-popover">Create Network</a>   				 
+                      <a href="#" data-description="{{observedEvidenceRole.displayText}}" target="_blank" data-content="please select master regulator to create network" class="mra-cytoscape-view clickable-popover">Create Network</a>   				 
                       <br/>
                       <small><font color="grey">Threshold: </font></small>
                       <small id="throttle-input"><font color="grey">e.g. 0.01 </font></small>
@@ -2298,16 +2306,13 @@
                        <br/>
                        <select id="interactomeList" class="cnkbSelectList" size="10"></select>
                        <br/>
+                       <medium>Network Description: </medium>
                        <small id="interactomeDescription" class="cnkbDescription">
                         &nbsp;&nbsp;
                        </small>
                      <br/><br/>
                       
-                    <medium class="labelDisable" id="selectVersion"> Select Version: </medium>
-                    <br/>
-                    <select id="interactomeVersionList" name="interactomeVersions"
-                         class="cnkbSelectList" size="4"></select>
-                     <br/>
+                    <medium>Version Documentation: </medium>
                     <small id="versionDescription" class="cnkbDescription">
                         &nbsp;&nbsp;
                     </small>
@@ -2329,25 +2334,6 @@
                   </div>
                   <div class="col-10">
                      <h3>Cellular Network Knowledge Base</h2>
-                     <a href="#" id="cnkbExport"  target="_blank" class=clickable-popover data-content="Export all selected interactions to a SIF file."> Export </a>
-                     <br>
-                     <form method="POST" action="cnkb/download" id="cnkbExport-form" style="display: none;">
-                             <input type="hidden" name="interactome" id="interactome">
-                             <input type="hidden" name="version" id="version">
-                             <input type="hidden" name="selectedGenes" id="selectedGenes">  
-                             <input type="hidden" name="interactionLimit" id="interactionLimit">
-                             <input type="hidden" name="throttle" id="throttle">
-                     </form>
-                     <table id="cnkb-result-grid" class="table table-bordered table-striped ">
-                        <thead> 
-                            <tr>
-                            <th><input type="checkbox" id="checkbox_selectall" class=clickable-popover data-content="select or deselect all checkboxes"></th>
-                            <th>GENE</th>
-                            </tr>
-                         </thead>
-                         <tbody>
-                         </tbody>
-                      </table>  
                    </div>
                    <div class="col-1">
                    </div>
@@ -2359,30 +2345,55 @@
                     <br/><br/><br/>
                 </div>
                 <div>
-                    <b>Interactions Limit:</b>	
-                    <select id="cytoscape-node-limit">
-                           <option value="25">25</option>
-                           <option value="50">50</option>
-                           <option value="100" selected="selected">100</option>
-                           <option value="200">200</option>
-                           <option value="300">300</option>
-                           <option value="400">400</option>
-                     </select>
-
-                     <b>Layout:</b>	
-                     <select id="cytoscape-layouts">
-                           <option value="cola" selected="selected">Cola</option>
-                           <option value="grid">Grid</option>
-                           <option value="random">Random</option>
-                           <option value="circle">Circle</option>
-                     </select>
-                     
-                     <a href="#" id="createnetwork"  target="_blank">Create Network</a>
-                     <br/>
-                     <small><font color="grey">Confidence threshold: </font></small>
-                     <small id="throttle-input"><font color="grey">e.g. 0.01 </font></small>
-                   	 <div id="createnw_progress_indicator" align="center" style="display: none;">data is loading ......
-                         <img id="cnkb_data_progress_indicator" src="img/progress_indicator.gif" width="20" height="20" alt="Please wait ......"><br>
+                    <div id="createnw_progress_indicator" align="center" style="display: none;">data is loading ......
+                        <img id="cnkb_data_progress_indicator" src="img/progress_indicator.gif" width="20" height="20" alt="Please wait ......"><br>
+                    </div>
+                    <div style="padding:10px;font-size:larger;text-align:center"><b>Gene cart genes:</b> <span id=genecart-genes></span></div>
+                    <div style="padding:10px;font-size:larger;text-align:center"><b>Interactome:</b> <span id=interactome-selected></span></div>
+                    <div id=interaction-viewer style="display: flex;">
+                        <div class="cytoscape-container" ">
+                        <div id="cnkb_cytoscape_progress">
+                            <img id="cnkb_cytoscape_progress_indicator" class="centeredImage" src="img/progress_indicator.gif" width="30" height="30" alt="Please wait ......">
+                        </div>
+                        <div id="cytoscape" style="height:600px">
+                        </div>
+                        <div id="cnkb-cytoscape-legend" class="well cytoscape-legend">
+                            <svg  width="500" height="30" xmlns="http://www.w3.org/2000/svg" id=legend-svg>
+                            </svg>
+                            <br/>
+                            <span id=network-description></span>
+                        </div>
+                        <div style="text-align: center"><button style="margin:5px;" id=cnkb-export-all>Export all interactions</button>
+                            <button style="margin:5px;" id=cnkb-export-displayed>Export currently displayed</button></div>
+                        </div>
+                        <button class="btn btn-primary" style="position: fixed;top: 50%;left: 50%;transform: translate(-50%, -50%);z-index: 2;display:none" id='export-spinner'>
+                            <span class="spinner-border spinner-border-sm"></span>
+                            Downloading...
+                        </button>
+                        <div style="width: 200px">
+                            <div id=network-detail-viewer style="margin:10px; padding:5px; border-style: solid; border-width:1px; height: 400px;">
+                                <h5>Network details</h5>
+                                <div id=gene-detail>
+                                    <div><b>Gene symbol:</b> <span id=gene-symbol></span></div>
+                                    <div><b>Gene name:</b> <span id=gene-name></span></div>
+                                    <div><b>References:</b> <span id=references></span></div>
+                                </div>
+                                <div id=interaction-detail>
+                                    <div><b>Interaction genes:</b><ul><li id=interaction-source></li> <li id=interaction-target></li></ul></div>
+                                    <div><b>Interaction values:</b> <ul id=interaction-values></ul></div>
+                                </div>
+                            </div>
+                            <div id=filtering-interactions style="margin:10px; padding:5px; border-style: solid; border-width:1px">
+                                <div style="padding:5px;">Confidence type
+                                    <select id=supported-confidence-types>
+                                    </select>
+                                </div>
+                                <div style="padding:5px;">Showing <span id=displayed-interaction-number></span> out of <span id=total-interaction-number></span> total interactions.</div>
+                                <div style="padding:5px;">Show fewer/more interactions <input type="range" min="10" max="100" style="width:100%" id=interaction-limit></div>
+                                <div style="margin:1px;height:1.5em;"><button style="float:left" id=decre1>-</button><button style="float:right" id=incre1>+</button></div>
+                                <div style="margin:1px;height:1.5em;"><button style="float:left" id=decre25>--</button><button style="float:right" id=incre25>++</button></div>
+                            </div>
+                        </div>
                      </div>
                   </div>
                   <br/>	
@@ -2394,23 +2405,6 @@
             <td><input type="checkbox" id="checkbox_{{geneName}}" value="{{geneName}}" class="cnkb_checkbox"></td> 
             <td>{{geneName}}</td>; 
         </tr>
-      </script>
-
-    <script type="text/template" id="cnkb-cytoscape-tmpl">
-        <div class="cytoscape-container">
-        <div id="cnkb_cytoscape_progress">
-            <img id="cnkb_cytoscape_progress_indicator" class="centeredImage" src="img/progress_indicator.gif" width="30" height="30" alt="Please wait ......">
-        </div>
-        <div id="cytoscape">
-        </div>
-        <div id="cnkb-cytoscape-legend" class="well cytoscape-legend">
-            <svg  width="500" height="30"xmlns="http://www.w3.org/2000/svg">
-               {{svgHtml}}
-            </svg>
-            <br/>
-            {{description}}
-        </div>
-        </div>
       </script>
 
     <script type="text/template" id="gene-cart-help-tmpl">

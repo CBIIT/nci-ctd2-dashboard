@@ -42,63 +42,6 @@ public class CNKB {
 		return instance;
 	}
 
-	// query only by one gene
-	public List<InteractionDetail> getInteractionsByGeneSymbol(String geneSymbol, String context, String version)
-			throws UnAuthenticatedException, ConnectException, SocketTimeoutException, IOException {
-
-		return getInteractionsByGeneSymbolAndLimit(geneSymbol, context, version, null);
-	}
-
-	public List<String> getInteractionsSifFormat(String context, String version, String interactionType,
-			String presentBy) throws UnAuthenticatedException, ConnectException, SocketTimeoutException, IOException {
-
-		List<String> arrayList = new ArrayList<String>();
-
-		String methodAndParams = "getInteractionsSifFormat" + Constants.DEL + context + Constants.DEL + version
-				+ Constants.DEL + interactionType + Constants.DEL + presentBy;
-		ResultSetlUtil rs = ResultSetlUtil.executeQuery(methodAndParams);
-
-		String sifLine = null;
-		while (rs.next()) {
-			try {
-				sifLine = rs.getString("sif format data");
-				arrayList.add(sifLine);
-			} catch (NullPointerException npe) {
-				if (logger.isErrorEnabled()) {
-					logger.error("db row is dropped because a NullPointerException");
-				}
-			}
-		}
-		rs.close();
-
-		return arrayList;
-	}
-
-	public List<String> getInteractionsAdjFormat(String context, String version, String interactionType,
-			String presentBy) throws UnAuthenticatedException, ConnectException, SocketTimeoutException, IOException {
-
-		List<String> arrayList = new ArrayList<String>();
-
-		String methodAndParams = "getInteractionsAdjFormat" + Constants.DEL + context + Constants.DEL + version
-				+ Constants.DEL + interactionType + Constants.DEL + presentBy;
-		ResultSetlUtil rs = ResultSetlUtil.executeQuery(methodAndParams);
-
-		String adjLine = null;
-		while (rs.next()) {
-			try {
-				adjLine = rs.getString("adj format data");
-				arrayList.add(adjLine);
-			} catch (NullPointerException npe) {
-				if (logger.isErrorEnabled()) {
-					logger.error("db row is dropped because a NullPointerException");
-				}
-			}
-		}
-		rs.close();
-
-		return arrayList;
-	}
-
 	public HashMap<String, String> getInteractionTypeMap()
 			throws ConnectException, SocketTimeoutException, IOException, UnAuthenticatedException {
 
@@ -237,32 +180,29 @@ public class CNKB {
 
 	public Set<String> interactionNames = null;
 
-	public ArrayList<String> getNciDatasetAndInteractioCount()
+	public List<InteractionAndCount> getNciDatasetAndInteractioCount()
 			throws ConnectException, SocketTimeoutException, IOException, UnAuthenticatedException {
 		interactionNames = new HashSet<String>();
-		ArrayList<String> arrayList = new ArrayList<String>();
-
-		String datasetName = null;
-		int interactionCount = 0;
-
-		String methodAndParams = "getNciDatasetNames";
-		ResultSetlUtil rs = ResultSetlUtil.executeQuery(methodAndParams);
-
+		List<InteractionAndCount> arrayList = new ArrayList<InteractionAndCount>();
+		ResultSetlUtil rs = ResultSetlUtil.executeQuery("getNciDatasetNames");
 		while (rs.next()) {
-
-			datasetName = rs.getString("name").trim();
+			String datasetName = rs.getString("name").trim();
 			interactionNames.add(datasetName);
-			interactionCount = (int) rs.getDouble("interaction_count");
-			arrayList.add(datasetName + " (" + interactionCount + " interactions)");
+			arrayList
+					.add(new InteractionAndCount(datasetName, (int) rs.getDouble("interaction_count")));
 		}
 		rs.close();
-
 		return arrayList;
 	}
 
-	public List<VersionDescriptor> getVersionDescriptor(String interactomeName)
+	// "only the most recent version of each interactome will be supported" - the
+	// requirement document
+	// The only interactome that has more than one version is HGi_TCGA. There are
+	// about 34 interactome totally.
+	public String getVersionDescriptor(String interactomeName)
 			throws ConnectException, SocketTimeoutException, IOException, UnAuthenticatedException {
-		List<VersionDescriptor> arrayList = new ArrayList<VersionDescriptor>();
+		String latestVersionDescription = null;
+		float versionValue = 0;
 
 		String methodAndParams = "getVersionDescriptor" + Constants.DEL + interactomeName;
 		ResultSetlUtil rs = ResultSetlUtil.executeQuery(methodAndParams);
@@ -271,21 +211,49 @@ public class CNKB {
 			if (version.equalsIgnoreCase("DEL"))
 				continue;
 			String value = rs.getString("authentication_yn").trim();
-			boolean needAuthentication = false;
 			if (value.equalsIgnoreCase("Y")) {
-				needAuthentication = true;
+				continue;
 			}
 			String versionDesc = rs.getString("description").trim();
-			VersionDescriptor vd = new VersionDescriptor(version, needAuthentication, versionDesc);
-			arrayList.add(vd);
+			float v = Float.parseFloat(version);
+			if (v > versionValue) {
+				versionValue = v;
+				latestVersionDescription = versionDesc;
+			}
 		}
 		rs.close();
 
-		return arrayList;
+		return latestVersionDescription;
 	}
 
-	public List<InteractionDetail> getInteractionsByGeneSymbolAndLimit(String geneSymbol, String context,
-			String version, Integer limit)
+	/* get the latest version number for an interactome */
+	public String getLatestVersionNumber(String interactomeName)
+			throws ConnectException, SocketTimeoutException, IOException, UnAuthenticatedException {
+		String latestVersion = null;
+		float versionValue = 0;
+
+		String methodAndParams = "getVersionDescriptor" + Constants.DEL + interactomeName;
+		ResultSetlUtil rs = ResultSetlUtil.executeQuery(methodAndParams);
+		while (rs.next()) {
+			String version = rs.getString("version").trim();
+			if (version.equalsIgnoreCase("DEL"))
+				continue;
+			String value = rs.getString("authentication_yn").trim();
+			if (value.equalsIgnoreCase("Y")) {
+				continue;
+			}
+			float v = Float.parseFloat(version);
+			if (v > versionValue) {
+				versionValue = v;
+				latestVersion = version;
+			}
+		}
+		rs.close();
+
+		return latestVersion;
+	}
+
+	public List<InteractionDetail> getInteractionsByGeneSymbol(String geneSymbol, String context, String version)
 			throws UnAuthenticatedException, ConnectException, SocketTimeoutException, IOException {
 
 		List<InteractionDetail> arrayList = new ArrayList<InteractionDetail>();
@@ -294,9 +262,6 @@ public class CNKB {
 
 		String methodAndParams = "getInteractionsByGeneSymbolAndLimit" + Constants.DEL + marker_geneName + Constants.DEL
 				+ context + Constants.DEL + version;
-
-		if (limit != null)
-			methodAndParams = methodAndParams + Constants.DEL + limit;
 
 		ResultSetlUtil rs = ResultSetlUtil.executeQuery(methodAndParams);
 
@@ -312,10 +277,6 @@ public class CNKB {
 					geneName2 = msid2;
 				String interactionType = rs.getString("interaction_type").trim();
 				String interactionId = rs.getString("interaction_id");
-				Short evidenceId = 0;
-				if (rs.getString("evidence_id") != null && !rs.getString("evidence_id").trim().equals("null")) {
-					evidenceId = Short.valueOf(rs.getString("evidence_id"));
-				}
 
 				if (previousInteractionId == null || !previousInteractionId.equals(interactionId)) {
 					if (interactionDetail != null) {
@@ -323,19 +284,18 @@ public class CNKB {
 							String edgeName = getEdgeName(interactionDetail, geneSymbol);
 							if (!edgeIdList.contains(edgeName)) {
 								edgeIdList.add(edgeName);
-								arrayList.add(interactionDetail);
+								if (interactionDetail.getParticipantList().size() > 1)
+									arrayList.add(interactionDetail);
 							}
-
 						}
 						interactionDetail = null;
 					}
 					previousInteractionId = interactionId;
-
 				}
 
 				if (interactionDetail == null) {
 					interactionDetail = new InteractionDetail(new InteractionParticipant(msid2, geneName2),
-							interactionType, evidenceId);
+							interactionType);
 					float confidenceValue = 1.0f;
 					try {
 						confidenceValue = (float) rs.getDouble("confidence_value");
@@ -357,7 +317,6 @@ public class CNKB {
 
 						for (int i = 0; i < values.length; i++)
 							interactionDetail.addConfidence(Float.valueOf(values[i]), Short.valueOf(types[i]));
-
 					}
 				} else {
 					interactionDetail.addParticipant(new InteractionParticipant(msid2, geneName2));
@@ -376,7 +335,8 @@ public class CNKB {
 			String edgeName = getEdgeName(interactionDetail, geneSymbol);
 			if (!edgeIdList.contains(edgeName)) {
 				edgeIdList.add(edgeName);
-				arrayList.add(interactionDetail);
+				if (interactionDetail.getParticipantList().size() > 1)
+					arrayList.add(interactionDetail);
 			}
 
 			interactionDetail = null;

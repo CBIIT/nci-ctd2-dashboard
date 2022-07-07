@@ -1,4 +1,4 @@
-import {ctd2_hovertext} from './ctd2.constants.js'
+import { supported_interactomes, supported_confidence_types } from './supported.interactomes.js'
 
 const action_explanatory = [
     "Retrieve molecular interactions involving the selected genes from the Cellular Networks Knowledge Base (CNKB). The CNKB is a database of gene and protein interaction networks maintained at Columbia University.  It includes PREPPI, a large database of predicted and experimentally confirmed protein-protein interactions.", // CNKB
@@ -149,7 +149,7 @@ export const GeneListView = Backbone.View.extend({
         $("#gene-cart-action").click(function (e) {
             const selected = $('#gene-cart-action-list :selected');
             const action_index = selected[0].index;
-            const selected_genes = $('#geneNames :selected').toArray().map(x=>x.value).join(",") || geneList.join(",")
+            const selected_genes = $('#geneNames :selected').toArray().map(x => x.value).join(",") || geneList.join(",")
             switch (action_index) {
                 case 0:
                     const selectedGenes = [];
@@ -167,7 +167,7 @@ export const GeneListView = Backbone.View.extend({
                 case 1:
                     e.preventDefault();
                     enrich({
-                        list: $('#geneNames :selected').toArray().map(x=>x.value).join("\n") || geneList.join("\n"),
+                        list: $('#geneNames :selected').toArray().map(x => x.value).join("\n") || geneList.join("\n"),
                         description: "CTD2 Dashboard Query",
                         popup: true,
                     });
@@ -305,22 +305,18 @@ export const CnkbQueryView = Backbone.View.extend({
         $(this.el).html(this.template({}));
         $('#queryDescription').html("");
         $('#queryDescription').html("Query with " + count + " genes from cart");
+        const names = supported_interactomes.map(x => x.name)
         $.ajax({
-            url: "cnkb/query",
-            data: {
-                dataType: "interactome-context",
-                interactome: "",
-                version: "",
-                selectedGenes: "",
-                interactionLimit: 0,
-                throttle: ""
-            },
+            url: "cnkb/interactome-list",
             dataType: "json",
             contentType: "json",
-            success: function (data) {
-                _.each(data.interactomeList, function (aData) {
-                    const option = '<option value="' + aData + '">' + aData + '</option>';
-                    if (aData.toLowerCase().startsWith("preppi")) {
+            success: function (interactomeList) {
+                _.each(interactomeList, function ({ name, count }) {
+                    if (!names.includes(name.toLowerCase())) {
+                        return;
+                    }
+                    const option = `<option value="${name}">${name} (${count} interactions)</option>`;
+                    if (name.toLowerCase() === "preppi") {
                         $("#interactomeList").prepend(option);
                     } else {
                         $("#interactomeList").append(option);
@@ -332,66 +328,33 @@ export const CnkbQueryView = Backbone.View.extend({
             }
         });
 
-        let versionDescriptors;
         $('#interactomeList').change(function () {
             $.ajax({
-                url: "cnkb/query",
+                url: "cnkb/interactome-descriptions",
                 data: {
-                    dataType: "interactome-version",
-                    interactome: $('#interactomeList option:selected').text().split("(")[0].trim(),
-                    version: "",
-                    selectedGenes: "",
-                    interactionLimit: 0,
-                    throttle: ""
+                    interactome: $('#interactomeList option:selected').val(),
                 },
                 dataType: "json",
                 contentType: "json",
-                success: function (data) {
-                    versionDescriptors = data.versionDescriptorList;
+                success: function (descriptions) {
                     const URL_pattern = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&/=]*[a-zA-Z0-9/])?/g;
                     // convert URL to an actual link
-                    $('#interactomeDescription').html(data.description.replaceAll(URL_pattern, "<a href='$&' target='_blank'>$&</a>"));
-                    $('#interactomeVersionList').html("");
-                    _.each(data.versionDescriptorList, function (aData) {
-                        $("#interactomeVersionList").append('<option value="' + aData.version + '">' + aData.version + '</option>');
-                    });
-                    $('#interactomeVersionList').disabled = false;
-                    $('#selectVersion').css('color', '#5a5a5a');
-                    $('#versionDescription').html("");
-
+                    $('#interactomeDescription').html(descriptions[0].replaceAll(URL_pattern, "<a href='$&' target='_blank'>$&</a>"));
+                    $('#versionDescription').html(descriptions[1]);
                 }
             }); //ajax
 
         }); //end $('#interactomeList').change()
 
-        $('#interactomeVersionList').change(function () {
-            const selectedVersion = $('#interactomeVersionList option:selected').text().trim();
-            _.each(versionDescriptors, function (aData) {
-                if (aData.version === selectedVersion) {
-                    $('#versionDescription').html("");
-                    $('#versionDescription').html(aData.versionDesc);
-                }
-            });
-
-        }); //end $('#interactomeList').change()
-
         $("#cnkb-result").click(function (e) {
-
-            const selectedInteractome = $('#interactomeList option:selected').text().split("(")[0].trim();
-            const selectedVersion = $('#interactomeVersionList option:selected').text().trim();
+            const selectedInteractome = $('#interactomeList option:selected').val();
 
             if (selectedInteractome == null || $.trim(selectedInteractome).length == 0) {
                 e.preventDefault();
                 showAlertMessage("Please select an interactome name");
-
-            } else if (selectedVersion == null || $.trim(selectedVersion).length == 0) {
-                e.preventDefault();
-                showAlertMessage("Please select an interactome version.");
             } else {
                 sessionStorage.selectedInteractome = JSON.stringify(selectedInteractome);
-                sessionStorage.selectedVersion = JSON.stringify(selectedVersion);
             }
-
         });
 
         return this;
@@ -409,405 +372,372 @@ export const GeneCartHelpView = Backbone.View.extend({
 });
 
 export const CnkbResultView = Backbone.View.extend({
-        el: $("#main-container"),
-        template: _.template($("#cnkb-result-tmpl").html()),
-        render: function () {
-            const selectedgenes = JSON.parse(sessionStorage.getItem("selectedGenes"));
-            const selectedInteractome = JSON.parse(sessionStorage.getItem("selectedInteractome"));
-            const selectedVersion = JSON.parse(sessionStorage.getItem("selectedVersion"));
+    el: $("#main-container"),
+    template: _.template($("#cnkb-result-tmpl").html()),
+    render: function () {
+        const selectedgenes = JSON.parse(sessionStorage.getItem("selectedGenes"));
+        const selectedInteractome = JSON.parse(sessionStorage.getItem("selectedInteractome"));
 
-            const numOfCartGene = 25; // this should match the numOfCartGene in ctd2.js
-            const table_filter_popover = {
-                placement: "top",
-                trigger: 'hover',
-                content: ctd2_hovertext.TABLE_FILTER,
-            };
-            if (selectedgenes.length > numOfCartGene) {
-                selectedgenes.slice(numOfCartGene, selectedgenes.length - 1);
-                sessionStorage.selectedGenes = JSON.stringify(selectedgenes);
+        const numOfCartGene = 25; // this should match the numOfCartGene in ctd2.js
+        if (selectedgenes.length > numOfCartGene) {
+            selectedgenes.slice(numOfCartGene, selectedgenes.length - 1);
+            sessionStorage.selectedGenes = JSON.stringify(selectedgenes);
+        }
+
+        $(this.el).html(this.template({}));
+        supported_interactomes.find(x => x.name == selectedInteractome.toLowerCase())
+            .confidence_types
+            .forEach(x => {
+                $("#supported-confidence-types").append(`<option>${x}</option>`)
+            })
+        const code = { "p-value": 7, "likelihood ratio": 1, "mutual information": 3, "mode of action": 6, "probability": 4 }
+        const network_data = {}
+        $("#supported-confidence-types").change(function (event) {
+            const confidence_type = $(event.target).val()
+            const confidence_type_code = code[confidence_type]
+            console.debug(`selected confidence type code ${confidence_type_code}`)
+            drawCNKBCytoscape(select_data(confidence_type_code), confidence_type_code)
+        })
+        $.ajax({
+            url: "cnkb/interaction-total-number",
+            data: {
+                interactome: selectedInteractome,
+                selectedGenes: JSON.stringify(selectedgenes),
+            },
+            dataType: "json",
+            contentType: "json",
+            success: function (totalNumber) {
+                $("#cnkb_data_progress").hide();
+                $("#total-interaction-number").text(totalNumber)
+                $("#interaction-limit").attr("max", totalNumber)
+                const geneNames = selectedgenes.toString()
+                $("#genecart-genes").text(geneNames);
+                $("#interactome-selected").text(selectedInteractome)
+                createNetwork()
+                function download(filename) {
+                    return function (data, textStatus, jqXHR) {
+                        const url = window.URL.createObjectURL(new Blob([data]));
+                        const a = document.createElement('a');
+                        a.style.display = 'none';
+                        a.href = url;
+                        a.download = filename;
+                        document.body.appendChild(a);
+                        a.click();
+                        window.URL.revokeObjectURL(url);
+                    }
+                }
+                $('#cnkb-export-all').click(function (e) {
+                    $(this).prop("disabled", true)
+                    $("#export-spinner").show()
+                    $.post("cnkb/download", {
+                        interactome: selectedInteractome,
+                        selectedGenes: geneNames,
+                        all: true,
+                    },
+                    ).done(download("all-interactions.sif")).always(function () {
+                        $("#export-spinner").hide()
+                        $("#cnkb-export-all").prop("disabled", false)
+                    })
+                })
+                $('#cnkb-export-displayed').click(function (e) {
+                    const confidence_type_code = code[$("#supported-confidence-types").val()]
+                    $(this).prop("disabled", true)
+                    $("#export-spinner").show()
+                    $.post("cnkb/download", {
+                        interactome: selectedInteractome,
+                        selectedGenes: geneNames,
+                        all: false,
+                        confidenceType: confidence_type_code,
+                        interactionLimit: network_limit
+                    },
+                    ).done(download("displayed-interactions.sif")).always(function () {
+                        $("#export-spinner").hide()
+                        $("#cnkb-export-displayed").prop("disabled", false)
+                    })
+                })
             }
+        });
 
-            $(this.el).html(this.template({}));
+        let network_limit = 200;
+
+        const select_data = function (confidence_type) {
+            const data = {}
+            data.edges = network_data.edges.sort((a, b) => b.data.confidences[confidence_type] - a.data.confidences[confidence_type]).slice(0, network_limit)
+            const node_set = data.edges.reduce((prev, curr) => {
+                prev.add(curr.data.source)
+                prev.add(curr.data.target)
+                return prev
+            }, new Set())
+            data.nodes = [...node_set].map(x => { return { data: { id: x, color: selectedgenes.includes(x) ? "yellow" : "#DDD" } } })
+            return data
+        }
+
+        const createNetwork = function () {
+            $('#createnw_progress_indicator').show();
             $.ajax({
-                url: "cnkb/query",
+                url: "cnkb/network",
                 data: {
-                    dataType: "interaction-result",
                     interactome: selectedInteractome,
-                    version: selectedVersion,
-                    selectedGenes: JSON.stringify(selectedgenes),
-                    interactionLimit: 0,
-                    throttle: ""
+                    selectedGenes: selectedgenes.toString(),
+                    //interactionLimit: default_limit,
                 },
                 dataType: "json",
                 contentType: "json",
                 success: function (data) {
-                    $("#cnkb_data_progress").hide();
-                    _.each(data.interactionTypeList, function (aData) {
-                        $('#cnkb-result-grid thead tr').append('<th>' + aData.toUpperCase() + '</th>');
-                    });
-
-                    const thatEl = $("#cnkb-result-grid");
-                    _.each(data.cnkbElementList, function (aData) {
-                        new CnkbResultRowView({
-                            el: $(thatEl).find("tbody"),
-                            model: aData
-                        }).render();
-
-                    });
-
-                    $(thatEl).dataTable({
-                        "dom": "<'fullwidth'ifrtlp>",
-                        "paging": false
-                    }); // return value ignored
-                    $(thatEl).parents("#cnkb-result-grid_wrapper").find('input[type=search]').popover(table_filter_popover);
-                    $(thatEl).find('thead th').popover({
-                        placement: "top",
-                        trigger: 'hover',
-                        content: function () {
-                            const hovertext_id = 'CNKB_' + $(this).text().toUpperCase().replace('-', '_');
-                            const t = ctd2_hovertext[hovertext_id];
-                            if (!t) return null; // only null is automatically hidden
-                            return t;
-                        },
-                    });
-                }
-
-            }); //ajax  
-
-            $('#cnkbExport').click(function (e) {
-                e.preventDefault();
-                let filters = "";
-                $('input[type="checkbox"]:checked').each(function () {
-                    filters = filters + ($(this).val() + ',');
-                });
-                if (filters.length == 0 || $.trim(filters) === 'on,') {
-                    showAlertMessage("Please select at least one row to export to a SIF file.");
-                    return;
-                }
-
-                $("#interactome").val(selectedInteractome);
-                $("#version").val(selectedVersion);
-                $("#selectedGenes").val(filters);
-                $("#interactionLimit").val("0");
-                $("#throttle").val("");
-                $('#cnkbExport-form').submit();
-
-            }); //end $('#interactomeList').change()
-
-            const getThrottleValue = function () {
-
-                let filters = "";
-                $('input[type="checkbox"]:checked').each(function () {
-                    filters = filters + ($(this).val() + ',');
-                });
-
-                $.ajax({
-                    url: "cnkb/query",
-                    data: {
-                        dataType: "interaction-throttle",
-                        interactome: selectedInteractome,
-                        version: selectedVersion,
-                        selectedGenes: filters,
-                        interactionLimit: $("#cytoscape-node-limit").val(),
-                        throttle: ""
-                    },
-                    dataType: "json",
-                    contentType: "json",
-                    success: function (data) {
-                        if (data != null && data.threshold != -1) {
-                            if (data.threshold == 0)
-                                $("#throttle-input").text("0.0");
-                            else
-                                $("#throttle-input").text(data.threshold);
-                        } else
-                            $("#throttle-input").text("e.g. 0.01");
-                        $("#throttle-input").css('color', 'grey');
-                    }
-                });
-
-            };
-
-            $("#cnkb-result-grid").on("change", ":checkbox", function () {
-                getThrottleValue();
-            }); //end cnkb-checked
-
-            $("#cytoscape-node-limit").change(function (evt) {
-                getThrottleValue();
-            }).popover({
-                placement: "top",
-                trigger: 'hover',
-                content: ctd2_hovertext.CNKB_LIMIT,
-            });
-            $("#cytoscape-layouts").popover({
-                placement: "top",
-                trigger: 'hover',
-                content: ctd2_hovertext.CNKB_LAYOUT,
-            });
-
-            $('#checkbox_selectall').click(function (event) { //on click
-                if (this.checked) { // check select status
-                    $('.cnkb_checkbox').each(function () { //loop through each checkbox
-                        this.checked = true; //select all checkboxes with class "checkbox1"
-                    });
-                    getThrottleValue();
-                } else {
-                    $('.cnkb_checkbox').each(function () { //loop through each checkbox
-                        this.checked = false; //deselect all checkboxes with class "checkbox1"
-                    });
-                    $("#throttle-input").text("e.g. 0.01");
-                    $("#throttle-input").css('color', 'grey');
-                }
-            });
-
-            $('#createnetwork').click(function (event) {
-                event.preventDefault();
-                const throttle = $("#throttle-input").text();
-                const interactionLimit = $("#cytoscape-node-limit").val();
-
-                let filters = "";
-                $('input[type="checkbox"]:checked').each(function () {
-                    filters = filters + ($(this).val() + ',');
-
-                });
-
-                if (filters.length == 0 || $.trim(filters) === 'on,') {
-                    showAlertMessage("Please select at least one row to create a network.");
-                    return;
-                }
-                $('#createnw_progress_indicator').show();
-                $.ajax({
-                    url: "cnkb/network",
-                    data: {
-                        interactome: selectedInteractome,
-                        version: selectedVersion,
-                        selectedGenes: filters,
-                        interactionLimit: interactionLimit,
-                        throttle: throttle
-                    },
-                    dataType: "json",
-                    contentType: "json",
-                    success: function (data) {
-                        $('#createnw_progress_indicator').hide();
-                        if (data == null) {
-                            showAlertMessage("The network is empty.");
-                            return;
-                        }
-                        drawCNKBCytoscape(data, Encoder.htmlEncode(selectedInteractome + " (v" + selectedVersion + ")"));
-
-                    } //end success
-                }); //end ajax
-
-            }); //end createnetwork.click
-            $('#createnetwork').popover({
-                placement: 'top',
-                trigger: 'hover',
-                content: ctd2_hovertext.CNKB_CREATE_NETWORK,
-            });
-            $('.clickable-popover').popover({
-                placement: "bottom",
-                trigger: 'hover',
-            }).click(function () {
-                $(this).popover('hide');
-            });
-
-            return this;
-        }
-
-    });
-
-const CnkbResultRowView = Backbone.View.extend({
-        render: function () {
-            const result = this.model;
-
-            this.template = _.template($("#cnkb-result-row-tmpl").html());
-            $(this.el).append(this.template(result));
-
-            _.each(result.interactionNumlist, function (aData) {
-                $("#tr_" + Encoder.htmlEncode(result.geneName)).append('<td>' + aData + '</td>');
-            });
-
-
-            return this;
-        }
-});
-
-const drawCNKBCytoscape = function (data, description) {
-        let svgHtml = "";
-        const interactions = data.interactions;
-        let x1 = 20 + 90 * (3 - interactions.length),
-            x2 = 53 + 90 * (3 - interactions.length);
-        _.each(interactions, function (aData) {
-            svgHtml = svgHtml + '<rect x="' + x1 + '" y="15" width="30" height="2" fill="' + aData.color + '" stroke="grey" stroke-width="0"/><text x="' + x2 + '" y="20" fill="grey">' + aData.type + '</text>';
-            x1 = x1 + aData.type.length * 11;
-            x2 = x2 + aData.type.length * 11;
-        });
-
-        $.fancybox.open(
-            _.template($("#cnkb-cytoscape-tmpl").html())({
-                description: description,
-                svgHtml: svgHtml
-            }), {
-            touch: false,
-            'autoDimensions': false,
-            'transitionIn': 'none',
-            'transitionOut': 'none'
-        }
-        );
-
-        cytoscape({
-            container: $('#cytoscape'),
-            wheelSensitivity: 0.4,
-            layout: {
-                name: $("#cytoscape-layouts").val(),
-                fit: true,
-                liveUpdate: false,
-                maxSimulationTime: 4000, // max length in ms to run the layout
-                stop: function () {
-                    $("#cnkb_cytoscape_progress").remove();
-                    this.stop();
-
-                } // callback on layoutstop 
-
-            },
-            elements: data,
-            style: cytoscape.stylesheet()
-                .selector("node")
-                .css({
-                    "content": "data(id)",
-                    "border-width": 2,
-                    "labelValign": "middle",
-                    "font-size": 10,
-                    "width": "25px",
-                    "height": "25px",
-                    "background-color": "data(color)",
-                    "border-color": "#555"
-                })
-                .selector("edge")
-                .css({
-                    "width": "mapData(weight, 0, 100, 1, 3)",
-                    "target-arrow-shape": "circle",
-                    "source-arrow-shape": "circle",
-                    "line-color": "data(color)"
-                })
-                .selector(":selected")
-                .css({
-                    "background-color": "#000",
-                    "line-color": "#000",
-                    "source-arrow-color": "#000",
-                    "target-arrow-color": "#000"
-                })
-                .selector(".ui-cytoscape-edgehandles-source")
-                .css({
-                    "border-color": "#5CC2ED",
-                    "border-width": 2
-                })
-                .selector(".ui-cytoscape-edgehandles-target, node.ui-cytoscape-edgehandles-preview")
-                .css({
-                    "background-color": "#5CC2ED"
-                })
-                .selector("edge.ui-cytoscape-edgehandles-preview")
-                .css({
-                    "line-color": "#5CC2ED"
-                })
-                .selector("node.ui-cytoscape-edgehandles-preview, node.intermediate")
-                .css({
-                    "shape": "rectangle",
-                    "width": 15,
-                    "height": 15
-                }),
-
-            ready: function () {
-                window.cy = this; // for debugging
-            }
-        }).on('cxttap', 'node', function () {
-
-            $.contextMenu('destroy', '#cytoscape');
-            const sym = this.data('id');
-            $.contextMenu({
-                selector: '#cytoscape',
-
-                callback: function (key, options) {
-                    if (!key || 0 === key.length) {
-                        $.contextMenu('destroy', '#cytoscape');
+                    $('#createnw_progress_indicator').hide();
+                    if (data == null) {
+                        showAlertMessage("The network is empty.");
                         return;
                     }
-
-                    let linkUrl = "";
-                    switch (key) {
-                        case 'linkout':
-                            return;
-                        case 'gene':
-                            linkUrl = "http://www.ncbi.nlm.nih.gov/gene?cmd=Search&term=" + sym;
-                            break;
-                        case 'protein':
-                            linkUrl = "http://www.ncbi.nlm.nih.gov/protein?cmd=Search&term=" + sym + "&doptcmdl=GenPept";
-                            break;
-                        case 'pubmed':
-                            linkUrl = "http://www.ncbi.nlm.nih.gov/pubmed?cmd=Search&term=" + sym + "&doptcmdl=Abstract";
-                            break;
-                        case 'nucleotide':
-                            linkUrl = "http://www.ncbi.nlm.nih.gov/nucleotide?cmd=Search&term=" + sym + "&doptcmdl=GenBank";
-                            break;
-                        case 'alldatabases':
-                            linkUrl = "http://www.ncbi.nlm.nih.gov/gquery/?term=" + sym;
-                            break;
-                        case 'structure':
-                            linkUrl = "http://www.ncbi.nlm.nih.gov/structure?cmd=Search&term=" + sym + "&doptcmdl=Brief";
-                            break;
-                        case 'omim':
-                            linkUrl = "http://www.ncbi.nlm.nih.gov/omim?cmd=Search&term=" + sym + "&doptcmdl=Synopsis";
-                            break;
-                        case 'genecards':
-                            linkUrl = "http://www.genecards.org/cgi-bin/carddisp.pl?gene=" + sym + "&alias=yes";
-                            break;
-                        case 'ctd2-dashboard':
-                            linkUrl = "#search/" + sym;
-                    }
-                    window.open(linkUrl);
-                    $.contextMenu('destroy', '#cytoscape');
-                },
-                items: {
-                    "linkout": {
-                        "name": 'LinkOut'
-                    },
-                    "sep1": "---------",
-                    "entrez": {
-                        "name": "Entrez",
-                        "items": {
-                            "gene": {
-                                "name": "Gene"
-                            },
-                            "protein": {
-                                "name": "Protein"
-                            },
-                            "pubmed": {
-                                "name": "PubMed"
-                            },
-                            "nucleotide": {
-                                "name": "Nucleotide"
-                            },
-                            "alldatabases": {
-                                "name": "All Databases"
-                            },
-                            "structure": {
-                                "name": "Structure"
-                            },
-                            "omim": {
-                                "name": "OMIM"
-                            }
+                    make_legend(data.interactionTypes, Encoder.htmlEncode(selectedInteractome))
+                    Object.assign(network_data, data)
+                    // the default type here is arbitrary
+                    const confidence_type = Object.keys(data.edges[0].data.confidences)[0];
+                    $("#displayed-interaction-number").text(network_limit)
+                    drawCNKBCytoscape(select_data(confidence_type), confidence_type)
+                    $("#interaction-limit").val(network_limit).on("input", function () {
+                        $("#displayed-interaction-number").text(this.value)
+                    }).on("change", function () {
+                        network_limit = parseInt(this.value)
+                        drawCNKBCytoscape(select_data(confidence_type), confidence_type)
+                    })
+                    function stepwise(change) {
+                        const max_number = parseInt($("#total-interaction-number").text())
+                        return function () {
+                            network_limit += change
+                            if (network_limit < 10) network_limit = 10
+                            if (network_limit > max_number) network_limit = max_number
+                            $("#displayed-interaction-number").text(network_limit)
+                            drawCNKBCytoscape(select_data(confidence_type), confidence_type)
                         }
-                    },
-                    "genecards": {
-                        "name": "GeneCards"
-                    },
-                    "ctd2-dashboard": {
-                        "name": "CTD2-Dashboard"
                     }
-
-                }
-
-            });
-
+                    $("#incre25").click(stepwise(25))
+                    $("#decre25").click(stepwise(-25))
+                    $("#incre1").click(stepwise(1))
+                    $("#decre1").click(stepwise(-1))
+                } //end success
+            }); //end ajax
+        } //end createnetwork
+        $('.clickable-popover').popover({
+            placement: "bottom",
+            trigger: 'hover',
+        }).click(function () {
+            $(this).popover('hide');
         });
 
+        return this;
+    }
+});
+
+const cytoscape_context_menu = {
+    linkout: { name: 'LinkOut' },
+    sep1: "---------",
+    entrez: {
+        name: "Entrez",
+        items: {
+            gene: { name: "Gene" },
+            protein: { name: "Protein" },
+            pubmed: { name: "PubMed" },
+            nucleotide: { name: "Nucleotide" },
+            alldatabases: { name: "All Databases" },
+            structure: { name: "Structure" },
+            omim: { name: "OMIM" }
+        }
+    },
+    genecards: { name: "GeneCards" },
+    ctd2_dashboard: { name: "CTD2-Dashboard" }
+}
+
+const context_menu_callback = sym => function (key, options) {
+    if (!key || 0 === key.length) {
+        $.contextMenu('destroy', '#cytoscape');
+        return;
+    }
+
+    const links = {
+        gene: "http://www.ncbi.nlm.nih.gov/gene?cmd=Search&term=" + sym,
+        protein: "http://www.ncbi.nlm.nih.gov/protein?cmd=Search&term=" + sym + "&doptcmdl=GenPept",
+        pubmed: "http://www.ncbi.nlm.nih.gov/pubmed?cmd=Search&term=" + sym + "&doptcmdl=Abstract",
+        nucleotide: "http://www.ncbi.nlm.nih.gov/nucleotide?cmd=Search&term=" + sym + "&doptcmdl=GenBank",
+        alldatabases: "http://www.ncbi.nlm.nih.gov/gquery/?term=" + sym,
+        structure: "http://www.ncbi.nlm.nih.gov/structure?cmd=Search&term=" + sym + "&doptcmdl=Brief",
+        omim: "http://www.ncbi.nlm.nih.gov/omim?cmd=Search&term=" + sym + "&doptcmdl=Synopsis",
+        genecards: "http://www.genecards.org/cgi-bin/carddisp.pl?gene=" + sym + "&alias=yes",
+        ctd2_dashboard: "#gene/h/" + sym,
+    }
+    const linkUrl = links[key]
+    if (linkUrl !== undefined) {
+        window.open(links[key])
+    }
+    $.contextMenu('destroy', '#cytoscape');
+}
+
+const make_legend = function (interaction_types, description) {
+    const edge_type_color = {
+        "protein-dna": "cyan",
+        "protein-protein": "orange",
+    }
+    let svgHtml = "";
+    let x1 = 20 + 90 * (3 - interaction_types.length),
+        x2 = 53 + 90 * (3 - interaction_types.length);
+    _.each(interaction_types, function (type) {
+        svgHtml = svgHtml + '<rect x="' + x1 + '" y="15" width="30" height="2" fill="' + edge_type_color[type] + '" stroke="grey" stroke-width="0"/><text x="' + x2 + '" y="20" fill="grey">' + type + '</text>';
+        x1 = x1 + type.length * 11;
+        x2 = x2 + type.length * 11;
+    });
+
+    $("#network-description").text(description)
+    $("#legend-svg").html(svgHtml)
+}
+
+const drawCNKBCytoscape = function (data, confidence_type) {
+    $("#gene-detail").hide()
+    $("#interaction-detail").hide()
+    let min_w = 1
+    let max_w = -1
+    data.edges.forEach(x => {
+        x.data.weight = x.data.confidences[confidence_type]
+        if (x.data.weight > max_w) max_w = x.data.weight
+        if (x.data.weight < min_w) min_w = x.data.weight
+    })
+    let range_w = max_w - min_w
+    if (range_w <= 0) range_w = 1
+    data.edges.forEach(x => x.data.weight = (x.data.weight - min_w) / range_w)
+
+    const CYTOSCAPE_TIMER = "cytoscape_timer"
+    console.time(CYTOSCAPE_TIMER)
+    cytoscape({
+        container: $('#cytoscape'),
+        wheelSensitivity: 0.4,
+        layout: {
+            name: 'cola',
+            fit: true,
+            liveUpdate: false,
+            maxSimulationTime: 4000, // max length in ms to run the layout
+            stop: function () {
+                $("#cnkb_cytoscape_progress").remove();
+                this.stop();
+                console.timeEnd(CYTOSCAPE_TIMER)
+            } // callback on layoutstop 
+        },
+        elements: data,
+        style: cytoscape.stylesheet()
+            .selector("node")
+            .css({
+                "content": "data(id)",
+                "border-width": 2,
+                "labelValign": "middle",
+                "font-size": 10,
+                "width": "25px",
+                "height": "25px",
+                "background-color": "data(color)",
+                "border-color": "#555"
+            })
+            .selector("edge")
+            .css({
+                "width": "mapData(weight, 0, 1, 1, 3)",
+                "target-arrow-shape": "circle",
+                "source-arrow-shape": "circle",
+                "line-color": "data(color)"
+            })
+            .selector(":selected")
+            .css({
+                "background-color": "#000",
+                "line-color": "#000",
+                "source-arrow-color": "#000",
+                "target-arrow-color": "#000"
+            })
+            .selector(".ui-cytoscape-edgehandles-source")
+            .css({
+                "border-color": "#5CC2ED",
+                "border-width": 2
+            })
+            .selector(".ui-cytoscape-edgehandles-target, node.ui-cytoscape-edgehandles-preview")
+            .css({
+                "background-color": "#5CC2ED"
+            })
+            .selector("edge.ui-cytoscape-edgehandles-preview")
+            .css({
+                "line-color": "#5CC2ED"
+            })
+            .selector("node.ui-cytoscape-edgehandles-preview, node.intermediate")
+            .css({
+                "shape": "rectangle",
+                "width": 15,
+                "height": 15
+            }),
+
+        ready: function () {
+            window.cy = this; // for debugging
+        }
+    }).on('cxttap', 'node', function () {
+
+        $.contextMenu('destroy', '#cytoscape');
+        const sym = this.data('id');
+        $.contextMenu({
+            selector: '#cytoscape',
+            callback: context_menu_callback(sym),
+            items: cytoscape_context_menu,
+        });
+
+    }).on('tap', 'node', function (event) {
+        const gene_symbol = event.target.data("id")
+        $.ajax({
+            url: "cnkb/gene-detail",
+            data: {
+                gene_symbol: gene_symbol,
+            },
+            dataType: "json",
+            contentType: "json",
+            success: function (gene_detail) {
+                $("#gene-name").text(gene_detail.geneName)
+                const template = _.template($("#gene-detail-references-tmpl").html())
+                $("#references").html(template({ ...gene_detail.references, gene_symbol: gene_symbol }))
+                $("#gene-symbol").html(gene_symbol + " (<a href='https://ctd2-dashboard.nci.nih.gov/dashboard/#gene/h/" + gene_symbol + "'>dashboard entry</a>)")
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.debug(jqXHR)
+                console.debug(textStatus)
+                console.debug(errorThrown)
+                $("#gene-name").text("")
+                $("#references").html("")
+                $("#gene-symbol").text(gene_symbol)
+            }
+        });
+        $("#interaction-detail").hide()
+        $("#gene-detail").show()
+    }).on('tap', 'edge', function (event) {
+        const edge_data = event.target;
+        gene_and_link(edge_data.data("source"), $("#interaction-source"))
+        gene_and_link(edge_data.data("target"), $("#interaction-target"))
+        const confidences = edge_data.data("confidences")
+        const types = { 7: "p-value", 1: "likelihood ratio", 3: "mutual information", 6: "mode of action", 4: "probability" }
+        $("#interaction-values").empty()
+        for (const type in confidences) {
+            $("#interaction-values").append(`<li>${types[type]}: ${confidences[type]}</li>`)
+        }
+        $("#gene-detail").hide()
+        $("#interaction-detail").show()
+    });
+    console.timeLog(CYTOSCAPE_TIMER)
 };
+
+const gene_and_link = function (gene_symbol, html_element) {
+    $.ajax({
+        url: "cnkb/gene-detail",
+        data: {
+            gene_symbol: gene_symbol,
+        },
+        dataType: "json",
+        contentType: "json",
+        success: function (gene_detail) {
+            html_element.html(gene_symbol + " (<a href='https://ctd2-dashboard.nci.nih.gov/dashboard/#gene/h/" + gene_symbol + "'>dashboard entry</a>)")
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.debug(jqXHR)
+            console.debug(textStatus)
+            console.debug(errorThrown)
+            html_element.text(gene_symbol)
+        }
+    })
+}

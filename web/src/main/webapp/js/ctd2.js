@@ -1,9 +1,10 @@
-import {BASE_URL, leftSep, rightSep, ctd2_hovertext, ctd2_role_definition, ctd2_ocg_dash, class2imageData} from './ctd2.constants.js'
-import {showAlertMessage, GeneListView, CnkbQueryView, CnkbResultView, GeneCartHelpView} from './gene.cart.js'
+import { BASE_URL, leftSep, rightSep, ctd2_hovertext, ctd2_role_definition, ctd2_ocg_dash, class2imageData } from './ctd2.constants.js'
+import { showAlertMessage, GeneListView, CnkbQueryView, CnkbResultView, GeneCartHelpView } from './gene.cart.js'
 import create_wordcloud from './wordcloud.js'
-import {ECOTerm} from './ecoterm.js'
-import {ObservedSubjects, ObservedEvidences, ObservedEvidence} from './observed.js'
+import { ECOTerm } from './ecoterm.js'
+import { ObservedSubjects, ObservedEvidences, ObservedEvidence } from './observed.js'
 import ObservationView from './observation.view.js'
+import MraView from './mra.js'
 
 (function ($) {
     // This is strictly coupled to the homepage design!
@@ -585,12 +586,12 @@ import ObservationView from './observation.view.js'
         render: function () {
             fetch("api-doc.html")
                 .then(response => {
-                    if(!response.ok) throw new Error("API Document Missing")
+                    if (!response.ok) throw new Error("API Document Missing")
                     return response.text()
                 })
-                .then(data => $(this.el).html(this.template({api_document: data})))
+                .then(data => $(this.el).html(this.template({ api_document: data })))
                 .catch(error => {
-                    $(this.el).html(this.template({api_document: error}))
+                    $(this.el).html(this.template({ api_document: error }))
                 });
             return this;
         }
@@ -1174,13 +1175,12 @@ import ObservationView from './observation.view.js'
     const observationTableOptions = {
         'dom': '<iBfrtlp>',
         "sPaginationType": "bootstrap",
-        "columns": [{
-            "orderDataType": "dashboard-date"
-        },
+        "columns": [
+            { "orderDataType": "dashboard-date" },
             null,
             null,
             null,
-            {visible: false},
+            { visible: false },
         ],
         'buttons': [{
             extend: 'excelHtml5',
@@ -1814,7 +1814,7 @@ import ObservationView from './observation.view.js'
             const thatModel = this.model; // observation
             const ecocode = thatModel.ecocode;
 
-            if(thatModel.ontology == undefined || thatModel.ontology == null) {
+            if (thatModel.ontology == undefined || thatModel.ontology == null) {
                 thatModel.ontology = false
             }
 
@@ -1865,19 +1865,18 @@ import ObservationView from './observation.view.js'
                             });
 
                             summary += _.template($("#submission-obs-tbl-row-tmpl").html())(thatModel);
-                            if(thatModel.ontology) {
+                            if (thatModel.ontology) {
                                 summary += '<img src="img/onto.png" style="float: right;"></img>'
                             }
                             $(thatEl).html(summary);
                             const dataTable = $(tableEl).parent().DataTable({
                                 retrieve: true,
-                                columns: [{
-                                    "orderDataType": "dashboard-date"
-                                },
+                                columns: [
+                                    { "orderDataType": "dashboard-date" },
                                     null,
                                     null,
                                     null,
-                                    {visible: false},
+                                    { visible: false },
                                 ],
                             });
                             dataTable.cells(cellId).invalidate();
@@ -1987,7 +1986,7 @@ import ObservationView from './observation.view.js'
             const thatModel = this.model; // observation with summary
             const observation = thatModel.observation;
 
-            if(observation.ontology == undefined || observation.ontology == null) {
+            if (observation.ontology == undefined || observation.ontology == null) {
                 observation.ontology = false
             }
 
@@ -2417,7 +2416,7 @@ import ObservationView from './observation.view.js'
         template: _.template($("#search-result-row-tmpl").html()),
         render: function () {
             const model = this.model;
-            if(!model.ontology) {
+            if (!model.ontology) {
                 model.ontology = false
             }
 
@@ -2456,7 +2455,7 @@ import ObservationView from './observation.view.js'
             }
             let count = 0;
             _.each(synonyms, function (s) {
-                const aSynonym = {displayName: s, sid: model.id}
+                const aSynonym = { displayName: s, sid: model.id }
                 if (count >= 3) aSynonym.toomany = 'toomany';
                 new SynonymView({
                     model: aSynonym,
@@ -2548,7 +2547,7 @@ import ObservationView from './observation.view.js'
             $(this.el).html(this.template(this.model));
 
             // update the search box accordingly
-            $("#omni-input").val(this.model.term.replaceAll("`","'"));
+            $("#omni-input").val(this.model.term.replaceAll("`", "'"));
 
             const searchQuery = this.model.term;
             let subject_names = [];
@@ -2562,7 +2561,7 @@ import ObservationView from './observation.view.js'
                     let submission_count = 0;
                     const subject_result = ontology_search_results.subject_result
                         .filter(s => !subject_names.includes(s.subjectName));
-                    if(subject_result.length==0) {
+                    if (subject_result.length == 0) {
                         $("#ontology-search").prop('disabled', true);
                         $("#ontology-search").css("pointer-events", "none");
                         $("#ontology-spinner").hide();
@@ -2570,7 +2569,7 @@ import ObservationView from './observation.view.js'
                         return;
                     }
                     $("#onto-legend").show();
-                    if($("#no-result").is(":visible")) {
+                    if ($("#no-result").is(":visible")) {
                         $("#no-result").hide();
                     }
                     $("#search-results-grid").DataTable().destroy();
@@ -2620,8 +2619,8 @@ import ObservationView from './observation.view.js'
                                 "orderDataType": "dashboard-rank",
                                 "type": 'num',
                             },
-                            {visible: false},
-                            {visible: false}
+                            { visible: false },
+                            { visible: false }
                         ]
                     }).fnSort([
                         [7, 'desc'],
@@ -2657,7 +2656,7 @@ import ObservationView from './observation.view.js'
                                 return // existing result
                             }
                             counter++
-                            if (counter>limit_of_addtional_ones) return
+                            if (counter > limit_of_addtional_ones) return
                             aResult.ontology = true;
                             matching_observations.push(aResult);
                         });
@@ -2697,7 +2696,7 @@ import ObservationView from './observation.view.js'
                             null,
                             null,
                             null,
-                            {visible: false}
+                            { visible: false }
                         ]
                     }).fnSort([
                         [6, 'desc'], // sort by 'is-ontology'
@@ -2805,8 +2804,8 @@ import ObservationView from './observation.view.js'
                                     "orderDataType": "dashboard-rank",
                                     "type": 'num',
                                 },
-                                {visible: false},
-                                {visible: false}
+                                { visible: false },
+                                { visible: false }
                             ]
 
                         });
@@ -2870,7 +2869,7 @@ import ObservationView from './observation.view.js'
                                     null,
                                     null,
                                     null,
-                                    {visible: false}
+                                    { visible: false }
                                 ]
                             });
                             sTable.fnSort([
@@ -2902,7 +2901,7 @@ import ObservationView from './observation.view.js'
                         }
 
                         console.log(`oversized observations %c ${results.oversized_observations}`, "color:green")
-                        if(results.oversized_observations>0) {
+                        if (results.oversized_observations > 0) {
                             $("#oversized-observations").text(results.oversized_observations)
                             $("#oversize-message-observations").show()
                         }
@@ -2936,284 +2935,6 @@ import ObservationView from './observation.view.js'
         render: function () {
             $(this.el).append(this.template(this.model));
         },
-    });
-
-    //MRA View
-    const MraView = Backbone.View.extend({
-        el: $("#main-container"),
-        template: _.template($("#mra-view-tmpl").html()),
-        render: function () {
-            const result = this.model.toJSON();
-            const mra_data_url = $("#mra-view-tmpl").attr("mra-data-url") + result.evidence.filePath.replace(/\\/g, '/');
-            $(this.el).html(this.template(result));
-            $.ajax({
-                url: "mra-data/",
-                data: {
-                    url: mra_data_url,
-                    dataType: "mra",
-                    filterBy: "none",
-                    nodeNumLimit: 0,
-                    throttle: ""
-                },
-                dataType: "json",
-                contentType: "json",
-
-                success: function (data) {
-                    const thatEl = $("#master-regulator-grid");
-                    const thatE2 = $("#mra-barcode-grid");
-                    _.each(data, function (aData) {
-                        new MraViewRowView({
-                            el: $(thatEl).find("tbody"),
-                            model: aData
-                        }).render();
-
-                        new MraBarcodeRowView({
-                            el: $(thatE2).find("tbody"),
-                            model: aData
-                        }).render();
-
-                    });
-
-                    $(thatEl).dataTable({
-                        "sDom": "<'fullwidth'ifrtlp>",
-                        "sScrollY": "200px",
-                        "bPaginate": false
-                    });
-
-                    $(thatE2).dataTable();
-                }
-            }); //ajax 
-
-            $(".mra-cytoscape-view").click(function (event) {
-                event.preventDefault();
-                const mraDesc = $(this).attr("data-description");
-                const layoutName = $("#cytoscape-layouts").val();
-                const nodeLimit = $("#cytoscape-node-limit").val();
-
-                let filters = "";
-                $('input[type="checkbox"]:checked').each(function () {
-                    filters = filters + ($(this).val() + ',');
-                });
-
-                if (filters.length == 0) {
-                    showAlertMessage("Please select at least one master regulator.");
-                    return;
-                }
-
-                $.ajax({
-                    url: "mra-data/",
-                    data: {
-                        url: mra_data_url,
-                        dataType: "cytoscape",
-                        filterBy: filters,
-                        nodeNumLimit: nodeLimit,
-                        throttle: ""
-                    },
-                    dataType: "json",
-                    contentType: "json",
-                    success: function (data) {
-
-                        if (data == null) {
-                            showAlertMessage("The network is empty.");
-                            return;
-                        }
-
-                        $.fancybox.open(
-                            _.template($("#mra-cytoscape-tmpl").html())({
-                                description: mraDesc
-                            }), {
-                            touch: false,
-                            'autoDimensions': false,
-                            'transitionIn': 'none',
-                            'transitionOut': 'none'
-                        }
-                        );
-
-                        window.cy = this;
-                        cytoscape({
-                            container: $('#mra-cytoscape'),
-
-                            layout: {
-                                name: layoutName,
-                                fit: true,
-                                liveUpdate: false,
-                                maxSimulationTime: 8000, // max length in ms to run the layout
-                                stop: function () {
-                                    $("#mra_progress_indicator").hide();
-                                    this.stop();
-                                } // callback on layoutstop 
-
-                            },
-                            elements: data,
-                            style: cytoscape.stylesheet()
-                                .selector("node")
-                                .css({
-                                    "content": "data(id)",
-                                    "shape": "data(shape)",
-                                    "border-width": 2,
-                                    "labelValign": "middle",
-                                    "font-size": 10,
-                                    "width": "25px",
-                                    "height": "25px",
-                                    "background-color": "data(color)",
-                                    "border-color": "#555"
-                                })
-                                .selector("edge")
-                                .css({
-                                    "width": "mapData(weight, 0, 100, 1, 3)",
-                                    "target-arrow-shape": "triangle",
-                                    "source-arrow-shape": "circle",
-                                    "line-color": "#444"
-                                })
-                                .selector(":selected")
-                                .css({
-                                    "background-color": "#000",
-                                    "line-color": "#000",
-                                    "source-arrow-color": "#000",
-                                    "target-arrow-color": "#000"
-                                })
-                                .selector(".ui-cytoscape-edgehandles-source")
-                                .css({
-                                    "border-color": "#5CC2ED",
-                                    "border-width": 2
-                                })
-                                .selector(".ui-cytoscape-edgehandles-target, node.ui-cytoscape-edgehandles-preview")
-                                .css({
-                                    "background-color": "#5CC2ED"
-                                })
-                                .selector("edge.ui-cytoscape-edgehandles-preview")
-                                .css({
-                                    "line-color": "#5CC2ED"
-                                })
-                                .selector("node.ui-cytoscape-edgehandles-preview, node.intermediate")
-                                .css({
-                                    "shape": "rectangle",
-                                    "width": 15,
-                                    "height": 15
-                                }),
-
-                            ready: function () {
-                                // for debugging
-                            }
-                        });
-
-                    }
-                }); //end ajax
-
-            }); //end .cytoscape-view
-
-            $("#master-regulator-grid").on("change", ":checkbox", function () {
-                let filters = "";
-                $('input[type="checkbox"]:checked').each(function () {
-                    filters = filters + ($(this).val() + ',');
-                });
-
-                $.ajax({
-                    url: "mra-data/",
-                    data: {
-                        url: mra_data_url,
-                        dataType: "throttle",
-                        filterBy: filters,
-                        nodeNumLimit: $("#cytoscape-node-limit").val(),
-                        throttle: ""
-                    },
-                    dataType: "json",
-                    contentType: "json",
-                    success: function (data) {
-                        if (data != null)
-                            $("#throttle-input").text(data);
-                        else
-                            $("#throttle-input").text("e.g. 0.01");
-                        $("#throttle-input").css('color', 'grey');
-                    }
-                });
-
-
-            }); //end mra-checked  
-
-            $("#cytoscape-node-limit").change(function (evt) {
-                //the following block code is same as above, shall make it as function,
-                //but for somehow the function call does not work here for me. 
-                let filters = "";
-                $('input[type="checkbox"]:checked').each(function () {
-                    filters = filters + ($(this).val() + ',');
-                });
-
-                $.ajax({
-                    url: "mra-data/",
-                    data: {
-                        url: mra_data_url,
-                        dataType: "throttle",
-                        filterBy: filters,
-                        nodeNumLimit: $("#cytoscape-node-limit").val(),
-                        throttle: ""
-                    },
-                    dataType: "json",
-                    contentType: "json",
-                    success: function (data) {
-                        if (data != null)
-                            $("#throttle-input").text(data);
-                        else
-                            $("#throttle-input").text("e.g. 0.01");
-                        $("#throttle-input").css('color', 'grey');
-                    }
-                });
-
-            });
-            $('.clickable-popover').popover({
-                placement: "bottom",
-                trigger: 'hover',
-            }).click(function () {
-                $(this).popover('hide');
-            });
-
-            return this;
-        }
-    });
-
-    const MraViewRowView = Backbone.View.extend({
-        render: function () {
-            this.template = _.template($("#mra-view-row-tmpl").html());
-            $(this.el).append(this.template(this.model));
-
-            return this;
-        }
-    });
-
-    const MraBarcodeRowView = Backbone.View.extend({
-        render: function () {
-            const result = this.model;
-
-            this.template = _.template($("#mra-barcode-view-row-tmpl").html());
-            $(this.el).append(this.template(result));
-
-            if (result.daColor != null)
-                $(".da-color-" + result.entrezId).css({
-                    "background-color": result.daColor
-                });
-
-            if (result.deColor != null)
-                $(".de-color-" + result.entrezId).css({
-                    "background-color": result.deColor
-                });
-
-            const ctx = document.getElementById("draw-" + result.entrezId).getContext("2d");
-
-            _.each(result.mraTargets, function (mraTarget) {
-
-                const colorIndex = 255 - mraTarget.colorIndex;
-                if (mraTarget.arrayIndex == 0) {
-                    ctx.fillStyle = 'rgb(255,' + colorIndex + ',' + colorIndex + ')';
-                    ctx.fillRect(mraTarget.position, 0, 1, 15);
-                } else {
-                    ctx.fillStyle = 'rgb(' + colorIndex + ', ' + colorIndex + ', 255)';
-                    ctx.fillRect(mraTarget.position, 15, 1, 15);
-                }
-
-            });
-
-            return this;
-        }
     });
 
     const reformattedClassName = {
@@ -3655,6 +3376,12 @@ import ObservationView from './observation.view.js'
                             role: role
                         }
                     }).render();
+                },
+                error: function (model, xhr, options) {
+                    console.debug(xhr.status)
+                    new SearchView({
+                        model: { term: symbol }
+                    }).render();
                 }
             });
         },
@@ -3686,17 +3413,17 @@ import ObservationView from './observation.view.js'
             const previous = window.location.hash;
             const search_term = ($("#omni-input").val().trim().replaceAll("'", "`"));
             const too_short = Array.from(search_term.matchAll(/([^"]\S*|".+?")\s*/g), m => m[1].replace(/^"/, "").replace(/"$/, ""))
-                .some(x => x.length<=2);
-            if(too_short) {
+                .some(x => x.length <= 2);
+            if (too_short) {
                 showAlertMessage("Search queries containing terms with one or two letters are not allowed as they may return too many results.  Please enclose search terms in quotes or reformulate it. E.g. B cell should be submitted as \"B Cell\".");
                 return false;
             }
-            if(search_term.length < 2) {
+            if (search_term.length < 2) {
                 showAlertMessage("You cannot search for a single character.");
                 return false;
             }
             window.location.hash = "search/" + encodeURIComponent(search_term);
-            if(previous==window.location.hash) {
+            if (previous == window.location.hash) {
                 window.location.reload();
             }
             return false;

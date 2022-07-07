@@ -4,39 +4,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CyNetwork {
-    List<CyNode> nodes = new ArrayList<CyNode>();
-    List<CyEdge> edges = new ArrayList<CyEdge>();
-    List<CyInteraction> interactions =  new ArrayList<CyInteraction>();
+    List<Element> edges = new ArrayList<Element>();
+    List<String> interactionTypes = new ArrayList<String>();
 
-    public List<CyNode> getNodes() {
-        return nodes;
-    }
-
-    public void setNodes(List<CyNode> nodes) {
-        this.nodes = nodes;
-    }
-
-    public List<CyEdge> getEdges() {
+    public List<Element> getEdges() {
         return edges;
     }
 
-    public void setEdges(List<CyEdge> edges) {
+    public void setEdges(List<Element> edges) {
         this.edges = edges;
     }
-    
-    public List<CyInteraction> getInteractions() {
-        return this.interactions;
-    }  
-    
-    public void setInteractions(List<CyInteraction> interactions) {
-        this.interactions = interactions;
-    }
-    
-    public boolean addEdge(CyEdge edge) {
-        return getEdges().add(edge);
+
+    public List<String> getInteractionTypes() {
+        return this.interactionTypes;
     }
 
-    public boolean addNode(CyNode node) {
-        return getNodes().add(node);
+    public void setInteractions(List<String> interactionTypes) {
+        this.interactionTypes = interactionTypes;
+    }
+
+    public boolean addEdge(Element edge) {
+        return getEdges().add(edge);
     }
 }

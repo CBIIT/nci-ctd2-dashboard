@@ -1,9 +1,21 @@
 package gov.nih.nci.ctd2.dashboard.controller;
 
-import flexjson.JSONDeserializer;
-import flexjson.JSONSerializer;
- 
-import org.springframework.beans.factory.annotation.Autowired; 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.ConnectException;
+import java.net.SocketTimeoutException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -14,59 +26,40 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.io.IOException;
-import java.io.OutputStream;
-
-import java.net.ConnectException;
-import java.net.SocketTimeoutException;
-
-import java.util.ArrayList; 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
-
-import javax.servlet.http.HttpServletResponse;
-
-import gov.nih.nci.ctd2.dashboard.dao.DashboardDao; 
+import flexjson.JSONDeserializer;
+import flexjson.JSONSerializer;
+import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
 import gov.nih.nci.ctd2.dashboard.model.Gene;
+import gov.nih.nci.ctd2.dashboard.model.Protein;
+import gov.nih.nci.ctd2.dashboard.model.Xref;
 import gov.nih.nci.ctd2.dashboard.util.cnkb.CNKB;
-import gov.nih.nci.ctd2.dashboard.util.cnkb.CellularNetWorkElementInformation;
-import gov.nih.nci.ctd2.dashboard.util.cnkb.CnkbObject;
+import gov.nih.nci.ctd2.dashboard.util.cnkb.InteractionAndCount;
 import gov.nih.nci.ctd2.dashboard.util.cnkb.InteractionDetail;
 import gov.nih.nci.ctd2.dashboard.util.cnkb.InteractionParticipant;
-import gov.nih.nci.ctd2.dashboard.util.cnkb.InteractomeInfo;
-import gov.nih.nci.ctd2.dashboard.util.cnkb.QueryResult;
 import gov.nih.nci.ctd2.dashboard.util.cnkb.UnAuthenticatedException;
-import gov.nih.nci.ctd2.dashboard.util.cnkb.VersionDescriptor;
-import gov.nih.nci.ctd2.dashboard.util.cytoscape.CyEdge;
-import gov.nih.nci.ctd2.dashboard.util.cytoscape.CyElement;
-import gov.nih.nci.ctd2.dashboard.util.cytoscape.CyInteraction;
 import gov.nih.nci.ctd2.dashboard.util.cytoscape.CyNetwork;
-import gov.nih.nci.ctd2.dashboard.util.cytoscape.CyNode;
+import gov.nih.nci.ctd2.dashboard.util.cytoscape.Element;
 
 @Controller
 @RequestMapping("/cnkb")
 public class CnkbController {
-  
-    @Autowired
+	private static final Log log = LogFactory.getLog(CnkbController.class);
+
+	@Autowired
 	private DashboardDao dashboardDao;
-    
-    @Autowired
-    @Qualifier("cnkbDataURL")
-    private String cnkbDataURL = "";
 
-    public String getCnkbDataURL() {
-        return cnkbDataURL;
-    }
+	@Autowired
+	@Qualifier("cnkbDataURL")
+	private String cnkbDataURL = "";
 
-    public void setCnkbDataURL(String cnkbDataURL) {
-        this.cnkbDataURL = cnkbDataURL;
-    }
+	public String getCnkbDataURL() {
+		return cnkbDataURL;
+	}
 
-    
+	public void setCnkbDataURL(String cnkbDataURL) {
+		this.cnkbDataURL = cnkbDataURL;
+	}
+
 	private static Map<String, String> colorMap = new HashMap<String, String>();
 	static {
 		colorMap.put("protein-dna", "cyan");
@@ -87,137 +80,94 @@ public class CnkbController {
 
 	}
 
-	 
-	@SuppressWarnings("unchecked")
 	@Transactional
-	@RequestMapping(value = "query", method = { RequestMethod.POST,
+	@RequestMapping(value = "interactome-list", method = { RequestMethod.POST,
 			RequestMethod.GET }, headers = "Accept=application/text")
-	public ResponseEntity<String> getCnkbObject(
-			@RequestParam("dataType") String dataType,
-			@RequestParam("interactome") String interactome,
-			@RequestParam("version") String version,
-			@RequestParam("selectedGenes") String selectedGenes,
-			@RequestParam("interactionLimit") int interactionLimit,
-			@RequestParam("throttle") String throttle) {
-
+	public ResponseEntity<String> getInteractomeList() {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
-
 		final CNKB interactionsConnection = CNKB.getInstance(getCnkbDataURL());
-		CnkbObject cnkbObject = null;
+		List<InteractionAndCount> list = null;
 		try {
-			List<String> interactomeList = interactionsConnection.getNciDatasetAndInteractioCount();
-			if(interactome!=null && interactome.trim().length()>0 && !interactionsConnection.interactionNames.contains(interactome.trim())) {
-				return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
-			}
- 
-			if (dataType.equals("interactome-context")) {
-				cnkbObject = new InteractomeInfo();
-				((InteractomeInfo) cnkbObject)
-						.setInteractomeList(interactomeList);
-			} else if (dataType.equals("interactome-version")) {
-				cnkbObject = new InteractomeInfo();
-				((InteractomeInfo) cnkbObject)
-						.setDescription(interactionsConnection
-								.getInteractomeDescription(interactome));
-				List<VersionDescriptor> versionDescriptors = interactionsConnection
-						.getVersionDescriptor(interactome);
-				for (VersionDescriptor versionDescriptor : versionDescriptors) {
-					if (versionDescriptor.getRequiresAuthentication() == false)
-						((InteractomeInfo) cnkbObject)
-								.addVersionDescriptor(versionDescriptor);
-				}
-
-			} else if (dataType.equals("interaction-result")) {
-				cnkbObject = new QueryResult();
-				List<String> interactionTypes = interactionsConnection
-						.getInteractionTypesByInteractomeVersion(interactome,
-								version);
-				((QueryResult) cnkbObject)
-						.setInteractionTypeList(interactionTypes);
-
-				List<InteractionDetail> interactionDetails = null;
-				Short confidenceType = null;
-				@SuppressWarnings("rawtypes")
-				List<String> selectedGenesList = (List<String>) new JSONDeserializer()
-						.deserialize(selectedGenes);
-				if (selectedGenesList != null && selectedGenesList.size() != 0) {
-
-					for (String gene : selectedGenesList) {
-						CellularNetWorkElementInformation c = new CellularNetWorkElementInformation(
-								gene.trim());
-						interactionDetails = interactionsConnection
-								.getInteractionsByGeneSymbol(gene.trim(),
-										interactome, version);
-						if (confidenceType == null
-								&& interactionDetails != null
-								&& interactionDetails.size() > 0)
-							confidenceType = interactionDetails.get(0)
-									.getConfidenceTypes().get(0);
-						for (int i = 0; i < interactionTypes.size(); i++) {
-							c.addInteractionNum(getInteractionNumber(
-									interactionDetails,
-									interactionTypes.get(i), confidenceType));
-						}
-
-						((QueryResult) cnkbObject).addCnkbElement(c);
-					}
-
-				}
-
-			} else if (dataType.equals("interaction-throttle")) {
-				cnkbObject = new QueryResult();			 
-				List<InteractionDetail> interactionDetails = null;
-				List<String> selectedGenesList = convertStringToList(selectedGenes);
-				List<Float> confidentList = new ArrayList<Float>();
-				Short confidenceType = null;
-				if (selectedGenesList != null && selectedGenesList.size() != 0) {
-					for (String gene : selectedGenesList) {
-						interactionDetails = interactionsConnection
-								.getInteractionsByGeneSymbolAndLimit(
-										gene.trim(), interactome, version,
-										interactionLimit);
-						if (interactionDetails != null) {
-							if (confidenceType == null
-									&& interactionDetails.size() > 0)
-								confidenceType = interactionDetails.get(0)
-										.getConfidenceTypes().get(0);
-							for (InteractionDetail interactionDetail : interactionDetails)
-								confidentList.add(interactionDetail
-										.getConfidenceValue(confidenceType));
-						}
-					}
-					// sort genes by value
-					Collections.sort(confidentList, new Comparator<Float>() {
-						public int compare(Float f1, Float f2) {
-							return f2.compareTo(f1);
-						}
-					});
-					if (confidentList.size() > interactionLimit)
-						((QueryResult) cnkbObject).setThreshold(confidentList
-								.get(interactionLimit));
-					else if (confidentList.size() > 0)
-						((QueryResult) cnkbObject).setThreshold(confidentList
-								.get(confidentList.size() - 1));
-				}
-			}
-
-		} catch (UnAuthenticatedException uae) {
-			uae.printStackTrace();
-		} catch (ConnectException e1) {
-			e1.printStackTrace();
-		} catch (SocketTimeoutException e1) {
-			e1.printStackTrace();
-		} catch (IOException e1) {
-			e1.printStackTrace();
+			list = interactionsConnection
+					.getNciDatasetAndInteractioCount();
+		} catch (ConnectException e) {
+			e.printStackTrace();
+		} catch (SocketTimeoutException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (UnAuthenticatedException e) {
+			e.printStackTrace();
 		}
- 
 		JSONSerializer jsonSerializer = new JSONSerializer().exclude("*.class");
 
 		return new ResponseEntity<String>(
-				jsonSerializer.deepSerialize(cnkbObject), headers,
+				jsonSerializer.deepSerialize(list), headers,
 				HttpStatus.OK);
+	}
 
+	@Transactional
+	@RequestMapping(value = "interactome-descriptions", method = { RequestMethod.POST,
+			RequestMethod.GET }, headers = "Accept=application/text")
+	public ResponseEntity<String> getInteractomeDescriptions(@RequestParam("interactome") String interactome) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "application/json; charset=utf-8");
+		final CNKB interactionsConnection = CNKB.getInstance(getCnkbDataURL());
+		String[] descriptions = new String[2];
+		try {
+			descriptions[0] = interactionsConnection
+					.getInteractomeDescription(interactome);
+			descriptions[1] = interactionsConnection
+					.getVersionDescriptor(interactome);
+		} catch (ConnectException e) {
+			e.printStackTrace();
+		} catch (SocketTimeoutException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (UnAuthenticatedException e) {
+			e.printStackTrace();
+		}
+		JSONSerializer jsonSerializer = new JSONSerializer().exclude("*.class");
+
+		return new ResponseEntity<String>(
+				jsonSerializer.deepSerialize(descriptions), headers,
+				HttpStatus.OK);
+	}
+
+	@Transactional
+	@RequestMapping(value = "interaction-total-number", method = { RequestMethod.POST,
+			RequestMethod.GET }, headers = "Accept=application/text")
+	public ResponseEntity<String> getInteractionResult(@RequestParam("interactome") String interactome,
+			@RequestParam("selectedGenes") String selectedGenes) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "application/json; charset=utf-8");
+		final CNKB interactionsConnection = CNKB.getInstance(getCnkbDataURL());
+		try {
+			String latestVersion = interactionsConnection.getLatestVersionNumber(interactome);
+			@SuppressWarnings("unchecked")
+			List<String> selectedGenesList = (List<String>) new JSONDeserializer()
+					.deserialize(selectedGenes);
+			if (selectedGenesList != null) {
+				int total = 0;
+				for (String gene : selectedGenesList) {
+					total += interactionsConnection
+							.getInteractionsByGeneSymbol(gene.trim(), interactome, latestVersion).size();
+				}
+				return new ResponseEntity<String>(Integer.toString(total), headers, HttpStatus.OK);
+			}
+		} catch (ConnectException e) {
+			e.printStackTrace();
+		} catch (SocketTimeoutException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (UnAuthenticatedException e) {
+			e.printStackTrace();
+		}
+
+		return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
 	}
 
 	@Transactional
@@ -225,12 +175,9 @@ public class CnkbController {
 			RequestMethod.GET }, headers = "Accept=application/json")
 	public ResponseEntity<String> getCnkbCyNetwork(
 			@RequestParam("interactome") String interactome,
-			@RequestParam("version") String version,
 			@RequestParam("selectedGenes") String selectedGenes,
-			@RequestParam("interactionLimit") int interactionLimit,
-			@RequestParam("throttle") String throttle) {
+			@RequestParam(value = "interactionLimit", required = false, defaultValue = "10000") int interactionLimit) {
 
-	 
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
 
@@ -244,29 +191,16 @@ public class CnkbController {
 				return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
 			}
 
-			List<InteractionDetail> interactionDetails = null;
 			List<String> selectedGenesList = convertStringToList(selectedGenes);
-			float throttleValue = 0;
-			try {
-				throttleValue = Float.valueOf(throttle);
-			} catch (NumberFormatException ne) {
-				// set throttleValue = 0;
-			}
 
-			List<CyEdge> edgeList = new ArrayList<CyEdge>();
-			Short confidenceType = null;
+			List<Element> edgeList = new ArrayList<Element>();
 			if (selectedGenesList != null && selectedGenesList.size() != 0) {
+				String latestVersion = interactionsConnection.getLatestVersionNumber(interactome);
 				for (String gene : selectedGenesList) {
-					interactionDetails = interactionsConnection
-							.getInteractionsByGeneSymbolAndLimit(gene.trim(),
-									interactome, version, interactionLimit);
+					List<InteractionDetail> interactionDetails = interactionsConnection
+							.getInteractionsByGeneSymbol(gene.trim(), interactome, latestVersion);
 					if (interactionDetails != null) {
-						if (confidenceType == null
-								&& interactionDetails.size() > 0)
-							confidenceType = interactionDetails.get(0)
-									.getConfidenceTypes().get(0);
-						getCyEdgeList(interactionDetails, throttleValue,
-								confidenceType, edgeList);
+						getEdgeList(interactionDetails, edgeList);
 					}
 				}
 			}
@@ -284,7 +218,7 @@ public class CnkbController {
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-	 
+
 		JSONSerializer jsonSerializer = new JSONSerializer().exclude("*.class");
 
 		return new ResponseEntity<String>(
@@ -292,77 +226,51 @@ public class CnkbController {
 
 	}
 
-	 
-
 	@Transactional
 	@RequestMapping(value = "download", method = { RequestMethod.POST })
 	public void downloadCnkbResult(
 			@RequestParam("interactome") String interactome,
-			@RequestParam("version") String version,
 			@RequestParam("selectedGenes") String selectedGenes,
-			@RequestParam("interactionLimit") int interactionLimit,
-			@RequestParam("throttle") String throttle,
+			@RequestParam(value = "all", required = false, defaultValue = "true") Boolean all,
+			@RequestParam(value = "confidenceType", required = false, defaultValue = "1") int confidenceType,
+			@RequestParam(value = "interactionLimit", required = false, defaultValue = "100") int limit,
 			HttpServletResponse response) {
 
 		CNKB interactionsConnection = CNKB.getInstance(getCnkbDataURL());
-		CnkbObject cnkbObject = null;
 		String filename = "cnkbResult";
 
 		response.setContentType("application/octet-stream");
-		response.addHeader("Content-Disposition", "attachment; filename=\""
-				+ filename + ".sif\"");
+		response.addHeader("Content-Disposition", "attachment; filename=\"" + filename + ".sif\"");
 		response.addHeader("Content-Transfer-Encoding", "binary");
 
 		try {
-
-			cnkbObject = new QueryResult();
-			List<String> interactionTypes = interactionsConnection
-					.getInteractionTypesByInteractomeVersion(interactome,
-							version);
-			((QueryResult) cnkbObject).setInteractionTypeList(interactionTypes);
-			List<InteractionDetail> interactionDetails = null;
+			String version = interactionsConnection.getLatestVersionNumber(interactome);
 
 			List<String> selectedGenesList = convertStringToList(selectedGenes);
 
 			OutputStream outputStream = response.getOutputStream();
 
-			if (selectedGenesList.size() != 0) {
-				Short confidenceType = null;
-				HashMap<String, String> map = interactionsConnection
-						.getInteractionTypeMap();
-				for (String gene : selectedGenesList) {
-					interactionDetails = interactionsConnection
-							.getInteractionsByGeneSymbol(gene.trim(),
-									interactome, version);
-					if (interactionDetails == null
-							|| interactionDetails.size() == 0)
-						continue;
-					if (confidenceType == null)
-						confidenceType = interactionDetails.get(0)
-								.getConfidenceTypes().get(0);
-					for (int i = 0; i < interactionTypes.size(); i++) {
-						List<InteractionDetail> interactionDetailList = getSelectedInteractions(
-								interactionDetails, interactionTypes.get(i),
-								confidenceType);
-						if (interactionDetailList.size() == 0)
-							continue;
-						StringBuffer buf = new StringBuffer(gene + " "
-								+ map.get(interactionTypes.get(i)));
-						for (InteractionDetail interactionDetail : interactionDetailList) {
-							List<InteractionParticipant> pList = interactionDetail
-									.getParticipantList();
-							for (int j = 0; j < pList.size(); j++) {
-								if (!pList.get(j).getGeneName().equals(gene))
-									buf.append(" " + pList.get(j).getGeneName());
-							}
-
-						}
-						buf.append("\n");
-						outputStream.write(buf.toString().getBytes());
-					}
-
+			Map<String, String> map = interactionsConnection.getInteractionTypeMap();
+			List<InteractionDetail> interactionDetails = new ArrayList<InteractionDetail>();
+			for (String gene : selectedGenesList) {
+				interactionDetails
+						.addAll(interactionsConnection.getInteractionsByGeneSymbol(gene.trim(), interactome, version));
+			}
+			if (!all && interactionDetails.size() > limit) {
+				interactionDetails = filter(interactionDetails, confidenceType, limit);
+			}
+			for (String gene : selectedGenesList) {
+				StringBuffer buf = new StringBuffer(
+						gene + " " + map.get(interactionDetails.get(0).getInteractionType()));
+				for (InteractionDetail interactionDetail : interactionDetails) {
+					List<InteractionParticipant> pList = interactionDetail.getParticipantList();
+					if (pList.get(0).getGeneName().equals(gene))
+						buf.append(" " + pList.get(1).getGeneName());
+					if (pList.get(1).getGeneName().equals(gene))
+						buf.append(" " + pList.get(0).getGeneName());
 				}
-
+				buf.append("\n");
+				outputStream.write(buf.toString().getBytes());
 			}
 			outputStream.close();
 		} catch (UnAuthenticatedException uae) {
@@ -374,172 +282,95 @@ public class CnkbController {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 	}
 
-	@Transactional
-	@RequestMapping(value = "upload", method = RequestMethod.POST)
-	public ResponseEntity<String> getCnkbCyNetwork(
-			@RequestParam("sifData") String data) {
+	private List<InteractionDetail> filter(List<InteractionDetail> all, int confidenceType, int limit) {
+		all.sort(
+				(InteractionDetail h1, InteractionDetail h2) -> -h1.getConfidenceValue(confidenceType)
+						.compareTo(h2.getConfidenceValue(confidenceType)));
+		return all.subList(0, limit);
+	}
 
-		HashMap<String, String> interactionTypeMap = getInteractionTypeMap();
-		HttpHeaders headers = new HttpHeaders();
-		headers.add("Content-Type", "application/json; charset=utf-8");
-		JSONSerializer jsonSerializer = new JSONSerializer().exclude("*.class");
-
-		HashSet<String> nodeNames = new HashSet<String>();
-		HashSet<String> interactionTypes = new HashSet<String>();
-		CyNetwork cyNetwork = new CyNetwork();
-		boolean validGFormat = true;
-		String lines[] = data.split("\n");
-
-		for (int i = 0; i < lines.length; i++) {
-			String tokens[] = lines[i].split("\\s+");
-			if (tokens.length < 3)
-				continue;
-			String source = tokens[0].trim();
-
-			String interactionType = tokens[1].trim();
-			for (int j = 2; j < tokens.length; j++) {
-				String target = tokens[j].trim();
-				CyEdge cyEdge = new CyEdge();
-				cyEdge.setProperty(CyElement.ID, source + "." + interactionType
-						+ "." + target);
-				cyEdge.setProperty(CyElement.SOURCE, source);
-				cyEdge.setProperty(CyElement.TARGET, target);
-				cyEdge.setProperty(CyElement.COLOR,
-						colorMap.get(interactionTypeMap.get(interactionType)));
-				if (colorMap.get(interactionTypeMap.get(interactionType)) == null) {
-					validGFormat = false;
-					break;
-				}
-				cyNetwork.addEdge(cyEdge);
-				interactionTypes.add(interactionTypeMap.get(interactionType));
-				nodeNames.add(source);
-				nodeNames.add(target);
-
-				if (nodeNames.size() > 500) {
-					String message = "The number of nodes to be displayed is limited to 500.";
-					return new ResponseEntity<String>(
-							jsonSerializer.deepSerialize(message), headers,
-							HttpStatus.OK);
-
-				}
-
-			}
-		}
-
-		if (validGFormat == false) {
-			String message = "your file is not sif format.";
-			return new ResponseEntity<String>(
-					jsonSerializer.deepSerialize(message), headers,
-					HttpStatus.OK);
-
-		}
-
-		for (String nodeName : nodeNames) {
-			CyNode cyNode = new CyNode();
-			cyNode.setProperty(CyElement.ID, nodeName);
-			cyNetwork.addNode(cyNode);
-		}
-
-		List<CyInteraction> cyInteractions = new ArrayList<CyInteraction>();
-		for (String interactionType : interactionTypes) {
-			cyInteractions.add(new CyInteraction(interactionType, colorMap
-					.get(interactionType)));
-		}
-		cyNetwork.setInteractions(cyInteractions);
-
-		return new ResponseEntity<String>(
-				jsonSerializer.deepSerialize(cyNetwork), headers, HttpStatus.OK);
-
-	}	 
-	
-	
 	@Transactional
 	@RequestMapping(value = "validation", method = { RequestMethod.POST,
 			RequestMethod.GET }, headers = "Accept=application/json")
 	public ResponseEntity<String> getInvalidGeneSymbols(
 			@RequestParam("geneSymbols") String geneSymbols) {
 
-	 
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
 
 		List<String> invalidGenes = getInvalidNames(geneSymbols);
-	 
+
 		JSONSerializer jsonSerializer = new JSONSerializer().exclude("*.class");
 
 		return new ResponseEntity<String>(
 				jsonSerializer.deepSerialize(invalidGenes), headers, HttpStatus.OK);
 
 	}
-	
-	
-	
 
-	private float getDivisorValue(float maxValue, float minValue) {
-		float divisor = (float) (maxValue - minValue) / 100;
-
-		return divisor;
+	@Transactional
+	@RequestMapping(value = "gene-detail", method = { RequestMethod.POST,
+			RequestMethod.GET }, headers = "Accept=application/json")
+	public ResponseEntity<String> getGeneDetail(
+			@RequestParam("gene_symbol") String geneSymbol) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "application/json; charset=utf-8");
+		List<Gene> genes = dashboardDao.findGenesBySymbol(geneSymbol);
+		// only return human gene. Returning two genes with the same symbol, one for
+		// human and one for mouse, does not make sense.
+		Gene gene = null;
+		for (Gene g : genes) {
+			if (g.getOrganism().getTaxonomyId().equals("9606")) {
+				gene = g;
+				break;
+			}
+		}
+		if (gene == null) {
+			log.warn("gene symbol " + geneSymbol + " not found in database");
+			return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
+		}
+		Set<Xref> xrefs = gene.getXrefs();
+		String genecards = null;
+		String dave = null;
+		if (xrefs.size() > 1) {
+			Xref x = xrefs.iterator().next();
+			if (x.getDatabaseName().equals("GeneCards")) {
+				genecards = x.getDatabaseId();
+			}
+			if (x.getDatabaseName().equals("Ensembl")) {
+				dave = x.getDatabaseId();
+			}
+		}
+		List<Protein> proteinByGene = dashboardDao.findProteinByGene(gene);
+		String uniprot = null;
+		if (proteinByGene.size() != 1) {
+			log.warn("no single protein found for gene symbol " + geneSymbol + ": " + proteinByGene.size());
+		} else {
+			uniprot = proteinByGene.get(0).getUniprotId();
+		}
+		GeneDetail geneDetail = new GeneDetail(gene.getFullName(), gene.getEntrezGeneId(), genecards, dave,
+				uniprot);
+		JSONSerializer jsonSerializer = new JSONSerializer().exclude("*.class");
+		return new ResponseEntity<String>(
+				jsonSerializer.deepSerialize(geneDetail), headers, HttpStatus.OK);
 	}
 
 	private HashMap<String, String> getInteractionTypeMap() {
 		HashMap<String, String> map = null;
 		try {
 			map = CNKB.getInstance(getCnkbDataURL()).getInteractionTypeMap();
-		} catch (ConnectException e) {			 
+		} catch (ConnectException e) {
 			e.printStackTrace();
-		} catch (SocketTimeoutException e) {			 
+		} catch (SocketTimeoutException e) {
 			e.printStackTrace();
-		} catch (IOException e) {		 
+		} catch (IOException e) {
 			e.printStackTrace();
-		} catch (UnAuthenticatedException e) {		 
+		} catch (UnAuthenticatedException e) {
 			e.printStackTrace();
 		}
 
 		return map;
-	}
-
-	private int getInteractionNumber(
-			List<InteractionDetail> interactionDetails, String interactionType,
-			Short confidenceType) {
-		int count = 0;
-		if (interactionDetails != null && interactionDetails.size() > 0) {
-			for (int i = 0; i < interactionDetails.size(); i++) {
-				InteractionDetail interactionDetail = interactionDetails.get(i);
-				if (interactionDetail != null
-						&& interactionType.equals(interactionDetail
-								.getInteractionType())
-						&& interactionDetail.getConfidenceTypes().contains(
-								confidenceType)) {
-					count++;
-				}
-
-			}
-		}
-		return count;
-	}
-
-	public ArrayList<InteractionDetail> getSelectedInteractions(
-			List<InteractionDetail> interactionDetails, String interactionType,
-			short selectedConfidenceType) {
-		ArrayList<InteractionDetail> arrayList = new ArrayList<InteractionDetail>();
-		if (interactionDetails != null && interactionDetails.size() > 0) {
-			for (int i = 0; i < interactionDetails.size(); i++) {
-				InteractionDetail interactionDetail = interactionDetails.get(i);
-
-				if (interactionType.equals(interactionDetail
-						.getInteractionType())
-						&& interactionDetail
-								.getConfidenceValue(selectedConfidenceType) != null) {
-					arrayList.add(interactionDetail);
-
-				}
-
-			}
-		}
-		return arrayList;
 	}
 
 	private List<String> convertStringToList(String str) {
@@ -554,153 +385,66 @@ public class CnkbController {
 		return list;
 	}
 
-	private void getCyEdgeList(List<InteractionDetail> interactionDetails,
-			float throttle, Short confidenceType, List<CyEdge> edgeList) {
-		CyNode source = null;
-		CyNode target = null;
+	private void getEdgeList(List<InteractionDetail> interactionDetails, final List<Element> edgeList) {
 
 		for (InteractionDetail interactionDetail : interactionDetails) {
-
-			if (!interactionDetail.getConfidenceTypes()
-					.contains(confidenceType)
-					|| interactionDetail.getConfidenceValue(confidenceType)
-							.floatValue() < throttle)
-				continue;
 			List<InteractionParticipant> participants = interactionDetail
 					.getParticipantList();
 			String interactionType = interactionDetail.getInteractionType();
 			for (int i = 0; i < participants.size(); i++) {
-				source = new CyNode();
 				String sName = participants.get(i).getGeneName();
-				source.setProperty(CyElement.ID, sName);
+				Element source = Element.createNode(sName);
 				for (int j = i + 1; j < participants.size(); j++) {
-					target = new CyNode();
 					String tName = participants.get(j).getGeneName();
-					target.setProperty(CyElement.ID, tName);
-					CyEdge cyEdge = new CyEdge();
-					cyEdge.setProperty(CyElement.ID, sName + "."
-							+ getInteractionTypeMap().get(interactionType)
-							+ "." + tName);
-					cyEdge.setProperty(CyElement.SOURCE, sName);
-					cyEdge.setProperty(CyElement.TARGET, tName);
-					cyEdge.setProperty(CyElement.WEIGHT, interactionDetail
-							.getConfidenceValue(confidenceType));
-					cyEdge.setProperty(CyElement.COLOR,
-							colorMap.get(interactionType));
+					Element target = Element.createNode(tName);
+					Element cyEdge = Element.createEdge(
+							sName + "." + getInteractionTypeMap().get(interactionType) + "." + tName,
+							sName,
+							tName);
+					cyEdge.setProperty(Element.COLOR, colorMap.get(interactionType));
+					cyEdge.setProperty(Element.CONFIDENCES, interactionDetail.getConfidences());
 					edgeList.add(cyEdge);
-
 				}
 			}
-
 		}
-
 	}
 
-	private CyNetwork convertToCyNetwork(List<CyEdge> edgeList,
-			int interactionLimit, List<String> selectedGenesList) {
+	private CyNetwork convertToCyNetwork(List<Element> edgeList, int interactionLimit, List<String> selectedGenesList) {
 
 		CyNetwork cyNetwork = new CyNetwork();
-		Collections.sort(edgeList, new Comparator<CyEdge>() {
-			public int compare(CyEdge e1, CyEdge e2) {
-				return ((Float) e2.getData().get(CyElement.WEIGHT))
-						.compareTo((Float) e1.getData().get(CyElement.WEIGHT));
-			}
-		});
-
-		List<CyEdge> cyEdgeList = new ArrayList<CyEdge>();
-		HashSet<String> nodeNames = new HashSet<String>();
-		HashSet<String> interactionTypes = new HashSet<String>();
+		Set<String> interactionTypes = new HashSet<String>();
 
 		for (int i = 0; i < edgeList.size(); i++) {
 			if (i >= interactionLimit)
 				break;
-			cyEdgeList.add(edgeList.get(i));
-			nodeNames.add(edgeList.get(i).getData().get(CyElement.SOURCE)
-					.toString());
-			nodeNames.add(edgeList.get(i).getData().get(CyElement.TARGET)
-					.toString());
-			String interactionType = edgeList.get(i).getData()
-					.get(CyElement.ID).toString().split("\\.")[1].trim();
+			cyNetwork.addEdge(edgeList.get(i));
+			String interactionType = edgeList.get(i)
+					.getProperty(Element.ID).toString().split("\\.")[1].trim();
 			interactionTypes.add(getInteractionTypeMap().get(interactionType));
 		}
 
-		float minValue = (Float) cyEdgeList.get(cyEdgeList.size() - 1)
-				.getData().get(CyElement.WEIGHT);
-		float maxValue = (Float) cyEdgeList.get(0).getData()
-				.get(CyElement.WEIGHT);
-		float divisor = getDivisorValue(maxValue, minValue);
-
-		for (int i = 0; i < cyEdgeList.size(); i++) {
-
-			float confValue = Float.valueOf(edgeList.get(i).getData()
-					.get(CyElement.WEIGHT).toString());
-			if (divisor != 0)
-				edgeList.get(i).setProperty(CyElement.WEIGHT,
-						(int) ((confValue - minValue) / divisor));
-			else
-				edgeList.get(i).setProperty(CyElement.WEIGHT, 50);
-			cyNetwork.addEdge(edgeList.get(i));
-
-		}
-
-		for (String nodeName : nodeNames) {
-			CyNode cyNode = new CyNode();
-			cyNode.setProperty(CyElement.ID, nodeName);
-			if (selectedGenesList.contains(nodeName))
-				cyNode.setProperty(CyElement.COLOR, "yellow");
-			else
-			   cyNode.setProperty(CyElement.COLOR, "#DDD");
-			cyNetwork.addNode(cyNode);
-		}
-
-		List<CyInteraction> cyInteractions = new ArrayList<CyInteraction>();
-		for (String interactionType : interactionTypes) {
-			cyInteractions.add(new CyInteraction(interactionType, colorMap
-					.get(interactionType)));
-		}
-		cyNetwork.setInteractions(cyInteractions);
+		cyNetwork.setInteractions(new ArrayList<String>(interactionTypes));
 
 		return cyNetwork;
-
 	}
-	
-	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private List<String> getInvalidNames(String geneSymbols)
-	{
+
+	@SuppressWarnings({ "unchecked" })
+	private List<String> getInvalidNames(String geneSymbols) {
 		List<String> invalidGenes = new ArrayList<String>();
 		List<String> geneSymbolList = null;
 		if (geneSymbols != null && geneSymbols.trim().length() > 0) {
 			geneSymbolList = (List<String>) new JSONDeserializer()
 					.deserialize(geneSymbols);
 		}
-		for(String gene : geneSymbolList)
-		{
-			if (gene != null && gene.trim().length() > 0)
-			{
+		for (String gene : geneSymbolList) {
+			if (gene != null && gene.trim().length() > 0) {
 				List<Gene> genes = dashboardDao.findGenesBySymbol(gene);
-				if (genes == null || genes.size() == 0)
-				{
+				if (genes == null || genes.size() == 0) {
 					invalidGenes.add(gene);
 				}
 			}
 		}
-		 
-		 
+
 		return invalidGenes;
-	}
-
-	// test
-	public static void main(String[] args) {
-
-		CnkbController cnknController = new CnkbController();
-		cnknController.getCnkbCyNetwork("BCi", "1.0", "NFIX, FOSL2", 100, "");
-		//cnknController.convertCNKBtoJSON("interaction-result", "BCi", "1.0",
-		// "NFIX, NCOA1", 100, "");
-		
-		 
-		
-		
-
 	}
 }
