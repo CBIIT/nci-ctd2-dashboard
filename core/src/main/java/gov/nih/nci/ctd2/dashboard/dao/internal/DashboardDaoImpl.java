@@ -1019,10 +1019,11 @@ public class DashboardDaoImpl implements DashboardDao {
         String sql = "SELECT observation.id FROM observation"
                 + " JOIN submission ON observation.submission_id=submission.id"
                 + " JOIN observation_template ON submission.observationTemplate_id=observation_template.id"
-                + " WHERE ecocode LIKE '%" + ecocode + "%'";
+                + " WHERE ecocode LIKE :ecocode";
         Session session = getSession();
         @SuppressWarnings("unchecked")
         org.hibernate.query.Query<Integer> query = session.createNativeQuery(sql);
+        query.setParameter("ecocode", "%" + ecocode + "%");
         List<Integer> list = query.list();
         session.close();
         return list;
@@ -1032,10 +1033,11 @@ public class DashboardDaoImpl implements DashboardDao {
         String sql = "SELECT COUNT(observation.id) FROM observation"
                 + " JOIN submission ON observation.submission_id=submission.id"
                 + " JOIN observation_template ON submission.observationTemplate_id=observation_template.id"
-                + " WHERE ecocode LIKE '%" + ecocode + "%'";
+                + " WHERE ecocode LIKE :ecocode";
         Session session = getSession();
         @SuppressWarnings("unchecked")
         org.hibernate.query.Query<BigInteger> query = session.createNativeQuery(sql);
+        query.setParameter("ecocode", "%" + ecocode + "%");
         int count = query.getSingleResult().intValue();
         session.close();
         return count;
@@ -1045,10 +1047,11 @@ public class DashboardDaoImpl implements DashboardDao {
         String sql = "SELECT COUNT(DISTINCT submissionCenter_id) FROM observation"
                 + " JOIN submission ON observation.submission_id=submission.id"
                 + " JOIN observation_template ON submission.observationTemplate_id=observation_template.id"
-                + " WHERE ecocode LIKE '%" + ecocode + "%'";
+                + " WHERE ecocode LIKE :ecocode";
         Session session = getSession();
         @SuppressWarnings("unchecked")
         org.hibernate.query.Query<BigInteger> query = session.createNativeQuery(sql);
+        query.setParameter("ecocode", "%" + ecocode + "%");
         int count = query.getSingleResult().intValue();
         session.close();
         return count;
@@ -1059,7 +1062,7 @@ public class DashboardDaoImpl implements DashboardDao {
         String sql = "SELECT MIN(observation.id), COUNT(DISTINCT observation.id) FROM observation"
                 + " JOIN submission ON observation.submission_id=submission.id"
                 + " JOIN observation_template ON submission.observationTemplate_id=observation_template.id"
-                + " WHERE ecocode LIKE '%" + ecocode + "%'";
+                + " WHERE ecocode LIKE :ecocode";
         if (tier > 0) {
             sql += " AND tier=" + tier;
         }
@@ -1068,6 +1071,7 @@ public class DashboardDaoImpl implements DashboardDao {
         Session session = getSession();
         @SuppressWarnings("unchecked")
         org.hibernate.query.Query<Object[]> query = session.createNativeQuery(sql);
+        query.setParameter("ecocode", "%" + ecocode + "%");
         List<Object[]> idList = query.list();
         session.close();
 
@@ -1109,12 +1113,12 @@ public class DashboardDaoImpl implements DashboardDao {
     }
 
     private int centerCount(String ecocode) {
-        String sql = "SELECT COUNT(DISTINCT submissionCenter_id) FROM observation_template WHERE ecocode LIKE '%"
-                + ecocode + "%'";
+        String sql = "SELECT COUNT(DISTINCT submissionCenter_id) FROM observation_template WHERE ecocode LIKE :ecocode";
         log.debug(sql);
         Session session = getSession();
         @SuppressWarnings("unchecked")
         org.hibernate.query.Query<BigInteger> query = session.createNativeQuery(sql);
+        query.setParameter("ecocode", "%" + ecocode + "%");
         BigInteger result = query.getSingleResult();
         int x = result.intValue();
         session.close();
@@ -1709,9 +1713,10 @@ public class DashboardDaoImpl implements DashboardDao {
 
         String synonymBasedQuery = "SELECT DISTINCT SubjectImpl_id FROM subject_synonym_map "
                 + "JOIN dashboard_entity ON subject_synonym_map.synonyms_id=dashboard_entity.id "
-                + "WHERE displayName LIKE '%" + searchTerm + "%'";
+                + "WHERE displayName LIKE :searchTerm";
         @SuppressWarnings("unchecked")
         org.hibernate.query.Query<Integer> query2 = session.createNativeQuery(synonymBasedQuery);
+        query2.setParameter("searchTerm", "%" + searchTerm + "%");
         List<Integer> list2 = new ArrayList<Integer>();
         try {
             list2 = query2.list();
@@ -1944,21 +1949,22 @@ public class DashboardDaoImpl implements DashboardDao {
     /*
      * This method does a straightforward search of subjects, not exactly the same
      * as full-text search but similar. This is done only for the purpose of getting
-     * observatoin 'insersection' for ontology search.
+     * observation 'intersection' for ontology search.
      */
     @SuppressWarnings("unchecked")
     private void searchSubjectsToUpdateObservations(String oneTerm, final Set<Integer> observations) {
         Session session = getSession();
-        String sqlForMainNameMatch = "SELECT subject.id FROM subject JOIN dashboard_entity ON dashboard_entity.id=subject.id WHERE displayName LIKE '%"
-                + oneTerm + "%'";
+        String sqlForMainNameMatch = "SELECT subject.id FROM subject JOIN dashboard_entity ON dashboard_entity.id=subject.id WHERE displayName LIKE :oneTerm";
         org.hibernate.query.Query<Integer> query = session.createNativeQuery(sqlForMainNameMatch);
+        query.setParameter("oneTerm", "%" + oneTerm + "%");
         List<Integer> list = query.getResultList();
 
         String sqlForSynonymMatch = "SELECT subject.id FROM subject "
                 + "JOIN subject_synonym_map ON subject.id=subject_synonym_map.SubjectImpl_id "
                 + "JOIN dashboard_entity ON dashboard_entity.id=subject_synonym_map.synonyms_id "
-                + "WHERE displayName LIKE '%" + oneTerm + "%'";
+                + "WHERE displayName LIKE :oneTerm";
         org.hibernate.query.Query<Integer> query2 = session.createNativeQuery(sqlForSynonymMatch);
+        query2.setParameter("oneTerm", "%" + oneTerm + "%");
         List<Integer> list2 = query2.getResultList();
 
         session.close();
