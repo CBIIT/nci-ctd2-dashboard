@@ -508,6 +508,7 @@ export const CnkbResultView = Backbone.View.extend({
                             if (network_limit < 10) network_limit = 10
                             if (network_limit > max_number) network_limit = max_number
                             $("#displayed-interaction-number").text(network_limit)
+                            $("#interaction-limit").val(network_limit)
                             drawCNKBCytoscape(select_data(confidence_type), confidence_type)
                         }
                     }
