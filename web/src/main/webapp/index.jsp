@@ -2373,7 +2373,7 @@
                         <div style="width: 200px">
                             <div id=network-detail-viewer style="margin:10px; padding:5px; border-style: solid; border-width:1px; height: 400px;">
                                 <h5>Network details</h5>
-                                <div id=initial-text style="display: flex;height: 100%;align-items: center">Click on a network node (gene) or edge (interaction) to see related information.</div>
+                                <div id=initial-text style="padding-top: 10px;">Click on a network node (gene) or edge (interaction) to see related information.</div>
                                 <div id=gene-detail>
                                     <div><b>Gene symbol:</b> <span id=gene-symbol></span></div>
                                     <div><b>Gene name:</b> <span id=gene-name></span></div>
