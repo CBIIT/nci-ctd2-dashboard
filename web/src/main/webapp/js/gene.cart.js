@@ -593,6 +593,7 @@ const make_legend = function (interaction_types, description) {
 const drawCNKBCytoscape = function (data, confidence_type) {
     $("#gene-detail").hide()
     $("#interaction-detail").hide()
+    $("#network-detail-viewer > #initial-text").show()
     let min_w = 1
     let max_w = -1
     data.edges.forEach(x => {
@@ -704,6 +705,7 @@ const drawCNKBCytoscape = function (data, confidence_type) {
                 $("#gene-symbol").text(gene_symbol)
             }
         });
+        $("#network-detail-viewer > #initial-text").hide()
         $("#interaction-detail").hide()
         $("#gene-detail").show()
     }).on('tap', 'edge', function (event) {
@@ -716,6 +718,7 @@ const drawCNKBCytoscape = function (data, confidence_type) {
         for (const type in confidences) {
             $("#interaction-values").append(`<li>${types[type]}: ${confidences[type]}</li>`)
         }
+        $("#network-detail-viewer > #initial-text").hide()
         $("#gene-detail").hide()
         $("#interaction-detail").show()
     });
