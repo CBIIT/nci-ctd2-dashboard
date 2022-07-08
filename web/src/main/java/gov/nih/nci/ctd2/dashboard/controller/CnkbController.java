@@ -5,6 +5,7 @@ import java.io.OutputStream;
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -259,22 +260,23 @@ public class CnkbController {
 			if (!all && interactionDetails.size() > limit) {
 				interactionDetails = filter(interactionDetails, confidenceType, limit);
 			}
+			Collections.sort(selectedGenesList);
 			for (String gene : selectedGenesList) {
 				StringBuffer buf = new StringBuffer(
 						gene + " " + map.get(interactionDetails.get(0).getInteractionType()));
-				int count = 0;
+				List<String> x = new ArrayList<String>();
 				for (InteractionDetail interactionDetail : interactionDetails) {
 					List<InteractionParticipant> pList = interactionDetail.getParticipantList();
 					if (pList.get(0).getGeneName().equals(gene)) {
-						buf.append(" " + pList.get(1).getGeneName());
-						count++;
+						x.add(pList.get(1).getGeneName());
 					} else if (pList.get(1).getGeneName().equals(gene)) {
-						buf.append(" " + pList.get(0).getGeneName());
-						count++;
+						x.add(pList.get(0).getGeneName());
 					}
 				}
-				if (count == 0)
+				if (x.size() == 0)
 					continue;
+				Collections.sort(x);
+				x.forEach(a -> buf.append(" ").append(a));
 				buf.append("\n");
 				outputStream.write(buf.toString().getBytes());
 			}
