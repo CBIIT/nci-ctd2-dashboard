@@ -2385,7 +2385,7 @@
                                 </div>
                             </div>
                             <div id=filtering-interactions style="margin:10px; padding:5px; border-style: solid; border-width:1px">
-                                <div style="padding:5px;">Confidence type
+                                <div style="padding:5px;">Filter by:
                                     <select id=supported-confidence-types>
                                     </select>
                                 </div>
