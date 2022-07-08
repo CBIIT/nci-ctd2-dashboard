@@ -262,13 +262,19 @@ public class CnkbController {
 			for (String gene : selectedGenesList) {
 				StringBuffer buf = new StringBuffer(
 						gene + " " + map.get(interactionDetails.get(0).getInteractionType()));
+				int count = 0;
 				for (InteractionDetail interactionDetail : interactionDetails) {
 					List<InteractionParticipant> pList = interactionDetail.getParticipantList();
-					if (pList.get(0).getGeneName().equals(gene))
+					if (pList.get(0).getGeneName().equals(gene)) {
 						buf.append(" " + pList.get(1).getGeneName());
-					if (pList.get(1).getGeneName().equals(gene))
+						count++;
+					} else if (pList.get(1).getGeneName().equals(gene)) {
 						buf.append(" " + pList.get(0).getGeneName());
+						count++;
+					}
 				}
+				if (count == 0)
+					continue;
 				buf.append("\n");
 				outputStream.write(buf.toString().getBytes());
 			}
