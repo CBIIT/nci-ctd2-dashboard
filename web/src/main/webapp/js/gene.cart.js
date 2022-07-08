@@ -491,14 +491,14 @@ export const CnkbResultView = Backbone.View.extend({
                     }
                     make_legend(data.interactionTypes, Encoder.htmlEncode(selectedInteractome))
                     Object.assign(network_data, data)
-                    // the default type here is arbitrary
-                    const confidence_type = Object.keys(data.edges[0].data.confidences)[0];
+                    const confidence_type = code[$("#supported-confidence-types").val()]
                     $("#displayed-interaction-number").text(network_limit)
                     drawCNKBCytoscape(select_data(confidence_type), confidence_type)
                     $("#interaction-limit").val(network_limit).on("input", function () {
                         $("#displayed-interaction-number").text(this.value)
                     }).on("change", function () {
                         network_limit = parseInt(this.value)
+                        const confidence_type = code[$("#supported-confidence-types").val()]
                         drawCNKBCytoscape(select_data(confidence_type), confidence_type)
                     })
                     function stepwise(change) {
@@ -509,6 +509,7 @@ export const CnkbResultView = Backbone.View.extend({
                             if (network_limit > max_number) network_limit = max_number
                             $("#displayed-interaction-number").text(network_limit)
                             $("#interaction-limit").val(network_limit)
+                            const confidence_type = code[$("#supported-confidence-types").val()]
                             drawCNKBCytoscape(select_data(confidence_type), confidence_type)
                         }
                     }
