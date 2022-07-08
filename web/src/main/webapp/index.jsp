@@ -926,11 +926,13 @@
     </script>
 
     <script type="text/template" id="gene-detail-references-tmpl">
-        Entrez: <a href="http://www.ncbi.nlm.nih.gov/gene/{{entrez}}" target="_blank">{{entrez}} <i class="icon-share"></i></a>
-        {{genecards ? "GeneCards: <a target='_blank' href='https://www.genecards.org/cgi-bin/carddisp.pl?gene=" + genecards + "'>" + genecards + " <i class='icon-share'></i></a>" : "" }}
-        {{dave ? "Data Analysis, Visualization, and Exploration (DAVE): <a target='_blank' href='https://portal.gdc.cancer.gov/genes/" + dave + "'>" + dave + " <i class='icon-share'></i></a>" : "" }}
-        Harmonizome: <a href="https://maayanlab.cloud/Harmonizome/gene/{{gene_symbol}}" target="_blank">{{gene_symbol}}</a>
-        UniProt: <a href="https://www.uniprot.org/uniprot/{{uniprot}}" target="_blank">{{uniprot}} <i class="icon-share"></i></a>
+        <ul style="padding-left:20px">
+        <li>Entrez: <a href="http://www.ncbi.nlm.nih.gov/gene/{{entrez}}" target="_blank">{{entrez}} <i class="icon-share"></i></a></li>
+        {{genecards ? "<li>GeneCards: <a target='_blank' href='https://www.genecards.org/cgi-bin/carddisp.pl?gene=" + genecards + "'>" + genecards + " <i class='icon-share'></i></a></li>" : "" }}
+        {{dave ? "<li>Data Analysis, Visualization, and Exploration (DAVE): <a target='_blank' href='https://portal.gdc.cancer.gov/genes/" + dave + "'>" + dave + " <i class='icon-share'></i></a></li>" : "" }}
+        <li>Harmonizome: <a href="https://maayanlab.cloud/Harmonizome/gene/{{gene_symbol}}" target="_blank">{{gene_symbol}}</a></li>
+        <li>UniProt: <a href="https://www.uniprot.org/uniprot/{{uniprot}}" target="_blank">{{uniprot}} <i class="icon-share"></i></a></li>
+        </ul>
     </script>
 
     <script type="text/template" id="gene-tmpl">
@@ -2375,9 +2377,9 @@
                                 <h5>Network details</h5>
                                 <div id=initial-text style="padding-top: 10px;">Click on a network node (gene) or edge (interaction) to see related information.</div>
                                 <div id=gene-detail>
-                                    <div><b>Gene symbol:</b> <span id=gene-symbol></span></div>
-                                    <div><b>Gene name:</b> <span id=gene-name></span></div>
-                                    <div><b>References:</b> <span id=references></span></div>
+                                    <div><b>Gene symbol:</b> <div id=gene-symbol style="padding-left: 20px;"></div></div>
+                                    <div><b>Gene name:</b> <div id=gene-name style="padding-left: 20px;"></div></div>
+                                    <div><b>References:</b> <div id=references></div></div>
                                 </div>
                                 <div id=interaction-detail>
                                     <div><b>Interaction genes:</b><ul><li id=interaction-source></li> <li id=interaction-target></li></ul></div>
