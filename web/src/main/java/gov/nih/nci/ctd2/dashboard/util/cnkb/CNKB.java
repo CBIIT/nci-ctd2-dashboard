@@ -305,6 +305,8 @@ public class CNKB {
 					short confidenceType = 0;
 					try {
 						confidenceType = Short.valueOf(rs.getString("confidence_type").trim());
+						if (confidenceType == 6) // mode of action
+							confidenceValue = Math.abs(confidenceValue);
 					} catch (NumberFormatException nfe) {
 						logger.info("there is no confidence value for this row. Default it to 0.");
 					}
@@ -315,8 +317,13 @@ public class CNKB {
 						String[] values = otherConfidenceValues.split(";");
 						String[] types = otherConfidenceTypes.split(";");
 
-						for (int i = 0; i < values.length; i++)
-							interactionDetail.addConfidence(Float.valueOf(values[i]), Short.valueOf(types[i]));
+						for (int i = 0; i < values.length; i++) {
+							short type = Short.valueOf(types[i]);
+							float value = Float.valueOf(values[i]);
+							if (type == 6) // mode of action
+								value = Math.abs(value);
+							interactionDetail.addConfidence(value, type);
+						}
 					}
 				} else {
 					interactionDetail.addParticipant(new InteractionParticipant(msid2, geneName2));
