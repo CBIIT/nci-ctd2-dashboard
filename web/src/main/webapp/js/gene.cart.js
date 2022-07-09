@@ -461,8 +461,13 @@ export const CnkbResultView = Backbone.View.extend({
         let network_limit = 200;
 
         const select_data = function (confidence_type) {
+            const types = { 7: "p-value", 1: "likelihood ratio", 3: "mutual information", 6: "mode of action", 4: "probability" }
+            const direction = supported_confidence_types.find(x => x.name == types[confidence_type]).directionality
+            const compare = (a, b) =>
+                direction == "increasing" ? (b.data.confidences[confidence_type] - a.data.confidences[confidence_type]) :
+                    (a.data.confidences[confidence_type] - b.data.confidences[confidence_type])
             const data = {}
-            data.edges = network_data.edges.sort((a, b) => b.data.confidences[confidence_type] - a.data.confidences[confidence_type]).slice(0, network_limit)
+            data.edges = network_data.edges.sort(compare).slice(0, network_limit)
             const node_set = data.edges.reduce((prev, curr) => {
                 prev.add(curr.data.source)
                 prev.add(curr.data.target)

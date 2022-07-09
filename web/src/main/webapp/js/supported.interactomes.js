@@ -1,23 +1,23 @@
 export const supported_confidence_types = [{
     name: "p-value",
     description: "the probability that the measured interaction actually occurred by chance",
-    directionality: ""
+    directionality: "decreasing"
 }, {
     name: "likelihood ratio",
     description: "an edge weight that indicates how strong the mutual information for an edge is when compared to the maximum observed MI in the network, it ranges between 0 and 1.",
-    directionality: ""
+    directionality: "increasing"
 }, {
     name: "mutual information",
     description: "quantifies the \"amount of information\" obtained about one random variable by observing the other random variable",
-    directionality: ""
+    directionality: "increasing"
 }, {
     name: "probability",
     description: "The probability that the given interaction actually exists in the system measured.",
-    directionality: ""
+    directionality: "increasing"
 }, {
     name: "mode of action",
     description: "indicates the sign of the association between regulator and target gene and ranges between -1 and +1. It is inferred by Spearman correlation analysis.",
-    directionality: ""
+    directionality: "increasing" /* absolute values */
 }, ]
 
 export const supported_interactomes = [{

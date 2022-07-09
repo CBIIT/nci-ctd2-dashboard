@@ -293,9 +293,9 @@ public class CnkbController {
 	}
 
 	private List<InteractionDetail> filter(List<InteractionDetail> all, int confidenceType, int limit) {
-		all.sort(
-				(InteractionDetail h1, InteractionDetail h2) -> -h1.getConfidenceValue(confidenceType)
-						.compareTo(h2.getConfidenceValue(confidenceType)));
+		/* confidenceType==7 (p-value) has 'decreasing directionality' */
+		all.sort((InteractionDetail h1, InteractionDetail h2) -> (confidenceType != 7 ? -1 : 1)
+				* (h1.getConfidenceValue(confidenceType).compareTo(h2.getConfidenceValue(confidenceType))));
 		return all.subList(0, limit);
 	}
 
