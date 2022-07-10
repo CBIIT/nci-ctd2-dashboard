@@ -6,6 +6,7 @@ import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -292,10 +293,31 @@ public class CnkbController {
 		}
 	}
 
+	private static class PValueComparator implements Comparator<InteractionDetail> {
+		static final int TYPE_CODE = 7;
+
+		@Override
+		public int compare(InteractionDetail a, InteractionDetail b) {
+			float x = a.getConfidenceValue(TYPE_CODE) - b.getConfidenceValue(TYPE_CODE);
+			if (x < 0)
+				return -1;
+			else if (x > 0)
+				return 1;
+			else
+				return a.getParticipantGeneList().compareTo(b.getParticipantGeneList());
+		}
+	}
+
 	private List<InteractionDetail> filter(List<InteractionDetail> all, int confidenceType, int limit) {
-		/* confidenceType==7 (p-value) has 'decreasing directionality' */
-		all.sort((InteractionDetail h1, InteractionDetail h2) -> (confidenceType != 7 ? -1 : 1)
-				* (h1.getConfidenceValue(confidenceType).compareTo(h2.getConfidenceValue(confidenceType))));
+		Comparator<InteractionDetail> comparator = null;
+		if (confidenceType == 7) { /* (p-value) has 'decreasing directionality' */
+			comparator = new PValueComparator();
+		} else {
+			comparator = (InteractionDetail h1, InteractionDetail h2) -> -h1.getConfidenceValue(confidenceType)
+					.compareTo(h2.getConfidenceValue(confidenceType));
+		}
+
+		all.sort(comparator);
 		return all.subList(0, limit);
 	}
 
