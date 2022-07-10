@@ -41,6 +41,7 @@ public class DashboardAdminMain {
             "classpath*:META-INF/spring/observationDataApplicationContext.xml", // observation data importer beans
             "classpath*:META-INF/spring/taxonomyDataApplicationContext.xml", // This is for taxonomy data importer beans
             "classpath*:META-INF/spring/ecotermDataApplicationContext.xml", // This is for ECO term data importer beans
+            "classpath*:META-INF/spring/relatedCompoundsContext.xml", // this is for related compounds
             "classpath*:META-INF/spring/xrefApplicationContext.xml" // this is for xref importer beans
     );
 
@@ -156,6 +157,10 @@ public class DashboardAdminMain {
             if (commandLine.hasOption("i")) {
                 DashboardDao dashboardDao = (DashboardDao) appContext.getBean("dashboardDao");
                 dashboardDao.cleanIndex((Integer) appContext.getBean("indexBatchSize"));
+            }
+
+            if (commandLine.hasOption("rc")) {
+                launchJob("relatedCompoundsJob");
             }
 
             log.info("All done.");

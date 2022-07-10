@@ -1564,6 +1564,13 @@
                               <td><small>{{smilesNotation}}</small></td>
                           </tr>
                           <tr>
+                              <th>Compounds with shared targets</th>
+                              <td>
+                                  <ul class="synonyms" id="related-compounds"></ul>
+                                  <button type="button" class="btn btn-outline-dark" id=see-all-compounds-switch>see all</button>
+                              </td>
+                          </tr>
+                          <tr>
                               <th>References</th>
                               <td>
                                   <ul class="compound-xrefs">

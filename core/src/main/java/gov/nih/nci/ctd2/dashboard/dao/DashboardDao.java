@@ -98,4 +98,6 @@ public interface DashboardDao {
     ObservationItem[] getObservations(String submissionId, Set<Integer> indexes);
 
     void masterExport(String filename, Boolean zipExport);
+
+    String[] getRelatedCompounds(String ctrpID);
 }

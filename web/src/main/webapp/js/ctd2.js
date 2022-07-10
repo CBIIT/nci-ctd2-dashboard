@@ -1104,12 +1104,15 @@ import MraView from './mra.js'
                     result.drugbank = xref.databaseId;
                 } else if (xref.databaseName == "CTRP ID") {
                     result.ctrpID = xref.databaseId;
+                    console.debug(`CTRP ID ${xref.databaseId}`)
                 } else if (xref.databaseName == "CTRP NAME") {
                     result.ctrpName = xref.databaseId;
                 } else if (xref.databaseName == "DepMap compound") {
                     result.depmap = xref.databaseId;
                 } else if (xref.databaseName == "CAS") {
                     result.cas = xref.databaseId;
+                } else if (xref.databaseName == "BROAD_COMPOUND") { // FIXME more such redundant data
+                    console.debug(`BROAD_COMPOUND ${xref.databaseId}`)
                 }
 
             });
@@ -1157,6 +1160,14 @@ import MraView from './mra.js'
                 },
                 el: "#compound-observation-grid"
             }).render();
+            console.log(result)
+            // get 'related' compounds
+            $.ajax("related-compounds/" + result.ctrpID).done(function (related_result) {
+                console.log(related_result);
+                related_result.forEach(x => $("#related-compounds").append(`<li>${x}</li>`))
+            }).fail(function (err) {
+                console.log(err);
+            });
             create_subject_word_cloud(result.id);
 
             $("a.compound-image").fancybox({

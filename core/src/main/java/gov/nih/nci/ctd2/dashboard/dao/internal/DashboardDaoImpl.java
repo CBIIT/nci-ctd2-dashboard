@@ -2171,7 +2171,7 @@ public class DashboardDaoImpl implements DashboardDao {
                 + " JOIN dashboard_entity ON observed_subject.subject_id=dashboard_entity.id"
                 + " JOIN subject ON observed_subject.subject_id=subject.id" + " WHERE subject.id!=" + associatedSubject
                 + " AND observation_id IN (" + idList + ") GROUP BY subject.id ORDER BY x DESC LIMIT 250";
-        log.debug(sql);
+        // log.debug(sql);
         @SuppressWarnings("unchecked")
         org.hibernate.query.Query<Object[]> query = session.createNativeQuery(sql);
         for (Object[] obj : query.getResultList()) {
@@ -2338,5 +2338,35 @@ public class DashboardDaoImpl implements DashboardDao {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /*
+     * There are totally 664 unique IDs in CompoundAnnotations.txt where
+     * "ANNOTATION_ID" has the
+     * form GeneID:XYZ. Among them, 450 correspond to Dashboard compounds with at
+     * least one observation. In Dashboard, there are totally 840 compounds and 529
+     * of them are 'observed'.
+     */
+    @Override
+    public String[] getRelatedCompounds(String ctrpID) {
+        // FIXME xref model makes it hard to join in a straightforward and efficient way
+        String sql = "SELECT subject.stableURL FROM related_compounds JOIN compound ON related_compounds.target=compound.ctrpID "
+                + "JOIN subject on compound.id=subject.id "
+                + "WHERE related_compounds.source=:ctrpID";
+        sql = "SELECT target from related_compounds WHERE source=:ctrpID";
+        Session session = getSession();
+        @SuppressWarnings("unchecked")
+        org.hibernate.query.Query<String> query = session.createNativeQuery(sql);
+        query.setParameter("ctrpID", ctrpID);
+        // for (String url : query.getResultList()) {
+        // System.out.println(url);
+        // }
+        for (String ctrp_id : query.getResultList()) {
+            System.out.println(ctrp_id);
+            // TODO from compound by xref
+            // url = compound.getStableURL()
+        }
+        session.close();
+        return new String[] { "url1", "url2", "url3" };
     }
 }
