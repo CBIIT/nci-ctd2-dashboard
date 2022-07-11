@@ -99,5 +99,6 @@ public interface DashboardDao {
 
     void masterExport(String filename, Boolean zipExport);
 
+    void storeRelatedCompounds(List<Integer[]> list);
     String[] getRelatedCompounds(String ctrpID);
 }

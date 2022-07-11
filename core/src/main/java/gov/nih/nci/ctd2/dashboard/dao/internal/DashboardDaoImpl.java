@@ -2340,13 +2340,28 @@ public class DashboardDaoImpl implements DashboardDao {
         }
     }
 
-    /*
-     * There are totally 664 unique IDs in CompoundAnnotations.txt where
-     * "ANNOTATION_ID" has the
-     * form GeneID:XYZ. Among them, 450 correspond to Dashboard compounds with at
-     * least one observation. In Dashboard, there are totally 840 compounds and 529
-     * of them are 'observed'.
-     */
+    @Override
+    public void storeRelatedCompounds(List<Integer[]> list) {
+        Session session = getSession();
+        session.beginTransaction();
+        org.hibernate.query.Query<?> query0 = session
+                .createNativeQuery("DROP TABLE IF EXISTS related_compounds");
+        query0.executeUpdate();
+        org.hibernate.query.Query<?> query = session
+                .createNativeQuery("CREATE TABLE related_compounds (gene_id INT, ctrp_id INT)");
+        query.executeUpdate();
+        for (Integer[] x : list) {
+            org.hibernate.query.Query<?> query2 = session
+                    .createNativeQuery("INSERT INTO related_compounds VALUES (:gene_id, :ctrp_id)");
+            query2.setParameter("gene_id", x[0]);
+            query2.setParameter("ctrp_id", x[1]);
+            query2.executeUpdate();
+        }
+
+        session.getTransaction().commit();
+        session.close();
+    }
+
     @Override
     public String[] getRelatedCompounds(String ctrpID) {
         // FIXME xref model makes it hard to join in a straightforward and efficient way
