@@ -727,7 +727,9 @@ const drawCNKBCytoscape = function (data, confidence_type) {
         const types = { 7: "p-value", 1: "likelihood ratio", 3: "mutual information", 6: "mode of action", 4: "probability" }
         $("#interaction-values").empty()
         for (const type in confidences) {
-            $("#interaction-values").append(`<li>${types[type]}: ${confidences[type]}</li>`)
+            const type_name = types[type]
+            const tooltip = supported_confidence_types.find(x => x.name == type_name)["description"]
+            $("#interaction-values").append(`<li title="${tooltip}">${type_name}: ${confidences[type]}</li>`)
         }
         $("#network-detail-viewer > #initial-text").hide()
         $("#gene-detail").hide()
