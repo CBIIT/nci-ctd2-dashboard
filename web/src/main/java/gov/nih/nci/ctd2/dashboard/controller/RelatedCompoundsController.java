@@ -24,8 +24,8 @@ public class RelatedCompoundsController {
 
     @Transactional
     @RequestMapping(value = "{ctrpID}", method = { RequestMethod.GET }, headers = "Accept=application/json")
-    public ResponseEntity<String> getSubjectCountsForRoles(@PathVariable String xid) {
-        log.debug("request received: " + xid);
+    public ResponseEntity<String> getSubjectCountsForRoles(@PathVariable String ctrpID) {
+        log.debug("request received for ctrpID " + ctrpID);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json; charset=utf-8");
 

@@ -67,6 +67,7 @@ public class DashboardAdminMain {
                 .addOption("s", "sample-data", false, "imports sample data.")
                 .addOption("t", "taxonomy-data", false, "imports organism data.")
                 .addOption("i", "index", false, "creates lucene index.")
+                .addOption("rc", "related-compounds", false, "store related compounds.")
                 .addOption("x", "prepare-export", false, "prepare master export file.");
 
         // Here goes the parsing attempt
