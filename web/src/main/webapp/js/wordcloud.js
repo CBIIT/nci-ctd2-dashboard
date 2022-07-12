@@ -1,4 +1,6 @@
 export default function create_wordcloud(dom_id, words, w_cloud = 960, h_cloud = 600) {
+    if (words.length == 0) return
+
     /* 7 basic parameters for the word-cloud */
     const max_word_number = 250;
     const angle_count = 5; // default 5
@@ -9,7 +11,7 @@ export default function create_wordcloud(dom_id, words, w_cloud = 960, h_cloud =
     const spiral_type = "archimedean"; // two options: archimedean, rectangular. default archimedean. see https://en.wikipedia.org/wiki/Archimedean_spiral
 
     function draw(tags, bounds) {
-        const color = ["#FF7F0E", "#D12FC2", "#0066FF", "#4ECB35", ]
+        const color = ["#FF7F0E", "#D12FC2", "#0066FF", "#4ECB35",]
         cloud_area.selectAll("text").data(tags)
             .enter().append("text")
             .attr("text-anchor", "middle")

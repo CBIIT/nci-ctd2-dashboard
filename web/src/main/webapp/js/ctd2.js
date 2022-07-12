@@ -1160,14 +1160,23 @@ import MraView from './mra.js'
                 },
                 el: "#compound-observation-grid"
             }).render();
-            console.log(result)
-            // get 'related' compounds
-            $.ajax("related-compounds/" + result.ctrpID).done(function (related_result) {
-                console.log(related_result);
-                related_result.forEach(x => $("#related-compounds").append(`<li>${x}</li>`))
-            }).fail(function (err) {
-                console.log(err);
-            });
+            if (result.ctrpID) // get 'related' compounds
+                $.ajax("related-compounds/" + result.ctrpID).done(function (related_result) {
+                    //console.log(related_result);
+                    for (const compound_name in related_result) {
+                        const x = related_result[compound_name]
+                        const url = x[0]
+                        const li = $(`<li><a href="#${url}">${compound_name}</a></li>`)
+                        let gene_links = " ( "
+                        for (let i = 1; i < x.length; i += 2) {
+                            gene_links += `<a href="#${x[i + 1]}">${x[i]}</a> `
+                        }
+                        li.append(gene_links + ")")
+                        $("#related-compounds").append(li)
+                    }
+                }).fail(function (err) {
+                    console.log(err);
+                });
             create_subject_word_cloud(result.id);
 
             $("a.compound-image").fancybox({

@@ -18,6 +18,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -2363,24 +2365,46 @@ public class DashboardDaoImpl implements DashboardDao {
     }
 
     @Override
-    public String[] getRelatedCompounds(Integer source_id) {
-        String sql = "SELECT DISTINCT T2.ctrp_id FROM related_compounds T1 JOIN related_compounds T2 ON T1.gene_id=T2.gene_id WHERE T1.ctrp_id=:source_id";
+    public SortedMap<String, String[]> getRelatedCompounds(Integer source_id) {
+        String sql = "SELECT T2.ctrp_id, T2.gene_id FROM related_compounds T1 JOIN related_compounds T2 ON T1.gene_id=T2.gene_id WHERE T1.ctrp_id=:source_id";
         Session session = getSession();
         @SuppressWarnings("unchecked")
-        org.hibernate.query.Query<Integer> query = session.createNativeQuery(sql);
+        org.hibernate.query.Query<Object[]> query = session.createNativeQuery(sql);
         query.setParameter("source_id", source_id);
-        List<String> urls = new ArrayList<String>();
-        for (Integer target_id : query.getResultList()) {
+        SortedMap<String, String[]> map = new TreeMap<String, String[]>();
+        for (Object[] result : query.getResultList()) {
+            Integer target_id = (Integer) result[0];
+            Integer gene_id = (Integer) result[1];
             List<Subject> compounds = findSubjectsByXref("BROAD_COMPOUND", target_id.toString());
             if (compounds.size() != 1) {
                 log.warn("The number of compounds for CTRP ID " + target_id + "is " + compounds.size()
                         + ". 1 is expected.");
                 continue;
             }
-            String url = compounds.get(0).getStableURL();
-            urls.add(url);
+            List<Gene> genes = findGenesByEntrezId(gene_id.toString());
+            if (genes.size() != 1) {
+                log.warn("The number of gene for entrez ID " + gene_id + "is " + genes.size()
+                        + ". 1 is expected.");
+                continue;
+            }
+            Gene gene = genes.get(0);
+            Subject compound = compounds.get(0);
+            String compound_name = compound.getDisplayName();
+            String[] content = map.get(compound_name); /* using a simple array to have the best performance */
+            if (content == null) {
+                content = new String[3];
+                content[0] = compound.getStableURL();
+                content[1] = gene.getDisplayName();
+                content[2] = gene.getStableURL();
+            } else {
+                int len = content.length;
+                content = Arrays.copyOf(content, len + 2);
+                content[len] = gene.getDisplayName();
+                content[len + 1] = gene.getStableURL();
+            }
+            map.put(compound_name, content);
         }
         session.close();
-        return urls.toArray(new String[0]);
+        return map;
     }
 }

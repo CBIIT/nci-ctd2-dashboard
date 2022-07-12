@@ -1,5 +1,7 @@
 package gov.nih.nci.ctd2.dashboard.controller;
 
+import java.util.SortedMap;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +33,7 @@ public class RelatedCompoundsController {
 
         String json = "{}";
         try {
-            String[] related = dashboardDao.getRelatedCompounds(ctrpID);
+            SortedMap<String, String[]> related = dashboardDao.getRelatedCompounds(ctrpID);
             JSONSerializer jsonSerializer = new JSONSerializer().exclude("class");
             json = jsonSerializer.deepSerialize(related);
         } catch (Exception e) {
