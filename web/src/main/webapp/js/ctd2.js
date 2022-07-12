@@ -1111,7 +1111,9 @@ import MraView from './mra.js'
                     result.depmap = xref.databaseId;
                 } else if (xref.databaseName == "CAS") {
                     result.cas = xref.databaseId;
-                } else if (xref.databaseName == "BROAD_COMPOUND") { // FIXME more such redundant data
+                } else if (xref.databaseName == "BROAD_COMPOUND") {
+                    // this is mostly the same as CTRP ID->ctrpID, but not always
+                    result.cpdID = xref.databaseId;
                     console.debug(`BROAD_COMPOUND ${xref.databaseId}`)
                 }
 
@@ -1160,8 +1162,8 @@ import MraView from './mra.js'
                 },
                 el: "#compound-observation-grid"
             }).render();
-            if (result.ctrpID) // get 'related' compounds
-                $.ajax("related-compounds/" + result.ctrpID).done(function (related_result) {
+            if (result.cpdID) // get 'related' compounds
+                $.ajax("related-compounds/" + result.cpdID).done(function (related_result) {
                     //console.log(related_result);
                     for (const compound_name in related_result) {
                         const x = related_result[compound_name]
