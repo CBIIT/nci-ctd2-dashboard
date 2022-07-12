@@ -2363,25 +2363,24 @@ public class DashboardDaoImpl implements DashboardDao {
     }
 
     @Override
-    public String[] getRelatedCompounds(String ctrpID) {
-        // FIXME xref model makes it hard to join in a straightforward and efficient way
-        String sql = "SELECT subject.stableURL FROM related_compounds JOIN compound ON related_compounds.target=compound.ctrpID "
-                + "JOIN subject on compound.id=subject.id "
-                + "WHERE related_compounds.source=:ctrpID";
-        sql = "SELECT target from related_compounds WHERE source=:ctrpID";
+    public String[] getRelatedCompounds(Integer source_id) {
+        String sql = "SELECT DISTINCT T2.ctrp_id FROM related_compounds T1 JOIN related_compounds T2 ON T1.gene_id=T2.gene_id WHERE T1.ctrp_id=:source_id";
         Session session = getSession();
         @SuppressWarnings("unchecked")
-        org.hibernate.query.Query<String> query = session.createNativeQuery(sql);
-        query.setParameter("ctrpID", ctrpID);
-        // for (String url : query.getResultList()) {
-        // System.out.println(url);
-        // }
-        for (String ctrp_id : query.getResultList()) {
-            System.out.println(ctrp_id);
-            // TODO from compound by xref
-            // url = compound.getStableURL()
+        org.hibernate.query.Query<Integer> query = session.createNativeQuery(sql);
+        query.setParameter("source_id", source_id);
+        List<String> urls = new ArrayList<String>();
+        for (Integer target_id : query.getResultList()) {
+            List<Subject> compounds = findSubjectsByXref("BROAD_COMPOUND", target_id.toString());
+            if (compounds.size() != 1) {
+                log.warn("The number of compounds for CTRP ID " + target_id + "is " + compounds.size()
+                        + ". 1 is expected.");
+                continue;
+            }
+            String url = compounds.get(0).getStableURL();
+            urls.add(url);
         }
         session.close();
-        return new String[] { "url1", "url2", "url3" };
+        return urls.toArray(new String[0]);
     }
 }
