@@ -2374,6 +2374,8 @@ public class DashboardDaoImpl implements DashboardDao {
         SortedMap<String, String[]> map = new TreeMap<String, String[]>();
         for (Object[] result : query.getResultList()) {
             Integer target_id = (Integer) result[0];
+            if (target_id.equals(source_id))
+                continue;
             Integer gene_id = (Integer) result[1];
             List<Subject> compounds = findSubjectsByXref("BROAD_COMPOUND", target_id.toString());
             if (compounds.size() != 1) {
