@@ -1163,44 +1163,44 @@ import MraView from './mra.js'
                 el: "#compound-observation-grid"
             }).render();
             $("#see-all-compounds-switch").hide()
-            if (result.cpdID) // get 'related' compounds
-                $.ajax("related-compounds/" + result.cpdID).done(function (related_result) {
-                    if (Object.keys(related_result).length == 0) {
-                        $("#related-compounds").append("None")
-                        return
+            // get 'related' compounds
+            $.ajax("related-compounds/" + result.id).done(function (related_result) {
+                if (Object.keys(related_result).length == 0) {
+                    $("#related-compounds").append("None")
+                    return
+                }
+                let count = 0;
+                for (const compound_name in related_result) {
+                    const x = related_result[compound_name]
+                    const url = x[0]
+                    const li = $(`<li><a href="#${url}">${compound_name}</a></li>`)
+                    if (count >= 3)
+                        li.addClass("too-many-related")
+                    let gene_links = " ( "
+                    for (let i = 1; i < x.length; i += 2) {
+                        gene_links += `<a href="#${x[i + 1]}">${x[i]}</a> `
                     }
-                    let count = 0;
-                    for (const compound_name in related_result) {
-                        const x = related_result[compound_name]
-                        const url = x[0]
-                        const li = $(`<li><a href="#${url}">${compound_name}</a></li>`)
-                        if (count >= 3)
-                            li.addClass("too-many-related")
-                        let gene_links = " ( "
-                        for (let i = 1; i < x.length; i += 2) {
-                            gene_links += `<a href="#${x[i + 1]}">${x[i]}</a> `
+                    li.append(gene_links + ")")
+                    $("#related-compounds").append(li)
+                    count++
+                }
+                if (count > 3) {
+                    const SEE_ALL = "see all";
+                    $(".too-many-related").hide()
+                    $("#see-all-compounds-switch").click(function () {
+                        if ($(this).text() == SEE_ALL) {
+                            $(".too-many-related").show();
+                            $(this).text("hide");
+                        } else {
+                            $(".too-many-related").hide();
+                            $(this).text(SEE_ALL);
                         }
-                        li.append(gene_links + ")")
-                        $("#related-compounds").append(li)
-                        count++
-                    }
-                    if (count > 3) {
-                        const SEE_ALL = "see all";
-                        $(".too-many-related").hide()
-                        $("#see-all-compounds-switch").click(function () {
-                            if ($(this).text() == SEE_ALL) {
-                                $(".too-many-related").show();
-                                $(this).text("hide");
-                            } else {
-                                $(".too-many-related").hide();
-                                $(this).text(SEE_ALL);
-                            }
-                        });
-                        $("#see-all-compounds-switch").show()
-                    }
-                }).fail(function (err) {
-                    console.log(err);
-                });
+                    });
+                    $("#see-all-compounds-switch").show()
+                }
+            }).fail(function (err) {
+                console.log(err);
+            });
             create_subject_word_cloud(result.id);
 
             $("a.compound-image").fancybox({

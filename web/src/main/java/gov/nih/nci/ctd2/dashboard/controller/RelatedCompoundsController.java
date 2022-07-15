@@ -25,15 +25,15 @@ public class RelatedCompoundsController {
     private DashboardDao dashboardDao;
 
     @Transactional
-    @RequestMapping(value = "{cpdID}", method = { RequestMethod.GET }, headers = "Accept=application/json")
-    public ResponseEntity<String> getSubjectCountsForRoles(@PathVariable Integer cpdID) {
-        log.debug("request received for cpdID " + cpdID);
+    @RequestMapping(value = "{id}", method = { RequestMethod.GET }, headers = "Accept=application/json")
+    public ResponseEntity<String> getSubjectCountsForRoles(@PathVariable Integer id) {
+        log.debug("request received for compound id " + id);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json; charset=utf-8");
 
         String json = "{}";
         try {
-            SortedMap<String, String[]> related = dashboardDao.getRelatedCompounds(cpdID);
+            SortedMap<String, String[]> related = dashboardDao.getRelatedCompounds(id);
             JSONSerializer jsonSerializer = new JSONSerializer().exclude("class");
             json = jsonSerializer.deepSerialize(related);
         } catch (Exception e) {

@@ -101,5 +101,5 @@ public interface DashboardDao {
     void masterExport(String filename, Boolean zipExport);
 
     void storeRelatedCompounds(List<Integer[]> list);
-    SortedMap<String, String[]> getRelatedCompounds(Integer cpdID);
+    SortedMap<String, String[]> getRelatedCompounds(Integer id);
 }
