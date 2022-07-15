@@ -2372,25 +2372,39 @@ public class DashboardDaoImpl implements DashboardDao {
         org.hibernate.query.Query<Object[]> query = session.createNativeQuery(sql);
         query.setParameter("source_id", source_id);
         SortedMap<String, String[]> map = new TreeMap<String, String[]>();
+
+        // this is to improve performance
+        // findSubjectsByXref is particularly slow
+        Map<Integer, Compound> target_compounds = new HashMap<Integer, Compound>();
+        Map<Integer, Gene> genes_map = new HashMap<Integer, Gene>();
+
         for (Object[] result : query.getResultList()) {
             Integer target_id = (Integer) result[0];
             if (target_id.equals(source_id))
                 continue;
             Integer gene_id = (Integer) result[1];
-            List<Subject> compounds = findSubjectsByXref("BROAD_COMPOUND", target_id.toString());
-            if (compounds.size() != 1) {
-                log.warn("The number of compounds for CTRP ID " + target_id + "is " + compounds.size()
-                        + ". 1 is expected.");
-                continue;
+            Compound compound = target_compounds.get(target_id);
+            if (compound == null) {
+                List<Subject> compounds = findSubjectsByXref("BROAD_COMPOUND", target_id.toString());
+                if (compounds.size() != 1) {
+                    log.warn("The number of compounds for CTRP ID " + target_id + "is " + compounds.size()
+                            + ". 1 is expected.");
+                    continue;
+                }
+                compound = (Compound) compounds.get(0);
+                target_compounds.put(target_id, compound);
             }
-            List<Gene> genes = findGenesByEntrezId(gene_id.toString());
-            if (genes.size() != 1) {
-                log.warn("The number of gene for entrez ID " + gene_id + "is " + genes.size()
-                        + ". 1 is expected.");
-                continue;
+            Gene gene = genes_map.get(gene_id);
+            if (gene == null) {
+                List<Gene> genes = findGenesByEntrezId(gene_id.toString());
+                if (genes.size() != 1) {
+                    log.warn("The number of gene for entrez ID " + gene_id + "is " + genes.size()
+                            + ". 1 is expected.");
+                    continue;
+                }
+                gene = genes.get(0);
+                genes_map.put(gene_id, gene);
             }
-            Gene gene = genes.get(0);
-            Subject compound = compounds.get(0);
             String compound_name = compound.getDisplayName();
             String[] content = map.get(compound_name); /* using a simple array to have the best performance */
             if (content == null) {
