@@ -2375,7 +2375,7 @@ public class DashboardDaoImpl implements DashboardDao {
 
         // this is to improve performance
         // findSubjectsByXref is particularly slow
-        Map<Integer, Compound> target_compounds = new HashMap<Integer, Compound>();
+        Map<Integer, Object[]> target_compounds = new HashMap<Integer, Object[]>();
         Map<Integer, Gene> genes_map = new HashMap<Integer, Gene>();
 
         for (Object[] result : query.getResultList()) {
@@ -2383,15 +2383,17 @@ public class DashboardDaoImpl implements DashboardDao {
             if (target_id.equals(source_id))
                 continue;
             Integer gene_id = (Integer) result[1];
-            Compound compound = target_compounds.get(target_id);
+            Object[] compound = target_compounds.get(target_id);
             if (compound == null) {
-                List<Subject> compounds = findSubjectsByXref("BROAD_COMPOUND", target_id.toString());
-                if (compounds.size() != 1) {
-                    log.warn("The number of compounds for CTRP ID " + target_id + "is " + compounds.size()
-                            + ". 1 is expected.");
-                    continue;
-                }
-                compound = (Compound) compounds.get(0);
+                String compound_sql = "SELECT displayName, stableURL FROM subject "
+                        + "JOIN subject_xref_map ON subject.id=subject_xref_map.SubjectImpl_id "
+                        + "JOIN xref on xref.id=subject_xref_map.xrefs_id "
+                        + "JOIN dashboard_entity ON dashboard_entity.id=subject.id "
+                        + "WHERE xref.databaseName='BROAD_COMPOUND' AND xref.databaseId=:target_id";
+                @SuppressWarnings("unchecked")
+                org.hibernate.query.Query<Object[]> compound_query = session.createNativeQuery(compound_sql);
+                compound_query.setParameter("target_id", target_id);
+                compound = compound_query.getSingleResult();
                 target_compounds.put(target_id, compound);
             }
             Gene gene = genes_map.get(gene_id);
@@ -2405,11 +2407,10 @@ public class DashboardDaoImpl implements DashboardDao {
                 gene = genes.get(0);
                 genes_map.put(gene_id, gene);
             }
-            String compound_name = compound.getDisplayName();
-            String[] content = map.get(compound_name); /* using a simple array to have the best performance */
+            String[] content = map.get((String) compound[0]); /* using a simple array to have the best performance */
             if (content == null) {
                 content = new String[3];
-                content[0] = compound.getStableURL();
+                content[0] = (String) compound[1];
                 content[1] = gene.getDisplayName();
                 content[2] = gene.getStableURL();
             } else {
@@ -2418,7 +2419,7 @@ public class DashboardDaoImpl implements DashboardDao {
                 content[len] = gene.getDisplayName();
                 content[len + 1] = gene.getStableURL();
             }
-            map.put(compound_name, content);
+            map.put((String) compound[0], content);
         }
         session.close();
         return map;
