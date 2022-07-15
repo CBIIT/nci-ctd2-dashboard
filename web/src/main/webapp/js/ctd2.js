@@ -1165,6 +1165,10 @@ import MraView from './mra.js'
             $("#see-all-compounds-switch").hide()
             if (result.cpdID) // get 'related' compounds
                 $.ajax("related-compounds/" + result.cpdID).done(function (related_result) {
+                    if (Object.keys(related_result).length == 0) {
+                        $("#related-compounds").append("None")
+                        return
+                    }
                     let count = 0;
                     for (const compound_name in related_result) {
                         const x = related_result[compound_name]
