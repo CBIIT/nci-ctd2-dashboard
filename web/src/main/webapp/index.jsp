@@ -43,6 +43,7 @@
     <script src="//assets.adobedtm.com/6a4249cd0a2c/0890c2def00a/launch-dbd676d3af6b.min.js" async></script>
     <!-- Fav and touch icons -->
     <link rel="shortcut icon" href="img/favicon.png" />
+    <script src="https://kit.fontawesome.com/95ddca2a38.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -283,6 +284,8 @@
                 <button type="button" class="btn btn-light" id=wordcloud-compounds style='background:rgb(253, 255, 201);border-color:#6c757d'>Compounds and Perturbagens</button>
                 <button type="button" class="btn btn-light" id=wordcloud-disease style='background:rgb(253, 255, 201);border-color:#6c757d'>Disease context</button>
                 <button type="button" class="btn btn-light" id=wordcloud-cell style='background:rgb(253, 255, 201);border-color:#6c757d'>Cell lines</button>
+                <i class="fas fa-cog fa-lg" style="color:SteelBlue;" id="config-wordcloud"></i>
+                <i class="fas fa-download fa-lg" style="color:SteelBlue;" id='download-wordcloud'></i>
             </div>
             <div id="vis"></div>
             <div id="vis-genes"></div>
