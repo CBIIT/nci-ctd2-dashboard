@@ -1,4 +1,4 @@
-export default function create_wordcloud(dom_id, words, w_cloud = 960, h_cloud = 600) {
+export default function create_wordcloud(dom_id, words, w_cloud = 960, h_cloud = 600, color = ["#FF7F0E", "#D12FC2", "#0066FF", "#4ECB35",]) {
     if (words.length == 0) return
 
     /* 7 basic parameters for the word-cloud */
@@ -11,7 +11,6 @@ export default function create_wordcloud(dom_id, words, w_cloud = 960, h_cloud =
     const spiral_type = "archimedean"; // two options: archimedean, rectangular. default archimedean. see https://en.wikipedia.org/wiki/Archimedean_spiral
 
     function draw(tags, bounds) {
-        const color = ["#FF7F0E", "#D12FC2", "#0066FF", "#4ECB35",]
         cloud_area.selectAll("text").data(tags)
             .enter().append("text")
             .attr("text-anchor", "middle")
@@ -46,6 +45,7 @@ export default function create_wordcloud(dom_id, words, w_cloud = 960, h_cloud =
         .fontSize(t => font_size_scale(+t.value))
         .spiral(spiral_type)
         .on("end", draw)
+    d3.select(dom_id).select("svg").remove()
     const cloud_area = d3.select(dom_id).append("svg").attr("width", w_cloud).attr("height", h_cloud).append("g")
         .attr("transform", "translate(" + [w_cloud >> 1, h_cloud >> 1] + ")")
 

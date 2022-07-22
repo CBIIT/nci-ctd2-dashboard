@@ -30,6 +30,7 @@
 
     <link rel="shortcut icon" href="img/favicon.ico" type="image/vnd.microsoft.icon" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/css/bootstrap.min.css" integrity="sha256-azvvU9xKluwHFJ0Cpgtf0CYzK7zgtOznnzxV4924X1w=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.11.3/b-2.0.1/b-html5-2.0.1/datatables.min.css"/>
     <link rel="stylesheet" href="css/jquery.fancybox.min.css" type="text/css" media="screen" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.9.2/jquery.contextMenu.min.css" integrity="sha512-SWjZLElR5l3FxoO9Bt9Dy3plCWlBi1Mc9/OlojDPwryZxO0ydpZgvXMLhV6jdEyULGNWjKgZWiX/AMzIvZ4JuA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -242,6 +243,43 @@
                     <button class="btn btn-primary" data-dismiss="modal">Close</button>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div class="modal hide fade" id="wordcloud-modal">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Configure Word Cloud</h3>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                Color palette
+                <select class="form-control border selectpicker" id="wordcloud-color">
+                    <option data-content='<img src="img/color-scheme/default.png"> default' value="default"></option>
+                    <option data-content='<img src="img/color-scheme/category10.png"> category10' value="category10"></option>
+                    <option data-content='<img src="img/color-scheme/Accent.png"> accent' value="accent"></option>
+                    <option data-content='<img src="img/color-scheme/Dark2.png"> dark2' value="dark2"></option>
+                    <option data-content='<img src="img/color-scheme/Paired.png"> paired' value="paired"></option>
+                </select>
+                Font style <select class="form-control border selectpicker"></select>
+                Max font size <select class="form-control border selectpicker"></select>
+                Scaling
+                <select class="form-control border selectpicker">
+                    <option>square root</option>
+                    <option>linear</option>
+                    <option>logarithm</option>
+                </select>
+                Layout <select class="form-control border selectpicker"><option>Archimedean</option><option>Rectangular</option></select>
+                Max word count <select class="form-control border selectpicker"><option>10</option><option>250</option></select>
+
+                <div style="float: right;padding: 10px;"><a href="">Reset</a></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal" id="apply-button">Apply</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="cancel-button">Cancel</button>
+            </div>
+        </div>
         </div>
     </div>
 
@@ -2548,6 +2586,7 @@
     <!-- end of templates -->
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha256-MSYVjWgrr6UL/9eQfQvOyt6/gsxb6dpwI1zqM5DbLCs=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.11.3/b-2.0.1/b-html5-2.0.1/datatables.min.js"></script>
     <script src="js/paging.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/underscore@1.13.1/underscore-umd-min.js"></script>
@@ -2563,7 +2602,7 @@
         integrity="sha512-oJp0DdQuQQrRsKVly+Ww6fAN1GwJN7d1bi8UubpEbzDUh84WrJ2CFPBnT4LqBCcfqTcHR5OGXFFhaPe3g1/bzQ=="
         crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-cloud/1.2.5/d3.layout.cloud.min.js" integrity="sha512-HjKxWye8lJGPu5q1u/ZYkHlJrJdm6KGr89E6tOrXeKm1mItb1xusPU8QPcKVhP8F9LjpZT7vsu1Fa+dQywP4eg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script type='module' src="js/ctd2.js?ts=2022"></script>
+    <script type='module' src="js/ctd2.js?ts=202207"></script>
 
 <script type="text/javascript">_satellite.pageBottom();</script>
 </body>
