@@ -33,8 +33,8 @@ export default function create_wordcloud(dom_id, words, w_cloud = 960, h_cloud =
 
     words.sort((t, e) => e.value - t.value)
 
-    const font_size_scale = d3.scale[scale_type]().range([10, 70]).domain([+words[words.length - 1].value || 1, +words[0].value])
-    const rotation_scale = d3.scale.linear().domain([0, angle_count - 1]).range([angle_from, angle_to])
+    const font_size_scale = d3.scaleSqrt().range([10, 70]).domain([+words[words.length - 1].value || 1, +words[0].value])
+    const rotation_scale = d3.scaleLinear().domain([0, angle_count - 1]).range([angle_from, angle_to])
     const layout = d3.layout.cloud().timeInterval(10)
         .size([w_cloud, h_cloud])
         .words(words.slice(0, Math.min(words.length, max_word_number)))
