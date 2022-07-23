@@ -13,6 +13,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.SortedMap;
 
 import gov.nih.nci.ctd2.dashboard.api.ObservationItem;
 
@@ -98,4 +99,7 @@ public interface DashboardDao {
     ObservationItem[] getObservations(String submissionId, Set<Integer> indexes);
 
     void masterExport(String filename, Boolean zipExport);
+
+    void storeRelatedCompounds(List<Integer[]> list);
+    SortedMap<String, String[]> getRelatedCompounds(Integer id);
 }

@@ -525,34 +525,71 @@ import MraView from './mra.js'
                 $(this).popover('hide');
             });
 
-            $.ajax("wordcloud").done(function (result) {
-                create_wordcloud('#vis', result, 940);
-            }).fail(function (err) {
-                console.log(err);
-            });
-            $.ajax("wordcloud/target,biomarker").done(function (result) {
-                create_wordcloud('#vis-genes', result, 940);
-            }).fail(function (err) {
-                console.log(err);
-            });
-            $.ajax("wordcloud/perturbagen,candidate drug").done(function (result) {
-                create_wordcloud('#vis-compounds', result, 940);
-            }).fail(function (err) {
-                console.log(err);
-            });
-            $.ajax("wordcloud/disease").done(function (result) {
-                create_wordcloud('#vis-disease', result, 940);
-            }).fail(function (err) {
-                console.log(err);
-            });
-            $.ajax("wordcloud/cell line").done(function (result) {
-                create_wordcloud('#vis-cell', result, 940);
-            }).fail(function (err) {
-                console.log(err);
-            });
+            const wc_color = sessionStorage.getItem("wordcloud-color") ?? "default"
+            create_frontpage_wordclouds(wc_color)
+
+            /* wordcloud download feature */
+            $("#download-wordcloud").click(function () {
+                const svg = document.querySelector('div:not([style*="display:none"]):not([style*="display: none"])>svg')
+                const svgData = new XMLSerializer().serializeToString(svg)
+                const canvas = document.createElement("canvas")
+                canvas.width = 940
+                canvas.height = 600
+                const ctx = canvas.getContext("2d")
+                const img = document.createElement("img")
+                img.setAttribute("src", "data:image/svg+xml;base64," + btoa(svgData))
+                img.onload = function () {
+                    ctx.fillStyle = "white"
+                    ctx.fillRect(0, 0, canvas.width, canvas.height)
+                    ctx.drawImage(img, 0, 0)
+
+                    const a = document.createElement("a")
+                    a.download = "CTD2_word_cloud"
+                    a.href = canvas.toDataURL()
+                    a.click()
+                }
+            })
+            $("#config-wordcloud").click(function () {
+                const wc_color = sessionStorage.getItem("wordcloud-color")
+                $("#wordcloud-color").val(wc_color).change()
+                $("#wordcloud-modal").modal('show')
+            })
+            $("#apply-button").click(function () {
+                const wc_color = $("#wordcloud-color").val()
+                create_frontpage_wordclouds(wc_color)
+                sessionStorage.setItem("wordcloud-color", wc_color)
+            })
             return this;
         }
     });
+
+    function create_frontpage_wordclouds(wc_color) {
+        $.ajax("wordcloud").done(function (result) {
+            create_wordcloud('#vis', result, 940, 600, wc_color);
+        }).fail(function (err) {
+            console.log(err);
+        });
+        $.ajax("wordcloud/target,biomarker").done(function (result) {
+            create_wordcloud('#vis-genes', result, 940, 600, wc_color);
+        }).fail(function (err) {
+            console.log(err);
+        });
+        $.ajax("wordcloud/perturbagen,candidate drug").done(function (result) {
+            create_wordcloud('#vis-compounds', result, 940, 600, wc_color);
+        }).fail(function (err) {
+            console.log(err);
+        });
+        $.ajax("wordcloud/disease").done(function (result) {
+            create_wordcloud('#vis-disease', result, 940, 600, wc_color);
+        }).fail(function (err) {
+            console.log(err);
+        });
+        $.ajax("wordcloud/cell line").done(function (result) {
+            create_wordcloud('#vis-cell', result, 940, 600, wc_color);
+        }).fail(function (err) {
+            console.log(err);
+        });
+    }
 
     const VideoPopupView = Backbone.View.extend({
         template: _.template($("#video-popup-tmpl").html()),
@@ -1104,12 +1141,17 @@ import MraView from './mra.js'
                     result.drugbank = xref.databaseId;
                 } else if (xref.databaseName == "CTRP ID") {
                     result.ctrpID = xref.databaseId;
+                    console.debug(`CTRP ID ${xref.databaseId}`)
                 } else if (xref.databaseName == "CTRP NAME") {
                     result.ctrpName = xref.databaseId;
                 } else if (xref.databaseName == "DepMap compound") {
                     result.depmap = xref.databaseId;
                 } else if (xref.databaseName == "CAS") {
                     result.cas = xref.databaseId;
+                } else if (xref.databaseName == "BROAD_COMPOUND") {
+                    // this is mostly the same as CTRP ID->ctrpID, but not always
+                    result.cpdID = xref.databaseId;
+                    console.debug(`BROAD_COMPOUND ${xref.databaseId}`)
                 }
 
             });
@@ -1157,6 +1199,45 @@ import MraView from './mra.js'
                 },
                 el: "#compound-observation-grid"
             }).render();
+            $("#see-all-compounds-switch").hide()
+            // get 'related' compounds
+            $.ajax("related-compounds/" + result.id).done(function (related_result) {
+                if (Object.keys(related_result).length == 0) {
+                    $("#related-compounds").append("None")
+                    return
+                }
+                let count = 0;
+                for (const compound_name in related_result) {
+                    const x = related_result[compound_name]
+                    const url = x[0]
+                    const li = $(`<li><a href="#${url}">${compound_name}</a></li>`)
+                    if (count >= 3)
+                        li.addClass("too-many-related")
+                    let gene_links = " ( "
+                    for (let i = 1; i < x.length; i += 2) {
+                        gene_links += `<a href="#${x[i + 1]}">${x[i]}</a> `
+                    }
+                    li.append(gene_links + ")")
+                    $("#related-compounds").append(li)
+                    count++
+                }
+                if (count > 3) {
+                    const SEE_ALL = "see all";
+                    $(".too-many-related").hide()
+                    $("#see-all-compounds-switch").click(function () {
+                        if ($(this).text() == SEE_ALL) {
+                            $(".too-many-related").show();
+                            $(this).text("hide");
+                        } else {
+                            $(".too-many-related").hide();
+                            $(this).text(SEE_ALL);
+                        }
+                    });
+                    $("#see-all-compounds-switch").show()
+                }
+            }).fail(function (err) {
+                console.log(err);
+            });
             create_subject_word_cloud(result.id);
 
             $("a.compound-image").fancybox({
