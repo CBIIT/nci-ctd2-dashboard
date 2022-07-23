@@ -525,31 +525,8 @@ import MraView from './mra.js'
                 $(this).popover('hide');
             });
 
-            $.ajax("wordcloud").done(function (result) {
-                create_wordcloud('#vis', result, 940);
-            }).fail(function (err) {
-                console.log(err);
-            });
-            $.ajax("wordcloud/target,biomarker").done(function (result) {
-                create_wordcloud('#vis-genes', result, 940);
-            }).fail(function (err) {
-                console.log(err);
-            });
-            $.ajax("wordcloud/perturbagen,candidate drug").done(function (result) {
-                create_wordcloud('#vis-compounds', result, 940);
-            }).fail(function (err) {
-                console.log(err);
-            });
-            $.ajax("wordcloud/disease").done(function (result) {
-                create_wordcloud('#vis-disease', result, 940);
-            }).fail(function (err) {
-                console.log(err);
-            });
-            $.ajax("wordcloud/cell line").done(function (result) {
-                create_wordcloud('#vis-cell', result, 940);
-            }).fail(function (err) {
-                console.log(err);
-            });
+            const wc_color = sessionStorage.getItem("wordcloud-color") ?? "default"
+            create_frontpage_wordclouds(wc_color)
 
             /* wordcloud download feature */
             $("#download-wordcloud").click(function () {
@@ -579,16 +556,40 @@ import MraView from './mra.js'
             })
             $("#apply-button").click(function () {
                 const wc_color = $("#wordcloud-color").val()
-                $.ajax("wordcloud").done(function (result) {
-                    create_wordcloud('#vis', result, 940, 600, wc_color);
-                }).fail(function (err) {
-                    console.log(err);
-                });
+                create_frontpage_wordclouds(wc_color)
                 sessionStorage.setItem("wordcloud-color", wc_color)
             })
             return this;
         }
     });
+
+    function create_frontpage_wordclouds(wc_color) {
+        $.ajax("wordcloud").done(function (result) {
+            create_wordcloud('#vis', result, 940, 600, wc_color);
+        }).fail(function (err) {
+            console.log(err);
+        });
+        $.ajax("wordcloud/target,biomarker").done(function (result) {
+            create_wordcloud('#vis-genes', result, 940, 600, wc_color);
+        }).fail(function (err) {
+            console.log(err);
+        });
+        $.ajax("wordcloud/perturbagen,candidate drug").done(function (result) {
+            create_wordcloud('#vis-compounds', result, 940, 600, wc_color);
+        }).fail(function (err) {
+            console.log(err);
+        });
+        $.ajax("wordcloud/disease").done(function (result) {
+            create_wordcloud('#vis-disease', result, 940, 600, wc_color);
+        }).fail(function (err) {
+            console.log(err);
+        });
+        $.ajax("wordcloud/cell line").done(function (result) {
+            create_wordcloud('#vis-cell', result, 940, 600, wc_color);
+        }).fail(function (err) {
+            console.log(err);
+        });
+    }
 
     const VideoPopupView = Backbone.View.extend({
         template: _.template($("#video-popup-tmpl").html()),
