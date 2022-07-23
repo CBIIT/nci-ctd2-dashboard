@@ -579,16 +579,8 @@ import MraView from './mra.js'
             })
             $("#apply-button").click(function () {
                 const wc_color = $("#wordcloud-color").val()
-                let color = ["#FF7F0E", "#D12FC2", "#0066FF", "#4ECB35",]
-                switch (wc_color) { /* these colors are based on d3 v4. the syntax to access these colors directly is different in v4 from v3 */
-                    case "category10": color = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf"]; break
-                    case "dark2": color = ["#1b9e77", "#d95f02", "#7570b3", "#e7298a", "#66a61e", "#e6ab02", "#a6761d", "#666666"]; break
-                    case "paired": color = ["#a6cee3", "#1f78b4", "#b2df8a", "#33a02c", "#fb9a99", "#e31a1c", "#fdbf6f", "#ff7f00", "#cab2d6", "#6a3d9a", "#ffff99", "#b15928"]; break
-                    case "accent": color = ["#7fc97f", "#beaed4", "#fdc086", "#ffff99", "#386cb0", "#f0027f", "#bf5b17", "#666666"]; break;
-                }
-                // v3 syntax d3.scale.category10()
                 $.ajax("wordcloud").done(function (result) {
-                    create_wordcloud('#vis', result, 940, 600, color);
+                    create_wordcloud('#vis', result, 940, 600, wc_color);
                 }).fail(function (err) {
                     console.log(err);
                 });

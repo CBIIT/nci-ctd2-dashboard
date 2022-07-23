@@ -1,4 +1,4 @@
-export default function create_wordcloud(dom_id, words, w_cloud = 960, h_cloud = 600, color = ["#FF7F0E", "#D12FC2", "#0066FF", "#4ECB35",]) {
+export default function create_wordcloud(dom_id, words, w_cloud = 960, h_cloud = 600, color_scheme = "default") {
     if (words.length == 0) return
 
     /* 7 basic parameters for the word-cloud */
@@ -9,6 +9,15 @@ export default function create_wordcloud(dom_id, words, w_cloud = 960, h_cloud =
     const font_name = "sans-serif"; // default Impact
     const scale_type = "sqrt"; // three options: log, sqrt, linear. default log. see https://i.stack.imgur.com/0oZZQ.png
     const spiral_type = "archimedean"; // two options: archimedean, rectangular. default archimedean. see https://en.wikipedia.org/wiki/Archimedean_spiral
+
+    const scheme_options = {
+        "default": ["#FF7F0E", "#D12FC2", "#0066FF", "#4ECB35",],
+        "category10": d3.schemeCategory10,
+        "accent": d3.schemeAccent,
+        "dark2": d3.schemeDark2,
+        "paired": d3.schemePaired,
+    }
+    const color = scheme_options[color_scheme]
 
     function draw(tags, bounds) {
         cloud_area.selectAll("text").data(tags)
