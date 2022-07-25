@@ -1240,6 +1240,10 @@ import MraView from './mra.js'
                     });
                     $("#see-all-compounds-switch").show()
                 }
+                $(".rc-tooltip").popover({
+                    placement: "bottom",
+                    trigger: "hover",
+                })
             }).fail(function (err) {
                 console.log(err);
             });

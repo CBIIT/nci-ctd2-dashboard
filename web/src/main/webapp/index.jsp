@@ -1610,7 +1610,7 @@
                               <td><small>{{smilesNotation}}</small></td>
                           </tr>
                           <tr>
-                              <th>Compounds with <br/>shared targets</th>
+                              <th>Compounds with <br/>shared targets <i class="icon-question-sign rc-tooltip" data-content="Within parentheses, the gene symbols of the shared targets"></i></th>
                               <td>
                                   <ul class="synonyms" id="related-compounds"></ul>
                                   <button type="button" class="btn btn-outline-dark" id=see-all-compounds-switch>see all</button>
