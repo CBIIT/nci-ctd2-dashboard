@@ -268,7 +268,12 @@
                     <option>Times New Roman</option>
                     <option>Impact</option>
                 </select>
-                Max font size <select class="form-control border selectpicker"></select>
+                Max font size
+                <select class="form-control border selectpicker" id="wordcloud-max-font">
+                    <option>40</option>
+                    <option>70</option>
+                    <option>100</option>
+                </select>
                 Scaling
                 <select class="form-control border selectpicker">
                     <option>square root</option>
