@@ -1218,11 +1218,11 @@ import MraView from './mra.js'
                     const li = $(`<li><a href="#${url}">${compound_name}</a></li>`)
                     if (count >= 3)
                         li.addClass("too-many-related")
-                    let gene_links = " ( "
-                    for (let i = 1; i < x.length; i += 2) {
-                        gene_links += `<a href="#${x[i + 1]}">${x[i]}</a> `
+                    const gene_links = new Array((x.length - 1) / 2)
+                    for (let i = 0; i < gene_links.length; i++) {
+                        gene_links[i] = `<a href="#${x[2 * i + 2]}">${x[2 * i + 1]}</a>`
                     }
-                    li.append(gene_links + ")")
+                    li.append(" ( " + gene_links.join(", ") + " )")
                     $("#related-compounds").append(li)
                     count++
                 }
