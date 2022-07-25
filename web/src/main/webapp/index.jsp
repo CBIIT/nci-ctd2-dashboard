@@ -262,7 +262,12 @@
                     <option data-content='<img src="img/color-scheme/Dark2.png"> dark2' value="dark2"></option>
                     <option data-content='<img src="img/color-scheme/Paired.png"> paired' value="paired"></option>
                 </select>
-                Font style <select class="form-control border selectpicker"></select>
+                Font style 
+                <select class="form-control border selectpicker" id="wordcloud-font">
+                    <option>Arial</option>
+                    <option>Times New Roman</option>
+                    <option>Impact</option>
+                </select>
                 Max font size <select class="form-control border selectpicker"></select>
                 Scaling
                 <select class="form-control border selectpicker">

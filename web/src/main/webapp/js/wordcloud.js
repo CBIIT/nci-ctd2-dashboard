@@ -1,4 +1,4 @@
-export default function create_wordcloud(dom_id, words, w_cloud = 960, h_cloud = 600, color_scheme = "default") {
+export default function create_wordcloud(dom_id, words, w_cloud = 960, h_cloud = 600, color_scheme = "default", font_name = "Arial") {
     if (words.length == 0) return
 
     /* 7 basic parameters for the word-cloud */
@@ -6,7 +6,6 @@ export default function create_wordcloud(dom_id, words, w_cloud = 960, h_cloud =
     const angle_count = 5; // default 5
     const angle_from = -60; // default -60
     const angle_to = 60; // default 60
-    const font_name = "sans-serif"; // default Impact
     const scale_type = "sqrt"; // three options: log, sqrt, linear. default log. see https://i.stack.imgur.com/0oZZQ.png
     const spiral_type = "archimedean"; // two options: archimedean, rectangular. default archimedean. see https://en.wikipedia.org/wiki/Archimedean_spiral
 

@@ -526,7 +526,8 @@ import MraView from './mra.js'
             });
 
             const wc_color = sessionStorage.getItem("wordcloud-color") ?? "default"
-            create_frontpage_wordclouds(wc_color)
+            const wc_font = sessionStorage.getItem("wordcloud-font") ?? "Arial"
+            create_frontpage_wordclouds(wc_color, wc_font)
 
             /* wordcloud download feature */
             $("#download-wordcloud").click(function () {
@@ -550,42 +551,46 @@ import MraView from './mra.js'
                 }
             })
             $("#config-wordcloud").click(function () {
-                const wc_color = sessionStorage.getItem("wordcloud-color")
+                const wc_color = sessionStorage.getItem("wordcloud-color") ?? "default"
+                const wc_font = sessionStorage.getItem("wordcloud-font") ?? "Arial"
                 $("#wordcloud-color").val(wc_color).change()
+                $("#wordcloud-font").val(wc_font).change()
                 $("#wordcloud-modal").modal('show')
             })
             $("#apply-button").click(function () {
                 const wc_color = $("#wordcloud-color").val()
-                create_frontpage_wordclouds(wc_color)
+                const wc_font = $("#wordcloud-font").val()
+                create_frontpage_wordclouds(wc_color, wc_font)
                 sessionStorage.setItem("wordcloud-color", wc_color)
+                sessionStorage.setItem("wordcloud-font", wc_font)
             })
             return this;
         }
     });
 
-    function create_frontpage_wordclouds(wc_color) {
+    function create_frontpage_wordclouds(wc_color, wc_font) {
         $.ajax("wordcloud").done(function (result) {
-            create_wordcloud('#vis', result, 940, 600, wc_color);
+            create_wordcloud('#vis', result, 940, 600, wc_color, wc_font);
         }).fail(function (err) {
             console.log(err);
         });
         $.ajax("wordcloud/target,biomarker").done(function (result) {
-            create_wordcloud('#vis-genes', result, 940, 600, wc_color);
+            create_wordcloud('#vis-genes', result, 940, 600, wc_color, wc_font);
         }).fail(function (err) {
             console.log(err);
         });
         $.ajax("wordcloud/perturbagen,candidate drug").done(function (result) {
-            create_wordcloud('#vis-compounds', result, 940, 600, wc_color);
+            create_wordcloud('#vis-compounds', result, 940, 600, wc_color, wc_font);
         }).fail(function (err) {
             console.log(err);
         });
         $.ajax("wordcloud/disease").done(function (result) {
-            create_wordcloud('#vis-disease', result, 940, 600, wc_color);
+            create_wordcloud('#vis-disease', result, 940, 600, wc_color, wc_font);
         }).fail(function (err) {
             console.log(err);
         });
         $.ajax("wordcloud/cell line").done(function (result) {
-            create_wordcloud('#vis-cell', result, 940, 600, wc_color);
+            create_wordcloud('#vis-cell', result, 940, 600, wc_color, wc_font);
         }).fail(function (err) {
             console.log(err);
         });
