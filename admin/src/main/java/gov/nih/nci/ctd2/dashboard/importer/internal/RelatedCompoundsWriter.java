@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import gov.nih.nci.ctd2.dashboard.dao.DashboardDao;
+import gov.nih.nci.ctd2.dashboard.model.ObservedSubject;
 import gov.nih.nci.ctd2.dashboard.model.Subject;
 
 @Component("relatedCompoundsWriter")
@@ -44,7 +45,12 @@ public class RelatedCompoundsWriter implements ItemWriter<String[]> {
                             + ". 1 is expected.");
                     continue;
                 }
-                id = compounds.get(0).getId();
+                Subject compound = compounds.get(0);
+                List<ObservedSubject> observed = dashboardDao.findObservedSubjectBySubject(compound);
+                if (observed.size() == 0) {
+                    continue;
+                }
+                id = compound.getId();
                 compound_ids.put(Integer.valueOf(cpd_id), id);
             }
             String annotation_id = x[2];
