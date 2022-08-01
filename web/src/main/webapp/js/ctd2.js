@@ -529,7 +529,8 @@ import MraView from './mra.js'
             const wc_font = sessionStorage.getItem("wordcloud-font") ?? "Arial"
             const wc_max_font = sessionStorage.getItem("wordcloud-max-font") ?? 70
             const wc_scaling = sessionStorage.getItem("wordcloud-scaling") ?? "sqrt"
-            create_frontpage_wordclouds(wc_color, wc_font, wc_max_font, wc_scaling)
+            const wc_spiral = sessionStorage.getItem("wordcloud-spiral") ?? "archimedean"
+            create_frontpage_wordclouds(wc_color, wc_font, wc_max_font, wc_scaling, wc_spiral)
 
             /* wordcloud download feature */
             $("#download-wordcloud").click(function () {
@@ -557,10 +558,12 @@ import MraView from './mra.js'
                 const wc_font = sessionStorage.getItem("wordcloud-font") ?? "Arial"
                 const wc_max_font = sessionStorage.getItem("wordcloud-max-font") ?? 70
                 const wc_scaling = sessionStorage.getItem("wordcloud-scaling") ?? "sqrt"
+                const wc_spiral = sessionStorage.getItem("wordcloud-spiral") ?? "archimedean"
                 $("#wordcloud-color").val(wc_color).change()
                 $("#wordcloud-font").val(wc_font).change()
                 $("#wordcloud-max-font").val(wc_max_font).change()
                 $("#wordcloud-scaling").val(wc_scaling).change()
+                $("#wordcloud-spiral").val(wc_spiral).change()
                 $("#wordcloud-modal").modal('show')
             })
             $("#apply-button").click(function () {
@@ -568,39 +571,41 @@ import MraView from './mra.js'
                 const wc_font = $("#wordcloud-font").val()
                 const wc_max_font = $("#wordcloud-max-font").val()
                 const wc_scaling = $("#wordcloud-scaling").val()
-                create_frontpage_wordclouds(wc_color, wc_font, wc_max_font, wc_scaling)
+                const wc_spiral = $("#wordcloud-spiral").val()
+                create_frontpage_wordclouds(wc_color, wc_font, wc_max_font, wc_scaling, wc_spiral)
                 sessionStorage.setItem("wordcloud-color", wc_color)
                 sessionStorage.setItem("wordcloud-font", wc_font)
                 sessionStorage.setItem("wordcloud-max-font", wc_max_font)
                 sessionStorage.setItem("wordcloud-scaling", wc_scaling)
+                sessionStorage.setItem("wordcloud-spiral", wc_spiral)
             })
             return this;
         }
     });
 
-    function create_frontpage_wordclouds(wc_color, wc_font, wc_max_font, wc_scaling) {
+    function create_frontpage_wordclouds(wc_color, wc_font, wc_max_font, wc_scaling, wc_spiral) {
         $.ajax("wordcloud").done(function (result) {
-            create_wordcloud('#vis', result, 940, 600, wc_color, wc_font, wc_max_font, wc_scaling);
+            create_wordcloud('#vis', result, 940, 600, wc_color, wc_font, wc_max_font, wc_scaling, wc_spiral);
         }).fail(function (err) {
             console.log(err);
         });
         $.ajax("wordcloud/target,biomarker").done(function (result) {
-            create_wordcloud('#vis-genes', result, 940, 600, wc_color, wc_font, wc_max_font, wc_scaling);
+            create_wordcloud('#vis-genes', result, 940, 600, wc_color, wc_font, wc_max_font, wc_scaling, wc_spiral);
         }).fail(function (err) {
             console.log(err);
         });
         $.ajax("wordcloud/perturbagen,candidate drug").done(function (result) {
-            create_wordcloud('#vis-compounds', result, 940, 600, wc_color, wc_font, wc_max_font, wc_scaling);
+            create_wordcloud('#vis-compounds', result, 940, 600, wc_color, wc_font, wc_max_font, wc_scaling, wc_spiral);
         }).fail(function (err) {
             console.log(err);
         });
         $.ajax("wordcloud/disease").done(function (result) {
-            create_wordcloud('#vis-disease', result, 940, 600, wc_color, wc_font, wc_max_font, wc_scaling);
+            create_wordcloud('#vis-disease', result, 940, 600, wc_color, wc_font, wc_max_font, wc_scaling, wc_spiral);
         }).fail(function (err) {
             console.log(err);
         });
         $.ajax("wordcloud/cell line").done(function (result) {
-            create_wordcloud('#vis-cell', result, 940, 600, wc_color, wc_font, wc_max_font, wc_scaling);
+            create_wordcloud('#vis-cell', result, 940, 600, wc_color, wc_font, wc_max_font, wc_scaling, wc_spiral);
         }).fail(function (err) {
             console.log(err);
         });

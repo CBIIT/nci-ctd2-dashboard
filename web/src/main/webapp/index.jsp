@@ -280,7 +280,11 @@
                     <option value="linear">Linear</option>
                     <option value="logarithm">Logarithm</option>
                 </select>
-                Layout <select class="form-control border selectpicker"><option>Archimedean</option><option>Rectangular</option></select>
+                Layout
+                <select class="form-control border selectpicker" id="wordcloud-spiral">
+                    <option value="archimedean">Archimedean</option>
+                    <option value="rectangular">Rectangular</option>
+                </select>
                 Max word count <select class="form-control border selectpicker"><option>10</option><option>250</option></select>
 
                 <div style="float: right;padding: 10px;"><a href="">Reset</a></div>

@@ -1,11 +1,9 @@
-export default function create_wordcloud(dom_id, words, w_cloud = 960, h_cloud = 600, color_scheme = "default", font_name = "Arial", max_font = 70, scale_type = "sqrt") {
+export default function create_wordcloud(dom_id, words, w_cloud = 960, h_cloud = 600,
+    color_scheme = "default", font_name = "Arial", max_font = 70, scale_type = "sqrt", spiral_type = "archimedean") {
     if (words.length == 0) return
 
     const max_word_number = 250;
-    const angle_count = 5; // default 5
-    const angle_from = -60; // default -60
-    const angle_to = 60; // default 60
-    const spiral_type = "archimedean"; // two options: archimedean, rectangular. default archimedean. see https://en.wikipedia.org/wiki/Archimedean_spiral
+    const angle_count = 5, angle_from = -60, angle_to = 60;
 
     const scheme_options = {
         "default": ["#FF7F0E", "#D12FC2", "#0066FF", "#4ECB35",],
