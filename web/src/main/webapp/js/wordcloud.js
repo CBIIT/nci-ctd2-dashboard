@@ -1,12 +1,10 @@
-export default function create_wordcloud(dom_id, words, w_cloud = 960, h_cloud = 600, color_scheme = "default", font_name = "Arial", max_font = 70) {
+export default function create_wordcloud(dom_id, words, w_cloud = 960, h_cloud = 600, color_scheme = "default", font_name = "Arial", max_font = 70, scale_type = "sqrt") {
     if (words.length == 0) return
 
-    /* 7 basic parameters for the word-cloud */
     const max_word_number = 250;
     const angle_count = 5; // default 5
     const angle_from = -60; // default -60
     const angle_to = 60; // default 60
-    const scale_type = "sqrt"; // three options: log, sqrt, linear. default log. see https://i.stack.imgur.com/0oZZQ.png
     const spiral_type = "archimedean"; // two options: archimedean, rectangular. default archimedean. see https://en.wikipedia.org/wiki/Archimedean_spiral
 
     const scheme_options = {
@@ -17,6 +15,12 @@ export default function create_wordcloud(dom_id, words, w_cloud = 960, h_cloud =
         "paired": d3.schemePaired,
     }
     const color = scheme_options[color_scheme]
+    const scale_options = {
+        "sqrt": d3.scaleSqrt(),
+        "linear": d3.scaleLinear(),
+        "logarithm": d3.scaleLog(),
+    }
+    const scale = scale_options[scale_type]
 
     function draw(tags, bounds) {
         cloud_area.selectAll("text").data(tags)
@@ -41,7 +45,7 @@ export default function create_wordcloud(dom_id, words, w_cloud = 960, h_cloud =
 
     words.sort((t, e) => e.value - t.value)
 
-    const font_size_scale = d3.scaleSqrt().range([10, max_font]).domain([+words[words.length - 1].value || 1, +words[0].value])
+    const font_size_scale = scale.range([10, max_font]).domain([+words[words.length - 1].value || 1, +words[0].value])
     const rotation_scale = d3.scaleLinear().domain([0, angle_count - 1]).range([angle_from, angle_to])
     const layout = d3.layout.cloud().timeInterval(10)
         .size([w_cloud, h_cloud])

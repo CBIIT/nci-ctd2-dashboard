@@ -275,10 +275,10 @@
                     <option>100</option>
                 </select>
                 Scaling
-                <select class="form-control border selectpicker">
-                    <option>square root</option>
-                    <option>linear</option>
-                    <option>logarithm</option>
+                <select class="form-control border selectpicker" id="wordcloud-scaling">
+                    <option value="sqrt">Square root</option>
+                    <option value="linear">Linear</option>
+                    <option value="logarithm">Logarithm</option>
                 </select>
                 Layout <select class="form-control border selectpicker"><option>Archimedean</option><option>Rectangular</option></select>
                 Max word count <select class="form-control border selectpicker"><option>10</option><option>250</option></select>
