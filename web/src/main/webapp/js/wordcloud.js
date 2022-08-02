@@ -29,8 +29,8 @@ export default function create_wordcloud(dom_id, words, w_cloud = 960, h_cloud =
             .style("fill", t => color[(Math.floor(Math.random() * color.length))])
             .style("cursor", "pointer")
             .text(t => t.text)
-            .on("click", t => {
-                d3.event.stopPropagation()
+            .on("click", (event, t) => {
+                event.stopPropagation()
                 window.location = "#" + t.url
             })
             .append("title").text(t => t.fullname)
