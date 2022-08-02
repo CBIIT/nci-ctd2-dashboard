@@ -1,8 +1,7 @@
 export default function create_wordcloud(dom_id, words, w_cloud = 960, h_cloud = 600,
-    color_scheme = "default", font_name = "Arial", max_font = 70, scale_type = "sqrt", spiral_type = "archimedean") {
+    color_scheme = "default", font_name = "Arial", max_font = 70, scale_type = "sqrt", spiral_type = "archimedean", max_word_number = 250) {
     if (words.length == 0) return
 
-    const max_word_number = 250;
     const angle_count = 5, angle_from = -60, angle_to = 60;
 
     const scheme_options = {

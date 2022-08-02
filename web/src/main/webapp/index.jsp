@@ -285,7 +285,7 @@
                     <option value="archimedean">Archimedean</option>
                     <option value="rectangular">Rectangular</option>
                 </select>
-                Max word count <select class="form-control border selectpicker"><option>10</option><option>250</option></select>
+                Max word number <select class="form-control border selectpicker" id="wordcloud-max-words"></select>
 
                 <div style="float: right;padding: 10px;"><a href="">Reset</a></div>
             </div>
