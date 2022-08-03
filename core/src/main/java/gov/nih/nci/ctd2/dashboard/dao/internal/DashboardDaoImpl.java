@@ -2343,20 +2343,21 @@ public class DashboardDaoImpl implements DashboardDao {
     }
 
     @Override
-    public void storeRelatedCompounds(List<Integer[]> list) {
+    public void storeRelatedCompounds(Set<List<Integer>> set) {
         Session session = getSession();
         session.beginTransaction();
         org.hibernate.query.Query<?> query0 = session
                 .createNativeQuery("DROP TABLE IF EXISTS related_compounds");
         query0.executeUpdate();
         org.hibernate.query.Query<?> query = session
-                .createNativeQuery("CREATE TABLE related_compounds (gene_id INT, compound_id INT)");
+                .createNativeQuery(
+                        "CREATE TABLE related_compounds (gene_id INT, compound_id INT, PRIMARY KEY (gene_id, compound_id))");
         query.executeUpdate();
-        for (Integer[] x : list) {
+        for (List<Integer> x : set) {
             org.hibernate.query.Query<?> query2 = session
                     .createNativeQuery("INSERT INTO related_compounds VALUES (:gene_id, :compound_id)");
-            query2.setParameter("gene_id", x[0]);
-            query2.setParameter("compound_id", x[1]);
+            query2.setParameter("gene_id", x.get(0));
+            query2.setParameter("compound_id", x.get(1));
             query2.executeUpdate();
         }
 

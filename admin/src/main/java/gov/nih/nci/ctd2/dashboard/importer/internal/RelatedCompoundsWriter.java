@@ -1,6 +1,7 @@
 package gov.nih.nci.ctd2.dashboard.importer.internal;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -34,7 +35,7 @@ public class RelatedCompoundsWriter implements ItemWriter<String[]> {
         int not_match = 0;
 
         Map<Integer, Integer> compound_ids = new HashMap<Integer, Integer>();
-        List<Integer[]> list = new ArrayList<Integer[]>();
+        Set<List<Integer>> set = new HashSet<List<Integer>>();
         for (String[] x : items) {
             String cpd_id = x[0];
             Integer id = compound_ids.get(Integer.valueOf(cpd_id));
@@ -57,7 +58,7 @@ public class RelatedCompoundsWriter implements ItemWriter<String[]> {
             Matcher matcher = pattern.matcher(annotation_id);
             if (matcher.matches()) {
                 Integer gene_id = Integer.valueOf(annotation_id.substring(7));
-                list.add(new Integer[] { gene_id, id });
+                set.add(Arrays.asList(gene_id, id));
                 count++;
             } else {
                 // log.debug("not matching 'GeneID:' - " + annotation_id);
@@ -66,7 +67,8 @@ public class RelatedCompoundsWriter implements ItemWriter<String[]> {
         }
         log.debug("not matched rows " + not_match);
         log.debug("total gene id rows " + count);
-        dashboardDao.storeRelatedCompounds(list);
+        log.debug("unique rows " + set.size());
+        dashboardDao.storeRelatedCompounds(set);
         log.debug("RelatedCompoundsWriter called. size=" + items.size());
     }
 }

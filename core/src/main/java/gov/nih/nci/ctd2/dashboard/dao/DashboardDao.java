@@ -100,6 +100,6 @@ public interface DashboardDao {
 
     void masterExport(String filename, Boolean zipExport);
 
-    void storeRelatedCompounds(List<Integer[]> list);
+    void storeRelatedCompounds(Set<List<Integer>> list);
     SortedMap<String, String[]> getRelatedCompounds(Integer id);
 }
