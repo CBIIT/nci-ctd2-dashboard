@@ -1390,8 +1390,14 @@ import MraView from './mra.js'
     });
 
     function create_subject_word_cloud(subject_id) {
+        const wc_color = sessionStorage.getItem("wordcloud-color") ?? "default"
+        const wc_font = sessionStorage.getItem("wordcloud-font") ?? "Arial"
+        const wc_max_font = sessionStorage.getItem("wordcloud-max-font") ?? 70
+        const wc_scaling = sessionStorage.getItem("wordcloud-scaling") ?? "sqrt"
+        const wc_spiral = sessionStorage.getItem("wordcloud-spiral") ?? "archimedean"
+        const wc_max_words = sessionStorage.getItem("wordcloud-max-words") ?? 250
         $.ajax("wordcloud/subject/" + subject_id).done(function (result) {
-            create_wordcloud('#subject-wordcloud', result, 930);
+            create_wordcloud('#subject-wordcloud', result, 930, 600, wc_color, wc_font, wc_max_font, wc_scaling, wc_spiral, wc_max_words);
         }).fail(function (err) {
             console.log(err);
         });
