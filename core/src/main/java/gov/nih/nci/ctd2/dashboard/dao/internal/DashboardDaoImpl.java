@@ -2371,7 +2371,7 @@ public class DashboardDaoImpl implements DashboardDao {
         @SuppressWarnings("unchecked")
         org.hibernate.query.Query<Object[]> query = session.createNativeQuery(sql);
         query.setParameter("source_id", source_id);
-        SortedMap<String, String[]> map = new TreeMap<String, String[]>();
+        Map<Integer, Set<Integer>> target_compound_to_genes = new HashMap<Integer, Set<Integer>>();
 
         Map<Integer, Compound> target_compounds = new HashMap<Integer, Compound>();
         Map<Integer, Gene> genes_map = new HashMap<Integer, Gene>();
@@ -2386,31 +2386,42 @@ public class DashboardDaoImpl implements DashboardDao {
                 compound = getEntityById(Compound.class, target_id);
                 target_compounds.put(target_id, compound);
             }
-            Gene gene = genes_map.get(gene_id);
-            if (gene == null) {
-                List<Gene> genes = findGenesByEntrezId(gene_id.toString());
-                if (genes.size() != 1) {
-                    log.warn("The number of gene for entrez ID " + gene_id + "is " + genes.size()
-                            + ". 1 is expected.");
-                    continue;
+            Set<Integer> genes = target_compound_to_genes.get(target_id);
+            if (genes == null) {
+                genes = new HashSet<Integer>();
+                target_compound_to_genes.put(target_id, genes);
+            }
+            genes.add(gene_id);
+        }
+        // make the new set
+        SortedMap<String, String[]> map = new TreeMap<String, String[]>();
+        for (Integer target_id : target_compounds.keySet()) {
+            Set<Integer> gene_ids = target_compound_to_genes.get(target_id);
+            List<String> gene_content = new ArrayList<String>();
+            for (Integer gene_id : gene_ids) {
+                Gene gene = genes_map.get(gene_id);
+                if (gene == null) {
+                    List<Gene> genes = findGenesByEntrezId(gene_id.toString());
+                    if (genes.size() != 1) {
+                        log.warn("The number of gene for entrez ID " + gene_id + "is " + genes.size()
+                                + ". 1 is expected.");
+                        continue;
+                    }
+                    gene = genes.get(0);
+                    genes_map.put(gene_id, gene);
                 }
-                gene = genes.get(0);
-                genes_map.put(gene_id, gene);
+                gene_content.add(gene.getDisplayName());
+                gene_content.add(gene.getStableURL());
             }
-            String compound_name = compound.getDisplayName();
-            String[] content = map.get(compound_name); /* using a simple array to have the best performance */
-            if (content == null) {
-                content = new String[3];
-                content[0] = compound.getStableURL();
-                content[1] = gene.getDisplayName();
-                content[2] = gene.getStableURL();
-            } else {
-                int len = content.length;
-                content = Arrays.copyOf(content, len + 2);
-                content[len] = gene.getDisplayName();
-                content[len + 1] = gene.getStableURL();
+
+            Compound compound = target_compounds.get(target_id);
+            /* using a simple array to have the best performance */
+            String[] content = new String[gene_content.size() + 1];
+            content[0] = compound.getStableURL();
+            for (int i = 0; i < gene_content.size(); i++) {
+                content[i + 1] = gene_content.get(i);
             }
-            map.put(compound_name, content);
+            map.put(compound.getDisplayName(), content);
         }
         session.close();
         return map;
