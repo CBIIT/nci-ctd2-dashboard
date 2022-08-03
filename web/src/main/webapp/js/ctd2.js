@@ -595,31 +595,18 @@ import MraView from './mra.js'
     });
 
     function create_frontpage_wordclouds(wc_color, wc_font, wc_max_font, wc_scaling, wc_spiral, wc_max_words) {
-        $.ajax("wordcloud").done(function (result) {
-            create_wordcloud('#vis', result, 940, 600, wc_color, wc_font, wc_max_font, wc_scaling, wc_spiral, wc_max_words);
-        }).fail(function (err) {
-            console.log(err);
-        });
-        $.ajax("wordcloud/target,biomarker").done(function (result) {
-            create_wordcloud('#vis-genes', result, 940, 600, wc_color, wc_font, wc_max_font, wc_scaling, wc_spiral, wc_max_words);
-        }).fail(function (err) {
-            console.log(err);
-        });
-        $.ajax("wordcloud/perturbagen,candidate drug").done(function (result) {
-            create_wordcloud('#vis-compounds', result, 940, 600, wc_color, wc_font, wc_max_font, wc_scaling, wc_spiral, wc_max_words);
-        }).fail(function (err) {
-            console.log(err);
-        });
-        $.ajax("wordcloud/disease").done(function (result) {
-            create_wordcloud('#vis-disease', result, 940, 600, wc_color, wc_font, wc_max_font, wc_scaling, wc_spiral, wc_max_words);
-        }).fail(function (err) {
-            console.log(err);
-        });
-        $.ajax("wordcloud/cell line").done(function (result) {
-            create_wordcloud('#vis-cell', result, 940, 600, wc_color, wc_font, wc_max_font, wc_scaling, wc_spiral, wc_max_words);
-        }).fail(function (err) {
-            console.log(err);
-        });
+        function one_wordcloud(data_query, dom_id) {
+            $.ajax(data_query).done(function (result) {
+                create_wordcloud(dom_id, result, 940, 600, wc_color, wc_font, wc_max_font, wc_scaling, wc_spiral, wc_max_words);
+            }).fail(function (err) {
+                console.log(err);
+            });
+        }
+        one_wordcloud("wordcloud", '#vis')
+        one_wordcloud("wordcloud/target,biomarker", '#vis-genes')
+        one_wordcloud("wordcloud/perturbagen,candidate drug", '#vis-compounds')
+        one_wordcloud("wordcloud/disease", '#vis-disease')
+        one_wordcloud("wordcloud/cell line", '#vis-cell')
     }
 
     const VideoPopupView = Backbone.View.extend({
