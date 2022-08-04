@@ -533,31 +533,34 @@ import MraView from './mra.js'
             const wc_max_words = sessionStorage.getItem("wordcloud-max-words") ?? 250
             create_frontpage_wordclouds(wc_color, wc_font, wc_max_font, wc_scaling, wc_spiral, wc_max_words)
 
-            /* wordcloud download feature */
-            $("#download-wordcloud").click(function () {
-                const svg = document.querySelector('div:not([style*="display:none"]):not([style*="display: none"])>svg')
-                const svgData = new XMLSerializer().serializeToString(svg)
-                const canvas = document.createElement("canvas")
-                canvas.width = 940
-                canvas.height = 600
-                const ctx = canvas.getContext("2d")
-                const img = document.createElement("img")
-                img.setAttribute("src", "data:image/svg+xml;base64," + btoa(svgData))
-                img.onload = function () {
-                    ctx.fillStyle = "white"
-                    ctx.fillRect(0, 0, canvas.width, canvas.height)
-                    ctx.drawImage(img, 0, 0)
-
-                    const a = document.createElement("a")
-                    a.download = "CTD2_word_cloud"
-                    a.href = canvas.toDataURL()
-                    a.click()
-                }
-            })
+            $("#download-wordcloud").click(wordcloud_download)
             $("#config-wordcloud").click(wordcloud_config)
             return this;
         }
     });
+
+    /* wordcloud download feature */
+    function wordcloud_download() {
+        const svg = document.querySelector('div:not([style*="display:none"]):not([style*="display: none"])>svg')
+        const svgData = new XMLSerializer().serializeToString(svg)
+        const canvas = document.createElement("canvas")
+        const svgSize = svg.getBoundingClientRect();
+        canvas.width = svgSize.width;
+        canvas.height = svgSize.height;
+        const ctx = canvas.getContext("2d")
+        const img = document.createElement("img")
+        img.setAttribute("src", "data:image/svg+xml;base64," + btoa(svgData))
+        img.onload = function () {
+            ctx.fillStyle = "white"
+            ctx.fillRect(0, 0, canvas.width, canvas.height)
+            ctx.drawImage(img, 0, 0)
+
+            const a = document.createElement("a")
+            a.download = "CTD2_word_cloud"
+            a.href = canvas.toDataURL()
+            a.click()
+        }
+    }
 
     function wordcloud_config() {
         const wc_color = sessionStorage.getItem("wordcloud-color") ?? "default"
@@ -574,6 +577,7 @@ import MraView from './mra.js'
         $("#wordcloud-max-words").val(wc_max_words).change()
         $("#wordcloud-modal").modal('show')
     }
+
     function create_frontpage_wordclouds(wc_color, wc_font, wc_max_font, wc_scaling, wc_spiral, wc_max_words) {
         function one_wordcloud(data_query, dom_id) {
             $.ajax(data_query).done(function (result) {
@@ -1391,6 +1395,7 @@ import MraView from './mra.js'
             });
         });
         $("#subject-id").val(subject_id)
+        $("#download-wordcloud").click(wordcloud_download)
         $("#config-wordcloud").click(wordcloud_config)
     }
 
