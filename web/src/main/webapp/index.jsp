@@ -1046,7 +1046,10 @@
 
              <h3>Related observations <small>{{ role?"for the role of "+role:"" }} {{tier?"and tier "+tier:""}}</small></h3>
              <div>
-             <button type="button" class="btn btn-secondary" id=subject-wordcloud-button><span id=subject-wordcloud-toggle-word>Show</span> Connected Subjects Word Cloud</button>
+                <button type="button" class="btn btn-secondary" id=subject-wordcloud-button><span id=subject-wordcloud-toggle-word>Show</span> Connected Subjects Word Cloud</button>
+                <i class="fas fa-cog fa-lg" style="color:SteelBlue;" id="config-wordcloud"></i>
+                <i class="fas fa-download fa-lg" style="color:SteelBlue;" id='download-wordcloud'></i>
+                <span id="subject-id" style="display:none"></span>
                 <div id=subject-wordcloud></div>
              </div>
 
@@ -1339,6 +1342,9 @@
             <h3>Related observations <small>{{ role?"for the role of "+role:"" }} {{tier?"and tier "+tier:""}}</small></h3>
             <div>
                 <button type="button" class="btn btn-secondary" id=subject-wordcloud-button><span id=subject-wordcloud-toggle-word>Show</span> Connected Subjects Word Cloud</button>
+                <i class="fas fa-cog fa-lg" style="color:SteelBlue;" id="config-wordcloud"></i>
+                <i class="fas fa-download fa-lg" style="color:SteelBlue;" id='download-wordcloud'></i>
+                <span id="subject-id" style="display:none"></span>
                 <div id=subject-wordcloud></div>
             </div>
 
@@ -1422,6 +1428,9 @@
             <h3>Related observations <small>{{ role?"for the role of "+role:"" }} {{tier?"and tier "+tier:""}}</small></h3>
             <div>
                 <button type="button" class="btn btn-secondary" id=subject-wordcloud-button><span id=subject-wordcloud-toggle-word>Show</span> Connected Subjects Word Cloud</button>
+                <i class="fas fa-cog fa-lg" style="color:SteelBlue;" id="config-wordcloud"></i>
+                <i class="fas fa-download fa-lg" style="color:SteelBlue;" id='download-wordcloud'></i>
+                <span id="subject-id" style="display:none"></span>
                 <div id=subject-wordcloud></div>
             </div>
 
@@ -1651,6 +1660,9 @@
               <h3>Related observations <small>{{ role?"for the role of "+decodeURI(role):"" }} {{tier?"and tier "+tier:""}}</small></h3>
                 <div>
                     <button type="button" class="btn btn-secondary" id=subject-wordcloud-button><span id=subject-wordcloud-toggle-word>Show</span> Connected Subjects Word Cloud</button>
+                    <i class="fas fa-cog fa-lg" style="color:SteelBlue;" id="config-wordcloud"></i>
+                    <i class="fas fa-download fa-lg" style="color:SteelBlue;" id='download-wordcloud'></i>
+                    <span id="subject-id" style="display:none"></span>
                     <div id=subject-wordcloud></div>
                 </div>
 

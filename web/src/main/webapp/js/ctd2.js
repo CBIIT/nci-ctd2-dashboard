@@ -554,46 +554,26 @@ import MraView from './mra.js'
                     a.click()
                 }
             })
-            const max_words_select = $("#wordcloud-max-words")
-            $("#config-wordcloud").click(function () {
-                const wc_color = sessionStorage.getItem("wordcloud-color") ?? "default"
-                const wc_font = sessionStorage.getItem("wordcloud-font") ?? "Arial"
-                const wc_max_font = sessionStorage.getItem("wordcloud-max-font") ?? 70
-                const wc_scaling = sessionStorage.getItem("wordcloud-scaling") ?? "sqrt"
-                const wc_spiral = sessionStorage.getItem("wordcloud-spiral") ?? "archimedean"
-                const wc_max_words = sessionStorage.getItem("wordcloud-max-words") ?? 250
-                $("#wordcloud-color").val(wc_color).change()
-                $("#wordcloud-font").val(wc_font).change()
-                $("#wordcloud-max-font").val(wc_max_font).change()
-                $("#wordcloud-scaling").val(wc_scaling).change()
-                $("#wordcloud-spiral").val(wc_spiral).change()
-                max_words_select.val(wc_max_words).change()
-                $("#wordcloud-modal").modal('show')
-            })
-            $("#apply-button").click(function () {
-                const wc_color = $("#wordcloud-color").val()
-                const wc_font = $("#wordcloud-font").val()
-                const wc_max_font = $("#wordcloud-max-font").val()
-                const wc_scaling = $("#wordcloud-scaling").val()
-                const wc_spiral = $("#wordcloud-spiral").val()
-                const wc_max_words = max_words_select.val()
-                create_frontpage_wordclouds(wc_color, wc_font, wc_max_font, wc_scaling, wc_spiral, wc_max_words)
-                sessionStorage.setItem("wordcloud-color", wc_color)
-                sessionStorage.setItem("wordcloud-font", wc_font)
-                sessionStorage.setItem("wordcloud-max-font", wc_max_font)
-                sessionStorage.setItem("wordcloud-scaling", wc_scaling)
-                sessionStorage.setItem("wordcloud-spiral", wc_spiral)
-                sessionStorage.setItem("wordcloud-max-words", wc_max_words)
-            })
-            max_words_select.empty()
-            for (let i = 10; i <= 250; i += 10) {
-                max_words_select.append("<option>" + i + "</option>")
-            }
-            max_words_select.selectpicker("refresh") /* a catch of bootstrap */
+            $("#config-wordcloud").click(wordcloud_config)
             return this;
         }
     });
 
+    function wordcloud_config() {
+        const wc_color = sessionStorage.getItem("wordcloud-color") ?? "default"
+        const wc_font = sessionStorage.getItem("wordcloud-font") ?? "Arial"
+        const wc_max_font = sessionStorage.getItem("wordcloud-max-font") ?? 70
+        const wc_scaling = sessionStorage.getItem("wordcloud-scaling") ?? "sqrt"
+        const wc_spiral = sessionStorage.getItem("wordcloud-spiral") ?? "archimedean"
+        const wc_max_words = sessionStorage.getItem("wordcloud-max-words") ?? 250
+        $("#wordcloud-color").val(wc_color).change()
+        $("#wordcloud-font").val(wc_font).change()
+        $("#wordcloud-max-font").val(wc_max_font).change()
+        $("#wordcloud-scaling").val(wc_scaling).change()
+        $("#wordcloud-spiral").val(wc_spiral).change()
+        $("#wordcloud-max-words").val(wc_max_words).change()
+        $("#wordcloud-modal").modal('show')
+    }
     function create_frontpage_wordclouds(wc_color, wc_font, wc_max_font, wc_scaling, wc_spiral, wc_max_words) {
         function one_wordcloud(data_query, dom_id) {
             $.ajax(data_query).done(function (result) {
@@ -1410,6 +1390,8 @@ import MraView from './mra.js'
                 else return "Show";
             });
         });
+        $("#subject-id").val(subject_id)
+        $("#config-wordcloud").click(wordcloud_config)
     }
 
     const GeneView = Backbone.View.extend({
@@ -3567,6 +3549,39 @@ import MraView from './mra.js'
             e.preventDefault();
             (new HelpNavigateView()).render();
         });
+
+        const max_words_select = $("#wordcloud-max-words")
+        max_words_select.empty()
+        for (let i = 10; i <= 250; i += 10) {
+            max_words_select.append("<option>" + i + "</option>")
+        }
+        max_words_select.selectpicker("refresh") /* a catch of bootstrap */
+        $("#apply-button").click(this, function (event) {
+            const wc_color = $("#wordcloud-color").val()
+            const wc_font = $("#wordcloud-font").val()
+            const wc_max_font = $("#wordcloud-max-font").val()
+            const wc_scaling = $("#wordcloud-scaling").val()
+            const wc_spiral = $("#wordcloud-spiral").val()
+            const wc_max_words = max_words_select.val()
+
+            const svg_container = $(event.data).find("svg").parent()
+            if (svg_container.length == 1 && svg_container[0].id === "subject-wordcloud") { /* subject page */
+                $.ajax("wordcloud/subject/" + $("#subject-id").val()).done(function (result) {
+                    create_wordcloud('#subject-wordcloud', result, 930, 600, wc_color, wc_font, wc_max_font, wc_scaling, wc_spiral, wc_max_words);
+                }).fail(function (err) {
+                    console.log(err);
+                });
+            } else { /* homepage */
+                create_frontpage_wordclouds(wc_color, wc_font, wc_max_font, wc_scaling, wc_spiral, wc_max_words)
+            }
+
+            sessionStorage.setItem("wordcloud-color", wc_color)
+            sessionStorage.setItem("wordcloud-font", wc_font)
+            sessionStorage.setItem("wordcloud-max-font", wc_max_font)
+            sessionStorage.setItem("wordcloud-scaling", wc_scaling)
+            sessionStorage.setItem("wordcloud-spiral", wc_spiral)
+            sessionStorage.setItem("wordcloud-max-words", wc_max_words)
+        })
     });
 
 })(window.jQuery);
