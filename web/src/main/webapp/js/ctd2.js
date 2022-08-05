@@ -1385,9 +1385,13 @@ import MraView from './mra.js'
         }).fail(function (err) {
             console.log(err);
         });
+        $("#config-wordcloud").hide()
+        $("#download-wordcloud").hide()
         $("#subject-wordcloud").hide();
         $("#subject-wordcloud-button").click(function (e) {
             e.preventDefault();
+            $("#config-wordcloud").toggle()
+            $("#download-wordcloud").toggle()
             $("#subject-wordcloud").toggle();
             $("#subject-wordcloud-toggle-word").text(function (index, content) {
                 if (content == "Show") return "Hide";
