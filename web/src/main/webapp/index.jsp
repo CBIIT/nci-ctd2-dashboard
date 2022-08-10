@@ -118,18 +118,28 @@
                                     <li><a target="_blank" href="https://ocg.cancer.gov/programs/ctd2">OCG/CTD² Home Page</a></li>
                                     <li><a href="#cite">How to Cite</a></li>
                                     <li><a href="#api-documentation">API Documentation</a></li>
-                                    <li><a target="_blank"
-                                            href="https://ocg.cancer.gov/programs/ctd2/publications">Publications</a>
+                                    <li class="dropdown-submenu"><a tabindex="-1" href="#">Applications</a>
+                                        <ul class="dropdown-menu">
+                                            <li><a target="_blank" href="/registration">Application Registration (Developers)</a></li>
+                                            <li><a target="_blank" href="#applications">Dashboard Applications</a></li>
+                                        </ul>
                                     </li>
-                                    <li><a href="" class="help-navigate">Glossary</a></li>
-                                    <li><a target="_blank" href="https://ocg.cancer.gov/programs/ctd2/data-portal">Data
-                                            Portal - Downloads</a></li>
-                                    <li><a target="_blank"
-                                            href="https://ocg.cancer.gov/programs/ctd2/analytical-tools">Analytical
-                                            Tools</a></li>
-                                    <li><a target="_blank"
-                                            href="https://ocg.cancer.gov/programs/ctd2/supported-reagents">Supported
-                                            Reagents</a></li>
+                                    <li class="dropdown-submenu"><a tabindex="-1" href="#">Network Resources</a>
+                                        <ul class="dropdown-menu">
+                                            <li><a target="_blank" href="https://ocg.cancer.gov/programs/ctd2">CTD² Home Page</a></li>
+                                            <li><a target="_blank"
+                                                href="https://ocg.cancer.gov/programs/ctd2/publications">Publications</a>
+                                            </li>
+                                            <li><a target="_blank" href="https://ocg.cancer.gov/programs/ctd2/data-portal">Data
+                                                Portal - Downloads</a></li>
+                                            <li><a target="_blank"
+                                                href="https://ocg.cancer.gov/programs/ctd2/analytical-tools">Analytical
+                                                Tools</a></li>
+                                            <li><a target="_blank"
+                                                href="https://ocg.cancer.gov/programs/ctd2/supported-reagents">Supported
+                                                Reagents</a></li>
+                                        </ul>
+                                    </li>
                                     <li class="dropdown-submenu"><a tabindex="-1" href="#">Outside Resources</a>
                                         <ul class="dropdown-menu">
                                             <li><a target="_blank" href="http://www.lincsproject.org/">LINCS</a></li>
