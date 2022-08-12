@@ -645,19 +645,34 @@ import MraView from './mra.js'
         }
     });
 
+    const AppView = Backbone.View.extend({
+        template: _.template($("#app-tmpl").html()),
+        render: function () {
+            $(this.el).append(this.template(this.model));
+            return this;
+        }
+    });
+
     const Applications = Backbone.View.extend({
         el: $("#main-container"),
         template: _.template($("#applications-tmpl").html()),
         render: function () {
-            fetch("api-apps.html")
-                .then(response => {
-                    if(!response.ok) throw new Error("API Applications Page Missing")
-                    return response.text()
+            $(this.el).html(this.template())
+            $.ajax("/registration/registration/data").done(function (result) {
+                result.forEach(function (registration) {
+                    if (registration.title === "") {
+                        return
+                    }
+                    const img = Math.random() < 0.5 ? "img/logos/ctd2_overall.png" : "https://www.cancer.gov/sites/g/files/xnrzdm211/files/styles/cgov_article/public/cgov_image/media_image/900/800/files/nci-shady-grove-building-article.jpg?h=10690783&itok=NBJtLxFt"
+                    new AppView({
+                        el: $("#app-container"),
+                        model: {
+                            title: registration.title, developers: registration.developers, description: registration.description,
+                            url: registration.url, email: registration.email, image: img
+                        },
+                    }).render();
                 })
-                .then(data => $(this.el).html(this.template({api_apps: data})))
-                .catch(error => {
-                    $(this.el).html(this.template({api_apps: error}))
-                });
+            }).fail(function (err) { console.log(err) })
             return this;
         }
     });

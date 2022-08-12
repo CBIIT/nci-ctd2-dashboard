@@ -2553,9 +2553,42 @@
         </div>
     </script>
 
+    <script type="text/template" id="app-tmpl">
+        <div class="col-sm">
+            <div class="card" style="width: 18rem;">
+                <img src="{{image}}" class="card-img-top" alt="..."
+                    style="max-height:190px;object-fit: contain">
+                <div class="card-body">
+                    <h5 class="card-title">{{title}}</h5>
+                    <p class="card-text">
+                    <dl>
+                        <dt>Developer</dt>
+                        <dd>{{developers}}</dd>
+                        <dt>Description</dt>
+                        <dd>{{description}}</dd>
+                        <dt>URL</dt>
+                        <dd>{{url}}</dd>
+                        <dt>Contact Email</dt>
+                        <dd>{{email}}</dd>
+                    </dl>
+                    </p>
+                    <a href="{{url}}" target="_blank" class="btn btn-primary">Go to the application</a>
+                </div>
+            </div>
+        </div>
+    </script>
+
     <script type="text/template" id="applications-tmpl">
-        <div class="container common-container">
-            {{api_apps}}
+        <div class="container common-container" style=padding:20px>
+            <h2>Dashboard Applications</h2>
+            <p>The applications listed below provide additional ways to view and use the Dashboard data. They are developed by
+                3rd
+                parties, leveraging the Dashboard API. These applications are the responsibility of their developers and are not
+                created or maintained by the NCI.</p>
+            <div class=container>
+                <div class="row" id="app-container">
+                </div>
+            </div>
         </div>
     </script>
 
