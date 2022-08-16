@@ -663,12 +663,11 @@ import MraView from './mra.js'
                     if (registration.title === "") {
                         return
                     }
-                    const img = Math.random() < 0.5 ? "img/logos/ctd2_overall.png" : "https://www.cancer.gov/sites/g/files/xnrzdm211/files/styles/cgov_article/public/cgov_image/media_image/900/800/files/nci-shady-grove-building-article.jpg?h=10690783&itok=NBJtLxFt"
                     new AppView({
                         el: $("#app-container"),
                         model: {
                             title: registration.title, developers: registration.developers, description: registration.description,
-                            url: registration.url, email: registration.email, image: img
+                            url: registration.url, email: registration.email, image: registration.image ?? "img/logos/ctd2_overall.png"
                         },
                     }).render();
                 })
