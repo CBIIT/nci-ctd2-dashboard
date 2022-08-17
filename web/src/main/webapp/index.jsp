@@ -2554,10 +2554,10 @@
     </script>
 
     <script type="text/template" id="app-tmpl">
-        <div class="col-sm">
-            <div class="card" style="width: 18rem;">
+        <div class="col-sm" style="padding-left:1px;padding-right:1px">
+            <div class="card" style="width: 300px;">
                 <img src="{{image}}" class="card-img-top" alt="..."
-                    style="max-height:190px;object-fit: contain">
+                    style="width:300px;height:150px">
                 <div class="card-body">
                     <h5 class="card-title">{{title}}</h5>
                     <p class="card-text">
@@ -2585,7 +2585,7 @@
                 3rd
                 parties, leveraging the Dashboard API. These applications are the responsibility of their developers and are not
                 created or maintained by the NCI.</p>
-            <div class=container>
+            <div class=container style="width:900px">
                 <div class="row" id="app-container">
                 </div>
             </div>
