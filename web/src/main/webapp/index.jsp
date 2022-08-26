@@ -1044,7 +1044,7 @@
                  </div>
              </div>
 
-             <h3>Related observations <small>{{ role?"for the role of "+role:"" }} {{tier?"and tier "+tier:""}}</small></h3>
+             <h3>Related observations <small id=observation-filter></small></h3>
              <div>
                 <button type="button" class="btn btn-secondary" id=subject-wordcloud-button><span id=subject-wordcloud-toggle-word>Show</span> Connected Subjects Word Cloud</button>
                 <i class="fas fa-cog fa-lg" style="color:SteelBlue;" id="config-wordcloud"></i>
@@ -1131,7 +1131,7 @@
                 </div>
             </div>
 
-            <h3>Related observations <small>{{ role?"for the role of "+role:"" }} {{tier?"and tier "+tier:""}}</small></h3>
+            <h3>Related observations <small id=observation-filter></small></h3>
 
             <table id="protein-observation-grid" class="table table-bordered table-striped observations">
                 <thead>
@@ -1204,7 +1204,7 @@
                 </div>
             </div>
 
-            <h3>Related observations <small>{{ role?"for the role of "+role:"" }} {{tier?"and tier "+tier:""}}</small></h3>
+            <h3>Related observations <small id=observation-filter></small></h3>
 
             <table id="shrna-observation-grid" class="table table-bordered table-striped observations">
                 <thead>
@@ -1271,7 +1271,7 @@
                 </div>
             </div>
 
-            <h3>Related observations <small>{{ role?"for the role of "+role:"" }} {{tier?"and tier "+tier:""}}</small></h3>
+            <h3>Related observations <small id=observation-filter></small></h3>
 
             <table id="transcript-observation-grid" class="table table-bordered table-striped observations">
                 <thead>
@@ -1339,7 +1339,7 @@
                 </div>
             </div>
 
-            <h3>Related observations <small>{{ role?"for the role of "+role:"" }} {{tier?"and tier "+tier:""}}</small></h3>
+            <h3>Related observations <small id=observation-filter></small></h3>
             <div>
                 <button type="button" class="btn btn-secondary" id=subject-wordcloud-button><span id=subject-wordcloud-toggle-word>Show</span> Connected Subjects Word Cloud</button>
                 <i class="fas fa-cog fa-lg" style="color:SteelBlue;" id="config-wordcloud"></i>
@@ -1425,7 +1425,7 @@
                         <img src="img/cellsample.png" class="img-polaroid" width=175 height=175 alt="Cell sample">
                 </div>
             </div>
-            <h3>Related observations <small>{{ role?"for the role of "+role:"" }} {{tier?"and tier "+tier:""}}</small></h3>
+            <h3>Related observations <small id=observation-filter></small></h3>
             <div>
                 <button type="button" class="btn btn-secondary" id=subject-wordcloud-button><span id=subject-wordcloud-toggle-word>Show</span> Connected Subjects Word Cloud</button>
                 <i class="fas fa-cog fa-lg" style="color:SteelBlue;" id="config-wordcloud"></i>
@@ -1568,7 +1568,7 @@
                     <img src="img/animalmodel.png" class="img-polaroid" width=175 height=175 alt="Animal model">
                 </div>
             </div>
-            <h3>Related observations <small>{{ role?"for the role of "+role:"" }} {{tier?"and tier "+tier:""}}</small></h3>
+            <h3>Related observations <small id=observation-filter></small></h3>
 
             <table id="animalmodel-observation-grid" class="table table-bordered table-striped observations">
                 <thead>
@@ -1657,7 +1657,7 @@
                   </div>
               </div>
 
-              <h3>Related observations <small>{{ role?"for the role of "+decodeURI(role):"" }} {{tier?"and tier "+tier:""}}</small></h3>
+              <h3>Related observations <small id=observation-filter></small></h3>
                 <div>
                     <button type="button" class="btn btn-secondary" id=subject-wordcloud-button><span id=subject-wordcloud-toggle-word>Show</span> Connected Subjects Word Cloud</button>
                     <i class="fas fa-cog fa-lg" style="color:SteelBlue;" id="config-wordcloud"></i>

@@ -1159,10 +1159,7 @@ import MraView from './mra.js'
             });
             result.type = result.class;
 
-            $(this.el).html(this.template($.extend(result, {
-                tier: thatModel.tier ? thatModel.tier : null,
-                role: thatModel.role ? thatModel.role : null
-            })));
+            $(this.el).html(this.template(result))
 
             let count = 0;
             _.each(result.synonyms, function (aSynonym) {
@@ -1293,11 +1290,13 @@ import MraView from './mra.js'
         render: function () {
             const thatEl = $(this.el);
             const thatModel = this.model;
+            const role = /^[a-z ]+$/.test(thatModel.role) ? thatModel.role : null
+            const tier = role == null ? null : thatModel.tier
 
             const observations = new OneObservationsPerSubmissionBySubject({
                 subjectId: thatModel.subjectId,
-                role: thatModel.role, // possibly undefined
-                tier: thatModel.tier, // possibly undefined
+                role: role,
+                tier: tier,
             });
             observations.fetch({
                 success: function () {
@@ -1324,6 +1323,7 @@ import MraView from './mra.js'
 
                     $(thatEl).dataTable(observationTableOptions);
                     $(thatEl).width("100%");
+                    $("#observation-filter").text((role ? "for the role of " + role : "") + (tier ? " and tier " + tier : ""))
                 }
             });
 
@@ -1423,10 +1423,7 @@ import MraView from './mra.js'
             });
 
             result.type = result.class;
-            $(this.el).html(this.template($.extend(result, {
-                tier: thatModel.tier ? thatModel.tier : null,
-                role: thatModel.role ? thatModel.role : null
-            })));
+            $(this.el).html(this.template(result))
 
             let count = 0;
             _.each(result.synonyms, function (aSynonym) {
@@ -1499,10 +1496,7 @@ import MraView from './mra.js'
             const thatModel = this.model;
             const result = thatModel.subject.toJSON();
             result.type = result.class;
-            $(this.el).html(this.template($.extend(result, {
-                tier: thatModel.tier ? thatModel.tier : null,
-                role: thatModel.role ? thatModel.role : null
-            })));
+            $(this.el).html(this.template(result))
 
             let count = 0;
             _.each(result.synonyms, function (aSynonym) {
@@ -1560,10 +1554,7 @@ import MraView from './mra.js'
         render: function () {
             const thatModel = this.model;
             const result = thatModel.subject.toJSON();
-            $(this.el).html(this.template($.extend(result, {
-                tier: thatModel.tier ? thatModel.tier : null,
-                role: thatModel.role ? thatModel.role : null
-            })));
+            $(this.el).html(this.template(result))
 
             new SubjectObservationsView({
                 model: {
@@ -1585,10 +1576,7 @@ import MraView from './mra.js'
             const thatModel = this.model;
             const result = thatModel.subject.toJSON();
             result.type = result.class;
-            $(this.el).html(this.template($.extend(result, {
-                tier: thatModel.tier ? thatModel.tier : null,
-                role: thatModel.role ? thatModel.role : null
-            })));
+            $(this.el).html(this.template(result))
 
             new SubjectObservationsView({
                 model: {
@@ -1628,10 +1616,7 @@ import MraView from './mra.js'
             });
 
             result.type = result.class;
-            $(this.el).html(this.template($.extend(result, {
-                tier: thatModel.tier ? thatModel.tier : null,
-                role: thatModel.role ? thatModel.role : null
-            })));
+            $(this.el).html(this.template(result))
 
             const thatEl = this.el;
             if (result.xrefs.length == 0) {
@@ -1748,10 +1733,7 @@ import MraView from './mra.js'
             const thatModel = this.model;
             const result = thatModel.subject.toJSON();
             result.type = result.class;
-            $(this.el).html(this.template($.extend(result, {
-                tier: thatModel.tier ? thatModel.tier : null,
-                role: thatModel.role ? thatModel.role : null
-            })));
+            $(this.el).html(this.template(result))
 
             let count = 0;
             _.each(result.synonyms, function (aSynonym) {
@@ -1847,10 +1829,7 @@ import MraView from './mra.js'
             result.cbioPortalId = cbioPortalId;
             result.type = result.class;
 
-            $(this.el).html(this.template($.extend(result, {
-                tier: thatModel.tier ? thatModel.tier : null,
-                role: thatModel.role ? thatModel.role : null
-            })));
+            $(this.el).html(this.template(result))
 
             if (!cbioPortalId) {
                 $("#cbiolink").css("display", "none");
