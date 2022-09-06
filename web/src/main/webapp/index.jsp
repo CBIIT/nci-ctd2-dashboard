@@ -1943,15 +1943,7 @@
                 </table>
             </div>
 
-            <div class="rss-feed">
-                Subscribe to
-                <a href="feed/search/{{term}}">
-                    '{{term}}' RSS feed
-                </a>
-                to receive alerts when new content is posted to the site.
-            </div>
-
-            </div>
+        </div>
     </script>
 
     <script type="text/template" id="search-submission-tbl-row-tmpl">
