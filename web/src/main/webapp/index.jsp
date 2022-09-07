@@ -287,7 +287,7 @@
                 </select>
                 Max word number <select class="form-control border selectpicker" id="wordcloud-max-words"></select>
 
-                <div style="float: right;padding: 10px;"><a href="">Reset</a></div>
+                <div style="float: right;padding: 10px;"><a id="reset-link">Reset</a></div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-dismiss="modal" id="apply-button">Apply</button>

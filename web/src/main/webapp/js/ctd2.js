@@ -3544,7 +3544,7 @@ import MraView from './mra.js'
             max_words_select.append("<option>" + i + "</option>")
         }
         max_words_select.selectpicker("refresh") /* a catch of bootstrap */
-        $("#apply-button").click(this, function (event) {
+        function redraw(event) {
             const wc_color = $("#wordcloud-color").val()
             const wc_font = $("#wordcloud-font").val()
             const wc_max_font = $("#wordcloud-max-font").val()
@@ -3569,6 +3569,23 @@ import MraView from './mra.js'
             sessionStorage.setItem("wordcloud-scaling", wc_scaling)
             sessionStorage.setItem("wordcloud-spiral", wc_spiral)
             sessionStorage.setItem("wordcloud-max-words", wc_max_words)
+        }
+        $("#apply-button").click(this, redraw)
+        $("#reset-link").click(this, function (event) {
+            const wc_color = "default"
+            const wc_font = "Arial"
+            const wc_max_font = 70
+            const wc_scaling = "sqrt"
+            const wc_spiral = "archimedean"
+            const wc_max_words = 250
+            $("#wordcloud-color").val(wc_color).change()
+            $("#wordcloud-font").val(wc_font).change()
+            $("#wordcloud-max-font").val(wc_max_font).change()
+            $("#wordcloud-scaling").val(wc_scaling).change()
+            $("#wordcloud-spiral").val(wc_spiral).change()
+            $("#wordcloud-max-words").val(wc_max_words).change()
+            redraw(event)
+            $("#wordcloud-modal").modal('hide')
         })
     });
 
