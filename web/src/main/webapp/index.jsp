@@ -296,8 +296,9 @@
                     <option value="rectangular">Rectangular</option>
                 </select>
                 Max word number <select class="form-control border selectpicker" id="wordcloud-max-words"></select>
+                Download format <select class="form-control border selectpicker" id="wordcloud-download-format"><option>png</option><option>jpg</option><option>svg</option></select>
 
-                <div style="float: right;padding: 10px;"><a href="">Reset</a></div>
+                <div style="float: right;padding: 10px;"><a id="reset-link">Reset</a></div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-dismiss="modal" id="apply-button">Apply</button>
@@ -1054,7 +1055,7 @@
                  </div>
              </div>
 
-             <h3>Related observations <small>{{ role?"for the role of "+role:"" }} {{tier?"and tier "+tier:""}}</small></h3>
+             <h3>Related observations <small id=observation-filter></small></h3>
              <div>
                 <button type="button" class="btn btn-secondary" id=subject-wordcloud-button><span id=subject-wordcloud-toggle-word>Show</span> Connected Subjects Word Cloud</button>
                 <i class="fas fa-cog fa-lg" style="color:SteelBlue;" id="config-wordcloud"></i>
@@ -1141,7 +1142,7 @@
                 </div>
             </div>
 
-            <h3>Related observations <small>{{ role?"for the role of "+role:"" }} {{tier?"and tier "+tier:""}}</small></h3>
+            <h3>Related observations <small id=observation-filter></small></h3>
 
             <table id="protein-observation-grid" class="table table-bordered table-striped observations">
                 <thead>
@@ -1214,7 +1215,7 @@
                 </div>
             </div>
 
-            <h3>Related observations <small>{{ role?"for the role of "+role:"" }} {{tier?"and tier "+tier:""}}</small></h3>
+            <h3>Related observations <small id=observation-filter></small></h3>
 
             <table id="shrna-observation-grid" class="table table-bordered table-striped observations">
                 <thead>
@@ -1281,7 +1282,7 @@
                 </div>
             </div>
 
-            <h3>Related observations <small>{{ role?"for the role of "+role:"" }} {{tier?"and tier "+tier:""}}</small></h3>
+            <h3>Related observations <small id=observation-filter></small></h3>
 
             <table id="transcript-observation-grid" class="table table-bordered table-striped observations">
                 <thead>
@@ -1349,7 +1350,7 @@
                 </div>
             </div>
 
-            <h3>Related observations <small>{{ role?"for the role of "+role:"" }} {{tier?"and tier "+tier:""}}</small></h3>
+            <h3>Related observations <small id=observation-filter></small></h3>
             <div>
                 <button type="button" class="btn btn-secondary" id=subject-wordcloud-button><span id=subject-wordcloud-toggle-word>Show</span> Connected Subjects Word Cloud</button>
                 <i class="fas fa-cog fa-lg" style="color:SteelBlue;" id="config-wordcloud"></i>
@@ -1435,7 +1436,7 @@
                         <img src="img/cellsample.png" class="img-polaroid" width=175 height=175 alt="Cell sample">
                 </div>
             </div>
-            <h3>Related observations <small>{{ role?"for the role of "+role:"" }} {{tier?"and tier "+tier:""}}</small></h3>
+            <h3>Related observations <small id=observation-filter></small></h3>
             <div>
                 <button type="button" class="btn btn-secondary" id=subject-wordcloud-button><span id=subject-wordcloud-toggle-word>Show</span> Connected Subjects Word Cloud</button>
                 <i class="fas fa-cog fa-lg" style="color:SteelBlue;" id="config-wordcloud"></i>
@@ -1578,7 +1579,7 @@
                     <img src="img/animalmodel.png" class="img-polaroid" width=175 height=175 alt="Animal model">
                 </div>
             </div>
-            <h3>Related observations <small>{{ role?"for the role of "+role:"" }} {{tier?"and tier "+tier:""}}</small></h3>
+            <h3>Related observations <small id=observation-filter></small></h3>
 
             <table id="animalmodel-observation-grid" class="table table-bordered table-striped observations">
                 <thead>
@@ -1667,7 +1668,7 @@
                   </div>
               </div>
 
-              <h3>Related observations <small>{{ role?"for the role of "+decodeURI(role):"" }} {{tier?"and tier "+tier:""}}</small></h3>
+              <h3>Related observations <small id=observation-filter></small></h3>
                 <div>
                     <button type="button" class="btn btn-secondary" id=subject-wordcloud-button><span id=subject-wordcloud-toggle-word>Show</span> Connected Subjects Word Cloud</button>
                     <i class="fas fa-cog fa-lg" style="color:SteelBlue;" id="config-wordcloud"></i>
@@ -1953,15 +1954,7 @@
                 </table>
             </div>
 
-            <div class="rss-feed">
-                Subscribe to
-                <a href="feed/search/{{term}}">
-                    '{{term}}' RSS feed
-                </a>
-                to receive alerts when new content is posted to the site.
-            </div>
-
-            </div>
+        </div>
     </script>
 
     <script type="text/template" id="search-submission-tbl-row-tmpl">

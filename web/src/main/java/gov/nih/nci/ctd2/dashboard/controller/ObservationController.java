@@ -90,6 +90,10 @@ public class ObservationController {
     }
 
     private List<ObservationWithCount> onePerSubmissionBySubjectId(Integer subjectId, String role, Integer tier) {
+        if (!role.matches("[a-z ]+")) {
+            return new ArrayList<ObservationWithCount>();
+        }
+
         Subject subject = dashboardDao.getEntityById(Subject.class, subjectId);
         if (subject != null) {
             Map<Integer, Integer> submissionIds = new HashMap<Integer, Integer>();

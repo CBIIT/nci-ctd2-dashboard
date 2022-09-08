@@ -542,22 +542,33 @@ import MraView from './mra.js'
     /* wordcloud download feature */
     function wordcloud_download() {
         const svg = document.querySelector('div:not([style*="display:none"]):not([style*="display: none"])>svg')
-        const svgData = new XMLSerializer().serializeToString(svg)
+        const svgData = btoa(new XMLSerializer().serializeToString(svg))
+        const a = document.createElement("a")
+        a.download = "CTD2_word_cloud"
+        const download_format = sessionStorage.getItem("wordcloud-download-format") ?? "png"
+        if (download_format === 'svg') {
+            a.href = 'data:image/svg+xml;base64,' + svgData
+            a.click()
+            return
+        }
+
         const canvas = document.createElement("canvas")
         const svgSize = svg.getBoundingClientRect();
         canvas.width = svgSize.width;
         canvas.height = svgSize.height;
         const ctx = canvas.getContext("2d")
         const img = document.createElement("img")
-        img.setAttribute("src", "data:image/svg+xml;base64," + btoa(svgData))
+        img.setAttribute("src", "data:image/svg+xml;base64," + svgData)
         img.onload = function () {
             ctx.fillStyle = "white"
             ctx.fillRect(0, 0, canvas.width, canvas.height)
             ctx.drawImage(img, 0, 0)
 
-            const a = document.createElement("a")
-            a.download = "CTD2_word_cloud"
-            a.href = canvas.toDataURL()
+            if (download_format === 'png') {
+                a.href = canvas.toDataURL('image/png')
+            } else if (download_format === 'jpg') {
+                a.href = canvas.toDataURL('image/jpeg')
+            }
             a.click()
         }
     }
@@ -569,12 +580,14 @@ import MraView from './mra.js'
         const wc_scaling = sessionStorage.getItem("wordcloud-scaling") ?? "sqrt"
         const wc_spiral = sessionStorage.getItem("wordcloud-spiral") ?? "archimedean"
         const wc_max_words = sessionStorage.getItem("wordcloud-max-words") ?? 250
+        const wc_download_format = sessionStorage.getItem("wordcloud-download-format") ?? "png"
         $("#wordcloud-color").val(wc_color).change()
         $("#wordcloud-font").val(wc_font).change()
         $("#wordcloud-max-font").val(wc_max_font).change()
         $("#wordcloud-scaling").val(wc_scaling).change()
         $("#wordcloud-spiral").val(wc_spiral).change()
         $("#wordcloud-max-words").val(wc_max_words).change()
+        $("#wordcloud-download-format").val(wc_download_format).change()
         $("#wordcloud-modal").modal('show')
     }
 
@@ -1190,10 +1203,7 @@ import MraView from './mra.js'
             });
             result.type = result.class;
 
-            $(this.el).html(this.template($.extend(result, {
-                tier: thatModel.tier ? thatModel.tier : null,
-                role: thatModel.role ? thatModel.role : null
-            })));
+            $(this.el).html(this.template(result))
 
             let count = 0;
             _.each(result.synonyms, function (aSynonym) {
@@ -1324,11 +1334,13 @@ import MraView from './mra.js'
         render: function () {
             const thatEl = $(this.el);
             const thatModel = this.model;
+            const role = /^[a-z ]+$/.test(thatModel.role) ? thatModel.role : null
+            const tier = role == null ? null : thatModel.tier
 
             const observations = new OneObservationsPerSubmissionBySubject({
                 subjectId: thatModel.subjectId,
-                role: thatModel.role, // possibly undefined
-                tier: thatModel.tier, // possibly undefined
+                role: role,
+                tier: tier,
             });
             observations.fetch({
                 success: function () {
@@ -1355,6 +1367,7 @@ import MraView from './mra.js'
 
                     $(thatEl).dataTable(observationTableOptions);
                     $(thatEl).width("100%");
+                    $("#observation-filter").text((role ? "for the role of " + role : "") + (tier ? " and tier " + tier : ""))
                 }
             });
 
@@ -1454,10 +1467,7 @@ import MraView from './mra.js'
             });
 
             result.type = result.class;
-            $(this.el).html(this.template($.extend(result, {
-                tier: thatModel.tier ? thatModel.tier : null,
-                role: thatModel.role ? thatModel.role : null
-            })));
+            $(this.el).html(this.template(result))
 
             let count = 0;
             _.each(result.synonyms, function (aSynonym) {
@@ -1530,10 +1540,7 @@ import MraView from './mra.js'
             const thatModel = this.model;
             const result = thatModel.subject.toJSON();
             result.type = result.class;
-            $(this.el).html(this.template($.extend(result, {
-                tier: thatModel.tier ? thatModel.tier : null,
-                role: thatModel.role ? thatModel.role : null
-            })));
+            $(this.el).html(this.template(result))
 
             let count = 0;
             _.each(result.synonyms, function (aSynonym) {
@@ -1591,10 +1598,7 @@ import MraView from './mra.js'
         render: function () {
             const thatModel = this.model;
             const result = thatModel.subject.toJSON();
-            $(this.el).html(this.template($.extend(result, {
-                tier: thatModel.tier ? thatModel.tier : null,
-                role: thatModel.role ? thatModel.role : null
-            })));
+            $(this.el).html(this.template(result))
 
             new SubjectObservationsView({
                 model: {
@@ -1616,10 +1620,7 @@ import MraView from './mra.js'
             const thatModel = this.model;
             const result = thatModel.subject.toJSON();
             result.type = result.class;
-            $(this.el).html(this.template($.extend(result, {
-                tier: thatModel.tier ? thatModel.tier : null,
-                role: thatModel.role ? thatModel.role : null
-            })));
+            $(this.el).html(this.template(result))
 
             new SubjectObservationsView({
                 model: {
@@ -1659,10 +1660,7 @@ import MraView from './mra.js'
             });
 
             result.type = result.class;
-            $(this.el).html(this.template($.extend(result, {
-                tier: thatModel.tier ? thatModel.tier : null,
-                role: thatModel.role ? thatModel.role : null
-            })));
+            $(this.el).html(this.template(result))
 
             const thatEl = this.el;
             if (result.xrefs.length == 0) {
@@ -1779,10 +1777,7 @@ import MraView from './mra.js'
             const thatModel = this.model;
             const result = thatModel.subject.toJSON();
             result.type = result.class;
-            $(this.el).html(this.template($.extend(result, {
-                tier: thatModel.tier ? thatModel.tier : null,
-                role: thatModel.role ? thatModel.role : null
-            })));
+            $(this.el).html(this.template(result))
 
             let count = 0;
             _.each(result.synonyms, function (aSynonym) {
@@ -1878,10 +1873,7 @@ import MraView from './mra.js'
             result.cbioPortalId = cbioPortalId;
             result.type = result.class;
 
-            $(this.el).html(this.template($.extend(result, {
-                tier: thatModel.tier ? thatModel.tier : null,
-                role: thatModel.role ? thatModel.role : null
-            })));
+            $(this.el).html(this.template(result))
 
             if (!cbioPortalId) {
                 $("#cbiolink").css("display", "none");
@@ -3597,13 +3589,14 @@ import MraView from './mra.js'
             max_words_select.append("<option>" + i + "</option>")
         }
         max_words_select.selectpicker("refresh") /* a catch of bootstrap */
-        $("#apply-button").click(this, function (event) {
+        function redraw(event) {
             const wc_color = $("#wordcloud-color").val()
             const wc_font = $("#wordcloud-font").val()
             const wc_max_font = $("#wordcloud-max-font").val()
             const wc_scaling = $("#wordcloud-scaling").val()
             const wc_spiral = $("#wordcloud-spiral").val()
             const wc_max_words = max_words_select.val()
+            const wc_download_format = $("#wordcloud-download-format").val()
 
             const svg_container = $(event.data).find("svg").parent()
             if (svg_container.length == 1 && svg_container[0].id === "subject-wordcloud") { /* subject page */
@@ -3622,6 +3615,26 @@ import MraView from './mra.js'
             sessionStorage.setItem("wordcloud-scaling", wc_scaling)
             sessionStorage.setItem("wordcloud-spiral", wc_spiral)
             sessionStorage.setItem("wordcloud-max-words", wc_max_words)
+            sessionStorage.setItem("wordcloud-download-format", wc_download_format)
+        }
+        $("#apply-button").click(this, redraw)
+        $("#reset-link").click(this, function (event) {
+            const wc_color = "default"
+            const wc_font = "Arial"
+            const wc_max_font = 70
+            const wc_scaling = "sqrt"
+            const wc_spiral = "archimedean"
+            const wc_max_words = 250
+            const wc_download_format = "png"
+            $("#wordcloud-color").val(wc_color).change()
+            $("#wordcloud-font").val(wc_font).change()
+            $("#wordcloud-max-font").val(wc_max_font).change()
+            $("#wordcloud-scaling").val(wc_scaling).change()
+            $("#wordcloud-spiral").val(wc_spiral).change()
+            $("#wordcloud-max-words").val(wc_max_words).change()
+            $("#wordcloud-download-format").val(wc_download_format).change()
+            redraw(event)
+            $("#wordcloud-modal").modal('hide')
         })
     });
 
