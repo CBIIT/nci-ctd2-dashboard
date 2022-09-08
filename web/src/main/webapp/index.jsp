@@ -286,6 +286,7 @@
                     <option value="rectangular">Rectangular</option>
                 </select>
                 Max word number <select class="form-control border selectpicker" id="wordcloud-max-words"></select>
+                Download format <select class="form-control border selectpicker" id="wordcloud-download-format"><option>png</option><option>jpg</option><option>svg</option></select>
 
                 <div style="float: right;padding: 10px;"><a id="reset-link">Reset</a></div>
             </div>
