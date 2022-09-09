@@ -1060,9 +1060,19 @@
                 <batch:chunk reader="stanfordArid1aStoryReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	    </batch:tasklet>
 	</batch:step>
-	<batch:step id="emoryHypomorphSMAD4SMAD3PPIinducerDiscoveryStoryStep" parent="observationDataStep">
+	<batch:step id="emoryHypomorphSMAD4SMAD3PPIinducerDiscoveryStoryStep" parent="observationDataStep" next="fhcrc1KRASMutantPDACDependenciesStep">
 	    <batch:tasklet>
                 <batch:chunk reader="emoryHypomorphSMAD4SMAD3PPIinducerDiscoveryStoryReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	    </batch:tasklet>
+	</batch:step>
+	<batch:step id="fhcrc1KRASMutantPDACDependenciesStep" parent="observationDataStep" next="emoryMutationDirectedNeoPpiStep">
+	    <batch:tasklet>
+                <batch:chunk reader="fhcrc1KRASMutantPDACDependenciesReader" processor="observationDataProcessor" writer="observationDataWriter"/>
+	    </batch:tasklet>
+	</batch:step>
+	<batch:step id="emoryMutationDirectedNeoPpiStep" parent="observationDataStep">
+	    <batch:tasklet>
+                <batch:chunk reader="emoryMutationDirectedNeoPpiReader" processor="observationDataProcessor" writer="observationDataWriter"/>
 	    </batch:tasklet>
 	</batch:step>
    </batch:job>
@@ -2972,6 +2982,23 @@
         <property name="names" value="dummy,submission_name,submission_date,template_name,compound_name1,gene1,gene2,gene3,compound_name2,ec50_1,reference,story_location,ec50_2,data_portal"/>
     </bean>
 
+    <bean name="fhcrc1KRASMutantPDACDependenciesLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="fhcrc1KRASMutantPDACDependenciesLineTokenizer" />
+    </bean>
+    <bean name="fhcrc1KRASMutantPDACDependenciesLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="&#9;"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,gene_1,gene_2,gene_3,drug_1,drug_2,drug_3,perturbagen_1,gene_4,disease_1,evidence_1,evidence_2,evidence_3,evidence_4,evidence_5,story_location"/>
+    </bean>
+
+    <bean name="emoryMutationDirectedNeoPpiLineMapper" class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+        <property name="fieldSetMapper" ref="observationDataMapper" />
+        <property name="lineTokenizer" ref="emoryMutationDirectedNeoPpiLineTokenizer" />
+    </bean>
+    <bean name="emoryMutationDirectedNeoPpiLineTokenizer" class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer" >
+        <property name="delimiter" value="&#9;"/>
+        <property name="names" value="dummy,submission_name,submission_date,template_name,protein_1,protein_2,differential_score,ds_qvalue,reference,mutation"/>
+    </bean>
 
     <!-- shared helper beans -->
     <bean name="observationTemplateMap" class="java.util.HashMap">
@@ -5119,6 +5146,27 @@
 		<entry key="stanford_arid1a_story:story_location" value="evidence:readString:createObservedFileEvidence" />
 		<entry key="stanford_arid1a_story:reference_1" value="evidence:readString:createObservedUrlEvidence" />
 		<entry key="stanford_arid1a_story:reference_2" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="emory_mutation_directed_neo_ppi:protein_1" value="subject:findGenesBySymbol" />
+		<entry key="emory_mutation_directed_neo_ppi:protein_2" value="subject:findGenesBySymbol" />
+		<entry key="emory_mutation_directed_neo_ppi:differential_score" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="emory_mutation_directed_neo_ppi:ds_qvalue" value="evidence:readDouble:createObservedNumericEvidence" />
+		<entry key="emory_mutation_directed_neo_ppi:reference" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="emory_mutation_directed_neo_ppi:mutation" value="evidence:readString:createObservedLabelEvidence" />
+		<entry key="fhcrc1_KRAS_mutant_PDAC_dependencies:gene_1" value="subject:findGenesBySymbol" />
+		<entry key="fhcrc1_KRAS_mutant_PDAC_dependencies:gene_2" value="subject:findGenesBySymbol" />
+		<entry key="fhcrc1_KRAS_mutant_PDAC_dependencies:gene_3" value="subject:findGenesBySymbol" />
+		<entry key="fhcrc1_KRAS_mutant_PDAC_dependencies:drug_1" value="subject:findCompoundsByName" />
+		<entry key="fhcrc1_KRAS_mutant_PDAC_dependencies:drug_2" value="subject:findCompoundsByName" />
+		<entry key="fhcrc1_KRAS_mutant_PDAC_dependencies:drug_3" value="subject:findCompoundsByName" />
+		<entry key="fhcrc1_KRAS_mutant_PDAC_dependencies:perturbagen_1" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="fhcrc1_KRAS_mutant_PDAC_dependencies:gene_4" value="subject:findGenesBySymbol" />
+		<entry key="fhcrc1_KRAS_mutant_PDAC_dependencies:disease_1" value="subject:findTissueSampleByName" />
+		<entry key="fhcrc1_KRAS_mutant_PDAC_dependencies:evidence_1" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="fhcrc1_KRAS_mutant_PDAC_dependencies:evidence_2" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="fhcrc1_KRAS_mutant_PDAC_dependencies:evidence_3" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="fhcrc1_KRAS_mutant_PDAC_dependencies:evidence_4" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="fhcrc1_KRAS_mutant_PDAC_dependencies:evidence_5" value="evidence:readString:createObservedUrlEvidence" />
+		<entry key="fhcrc1_KRAS_mutant_PDAC_dependencies:story_location" value="evidence:readString:createObservedFileEvidence" />
 
             </map>
         </constructor-arg>
