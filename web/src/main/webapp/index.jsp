@@ -2549,23 +2549,14 @@
     <script type="text/template" id="app-tmpl">
         <div class="col-sm" style="padding-left:1px;padding-right:1px">
             <div class="card" style="width: 300px;">
-                <img src="{{image}}" class="card-img-top" alt="..."
-                    style="width:300px;height:150px">
+                <a href="{{url}}" target="_blank"><img src="{{image}}" class="card-img-top" alt="..." style="width:300px;height:150px"></a>
                 <div class="card-body">
-                    <h5 class="card-title">{{title}}</h5>
-                    <p class="card-text">
-                    <dl>
-                        <dt>Developer</dt>
-                        <dd>{{developers}}</dd>
-                        <dt>Description</dt>
-                        <dd>{{description}}</dd>
-                        <dt>URL</dt>
-                        <dd>{{url}}</dd>
-                        <dt>Contact Email</dt>
-                        <dd>{{email}}</dd>
-                    </dl>
-                    </p>
-                    <a href="{{url}}" target="_blank" class="btn btn-primary">Go to the application</a>
+                    <h5 class="card-title"><a href="{{url}}" target="_blank">{{title}}</a></h5>
+                    <div class="card-text">
+                        <div>{{description.substring(0, 100)}}{{description.length>100?"... <a id=more-description>more</a>":""}}</div>
+                        <div><a id=developer-info>Developer information</a></div>
+                        <div><a href={{url}} target="_blank">Go to application</a></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -2662,7 +2653,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.9.2/jquery.contextMenu.min.js" integrity="sha512-kvg/Lknti7OoAw0GqMBP8B+7cGHvp4M9O9V6nAYG91FZVDMW3Xkkq5qrdMhrXiawahqU7IZ5CNsY/wWy1PpGTQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.6.1/d3.min.js" integrity="sha512-MefNfAGJ/pEy89xLOFs3V6pYPs6AmUhXJrRlydI/9wZuGrqxmrdQ80zKHUcyadAcpH67teDZcBeS6oMJLPtTqw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-cloud/1.2.5/d3.layout.cloud.min.js" integrity="sha512-HjKxWye8lJGPu5q1u/ZYkHlJrJdm6KGr89E6tOrXeKm1mItb1xusPU8QPcKVhP8F9LjpZT7vsu1Fa+dQywP4eg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script type='module' src="js/ctd2.js?ts=202207"></script>
+    <script type='module' src="js/ctd2.js?ts=202209"></script>
 
 <script type="text/javascript">_satellite.pageBottom();</script>
 </body>

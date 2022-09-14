@@ -662,6 +662,16 @@ import MraView from './mra.js'
         template: _.template($("#app-tmpl").html()),
         render: function () {
             $(this.el).append(this.template(this.model));
+            $("#more-description").click(function (e) {
+                e.preventDefault();
+                console.debug(e)
+                console.debug("more description clicked")
+            })
+            $("#developer-info").click(function (e) {
+                e.preventDefault();
+                console.debug(e)
+                console.debug("developer info clicked")
+            })
             return this;
         }
     });
