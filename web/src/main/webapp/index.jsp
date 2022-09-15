@@ -244,7 +244,7 @@
     <div class="modal hide fade" id="app-modal">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
-                <div class="modal-header"><button class="close" data-dismiss="modal">&times;</button>
+                <div class="modal-header"><h2 id=app-modal-header></h2><button class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body" id=app-modal-body>
                 </div>
@@ -2559,15 +2559,17 @@
 
     <script type="text/template" id="app-tmpl">
         <div class="col-sm" style="padding-left:1px;padding-right:1px">
-            <div class="card" style="width: 300px;">
+            <div class="card h-100" style="width: 300px;" id=app-{{app_code}}>
                 <a href="{{url}}" target="_blank"><img src="{{image}}" class="card-img-top" alt="..." style="width:300px;height:150px"></a>
                 <div class="card-body">
                     <h5 class="card-title"><a href="{{url}}" target="_blank">{{title}}</a></h5>
-                    <div class="card-text" id=app-{{app_code}}>
+                    <div class="card-text">
                         <div>{{description.substring(0, 100)}}{{description.length>100?"... <a id=more-description>more</a>":""}}</div>
-                        <div><a id=developer-info>Developer information</a></div>
-                        <div><a href={{url}} target="_blank">Go to application</a></div>
                     </div>
+                </div>
+                <div class="card-footer">
+                    <div class=p-2><a id=developer-info>Developer information</a></div>
+                    <div class=p-2><a href={{url}} target="_blank">Go to application</a></div>
                 </div>
             </div>
         </div>

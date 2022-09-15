@@ -667,12 +667,14 @@ import MraView from './mra.js'
             $("#app-"+code).find("#more-description").click(function (e) {
                 e.preventDefault();
                 console.debug(e)
+                $("#app-modal-header").html("Description")
                 $("#app-modal-body").html(model.description)
                 $("#app-modal").modal("show")
             })
             $("#app-"+code).find("#developer-info").click(function (e) {
                 e.preventDefault();
                 console.debug(e)
+                $("#app-modal-header").html("Developer Information")
                 const text = `<ul><li>Institution(s): ${model.institution}</li><li>Developer(s): ${model.developers}</li><li>Lab(s): ${model.lab}`
                 $("#app-modal-body").html(text)
                 $("#app-modal").modal("show")
