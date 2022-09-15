@@ -661,16 +661,21 @@ import MraView from './mra.js'
     const AppView = Backbone.View.extend({
         template: _.template($("#app-tmpl").html()),
         render: function () {
+            const model = this.model
+            const code = this.model.app_code
             $(this.el).append(this.template(this.model));
-            $("#more-description").click(function (e) {
+            $("#app-"+code).find("#more-description").click(function (e) {
                 e.preventDefault();
                 console.debug(e)
-                console.debug("more description clicked")
+                $("#app-modal-body").html(model.description)
+                $("#app-modal").modal("show")
             })
-            $("#developer-info").click(function (e) {
+            $("#app-"+code).find("#developer-info").click(function (e) {
                 e.preventDefault();
                 console.debug(e)
-                console.debug("developer info clicked")
+                const text = `<ul><li>Institution(s): ${model.institution}</li><li>Developer(s): ${model.developers}</li><li>Lab(s): ${model.lab}`
+                $("#app-modal-body").html(text)
+                $("#app-modal").modal("show")
             })
             return this;
         }
@@ -686,12 +691,10 @@ import MraView from './mra.js'
                     if (registration.title === "") {
                         return
                     }
+                    registration.image = registration.image ?? "img/logos/ctd2_overall.png"
                     new AppView({
                         el: $("#app-container"),
-                        model: {
-                            title: registration.title, developers: registration.developers, description: registration.description,
-                            url: registration.url, email: registration.email, image: registration.image ?? "img/logos/ctd2_overall.png"
-                        },
+                        model: registration,
                     }).render();
                 })
             }).fail(function (err) { console.log(err) })

@@ -241,6 +241,17 @@
         </footer>
     </div>
 
+    <div class="modal hide fade" id="app-modal">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header"><button class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body" id=app-modal-body>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="modal hide fade" id="alert-message-modal">
         <!-- a hidden div for showing alert message -->
         <div class="modal-dialog" role="document">
@@ -2552,7 +2563,7 @@
                 <a href="{{url}}" target="_blank"><img src="{{image}}" class="card-img-top" alt="..." style="width:300px;height:150px"></a>
                 <div class="card-body">
                     <h5 class="card-title"><a href="{{url}}" target="_blank">{{title}}</a></h5>
-                    <div class="card-text">
+                    <div class="card-text" id=app-{{app_code}}>
                         <div>{{description.substring(0, 100)}}{{description.length>100?"... <a id=more-description>more</a>":""}}</div>
                         <div><a id=developer-info>Developer information</a></div>
                         <div><a href={{url}} target="_blank">Go to application</a></div>
