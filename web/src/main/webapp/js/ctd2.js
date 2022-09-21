@@ -5,6 +5,7 @@ import { ECOTerm } from './ecoterm.js'
 import { ObservedSubjects, ObservedEvidences, ObservedEvidence } from './observed.js'
 import ObservationView from './observation.view.js'
 import MraView from './mra.js'
+import test_treeview from './treeview.js'
 
 (function ($) {
     // This is strictly coupled to the homepage design!
@@ -427,6 +428,7 @@ import MraView from './mra.js'
                 select_wordcloud("#vis", this);
             });
 
+            $("#treeview-container").append(test_treeview)
             $("#treeview-container").hide()
             $("#tv-disease-context").prop('disabled', true) // initial choice of the tree view
             $("#treeview-button").click(function (e) {
