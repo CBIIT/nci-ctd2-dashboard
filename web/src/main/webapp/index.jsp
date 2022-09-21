@@ -329,6 +329,14 @@
         <div style="text-align:center;display:block;padding:10px">
         <button type="button" class="btn btn-secondary" id=summary-table-label><span id=toggle-word>Show</span> Dashboard Content Summary</button>
         <button type="button" class="btn btn-secondary" id=wordcloud-button><span id=wordcloud-toggle-word>Hide</span> Word Cloud</button>
+        <button type="button" class="btn btn-secondary" id=treeview-button><span id=treeview-toggle-word>Show</span> Tree View</button>
+        </div>
+        <div class=container id='treeview-container'>
+            <div style="text-align:center;display:block;padding:10px">
+                <button type="button" class="btn btn-light" id=tv-disease-context style='background:rgb(253, 255, 201);border-color:#6c757d'>Disease context</button>
+                <button type="button" class="btn btn-light" id=tv-evidence-type style='background:rgb(253, 255, 201);border-color:#6c757d'>Evidence type</button>
+            </div>
+            <div id=treeview>... placeholder for tree view</div>
         </div>
         <div class=container id='wordcloud-container'>
             <div style="text-align:center;display:block;padding:10px">
