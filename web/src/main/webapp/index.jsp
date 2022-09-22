@@ -336,7 +336,7 @@
                 <button type="button" class="btn btn-light" id=tv-disease-context style='background:rgb(253, 255, 201);border-color:#6c757d'>Disease context</button>
                 <button type="button" class="btn btn-light" id=tv-evidence-type style='background:rgb(253, 255, 201);border-color:#6c757d'>Evidence type</button>
             </div>
-            <div id=treeview>... placeholder for tree view</div>
+            <div id=treeview></div>
         </div>
         <div class=container id='wordcloud-container'>
             <div style="text-align:center;display:block;padding:10px">

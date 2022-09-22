@@ -5,7 +5,7 @@ import { ECOTerm } from './ecoterm.js'
 import { ObservedSubjects, ObservedEvidences, ObservedEvidence } from './observed.js'
 import ObservationView from './observation.view.js'
 import MraView from './mra.js'
-import test_treeview from './treeview.js'
+import create_tree_view, { flare, data2 } from './treeview.js'
 
 (function ($) {
     // This is strictly coupled to the homepage design!
@@ -428,7 +428,19 @@ import test_treeview from './treeview.js'
                 select_wordcloud("#vis", this);
             });
 
-            $("#treeview-container").append(test_treeview)
+            const tree1 = create_tree_view(flare, {
+                label: d => d.name,
+                title: (d, n) => `${n.ancestors().reverse().map(d => d.data.name).join(".")}`, // hover text
+                link: (d, n) => `https://github.com/prefuse/Flare/${n.children ? "tree" : "blob"}/master/flare/src/${n.ancestors().reverse().map(d => d.data.name).join("/")}${n.children ? "" : ".as"}`,
+                width: 1152
+            })
+            const tree2 = create_tree_view(data2, {
+                label: d => d.name,
+                title: (d, n) => `${n.ancestors().reverse().map(d => d.data.name).join(".")}`, // hover text
+                link: (d, n) => `https://github.com/prefuse/Flare/${n.children ? "tree" : "blob"}/master/flare/src/${n.ancestors().reverse().map(d => d.data.name).join("/")}${n.children ? "" : ".as"}`,
+                width: 1152
+            })
+            $("#treeview").html(tree1)
             $("#treeview-container").hide()
             $("#tv-disease-context").prop('disabled', true) // initial choice of the tree view
             $("#treeview-button").click(function (e) {
@@ -447,12 +459,13 @@ import test_treeview from './treeview.js'
             $("#tv-disease-context").click(function (e) {
                 $("#tv-evidence-type").prop('disabled', false)
                 $("#tv-disease-context").prop('disabled', true)
-                $("#treeview").text("switch to disease context")
+                $("#treeview").html(tree1)
             })
             $("#tv-evidence-type").click(function (e) {
                 $("#tv-disease-context").prop('disabled', false)
                 $("#tv-evidence-type").prop('disabled', true)
-                $("#treeview").text("switch to evidence type")
+
+                $("#treeview").html(tree2)
             })
 
             $('#summary-table thead th').popover({
