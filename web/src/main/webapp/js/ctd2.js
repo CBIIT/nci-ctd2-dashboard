@@ -689,7 +689,15 @@ import MraView from './mra.js'
         render: function () {
             $(this.el).html(this.template())
             $.ajax("/registration/registration/data").done(function (result) {
-                result.forEach(function (registration) {
+                result.sort((a, b) => { 
+                    if (a.title < b.title) {
+                        return -1;
+                    }
+                    if (a.title > b.title) {
+                        return 1;
+                    }
+                    return 0;}
+                ).forEach(function (registration) {
                     if (registration.title === "") {
                         return
                     }
