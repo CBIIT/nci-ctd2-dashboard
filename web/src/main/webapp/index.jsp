@@ -120,8 +120,8 @@
                                     <li><a href="#api-documentation">API Documentation</a></li>
                                     <li class="dropdown-submenu"><a tabindex="-1" href="#">Applications</a>
                                         <ul class="dropdown-menu">
-                                            <li><a target="_blank" href="/registration">Application Registration (Developers)</a></li>
-                                            <li><a target="_blank" href="#applications">Dashboard Applications</a></li>
+                                            <li><a href="/registration">Application Registration (Developers)</a></li>
+                                            <li><a href="#applications">Dashboard Applications</a></li>
                                         </ul>
                                     </li>
                                     <li class="dropdown-submenu"><a tabindex="-1" href="#">Network Resources</a>
