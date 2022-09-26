@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -47,6 +48,30 @@ public enum Hierarchy {
     public String toString() {
         return super.toString() + ": parent number " + map.size() + "; total children "
                 + map.values().stream().reduce(0, (total, x) -> total + x.length, Integer::sum);
+    }
+
+    // TODO test
+    public Map<Integer, int[]> map() {
+        return map;
+    }
+
+    /* return the top nodes, namely those who are not children of any other nodes */
+    public List<Integer> topNodes() {
+        List<Integer> tops = new ArrayList<Integer>();
+        for (int key : map.keySet()) {
+            boolean found = false;
+            for (int x : map.keySet()) {
+                int[] children = map.get(x);
+                if (Arrays.stream(children).anyMatch(a -> a == key)) {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                tops.add(key);
+            }
+        }
+        return tops;
     }
 
     // create a flat map for looking up all descendants quickly
