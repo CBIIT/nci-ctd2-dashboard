@@ -664,14 +664,14 @@ import MraView from './mra.js'
             const model = this.model
             const code = this.model.app_code
             $(this.el).append(this.template(this.model));
-            $("#app-"+code).find("#more-description").click(function (e) {
+            $("#app-" + code).find("#more-description").click(function (e) {
                 e.preventDefault();
                 console.debug(e)
                 $("#app-modal-header").html("Description")
                 $("#app-modal-body").html(model.description)
                 $("#app-modal").modal("show")
             })
-            $("#app-"+code).find("#developer-info").click(function (e) {
+            $("#app-" + code).find("#developer-info").click(function (e) {
                 e.preventDefault();
                 console.debug(e)
                 $("#app-modal-header").html("Developer Information")
@@ -689,14 +689,15 @@ import MraView from './mra.js'
         render: function () {
             $(this.el).html(this.template())
             $.ajax("/registration/registration/data").done(function (result) {
-                result.sort((a, b) => { 
-                    if (a.title < b.title) {
+                result.sort((a, b) => {
+                    if (a.title.toLowerCase() < b.title.toLowerCase()) {
                         return -1;
                     }
-                    if (a.title > b.title) {
+                    if (a.title.toLowerCase() > b.title.toLowerCase()) {
                         return 1;
                     }
-                    return 0;}
+                    return 0;
+                }
                 ).forEach(function (registration) {
                     if (registration.title === "") {
                         return
