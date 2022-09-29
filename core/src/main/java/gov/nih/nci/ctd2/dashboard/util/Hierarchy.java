@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -13,8 +14,15 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import gov.nih.nci.ctd2.dashboard.util.Node;
+
 public enum Hierarchy {
     DISEASE_CONTEXT("disease_context_hierarchy.txt"), EXPERIMENTAL_EVIDENCE("experimental_evidence_hierarchy.txt");
+
+    private static final Log log = LogFactory.getLog(Hierarchy.class);
 
     final private Map<Integer, int[]> map;
 
@@ -48,9 +56,47 @@ public enum Hierarchy {
                 + map.values().stream().reduce(0, (total, x) -> total + x.length, Integer::sum);
     }
 
-    // TODO test
-    public Map<Integer, int[]> map() {
-        return map;
+    // export as a tree structure
+    public Node getTree() {
+        Map<Integer, Node> nodes = new HashMap<Integer, Node>();
+        for (Integer key : map.keySet()) {
+            int[] id_children = map.get(key);
+            List<Node> children = new ArrayList<Node>();
+            for (int child : id_children) {
+                children.add(new Node(String.valueOf(child)));
+            }
+            nodes.put(key, new Node(String.valueOf(key), children));
+        }
+
+        Set<Node> to_be_removed = new HashSet<Node>();
+
+        for (Integer key : nodes.keySet()) {
+            final Node node = nodes.get(key);
+            final List<Node> nodes_to_remove = new ArrayList<Node>();
+            final List<Node> nodes_to_add = new ArrayList<Node>();
+            for (Node child : node.children) {
+                int child_id = Integer.valueOf(child.name);
+                Node x = nodes.get(child_id);
+                if (x != null && !to_be_removed.contains(x)) {
+                    nodes_to_remove.add(child);
+                    nodes_to_add.add(x);
+                    to_be_removed.add(x);
+                }
+            }
+            for (Node x : nodes_to_remove) {
+                node.children.remove(x);
+            }
+            for (Node x : nodes_to_add) {
+                node.children.add(x);
+            }
+        }
+
+        Collection<Node> top_nodes = nodes.values();
+        top_nodes.removeAll(to_be_removed);
+        Node tree = new Node("root", new ArrayList<Node>(top_nodes));
+        log.debug("top level: " + top_nodes.size());
+        log.debug("total nodes: " + tree.totalSize());
+        return tree;
     }
 
     // create a flat map for looking up all descendants quickly
