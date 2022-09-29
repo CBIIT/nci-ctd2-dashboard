@@ -2427,4 +2427,46 @@ public class DashboardDaoImpl implements DashboardDao {
         session.close();
         return map;
     }
+
+    @Override
+    public Map<Integer, Integer> tissueSampleCodeToObservationNumber() {
+        Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+        Session session = getSession();
+        @SuppressWarnings("unchecked")
+        org.hibernate.query.Query<Object[]> query = session.createNativeQuery(
+                "SELECT code, COUNT(*) FROM observed_subject JOIN tissue_sample ON observed_subject.subject_id=tissue_sample.id GROUP BY code");
+        for (Object[] result : query.getResultList()) {
+            Integer code = (Integer) result[0];
+            BigInteger count = (BigInteger) result[1];
+            map.put(code, count.intValue());
+        }
+        session.close();
+        return map;
+    }
+
+    @Override
+    public Map<Integer, Integer> evidenceTypeToObservationNumber() {
+        Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+        Session session = getSession();
+        @SuppressWarnings("unchecked")
+        org.hibernate.query.Query<String> query = session.createNativeQuery(
+                "SELECT ECOcode FROM observation JOIN submission ON observation.submission_id=submission.id JOIN observation_template ON submission.observationTemplate_id=observation_template.id");
+        for (String ecoCodes : query.getResultList()) {
+            if (ecoCodes.trim().length() == 0) {
+                continue;
+            }
+            String[] x = ecoCodes.split("\\|");
+            for (String c : x) {
+                int code = Integer.valueOf(c.substring(4));
+                Integer count = map.get(code);
+                if (count == null) {
+                    map.put(code, 1);
+                } else {
+                    map.put(code, count + 1);
+                }
+            }
+        }
+        session.close();
+        return map;
+    }
 }

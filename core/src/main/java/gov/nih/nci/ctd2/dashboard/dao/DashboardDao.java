@@ -102,4 +102,7 @@ public interface DashboardDao {
 
     void storeRelatedCompounds(Set<List<Integer>> list);
     SortedMap<String, String[]> getRelatedCompounds(Integer id);
+
+    Map<Integer, Integer> tissueSampleCodeToObservationNumber();
+    Map<Integer, Integer> evidenceTypeToObservationNumber();
 }

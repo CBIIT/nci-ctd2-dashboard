@@ -57,7 +57,7 @@ public enum Hierarchy {
     }
 
     // export as a tree structure
-    public Node getTree() {
+    public Node getTree(Map<Integer, Integer> observations) {
         Map<Integer, Node> nodes = new HashMap<Integer, Node>();
         for (Integer key : map.keySet()) {
             int[] id_children = map.get(key);
@@ -94,9 +94,49 @@ public enum Hierarchy {
         Collection<Node> top_nodes = nodes.values();
         top_nodes.removeAll(to_be_removed);
         Node tree = new Node("root", new ArrayList<Node>(top_nodes));
-        log.debug("top level: " + top_nodes.size());
+
+        if (observations != null) {
+            int c = 0;
+            for (Node child : tree.children) {
+                setCount(child, observations);
+                c += child.observations;
+            }
+            tree.observations = c;
+            filter(tree);
+        }
+        if (tree.children.size() == 1) { /* avoid unnecessary root node. it is in fact the case of evidence type */
+            tree = tree.children.get(0);
+        }
+
+        log.debug("top level: " + tree.children.size());
         log.debug("total nodes: " + tree.totalSize());
         return tree;
+    }
+
+    static private void setCount(Node node, Map<Integer, Integer> observations) {
+        int c = 0;
+        Integer x = observations.get(Integer.parseInt(node.name));
+        if (x != null) {
+            c = x;
+        }
+        for (Node child : node.children) {
+            setCount(child, observations);
+            c += child.observations;
+        }
+        node.observations = c;
+    }
+
+    static private void filter(Node node) {
+        List<Node> to_remove = new ArrayList<Node>();
+        for (Node child : node.children) {
+            filter(child);
+            if (child.observations == 0) {
+                to_remove.add(child);
+            }
+        }
+        for (Node x : to_remove) {
+            node.children.remove(x);
+        }
     }
 
     // create a flat map for looking up all descendants quickly

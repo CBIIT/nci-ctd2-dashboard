@@ -1,5 +1,7 @@
 package gov.nih.nci.ctd2.dashboard.controller;
 
+import java.util.Map;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +32,8 @@ public class TreeController {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json; charset=utf-8");
 
-        Node tree = Hierarchy.DISEASE_CONTEXT.getTree();
+        Map<Integer, Integer> count = dashboardDao.tissueSampleCodeToObservationNumber();
+        Node tree = Hierarchy.DISEASE_CONTEXT.getTree(count);
         JSONSerializer jsonSerializer = new JSONSerializer().exclude("*.class");
         String json = "{}";
         try {
@@ -50,7 +53,8 @@ public class TreeController {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json; charset=utf-8");
 
-        Node tree = Hierarchy.EXPERIMENTAL_EVIDENCE.getTree();
+        Map<Integer, Integer> count = dashboardDao.evidenceTypeToObservationNumber();
+        Node tree = Hierarchy.EXPERIMENTAL_EVIDENCE.getTree(count);
         JSONSerializer jsonSerializer = new JSONSerializer().exclude("*.class");
         String json = "{}";
         try {

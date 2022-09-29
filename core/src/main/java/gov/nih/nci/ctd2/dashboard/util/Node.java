@@ -7,6 +7,7 @@ import java.util.List;
 public class Node {
     public final String name;
     public final List<Node> children;
+    public int observations;
 
     public Node(String name, List<Node> children) {
         this.name = name;
