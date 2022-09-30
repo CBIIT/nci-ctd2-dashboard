@@ -83,6 +83,7 @@ import gov.nih.nci.ctd2.dashboard.model.Transcript;
 import gov.nih.nci.ctd2.dashboard.model.Xref;
 import gov.nih.nci.ctd2.dashboard.util.EcoBrowse;
 import gov.nih.nci.ctd2.dashboard.util.Hierarchy;
+import gov.nih.nci.ctd2.dashboard.util.Node;
 import gov.nih.nci.ctd2.dashboard.util.ObservationURIsAndTiers;
 import gov.nih.nci.ctd2.dashboard.util.SearchResults;
 import gov.nih.nci.ctd2.dashboard.util.SubjectResult;
@@ -2468,5 +2469,61 @@ public class DashboardDaoImpl implements DashboardDao {
         }
         session.close();
         return map;
+    }
+
+    @Override
+    public void setTissueSampleLabels(Node node) {
+        Session session = getSession();
+        labelTissueSample(node, session);
+        session.close();
+    }
+
+    private void labelTissueSample(Node node, Session session) {
+        @SuppressWarnings("unchecked")
+        org.hibernate.query.Query<String> query = session.createNativeQuery(
+                "SELECT displayName FROM tissue_sample JOIN dashboard_entity ON tissue_sample.id=dashboard_entity.id WHERE code=:code");
+        try {
+            int code = Integer.valueOf(node.name);
+            query.setParameter("code", code);
+            node.label = query.getSingleResult();
+        } catch (NumberFormatException e) {
+            // expected
+            node.label = node.name;
+        } catch (NoResultException e) {
+            log.warn("missing name for tissue sample code=" + node.name);
+            node.label = node.name;
+        }
+
+        for (Node child : node.children) {
+            labelTissueSample(child, session);
+        }
+    }
+
+    @Override
+    public void setEvidenceLabels(Node node) {
+        Session session = getSession();
+        labelEvidence(node, session);
+        session.close();
+    }
+
+    private void labelEvidence(Node node, Session session) {
+        @SuppressWarnings("unchecked")
+        org.hibernate.query.Query<String> query = session.createNativeQuery(
+                "SELECT displayName FROM ecoterm JOIN dashboard_entity ON ecoterm.id=dashboard_entity.id WHERE code=:code");
+        try {
+            int code = Integer.valueOf(node.name);
+            query.setParameter("code", String.format("ECO:%07d", code));
+            node.label = query.getSingleResult();
+        } catch (NumberFormatException e) {
+            // expected
+            node.label = node.name;
+        } catch (NoResultException e) {
+            log.warn("missing name for ECO code=" + node.name);
+            node.label = node.name;
+        }
+
+        for (Node child : node.children) {
+            labelEvidence(child, session);
+        }
     }
 }

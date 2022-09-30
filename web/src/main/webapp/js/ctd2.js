@@ -431,7 +431,7 @@ import create_tree_view from './treeview.js'
             $.ajax("tree/disease-context").done(function (result) {
                 console.debug(result)
                 const tree1 = create_tree_view(result, {
-                    label: d => d.name,
+                    label: d => d.label,
                     title: (d, n) => `${n.ancestors().reverse().map(d => d.data.name).join(".")}`, // hover text
                     link: (d, n) => `https://github.com/prefuse/Flare/${n.children ? "tree" : "blob"}/master/flare/src/${n.ancestors().reverse().map(d => d.data.name).join("/")}${n.children ? "" : ".as"}`,
                     width: 1152
@@ -448,7 +448,7 @@ import create_tree_view from './treeview.js'
             $.ajax("tree/evidence-type").done(function (result) {
                 console.debug(result)
                 const tree2 = create_tree_view(result, {
-                    label: d => d.name,
+                    label: d => d.label,
                     title: (d, n) => `${n.ancestors().reverse().map(d => d.data.name).join(".")}`, // hover text
                     link: (d, n) => `https://github.com/prefuse/Flare/${n.children ? "tree" : "blob"}/master/flare/src/${n.ancestors().reverse().map(d => d.data.name).join("/")}${n.children ? "" : ".as"}`,
                     width: 1152

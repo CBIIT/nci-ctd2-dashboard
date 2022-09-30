@@ -34,6 +34,7 @@ public class TreeController {
 
         Map<Integer, Integer> count = dashboardDao.tissueSampleCodeToObservationNumber();
         Node tree = Hierarchy.DISEASE_CONTEXT.getTree(count);
+        dashboardDao.setTissueSampleLabels(tree);
         JSONSerializer jsonSerializer = new JSONSerializer().exclude("*.class");
         String json = "{}";
         try {
@@ -55,6 +56,7 @@ public class TreeController {
 
         Map<Integer, Integer> count = dashboardDao.evidenceTypeToObservationNumber();
         Node tree = Hierarchy.EXPERIMENTAL_EVIDENCE.getTree(count);
+        dashboardDao.setEvidenceLabels(tree);
         JSONSerializer jsonSerializer = new JSONSerializer().exclude("*.class");
         String json = "{}";
         try {
