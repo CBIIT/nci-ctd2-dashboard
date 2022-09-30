@@ -433,7 +433,7 @@ import create_tree_view from './treeview.js'
                 const tree1 = create_tree_view(result, {
                     label: d => d.label,
                     title: (d, n) => `${n.ancestors().reverse().map(d => d.data.name).join(".")}`, // hover text
-                    link: (d, n) => `https://github.com/prefuse/Flare/${n.children ? "tree" : "blob"}/master/flare/src/${n.ancestors().reverse().map(d => d.data.name).join("/")}${n.children ? "" : ".as"}`,
+                    link: (d, n) => `#tissue/c${d.name}`,
                     width: 1152
                 })
                 $("#treeview").html(tree1)
@@ -450,7 +450,7 @@ import create_tree_view from './treeview.js'
                 const tree2 = create_tree_view(result, {
                     label: d => d.label,
                     title: (d, n) => `${n.ancestors().reverse().map(d => d.data.name).join(".")}`, // hover text
-                    link: (d, n) => `https://github.com/prefuse/Flare/${n.children ? "tree" : "blob"}/master/flare/src/${n.ancestors().reverse().map(d => d.data.name).join("/")}${n.children ? "" : ".as"}`,
+                    link: (d, n) => `#eco/eco-${d.name.padStart(7, "0")}`,
                     width: 1152
                 })
                 $("#tv-evidence-type").click(function (e) {
