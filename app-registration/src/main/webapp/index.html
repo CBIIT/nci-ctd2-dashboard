@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>CTD² Application Registration</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/style.css" type="text/css" />
+    <link rel="shortcut icon" href="img/favicon.ico" type="image/vnd.microsoft.icon" />
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script src="https://kit.fontawesome.com/95ddca2a38.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div class="navbar-wrapper">
+        <!-- Wrap the .navbar in .container to center it within the absolutely positioned parent. -->
+        <div class="container">
+            <a href="https://ocg.cancer.gov/" target="_blank"><img src="/dashboard/img/logos/ccg.png"></a>
+            <div class="navbar">
+                <div class="navbar-inner">
+                    <div class="nav-collapse collapse show">
+                        <ul id="nav" class="nav">
+                            <li><a id="navlink-dashboard" class="navlink" href="/dashboard/#">CTD<sup>2</sup> Dashboard</a></li>
+                            <li><a id="navlink-centers" class="navlink" href="/dashboard/#centers">Centers</a></li>
+                            <li class="dropdown">
+                                <a class="dropdown-toggle navlink" href="#" data-bs-toggle="dropdown">Resources <b
+                                        class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="/dashboard/#master-export">Master Observation Export</a></li>
+                                    <li><a target="_blank" href="https://ocg.cancer.gov/programs/ctd2">OCG/CTD² Home Page</a></li>
+                                    <li><a href="/dashboard/#cite">How to Cite</a></li>
+                                    <li><a href="/dashboard/#api-documentation">API Documentation</a></li>
+                                    <li class="dropdown-submenu"><a tabindex="-1" href="#">Applications</a>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="/registration">Application Registration (Developers)</a></li>
+                                            <li><a href="/dashboard/#applications">Dashboard Applications</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="dropdown-submenu"><a tabindex="-1" href="#">Network Resources</a>
+                                        <ul class="dropdown-menu">
+                                            <li><a target="_blank" href="https://ocg.cancer.gov/programs/ctd2">CTD² Home Page</a></li>
+                                            <li><a target="_blank"
+                                                href="https://ocg.cancer.gov/programs/ctd2/publications">Publications</a>
+                                            </li>
+                                            <li><a target="_blank" href="https://ocg.cancer.gov/programs/ctd2/data-portal">Data
+                                                Portal - Downloads</a></li>
+                                            <li><a target="_blank"
+                                                href="https://ocg.cancer.gov/programs/ctd2/analytical-tools">Analytical
+                                                Tools</a></li>
+                                            <li><a target="_blank"
+                                                href="https://ocg.cancer.gov/programs/ctd2/supported-reagents">Supported
+                                                Reagents</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="dropdown-submenu"><a tabindex="-1" href="#">Outside Resources</a>
+                                        <ul class="dropdown-menu">
+                                            <li><a target="_blank" href="http://www.lincsproject.org/">LINCS</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a id="navlink-browse" class="dropdown-toggle navlink" href="#"
+                                    data-bs-toggle="dropdown">Browse <b class="caret"></b></a>
+                                <ul id="dropdown-menu-browse" class="dropdown-menu">
+                                    <li><a href="/dashboard/#stories">Stories</a></li>
+                                    <li><a href="/dashboard/#explore/target/Biomarker,Target">Genes (Biomarkers, Targets, etc.)</a>
+                                    </li>
+                                    <li><a href="/dashboard/#explore/compound/Perturbagen,Candidate Drug">Compounds and
+                                            Perturbagens</a></li>
+                                    <li><a href="/dashboard/#explore/context/Disease">Disease Context</a></li>
+                                    <li><a href="/dashboard/#explore/cellline/Cell Line">Cell Lines</a></li>
+                                    <li><a href="/dashboard/#eco_browse">Experimental Evidence</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a id="navlink-genecart" class="dropdown-toggle navlink" href="#"
+                                    data-bs-toggle="dropdown">Gene Cart <b class="caret"></b></a>
+                                <ul id="dropdown-menu-genecart" class="dropdown-menu">
+                                    <li><a href="/dashboard/#genes">Go To Cart</a></li>
+                                    <li><a href="/dashboard/#gene-cart-help">Help</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul class="nav pull-right">
+                            <form class="form-search" id="omnisearch">
+                                <div class="input-append">
+                                    <input type="text" id="omni-input" class="search-query"
+                                        placeholder="e.g. CTNNB1 or dasatinib" aria-label="search">
+                                    <button type="submit" class="btn search-button">Search</button>
+                                    <span class="d-none" id="search-help-content">
+                                        <p>Please enter the keyword(s) you would like to search on the website. Use of quotes to surround multi-word search terms is advised to avoid a large number of hits. You may
+                                            enter multiple search terms, but do not use "AND" or "OR".</p>
+                                        <strong>Examples:</strong>
+                                        <ul>
+                                            <li><em>Gene: </em> <a href="/dashboard/#search/CTNNB1">CTNNB1</a></li>
+                                            <li><em>Gene: </em> <a href="/dashboard/#search/YAP*">YAP*</a></li>
+                                            <li><em>Compound: </em> <a href="/dashboard/#search/dasatinib">dasatinib</a></li>
+                                            <li><em>Cell Sample: </em> <a href="/dashboard/#search/OVCAR8">OVCAR8</a></li>
+                                            <li><em>Multiple: </em> <a href="/dashboard/#search/dexamethasone AKT1">dexamethasone
+                                                    AKT1</a></li>
+                                            <li><em>Expt. Evidence Code: </em> <a
+                                                    href="/dashboard/#search/ECO_0006053">ECO_0006053</a></li>
+                                            <li><em>Expt. Evidence term: </em> <a href="/dashboard/#search/PCR">PCR</a></li>
+                                        </ul>
+                                    </span>
+                                </div>
+                            </form>
+                        </ul>
+                    </div>
+                    <!--/.nav-collapse -->
+                </div><!-- /.navbar-inner -->
+            </div><!-- /.navbar -->
+
+        </div> <!-- /.container -->
+    </div>
+
+    <div class="px-4 py-5 my-5 text-center">
+
+        <h1>Application Registration</h1>
+
+        <div class="container message-box">The <a href="/dashboard/#api-documentation" target="_blank">CTD² Dashboard
+                API</a> allows programmatic access to the Dashboard data, to facilitate
+            development of third-party applications that provide improved visualization capabilities as well as
+            integration with external data sources. Using the application registration form below, developers can
+            register their application with the Dashboard so that Dashboard users can find and access them. After the
+            form is submitted, it will be reviewed by the Dashboard team and a link to the application will be added to
+            the “<a href="/dashboard/#applications" target="_blank">Dashboard Applications</a>” page. Developers will
+            also receive by e-mail a unique code, which can be used in the future to make changes to the registration
+            form.
+        </div>
+
+        <a href="" id="register" class="m-5">Register new application</a> <a href="" id="modify" class="m-5">Modify
+            existing
+            registration</a>
+
+        <div id="modify-message" style="display:none" class="container common-container">
+            <div class="text-start">
+                When you submitted your original application registration form, you received an e-mail with a unique
+                code. Please enter that code below to modify the application information you submitted. If you have lost
+                the code, please e-mail us at ctd2-dashboard@cumc.columbia.edu so that we can resend it to you. Please
+                make sure to include your application’s name in your message.
+            </div>
+            <p><input type="text" id="registration-id"></p>
+            <a href="" id="retrieve">Submit</a>
+        </div>
+        <div id="registration-not-found" style="display:none" class="container common-container">The code you provided
+            (<span id="not-found-id"></span>)
+            does not match any application. Please try again.</p>
+        </div>
+        <div class="container my-4 p-5 text-start">
+            <form id="registration-form" style="display:none">
+                <input type="hidden" id="action" name="action">
+                <input type="hidden" id="app_code" name="app_code">
+                <div class="mb-2">
+                    <label for="title" class="col-auto required">Application Title (30 characters max) <i class="fas fa-question-circle"
+                            title="A short application title, no more than 30 characters."></i></label>
+                    <input type="text" class="form-control col" id="title">
+                    <small class="form-text text-muted">0 characters remaining</small>
+                </div>
+                <div class="mb-2">
+                    <label for="url" class="form-label col-auto required">URL <i class="fas fa-question-circle"
+                            title="Application URL, this is where the Dashboard link will point."></i></label>
+                    <input type="url" id="url" class="form-control col">
+                    <small class="form-text text-muted">0 characters remaining</small>
+                </div>
+                <div class="mb-2">
+                    <label for="url" class="col-auto required">Application Description (500 characters max) <i class="fas fa-question-circle"
+                            title="One paragraph description of the application functionality."></i></label>
+                    <textarea id="description" rows="3" class="form-control"></textarea>
+                    <small class="form-text text-muted">0 characters remaining</small>
+                </div>
+                <div class="mb-2">
+                    <label for="url" class="col-auto required">Developer Name <i class="fas fa-question-circle"
+                            title="Name(s) of application developer(s). Please separate multiple entries by commas."></i></label>
+                    <input type="text" id="developers" class="form-control col">
+                    <small class="form-text text-muted">0 characters remaining</small>
+                </div>
+                <div class="mb-2">
+                    <label for="url" class="col-auto required">Contact Email <i class="fas fa-question-circle"
+                            title="The institution(s) the developer(s) are affiliated with. Please separate multiple entries by commas."></i></label>
+                    <input type="email" id="email" class="form-control col">
+                    <small class="form-text text-muted">0 characters remaining</small>
+                </div>
+                <div class="mb-2">
+                    <label for="url" class="col-auto required">Institution <i class="fas fa-question-circle"
+                            title="The institution(s) the developer(s) are affiliated with. Please separate multiple entries by commas."></i></label>
+                    <input type="text" id="institution" class="form-control col">
+                    <small class="form-text text-muted">0 characters remaining</small>
+                </div>
+                <div class="mb-2">
+                    <label for="url" class="form-label col-auto">Lab Name <i class="fas fa-question-circle"
+                            title="The name of the lead investigator(s) of the lab(s) where the application was developed, if applicable. Please separate multiple entries by commas."></i></label>
+                    <input type="text" id="lab" class="form-control col">
+                    <small class="form-text text-muted">0 characters remaining</small>
+                </div>
+                <div class="mb-1">
+                    <label for="url" class="form-label col-auto">Image <i class="fas fa-question-circle"
+                            title="A 300 x 150 pixel image (width x height) to be associated with the application in the Dashboard page, if desired."></i></label>
+                    <input class="form-control col" type="file" id="image">
+                </div>
+                <img width="300px" height="150px" id="previous-image"></td>
+                <div class="g-recaptcha" data-sitekey="6LdhT2ohAAAAAC0EP2BNa2ZwJ8K-fjmSET49j454" id="ctd2captcha"></div>
+                <input type="submit" value="Submit">
+            </form>
+        </div>
+    </div>
+
+    <div class="container footer-container">
+        <footer>
+            <div style="font-size:14px; font-weight:bold; margin-bottom:10px;">
+                Dashboard API Application Registration v1.0
+                <a href="#attribution" data-bs-toggle="collapse">attributions</a>
+            </div>
+            <div id="attribution" class="collapse">
+                <div style="font-size:14px; margin-bottom:10px;">
+                    Data users must acknowledge and cite the manuscript <a
+                        href="https://www.ncbi.nlm.nih.gov/pubmed/29220450" target="_blank">Aksoy, Dančík, Smith et
+                        al.</a>, Database 2017;1-10 and provide the URL <a
+                        href="https://ctd2-dashboard.nci.nih.gov/dashboard/">https://ctd2-dashboard.nci.nih.gov/dashboard/</a>.
+                </div>
+                <div style="font-size:14px; margin-bottom:10px;">
+                    As the CTD<sup>2</sup> Network continues to refine the Dashboard, input from the research community
+                    is highly valued to help improve usability.
+                    Please send your feedback and comments to <a
+                        href="mailto:ocg@mail.nih.gov?subject=CTD2 Dashboard Feedback">ocg@mail.nih.gov</a>.
+                </div>
+                <div style="font-size:14px; margin-bottom:10px;">
+                    <a href="http://www.cancer.gov/global/web/policies" target="_blank">Policies</a> &middot;
+                    <a href="http://www.cancer.gov/global/web/policies/accessibility" target="_blank">Accessibility</a>
+                    &middot;
+                    <a href="http://www.cancer.gov/global/web/policies/foia" target="_blank">FOIA</a>
+                </div>
+            </div>
+            <div style="font-size:14px; margin-bottom:10px;">
+                <a href="http://www.hhs.gov/" target="_blank">U.S. Department of Health and Human Services</a> / <a
+                    href="http://www.nih.gov" target="_blank">National Institutes of Health</a> / <a
+                    href="http://www.cancer.gov/" target="_blank">National Cancer Institute</a> / <a
+                    href="http://usa.gov" target="_blank">USA.gov</a>
+                / <a href="https://www.hhs.gov/vulnerability-disclosure-policy/index.html" target="_blank">HHS
+                    Vulnerability Disclosure</a>
+            </div>
+        </footer>
+    </div>
+
+    <div class="modal" id="message-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body" id="message-modal-text">
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="modal-button">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+        crossorigin="anonymous"></script>
+    <script src="js/main.js"></script>
+</body>
+
+</html>

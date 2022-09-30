@@ -1,0 +1,10 @@
+db.host=DB_HOST
+db.port=DB_PORT
+db.username=USERNAME
+db.password=PASSWORD
+
+grecaptcha.secret=ACTUAL_SECRET
+
+emailer.username=EMAIL_SENDER
+emailer.password=PWD
+reviewer.email=REVIEWER
