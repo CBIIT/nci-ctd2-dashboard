@@ -1,6 +1,4 @@
-// Copyright 2021 Observable, Inc.
-// Released under the ISC license.
-// https://observablehq.com/@d3/tree
+// based on https://observablehq.com/@d3/tree
 export default function Tree(data, { // data is either tabular (array of objects) or hierarchy (nested objects)
     path, // as an alternative to id and parentId, returns an array identifier, imputing internal nodes
     id = Array.isArray(data) ? d => d.id : null, // if tabular data, given a d in data, returns a unique identifier (string)
@@ -81,11 +79,9 @@ export default function Tree(data, { // data is either tabular (array of objects
             .y(d => d.x));
 
     const node = svg.append("g")
-        .selectAll("a")
+        .selectAll("g")
         .data(root.descendants())
-        .join("a")
-        .attr("xlink:href", link == null ? null : d => link(d.data, d))
-        .attr("target", link == null ? null : linkTarget)
+        .join("g")
         .attr("transform", d => `translate(${d.y},${d.x})`);
 
     node.append("circle")
@@ -95,7 +91,10 @@ export default function Tree(data, { // data is either tabular (array of objects
     if (title != null) node.append("title")
         .text(d => title(d.data, d));
 
-    if (L) node.append("text")
+    if (L) node.append("a")
+        .attr("xlink:href", link == null ? null : d => link(d.data, d))
+        .attr("target", link == null ? null : linkTarget)
+        .append("text")
         .attr("dy", "0.32em")
         .attr("x", d => d.children ? -6 : 6)
         .attr("text-anchor", d => d.children ? "end" : "start")
