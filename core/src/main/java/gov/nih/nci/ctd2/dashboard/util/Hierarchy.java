@@ -17,8 +17,6 @@ import java.util.stream.Stream;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import gov.nih.nci.ctd2.dashboard.util.Node;
-
 public enum Hierarchy {
     DISEASE_CONTEXT("disease_context_hierarchy.txt"), EXPERIMENTAL_EVIDENCE("experimental_evidence_hierarchy.txt");
 
