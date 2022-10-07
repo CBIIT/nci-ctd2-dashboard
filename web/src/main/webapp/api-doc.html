@@ -34,13 +34,13 @@
             target=_blank>https://editor.swagger.io/</a>.
     </p>
     <h3 id="hierarchy">Dashboard content hierarchy</h3>
-    <h4 id="centers">Center</h4>
+    <h4 id="centers">Centers <small>[<a onclick='window.scrollTo(0, 0)'>back to top</a>]</small></h4>
     <p>Centers are the research teams that participate in the CTD2 Network. They are the entities who submit the data, thus each submission is associated with a specific Center responsible for a submission even when multiple Centers contributed to the submission.</p>
-    <h4 id="submissions">Submissions</h4>
+    <h4 id="submissions">Submissions <small>[<a onclick='window.scrollTo(0, 0)'>back to top</a>]</small></h4>
     <p>A submission is a collection of related observations from a participating CTD2 Network Center, sharing the same structure and format, and representing findings from one or more experimental and/or computational investigations. Each submission can comprise multiple observations described using a submission-specific spreadsheet template, with each row corresponding to one observation and columns representing the data elements necessary for fully documenting an observation. Submissions can be assigned to one of three tiers, depending on their level of experimental support. Tier 1 typically represents preliminary results of a screening campaign or large-scale computational analysis. Tier 2 indicates a confirmation of primary results in a cancer-relevant in vitro model. Finally, Tier 3 provides validation obtained in a cancer-relevant in vivo model. A further component of the submission is the “observation summary”.This is a short statement that summarizes the observation in a readable form, appropriate for human consumption. This observation summary is discussed further below. Some submissions may also be associated with a Dashboard “story”, a hypertext narrative with more details describing an in-depth observation.</p>
     <h4>Projects</h4>
     <p>Each submission is also associated with a single project that represents a research area. Multiple submissions can be associated with a single project.</p>
-    <h4 id="observations">Observations</h4>
+    <h4 id="observations">Observations <small>[<a onclick='window.scrollTo(0, 0)'>back to top</a>]</small></h4>
     <p>Observations are the main unit of knowledge in the Dashboard. They are statements describing biological components (e.g., genes, cell lines, compounds) dubbed “subjects” and the roles they play (e.g., target, background, candidate drug) in the context of a high-level investigational finding, along with links to the computational and/or experimental evidence that support this finding.</p>
     <p>Subjects are the primary biological entities involved in the experimental and/or computational finding described by an observation. Within an observation, subjects are defined by their class and role. The subject class specifies the type of biological entity and can assume any among a predefined set of choices, namely: gene, shRNA, protein, cell sample, animal model, tissue sample, or compound. Subjects can also have an associated role which further specifies their semantics in the context of an observation; e.g., in an observation from a compound screening experiment, a gene may be assigned the role of a “target” if it is the target of a screened compound; or the role of “biomarker” if it is a determinant of the cell line used for the screen. Subjects assume values from controlled vocabularies, depending on their class.</p>
     <p>Observations can also have evidence fields which capture supporting quantitative and qualitative data that are important in interpreting a finding (e.g., details of the experimental or computational protocol used). Each evidence field is characterized by a type and a role. The type is drawn from a fixed set of options (URL, label, data numeric, and file). Possible roles are literature, measured, link, reference, background, observed, computed, written, resources, and species. At the level of the observation, evidence assumes a value, albeit less constrained than for subjects, i.e., evidence values do not usually come from controlled vocabularies.</p>
@@ -49,7 +49,7 @@
         <figcaption>Figure 1: Schematic representation of Dashboard data structure.</figcaption>
     </figure>
     
-    <h4 id="observation-summary">Observation summary</h4>
+    <h4 id="observation-summary">Observation summary <small>[<a onclick='window.scrollTo(0, 0)'>back to top</a>]</small></h4>
     <p>The observation summary is a short, human-readable statement of an individual finding (an observation) in the Dashboard. As the initial result of most Dashboard queries, it is the main route to quickly understanding the observations. The summary is constructed using a template which is part of each submission and applies to all observations within that submission. The template consists of one or more sentences which contain references to specific columns in the associated observation template (as described above). For any given single observation, the referenced items in the observation summary are filled in with the actual values from that observation. For example, in the submission described above, the observation summary template is:</p>
     <blockquote>“Predicted cell-line-specific synthetic lethality of &lt;gene_1&gt; and &lt;gene_2&gt;  was tested in &lt;tissue_1&gt; cell line &lt;cell_line_1&gt; by MTT assay using inhibitors &lt;compound_1&gt; and &lt;compound_2&gt; with result: &lt;effect_1&gt;”,</blockquote>
     <p>where the column names are enclosed in angle brackets <>. The final displayed text on the web page for the first observation in that submission is</p>
@@ -57,7 +57,7 @@
     <p>Note that subject values are hyperlinked on the web page, while evidence values are shown in bold.</p>
     <p>The final observation summary text, but without the hyperlinks or bolding, is included in the data returned for each observation by the API. Observations are returned when executing API calls of type “submission”, “browse”, or “search”.</p>
     <h3 id="api">Dashboard API calls</h3>
-    <h4 id="api-centers">GET /centers - returns a list of centers</h4>
+    <h4 id="api-centers">GET /centers - returns a list of centers <small>[<a onclick='window.scrollTo(0, 0)'>back to top</a>]</small></h4>
     <p>example: <a href="https://ctd2-dashboard.nci.nih.gov/dashboard/api/centers">https://ctd2-dashboard.nci.nih.gov/dashboard/api/centers</a></p>
     <p>output structure:</p>
     <pre>[
@@ -71,7 +71,7 @@
         }
       ]</pre>
     <p>corresponding Dashboard site: <a href="https://ctd2-dashboard.nci.nih.gov/dashboard/#centers">https://ctd2-dashboard.nci.nih.gov/dashboard/#centers</a></p>
-    <h4 id="api-submission">GET /submission/{submissionId} - returns contents of a submission</h4>
+    <h4 id="api-submission">GET /submission/{submissionId} - returns contents of a submission <small>[<a onclick='window.scrollTo(0, 0)'>back to top</a>]</small></h4>
     <p>required parameter:</p>
     <dl><dt>submissionId</dt><dd>The identifier of the requested submission</dd></dl>
     <p>optional parameters:</p>
@@ -92,7 +92,7 @@
         ]
       }</pre>
     <p>corresponding Dashboard site: <a href="https://ctd2-dashboard.nci.nih.gov/dashboard/#submission/20130426-dfci-ovarian-analysis">https://ctd2-dashboard.nci.nih.gov/dashboard/#submission/20130426-dfci-ovarian-analysis</a></p>
-    <h4 id="api-browse">GET /browse/{subjectClass}/{subjectName} - returns observations for a subject</h4>
+    <h4 id="api-browse">GET /browse/{subjectClass}/{subjectName} - returns observations for a subject <small>[<a onclick='window.scrollTo(0, 0)'>back to top</a>]</small></h4>
     <p>required parameters:</p>
     <dl><dt>subjectClass</dt><dd>Available values: AnimalModel, CellSample, Compound, Gene, ShRna, TissueSample, Evidence</dd>
         <dt>subjectName</dt><dd>The name of the subject as known by the Dashboard</dd>
@@ -130,7 +130,7 @@
         ]
       }</pre>
     <p>corresponding Dashboard site: <a href="https://ctd2-dashboard.nci.nih.gov/dashboard/#gene/h/tp53/biomarker">https://ctd2-dashboard.nci.nih.gov/dashboard/#gene/h/tp53/biomarker</a></p>
-    <h4 id="api-search">GET /search/{term} - search Dashboard</h4>
+    <h4 id="api-search">GET /search/{term} - search Dashboard <small>[<a onclick='window.scrollTo(0, 0)'>back to top</a>]</small></h4>
     <p>required parameter:</p>
     <dl><dt>term</dt><dd>The search term</dd></dl>
     <p>optional parameters:</p>
@@ -168,7 +168,7 @@
         }
       ]</pre>
     <p>corresponding Dashboard site: <a href="https://ctd2-dashboard.nci.nih.gov/dashboard/#search/ALL">https://ctd2-dashboard.nci.nih.gov/dashboard/#search/ALL</a></p>
-    <h4 id="api-observation">GET /observation/{observationId} - returns an observation</h4>
+    <h4 id="api-observation">GET /observation/{observationId} - returns an observation <small>[<a onclick='window.scrollTo(0, 0)'>back to top</a>]</small></h4>
     <p>required parameter:</p>
     <dl><dt>observationId</dt><dd>Id of the requested observation</dd></dl>
     <p>example: <a href="https://ctd2-dashboard.nci.nih.gov/dashboard/api/observation/20150724-columbia-akt-tall-0">https://ctd2-dashboard.nci.nih.gov/dashboard/api/observation/20150724-columbia-akt-tall-0</a></p>
@@ -197,7 +197,7 @@
         ]
       }</pre>
     <p>corresponding Dashboard site: <a href="https://ctd2-dashboard.nci.nih.gov/dashboard/#observation/20150724-columbia-akt-tall-0">https://ctd2-dashboard.nci.nih.gov/dashboard/#observation/20150724-columbia-akt-tall-0</a></p>
-    <h4 id="api-observations">GET /observations/{submissionId}/{indexRanges} - returns observations from a submission</h4>
+    <h4 id="api-observations">GET /observations/{submissionId}/{indexRanges} - returns observations from a submission <small>[<a onclick='window.scrollTo(0, 0)'>back to top</a>]</small></h4>
     <p>required parameter:</p>
     <dl><dt>submissionId</dt><dd>The name of the requested submission</dd>
         <dt>indexRanges</dt><dd>Comma-separated list of indexRanges; each indexRange is either a single index or startIndex-endIndex, e.g. 1,3-5,7,9-13</dd>
