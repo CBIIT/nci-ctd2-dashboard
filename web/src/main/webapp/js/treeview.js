@@ -1,5 +1,5 @@
 // based on https://observablehq.com/@d3/collapsible-tree and https://observablehq.com/@d3/tree
-export default function(data, { // data is hierarchy (nested objects)
+export default function (data, { // data is hierarchy (nested objects)
     sort, // how to sort nodes prior to layout (e.g., (a, b) => d3.descending(a.height, b.height))
     label, // given a node d, returns the display name
     title, // given a node d, returns its hover text
@@ -149,5 +149,24 @@ export default function(data, { // data is hierarchy (nested objects)
 
     update(root);
 
-    return svg.node();
+    function collapse() {
+        root.descendants().forEach((d, i) => {
+            if (d.depth) d.children = null;
+        });
+        update(root)
+    }
+
+    function _expand(x) {
+        if (x._children === undefined || x._children === null) return
+        x.children = x._children
+        x.children.forEach(d => {
+            _expand(d)
+        })
+    }
+    function expand() {
+        _expand(root)
+        update(root)
+    }
+
+    return { tree: svg.node(), collapse: collapse, expand: expand };
 }

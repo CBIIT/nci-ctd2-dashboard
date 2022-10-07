@@ -430,24 +430,28 @@ import create_tree_view from './treeview.js'
 
             $.ajax("tree/disease-context").done(function (result) {
                 console.debug(result)
-                const tree1 = create_tree_view(result, {
+                const { tree, collapse, expand } = create_tree_view(result, {
                     label: d => d.label,
                     title: (d, n) => `${n.ancestors().reverse().map(d => d.data.name).join(".")}`, // hover text
                     link: (d, n) => `#tissue/c${d.name}`,
                     width: 1152
                 })
-                $("#treeview").html(tree1)
+                $("#treeview").html(tree)
+                $("#treeview-collapse").click(collapse)
+                $("#treeview-expand").click(expand)
                 $("#tv-disease-context").click(function (e) {
                     $("#tv-evidence-type").prop('disabled', false)
                     $("#tv-disease-context").prop('disabled', true)
-                    $("#treeview").html(tree1)
+                    $("#treeview").html(tree)
+                    $("#treeview-collapse").off('click').click(collapse)
+                    $("#treeview-expand").off('click').click(expand)
                 })
             }).fail(function (err) {
                 console.log(err);
             })
             $.ajax("tree/evidence-type").done(function (result) {
                 console.debug(result)
-                const tree2 = create_tree_view(result, {
+                const { tree, collapse, expand } = create_tree_view(result, {
                     label: d => d.label,
                     title: (d, n) => `${n.ancestors().reverse().map(d => d.data.name).join(".")}`, // hover text
                     link: (d, n) => `#eco/eco-${d.name.padStart(7, "0")}`,
@@ -456,7 +460,9 @@ import create_tree_view from './treeview.js'
                 $("#tv-evidence-type").click(function (e) {
                     $("#tv-disease-context").prop('disabled', false)
                     $("#tv-evidence-type").prop('disabled', true)
-                    $("#treeview").html(tree2)
+                    $("#treeview").html(tree)
+                    $("#treeview-collapse").off('click').click(collapse)
+                    $("#treeview-expand").off('click').click(expand)
                 })
             }).fail(function (err) {
                 console.log(err);

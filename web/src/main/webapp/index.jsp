@@ -335,6 +335,8 @@
             <div style="text-align:center;display:block;padding:10px">
                 <button type="button" class="btn btn-light" id=tv-disease-context style='background:rgb(253, 255, 201);border-color:#6c757d'>Disease context</button>
                 <button type="button" class="btn btn-light" id=tv-evidence-type style='background:rgb(253, 255, 201);border-color:#6c757d'>Evidence type</button>
+                <i class="fas fa-expand-arrows-alt fa-lg" style="color:SteelBlue" id="treeview-expand"></i>
+                <i class="fas fa-compress-arrows-alt fa-lg" style="color:SteelBlue" id='treeview-collapse'></i>
             </div>
             <div id=treeview></div>
         </div>
