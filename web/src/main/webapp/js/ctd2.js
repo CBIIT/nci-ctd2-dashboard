@@ -434,7 +434,8 @@ import create_tree_view from './treeview.js'
                     label: d => d.label,
                     title: (d, n) => `${n.ancestors().reverse().map(d => d.data.name).join(".")}`, // hover text
                     link: (d, n) => `#tissue/c${d.name}`,
-                    width: 1152
+                    width: 1152,
+                    port_width: 1152,
                 })
                 $("#treeview").html(tree)
                 $("#treeview-collapse").click(collapse)
@@ -455,7 +456,8 @@ import create_tree_view from './treeview.js'
                     label: d => d.label,
                     title: (d, n) => `${n.ancestors().reverse().map(d => d.data.name).join(".")}`, // hover text
                     link: (d, n) => `#eco/eco-${d.name.padStart(7, "0")}`,
-                    width: 1152
+                    width: 1152,
+                    port_width: 1152,
                 })
                 $("#tv-evidence-type").click(function (e) {
                     $("#tv-disease-context").prop('disabled', false)

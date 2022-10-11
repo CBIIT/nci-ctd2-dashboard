@@ -14,6 +14,7 @@ export default function (data, { // data is hierarchy (nested objects)
     strokeOpacity = 0.4, // stroke opacity for links
     halo = "#fff", // color of label halo 
     haloWidth = 3, // padding around the labels
+    port_width, // width of viewport
 } = {}) {
     const xlink = link
     const diagonal = d3.linkHorizontal().x(d => d.y).y(d => d.x)
@@ -40,6 +41,7 @@ export default function (data, { // data is hierarchy (nested objects)
         .attr("viewBox", [-margin.left, -margin.top, width, dx])
         .style("font", "10px sans-serif")
         .style("user-select", "none")
+        .attr("width", port_width)
     const gLink = svg.append("g")
         .attr("fill", "none")
         .attr("stroke", stroke)

@@ -338,7 +338,7 @@
                 <i class="fas fa-expand-arrows-alt fa-lg" style="color:SteelBlue" id="treeview-expand"></i>
                 <i class="fas fa-compress-arrows-alt fa-lg" style="color:SteelBlue" id='treeview-collapse'></i>
             </div>
-            <div id=treeview></div>
+            <div id=treeview style="height:600px;overflow-y:scroll;overflow-x:scroll"></div>
         </div>
         <div class=container id='wordcloud-container'>
             <div style="text-align:center;display:block;padding:10px">
