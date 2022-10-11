@@ -8,6 +8,7 @@ public class Node {
     public final String name;
     public final List<Node> children;
     public int observations;
+    public int direct; /* number of direct observations of this node itself, not the descendants */
     public String label;
 
     public Node(String name, List<Node> children) {

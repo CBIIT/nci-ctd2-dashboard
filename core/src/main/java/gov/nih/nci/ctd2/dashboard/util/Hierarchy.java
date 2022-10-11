@@ -100,6 +100,7 @@ public enum Hierarchy {
                 c += child.observations;
             }
             tree.observations = c;
+            tree.direct = 0;
             filter(tree);
         }
         if (tree.children.size() == 1) { /* avoid unnecessary root node. it is in fact the case of evidence type */
@@ -117,6 +118,7 @@ public enum Hierarchy {
         if (x != null) {
             c = x;
         }
+        node.direct = c;
         for (Node child : node.children) {
             setCount(child, observations);
             c += child.observations;

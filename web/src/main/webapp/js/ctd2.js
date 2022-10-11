@@ -432,7 +432,7 @@ import create_tree_view from './treeview.js'
                 console.debug(result)
                 const { tree, collapse, expand } = create_tree_view(result, {
                     label: d => d.label,
-                    title: (d, n) => `${n.ancestors().reverse().map(d => d.data.name).join(".")}`, // hover text
+                    title: d => `observations of this node: ${d.direct}\nobservations of all descendants: ${d.observations}`, // hover text
                     link: (d, n) => `#tissue/c${d.name}`,
                     width: 1152,
                     port_width: 1152,
@@ -454,7 +454,7 @@ import create_tree_view from './treeview.js'
                 console.debug(result)
                 const { tree, collapse, expand } = create_tree_view(result, {
                     label: d => d.label,
-                    title: (d, n) => `${n.ancestors().reverse().map(d => d.data.name).join(".")}`, // hover text
+                    title: d => `observations of this node: ${d.direct}\nobservations of all descendants: ${d.observations}`, // hover text
                     link: (d, n) => `#eco/eco-${d.name.padStart(7, "0")}`,
                     width: 1152,
                     port_width: 1152,
