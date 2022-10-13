@@ -2503,6 +2503,8 @@ public class DashboardDaoImpl implements DashboardDao {
         } catch (NoResultException e) {
             log.warn("missing name for ECO code=" + node.name);
             node.label = node.name;
+            if (node.name.equals("0")) /* not a real ECO code */
+                node.label = "root";
         }
 
         for (Node child : node.children) {
