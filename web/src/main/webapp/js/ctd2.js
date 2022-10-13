@@ -436,6 +436,7 @@ import create_tree_view from './treeview.js'
                     link: (d, n) => `#tissue/c${d.name}`,
                     width: 1152,
                     port_width: 1152,
+                    r: 4,
                 })
                 $("#treeview").html(tree)
                 $("#treeview-collapse").click(collapse)
@@ -458,6 +459,7 @@ import create_tree_view from './treeview.js'
                     link: (d, n) => `#eco/eco-${d.name.padStart(7, "0")}`,
                     width: 1152,
                     port_width: 1152,
+                    r: 4,
                 })
                 $("#tv-evidence-type").click(function (e) {
                     $("#tv-disease-context").prop('disabled', false)

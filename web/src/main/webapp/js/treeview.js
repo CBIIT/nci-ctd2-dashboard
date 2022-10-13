@@ -15,6 +15,7 @@ export default function (data, { // data is hierarchy (nested objects)
     halo = "#fff", // color of label halo 
     haloWidth = 3, // padding around the labels
     port_width, // width of viewport
+    internal_node_fill = "brown"
 } = {}) {
     const xlink = link
     const diagonal = d3.linkHorizontal().x(d => d.y).y(d => d.x)
@@ -85,7 +86,7 @@ export default function (data, { // data is hierarchy (nested objects)
 
         nodeEnter.append("circle")
             .attr("r", r)
-            .attr("fill", d => d._children ? stroke : fill)
+            .attr("fill", d => d._children ? internal_node_fill : fill)
             .attr("stroke-width", 10)
             .on("click", (event, d) => {
                 d.children = d.children ? null : d._children;
