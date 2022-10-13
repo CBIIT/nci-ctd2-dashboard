@@ -428,49 +428,7 @@ import create_tree_view from './treeview.js'
                 select_wordcloud("#vis", this);
             });
 
-            $.ajax("tree/disease-context").done(function (result) {
-                console.debug(result)
-                const { tree, collapse, expand } = create_tree_view(result, {
-                    label: d => d.label.substring(0, 10) + (d.label.length > 10 ? "..." : ""),
-                    title: d => `${d.label}\nobservations of this node: ${d.direct}\nobservations of all descendants: ${d.observations}`, // hover text
-                    link: (d, n) => `#tissue/c${d.name}`,
-                    width: 1152,
-                    port_width: 1152,
-                    r: 4,
-                })
-                $("#treeview").html(tree)
-                $("#treeview-collapse").click(collapse)
-                $("#treeview-expand").click(expand)
-                $("#tv-disease-context").click(function (e) {
-                    $("#tv-evidence-type").prop('disabled', false)
-                    $("#tv-disease-context").prop('disabled', true)
-                    $("#treeview").html(tree)
-                    $("#treeview-collapse").off('click').click(collapse)
-                    $("#treeview-expand").off('click').click(expand)
-                })
-            }).fail(function (err) {
-                console.log(err);
-            })
-            $.ajax("tree/evidence-type").done(function (result) {
-                console.debug(result)
-                const { tree, collapse, expand } = create_tree_view(result, {
-                    label: d => d.label.substring(0, 10) + (d.label.length > 10 ? "..." : ""),
-                    title: d => `${d.label}\nobservations of this node: ${d.direct}\nobservations of all descendants: ${d.observations}`, // hover text
-                    link: (d, n) => `#eco/eco-${d.name.padStart(7, "0")}`,
-                    width: 1152,
-                    port_width: 1152,
-                    r: 4,
-                })
-                $("#tv-evidence-type").click(function (e) {
-                    $("#tv-disease-context").prop('disabled', false)
-                    $("#tv-evidence-type").prop('disabled', true)
-                    $("#treeview").html(tree)
-                    $("#treeview-collapse").off('click').click(collapse)
-                    $("#treeview-expand").off('click').click(expand)
-                })
-            }).fail(function (err) {
-                console.log(err);
-            })
+            create_tree_view()
 
             $("#treeview-container").hide()
             $("#tv-disease-context").prop('disabled', true) // initial choice of the tree view
