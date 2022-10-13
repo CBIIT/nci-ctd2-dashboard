@@ -431,8 +431,8 @@ import create_tree_view from './treeview.js'
             $.ajax("tree/disease-context").done(function (result) {
                 console.debug(result)
                 const { tree, collapse, expand } = create_tree_view(result, {
-                    label: d => d.label,
-                    title: d => `observations of this node: ${d.direct}\nobservations of all descendants: ${d.observations}`, // hover text
+                    label: d => d.label.substring(0, 10) + (d.label.length > 10 ? "..." : ""),
+                    title: d => `${d.label}\nobservations of this node: ${d.direct}\nobservations of all descendants: ${d.observations}`, // hover text
                     link: (d, n) => `#tissue/c${d.name}`,
                     width: 1152,
                     port_width: 1152,
@@ -453,8 +453,8 @@ import create_tree_view from './treeview.js'
             $.ajax("tree/evidence-type").done(function (result) {
                 console.debug(result)
                 const { tree, collapse, expand } = create_tree_view(result, {
-                    label: d => d.label,
-                    title: d => `observations of this node: ${d.direct}\nobservations of all descendants: ${d.observations}`, // hover text
+                    label: d => d.label.substring(0, 10) + (d.label.length > 10 ? "..." : ""),
+                    title: d => `${d.label}\nobservations of this node: ${d.direct}\nobservations of all descendants: ${d.observations}`, // hover text
                     link: (d, n) => `#eco/eco-${d.name.padStart(7, "0")}`,
                     width: 1152,
                     port_width: 1152,
