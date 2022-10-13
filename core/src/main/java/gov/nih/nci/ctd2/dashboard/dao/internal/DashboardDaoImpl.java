@@ -941,21 +941,6 @@ public class DashboardDaoImpl implements DashboardDao {
         log.debug("disease context map size " + flatDiseaseContextMap.size());
     }
 
-    private void searchDCChildren(int code, final List<Integer> observed, final Set<Integer> searched) {
-        int[] children = Hierarchy.DISEASE_CONTEXT.getChildrenCode(code);
-        for (int child : children) {
-            if (searched.contains(child))
-                continue;
-            searched.add(child);
-
-            int observationNumber = observationCountForTissueSample(child);
-            if (observationNumber > 0) {
-                observed.add(child);
-            }
-            searchDCChildren(child, observed, searched);
-        }
-    }
-
     private List<Integer> ontologySearchExperimentalEvidence(final List<ECOTerm> ecoterms) {
         List<Integer> list = new ArrayList<Integer>();
         for (ECOTerm t : ecoterms) {
@@ -1196,6 +1181,7 @@ public class DashboardDaoImpl implements DashboardDao {
                         break;
                     default:
                         log.error("unknow tier number " + tier);
+                        continue;
                 }
                 centerSet.add(centerId);
             }
@@ -1832,11 +1818,9 @@ public class DashboardDaoImpl implements DashboardDao {
         final String[] searchTerms = parseWords(queryString);
         Set<Integer> observationsIntersection = null;
         Set<SubjectResult> subject_result = null;
-        final int termCount = searchTerms.length;
-        if (termCount <= 1) { // prevent wasting time finding observations
+        if (searchTerms.length <= 1) { // prevent wasting time finding observations
             subject_result = new HashSet<SubjectResult>(ontologySearchOneTerm(searchTerms[0], null));
         } else {
-            boolean first = true;
             Map<SubjectResult, Integer> subjectResultMap = new HashMap<SubjectResult, Integer>();
             for (String oneTerm : searchTerms) {
                 log.debug("ontology search term:" + oneTerm);
@@ -1849,9 +1833,8 @@ public class DashboardDaoImpl implements DashboardDao {
                     }
                     subjectResultMap.put(s, s.getMatchNumber());
                 }
-                if (first) {
+                if (observationsIntersection == null) { // first term
                     observationsIntersection = observations;
-                    first = false;
                 } else {
                     observationsIntersection.retainAll(observations);
                 }
