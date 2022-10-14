@@ -2,11 +2,11 @@ export default function () {
     $.ajax("tree/disease-context").done(function (result) {
         console.debug(result)
         const { tree, collapse, expand } = create_tree(result, {
-            label: d => d.label.substring(0, 10) + (d.label.length > 10 ? "..." : ""),
+            label: d => d.label.substring(0, 30) + (d.label.length > 30 ? "..." : "") + ` (${d.observations}, ${d.direct})`,
             title: d => `${d.label}\nobservations of this node: ${d.direct}\nobservations of all descendants: ${d.observations}`, // hover text
             link: (d, n) => `#tissue/c${d.name}`,
-            width: 1152,
-            port_width: 1152,
+            width: 3000,
+            port_width: 3000,
             r: 4,
         })
         $("#treeview").html(tree)
@@ -25,11 +25,11 @@ export default function () {
     $.ajax("tree/evidence-type").done(function (result) {
         console.debug(result)
         const { tree, collapse, expand } = create_tree(result, {
-            label: d => d.label.substring(0, 10) + (d.label.length > 10 ? "..." : ""),
+            label: d => d.label.substring(0, 30) + (d.label.length > 30 ? "..." : "") + ` (${d.observations}, ${d.direct})`,
             title: d => `${d.label}\nobservations of this node: ${d.direct}\nobservations of all descendants: ${d.observations}`, // hover text
             link: (d, n) => `#eco/eco-${d.name.padStart(7, "0")}`,
-            width: 1152,
-            port_width: 1152,
+            width: 3000,
+            port_width: 3000,
             r: 4,
         })
         $("#tv-evidence-type").click(function (e) {
@@ -64,7 +64,7 @@ function create_tree(data, { // data is hierarchy (nested objects)
 } = {}) {
     const xlink = link
     const diagonal = d3.linkHorizontal().x(d => d.y).y(d => d.x)
-    const margin = ({ top: 10, right: 120, bottom: 10, left: 40 })
+    const margin = ({ top: 10, right: 120, bottom: 10, left: 100 })
 
     const root = d3.hierarchy(data)
 
@@ -72,7 +72,7 @@ function create_tree(data, { // data is hierarchy (nested objects)
     if (sort != null) root.sort(sort);
 
     // Compute the layout.
-    const dx = 12;
+    const dx = 14;
     const dy = width / (root.height + padding);
     const tree = d3.tree().nodeSize([dx, dy])
 
@@ -81,7 +81,7 @@ function create_tree(data, { // data is hierarchy (nested objects)
     root.descendants().forEach((d, i) => {
         d.id = i;
         d._children = d.children;
-        if (d.depth > 5) d.children = null;
+        if (d.depth > 2) d.children = null;
     });
 
     const svg = d3.create("svg")
