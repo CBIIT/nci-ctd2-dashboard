@@ -72,7 +72,7 @@ function create_tree(data, { // data is hierarchy (nested objects)
     if (sort != null) root.sort(sort);
 
     // Compute the layout.
-    const dx = 10;
+    const dx = 12;
     const dy = width / (root.height + padding);
     const tree = d3.tree().nodeSize([dx, dy])
 
@@ -86,7 +86,7 @@ function create_tree(data, { // data is hierarchy (nested objects)
 
     const svg = d3.create("svg")
         .attr("viewBox", [-margin.left, -margin.top, width, dx])
-        .style("font", "10px sans-serif")
+        .style("font", "12px sans-serif")
         .style("user-select", "none")
         .attr("width", port_width)
     const gLink = svg.append("g")
