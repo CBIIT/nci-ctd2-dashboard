@@ -2468,7 +2468,8 @@ public class DashboardDaoImpl implements DashboardDao {
         try {
             int code = Integer.valueOf(node.name);
             query.setParameter("code", code);
-            node.label = query.getSingleResult();
+            String label = query.getSingleResult();
+            node.label = label.length() > ABBREVIATION_LENGTH_LIMIT ? shorternSubjectName(label) : label;
         } catch (NumberFormatException e) {
             // expected
             node.label = node.name;
@@ -2496,7 +2497,8 @@ public class DashboardDaoImpl implements DashboardDao {
         try {
             int code = Integer.valueOf(node.name);
             query.setParameter("code", String.format("ECO:%07d", code));
-            node.label = query.getSingleResult();
+            String label = query.getSingleResult();
+            node.label = label.length() > ABBREVIATION_LENGTH_LIMIT ? shorternSubjectName(label) : label;
         } catch (NumberFormatException e) {
             // expected
             node.label = node.name;
