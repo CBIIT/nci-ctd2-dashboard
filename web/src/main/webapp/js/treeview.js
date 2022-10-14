@@ -54,7 +54,6 @@ function create_tree(data, { // data is hierarchy (nested objects)
     width = 640, // outer width, in pixels
     r = 3, // radius of nodes
     padding = 1, // horizontal padding for first and last column
-    fill = "#999", // fill for nodes
     stroke = "#555", // stroke for links
     strokeWidth = 1.5, // stroke width for links
     strokeOpacity = 0.4, // stroke opacity for links
@@ -133,8 +132,8 @@ function create_tree(data, { // data is hierarchy (nested objects)
 
         nodeEnter.append("circle")
             .attr("r", r)
-            .attr("fill", d => d._children ? internal_node_fill : fill)
-            .attr("stroke-width", 10)
+            .attr("fill", d => d._children ? internal_node_fill : "white")
+            .attr("stroke", d => d._children ? "none" : "darkblue")
             .on("click", (event, d) => {
                 d.children = d.children ? null : d._children;
                 update(d);
