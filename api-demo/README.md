@@ -35,6 +35,6 @@ node.js
 
 ## example test run with docker image
 
-Note that *CTD2_API_HOST* and *CTD2_API_PORT* here are just examples. They should eventaully point to the production ones, namely `ctd2-dashboard.nci.nih.gov` and `80`.
+Note that to test local API instance, the `https` in the code need to be changed to `http` (lines 268, 279, 309); *CTD2_API_HOST* and *CTD2_API_PORT* could be `127.0.0.1` and `80`.
 
-`docker run -d -e CTD2_API_HOST=156.145.29.93 -e CTD2_API_PORT=9001 -p 3000:3000 $DOCKER_USER/ctd2api-demo:v0`
+`docker run --name ctd2api-demo -d -e CTD2_API_HOST=ctd2-dashboard.nci.nih.gov -e CTD2_API_PORT=443 -p 3000:3000 $DOCKER_USER/ctd2api-demo`
