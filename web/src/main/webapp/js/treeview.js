@@ -8,6 +8,7 @@ export default function () {
             width: 3000,
             port_width: 3000,
             r: 4,
+            sort: (a, b) => a.data.label.localeCompare(b.data.label)
         })
         $("#treeview").html(tree)
         $("#treeview-collapse").click(collapse)
@@ -31,6 +32,7 @@ export default function () {
             width: 3000,
             port_width: 3000,
             r: 4,
+            sort: (a, b) => a.data.label.localeCompare(b.data.label)
         })
         $("#tv-evidence-type").click(function (e) {
             $("#tv-disease-context").prop('disabled', false)
