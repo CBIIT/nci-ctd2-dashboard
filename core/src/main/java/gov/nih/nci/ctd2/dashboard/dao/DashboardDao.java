@@ -5,6 +5,7 @@ import gov.nih.nci.ctd2.dashboard.util.SubjectWithSummaries;
 import gov.nih.nci.ctd2.dashboard.util.Summary;
 import gov.nih.nci.ctd2.dashboard.util.WordCloudEntry;
 import gov.nih.nci.ctd2.dashboard.util.EcoBrowse;
+import gov.nih.nci.ctd2.dashboard.util.Node;
 import gov.nih.nci.ctd2.dashboard.util.ObservationURIsAndTiers;
 import gov.nih.nci.ctd2.dashboard.util.SearchResults;
 
@@ -102,4 +103,9 @@ public interface DashboardDao {
 
     void storeRelatedCompounds(Set<List<Integer>> list);
     SortedMap<String, String[]> getRelatedCompounds(Integer id);
+
+    Map<Integer, Integer> tissueSampleCodeToObservationNumber();
+    Map<Integer, Integer> evidenceTypeToObservationNumber();
+    void setTissueSampleLabels(Node node);
+    void setEvidenceLabels(Node node);
 }
