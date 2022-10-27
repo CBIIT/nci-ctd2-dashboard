@@ -29,7 +29,7 @@ app.use(express.static(path.join(__dirname, 'static')));
 // ex: res.render('users.html').
 app.set('view engine', 'html');
 
-app.get('/', function(request, response) {
+app.get('/', function (request, response) {
     response.render('index');
 });
 
@@ -44,6 +44,11 @@ function get_names(url, response, ctd2type) {
 
     const req = https.request(options, res => {
         console.log(`statusCode: ${res.statusCode}`);
+        if (res.statusCode != 200) {
+            console.warn(`not OK for {url}`)
+            ctd2(ctd2type, [], response)
+            return
+        }
         let data = '';
         res.on('data', chunk => {
             data += chunk;
@@ -89,6 +94,11 @@ function aggregate(list_ids, response, ctd2type) {
     };
     const req = https.request(options, res => {
         console.log(`statusCode: ${res.statusCode}`);
+        if (res.statusCode != 200) {
+            console.warn(`not OK for {options} {data}`)
+            ctd2(ctd2type, [], response)
+            return
+        }
         res.on('data', d => {
             const x = JSON.parse(d);
             get_names(x.url, response, ctd2type);
@@ -125,12 +135,17 @@ function transform(id, transformers, response, ctd2type) {
 
         const req = https.request(options, res => {
             console.log(`statusCode: ${res.statusCode}`);
-            let data = '';
+            if (res.statusCode != 200) {
+                console.warn(`not OK for {options} {data}`)
+                ctd2(ctd2type, [], response)
+                return
+            }
+            let result_data = '';
             res.on('data', chunk => {
-                data += chunk;
+                result_data += chunk;
             });
             res.on('end', () => {
-                const x = JSON.parse(data);
+                const x = JSON.parse(result_data);
                 list_ids.push(x.id);
                 if (list_ids.length == transformers.length) {
                     aggregate(list_ids, response, ctd2type);
@@ -144,7 +159,7 @@ function transform(id, transformers, response, ctd2type) {
     });
 }
 
-app.get('/gene/:name', function(req1, res1) {
+app.get('/gene/:name', function (req1, res1) {
     const compound_transformers = [
         'DrugBank inhibitors transformer',
         'DrugBank substrates transformer',
@@ -178,6 +193,11 @@ app.get('/gene/:name', function(req1, res1) {
 
     const req = https.request(options, res => {
         console.log(`statusCode: ${res.statusCode}`);
+        if (res.statusCode != 200) {
+            console.warn(`not OK for {options} {data}`)
+            ctd2(ctd2type, [], response)
+            return
+        }
         let data = '';
         res.on('data', chunk => {
             data += chunk;
@@ -196,15 +216,15 @@ app.get('/gene/:name', function(req1, res1) {
     req.end();
 });
 
-app.get('/compound/:name', function(request, response) {
+app.get('/compound/:name', function (request, response) {
     const gene_transformers = [
         'DrugBank target genes transformer',
         'DrugBank enzyme genes transformer',
         'DrugBank transporter genes transformer',
         'DrugBank carrier genes transformer',
         'Pharos target genes transformer',
-        'ChEMBL target transformer',
-        'HMDB target transformer',
+        'ChEMBL gene target transformer',
+        'HMDB target genes transformer',
         'Repurposing Hub target transformer',
         'DGIdb target transformer',
         'GtoPdb target transformer'
@@ -219,6 +239,11 @@ app.get('/compound/:name', function(request, response) {
     }
     https.request(options, res => {
         console.log(`statusCode: ${res.statusCode}`);
+        if (res.statusCode != 200) {
+            console.warn(`not OK for {options}`)
+            ctd2(ctd2type, [], response)
+            return
+        }
         let data = '';
         res.on('data', chunk => {
             data += chunk;
@@ -240,7 +265,7 @@ function ctd2(ctd2type, terms, res1) {
         });
         return;
     }
-    const http = require('http');
+    const https = require('https');
     let x = [];
     let total = terms.length;
     terms.forEach(term => {
@@ -251,7 +276,7 @@ function ctd2(ctd2type, terms, res1) {
             method: 'GET',
         }
 
-        const req = http.request(options, res => {
+        const req = https.request(options, res => {
             let data = '';
             res.on('data', chunk => {
                 data += chunk;
@@ -281,7 +306,7 @@ function ctd2(ctd2type, terms, res1) {
                             path: `/dashboard/api/browse/${ctd2type}/${encodeURIComponent(term)}?role=${encodeURIComponent(role)}`,
                             method: 'GET',
                         }
-                        const req = http.request(options, res => {
+                        const req = https.request(options, res => {
                             let data = '';
                             res.on('data', chunk => {
                                 data += chunk;
@@ -326,8 +351,8 @@ function ctd2(ctd2type, terms, res1) {
 
 app.use(express.json()) // for parsing application/json
 app.use(express.urlencoded({
-        extended: true
-    })) // for parsing application/x-www-form-urlencoded
+    extended: true
+})) // for parsing application/x-www-form-urlencoded
 
 if (!module.parent) {
     app.listen(3000);

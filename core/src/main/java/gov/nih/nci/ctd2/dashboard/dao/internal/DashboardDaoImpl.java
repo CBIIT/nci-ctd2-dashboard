@@ -83,6 +83,7 @@ import gov.nih.nci.ctd2.dashboard.model.Transcript;
 import gov.nih.nci.ctd2.dashboard.model.Xref;
 import gov.nih.nci.ctd2.dashboard.util.EcoBrowse;
 import gov.nih.nci.ctd2.dashboard.util.Hierarchy;
+import gov.nih.nci.ctd2.dashboard.util.Node;
 import gov.nih.nci.ctd2.dashboard.util.ObservationURIsAndTiers;
 import gov.nih.nci.ctd2.dashboard.util.SearchResults;
 import gov.nih.nci.ctd2.dashboard.util.SubjectResult;
@@ -940,21 +941,6 @@ public class DashboardDaoImpl implements DashboardDao {
         log.debug("disease context map size " + flatDiseaseContextMap.size());
     }
 
-    private void searchDCChildren(int code, final List<Integer> observed, final Set<Integer> searched) {
-        int[] children = Hierarchy.DISEASE_CONTEXT.getChildrenCode(code);
-        for (int child : children) {
-            if (searched.contains(child))
-                continue;
-            searched.add(child);
-
-            int observationNumber = observationCountForTissueSample(child);
-            if (observationNumber > 0) {
-                observed.add(child);
-            }
-            searchDCChildren(child, observed, searched);
-        }
-    }
-
     private List<Integer> ontologySearchExperimentalEvidence(final List<ECOTerm> ecoterms) {
         List<Integer> list = new ArrayList<Integer>();
         for (ECOTerm t : ecoterms) {
@@ -1195,6 +1181,7 @@ public class DashboardDaoImpl implements DashboardDao {
                         break;
                     default:
                         log.error("unknow tier number " + tier);
+                        continue;
                 }
                 centerSet.add(centerId);
             }
@@ -1831,11 +1818,9 @@ public class DashboardDaoImpl implements DashboardDao {
         final String[] searchTerms = parseWords(queryString);
         Set<Integer> observationsIntersection = null;
         Set<SubjectResult> subject_result = null;
-        final int termCount = searchTerms.length;
-        if (termCount <= 1) { // prevent wasting time finding observations
+        if (searchTerms.length <= 1) { // prevent wasting time finding observations
             subject_result = new HashSet<SubjectResult>(ontologySearchOneTerm(searchTerms[0], null));
         } else {
-            boolean first = true;
             Map<SubjectResult, Integer> subjectResultMap = new HashMap<SubjectResult, Integer>();
             for (String oneTerm : searchTerms) {
                 log.debug("ontology search term:" + oneTerm);
@@ -1848,9 +1833,8 @@ public class DashboardDaoImpl implements DashboardDao {
                     }
                     subjectResultMap.put(s, s.getMatchNumber());
                 }
-                if (first) {
+                if (observationsIntersection == null) { // first term
                     observationsIntersection = observations;
-                    first = false;
                 } else {
                     observationsIntersection.retainAll(observations);
                 }
@@ -2426,5 +2410,105 @@ public class DashboardDaoImpl implements DashboardDao {
         }
         session.close();
         return map;
+    }
+
+    @Override
+    public Map<Integer, Integer> tissueSampleCodeToObservationNumber() {
+        Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+        Session session = getSession();
+        @SuppressWarnings("unchecked")
+        org.hibernate.query.Query<Object[]> query = session.createNativeQuery(
+                "SELECT code, COUNT(*) FROM observed_subject JOIN tissue_sample ON observed_subject.subject_id=tissue_sample.id GROUP BY code");
+        for (Object[] result : query.getResultList()) {
+            Integer code = (Integer) result[0];
+            BigInteger count = (BigInteger) result[1];
+            map.put(code, count.intValue());
+        }
+        session.close();
+        return map;
+    }
+
+    @Override
+    public Map<Integer, Integer> evidenceTypeToObservationNumber() {
+        Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+        Session session = getSession();
+        @SuppressWarnings("unchecked")
+        org.hibernate.query.Query<String> query = session.createNativeQuery(
+                "SELECT ECOcode FROM observation JOIN submission ON observation.submission_id=submission.id JOIN observation_template ON submission.observationTemplate_id=observation_template.id");
+        for (String ecoCodes : query.getResultList()) {
+            if (ecoCodes.trim().length() == 0) {
+                continue;
+            }
+            String[] x = ecoCodes.split("\\|");
+            for (String c : x) {
+                int code = Integer.valueOf(c.substring(4));
+                Integer count = map.get(code);
+                if (count == null) {
+                    map.put(code, 1);
+                } else {
+                    map.put(code, count + 1);
+                }
+            }
+        }
+        session.close();
+        return map;
+    }
+
+    @Override
+    public void setTissueSampleLabels(Node node) {
+        Session session = getSession();
+        labelTissueSample(node, session);
+        session.close();
+    }
+
+    private void labelTissueSample(Node node, Session session) {
+        @SuppressWarnings("unchecked")
+        org.hibernate.query.Query<String> query = session.createNativeQuery(
+                "SELECT displayName FROM tissue_sample JOIN dashboard_entity ON tissue_sample.id=dashboard_entity.id WHERE code=:code");
+        try {
+            int code = Integer.valueOf(node.name);
+            query.setParameter("code", code);
+            node.label = query.getSingleResult();
+        } catch (NumberFormatException e) {
+            // expected
+            node.label = node.name;
+        } catch (NoResultException e) {
+            log.warn("missing name for tissue sample code=" + node.name);
+            node.label = node.name;
+        }
+
+        for (Node child : node.children) {
+            labelTissueSample(child, session);
+        }
+    }
+
+    @Override
+    public void setEvidenceLabels(Node node) {
+        Session session = getSession();
+        labelEvidence(node, session);
+        session.close();
+    }
+
+    private void labelEvidence(Node node, Session session) {
+        @SuppressWarnings("unchecked")
+        org.hibernate.query.Query<String> query = session.createNativeQuery(
+                "SELECT displayName FROM ecoterm JOIN dashboard_entity ON ecoterm.id=dashboard_entity.id WHERE code=:code");
+        try {
+            int code = Integer.valueOf(node.name);
+            query.setParameter("code", String.format("ECO:%07d", code));
+            node.label = query.getSingleResult();
+        } catch (NumberFormatException e) {
+            // expected
+            node.label = node.name;
+        } catch (NoResultException e) {
+            log.warn("missing name for ECO code=" + node.name);
+            node.label = node.name;
+            if (node.name.equals("0")) /* not a real ECO code */
+                node.label = "root";
+        }
+
+        for (Node child : node.children) {
+            labelEvidence(child, session);
+        }
     }
 }

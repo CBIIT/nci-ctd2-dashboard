@@ -5,6 +5,7 @@ import { ECOTerm } from './ecoterm.js'
 import { ObservedSubjects, ObservedEvidences, ObservedEvidence } from './observed.js'
 import ObservationView from './observation.view.js'
 import MraView from './mra.js'
+import create_tree_view from './treeview.js'
 
 (function ($) {
     // This is strictly coupled to the homepage design!
@@ -369,7 +370,8 @@ import MraView from './mra.js'
                 $("#summary-table").toggle();
                 $("#toggle-word").text(function (index, content) {
                     if (content == "Show") {
-                        // hide word cloud
+                        $("#treeview-container").hide();
+                        $("#treeview-toggle-word").text("Show");
                         $("#wordcloud-container").hide();
                         $("#wordcloud-toggle-word").text("Show");
                         return "Hide";
@@ -397,7 +399,8 @@ import MraView from './mra.js'
                 $("#wordcloud-container").toggle();
                 $("#wordcloud-toggle-word").text(function (index, content) {
                     if (content == "Show") {
-                        // hide summary table
+                        $("#treeview-container").hide();
+                        $("#treeview-toggle-word").text("Show");
                         $("#summary-table").hide();
                         $("#toggle-word").text("Show");
                         return "Hide";
@@ -424,6 +427,25 @@ import MraView from './mra.js'
                 e.preventDefault();
                 select_wordcloud("#vis", this);
             });
+
+            create_tree_view()
+
+            $("#treeview-container").hide()
+            $("#tv-disease-context").prop('disabled', true) // initial choice of the tree view
+            $("#treeview-button").click(function (e) {
+                e.preventDefault()
+                $("#treeview-container").toggle();
+                $("#treeview-toggle-word").text(function (index, content) {
+                    if (content == "Show") {
+                        $("#summary-table").hide()
+                        $("#toggle-word").text("Show")
+                        $("#wordcloud-container").hide()
+                        $("#wordcloud-toggle-word").text("Show")
+                        return "Hide"
+                    } else return "Show"
+                });
+            });
+
             $('#summary-table thead th').popover({
                 placement: "top",
                 trigger: 'hover',
