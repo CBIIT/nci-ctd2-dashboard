@@ -67,8 +67,10 @@ public class RegistrationController {
     @Autowired
     private String grecaptcha_secret;
 
+    /* retrieve PUBLISHED registration data */
     @RequestMapping(value = "data", method = { RequestMethod.GET }, headers = "Accept=application/json")
     public ResponseEntity<String> getData() {
+        final String PUBLISHED = "published"; // registration status
         logger.log(Level.INFO, "request received to retrieve registration data");
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json; charset=utf-8");
@@ -84,11 +86,12 @@ public class RegistrationController {
             ResultSet rs = ps.executeQuery();
 
             StringBuffer sb = new StringBuffer("[");
-            boolean first = true;
             while (rs.next()) {
-                if (first) {
-                    first = false;
-                } else {
+                String status = rs.getString("status");
+                if (!PUBLISHED.equals(status)) {
+                    continue;
+                }
+                if (sb.length()>1) { // not the first record
                     sb.append(",");
                 }
                 String app_code = rs.getString("app_code");
