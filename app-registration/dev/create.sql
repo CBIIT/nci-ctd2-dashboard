@@ -16,5 +16,6 @@ CREATE TABLE registration
 
 INSERT INTO registration
 VALUES
-    ('ABC20220809010203', 'test title', 'test url', 'test description',
-        'test developer name', 'test email', 'test instituion', 'test lab', null, 'published')
+    ('CTD20220809010203', 'CTD² API Demo Application', 'http://34.74.93.164:3000/',
+    'This demo application uses MolePro Translator to find gene-compound connections, and then uses the CTD² Dashboard API to construct a listing of relevant Dashboard results.',
+    'Floratos, Ji, et al', 'ctd2@cumc.columbia.edu', 'Columbia University', 'Floratos Lab', null, 'published')
