@@ -563,7 +563,7 @@ import create_tree_view from './treeview.js'
 
     /* wordcloud download feature */
     function wordcloud_download() {
-        const svg = document.querySelector('div:not([style*="display:none"]):not([style*="display: none"])>svg')
+        const svg = document.querySelector('div.wordcloud:not([style*="display:none"]):not([style*="display: none"])>svg')
         const svgData = btoa(new XMLSerializer().serializeToString(svg))
         const a = document.createElement("a")
         a.download = "CTD2_word_cloud"
