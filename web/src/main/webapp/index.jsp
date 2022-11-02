@@ -350,11 +350,11 @@
                 <i class="fas fa-cog fa-lg" style="color:SteelBlue;" id="config-wordcloud"></i>
                 <i class="fas fa-download fa-lg" style="color:SteelBlue;" id='download-wordcloud'></i>
             </div>
-            <div id="vis"></div>
-            <div id="vis-genes"></div>
-            <div id="vis-compounds"></div>
-            <div id="vis-disease"></div>
-            <div id="vis-cell"></div>
+            <div id="vis" class=wordcloud></div>
+            <div id="vis-genes" class=wordcloud></div>
+            <div id="vis-compounds" class=wordcloud></div>
+            <div id="vis-disease" class=wordcloud></div>
+            <div id="vis-cell" class=wordcloud></div>
         </div>
         <table id=summary-table class="table table-bordered table-sm text-center">
             <thead>
@@ -1061,7 +1061,7 @@
                 <i class="fas fa-cog fa-lg" style="color:SteelBlue;" id="config-wordcloud"></i>
                 <i class="fas fa-download fa-lg" style="color:SteelBlue;" id='download-wordcloud'></i>
                 <span id="subject-id" style="display:none"></span>
-                <div id=subject-wordcloud></div>
+                <div id=subject-wordcloud class=wordcloud></div>
              </div>
 
              <table id="gene-observation-grid" class="table table-bordered table-striped observations">
@@ -1356,7 +1356,7 @@
                 <i class="fas fa-cog fa-lg" style="color:SteelBlue;" id="config-wordcloud"></i>
                 <i class="fas fa-download fa-lg" style="color:SteelBlue;" id='download-wordcloud'></i>
                 <span id="subject-id" style="display:none"></span>
-                <div id=subject-wordcloud></div>
+                <div id=subject-wordcloud class=wordcloud></div>
             </div>
 
             <table id="tissuesample-observation-grid" class="table table-bordered table-striped observations">
@@ -1442,7 +1442,7 @@
                 <i class="fas fa-cog fa-lg" style="color:SteelBlue;" id="config-wordcloud"></i>
                 <i class="fas fa-download fa-lg" style="color:SteelBlue;" id='download-wordcloud'></i>
                 <span id="subject-id" style="display:none"></span>
-                <div id=subject-wordcloud></div>
+                <div id=subject-wordcloud class=wordcloud></div>
             </div>
 
             <table id="cellsample-observation-grid" class="table table-bordered table-striped observations">
@@ -1674,7 +1674,7 @@
                     <i class="fas fa-cog fa-lg" style="color:SteelBlue;" id="config-wordcloud"></i>
                     <i class="fas fa-download fa-lg" style="color:SteelBlue;" id='download-wordcloud'></i>
                     <span id="subject-id" style="display:none"></span>
-                    <div id=subject-wordcloud></div>
+                    <div id=subject-wordcloud class=wordcloud></div>
                 </div>
 
               <table id="compound-observation-grid" class="table table-bordered table-striped observations">
