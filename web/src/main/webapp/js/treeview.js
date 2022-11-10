@@ -1,12 +1,9 @@
 export default function () {
     $.ajax("tree/disease-context").done(function (result) {
-        console.debug(result)
         const { tree, collapse, expand } = create_tree(result, {
             label: d => d.label.substring(0, 30) + (d.label.length > 30 ? "..." : "") + ` (${d.observations}, ${d.direct})`,
             title: d => `${d.label}\nobservations of this node: ${d.direct}\nobservations of all descendants: ${d.observations}`, // hover text
             link: (d, n) => `#tissue/c${d.name}`,
-            width: 3000,
-            port_width: 3000,
             r: 4,
             sort: (a, b) => a.data.label.localeCompare(b.data.label)
         })
@@ -24,13 +21,10 @@ export default function () {
         console.log(err);
     })
     $.ajax("tree/evidence-type").done(function (result) {
-        console.debug(result)
         const { tree, collapse, expand } = create_tree(result, {
             label: d => d.label.substring(0, 30) + (d.label.length > 30 ? "..." : "") + ` (${d.observations}, ${d.direct})`,
             title: d => `${d.label}\nobservations of this node: ${d.direct}\nobservations of all descendants: ${d.observations}`, // hover text
             link: (d, n) => `#eco/eco-${d.name.padStart(7, "0")}`,
-            width: 3000,
-            port_width: 3000,
             r: 4,
             sort: (a, b) => a.data.label.localeCompare(b.data.label)
         })
@@ -53,7 +47,7 @@ function create_tree(data, { // data is hierarchy (nested objects)
     title, // given a node d, returns its hover text
     link, // given a node d, its link (if any)
     linkTarget = "_blank", // the target attribute for links (if any)
-    width = 640, // outer width, in pixels
+    container_width = 940, // dom container  width, in pixels
     r = 3, // radius of nodes
     padding = 1, // horizontal padding for first and last column
     stroke = "#555", // stroke for links
@@ -61,7 +55,6 @@ function create_tree(data, { // data is hierarchy (nested objects)
     strokeOpacity = 0.4, // stroke opacity for links
     halo = "#fff", // color of label halo 
     haloWidth = 3, // padding around the labels
-    port_width, // width of viewport
     internal_node_fill = "brown"
 } = {}) {
     const xlink = link
@@ -74,8 +67,8 @@ function create_tree(data, { // data is hierarchy (nested objects)
     if (sort != null) root.sort(sort);
 
     // Compute the layout.
-    const dx = 14;
-    const dy = width / (root.height + padding);
+    const dx = 14
+    const dy = 250
     const tree = d3.tree().nodeSize([dx, dy])
 
     root.x0 = dy / 2;
@@ -87,10 +80,8 @@ function create_tree(data, { // data is hierarchy (nested objects)
     });
 
     const svg = d3.create("svg")
-        .attr("viewBox", [-margin.left, -margin.top, width, dx])
         .style("font", "12px sans-serif")
         .style("user-select", "none")
-        .attr("width", port_width)
     const gLink = svg.append("g")
         .attr("fill", "none")
         .attr("stroke", stroke)
@@ -100,7 +91,16 @@ function create_tree(data, { // data is hierarchy (nested objects)
         .attr("cursor", "pointer")
         .attr("pointer-events", "all")
 
+    // get the height of the 'visible' portion of the tree
+    // instead of the height of underlying data, which is static and does not change
+    function visible_height(node) {
+        if (node.children == null) return 0
+        else return 1 + Math.max(...node.children.map(x => visible_height(x)))
+    }
+
     function update(source) {
+        const width = Math.max(dy * (visible_height(root) + padding), container_width)
+        svg.attr("width", width)
         const duration = d3.event && d3.event.altKey ? 2500 : 250;
         const nodes = root.descendants().reverse();
         const links = root.links();
